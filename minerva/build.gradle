@@ -1,0 +1,30 @@
+plugins {
+    id 'application'
+    id 'eclipse'
+}
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+compileJava.options.encoding = 'windows-1252'
+compileTestJava.options.encoding = 'windows-1252'
+
+application {
+    //mainClass = ''
+}
+
+dependencies {
+    implementation 'com.github.SoltauFintel.amalia:amalia-web:0.1.2'
+    implementation 'commons-io:commons-io:2.4' // TODO 2.12
+    implementation 'javax.websocket:javax.websocket-api:1.1'
+    implementation 'org.java-websocket:Java-WebSocket:1.5.3'
+    implementation 'org.eclipse.jgit:org.eclipse.jgit:6.5.0.202303070854-r'
+    // alt: implementation 'org.eclipse.jgit:org.eclipse.jgit:5.13.0.202109080827-r'
+    implementation 'org.gitlab4j:gitlab4j-api:5.0.1' // TODO erstmal belassen, später 5.2.0 probieren
+    
+    testImplementation 'junit:junit:4.12' 
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'https://jitpack.io' }
+}
