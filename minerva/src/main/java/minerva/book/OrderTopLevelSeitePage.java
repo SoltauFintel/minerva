@@ -10,7 +10,7 @@ public class OrderTopLevelSeitePage extends BPage {
     @Override
     protected void execute() {
         sv = new OrderSeiteService(ctx, isPOST(), model, branch, //
-                bookFolder, SeiteSO.ROOT_ID, booklink, user, book.getHasSeiten()) {
+                bookFolder, SeiteSO.ROOT_ID, booklink, user, book.getISeite()) {
             @Override
             protected void saveSubpagesAfterReordering(SeitenSO seiten) {
                 book.savePagesAfterReordering(seiten);

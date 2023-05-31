@@ -1,10 +1,14 @@
 package minerva.model;
 
-public interface Seitensortierung {
+public interface ISeite {
     
     String getId();
-    
+
+    String getTitle();
+
     boolean isSorted();
     
     String getUserLanguage();
+    
+    SeitenSO getSeiten();
 }

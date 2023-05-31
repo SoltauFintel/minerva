@@ -31,12 +31,12 @@ public class BookSO {
                 .map(e -> new Gson().fromJson(e.getValue(), Seite.class))
                 .collect(Collectors.toList());
 
-        seiten = SeitenSO.findeUnterseiten(getSeitensortierung(), alleSeiten, this);
+        seiten = SeitenSO.findeUnterseiten(getISeite(), alleSeiten, this);
     }
     
     // public for migration
-    public Seitensortierung getSeitensortierung() {
-        return new Seitensortierung() {
+    public ISeite getISeite() {
+        return new ISeite() {
             @Override
             public String getId() {
                 return SeiteSO.ROOT_ID;
@@ -51,18 +51,7 @@ public class BookSO {
             public String getUserLanguage() {
                 return workspace.getUser().getLanguage();
             }
-        };
-    }
 
-    // Seitensortierung und HasSeiten evtl. zusammenfassen?
-    public HasSeiten getHasSeiten() {
-        return new HasSeiten() {
-            
-            @Override
-            public String getId() {
-                return SeiteSO.ROOT_ID;
-            }
-            
             @Override
             public String getTitle() {
                 return book.getTitle().getString(getUser().getLanguage());
@@ -100,7 +89,7 @@ public class BookSO {
     }
     
     public String createTopLevelSeite() {
-        return seiten.createSeite(getSeitensortierung(), this);
+        return seiten.createSeite(getISeite(), this);
     }
     
     public String getTitle() {

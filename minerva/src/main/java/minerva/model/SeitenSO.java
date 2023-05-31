@@ -15,11 +15,11 @@ import minerva.seite.Seite;
 
 public class SeitenSO extends MList<SeiteSO> {
 
-    public SeitenSO(Seitensortierung parent) {
+    public SeitenSO(ISeite parent) {
         super(getComparator(parent));
     }
 
-    private static Comparator<SeiteSO> getComparator(Seitensortierung parent) {
+    private static Comparator<SeiteSO> getComparator(ISeite parent) {
         if (parent.isSorted()) {
             return (a, b) -> a.getTitle().compareToIgnoreCase(b.getTitle());
         } else {
@@ -28,7 +28,7 @@ public class SeitenSO extends MList<SeiteSO> {
         }
     }
 
-    public static SeitenSO findeUnterseiten(Seitensortierung parent, List<Seite> alleSeiten, BookSO book) {
+    public static SeitenSO findeUnterseiten(ISeite parent, List<Seite> alleSeiten, BookSO book) {
         SeitenSO ret = new SeitenSO(parent);
         for (Seite seite : alleSeiten) {
             if (seite.getParentId().equals(parent.getId())) {
@@ -68,7 +68,7 @@ public class SeitenSO extends MList<SeiteSO> {
         return null;
     }
 
-    public String createSeite(Seitensortierung parent, BookSO book) {
+    public String createSeite(ISeite parent, BookSO book) {
         return createSeite(parent, book, IdGenerator.createId6()).getId();
     }
 
@@ -79,7 +79,7 @@ public class SeitenSO extends MList<SeiteSO> {
      * @param newId -
      * @return SeiteSO
      */
-    public SeiteSO createSeite(Seitensortierung parent, BookSO book, String newId) {
+    public SeiteSO createSeite(ISeite parent, BookSO book, String newId) {
         Seite neueSeite = new Seite();
         neueSeite.setId(newId);
         neueSeite.setParentId(parent.getId());

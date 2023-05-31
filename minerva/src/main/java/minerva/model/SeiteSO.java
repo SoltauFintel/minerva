@@ -22,7 +22,7 @@ import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.seite.Seite;
 
-public class SeiteSO implements HasSeiten, Seitensortierung {
+public class SeiteSO implements ISeite {
     public static final String META_SUFFIX = ".meta";
     public static final String ROOT_ID = "root";
     private final BookSO book;
@@ -69,7 +69,7 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
      * @param seite -
      * @param parent -
      */
-    public SeiteSO(BookSO book, Seite seite, Seitensortierung parent) {
+    public SeiteSO(BookSO book, Seite seite, ISeite parent) {
         this.book = book;
         this.seite = seite;
         seiten = new SeitenSO(parent); // leer

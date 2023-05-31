@@ -160,10 +160,10 @@ public class ConfluenceToMinervaMigrationService {
         BookSO book = workspace.getBooks().byFolder(folder);
 
         // migrate first page ----
-        /*SeiteSO seite1 = book.getSeiten().createSeite(book.getSeitensortierung(), book, sp.getId());
+        /*SeiteSO seite1 = book.getSeiten().createSeite(book.getISeite(), book, sp.getId());
         migratePage(sp, seite1, files);*/
         for (ConfluencePage sub : sp.getSubpages()) {
-            SeiteSO subTp = book.getSeiten().createSeite(book.getSeitensortierung(), book, sub.getId());
+            SeiteSO subTp = book.getSeiten().createSeite(book.getISeite(), book, sub.getId());
             migratePage(sub, subTp, files);
         }
 

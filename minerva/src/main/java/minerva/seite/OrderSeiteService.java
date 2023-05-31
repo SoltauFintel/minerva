@@ -14,10 +14,9 @@ import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.web.action.Escaper;
 import github.soltaufintel.amalia.web.action.Page;
 import minerva.base.NLS;
-import minerva.model.HasSeiten;
+import minerva.model.ISeite;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
-import minerva.model.Seitensortierung;
 import minerva.model.UserSO;
 import minerva.user.UPage;
 
@@ -36,10 +35,11 @@ public abstract class OrderSeiteService {
     /** gleichzeitig auch Basislink */
     private final String goBackLink; // viewlink
     private final UserSO user;
-    private final HasSeiten hasSeiten;
+    // title, subpages
+    private final ISeite hasSeiten;
     
     public OrderSeiteService(Context ctx, boolean post, DataMap model, String branch, String bookFolder, String id,
-            String goBackLink, UserSO user, HasSeiten hasSeiten) {
+            String goBackLink, UserSO user, ISeite hasSeiten) {
         this.ctx = ctx;
         this.post = post;
         this.model = model;
@@ -126,11 +126,11 @@ public abstract class OrderSeiteService {
         return seitenWC;
     }
 
-    private void fill(String branch, String bookFolder, String id, String key, HasSeiten hasSeiten) {
+    private void fill(String branch, String bookFolder, String id, String key, ISeite seite) {
         String title = n("reorderSubpages");
         model.put("header", title);
         model.put("title", title + UPage.TITLE_POSTFIX);
-        model.put("pageTitle", Escaper.esc(hasSeiten.getTitle()));
+        model.put("pageTitle", Escaper.esc(seite.getTitle()));
         model.put("orderlink", goBackLink + "/order?key=" + key);
         model.put("fertiglink", goBackLink + "/order?key=" + key + "&m=end");
     }
@@ -151,7 +151,7 @@ public abstract class OrderSeiteService {
     }
 
     private SeitenSO createSeitenSO(String seiteId) {
-        return new SeitenSO(new Seitensortierung() {
+        return new SeitenSO(new ISeite() {
             @Override
             public boolean isSorted() {
                 return false;
@@ -165,6 +165,16 @@ public abstract class OrderSeiteService {
             @Override
             public String getId() {
                 return seiteId;
+            }
+
+            @Override
+            public String getTitle() {
+                throw new UnsupportedOperationException();
+            }
+
+            @Override
+            public SeitenSO getSeiten() {
+                throw new UnsupportedOperationException();
             }
         });
     }

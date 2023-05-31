@@ -5,7 +5,8 @@ import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 
 public class MoveSeitePage extends SPage {
-
+    // TODO beim Bucheintrag dahinter " (Buch)" schreiben (oder ein Buchsymbol davor machen)
+    
     @Override
     protected void execute() {
         header("Seite verschieben");
