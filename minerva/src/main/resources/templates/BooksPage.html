@@ -42,18 +42,18 @@
     </div>
     <div class="col-lg-12">
         <p style="margin-top: 4cm;">
-            <a href="/w/{{branch}}/tag-cloud?m=n" class="btn btn-default br"><i
+            <a href="/w/{{branch}}/tag-cloud?m=n" class="btn btn-default brr"><i
                 class="fa fa-cloud"></i> {{N.tagCloud}}</a>
-            <a href="/w/{{branch}}/pull" class="btn btn-default br" title="pull"
+            <a href="/w/{{branch}}/pull" class="btn btn-default brr" title="pull"
                 onclick="document.querySelector('#s1').style='';"><i class="fa fa-undo"></i>
                 {{N.pullWS}}! <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
-            <a href="/w/{{branch}}/pull?force=1" class="btn btn-default br" title="force clone"
+            <a href="/w/{{branch}}/pull?force=1" class="btn btn-default brr" title="force clone"
                 onclick="document.querySelector('#s2').style='';"><i class="fa fa-undo" style="color: #900;"></i>
                 {{N.cloneWS}}! <i id="s2" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
-            <a href="/w/{{branch}}/delete" class="btn btn-danger br"><i
+            <a href="/w/{{branch}}/delete" class="btn btn-danger brr"><i
                 class="fa fa-trash-o"></i> {{N.deleteWS}}...</a>
             {{if migrationAllowed}}
-                <a href="/migration/{{branch}}" class="btn btn-danger br"><i class="fa fa-cloud-download"></i>
+                <a href="/migration/{{branch}}" class="btn btn-danger brr"><i class="fa fa-cloud-download"></i>
                     Confluence Import...</a>
             {{/if}}
         </p>

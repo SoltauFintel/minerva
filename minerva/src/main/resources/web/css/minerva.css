@@ -113,6 +113,11 @@
     border: 0;
 }
 
+.brr {
+    margin-right: 1em;
+    margin-bottom: 1em;
+}
+
 /* ---- ViewSeitePage: HTML from CKEditor display ---- */
 
 figure table td {
