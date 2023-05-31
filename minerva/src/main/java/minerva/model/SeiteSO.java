@@ -344,7 +344,7 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
         langs.forEach(lang -> filenamesToDelete.add(filenameHTML(lang)));
     }
 
-    public void removeTag(String tag) {
+    public void removeTag(String tag) { // TODO rename: deleteTag
         if ("$all".equals(tag)) {
             seite.getTags().clear();
             saveMeta("removed all tags from page: $t");
