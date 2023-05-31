@@ -38,15 +38,15 @@ public class MergeRequestService {
             } catch (Exception ignore) {
             }
             if (s != null) {
-                if ("can_be_merged".equals(s.getMergeStatus())) {
+                if ("can_be_merged".equals(getMergeStatus(s))) {
                     break;
-                } else if ("cannot_be_merged".equals(s.getMergeStatus())) {
+                } else if ("cannot_be_merged".equals(getMergeStatus(s))) {
                     throw new MergeRequestException("Merge Request " + mr.getIid() + " can not be merged!");
                 }
             }
             if (++loop > (1000 / time) * 60) { // 1 minute
                 throw new RuntimeException("Killer loop. Merge Reqest merge state does not become can_be_merged" +
-                    " and it is: " + s.getMergeStatus() + " ID is " + mr.getIid() +
+                    " and it is: " + getMergeStatus(s) + " ID is " + mr.getIid() +
                     "  Please check Merge Request manually.");
             }
             try {
@@ -55,6 +55,10 @@ public class MergeRequestService {
                 throw new RuntimeException("Interrupt error while waiting for can_be_merged state", e);
             }
         }
+    }
+
+    private String getMergeStatus(MergeRequest s) {
+        return s == null ? "" : s.getMergeStatus(); // Will be deprecated in 5.2.0. However, other method does not work.
     }
 
     private void waitForMergedState(String project, MergeRequestApi api, MergeRequest mr) throws GitLabApiException {
@@ -72,7 +76,7 @@ public class MergeRequestService {
             if (++loop > (1000 / time) * 60) { // 1 minute
                 throw new RuntimeException("Killer loop while waiting for merged MR. ID: " + mr.getIid()
                     + "  Please check MR state manually. State is: " + s.getState() + ", merge state is: "
-                    + s.getMergeStatus() + ", error: " + s.getMergeError());
+                    + getMergeStatus(s) + ", error: " + s.getMergeError());
             }
             try {
                 Thread.sleep(time);
