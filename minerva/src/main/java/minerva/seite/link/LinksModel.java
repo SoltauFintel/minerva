@@ -97,7 +97,7 @@ public class LinksModel {
             }
         }
         if (dirty) {
-            seite.saveHTML("replaced links: $t", langs);
+            seite.saveHtml("replaced links: $t", langs);
         }
     }
 

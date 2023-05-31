@@ -154,14 +154,14 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
             filenames.add(filenameMeta());
         }
         for (String lang : langs) {
-            filenames.add(filenameHTML(lang));
+            filenames.add(filenameHtml(lang));
         }
         return dao().loadFiles(filenames);
     }
 
     private void setContent(Map<String, String> files, List<String> langs) {
         for (String lang : langs) {
-            content.setString(lang, files.get(filenameHTML(lang)));
+            content.setString(lang, files.get(filenameHtml(lang)));
         }
     }
 
@@ -341,10 +341,10 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
         
         // Seite selbst (.meta, .html)
         filenamesToDelete.add(filenameMeta());
-        langs.forEach(lang -> filenamesToDelete.add(filenameHTML(lang)));
+        langs.forEach(lang -> filenamesToDelete.add(filenameHtml(lang)));
     }
 
-    public void removeTag(String tag) { // TODO rename: deleteTag
+    public void deleteTag(String tag) {
         if ("$all".equals(tag)) {
             seite.getTags().clear();
             saveMeta("removed all tags from page: $t");
@@ -375,7 +375,7 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
         book.getWorkspace().pull();
     }
 
-    public void save(NlsString newTitle, NlsString newContent, int version, List<String> langs) {
+    public void saveAll(NlsString newTitle, NlsString newContent, int version, List<String> langs) {
         if (getSeite().getVersion() != version) {
             throw new UserMessage("error.simultaneousEditing", book.getWorkspace());
         }
@@ -385,7 +385,6 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
             }
         }
         
-        seite.setVersion(seite.getVersion() + 1);
         if (content == null) {
             content = new NlsString();
         }
@@ -395,11 +394,11 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
         }
         
         Map<String, String> files = new HashMap<>();
-        files.put(filenameMeta(), StringService.prettyJSON(seite));
-        langs.forEach(lang -> files.put(filenameHTML(lang), prettyHTML(lang)));
-        images.forEach(filename -> files.put(filenameIMAGE(filename), IMAGE));
+        saveMetaTo(files);
+        saveHtmlTo(files, langs);
+        images.forEach(filename -> files.put(filenameImage(filename), IMAGE));
         
-        dao().saveFiles(files, newTitle.getString(langs.get(0)), book.getWorkspace());
+        dao().saveFiles(files, getTitle(), book.getWorkspace());
         
         images.clear();
 
@@ -408,55 +407,53 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
             book.getSeiten().sort();
         }
     }
-    
-    public void saveTo(Map<String,String> files) {
-        seite.setVersion(seite.getVersion() + 1);
-        String json = StringService.prettyJSON(seite);
-        files.put(filenameMeta(), json);
+
+    public void saveMeta(String commitMessage) {
+        Map<String, String> files = new HashMap<>();
+        saveMetaTo(files);
+        saveFiles(files, commitMessage);
     }
 
-    public void saveTo_withHTML(Map<String,String> files, List<String> langs) {
-        saveTo(files);
-        langs.forEach(lang -> files.put(filenameHTML(lang), prettyHTML(lang)));
+    public void saveHtml(String commitMessage, List<String> langs) {
+        Map<String, String> files = new HashMap<>();
+        saveHtmlTo(files, langs);
+        saveFiles(files, commitMessage);
     }
-    
+
+    public void saveMetaTo(Map<String,String> files) {
+        seite.setVersion(seite.getVersion() + 1);
+        files.put(filenameMeta(), StringService.prettyJSON(seite));
+    }
+
+    public void saveHtmlTo(Map<String,String> files, List<String> langs) {
+        langs.forEach(lang -> files.put(filenameHtml(lang), StringService.prettyHTML(content.getString(lang))));
+    }
+
     // similar method in BookSO
     public void saveSubpagesAfterReordering(SeitenSO reorderdSeiten) {
         this.seiten = reorderdSeiten;
         Map<String, String> files = new HashMap<>();
-        if (getSeite().isSorted()) {
-            getSeite().setSorted(false);
-            files.put(filenameMeta(), StringService.prettyJSON(getSeite()));
+        if (seite.isSorted()) {
+            seite.setSorted(false);
+            saveMetaTo(files);
         }
         reorderdSeiten.setPositionsAndSaveTo(files);
-        dao().saveFiles(files, "reordering subpages of: " + getTitle(), book.getWorkspace());
+        saveFiles(files, "reordering subpages of: $t");
     }
 
-    public void saveMeta(String commitMessage) {
-        Map<String, String> files = new HashMap<>();
-        files.put(filenameMeta(), StringService.prettyJSON(getSeite()));
+    private void saveFiles(Map<String, String> files, String commitMessage) {
         dao().saveFiles(files, commitMessage.replace("$t", getTitle()), book.getWorkspace());
-    }
-
-    public void saveHTML(String commitMessage, List<String> langs) {
-        Map<String, String> files = new HashMap<>();
-        langs.forEach(lang -> files.put(filenameHTML(lang), prettyHTML(lang)));
-        dao().saveFiles(files, commitMessage.replace("$t", getTitle()), book.getWorkspace());
-    }
-
-    private String prettyHTML(String lang) {
-        return StringService.prettyHTML(content.getString(lang));
     }
 
     private String filenameMeta() {
         return book.getFolder() + "/" + getId() + META_SUFFIX;
     }
     
-    private String filenameHTML(String lang) {
+    private String filenameHtml(String lang) {
         return book.getFolder() + "/" + lang + "/" + getId() + ".html";
     }
 
-    private String filenameIMAGE(String filename) {
+    private String filenameImage(String filename) {
         return book.getFolder() + "/" + filename;
     }
 

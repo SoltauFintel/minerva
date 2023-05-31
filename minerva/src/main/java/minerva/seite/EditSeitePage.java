@@ -52,7 +52,7 @@ public class EditSeitePage extends ViewSeitePage {
         
         PostContentsData data = waitForContent(branch, bookFolder, id, version);
         
-        seiteSO.save(title, data.getContent(), version, langs);
+        seiteSO.saveAll(title, data.getContent(), version, langs);
         data.setDone(true);
         
         Logger.info("Seite #" + seiteSO.getId() + " \"" + title.getString(langs.get(0)) + "\" gespeichert. "

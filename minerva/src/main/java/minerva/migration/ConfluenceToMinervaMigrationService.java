@@ -225,7 +225,8 @@ public class ConfluenceToMinervaMigrationService {
         }
         tp.getContent().setString("en", html_en);
 
-        tp.saveTo_withHTML(files, langs);
+        tp.saveMetaTo(files);
+        tp.saveHtmlTo(files, langs);
 
         for (ConfluencePage sub : sp.getSubpages()) {
             SeiteSO subTp = tp.getSeiten().createSeite(tp, tp.getBook(), sub.getId());

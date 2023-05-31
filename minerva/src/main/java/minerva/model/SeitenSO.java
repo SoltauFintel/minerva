@@ -106,7 +106,7 @@ public class SeitenSO extends MList<SeiteSO> {
         int position = 1;
         for (SeiteSO sub : this) {
             sub.getSeite().setPosition(position++);
-            sub.saveTo(files);
+            sub.saveMetaTo(files);
         }
     }
 

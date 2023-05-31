@@ -8,7 +8,7 @@ public class DeleteTagAction extends SAction {
     protected void execute() {
         String tag = ctx.queryParam("tag");
 
-        seite.removeTag(tag);
+        seite.deleteTag(tag);
         
         ctx.redirect(viewlink + "/tags");
     }
