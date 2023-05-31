@@ -1,16 +1,11 @@
 package minerva.seite;
 
-import minerva.user.UAction;
-
-public class PostContentsAction extends UAction {
+public class PostContentsAction extends SAction {
     private static final String handle = "handle";
     public static PostContentsData last;
     
     @Override
     protected void execute() {
-        String branch = ctx.pathParam("branch");
-        String bookFolder = ctx.pathParam("book");
-        String id = ctx.pathParam("id");
         int version = Integer.parseInt(ctx.formParam("version"));
 
         PostContentsData d = new PostContentsData(branch, bookFolder, id, version);
