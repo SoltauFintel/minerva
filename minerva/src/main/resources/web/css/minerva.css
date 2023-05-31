@@ -104,7 +104,14 @@
 
 .seite h3 {
     color: #090;
-}  
+}
+
+#search-results td {
+    border: 0;
+}
+#search-results tr {
+    border: 0;
+}
 
 /* ---- ViewSeitePage: HTML from CKEditor display ---- */
 
