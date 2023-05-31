@@ -65,6 +65,8 @@ createWS1=Bereits erstellte Workspaces und Minerva-interne Branches werden in de
 deleteWS=Workspace löschen
 deleteWS1=Hiermit löschen Sie den Workspace
 deleteWS2=Der Branch wird nicht im Gitlab Repository gelöscht.
+deleteWS3=Workspace "master" darf nicht gelöscht werden!
+deleteWS4=Der letzte Workspace darf nicht gelöscht werden!
 keepWS=Workspace behalten
 
 note=Notiz

@@ -11,14 +11,14 @@ public class DeleteWorkspacePage extends UPage {
         String branch = ctx.pathParam("branch");
 
         if ("master".equals(branch)) {
-            throw new UserMessage("Workspace \"master\" is not allowed to be deleted!", user);
+            throw new UserMessage(n("deleteWS3"), user); // master can't be deleted
         } else if (user.getWorkspaces().size() == 1) {
-            throw new UserMessage("Last workspace can not be deleted!", user);
+            throw new UserMessage(n("deleteWS4"), user); // last can't be deleted
         }
         
         WorkspaceSO workspace = user.getWorkspace(branch);
 
-        put("branch", branch);
+        put("branch", esc(branch));
         header(n("deleteWS"));
         
         if ("d".equals(ctx.queryParam("m"))) {
