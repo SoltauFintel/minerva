@@ -5,7 +5,9 @@
         <h1 class="page-header">{{header}}</h1>
     </div>      
     <div class="col-lg-6">
-        <p>Branch: {{branch}}</p>
+        {{if gitlab}}
+            <p title="Commit: {{hash7}}">Branch: {{branch}}</p>
+        {{/if}}
         <p style="margin-top: 2em;">
             <a href="/b/{{branch}}/add" class="btn btn-primary br"><i class="fa fa-book"></i>
                 {{N.newBook}}</a>

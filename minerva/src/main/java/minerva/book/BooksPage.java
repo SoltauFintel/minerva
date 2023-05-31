@@ -3,6 +3,7 @@ package minerva.book;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import minerva.MinervaWebapp;
 import minerva.model.BookSO;
 import minerva.model.BooksSO;
 import minerva.model.WorkspaceSO;
@@ -18,9 +19,19 @@ public class BooksPage extends UPage {
         WorkspaceSO workspace = user.getWorkspace(branch);
         user.setCurrentWorkspace(workspace);
         BooksSO books = workspace.getBooks();
+        String hash = "";
+        String hash7 = "";
+        if (MinervaWebapp.factory().isGitlab()) {
+            hash = MinervaWebapp.factory().getGitlabRepository().getCommitHashOfHead(workspace);
+            if (hash != null && hash.length() > 7) {
+                hash7 = hash.substring(0, 7);
+            }
+        }
         
         header(n("books"));
-        put("branch", branch);
+        put("branch", esc(branch));
+        put("hash", esc(hash));
+        put("hash7", esc(hash7));
         put("migrationAllowed", "1".equals(System.getenv("MINERVA_MIGRATION")));
         DataList list = list("books");
         for (BookSO book : books) {

@@ -86,6 +86,14 @@ public class GitlabRepositorySO {
     }
 
     public List<String> getBranches(WorkspaceSO workspace) {
-        return new GitService(new File(workspace.getFolder())).getBranchNames();
+        return git(workspace).getBranchNames();
+    }
+    
+    public String getCommitHashOfHead(WorkspaceSO workspace) {
+        return git(workspace).getCurrentCommitHash();
+    }
+
+    private GitService git(WorkspaceSO workspace) {
+        return new GitService(new File(workspace.getFolder()));
     }
 }
