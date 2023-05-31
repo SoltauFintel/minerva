@@ -110,14 +110,18 @@ public class SeitenSO extends MList<SeiteSO> {
         }
     }
 
-    public List<SeiteSO> searchInTitle(String search, String excludeSeiteId) {
+    public List<SeiteSO> searchInTitle(String search, String excludeSeiteId, List<String> langs) {
         List<SeiteSO> ret = new ArrayList<>();
         for (SeiteSO seite : this) {
-            if (!seite.getId().equals(excludeSeiteId) &&
-                    seite.getTitle().toLowerCase().contains(search.toLowerCase())) {
-                ret.add(seite);
+            if (!seite.getId().equals(excludeSeiteId)) {
+                for (String lang : langs) {
+                    if (seite.getSeite().getTitle().getString(lang).toLowerCase().contains(search)) {
+                        ret.add(seite);
+                        break; // add page only once
+                    }
+                }
             }
-            ret.addAll(seite.getSeiten().searchInTitle(search, excludeSeiteId));
+            ret.addAll(seite.getSeiten().searchInTitle(search, excludeSeiteId, langs));
         }
         return ret;
     }
