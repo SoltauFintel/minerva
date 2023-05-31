@@ -1,5 +1,6 @@
 package minerva.seite;
 
+import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 
 /**
@@ -10,12 +11,22 @@ public class MoveSeiteAckPage extends SPage {
     @Override
     protected void execute() {
         String parentId = ctx.queryParam("parentid");
+        String folder = ctx.queryParam("folder");
         
-        SeiteSO parent = book.getSeiten().byId(parentId);
-
+        String text;
         header(n("movePage"));
-        put("parentId", esc(parentId));
-        put("parentPageTitle", esc(parent.getTitle()));
-        put("movePage1", n("movePage1").replace("$p", esc(parent.getTitle())).replace("$t", esc(seite.getTitle())));
+        if (folder == null || folder.isEmpty()) {
+            SeiteSO parent = book.getSeiten().byId(parentId);
+    
+            put("moveToBook", false);
+            put("parentId", esc(parentId));
+            text = n("movePage1").replace("$p", esc(parent.getTitle())).replace("$t", esc(seite.getTitle()));
+        } else {
+            put("moveToBook", true);
+            put("folder", esc(folder));
+            BookSO targetBook = books.byFolder(folder);
+            text = n("movePage2").replace("$b", esc(targetBook.getTitle())).replace("$t", esc(seite.getTitle()));
+        }
+        put("movePageText", text);
     }
 }

@@ -79,6 +79,7 @@ deleteQ=Hiermit löschen Sie die Notiz.
 
 movePage=Seite verschieben
 movePage1=Die Seite "$t" erhält die Seite "$p" als neue übergeordnete Seite.
+movePage2=Die Seite "$t" wird in das Buch "$b" verschoben.
 deletePage=Seite löschen
 logout=Abmelden
 noBranches=Es wurde bereits für jeden Branch ein Workspace angelegt.
@@ -93,3 +94,4 @@ author=Autor
 nodot=Nr.
 createdAt=Erstellt am
 preview=Vorschau
+otherBook=anderes Buch

@@ -79,6 +79,7 @@ deleteQ=Delete note?
 
 movePage=Move page
 movePage1=Page $t gets page $p as the new parent page.
+movePage2=Page "$t" will be moved to book "$b".
 deletePage=Delete page
 logout=Logout
 noBranches=A workspace has already been created for each branch.
@@ -93,3 +94,4 @@ author=Author
 nodot=No.
 createdAt=Created
 preview=Preview
+otherBook=other book

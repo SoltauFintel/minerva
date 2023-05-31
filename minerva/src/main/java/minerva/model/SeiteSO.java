@@ -247,6 +247,14 @@ public class SeiteSO implements ISeite {
         book.getWorkspace().pull();
     }
 
+    public void moveToBook(String folder) {
+        // TODO Seiten inkl. Unterseiten und Images in anderen Buchordner verschieben
+        // pushen
+        // parent ID wird ROOT_ID sein!
+        // Position setzen
+        throw new RuntimeException("Move to other book not implemented yet");
+    }
+
     public void saveAll(NlsString newTitle, NlsString newContent, int version, List<String> langs) {
         if (getSeite().getVersion() != version) {
             throw new UserMessage("error.simultaneousEditing", book.getWorkspace());

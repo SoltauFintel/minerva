@@ -5,9 +5,16 @@ public class MoveSeiteAction extends SAction {
     @Override
     protected void execute() {
         String parentId = ctx.queryParam("parentid");
-        
-        seite.move(parentId);
+        String folder = ctx.queryParam("folder");
 
-        ctx.redirect(viewlink);
+        if (folder == null || folder.isEmpty()) {
+            seite.moveToBook(folder);
+            
+            ctx.redirect("/s/" + branch + "/" + folder + "/" + esc(id));
+        } else {
+            seite.move(parentId);
+            
+            ctx.redirect(viewlink);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package minerva.seite;
 
 import github.soltaufintel.amalia.web.action.Escaper;
+import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 
@@ -12,11 +13,23 @@ public class MoveSeitePage extends SPage {
         put("pageTitle", esc(seite.getTitle()));
 
         StringBuilder gliederung = new StringBuilder();
+/* TODO Baustelle        
+        gliederung.append("<ul><li><a href=\"" + viewlink
+                + "/move-ack?parentid=root\">" + esc(book.getTitle()) + "</a> (" + n("book") + ")</li>");
         gliederung.append("<ul><li>"
                 + "<i class=\"fa fa-book\" style=\"color: #090;\"></i> "
                 + "<a href=\"/s/" + branch + "/" + bookFolder + "/" + esc(id) + "/moved?parentid=root\">"
                 + esc(book.getTitle()) + "</a></li>");
+*/
         fillSeiten(branch, bookFolder, book.getSeiten(), user.getLanguage(), gliederung, false);
+        for (BookSO b : book.getWorkspace().getBooks()) {
+            String bf = b.getBook().getFolder();
+            if (!bf.equals(bookFolder)) {
+                gliederung.append("<li><a href=\"" + viewlink + "/move-ack?folder="
+                        + Escaper.urlEncode(bf, "") + "\">" + b.getTitle() + "</a> ("
+                        + n("otherBook") + ")</li>");
+            }
+        }
         gliederung.append("</ul>");
         put("gliederung", gliederung.toString());
     }
