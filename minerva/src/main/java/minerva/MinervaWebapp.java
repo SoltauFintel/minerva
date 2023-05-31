@@ -147,12 +147,19 @@ public class MinervaWebapp extends RouteDefinitions {
             page.put("user", esc(wctx.session().getLogin()));
             page.put("gitlab", factory().getConfig().isGitlab());
             page.put("booksLabel", "Bücher");
+            page.put("branch0", "");
             booksForMenu(ctx, page, hasUser);
             if (hasUser) {
                 UserSO user = StatesSO.get(ctx).getUser();
                 String userLang = user.getLanguage();
                 page.put("abmelden", NLS.get(userLang, "logout"));
                 page.put("booksLabel", NLS.get(userLang, "books"));
+                if (user.getCurrentWorkspace() != null) {
+                    String branch = user.getCurrentWorkspace().getBranch();
+                    if (!"master".equals(branch)) {
+                        page.put("branch0", esc(branch));
+                    }
+                }
             }
         }
 

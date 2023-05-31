@@ -71,6 +71,15 @@
     background-color: #f5f5f9 !important;
 }
 
+.branch0 {
+    padding-left: 19mm;
+    padding-top: 14px;
+    display: flex;
+    color: #c00;
+    font-weight: bold;
+    font-style: italic;
+}
+
 /* ---- ViewSeitePage: HTML from CKEditor display ---- */
 
 figure table td {

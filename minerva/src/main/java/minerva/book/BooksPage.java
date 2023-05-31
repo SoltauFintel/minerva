@@ -3,6 +3,7 @@ package minerva.book;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import github.soltaufintel.amalia.spark.Context;
 import minerva.MinervaWebapp;
 import minerva.model.BookSO;
 import minerva.model.BooksSO;
@@ -12,12 +13,19 @@ import minerva.user.UPage;
 public class BooksPage extends UPage {
     
     @Override
+    public void init(Context ctx) {
+        super.init(ctx);
+
+        // set current workspace before PageInitializer is executed
+        user.setCurrentWorkspace(user.getWorkspace(ctx.pathParam("branch")));
+    }
+    
+    @Override
     protected void execute() {
         String branch = ctx.pathParam("branch");
         String userLang = user.getLanguage();
         
         WorkspaceSO workspace = user.getWorkspace(branch);
-        user.setCurrentWorkspace(workspace);
         BooksSO books = workspace.getBooks();
         String hash = "";
         String hash7 = "";
