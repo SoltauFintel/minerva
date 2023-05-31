@@ -15,8 +15,9 @@ public class NotesSO {
     
     public void addNote(String text, Note parent) {
         Note note = new Note();
-        // TODO zuletzt vergebene number in der Seite merken
-        note.setNumber(1 + fetchMax(seiteSO.getSeite().getNotes()));
+        int next = seiteSO.getSeite().getNextNoteNumber();
+        note.setNumber(next);
+        seiteSO.getSeite().setNextNoteNumber(next + 1);
         note.setUser(seiteSO.getBook().getUser().getUser().getLogin());
         note.setCreated(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         note.setChanged("");
@@ -27,20 +28,6 @@ public class NotesSO {
             parent.getNotes().add(note);
         }
         seiteSO.saveMeta(seiteSO.getTitle() + ": add note #" + note.getNumber());
-    }
-
-    private int fetchMax(List<Note> notes) {
-        int max = 0;
-        for (Note note : notes) {
-            if (note.getNumber() > max) {
-                max = note.getNumber();
-            }
-            int m = fetchMax(note.getNotes());
-            if (m > max) {
-                max = m;
-            }
-        }
-        return max;
     }
 
     public Note noteByNumber(int number) {

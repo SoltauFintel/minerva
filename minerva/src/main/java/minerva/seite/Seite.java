@@ -20,6 +20,7 @@ public class Seite {
     private final Set<String> tags = new TreeSet<>();
     private int version = 1;
     private List<Note> notes = new ArrayList<>();
+    private int nextNoteNumber = 1;
     // TO-DO letzte Änderung (Name, Timestamp, Grund)
 
     public Seite() {
@@ -93,5 +94,13 @@ public class Seite {
 
     public void setNotes(List<Note> notes) {
         this.notes = notes;
+    }
+
+    public int getNextNoteNumber() {
+        return nextNoteNumber;
+    }
+
+    public void setNextNoteNumber(int nextNoteNumber) {
+        this.nextNoteNumber = nextNoteNumber;
     }
 }
