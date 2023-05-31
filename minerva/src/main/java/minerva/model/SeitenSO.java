@@ -11,7 +11,9 @@ import github.soltaufintel.amalia.base.IdGenerator;
 import minerva.MinervaWebapp;
 import minerva.base.MList;
 import minerva.seite.Breadcrumb;
+import minerva.seite.Note;
 import minerva.seite.Seite;
+import minerva.seite.note.NoteWithSeite;
 
 public class SeitenSO extends MList<SeiteSO> {
 
@@ -151,6 +153,22 @@ public class SeitenSO extends MList<SeiteSO> {
         sort();
         for (SeiteSO seite : this) {
             seite.getSeiten().sortAll();
+        }
+    }
+
+    public List<NoteWithSeite> getAllNotes() {
+        List<NoteWithSeite> ret = new ArrayList<>();
+        for (SeiteSO seite : this) {
+            findAllNotes(seite, seite.getSeite().getNotes(), ret);
+            ret.addAll(seite.getSeiten().getAllNotes());
+        }
+        return ret;
+    }
+    
+    private void findAllNotes(SeiteSO seite, List<Note> notes, List<NoteWithSeite> result) {
+        for (Note note : notes) {
+            result.add(new NoteWithSeite(note, seite));
+            findAllNotes(seite, note.getNotes(), result); // recursive
         }
     }
 }

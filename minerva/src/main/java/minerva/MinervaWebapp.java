@@ -48,6 +48,7 @@ import minerva.seite.SortSeiteAction;
 import minerva.seite.ViewSeitePage;
 import minerva.seite.link.LinkResolverPage;
 import minerva.seite.note.AddNotePage;
+import minerva.seite.note.AllNotesPage;
 import minerva.seite.note.DeleteNoteAction;
 import minerva.seite.note.EditNotePage;
 import minerva.seite.note.NotesPage;
@@ -83,6 +84,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/b/:branch/:book", BookPage.class);
         form("/b/:branch/:book/order", OrderTopLevelSeitePage.class);
         get("/b/:branch/:book/sort", SortTopLevelSeiteAction.class);
+        get("/b/:branch/:book/notes", AllNotesPage.class);
         get("/b/", CurrentWorkspaceAction.class); // falls man sich dahin verirren sollte
         
         // Seite
