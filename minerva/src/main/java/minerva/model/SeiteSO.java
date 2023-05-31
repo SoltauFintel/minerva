@@ -18,6 +18,7 @@ import org.pmw.tinylog.Logger;
 import com.google.gson.Gson;
 
 import minerva.MinervaWebapp;
+import minerva.access.DirAccess;
 import minerva.base.NlsString;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
@@ -117,6 +118,10 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
         return ROOT_ID.equals(seite.getParentId());
     }
 
+    public String getLogin() {
+        return book.getUser().getUser().getLogin();
+    }
+
     public NlsString getContent() {
         if (content == null) {
             content = new NlsString();
@@ -125,67 +130,6 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
             setContent(files, langs);
         }
         return content;
-    }
-
-    public void save(NlsString newTitle, NlsString newContent, int version, List<String> langs) {
-        if (getSeite().getVersion() != version) {
-            throw new UserMessage("error.simultaneousEditing", book.getWorkspace());
-        }
-        for (String lang : langs) {
-            if (StringService.isNullOrEmpty(newTitle.getString(lang))) {
-                throw new UserMessage("error.enterTitle", book.getWorkspace());
-            }
-        }
-        
-        seite.setVersion(seite.getVersion() + 1);
-        if (content == null) {
-            content = new NlsString();
-        }
-        for (String lang : langs) {
-            seite.getTitle().setString(lang, newTitle.getString(lang));
-            content.setString(lang, newContent.getString(lang));
-        }
-        
-        Map<String, String> files = new HashMap<>();
-        files.put(filenameMeta(), StringService.prettyJSON(seite));
-        langs.forEach(lang -> files.put(filenameHTML(lang), pettyHTML(lang)));
-        images.forEach(filename -> files.put(filenameIMAGE(filename), IMAGE));
-        
-        book.dao().saveFiles(files, newTitle.getString(langs.get(0)), book.getWorkspace());
-        
-        images.clear();
-
-        if (hasNoParent()) {
-            // Wenn book.sorted=true ist und ein Seitentitel geändert worden ist, muss neu sortiert werden.
-            book.getSeiten().sort();
-        }
-    }
-    
-    public void saveTo(Map<String,String> files) {
-        seite.setVersion(seite.getVersion() + 1);
-        String json = StringService.prettyJSON(seite);
-        files.put(filenameMeta(), json);
-    }
-
-    public void saveTo_withHTML(Map<String,String> files, List<String> langs) {
-        saveTo(files);
-        langs.forEach(lang -> files.put(filenameHTML(lang), pettyHTML(lang)));
-    }
-    
-    private String filenameMeta() {
-        return book.getFolder() + "/" + getId() + META_SUFFIX;
-    }
-    
-    private String filenameHTML(String lang) {
-        return book.getFolder() + "/" + lang + "/" + getId() + ".html";
-    }
-
-    private String filenameIMAGE(String filename) {
-        return book.getFolder() + "/" + filename;
-    }
-
-    private String pettyHTML(String lang) {
-        return StringService.prettyHTML(content.getString(lang));
     }
 
     /**
@@ -212,7 +156,7 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
         for (String lang : langs) {
             filenames.add(filenameHTML(lang));
         }
-        return book.dao().loadFiles(filenames);
+        return dao().loadFiles(filenames);
     }
 
     private void setContent(Map<String, String> files, List<String> langs) {
@@ -225,65 +169,10 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
         return images;
     }
 
-    /**
-     * Nach dem Aufruf ist die komplette BookSO/SeiteSO-Struktur neu aufzubauen.
-     */
-    public void remove() {
-        Set<String> filenamesToDelete = new HashSet<>();
-        List<String> langs = MinervaWebapp.factory().getLanguages();
-        remove(filenamesToDelete, langs);
-        List<String> cantBeDeleted = new ArrayList<>();
-        
-        book.dao().deleteFiles(filenamesToDelete, "delete page " + getId(), book.getWorkspace(), cantBeDeleted);
-        book.getWorkspace().pull(); // Datenstruktur neu aufbauen (auch wenn cantBeDeleted nicht leer ist)
-        
-        if (cantBeDeleted.isEmpty()) {
-            Logger.info("Delete page " + getId() + " complete.");
-        } else {
-            Logger.error("Tried to delete page " + getId() + ": These files could not be deleted:"
-                    + cantBeDeleted.stream().map(i -> "\n  - " + i).collect(Collectors.joining())
-                    + "\n  Please delete these files manually.");
-            throw new RuntimeException("Es konnten nicht alle Dateien gelöscht werden!"
-                    + "\nBitte an Administrator wenden. ID " + getId());
-        }
-    }
-    
-    private void remove(Set<String> filenamesToDelete, List<String> langs) {
-        // Untergeordnete Seiten
-        for (SeiteSO unterseite : seiten) {
-            unterseite.remove(filenamesToDelete, langs); // rekursiv
-        }
-        
-        // Images für diese Seite
-        filenamesToDelete.add(book.getFolder() + "/img/" + getId() + "/*");
-        
-        // Seite selbst (.meta, .html)
-        filenamesToDelete.add(filenameMeta());
-        langs.forEach(lang -> filenamesToDelete.add(filenameHTML(lang)));
-    }
-    
-    // similar method in BookSO
-    public void saveSubpagesAfterReordering(SeitenSO reorderdSeiten) {
-        this.seiten = reorderdSeiten;
-        Map<String, String> files = new HashMap<>();
-        if (getSeite().isSorted()) {
-            getSeite().setSorted(false);
-            files.put(filenameMeta(), StringService.prettyJSON(getSeite()));
-        }
-        reorderdSeiten.setPositionsAndSaveTo(files);
-        book.dao().saveFiles(files, "reordering subpages of: " + getTitle(), book.getWorkspace());
-    }
-
     public void activateSorted() {
         seite.setSorted(true);
         saveMeta("sort subpages alphabetically: $t");
         book.getWorkspace().pull(); // ja, ist etwas brutal...
-    }
-
-    public void saveMeta(String commitMessage) {
-        Map<String, String> files = new HashMap<>();
-        files.put(filenameMeta(), StringService.prettyJSON(getSeite()));
-        book.dao().saveFiles(files, commitMessage.replace("$t", getTitle()), book.getWorkspace());
     }
 
     public void addTag(String tag) {
@@ -319,22 +208,6 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
         return tag.replace(" ", "-");
     }
 
-    public void removeTag(String tag) {
-        if ("$all".equals(tag)) {
-            seite.getTags().clear();
-            saveMeta("removed all tags from page: $t");
-        } else {
-            seite.getTags().remove(tag);
-            saveMeta("removed tag " + tag + " from page: $t");
-        }
-    }
-
-    public void saveHTML(String commitMessage, List<String> langs) {
-        Map<String, String> files = new HashMap<>();
-        langs.forEach(lang -> files.put(filenameHTML(lang), pettyHTML(lang)));
-        book.dao().saveFiles(files, commitMessage.replace("$t", getTitle()), book.getWorkspace());
-    }
-
     public List<SeiteSO> findTag(String tag) {
         List<SeiteSO> ret = new ArrayList<>();
         if (seite.getTags().contains(tag)) {
@@ -349,27 +222,6 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
     public void addAllTags(TagNList tags) {
         seite.getTags().forEach(tag -> tags.add(tag));
         seiten.forEach(seite -> seite.addAllTags(tags));
-    }
-
-    public void move(String parentId) {
-        // Seite bei neuer Parent-Seite hinzfuügen
-        if (SeiteSO.ROOT_ID.equals(parentId)) {
-            seite.setPosition(book.getSeiten().calculateNextPosition());
-            book.getSeiten().add(this);
-        } else {
-            SeiteSO parentSeite = book.getSeiten().byId(parentId); // soll auch prüfen, ob parentId gültig ist
-            seite.setPosition(parentSeite.getSeiten().calculateNextPosition());
-            parentSeite.getSeiten().add(this);
-        }
-        // Seite bei alter Parent-Seite entfernen
-        if (SeiteSO.ROOT_ID.equals(seite.getParentId()) ){
-            book.getSeiten().onlyRemove(this);
-        } else {
-            book.getSeiten().byId(seite.getParentId()).getSeiten().onlyRemove(this);
-        }
-        seite.setParentId(parentId);
-        saveMeta("moved page " + getTitle());
-        book.getWorkspace().pull();
     }
 
     public void addNote(String text, Note parent) {
@@ -423,10 +275,6 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
         return null;
     }
     
-    public String getLogin() {
-        return book.getUser().getUser().getLogin();
-    }
-
     public void deleteNote(int number) {
         if (_deleteNote(seite.getNotes(), number)) {
             saveMeta(getTitle() + ": delete note #" + number);
@@ -457,5 +305,162 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
             ret += _getNotesSize(note.getNotes());
         }
         return ret;
+    }
+
+    /**
+     * Nach dem Aufruf ist die komplette BookSO/SeiteSO-Struktur neu aufzubauen.
+     */
+    public void remove() {
+        Set<String> filenamesToDelete = new HashSet<>();
+        List<String> langs = MinervaWebapp.factory().getLanguages();
+        remove(filenamesToDelete, langs);
+        List<String> cantBeDeleted = new ArrayList<>();
+        
+        dao().deleteFiles(filenamesToDelete, "delete page " + getId(), book.getWorkspace(), cantBeDeleted);
+        book.getWorkspace().pull(); // Datenstruktur neu aufbauen (auch wenn cantBeDeleted nicht leer ist)
+        
+        if (cantBeDeleted.isEmpty()) {
+            Logger.info("Delete page " + getId() + " complete.");
+        } else {
+            Logger.error("Tried to delete page " + getId() + ": These files could not be deleted:"
+                    + cantBeDeleted.stream().map(i -> "\n  - " + i).collect(Collectors.joining())
+                    + "\n  Please delete these files manually.");
+            throw new RuntimeException("Es konnten nicht alle Dateien gelöscht werden!"
+                    + "\nBitte an Administrator wenden. ID " + getId());
+        }
+    }
+    
+    private void remove(Set<String> filenamesToDelete, List<String> langs) {
+        // Untergeordnete Seiten
+        for (SeiteSO unterseite : seiten) {
+            unterseite.remove(filenamesToDelete, langs); // rekursiv
+        }
+        
+        // Images für diese Seite
+        filenamesToDelete.add(book.getFolder() + "/img/" + getId() + "/*");
+        
+        // Seite selbst (.meta, .html)
+        filenamesToDelete.add(filenameMeta());
+        langs.forEach(lang -> filenamesToDelete.add(filenameHTML(lang)));
+    }
+
+    public void removeTag(String tag) {
+        if ("$all".equals(tag)) {
+            seite.getTags().clear();
+            saveMeta("removed all tags from page: $t");
+        } else {
+            seite.getTags().remove(tag);
+            saveMeta("removed tag " + tag + " from page: $t");
+        }
+    }
+
+    public void move(String parentId) {
+        // Seite bei neuer Parent-Seite hinzfuügen
+        if (SeiteSO.ROOT_ID.equals(parentId)) {
+            seite.setPosition(book.getSeiten().calculateNextPosition());
+            book.getSeiten().add(this);
+        } else {
+            SeiteSO parentSeite = book.getSeiten().byId(parentId); // soll auch prüfen, ob parentId gültig ist
+            seite.setPosition(parentSeite.getSeiten().calculateNextPosition());
+            parentSeite.getSeiten().add(this);
+        }
+        // Seite bei alter Parent-Seite entfernen
+        if (SeiteSO.ROOT_ID.equals(seite.getParentId()) ){
+            book.getSeiten().onlyRemove(this);
+        } else {
+            book.getSeiten().byId(seite.getParentId()).getSeiten().onlyRemove(this);
+        }
+        seite.setParentId(parentId);
+        saveMeta("moved page " + getTitle());
+        book.getWorkspace().pull();
+    }
+
+    public void save(NlsString newTitle, NlsString newContent, int version, List<String> langs) {
+        if (getSeite().getVersion() != version) {
+            throw new UserMessage("error.simultaneousEditing", book.getWorkspace());
+        }
+        for (String lang : langs) {
+            if (StringService.isNullOrEmpty(newTitle.getString(lang))) {
+                throw new UserMessage("error.enterTitle", book.getWorkspace());
+            }
+        }
+        
+        seite.setVersion(seite.getVersion() + 1);
+        if (content == null) {
+            content = new NlsString();
+        }
+        for (String lang : langs) {
+            seite.getTitle().setString(lang, newTitle.getString(lang));
+            content.setString(lang, newContent.getString(lang));
+        }
+        
+        Map<String, String> files = new HashMap<>();
+        files.put(filenameMeta(), StringService.prettyJSON(seite));
+        langs.forEach(lang -> files.put(filenameHTML(lang), prettyHTML(lang)));
+        images.forEach(filename -> files.put(filenameIMAGE(filename), IMAGE));
+        
+        dao().saveFiles(files, newTitle.getString(langs.get(0)), book.getWorkspace());
+        
+        images.clear();
+
+        if (hasNoParent()) {
+            // Wenn book.sorted=true ist und ein Seitentitel geändert worden ist, muss neu sortiert werden.
+            book.getSeiten().sort();
+        }
+    }
+    
+    public void saveTo(Map<String,String> files) {
+        seite.setVersion(seite.getVersion() + 1);
+        String json = StringService.prettyJSON(seite);
+        files.put(filenameMeta(), json);
+    }
+
+    public void saveTo_withHTML(Map<String,String> files, List<String> langs) {
+        saveTo(files);
+        langs.forEach(lang -> files.put(filenameHTML(lang), prettyHTML(lang)));
+    }
+    
+    // similar method in BookSO
+    public void saveSubpagesAfterReordering(SeitenSO reorderdSeiten) {
+        this.seiten = reorderdSeiten;
+        Map<String, String> files = new HashMap<>();
+        if (getSeite().isSorted()) {
+            getSeite().setSorted(false);
+            files.put(filenameMeta(), StringService.prettyJSON(getSeite()));
+        }
+        reorderdSeiten.setPositionsAndSaveTo(files);
+        dao().saveFiles(files, "reordering subpages of: " + getTitle(), book.getWorkspace());
+    }
+
+    public void saveMeta(String commitMessage) {
+        Map<String, String> files = new HashMap<>();
+        files.put(filenameMeta(), StringService.prettyJSON(getSeite()));
+        dao().saveFiles(files, commitMessage.replace("$t", getTitle()), book.getWorkspace());
+    }
+
+    public void saveHTML(String commitMessage, List<String> langs) {
+        Map<String, String> files = new HashMap<>();
+        langs.forEach(lang -> files.put(filenameHTML(lang), prettyHTML(lang)));
+        dao().saveFiles(files, commitMessage.replace("$t", getTitle()), book.getWorkspace());
+    }
+
+    private String prettyHTML(String lang) {
+        return StringService.prettyHTML(content.getString(lang));
+    }
+
+    private String filenameMeta() {
+        return book.getFolder() + "/" + getId() + META_SUFFIX;
+    }
+    
+    private String filenameHTML(String lang) {
+        return book.getFolder() + "/" + lang + "/" + getId() + ".html";
+    }
+
+    private String filenameIMAGE(String filename) {
+        return book.getFolder() + "/" + filename;
+    }
+
+    private DirAccess dao() {
+        return book.dao();
     }
 }
