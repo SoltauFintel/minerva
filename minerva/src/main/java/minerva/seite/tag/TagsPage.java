@@ -23,7 +23,7 @@ public class TagsPage extends SPage {
                 map.put("tag", esc(tag));
                 map.put("deletelink", viewlink + "/delete-tag?tag=" + Escaper.urlEncode(tag, ""));
             });
-            header("tags - " + seite.getTitle());
+            header("tags");
         }
     }
 }
