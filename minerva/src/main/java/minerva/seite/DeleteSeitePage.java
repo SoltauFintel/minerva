@@ -2,29 +2,16 @@ package minerva.seite;
 
 import org.pmw.tinylog.Logger;
 
-import minerva.model.BookSO;
 import minerva.model.SeiteSO;
-import minerva.user.UPage;
 
-public class DeleteSeitePage extends UPage {
+public class DeleteSeitePage extends SPage {
 
     @Override
     protected void execute() {
-        String branch = ctx.pathParam("branch");
-        String bookFolder = ctx.pathParam("book");
-        String id = ctx.pathParam("id");
-
-        BookSO book = user.getWorkspace(branch).getBooks().byFolder(bookFolder);
-        SeiteSO seite = book.getSeiten().byId(id);
         String title = seite.getTitle();
         String parentId = seite.getSeite().getParentId();
 
-        put("branch", branch);
-        put("bookFolder", bookFolder);
-        put("folder", bookFolder);
-        put("id", id); // TODO kann weg wenn SPage
-        put("pagetitle", esc(title)); // TODO kann weg wenn SPage
-        header("Seite löschen"); // TODO NLS
+        header(n("deletePage"));
 
         if ("d".equals(ctx.queryParam("m"))) {
             seite.remove();
@@ -33,9 +20,9 @@ public class DeleteSeitePage extends UPage {
                     + bookFolder + "/" + id + " \"" + title + "\"");
 
             if (parentId.equals(SeiteSO.ROOT_ID)) {
-                ctx.redirect("/b/" + branch + "/" + bookFolder);
+                ctx.redirect(booklink);
             } else {
-                ctx.redirect("/s/" + branch + "/" + bookFolder + "/" + parentId);
+                ctx.redirect(viewlink);
             }
         }
     }
