@@ -142,4 +142,11 @@ public class SeitenSO extends MList<SeiteSO> {
     public void onlyRemove(SeiteSO seite) {
         remove(seite);
     }
+    
+    public void sortAll() {
+        sort();
+        for (SeiteSO seite : this) {
+            seite.getSeiten().sortAll();
+        }
+    }
 }

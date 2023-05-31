@@ -1,5 +1,6 @@
 package minerva.book;
 
+import minerva.model.BookSO;
 import minerva.user.UAction;
 
 public class SelectLanguageAction extends UAction {
@@ -10,7 +11,9 @@ public class SelectLanguageAction extends UAction {
         String lang = ctx.pathParam("lang");
         
         user.getUser().setLanguage(lang);
-        user.getWorkspace(branch).pull(); // ja, brutal, Seiten-Neusortierung würde auch reichen
+        for (BookSO book : user.getWorkspace(branch).getBooks()) {
+            book.getSeiten().sortAll();
+        }
         
         ctx.redirect("/b/" + branch);
     }
