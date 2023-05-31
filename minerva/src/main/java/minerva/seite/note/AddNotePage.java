@@ -11,10 +11,10 @@ public class AddNotePage extends SPage {
         if (isPOST()) {
             String text = ctx.formParam("text1");
             if (parentNumber == 0) {
-                seite.addNote(text, null);
+                seite.notes().addNote(text, null);
             } else {
-                Note parentNote = seite.noteByNumber(parentNumber);
-                seite.addNote(text, parentNote);
+                Note parentNote = seite.notes().noteByNumber(parentNumber);
+                seite.notes().addNote(text, parentNote);
             }
             ctx.redirect(viewlink + "/notes");
         } else {
@@ -22,7 +22,7 @@ public class AddNotePage extends SPage {
                 put("parentText", "");
                 put("hasParent", false);
             } else {
-                put("parentText", esc(seite.noteByNumber(parentNumber).getText()));
+                put("parentText", esc(seite.notes().noteByNumber(parentNumber).getText()));
                 put("hasParent", true);
             }
             header(n("addNote"));

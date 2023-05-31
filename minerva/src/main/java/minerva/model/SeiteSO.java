@@ -3,8 +3,6 @@ package minerva.model;
 import static minerva.access.DirAccess.IMAGE;
 
 import java.text.DecimalFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,7 +20,6 @@ import minerva.access.DirAccess;
 import minerva.base.NlsString;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
-import minerva.seite.Note;
 import minerva.seite.Seite;
 import minerva.seite.tag.TagNList;
 
@@ -39,6 +36,7 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
     // TODO wenn ich in Buch 1 bin, dann sollte ich nicht die contents für die anderen Bücher im Speicher haben. Ich kann die ja immer schnell von der Platte laden.
     /** null: nicht geladen */
     private NlsString content = null;
+    private final NotesSO notes = new NotesSO(this);
     
     /**
      * Loaded Seite constructor
@@ -224,89 +222,10 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
         seiten.forEach(seite -> seite.addAllTags(tags));
     }
 
-    public void addNote(String text, Note parent) {
-        Note note = new Note();
-        // TODO zuletzt vergebene number in der Seite merken
-        note.setNumber(1 + fetchMax(seite.getNotes()));
-        note.setUser(book.getUser().getUser().getLogin());
-        note.setCreated(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-        note.setChanged("");
-        note.setText(text);
-        if (parent == null) {
-            seite.getNotes().add(note);
-        } else {
-            parent.getNotes().add(note);
-        }
-        saveMeta(getTitle() + ": add note #" + note.getNumber());
-    }
-
-    private int fetchMax(List<Note> notes) {
-        int max = 0;
-        for (Note note : notes) {
-            if (note.getNumber() > max) {
-                max = note.getNumber();
-            }
-            int m = fetchMax(note.getNotes());
-            if (m > max) {
-                max = m;
-            }
-        }
-        return max;
-    }
-
-    public Note noteByNumber(int number) {
-        Note note = _noteByNumber(seite.getNotes(), number);
-        if (note == null) {
-            throw new RuntimeException("Note not found");
-        }
-        return note;
-    }
-
-    private Note _noteByNumber(List<Note> notes, int number) {
-        for (Note note : notes) {
-            if (note.getNumber() == number) {
-                return note;
-            }
-            Note note2 = _noteByNumber(note.getNotes(), number);
-            if (note2 != null) {
-                return note2;
-            }
-        }
-        return null;
+    public NotesSO notes() {
+        return notes;
     }
     
-    public void deleteNote(int number) {
-        if (_deleteNote(seite.getNotes(), number)) {
-            saveMeta(getTitle() + ": delete note #" + number);
-        }
-    }
-    
-    private boolean _deleteNote(List<Note> notes, int number) {
-        for (Note note : notes) {
-            if (note.getNumber() == number) {
-                notes.remove(note);
-                return true;
-            }
-            boolean ret = _deleteNote(note.getNotes(), number);
-            if (ret) {
-                return ret;
-            }
-        }
-        return false;
-    }
-    
-    public int getNotesSize() {
-        return _getNotesSize(seite.getNotes());
-    }
-
-    private int _getNotesSize(List<Note> notes) {
-        int ret = notes.size();
-        for (Note note : notes) {
-            ret += _getNotesSize(note.getNotes());
-        }
-        return ret;
-    }
-
     /**
      * Nach dem Aufruf ist die komplette BookSO/SeiteSO-Struktur neu aufzubauen.
      */

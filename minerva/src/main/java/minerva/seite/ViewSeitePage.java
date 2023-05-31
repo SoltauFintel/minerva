@@ -58,7 +58,7 @@ public class ViewSeitePage extends SPage {
         put("hasSubPages", !seiteSO.getSeiten().isEmpty());
         put("Sortierung", n(seite.isSorted() ? "alfaSorted" : "manuSorted"));
         put("isSorted", seite.isSorted());
-        int n = seiteSO.getNotesSize();
+        int n = seiteSO.notes().getNotesSize();
         putInt("notesSize", n);
         put("hasNotes", n > 0);
         header(modifyHeader(seiteSO.getTitle()));

@@ -12,7 +12,7 @@ public class EditNotePage extends SPage {
     protected void execute() {
         int number = Integer.parseInt(ctx.queryParam("number"));
 
-        Note note = seite.noteByNumber(number);
+        Note note = seite.notes().noteByNumber(number);
 
         if (isPOST()) {
             String text = ctx.formParam("text1");
