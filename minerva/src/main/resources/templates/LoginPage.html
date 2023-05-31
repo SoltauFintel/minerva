@@ -1,0 +1,35 @@
+{{master: master}}
+
+<div class="row">
+    <h1 class="page-header" style="font-family: 'Shrikhand', cursive;">Willkommen bei Minerva!</h1>
+    <div class="col-lg-12">
+        <form action="/login" method="post" class="form-horizontal">
+            <fieldset>
+                <div class="form-group">
+                    <div class="col-lg-offset-2 col-lg-5">{{if withPassword}}Bitte melden Sie sich mit Ihren Gitlab Zugangsdaten an.{{else}}Bitte geben Sie Ihren Namen an!{{/if}}</div>
+                </div>
+                <div class="form-group">
+                    <label for="minerva_user" class="col-lg-2 control-label">Benutzername</label>
+                    <div class="col-lg-2">
+                        <input type="text" id="minerva_user" name="user[login]" class="form-control" autofocus>
+                    </div>
+                </div>
+                {{if withPassword}}
+                    <div class="form-group">
+                        <label for="minerva_password" class="col-lg-2 control-label">Passwort</label>
+                        <div class="col-lg-2">
+                            <input type="password" id="minerva_password" name="user[password]" class="form-control">
+                        </div>
+                    </div>
+                {{/if}}
+                <div class="form-group">
+                    <div class="col-lg-offset-2 col-lg-5">
+                        <button type="submit" class="btn btn-primary">Einloggen</button>
+                        {{if loginError}}<span style="color: #900; margin-left: 2em;">Falsche Zugangsdaten!</span>{{/if}}
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+

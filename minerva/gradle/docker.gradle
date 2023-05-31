@@ -1,0 +1,37 @@
+int getPort() {
+    def props = new Properties()
+    file("AppConfig.properties").withInputStream { is -> props.load(is) }
+    return props.getProperty('port') as int
+}
+
+docker {
+    javaApplication {
+        ports = [ getPort() ]
+        def imagename = findProperty('dockerhub') + project.name
+        def target = findProperty('target')
+        if (target == 'base') {
+            baseImage = 'eclipse-temurin:17.0.7_7-jre-jammy'
+            images = [ imagename + 'base' ]
+        } else {
+            baseImage = imagename + 'base'
+            images = [ imagename ]
+        }
+        maintainer = 'SoltauFintel'
+        mainClassName = application.mainClass
+    }
+}
+
+dockerCreateDockerfile {
+    outputs.upToDateWhen { false }
+    doLast {
+        def target = findProperty('target')
+        def dockerfile = destFile.get().asFile
+        if (target == 'base') {
+            dockerfile.text = """
+                FROM ${docker.javaApplication.baseImage.get()}
+                COPY libs /app/libs/ """
+        } else {
+            dockerfile.text = dockerfile.text.replace('COPY libs libs/', '')
+        }
+    }
+}

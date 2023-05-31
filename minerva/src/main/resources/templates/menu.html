@@ -1,0 +1,18 @@
+<ul class="nav" id="side-menu">
+    <li>
+        <a href="/"><i class="fa fa-home"></i> Workspaces</a>
+    </li>
+    <li>
+        <a href="/b/{{branch}}"><i class="fa fa-book"></i> Bücher</a>
+    </li>
+    {{each b in booksForMenu}}
+        <li>
+            <a href="/b/{{branch}}/{{b.folder}}"><i class="fa fa-book greenbook"></i> {{b.title}}</a>
+        </li>
+    {{/each}}
+    {{if hasUser}}
+        <li>
+            <a href="/auth/logout" style="color: #900;"><i class="fa fa-sign-out"></i> {{abmelden}} ({{user}})</a>
+        </li>
+    {{/if}}
+</ul>

@@ -1,3 +1,8 @@
-port=5555
-url=http://localhost:5555
+port=8080
 development=true
+app.name=minerva
+
+backend=gitlab
+workspaces=C:/somewhere-outside-eclipse/minerva-workspaces
+gitlab.url=http://localhost:8000
+gitlab.project=

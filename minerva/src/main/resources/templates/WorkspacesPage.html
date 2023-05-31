@@ -1,0 +1,24 @@
+{{master: master}}
+
+<div class="row"> 
+    <div class="col-lg-12">
+        <h1 class="page-header">Workspaces</h1>
+    </div>
+    <div class="col-lg-6">
+        <p style="margin-bottom: 2em;">{{N.selectWS}}</p>
+        
+        <p>
+            {{each w in workspaces}}
+                <a href="/b/{{w.name}}" class="btn btn-default br" style="margin-bottom: 16px;">{{w.name}}</a>
+            {{/each}}
+        </p>
+    </div>        
+    <div class="col-lg-6" style="background-color: #f6f6f6; padding-top: 16px; padding-bottom: 8px; text-align: right;">
+        {{if gitlab}}
+            <p style="margin-bottom: 16px;">
+                <a href="/create-workspace" class="btn btn-default" style="min-width: 240px;">{{N.createWS}}</a>
+            </p>
+        {{/if}}
+        <p>{{N.persistence}}: {{persistenceInfo}}</p>
+    </div>
+</div>

@@ -3,3 +3,5 @@
 /.gradle/
 /*.txt
 /AppConfig.properties
+/workspaces/
+/*.bat

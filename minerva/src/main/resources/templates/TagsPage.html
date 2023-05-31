@@ -1,0 +1,53 @@
+{{master: master}}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">{{header}}</h1>
+        <form action="{{addlink}}" class="form-horizontal" method="post" style="margin-top: 1em;">
+            <fieldset>
+                <div class="form-group">
+                    <label for="tag" class="col-lg-1 control-label">Neues tag</label>
+                    <div class="col-lg-2">
+                        <input class="form-control" type="text" id="tag" name="tag" autofocus>
+                    </div>
+                    <div class="col-lg-2">
+                        <button type="submit" class="btn btn-primary br"
+                            onclick="document.getElementById('s1').style='';">Speichern
+                            <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
+                        
+                        <!-- Idee: noch beliebte tags hier anbieten (1-Klick create) -->
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        <div style="margin-top: 2em;">
+            {{each tag in tags}}
+                <p>
+                    <span class="label label-tag" style="font-size: 10pt;"><a href="/w/{{branch}}/tag/{{tag.tag}}"><i
+                    class="fa fa-tag"></i> {{tag.tag}}</a></span>
+                    <a href="{{tag.deletelink}}" style="font-size: 8pt; color: #900; margin-right: 2em;"
+                    title="Löschen!" onclick="document.getElementById('dt_{{tag.tag}}').classList.add('fa-spin');"><i
+                    class="fa fa-times" id="dt_{{tag.tag}}"></i></a>
+                </p>
+            {{/each}}
+        </div>
+        
+        <p style="margin-top: 4em;">
+            <a href="{{viewlink}}" class="btn btn-default br">&lt;&lt; Zurück</a>
+            <a href="{{viewlink}}/delete-tag?tag=$all" class="btn btn-danger br"
+                onclick="return deleteAll();"><i class="fa fa-trash"></i> Alle tags löschen
+                <i id="s2" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+        </p>
+    </div>
+</div>
+
+<script>
+    function deleteAll() {
+        ok = confirm('Hiermit löschen Sie alle tags!');
+        if (ok) {
+            document.getElementById('s2').style='';
+        }
+        return ok
+    }
+</script>

@@ -1,0 +1,118 @@
+{{master: master_jqueryoben}}
+
+<div class="row">
+    <div class="col-lg-9">
+        <div style="margin-top: 1em; margin-bottom: 10px; padding-left: 0;">
+            <a {{if hasPrevlink}}href="{{prevlink}}"{{else}}disabled{{/if}} class="btn btn-default"
+                title="{{N.pageToPrev}}"><i class="fa fa-arrow-left"></i></a>
+            <a {{if hasNextlink}}href="{{nextlink}}"{{else}}disabled{{/if}} class="btn btn-default br"
+                title="{{N.pageToNext}}"><i class="fa fa-arrow-right"></i></a>
+        </div>
+        
+        <ul class="nav nav-tabs" id="langTabs">
+            {{each L in languages}}
+                <li role="presentation"{{if L.active}} class="active"{{/if}}><a href="#{{L.lang}}">{{N.language}}
+                    {{L.LANG}}</a></li>
+            {{/each}}
+        </ul>
+        
+        <div class="tab-content">
+            {{each L in languages}}
+                <div role="tabpanel" class="tab-pane{{if L.active}} active{{/if}}" id="{{L.lang}}">
+                    <div class="col-lg-12 mwtab" style="border: 1px solid #ddd; border-top: 0px white;">
+                        <div class="breadcrumbs">
+                            {{each b in L.breadcrumbs}}
+                                {{if b.first}}<i class="fa fa-book greenbook"></i>{{/if}}
+                                <a href="{{b.link}}">{{b.title}}</a> &gt;
+                            {{/each}}
+                            &nbsp;<i class="fa fa-file-o"></i>&nbsp; {{L.titel}}
+                        </div>
+                        <h1 style="margin-top: 10px;">{{L.titel}}</h1>
+                        {{L.content}}
+                        <div style="height: 14px;"></div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+        <div class="col-lg-12 visible-lg-block" style="margin-top: 1em; padding-left: 0;">
+            <p>
+                <a {{if hasPrevlink}}href="{{prevlink}}"{{else}}disabled{{/if}} class="btn btn-default"
+                    title="{{N.pageToPrev}}"><i class="fa fa-arrow-left"></i></a>
+                <a {{if hasNextlink}}href="{{nextlink}}"{{else}}disabled{{/if}} class="btn btn-default br"
+                    title="{{N.pageToNext}}"><i class="fa fa-arrow-right"></i></a>
+                <a href="{{editlink}}" class="btn btn-primary br" style="min-width: 100px;"><i
+                    class="fa fa-pencil"></i> {{N.edit}}</a>
+            </p>
+        </div>
+    </div>
+    
+    <!-- rechte Rand -->
+    
+    <div class="col-lg-3">
+        <p style="margin-top: 16px;">
+            <a href="{{editlink}}" class="btn btn-primary br" style="min-width: 100px;"><i class="fa fa-pencil"></i>
+                {{N.edit}}</a>
+            <a href="{{createlink}}" class="btn btn-default br">{{N.newPage}}</a>
+            <a href="{{pulllink}}" class="btn btn-default br" title="{{N.pullT}}"
+                onclick="document.getElementById('s_pull').classList.add('fa-spin');"><i class="fa fa-undo"
+                id="s_pull"></i></a>
+        </p>
+        <p><span style="font-family: Courier New;" class="br">Page ID: {{id}}</span></p>
+        <hr/>
+        <h4>{{N.subpages}} ({{subpagesSize}})</h4>
+        {{if hasSubPages}}
+            <ul>
+            {{each s in subpages}}
+                <li><a href="{{s.viewlink}}">{{s.titel}}</a>{{if not isSorted}}<sub
+                    style="color: #ccc; font-size: 6pt;">{{s.position}}</sub>{{/if}}</li>
+            {{/each}}
+            </ul>
+        {{/if}}
+        <p>
+            <a href="{{positionlink}}"
+                class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"
+                ><i class="fa fa-sort"></i> {{N.reorder}}</a>
+            <a href="{{sortlink}}"
+                class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"
+                onclick="return sort();"><i class="fa fa-sort-alpha-asc"></i> {{N.sort}}!
+                <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+        </p>
+        <p style="font-size: 8pt; color: #888;">
+            Position: {{position}} | {{Sortierung}}
+        </p>
+        <hr/>
+        <h4>tags ({{tagsSize}})</h4>
+        <p>
+            {{each tag in tags}}
+                <span class="label label-tag"><i class="fa fa-tag"></i> <a
+                    href="{{tag.link}}">{{tag.tag}}</a></span>
+            {{/each}}
+        </p>
+        <p style="margin-top: 1em;"><a href="{{edittagslink}}" class="btn btn-default btn-sm">{{N.edit}}</a></p>
+        <hr/>
+        <h4>{{N.notes}} ({{notesSize}})</h4>
+        <p><a href="{{viewlink}}/notes" class="btn btn-default btn-sm">{{N.edit}}</a></p>
+        <hr/>
+        <p style="margin-top: 16px;">
+            <a href="{{movelink}}" class="btn btn-default br">{{N.movePage}}</a>
+        </p>
+        <p>
+            <a href="{{deletelink}}" class="btn btn-danger br"><i class="fa fa-trash"></i> {{N.deletePage}}...</a>
+        </p>
+    </div>
+</div>
+
+<script>
+    $('#langTabs a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+    })
+    
+    function sort() {
+        ret = confirm('{{N.sortConfirm}}');
+        if (ret) {
+            document.querySelector('#s1').style='';
+        }
+        return ret;
+    }
+</script>

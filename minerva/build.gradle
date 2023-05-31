@@ -1,30 +1,34 @@
 plugins {
     id 'application'
     id 'eclipse'
+    id 'com.bmuschko.docker-java-application' version '6.7.0'
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
-compileJava.options.encoding = 'windows-1252'
-compileTestJava.options.encoding = 'windows-1252'
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
 
 application {
-    //mainClass = ''
+    mainClass = 'minerva.MinervaWebapp'
 }
 
 dependencies {
-    implementation 'com.github.SoltauFintel.amalia:amalia-web:0.1.2'
+    implementation 'com.github.SoltauFintel.amalia:amalia-web:0.2.0'
+    implementation 'org.slf4j:slf4j-nop:2.0.6'
     implementation 'commons-io:commons-io:2.4' // TODO 2.12
     implementation 'javax.websocket:javax.websocket-api:1.1'
     implementation 'org.java-websocket:Java-WebSocket:1.5.3'
     implementation 'org.eclipse.jgit:org.eclipse.jgit:6.5.0.202303070854-r'
-    // alt: implementation 'org.eclipse.jgit:org.eclipse.jgit:5.13.0.202109080827-r'
     implementation 'org.gitlab4j:gitlab4j-api:5.0.1' // TODO erstmal belassen, später 5.2.0 probieren
-    
-    testImplementation 'junit:junit:4.12' 
+    implementation 'org.jsoup:jsoup:1.16.1' // pretty HTML
 }
 
 repositories {
 	mavenCentral()
 	maven { url 'https://jitpack.io' }
+    maven { url 'https://www.javaxt.com/maven' }
 }
+
+apply from: 'gradle/docker.gradle'
+

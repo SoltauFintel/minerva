@@ -1,0 +1,37 @@
+{{master: master}}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Unfertige Links ersetzen #{{nextIndex}}/{{size}}</h1>
+        
+        <h3>Es wurde in der Seite "{{pageTitle}}" ein Link mit
+        <br>Adresse <b>"{{href}}"</b> und Titel <b>"{{aTitle}}"</b>
+        gefunden.</h3>
+        <p>Bitte nach einem Seitentitel suchen, damit der Link mit dessen Seiten ID ersetzt werden kann.</p>
+        
+        <form class="form-horizontal">
+            <fieldset>
+                <div class="form-group">
+                    <label for="search" class="col-lg-2 control-label"><b>nach Seitentitel suchen:</b></label>
+                    <div class="col-lg-3">
+                        <input class="form-control" type="search" id="search"
+                               name="search" value="{{href}}"
+                               hx-post="/links/{{branch}}/{{bookFolder}}/{{id}}?key={{key}}&index={{index}}" 
+                               hx-trigger="keyup changed delay:500ms, search" 
+                               hx-target="#search-results" 
+                               autofocus>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        
+        <table class="table" style="margin-top: 1em;">
+            <thead>
+                <tr>
+                    <th>Ergebnisliste</th>
+                </tr>
+            </thead>
+            <tbody id="search-results">{{result0}}</tbody>
+        </table>
+    </div>
+</div>

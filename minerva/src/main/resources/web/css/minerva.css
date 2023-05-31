@@ -1,0 +1,89 @@
+.breadcrumbs {
+    font-size: 8pt;
+    margin-top: 1em;
+}
+.breadcrumbs a {
+    color: black;
+    padding: 4px;
+}
+.breadcrumbs a:hover {
+    background-color: #eee;
+    text-decoration: none;
+}
+
+.btn-m180 {
+    min-width: 180px;
+}
+
+.greenbook {
+    color: #090;
+}
+
+.ck-balloon-panel {
+    z-index: 1040 !important;
+}
+
+.label>a {
+    color: white;
+}
+
+.label>a:hover {
+    text-decoration: none;
+}
+
+.label-tag {
+    background-color: grey;
+}
+
+.s1red {
+    color: #c00;
+}
+
+.kasten {
+    border: 1px solid #ccc;
+    margin-bottom: 6px;
+    padding: 8px;
+    background-color: #eee;
+}
+
+.subnotes {
+    margin-left: 2cm;
+}
+
+.noteChanged {
+    color: #900;
+}
+
+.noteNumber {
+    font-weight: bold;
+}
+
+.noteInfo {
+    font-size: 8pt;
+    color: #666;
+}
+
+.noteText {
+    white-space: pre-wrap;
+}
+
+.ck-toolbar {
+    background-color: #f5f5f9 !important;
+}
+
+/* ---- ViewSeitePage: HTML from CKEditor display ---- */
+
+figure table td {
+    border: 1px solid #BBB;
+    padding: 5px;
+}
+
+figure table th {
+    border: 1px solid #BBB;
+    padding: 5px;
+    background-color: #f0f0f0;
+}
+
+figure.image img {
+    max-width: 100%;
+}

@@ -1,0 +1,17 @@
+{{master: master}}
+
+<div class="row"> 
+    <div class="col-lg-12">
+        <h1 class="page-header">Confluence nach Minerva Migration</h1>
+        
+        <h3 style="max-width: 800px;">Import der Confluence OH Seiten
+        aus Ordner "{{sourceFolder}}"
+        in den Workspace "{{user}}/{{branch}}".
+        Alle bestehenden Seiten werden zuvor gelöscht.</h3>
+        
+        <p style="margin-top: 2em;"><a href="/migration/{{branch}}?m=1" class="btn btn-danger br"
+            onclick="document.querySelector('#s1').style='';">Starte Migration!
+            <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+            <a href="/b/{{branch}}" class="btn btn-default">Abbruch</a></p>
+    </div>
+</div>

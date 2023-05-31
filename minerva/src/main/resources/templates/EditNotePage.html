@@ -1,0 +1,29 @@
+{{master: master}}
+
+<div class="row"> 
+    <div class="col-lg-12">
+        <h1 class="page-header">{{header}}</h1>
+
+        <h3>{{pageTitle}}</h3>
+
+        <form action="{{viewlink}}/edit-note?number={{number}}" class="form-horizontal" method="post"
+            style="margin-top: 3em;">
+            <fieldset>
+                <div class="form-group">
+                    <label for="text1" class="col-lg-1 control-label">{{N.note}}</label>
+                    <div class="col-lg-5">
+                        <textarea class="form-control" id="text1" name="text1" rows="8" autofocus>{{text1}}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <button type="submit" class="btn btn-primary br"
+                            onclick="document.querySelector('#s1').style='';">{{N.save}}
+                            <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
+                        <a href="{{viewlink}}/notes" class="btn btn-default">{{N.cancel}}</a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
