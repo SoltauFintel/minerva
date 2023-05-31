@@ -6,19 +6,19 @@ import github.soltaufintel.amalia.web.route.RouteHandler;
 
 public class MinervaAuthRoutes extends RouteDefinitions implements IAuthRoutes {
 
-	public MinervaAuthRoutes() {
-		super(60);
-	}
-	
-	@Override
-	public void routes() {
-		setupAuthFilter();
-		get("/auth/logout", LogoutAction.class);
-		addNotProtected("/auth/logout");
-	}
+    public MinervaAuthRoutes() {
+        super(60);
+    }
+    
+    @Override
+    public void routes() {
+        setupAuthFilter();
+        get("/auth/logout", LogoutAction.class);
+        addNotProtected("/auth/logout");
+    }
 
-	@Override
-	public RouteHandler getLoginPageRouteHandler() {
-		return getRouteHandler(LoginPage.class);
-	}
+    @Override
+    public RouteHandler getLoginPageRouteHandler() {
+        return getRouteHandler(LoginPage.class);
+    }
 }

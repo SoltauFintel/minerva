@@ -10,75 +10,75 @@ import minerva.base.StringService;
 
 public class MergeRequestService {
 
-	public void createAndSquashMergeRequest(String title, String branch, String targetBranch, String gitlabUrl, String project, String user, String password) throws GitLabApiException {
-		try (GitLabApi gitLabApi = GitLabApi.oauth2Login(gitlabUrl, user, password)) {
-			MergeRequestParams params = new MergeRequestParams()
-				    .withSourceBranch(branch)
-				    .withTargetBranch(targetBranch)
-				    .withTitle(StringService.isNullOrEmpty(title) ? ("Merge Request " + branch + " -> " + targetBranch) : title)
-				    .withRemoveSourceBranch(Boolean.TRUE)
-				    .withSquash(Boolean.TRUE);
-			
-			MergeRequestApi api = gitLabApi.getMergeRequestApi();
-			MergeRequest mr = api.createMergeRequest(project, params);
-			waitForCanBeMerged(project, api, mr);
-			
-			api.acceptMergeRequest(project, mr.getIid());
-			waitForMergedState(project, api, mr);
-		}
-	}
-	
-	private void waitForCanBeMerged(String project, MergeRequestApi api, MergeRequest mr) throws GitLabApiException {
-		int loop = 0;
-		int time = 500;
-		while (true) {
-			MergeRequest s = null;
-			try {
-				s = api.getMergeRequest(project, mr.getIid());
-			} catch (Exception ignore) {
-			}
-			if (s != null) {
-				if ("can_be_merged".equals(s.getMergeStatus())) {
-					break;
-				} else if ("cannot_be_merged".equals(s.getMergeStatus())) {
-					throw new MergeRequestException("Merge Request " + mr.getIid() + " can not be merged!");
-				}
-			}
-			if (++loop > (1000 / time) * 60) { // 1 minute
-				throw new RuntimeException("Killer loop. Merge Reqest merge state does not become can_be_merged" +
-					" and it is: " + s.getMergeStatus() + " ID is " + mr.getIid() +
-					"  Please check Merge Request manually.");
-			}
-			try {
-				Thread.sleep(time);
-			} catch (InterruptedException e) {
-				throw new RuntimeException("Interrupt error while waiting for can_be_merged state", e);
-			}
-		}
-	}
+    public void createAndSquashMergeRequest(String title, String branch, String targetBranch, String gitlabUrl, String project, String user, String password) throws GitLabApiException {
+        try (GitLabApi gitLabApi = GitLabApi.oauth2Login(gitlabUrl, user, password)) {
+            MergeRequestParams params = new MergeRequestParams()
+                    .withSourceBranch(branch)
+                    .withTargetBranch(targetBranch)
+                    .withTitle(StringService.isNullOrEmpty(title) ? ("Merge Request " + branch + " -> " + targetBranch) : title)
+                    .withRemoveSourceBranch(Boolean.TRUE)
+                    .withSquash(Boolean.TRUE);
+            
+            MergeRequestApi api = gitLabApi.getMergeRequestApi();
+            MergeRequest mr = api.createMergeRequest(project, params);
+            waitForCanBeMerged(project, api, mr);
+            
+            api.acceptMergeRequest(project, mr.getIid());
+            waitForMergedState(project, api, mr);
+        }
+    }
+    
+    private void waitForCanBeMerged(String project, MergeRequestApi api, MergeRequest mr) throws GitLabApiException {
+        int loop = 0;
+        int time = 500;
+        while (true) {
+            MergeRequest s = null;
+            try {
+                s = api.getMergeRequest(project, mr.getIid());
+            } catch (Exception ignore) {
+            }
+            if (s != null) {
+                if ("can_be_merged".equals(s.getMergeStatus())) {
+                    break;
+                } else if ("cannot_be_merged".equals(s.getMergeStatus())) {
+                    throw new MergeRequestException("Merge Request " + mr.getIid() + " can not be merged!");
+                }
+            }
+            if (++loop > (1000 / time) * 60) { // 1 minute
+                throw new RuntimeException("Killer loop. Merge Reqest merge state does not become can_be_merged" +
+                    " and it is: " + s.getMergeStatus() + " ID is " + mr.getIid() +
+                    "  Please check Merge Request manually.");
+            }
+            try {
+                Thread.sleep(time);
+            } catch (InterruptedException e) {
+                throw new RuntimeException("Interrupt error while waiting for can_be_merged state", e);
+            }
+        }
+    }
 
-	private void waitForMergedState(String project, MergeRequestApi api, MergeRequest mr) throws GitLabApiException {
-		int loop = 0;
-		int time = 200;
-		while (true) {
-			MergeRequest s = null;
-			try {
-				s = api.getMergeRequest(project, mr.getIid());
-			} catch (Exception ignore) {
-			}
-			if (s != null && "merged".equals(s.getState())) {
-				break;
-			}
-			if (++loop > (1000 / time) * 60) { // 1 minute
-				throw new RuntimeException("Killer loop while waiting for merged MR. ID: " + mr.getIid()
-					+ "  Please check MR state manually. State is: " + s.getState() + ", merge state is: "
-					+ s.getMergeStatus() + ", error: " + s.getMergeError());
-			}
-			try {
-				Thread.sleep(time);
-			} catch (InterruptedException e) {
-				throw new RuntimeException("Interrupt error while waiting for merged state", e);
-			}
-		}
-	}
+    private void waitForMergedState(String project, MergeRequestApi api, MergeRequest mr) throws GitLabApiException {
+        int loop = 0;
+        int time = 200;
+        while (true) {
+            MergeRequest s = null;
+            try {
+                s = api.getMergeRequest(project, mr.getIid());
+            } catch (Exception ignore) {
+            }
+            if (s != null && "merged".equals(s.getState())) {
+                break;
+            }
+            if (++loop > (1000 / time) * 60) { // 1 minute
+                throw new RuntimeException("Killer loop while waiting for merged MR. ID: " + mr.getIid()
+                    + "  Please check MR state manually. State is: " + s.getState() + ", merge state is: "
+                    + s.getMergeStatus() + ", error: " + s.getMergeError());
+            }
+            try {
+                Thread.sleep(time);
+            } catch (InterruptedException e) {
+                throw new RuntimeException("Interrupt error while waiting for merged state", e);
+            }
+        }
+    }
 }

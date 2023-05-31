@@ -19,108 +19,108 @@ import minerva.model.WorkspaceSO;
  */
 public abstract class AbstractDirAccess implements DirAccess {
 
-	// alle Workspaces ermitteln
-	@Override
-	public List<String> getAllFolders(String folder) {
-		List<String> ret = new ArrayList<>();
-		File[] files = new File(folder).listFiles();
-		if (files != null) {
-			for (File file : files) {
-				if (file.isDirectory() && !file.getName().startsWith(".")) {
-					ret.add(file.getName());
-				}
-			}
-		}
-		return ret;
-	}
+    // alle Workspaces ermitteln
+    @Override
+    public List<String> getAllFolders(String folder) {
+        List<String> ret = new ArrayList<>();
+        File[] files = new File(folder).listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory() && !file.getName().startsWith(".")) {
+                    ret.add(file.getName());
+                }
+            }
+        }
+        return ret;
+    }
 
-	@Override
-	public Map<String, String> loadFiles(Set<String> filenames) {
-		Map<String, String> ret = new HashMap<>();
-		for (String filename : filenames) {
-			ret.put(filename, FileService.loadPlainTextFile(new File(filename)));
-		}
-		return ret;
-	}
+    @Override
+    public Map<String, String> loadFiles(Set<String> filenames) {
+        Map<String, String> ret = new HashMap<>();
+        for (String filename : filenames) {
+            ret.put(filename, FileService.loadPlainTextFile(new File(filename)));
+        }
+        return ret;
+    }
 
-	@Override
-	public Map<String, String> loadAllFiles(String folder) {
-		Map<String, String> ret = new HashMap<>();
-		File[] files = new File(folder).listFiles();
-		if (files != null) {
-			for (File file : files) {
-				if (file.isFile() && !file.getName().startsWith(".")) {
-					ret.put(file.getName(), FileService.loadPlainTextFile(new File(folder + "/" + file.getName())));
-				}
-			}
-		}
-		return ret;
-	}
+    @Override
+    public Map<String, String> loadAllFiles(String folder) {
+        Map<String, String> ret = new HashMap<>();
+        File[] files = new File(folder).listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile() && !file.getName().startsWith(".")) {
+                    ret.put(file.getName(), FileService.loadPlainTextFile(new File(folder + "/" + file.getName())));
+                }
+            }
+        }
+        return ret;
+    }
 
-	@Override
-	public void saveFiles(Map<String, String> files, String commitMessage, WorkspaceSO workspace) {
-		for (Entry<String, String> e : files.entrySet()) {
-			File file = new File(e.getKey());
-			if (e.getValue() == null) {
-				file.delete();
-			} else if (IMAGE.equals(e.getValue())) {
-				// do nothing
-			} else {
-				FileService.savePlainTextFile(file, e.getValue());
-			}
-		}
-	}
-	
-	@Override
-	public void deleteFiles(Set<String> filenames, String commitMessage, WorkspaceSO workspace, List<String> cantBeDeleted) {
-		if (cantBeDeleted == null) {
-			throw new IllegalArgumentException("cantBeDeleted must not be null");
-		}
-		Set<String> addList = new HashSet<>();
-		Set<String> killList = new HashSet<>();
-		for (String dn : filenames) {
-			boolean ok = false;
-			if (dn.endsWith("/*")) { // folder
-				String fn = dn.substring(0, dn.length() - "/*".length());
-				File folder = new File(fn);
-				if (folder.isDirectory()) {
-					deleteFolder(folder, addList, cantBeDeleted);
-					ok = true;
-					killList.add(dn);
-				} else if (!folder.isFile()) {
-					ok = true; // Datei/Ordner existiert nicht. Nicht als Fehler werten.
-				}
-			} else { // file
-				File file = new File(dn);
-				if (file.isFile()) {
-					ok = file.delete();
-				} else if (!file.isDirectory()) {
-					ok = true; // Datei/Ordner existiert nicht. Nicht als Fehler werten.
-				}
-			}
-			if (!ok) {
-				cantBeDeleted.add(dn);
-			}
-		}
-		filenames.removeAll(killList);
-		filenames.addAll(addList);
-	}
+    @Override
+    public void saveFiles(Map<String, String> files, String commitMessage, WorkspaceSO workspace) {
+        for (Entry<String, String> e : files.entrySet()) {
+            File file = new File(e.getKey());
+            if (e.getValue() == null) {
+                file.delete();
+            } else if (IMAGE.equals(e.getValue())) {
+                // do nothing
+            } else {
+                FileService.savePlainTextFile(file, e.getValue());
+            }
+        }
+    }
+    
+    @Override
+    public void deleteFiles(Set<String> filenames, String commitMessage, WorkspaceSO workspace, List<String> cantBeDeleted) {
+        if (cantBeDeleted == null) {
+            throw new IllegalArgumentException("cantBeDeleted must not be null");
+        }
+        Set<String> addList = new HashSet<>();
+        Set<String> killList = new HashSet<>();
+        for (String dn : filenames) {
+            boolean ok = false;
+            if (dn.endsWith("/*")) { // folder
+                String fn = dn.substring(0, dn.length() - "/*".length());
+                File folder = new File(fn);
+                if (folder.isDirectory()) {
+                    deleteFolder(folder, addList, cantBeDeleted);
+                    ok = true;
+                    killList.add(dn);
+                } else if (!folder.isFile()) {
+                    ok = true; // Datei/Ordner existiert nicht. Nicht als Fehler werten.
+                }
+            } else { // file
+                File file = new File(dn);
+                if (file.isFile()) {
+                    ok = file.delete();
+                } else if (!file.isDirectory()) {
+                    ok = true; // Datei/Ordner existiert nicht. Nicht als Fehler werten.
+                }
+            }
+            if (!ok) {
+                cantBeDeleted.add(dn);
+            }
+        }
+        filenames.removeAll(killList);
+        filenames.addAll(addList);
+    }
 
-	private void deleteFolder(File folder, Set<String> addList, List<String> cantBeDeleted) {
-		File[] files = folder.listFiles();
-		if (files != null) {
-			for (File file : files) {
-				if (file.isDirectory()) {
-					Logger.error("[deleteFolder] Unexpected folder: " + file.getAbsolutePath());
-					cantBeDeleted.add(file.getAbsolutePath());
-				} else {
-					if (file.delete()) {
-						addList.add(file.getAbsolutePath().replace("\\", "/"));
-					} else {
-						cantBeDeleted.add(file.getAbsolutePath());
-					}
-				}
-			}
-		}
-	}
+    private void deleteFolder(File folder, Set<String> addList, List<String> cantBeDeleted) {
+        File[] files = folder.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    Logger.error("[deleteFolder] Unexpected folder: " + file.getAbsolutePath());
+                    cantBeDeleted.add(file.getAbsolutePath());
+                } else {
+                    if (file.delete()) {
+                        addList.add(file.getAbsolutePath().replace("\\", "/"));
+                    } else {
+                        cantBeDeleted.add(file.getAbsolutePath());
+                    }
+                }
+            }
+        }
+    }
 }

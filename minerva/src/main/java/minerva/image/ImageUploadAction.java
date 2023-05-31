@@ -23,72 +23,72 @@ import spark.utils.IOUtils;
 
 public class ImageUploadAction extends JsonAction<Success> {
 
-	@Override
-	protected void execute() {
-		String branch = ctx.pathParam("branch");
-		String bookFolder = ctx.pathParam("book");
-		String id = ctx.pathParam("id");
+    @Override
+    protected void execute() {
+        String branch = ctx.pathParam("branch");
+        String bookFolder = ctx.pathParam("book");
+        String id = ctx.pathParam("id");
 
-		UserSO user = StatesSO.get(ctx).getUser();
-		WorkspaceSO workspace = user.getWorkspace(branch);
-		BookSO book = workspace.getBooks().byFolder(bookFolder);
-		SeiteSO seite = book.getSeiten().byId(id);
+        UserSO user = StatesSO.get(ctx).getUser();
+        WorkspaceSO workspace = user.getWorkspace(branch);
+        BookSO book = workspace.getBooks().byFolder(bookFolder);
+        SeiteSO seite = book.getSeiten().byId(id);
 
-		ctx.req.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("upload"));
-		ctx.res.type("application/json");
-		Part part;
-		try {
-			part = ctx.req.raw().getPart("upload");
-		} catch (IOException | ServletException e) {
-			Logger.error(e);
-			throw new RuntimeException("Error uploading image!");
-		}
-		String submittedFilename = part.getSubmittedFileName();
-		if (part.getSize() > 1024l * 1024 * 1024 * 10) { // 10 MB
-			throw new UserMessage("error.imageTooBig", workspace);
-		}
+        ctx.req.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("upload"));
+        ctx.res.type("application/json");
+        Part part;
+        try {
+            part = ctx.req.raw().getPart("upload");
+        } catch (IOException | ServletException e) {
+            Logger.error(e);
+            throw new RuntimeException("Error uploading image!");
+        }
+        String submittedFilename = part.getSubmittedFileName();
+        if (part.getSize() > 1024l * 1024 * 1024 * 10) { // 10 MB
+            throw new UserMessage("error.imageTooBig", workspace);
+        }
 
-		String filename = "img/" + seite.getId() + "/" + submittedFilename;
-		File file = new File(book.getFolder(), filename);
-		if (file.isFile()) { // Name schon vergeben
-			int o = filename.lastIndexOf(".");
-			if (o >= 0) {
-				filename = filename.substring(0, o) + "-" + IdGenerator.createId6() + filename.substring(o);
-			} else {
-				filename += "-" + IdGenerator.createId6();
-			}
-			Logger.info("[ImageUploadAction] Dateiname schon vergeben. Geändert auf " + filename);
-			file = new File(book.getFolder(), filename);
-			if (file.isFile()) { // Das sollte doch niemals passieren.
-				Logger.error("File already exists: " + file.getAbsolutePath());
-				throw new RuntimeException("Error uploading image! Try another filename.");
-			}
-		}
-		file.getParentFile().mkdirs();
-		try (FileOutputStream fos = new FileOutputStream(file)) {
-			IOUtils.copy(part.getInputStream(), fos);
-		} catch (IOException e) {
-			Logger.error(e);
-			throw new RuntimeException("Error uploading image!");
-		}
-		
-		seite.getImages().add(filename);
+        String filename = "img/" + seite.getId() + "/" + submittedFilename;
+        File file = new File(book.getFolder(), filename);
+        if (file.isFile()) { // Name schon vergeben
+            int o = filename.lastIndexOf(".");
+            if (o >= 0) {
+                filename = filename.substring(0, o) + "-" + IdGenerator.createId6() + filename.substring(o);
+            } else {
+                filename += "-" + IdGenerator.createId6();
+            }
+            Logger.info("[ImageUploadAction] Dateiname schon vergeben. Geändert auf " + filename);
+            file = new File(book.getFolder(), filename);
+            if (file.isFile()) { // Das sollte doch niemals passieren.
+                Logger.error("File already exists: " + file.getAbsolutePath());
+                throw new RuntimeException("Error uploading image! Try another filename.");
+            }
+        }
+        file.getParentFile().mkdirs();
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            IOUtils.copy(part.getInputStream(), fos);
+        } catch (IOException e) {
+            Logger.error(e);
+            throw new RuntimeException("Error uploading image!");
+        }
+        
+        seite.getImages().add(filename);
 
-		// Response must be JSON, containing url field.
-		Success ret = new Success();
-		ret.setUrl(filename); // relative filename (e.g. branch name cannot be saved!)
-		result = ret;
-	}
+        // Response must be JSON, containing url field.
+        Success ret = new Success();
+        ret.setUrl(filename); // relative filename (e.g. branch name cannot be saved!)
+        result = ret;
+    }
 
-	public static class Success {
-		private String url;
+    public static class Success {
+        private String url;
 
-		public String getUrl() {
-			return url;
-		}
+        public String getUrl() {
+            return url;
+        }
 
-		public void setUrl(String url) {
-			this.url = url;
-		}
-	}
+        public void setUrl(String url) {
+            this.url = url;
+        }
+    }
 }

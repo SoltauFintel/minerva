@@ -12,86 +12,86 @@ import minerva.base.NlsString;
  * It is called Seite (German) so that there is no confusion with the Amalia Page concept.
  */
 public class Seite {
-	private String id;
-	private String parentId;
-	private final NlsString title = new NlsString();
-	private int position;
-	private boolean sorted = true;
-	private final Set<String> tags = new TreeSet<>();
-	private int version = 1;
-	private List<Note> notes = new ArrayList<>();
-	// TO-DO letzte Änderung (Name, Timestamp, Grund)
+    private String id;
+    private String parentId;
+    private final NlsString title = new NlsString();
+    private int position;
+    private boolean sorted = true;
+    private final Set<String> tags = new TreeSet<>();
+    private int version = 1;
+    private List<Note> notes = new ArrayList<>();
+    // TO-DO letzte Änderung (Name, Timestamp, Grund)
 
-	public Seite() {
-	}
-	
-	/**
-	 * copy constructor
-	 * @param seite -
-	 */
-	public Seite(Seite c) {
-		this.id = c.id;
-		this.parentId = c.parentId;
-		this.title.from(c.title);
-		this.position = c.position;
-		this.sorted = c.sorted;
-		this.tags.addAll(c.tags);
-		this.version = c.version;
-	}
+    public Seite() {
+    }
+    
+    /**
+     * copy constructor
+     * @param seite -
+     */
+    public Seite(Seite c) {
+        this.id = c.id;
+        this.parentId = c.parentId;
+        this.title.from(c.title);
+        this.position = c.position;
+        this.sorted = c.sorted;
+        this.tags.addAll(c.tags);
+        this.version = c.version;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getParentId() {
-		return parentId;
-	}
+    public String getParentId() {
+        return parentId;
+    }
 
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
-	}
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
 
-	public NlsString getTitle() {
-		return title;
-	}
+    public NlsString getTitle() {
+        return title;
+    }
 
-	public Set<String> getTags() {
-		return tags;
-	}
+    public Set<String> getTags() {
+        return tags;
+    }
 
-	public int getPosition() {
-		return position;
-	}
+    public int getPosition() {
+        return position;
+    }
 
-	public void setPosition(int position) {
-		this.position = position;
-	}
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
-	public boolean isSorted() {
-		return sorted;
-	}
+    public boolean isSorted() {
+        return sorted;
+    }
 
-	public void setSorted(boolean sorted) {
-		this.sorted = sorted;
-	}
+    public void setSorted(boolean sorted) {
+        this.sorted = sorted;
+    }
 
-	public int getVersion() {
-		return version;
-	}
+    public int getVersion() {
+        return version;
+    }
 
-	public void setVersion(int version) {
-		this.version = version;
-	}
+    public void setVersion(int version) {
+        this.version = version;
+    }
 
-	public List<Note> getNotes() {
-		return notes;
-	}
+    public List<Note> getNotes() {
+        return notes;
+    }
 
-	public void setNotes(List<Note> notes) {
-		this.notes = notes;
-	}
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
+    }
 }

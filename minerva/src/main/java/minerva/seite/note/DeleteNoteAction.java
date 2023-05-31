@@ -4,12 +4,12 @@ import minerva.seite.SAction;
 
 public class DeleteNoteAction extends SAction {
 
-	@Override
-	protected void execute() {
-		int number = Integer.parseInt(ctx.queryParam("number"));
+    @Override
+    protected void execute() {
+        int number = Integer.parseInt(ctx.queryParam("number"));
 
-		seite.deleteNote(number);
+        seite.deleteNote(number);
 
-		ctx.redirect(viewlink + "/notes");
-	}
+        ctx.redirect(viewlink + "/notes");
+    }
 }

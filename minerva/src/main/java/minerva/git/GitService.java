@@ -76,7 +76,7 @@ public class GitService {
                 .setBare(bare)
                 .call()) {
         } catch (Exception e) {
-        	Logger.error("Error cloning Git repository! URL: " + url + " | user: " + user + " | branch: " + branch);
+            Logger.error("Error cloning Git repository! URL: " + url + " | user: " + user + " | branch: " + branch);
             throw new RuntimeException("Error cloning Git repository!", e);
         }
     }
@@ -372,7 +372,7 @@ public class GitService {
                     .call();
             }            
         } catch (Exception e) {
-			throw new RuntimeException("Error while switching branch to " + branch, e);
+            throw new RuntimeException("Error while switching branch to " + branch, e);
         }
     }
 
@@ -432,7 +432,7 @@ public class GitService {
      * @return commit hash of newly created commit
      */
     public String commit(String commitMessage, String authorName, String mail, String user, String password,
-    		Set<String> addFilenames, Set<String> removeFilenames) {
+            Set<String> addFilenames, Set<String> removeFilenames) {
         if (commitMessage == null || commitMessage.trim().isEmpty()) {
             throw new IllegalArgumentException("commitMessage must not be empty!");
         }
@@ -443,16 +443,16 @@ public class GitService {
             throw new IllegalArgumentException("mail must not be empty!");
         }
         try (Git git = Git.open(workspace)) {
-			if (!addFilenames.isEmpty()) {
-				AddCommand add = git.add(); // "."/*=all files*/
-				addFilenames.forEach(filename -> add.addFilepattern(filename));
-				add.call();
-			}
-			if (!removeFilenames.isEmpty()) {
-				RmCommand rm = git.rm();
-				removeFilenames.forEach(filename -> rm.addFilepattern(filename));
-				rm.call();
-			}
+            if (!addFilenames.isEmpty()) {
+                AddCommand add = git.add(); // "."/*=all files*/
+                addFilenames.forEach(filename -> add.addFilepattern(filename));
+                add.call();
+            }
+            if (!removeFilenames.isEmpty()) {
+                RmCommand rm = git.rm();
+                removeFilenames.forEach(filename -> rm.addFilepattern(filename));
+                rm.call();
+            }
             RevCommit commit = git.commit()
                 .setMessage(commitMessage)
                 .setAuthor(authorName, mail)
@@ -466,9 +466,9 @@ public class GitService {
             }
             return commit.getName();
         } catch (EmptyCommitException e) {
-        	throw new MinervaEmptyCommitException(e.getMessage());
+            throw new MinervaEmptyCommitException(e.getMessage());
         } catch (Exception e) {
-        	Logger.error(e); // Das muss leider so, damit keine Info verloren geht.
+            Logger.error(e); // Das muss leider so, damit keine Info verloren geht.
             throw new RuntimeException("Error committing changes! See log.");
         }
     }

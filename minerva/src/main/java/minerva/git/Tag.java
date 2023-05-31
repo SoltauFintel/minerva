@@ -30,7 +30,7 @@ public class Tag implements IVersion {
             RevCommit c = walk.parseCommit(tag.getObjectId());
             commit = new Commit(c);
         } catch (Exception e) {
-        	Logger.error("tag: " + name);
+            Logger.error("tag: " + name);
             throw new RuntimeException("Error retrieving commit for tag!", e);
         }
     }

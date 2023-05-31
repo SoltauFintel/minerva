@@ -8,19 +8,19 @@ import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.web.config.AppConfig;
 
 public class MinervaAuth extends AbstractAuth {
-	
-	public MinervaAuth() {
-		super(new NoOpRememberMe(), new MinervaAuthRoutes());
-		WebContext.setCookieName(new AppConfig());
-	}
-	
-	@Override
-	public void filter(WebContext ctx) {
-		super.filter(ctx);
-	}
-	
-	@Override
-	public IAuthService getService(Context ctx) {
-		throw new UnsupportedOperationException();
-	}
+    
+    public MinervaAuth() {
+        super(new NoOpRememberMe(), new MinervaAuthRoutes());
+        WebContext.setCookieName(new AppConfig());
+    }
+    
+    @Override
+    public void filter(WebContext ctx) {
+        super.filter(ctx);
+    }
+    
+    @Override
+    public IAuthService getService(Context ctx) {
+        throw new UnsupportedOperationException();
+    }
 }

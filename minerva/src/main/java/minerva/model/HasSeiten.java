@@ -2,9 +2,9 @@ package minerva.model;
 
 public interface HasSeiten {
 
-	String getId();
+    String getId();
 
-	String getTitle();
-	
-	SeitenSO getSeiten();
+    String getTitle();
+    
+    SeitenSO getSeiten();
 }

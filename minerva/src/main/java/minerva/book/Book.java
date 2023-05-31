@@ -7,40 +7,40 @@ import minerva.base.NlsString;
  * Die hierarchischen Seiten ergeben eine Gliederung.
  */
 public class Book {
-	private NlsString title;
-	private String folder;
-	private int position;
-	private boolean sorted = false;
+    private NlsString title;
+    private String folder;
+    private int position;
+    private boolean sorted = false;
 
-	public NlsString getTitle() {
-		return title;
-	}
+    public NlsString getTitle() {
+        return title;
+    }
 
-	public void setTitle(NlsString title) {
-		this.title = title;
-	}
+    public void setTitle(NlsString title) {
+        this.title = title;
+    }
 
-	public String getFolder() {
-		return folder;
-	}
+    public String getFolder() {
+        return folder;
+    }
 
-	public void setFolder(String folder) {
-		this.folder = folder;
-	}
+    public void setFolder(String folder) {
+        this.folder = folder;
+    }
 
-	public int getPosition() {
-		return position;
-	}
+    public int getPosition() {
+        return position;
+    }
 
-	public void setPosition(int position) {
-		this.position = position;
-	}
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
-	public boolean isSorted() {
-		return sorted;
-	}
+    public boolean isSorted() {
+        return sorted;
+    }
 
-	public void setSorted(boolean sorted) {
-		this.sorted = sorted;
-	}
+    public void setSorted(boolean sorted) {
+        this.sorted = sorted;
+    }
 }

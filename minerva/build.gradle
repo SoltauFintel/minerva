@@ -25,10 +25,9 @@ dependencies {
 }
 
 repositories {
-	mavenCentral()
-	maven { url 'https://jitpack.io' }
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
     maven { url 'https://www.javaxt.com/maven' }
 }
 
 apply from: 'gradle/docker.gradle'
-

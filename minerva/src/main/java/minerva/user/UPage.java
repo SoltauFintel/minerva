@@ -13,30 +13,30 @@ import minerva.model.UserSO;
  * Base class for user pages
  */
 public abstract class UPage extends Page {
-	public static final String TITLE_POSTFIX = " - Minerva";
-	protected UserSO user;
-	protected List<String> langs;
+    public static final String TITLE_POSTFIX = " - Minerva";
+    protected UserSO user;
+    protected List<String> langs;
 
-	@Override
-	public void init(Context ctx) {
-		super.init(ctx);
-		user = StatesSO.get(ctx).getUser();
-		langs = MinervaWebapp.factory().getLanguages();
-		model.put("N", "en".equals(user.getLanguage()) ? NLS.dataMap_en : NLS.dataMap_de); // RB texts
-	}
+    @Override
+    public void init(Context ctx) {
+        super.init(ctx);
+        user = StatesSO.get(ctx).getUser();
+        langs = MinervaWebapp.factory().getLanguages();
+        model.put("N", "en".equals(user.getLanguage()) ? NLS.dataMap_en : NLS.dataMap_de); // RB texts
+    }
 
-	protected void header(String title) {
-		String t = esc(title);
-		put("header", t);
-		put("title", t + TITLE_POSTFIX);
-	}
-	
-	/**
-	 * NLS
-	 * @param key -
-	 * @return text in user language
-	 */
-	protected String n(String key) {
-		return NLS.get(user.getLanguage(), key);
-	}
+    protected void header(String title) {
+        String t = esc(title);
+        put("header", t);
+        put("title", t + TITLE_POSTFIX);
+    }
+    
+    /**
+     * NLS
+     * @param key -
+     * @return text in user language
+     */
+    protected String n(String key) {
+        return NLS.get(user.getLanguage(), key);
+    }
 }

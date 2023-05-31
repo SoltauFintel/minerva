@@ -13,43 +13,43 @@ public class MinervaErrorPage extends Page implements ErrorPage {
 
     @Override
     public void setException(Exception exception) {
-    	this.exception = exception;
-		if (exception != null) {
-			if (Strings.isNullOrEmpty(exception.getMessage())) {
-				msg = exception.getClass().getName();
-			} else {
-				msg = exception.getMessage();
-			}
-		}
+        this.exception = exception;
+        if (exception != null) {
+            if (Strings.isNullOrEmpty(exception.getMessage())) {
+                msg = exception.getClass().getName();
+            } else {
+                msg = exception.getMessage();
+            }
+        }
     }
     
     @Override
     public void setMsg(String msg) {
-    	this.msg = msg;
+        this.msg = msg;
     }
 
     @Override
     protected void execute() {
-    	Logger.error("Error rendering path \"" + ctx.path() + "\":");
-    	if (exception == null) {
-    		Logger.error(msg);
-    	} else {
-    		Logger.error(exception);
-    	}
-    	ctx.status(500);
-    	put("msg", esc(msg)); // for subclasses
-    	put("p", "");
-    	put("title", "Minerva error");
-    	put("header", exception instanceof UserMessage ? "Message" : "Sorry, that should not happen!");
+        Logger.error("Error rendering path \"" + ctx.path() + "\":");
+        if (exception == null) {
+            Logger.error(msg);
+        } else {
+            Logger.error(exception);
+        }
+        ctx.status(500);
+        put("msg", esc(msg)); // for subclasses
+        put("p", "");
+        put("title", "Minerva error");
+        put("header", exception instanceof UserMessage ? "Message" : "Sorry, that should not happen!");
     }
     
     @Override
     protected String render() {
-		try {
-			return templates.render(MinervaErrorPage.class.getSimpleName(), model);
-		} catch (Exception e) {
-			Logger.error(e);
-			return "Error while displaying error. See log.";
-		}
+        try {
+            return templates.render(MinervaErrorPage.class.getSimpleName(), model);
+        } catch (Exception e) {
+            Logger.error(e);
+            return "Error while displaying error. See log.";
+        }
     }
 }
