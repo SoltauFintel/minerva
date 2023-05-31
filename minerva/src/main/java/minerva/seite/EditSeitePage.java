@@ -74,7 +74,7 @@ public class EditSeitePage extends ViewSeitePage {
         long start = System.currentTimeMillis();
         long max = 1000 * 60 * 5;
         do {
-            data = PostContentsAction.get(branch, bookFolder, id, version);
+            data = PostContentsService.get(branch, bookFolder, id, version);
             if (data != null) {
                 return data;
             }
