@@ -80,6 +80,32 @@
     font-style: italic;
 }
 
+.seite table.confluenceTable {
+}
+
+.seite table.confluenceTable td {
+    border: 1px solid #BBB;
+    padding: 5px;
+}
+
+.seite table.confluenceTable th {
+    border: 1px solid #BBB;
+    padding: 5px;
+    background-color: #f0f0f0;
+}
+
+.seite p img {
+    max-width: 100%;
+}
+
+.seite h2 {
+    color: #c00;
+}
+
+.seite h3 {
+    color: #090;
+}  
+
 /* ---- ViewSeitePage: HTML from CKEditor display ---- */
 
 figure table td {
@@ -91,8 +117,4 @@ figure table th {
     border: 1px solid #BBB;
     padding: 5px;
     background-color: #f0f0f0;
-}
-
-figure.image img {
-    max-width: 100%;
 }
