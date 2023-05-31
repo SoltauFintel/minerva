@@ -12,8 +12,8 @@ public class MoveSeitePage extends SPage {
         put("pageTitle", esc(seite.getTitle()));
 
         StringBuilder gliederung = new StringBuilder();
-        gliederung.append("<ul><li><a href=\"/s/"+branch+"/"+bookFolder+ "/"+esc(id)+"/moved?parentid=root\">"
-                + esc(book.getTitle()) + "</a></li>");
+        gliederung.append("<ul><li><a href=\"/s/" + branch + "/" + bookFolder + "/" + esc(id)
+                + "/moved?parentid=root\">" + esc(book.getTitle()) + "</a></li>");
         fillSeiten(branch, bookFolder, book.getSeiten(), user.getLanguage(), gliederung);
         gliederung.append("</ul>");
         put("gliederung", gliederung.toString());
@@ -29,8 +29,8 @@ public class MoveSeitePage extends SPage {
                     gliederung.append("\t<li>" + esc(seite.getSeite().getTitle().getString(lang)) + "</li>\n");
                 } else {
                     String link = viewlink + "/move-ack?parentid=" + Escaper.urlEncode(seite.getId(), "");
-                    gliederung.append("\t<li><a href=\"" + link + "\">" + esc(seite.getSeite().getTitle().getString(lang))
-                            + "</a></li>\n");
+                    gliederung.append("\t<li><a href=\"" + link + "\">"
+                            + esc(seite.getSeite().getTitle().getString(lang)) + "</a></li>\n");
                 }
                 fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung);
             }

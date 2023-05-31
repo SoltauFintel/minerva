@@ -16,7 +16,7 @@ public abstract class SPage extends BPage {
     public void init(Context ctx) {
         super.init(ctx);
         id = ctx.pathParam("id");
-        viewlink = "/s/" + branch + "/" + bookFolder + "/" + id;
+        viewlink = "/s/" + esc(branch) + "/" + esc(bookFolder) + "/" + esc(id);
 
         seite = getSeite();
         

@@ -45,7 +45,6 @@ public class NotesPage extends SPage {
             case 1: color = "0a0"; break;
             case 2: color = "00f"; break;
             case 3: color = "c00"; break;
-            
             case 4: color = "09f"; break;
             case 5: color = "f09"; break;
             case 6: color = "f90"; break;
