@@ -82,3 +82,4 @@ movePage1=Die Seite "$t" erhält die Seite "$p" als neue übergeordnete Seite.
 deletePage=Seite löschen
 logout=Abmelden
 noBranches=Es wurde bereits für jeden Branch ein Workspace angelegt.
+currentParentPage=aktuelle übergeordnete Seite

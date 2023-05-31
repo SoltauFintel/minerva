@@ -82,3 +82,4 @@ movePage1=Page $t gets page $p as the new parent page.
 deletePage=Delete page
 logout=Logout
 noBranches=A workspace has already been created for each branch.
+currentParentPage=current parent page
