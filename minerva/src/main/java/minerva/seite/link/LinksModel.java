@@ -18,6 +18,8 @@ public class LinksModel {
     private static final Map<String, LinksModel> models = new HashMap<>();
     private static final String HANDLE = "models";
 
+    // TODO esc  (& wird geschluckt)
+    
     public LinksModel(SeiteSO seite, List<String> langs) {
         List<BookSO> books = new ArrayList<>();
         books.add(seite.getBook());
