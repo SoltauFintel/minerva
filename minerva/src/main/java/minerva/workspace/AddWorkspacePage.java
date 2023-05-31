@@ -22,15 +22,18 @@ public class AddWorkspacePage extends UPage {
             ctx.redirect("/");
         } else {
             List<String> branches = user.getWorkspaces().getAddableBranches(user.getWorkspaces().master());
-            
-            combobox("branches", branches, null, false, model);
-            header(n("createWS"));
-            
-            ColumnFormularGenerator gen = new ColumnFormularGenerator(1, 1);
-            initColumnFormularGenerator(gen);
-            TemplatesInitializer.fp.setContent(gen
-                    .combobox("branch", "Branch", 4, "branches", true)
-                    .getHTML("/create-workspace", "/"));
+            if (branches.isEmpty()) {
+                ctx.redirect("/message?m=2");
+            } else {
+                combobox("branches", branches, null, false, model);
+                header(n("createWS"));
+                
+                ColumnFormularGenerator gen = new ColumnFormularGenerator(1, 1);
+                initColumnFormularGenerator(gen);
+                TemplatesInitializer.fp.setContent(gen
+                        .combobox("branch", "Branch", 4, "branches", true)
+                        .getHTML("/create-workspace", "/"));
+            }
         }
     }
     

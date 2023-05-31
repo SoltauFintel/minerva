@@ -20,6 +20,9 @@ public class MessagePage extends UPage {
             put("h2", n("pageNotFound"));
             put("p", n("pageNotFound2"));
             break;
+        case 2:
+            put("h2", n("noBranches"));
+            break;
         default:
             Logger.error("[MessagePage] unsupported m value: " + m);
             put("h2", "Sorry, no message text for this message.");
