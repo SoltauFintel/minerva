@@ -23,6 +23,7 @@ public class AddBookPage extends UPage {
         } else {
             header(n("addBook"));
             ColumnFormularGenerator gen = new ColumnFormularGenerator(2, 1);
+            initColumnFormularGenerator(gen);
             boolean first = true;
             for (String lang : langs) {
                 gen.textfield("bookTitle" + lang, n("buchtitel") + " " + lang, 3, first, false);

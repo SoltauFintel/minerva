@@ -27,6 +27,7 @@ public class AddWorkspacePage extends UPage {
             header(n("createWS"));
             
             ColumnFormularGenerator gen = new ColumnFormularGenerator(1, 1);
+            initColumnFormularGenerator(gen);
             TemplatesInitializer.fp.setContent(gen
                     .combobox("branch", "Branch", 4, "branches", true)
                     .getHTML("/create-workspace", "/"));

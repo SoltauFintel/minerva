@@ -8,8 +8,11 @@
         
         <p>{{if gitlab}}{{N.deleteWS2}}{{/if}}</p>
         
-        <p style="margin-top: 2em;"><a href="/w/{{branch}}/delete?m=d" class="btn btn-danger br"><i
-            class="fa fa-trash-o"></i> {{N.deleteWS}}!</a><a href="/b/{{branch}}"
-            class="btn btn-default">{{N.keepWS}}</a></p>
+        <p style="margin-top: 2em;">
+            <a href="/w/{{branch}}/delete?m=d" class="btn btn-danger br"
+                onclick="document.querySelector('#s1').style='';"><i class="fa fa-trash-o"></i> {{N.deleteWS}}!
+                <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+            <a href="/b/{{branch}}" class="btn btn-default">{{N.keepWS}}</a>
+        </p>
     </div>
 </div>

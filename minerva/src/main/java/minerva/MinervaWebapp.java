@@ -142,15 +142,17 @@ public class MinervaWebapp extends RouteDefinitions {
             page.put("title", "Minerva");
             WebContext wctx = new WebContext(ctx);
             boolean hasUser = wctx.session().isLoggedIn();
-            page.put("abmelden", "Abmelden?");
+            page.put("abmelden", "Abmelden");
             page.put("hasUser", hasUser);
             page.put("user", esc(wctx.session().getLogin()));
             page.put("gitlab", factory().getConfig().isGitlab());
+            page.put("booksLabel", "Bücher");
             booksForMenu(ctx, page, hasUser);
             if (hasUser) {
                 UserSO user = StatesSO.get(ctx).getUser();
                 String userLang = user.getLanguage();
                 page.put("abmelden", NLS.get(userLang, "logout"));
+                page.put("booksLabel", NLS.get(userLang, "books"));
             }
         }
 

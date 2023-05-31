@@ -22,12 +22,13 @@ public class EditBookPage extends BPage {
             header(n("editBook"));
             langs.forEach(lang -> put("bookTitle" + lang, book.getBook().getTitle().getString(lang)));
             ColumnFormularGenerator gen = new ColumnFormularGenerator(2, 1);
+            initColumnFormularGenerator(gen);
             boolean first = true;
             for (String lang : langs) {
                 gen.textfield("bookTitle" + lang, n("buchtitel") + " " + lang, 3, first, true);
                 first = false;
             }
-            putInt("position", book.getBook().getPosition()); 
+            putInt("position", book.getBook().getPosition());
             TemplatesInitializer.fp.setContent(gen
                     .textfield("position", "Position", 1, false, true)
                     .getHTML("/b/" + branch + "/" + bookFolder + "/edit", "/b/" + branch));
