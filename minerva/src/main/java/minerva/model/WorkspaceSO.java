@@ -60,7 +60,7 @@ public class WorkspaceSO {
     }
 
     public List<SeiteSO> findTag(String tag) {
-        String x = SeiteSO.cleanTag(tag);
+        String x = TagsSO.cleanTag(tag);
         List<SeiteSO> ret = new ArrayList<>();
         for (BookSO book : books) {
             ret.addAll(book.findTag(x));

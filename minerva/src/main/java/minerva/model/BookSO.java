@@ -134,13 +134,13 @@ public class BookSO {
     public List<SeiteSO> findTag(String tag) {
         List<SeiteSO> ret = new ArrayList<>();
         for (SeiteSO seite : seiten) {
-            ret.addAll(seite.findTag(tag));
+            ret.addAll(seite.tags().findTag(tag));
         }
         return ret;
     }
 
     public void addAllTags(TagNList tags) {
-        seiten.forEach(seite -> seite.addAllTags(tags));
+        seiten.forEach(seite -> seite.tags().addAllTags(tags));
     }
 
     public List<Breadcrumb> getBreadcrumbs(String seiteId) {

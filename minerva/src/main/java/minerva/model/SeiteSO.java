@@ -21,7 +21,6 @@ import minerva.base.NlsString;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.seite.Seite;
-import minerva.seite.tag.TagNList;
 
 public class SeiteSO implements HasSeiten, Seitensortierung {
     public static final String META_SUFFIX = ".meta";
@@ -37,6 +36,7 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
     /** null: nicht geladen */
     private NlsString content = null;
     private final NotesSO notes = new NotesSO(this);
+    private final TagsSO tags = new TagsSO(this);
     
     /**
      * Loaded Seite constructor
@@ -173,55 +173,10 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
         book.getWorkspace().pull(); // ja, ist etwas brutal...
     }
 
-    public void addTag(String tag) {
-        boolean dirty = false;
-        if (tag.contains(",")) {
-            for (String aTag : tag.split(",")) {
-                if (addTag2(aTag)) {
-                    dirty = true;
-                }
-            }
-        } else {
-            dirty = addTag2(tag);
-        }
-        if (dirty) {
-            saveMeta("added tag " + tag + " to page: $t");
-        }
-    }
-
-    private boolean addTag2(String pTag) {
-        String tag = cleanTag(pTag);
-        if (!seite.getTags().contains(tag)) {
-            seite.getTags().add(tag);
-            return true;
-        }
-        return false;
+    public TagsSO tags() {
+        return tags;
     }
     
-    public static String cleanTag(String pTag) {
-        String tag = pTag.toLowerCase().trim();
-        while (tag.contains("  ")) {
-            tag = tag.replace("  ", " ");
-        }
-        return tag.replace(" ", "-");
-    }
-
-    public List<SeiteSO> findTag(String tag) {
-        List<SeiteSO> ret = new ArrayList<>();
-        if (seite.getTags().contains(tag)) {
-            ret.add(this);
-        }
-        for (SeiteSO sub : getSeiten()) {
-            ret.addAll(sub.findTag(tag));
-        }
-        return ret;
-    }
-
-    public void addAllTags(TagNList tags) {
-        seite.getTags().forEach(tag -> tags.add(tag));
-        seiten.forEach(seite -> seite.addAllTags(tags));
-    }
-
     public NotesSO notes() {
         return notes;
     }
@@ -261,16 +216,6 @@ public class SeiteSO implements HasSeiten, Seitensortierung {
         // Seite selbst (.meta, .html)
         filenamesToDelete.add(filenameMeta());
         langs.forEach(lang -> filenamesToDelete.add(filenameHtml(lang)));
-    }
-
-    public void deleteTag(String tag) {
-        if ("$all".equals(tag)) {
-            seite.getTags().clear();
-            saveMeta("removed all tags from page: $t");
-        } else {
-            seite.getTags().remove(tag);
-            saveMeta("removed tag " + tag + " from page: $t");
-        }
     }
 
     public void move(String parentId) {
