@@ -20,7 +20,7 @@ dependencies {
     implementation 'javax.websocket:javax.websocket-api:1.1'
     implementation 'org.java-websocket:Java-WebSocket:1.5.3'
     implementation 'org.eclipse.jgit:org.eclipse.jgit:6.5.0.202303070854-r'
-    implementation 'org.gitlab4j:gitlab4j-api:5.2.0'
+    implementation 'org.gitlab4j:gitlab4j-api:5.0.1' // TODO erstmal belassen, später 5.2.0 probieren
     implementation 'org.jsoup:jsoup:1.16.1' // pretty HTML
 }
 
