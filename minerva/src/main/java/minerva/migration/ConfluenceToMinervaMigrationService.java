@@ -102,8 +102,12 @@ public class ConfluenceToMinervaMigrationService {
         if (files == null) {
             throw new RuntimeException("files is null");
         }
-        final String xde = "de: http://jira01.intern.x-map.de:8090/pages/viewpage.action?pageId=";
-        final String xen = "en: http://jira01.intern.x-map.de:8090/pages/viewpage.action?pageId=";
+        final String ticketSystemUrl = System.getenv("MINERVA_TICKETSYSTEMURL");
+        if (StringService.isNullOrEmpty(ticketSystemUrl)) {
+            throw new RuntimeException("Env var MINERVA_TICKETSYSTEMURL is not set!");
+        }
+        final String xde = "de: " + ticketSystemUrl;
+        final String xen = "en: " + ticketSystemUrl;
 
         for (File file : files) {
             String content = new String(Files.readAllBytes(file.toPath())).replace("\r\n", "\n");
