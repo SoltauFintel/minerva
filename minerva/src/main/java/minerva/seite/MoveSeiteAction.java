@@ -1,5 +1,7 @@
 package minerva.seite;
 
+import minerva.base.StringService;
+
 public class MoveSeiteAction extends SAction {
 
     @Override
@@ -7,14 +9,14 @@ public class MoveSeiteAction extends SAction {
         String parentId = ctx.queryParam("parentid");
         String folder = ctx.queryParam("folder");
 
-        if (folder == null || folder.isEmpty()) {
-            seite.moveToBook(folder);
-            
-            ctx.redirect("/s/" + branch + "/" + folder + "/" + esc(id));
-        } else {
+        if (StringService.isNullOrEmpty(folder)) {
             seite.move(parentId);
             
             ctx.redirect(viewlink);
+        } else {
+            seite.moveToBook(folder);
+            
+            ctx.redirect("/s/" + branch + "/" + folder + "/" + esc(id));
         }
     }
 }
