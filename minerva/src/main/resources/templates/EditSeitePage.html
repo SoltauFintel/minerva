@@ -54,6 +54,7 @@ function MyCustomUploadAdapterPlugin( editor ) {
     DecoupledEditor
         .create(document.querySelector('#editor{{L.LANG}}'), {
             extraPlugins: [ MyCustomUploadAdapterPlugin ],
+            language: '{{L.lang}}',
             toolbar: {
                 removeItems: ['fontfamily', 'mediaEmbed', 'indent', 'outdent']
             }
