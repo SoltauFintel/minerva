@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.pmw.tinylog.Logger;
+
 import com.google.gson.Gson;
 
 import minerva.base.StringService;
@@ -35,6 +37,10 @@ public class MultiPurposeDirAccess {
         filenames.add(dn);
         Map<String, String> files = access.loadFiles(filenames);
         String json = files.get(dn);
-        return json == null ? null : new Gson().fromJson(json, type);
+        if (json == null) {
+            Logger.error("JSON is null for file: " + dn);
+            return null;
+        }
+        return new Gson().fromJson(json, type);
     }
 }
