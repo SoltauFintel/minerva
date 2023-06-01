@@ -31,11 +31,7 @@ public class BookPage extends BPage {
         for (SeiteSO seite : seiten) {
             String link = "/s/" + branch + "/" + bookFolder + "/" + esc(seite.getSeite().getId());
             gliederung.append("\t<li id=\"" + seite.getId() + "\"><a href=\"" + link + "\""
-                    + ">" + esc(seite.getSeite().getTitle().getString(lang)) + "</a>"
-                    + (sorted ? ""
-                            : "<sub style=\"color: #ccc; font-size: 6pt;\">" + seite.getSeite().getPosition()
-                                    + "</sub>")
-                    + "</li>\n");
+                    + ">" + esc(seite.getSeite().getTitle().getString(lang)) + "</a>" + "</li>\n");
             fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, true);
         }
         gliederung.append("</ul>\n");
