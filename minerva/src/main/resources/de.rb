@@ -73,7 +73,7 @@ note=Notiz
 addNote=Neue Notiz schreiben
 editNote=Notiz bearbeiten
 notes=Notizen
-backToPage=zurück zur Seite
+backToPage=Zurück zur Seite
 reply=Antworten
 deleteQ=Hiermit löschen Sie die Notiz.
 
@@ -83,3 +83,8 @@ deletePage=Seite löschen
 logout=Abmelden
 noBranches=Es wurde bereits für jeden Branch ein Workspace angelegt.
 currentParentPage=aktuelle übergeordnete Seite
+deleteAllTags=Alle tags löschen
+newTag=Neues tag
+anzahl=Anzahl
+page=Seite
+book=Buch

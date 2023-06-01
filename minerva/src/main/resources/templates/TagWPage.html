@@ -6,8 +6,8 @@
         
         <table class="table table-striped table-hover" style="margin-top: 2em;">
             <tr>
-                <th>Seite</th>
-                <th>Buch</th>
+                <th>{{N.page}}</th>
+                <th>{{N.book}}</th>
                 <th>tags</th>
             </tr>
             {{each s in seiten}}
@@ -23,7 +23,7 @@
             {{/each}}
         </table>
         
-        <p>Anzahl: {{anzahl}}</p>
+        <p>{{N.anzahl}}: {{anzahl}}</p>
 
     </div>
 </div>

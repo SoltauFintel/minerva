@@ -13,7 +13,7 @@
                     </div>
                     <div class="col-lg-2">
                         <button type="submit" class="btn btn-primary br"
-                            onclick="document.getElementById('s1').style='';">Speichern
+                            onclick="document.getElementById('s1').style='';">{{N.save}}
                             <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
                         
                         <!-- Idee: noch beliebte tags hier anbieten (1-Klick create) -->
@@ -35,9 +35,9 @@
         </div>
         
         <p style="margin-top: 4em;">
-            <a href="{{viewlink}}" class="btn btn-default br">&lt;&lt; Zurück</a>
+            <a href="{{viewlink}}" class="btn btn-default br">&lt;&lt; {{N.backToPage}} "{{pageTitle}}"</a>
             <a href="{{viewlink}}/delete-tag?tag=$all" class="btn btn-danger br"
-                onclick="return deleteAll();"><i class="fa fa-trash"></i> Alle tags löschen
+                onclick="return deleteAll();"><i class="fa fa-trash"></i> {{N.deleteAllTags}}
                 <i id="s2" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
         </p>
     </div>

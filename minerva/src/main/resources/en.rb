@@ -73,7 +73,7 @@ note=Note
 addNote=Add note
 editNote=Edit note
 notes=Notes
-backToPage=back to page
+backToPage=Back to page
 reply=Reply
 deleteQ=Delete note?
 
@@ -83,3 +83,8 @@ deletePage=Delete page
 logout=Logout
 noBranches=A workspace has already been created for each branch.
 currentParentPage=current parent page
+deleteAllTags=Delete all tags
+newTag=New tag
+anzahl=size
+page=Page
+book=Book
