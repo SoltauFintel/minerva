@@ -32,6 +32,7 @@ public class ViewSeitePage extends SPage {
     }
     
     protected void execute2(String branch, String bookFolder, String id, SeiteSO seiteSO) {
+        seiteSO.forceContentReloadIfCheap();
         Seite seite = seiteSO.getSeite();
         DataList list = list("languages");
         for (String lang : langs) {

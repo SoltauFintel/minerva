@@ -120,6 +120,12 @@ public class SeiteSO implements ISeite {
         return book.getUser().getUser().getLogin();
     }
 
+    public void forceContentReloadIfCheap() {
+        if (!MinervaWebapp.factory().isGitlab()) {
+            content = null;
+        }
+    }
+
     public NlsString getContent() {
         if (content == null) {
             content = new NlsString();
