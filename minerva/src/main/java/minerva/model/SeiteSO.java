@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 
 import minerva.MinervaWebapp;
 import minerva.access.DirAccess;
+import minerva.access.MultiPurposeDirAccess;
 import minerva.base.NlsString;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
@@ -120,12 +121,6 @@ public class SeiteSO implements ISeite {
         return book.getUser().getUser().getLogin();
     }
 
-    public void forceContentReloadIfCheap() {
-        if (!MinervaWebapp.factory().isGitlab()) {
-            content = null;
-        }
-    }
-
     public NlsString getContent() {
         if (content == null) {
             content = new NlsString();
@@ -134,6 +129,13 @@ public class SeiteSO implements ISeite {
             setContent(files, langs);
         }
         return content;
+    }
+
+    public void forceReloadIfCheap() {
+        if (!MinervaWebapp.factory().isGitlab()) {
+            seite = new MultiPurposeDirAccess(dao()).load(filenameMeta(), Seite.class);
+            content = null;
+        }
     }
 
     /**

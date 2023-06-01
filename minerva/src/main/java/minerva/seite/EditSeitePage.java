@@ -55,7 +55,7 @@ public class EditSeitePage extends ViewSeitePage {
         seiteSO.saveAll(title, data.getContent(), version, langs);
         data.setDone(true);
         
-        Logger.info("Seite #" + seiteSO.getId() + " \"" + title.getString(langs.get(0)) + "\" gespeichert. "
+        Logger.info("Page #" + seiteSO.getId() + " \"" + title.getString(langs.get(0)) + "\" saved. "
                 + (System.currentTimeMillis() - start) + "ms");
         
         LinksModel linksModel = new LinksModel(seiteSO, langs);

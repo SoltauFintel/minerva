@@ -13,11 +13,11 @@ public class LoginPage extends Page {
 
     @Override
     protected void execute() {
-        Logger.info("LoginPage " + ctx.method());
         LoginService loginService = MinervaWebapp.factory().getLoginService();
         if (isPOST()) {
             String login = ctx.formParam("user[login]"); // gleiche name's wie bei Gitlab
             String password = loginService.withPassword() ? ctx.formParam("user[password]") : null;
+            Logger.info("LoginPage POST " + login);
             login(login, password, loginService);
         } else {
             put("loginError", "f".equals(ctx.queryParam("m")));

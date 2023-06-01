@@ -57,7 +57,7 @@ public class ImageUploadAction extends JsonAction<Success> {
             } else {
                 filename += "-" + IdGenerator.createId6();
             }
-            Logger.info("[ImageUploadAction] Dateiname schon vergeben. Geändert auf " + filename);
+            Logger.info("[ImageUploadAction] File name already taken. Changed to " + filename);
             file = new File(book.getFolder(), filename);
             if (file.isFile()) { // Das sollte doch niemals passieren.
                 Logger.error("File already exists: " + file.getAbsolutePath());

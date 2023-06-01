@@ -39,12 +39,10 @@ public class WorkspaceSO {
 
     public BooksSO getBooks() {
         if (books == null) {
-            // late access auf books
-            // Dies ist der erste richtige Zugriff auf den Workspace.
-            // Git Repo pullen!
+            // Late access on books. This is the first access onto the workspace. Pull Git repo!
             dao().initWorkspace(this, false);
             books = new BooksSO(this);
-            Logger.info("User " + user.getUser().getLogin() + " greift das erste Mal auf Workspace " + branch + " zu. Bücher: " + books.size());
+            info("User $l accesses workspace $b for the first time. Books: $n");
         }
         return books;
     }
@@ -56,7 +54,14 @@ public class WorkspaceSO {
     public void pull(boolean forceClone) {
         dao().initWorkspace(this, forceClone);
         books = new BooksSO(this);
-        Logger.info("User " + user.getUser().getLogin() + " has updated workspace " + branch + ". Books: " + books.size());
+        info("User $l has updated workspace $b. Books: $n");
+    }
+    
+    private void info(String text) {
+        Logger.info(text
+                .replace("$l", user.getUser().getLogin())
+                .replace("$b", branch)
+                .replace("$n", "" + books.size()));
     }
 
     public List<SeiteSO> findTag(String tag) {
@@ -65,7 +70,9 @@ public class WorkspaceSO {
         for (BookSO book : books) {
             ret.addAll(book.findTag(x));
         }
-        return ret.stream().sorted((a, b) -> a.getSort().compareToIgnoreCase(b.getSort())).collect(Collectors.toList());
+        return ret.stream()
+                .sorted((a, b) -> a.getSort().compareToIgnoreCase(b.getSort()))
+                .collect(Collectors.toList());
     }
 
     public TagNList getAllTags() {
