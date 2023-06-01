@@ -6,6 +6,7 @@ import java.util.List;
 import minerva.access.DirAccess;
 import minerva.auth.LoginService;
 import minerva.base.NlsString;
+import minerva.base.StringService;
 import minerva.model.GitlabRepositorySO;
 import minerva.model.GitlabSystemSO;
 import minerva.model.UserSO;
@@ -36,7 +37,13 @@ public class MinervaFactory {
             gitlabSystem = null;
             gitlabRepository = null;
         }
-        System.out.println("languages: " + languages + " | backend: " + getPersistenceInfo());
+        String folder = System.getenv("MINERVA_USERFOLDER");
+        if (!StringService.isNullOrEmpty(folder)) {
+            folder = " | static user folder: " + folder;
+        } else {
+            folder = "";
+        }
+        System.out.println("languages: " + languages + " | backend: " + getPersistenceInfo() + folder);
     }
 
     public MinervaConfig getConfig() {
