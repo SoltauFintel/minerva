@@ -9,6 +9,7 @@ import minerva.MinervaWebapp;
 import minerva.access.AbstractDirAccess;
 import minerva.model.GitlabRepositorySO;
 import minerva.model.WorkspaceSO;
+import minerva.seite.MoveFile;
 
 public class GitlabDirAccess extends AbstractDirAccess {
     private final GitlabRepositorySO repo = MinervaWebapp.factory().getGitlabRepository();
@@ -29,6 +30,18 @@ public class GitlabDirAccess extends AbstractDirAccess {
             List<String> cantBeDeleted) {
         repo.push(commitMessage, workspace, emptySet(), filenames,
                 () -> super.deleteFiles(filenames, commitMessage, workspace, cantBeDeleted));
+    }
+    
+    @Override
+    public void moveFiles(List<MoveFile> files, String commitMessage, WorkspaceSO workspace) {
+        Set<String> add = new HashSet<>();
+        Set<String> rm = new HashSet<>();
+        for (MoveFile f : files) {
+            add.add(f.getNewFile());
+            rm.add(f.getOldFile());
+        }
+        repo.push(commitMessage, workspace, add, rm,
+                () -> super.moveFiles(files, commitMessage, workspace));
     }
 
     private HashSet<String> emptySet() {

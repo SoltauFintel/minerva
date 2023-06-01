@@ -14,7 +14,7 @@ public class MoveSeiteAction extends SAction {
             
             ctx.redirect(viewlink);
         } else {
-            seite.moveToBook(folder);
+            seite.moveToBook(folder, langs);
             
             ctx.redirect("/s/" + branch + "/" + folder + "/" + esc(id));
         }

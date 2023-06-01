@@ -1,6 +1,7 @@
 package minerva.access;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,10 +10,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.pmw.tinylog.Logger;
 
 import minerva.base.FileService;
 import minerva.model.WorkspaceSO;
+import minerva.seite.MoveFile;
 
 /**
  * File based directory access
@@ -120,6 +123,27 @@ public abstract class AbstractDirAccess implements DirAccess {
                         cantBeDeleted.add(file.getAbsolutePath());
                     }
                 }
+            }
+        }
+    }
+    
+    @Override
+    public void moveFiles(List<MoveFile> files, String commitMessage, WorkspaceSO workspace) {
+        for (MoveFile f : files) {
+            File source = new File(f.getOldFile());
+            File target = new File(f.getNewFile());
+            if (!source.exists()) {
+                Logger.warn("(move-to-book) " + source.getAbsolutePath() + " not found. -> skipped");
+            } else if (source.isDirectory()) {
+                try {
+                    FileUtils.moveDirectory(source, target);
+                } catch (IOException e) {
+                    Logger.error(e, "Error moving folder " + source.getAbsolutePath());
+                    throw new RuntimeException("Error moving images folder to other book! Please pull workspace!");
+                }
+            } else if (source.isFile()) {
+                target.getParentFile().mkdirs();
+                source.renameTo(target);
             }
         }
     }

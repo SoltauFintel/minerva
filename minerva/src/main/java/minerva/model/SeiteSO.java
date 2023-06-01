@@ -21,6 +21,8 @@ import minerva.access.MultiPurposeDirAccess;
 import minerva.base.NlsString;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
+import minerva.seite.MoveFile;
+import minerva.seite.MoveFolder;
 import minerva.seite.Seite;
 
 public class SeiteSO implements ISeite {
@@ -247,12 +249,39 @@ public class SeiteSO implements ISeite {
         book.getWorkspace().pull();
     }
 
-    public void moveToBook(String folder) {
-        // TODO Seiten inkl. Unterseiten und Images in anderen Buchordner verschieben
-        // pushen
-        // parent ID wird ROOT_ID sein!
-        // Position setzen
-        throw new RuntimeException("Move to other book not implemented yet");
+    public void moveToBook(String targetBookFolder, List<String> langs) {
+        if (book.getBook().getFolder().equals(targetBookFolder)) {
+            throw new RuntimeException("Target book can't be current book! Moving page to other book failed.");
+        }
+        WorkspaceSO workspace = book.getWorkspace();
+        BookSO targetBook = workspace.getBooks().byFolder(targetBookFolder);
+        int newPosition = targetBook.getSeiten().calculateNextPosition();
+        
+        List<MoveFile> files = new ArrayList<>();
+        movePageToBookTo(targetBook, langs, files);
+        String commitMessage = "moved page " + getTitle() + " to book " + targetBookFolder;
+        dao().moveFiles(files, commitMessage + " (commit 1/2)", workspace);
+        // From now on the files are in the other book folder!
+        
+        workspace.pull();
+        // From now there are new objects in memory!
+        
+        targetBook = workspace.getBooks().byFolder(targetBookFolder); // retrieve again
+        SeiteSO newSeite = targetBook.getSeiten().byId(getId()); // retrieve again
+        newSeite.getSeite().setPosition(newPosition);
+        newSeite.getSeite().setParentId(ROOT_ID);
+        newSeite.saveMeta(commitMessage + " (commit 2/2)");
+    }
+    
+    public void movePageToBookTo(BookSO targetBook, List<String> langs, List<MoveFile> files) {
+        files.add(new MoveFile(filenameMeta(), targetBook.getFolder() + "/" + getId() + META_SUFFIX));
+        for (String lang : langs) {
+            files.add(new MoveFile(filenameHtml(lang), targetBook.getFolder() + "/" + lang + "/" + getId() + ".html"));
+        }
+        files.add(new MoveFolder(book.getFolder() + "/img/" + getId(), targetBook.getFolder() + "/img/" + getId()));
+        for (SeiteSO seite : seiten) {
+            seite.movePageToBookTo(targetBook, langs, files); // recursive
+        }
     }
 
     public void saveAll(NlsString newTitle, NlsString newContent, int version, List<String> langs) {

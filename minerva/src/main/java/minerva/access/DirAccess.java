@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import minerva.model.WorkspaceSO;
+import minerva.seite.MoveFile;
 
 /**
  * That's an generic DAO.
@@ -45,4 +46,6 @@ public interface DirAccess {
      * @return Liste der Dateien, die nicht gelöscht werden konnten
      */
     void deleteFiles(Set<String> filenames, String commitMessage, WorkspaceSO workspace, List<String> cantBeDeleted);
+
+    void moveFiles(List<MoveFile> files, String commitMessage, WorkspaceSO workspace);
 }
