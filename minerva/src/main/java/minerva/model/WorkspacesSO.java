@@ -25,7 +25,7 @@ public class WorkspacesSO extends MList<WorkspaceSO> {
         if (workspaceFolders.isEmpty() || !workspaceFolders.contains("master")) {
             workspaceFolders.add(0, "master");
         }
-        Logger.info("User " + user.getUser().getLogin() + " hat diese Workspaces: " + workspaceFolders);
+        Logger.info("User " + user.getUser().getLogin() + " has these workspaces: " + workspaceFolders);
         for (String branch : workspaceFolders) {
             add(new WorkspaceSO(user, userFolder, branch));
         }

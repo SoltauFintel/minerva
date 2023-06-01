@@ -7,7 +7,7 @@ public class GitlabUser extends User {
     private final String mail;
     
     public GitlabUser(String login, String password, String mail) {
-        super(login);
+        super(login, login /*user folder is always the login*/);
         this.password = password;
         this.mail = mail;
     }

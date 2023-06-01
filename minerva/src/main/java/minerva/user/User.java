@@ -4,15 +4,21 @@ import minerva.MinervaWebapp;
 
 public class User {
     private final String login;
+    private final String folder;
     /** Einstellung welche Sprache angezeigt wird */
     private String language = MinervaWebapp.factory().getLanguages().get(0);
     
-    public User(String login) {
+    public User(String login, String folder) {
         this.login = login;
+        this.folder = folder;
     }
 
     public String getLogin() {
         return login;
+    }
+    
+    public String getFolder() {
+        return folder;
     }
 
     public String getLanguage() {

@@ -56,7 +56,7 @@ public class WorkspaceSO {
     public void pull(boolean forceClone) {
         dao().initWorkspace(this, forceClone);
         books = new BooksSO(this);
-        Logger.info("User " + user.getUser().getLogin() + " hat Workspace " + branch + " aktualisiert. Bücher: " + books.size());
+        Logger.info("User " + user.getUser().getLogin() + " has updated workspace " + branch + ". Books: " + books.size());
     }
 
     public List<SeiteSO> findTag(String tag) {

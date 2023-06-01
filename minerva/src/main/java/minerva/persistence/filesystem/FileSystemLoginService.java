@@ -17,6 +17,10 @@ public class FileSystemLoginService implements LoginService {
         if (StringService.isNullOrEmpty(login)) {
             return null;
         }
-        return new User(login);
+        String folder = System.getenv("MINERVA_USERFOLDER");
+        if (folder == null || folder.isEmpty()) {
+            folder = login;
+        }
+        return new User(login, folder);
     }
 }
