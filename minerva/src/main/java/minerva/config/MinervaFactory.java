@@ -54,6 +54,10 @@ public class MinervaFactory {
     public boolean isGitlab() {
         return gitlab;
     }
+    
+    public boolean isCustomerVersion() {
+        return "1".equals(System.getenv("MINERVA_KUNDE"));
+    }
 
     public GitlabSystemSO getGitlabSystem() {
         return gitlabSystem;

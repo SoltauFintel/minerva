@@ -46,7 +46,11 @@ public class LoginPage extends Page {
         String path = wctx.session().getGoBackPath();
         wctx.session().setGoBackPath(null);
         if (path == null || path.isBlank() || path.equals(ctx.path())) {
-            ctx.redirect("/");
+            if (MinervaWebapp.factory().isCustomerVersion()) {
+                ctx.redirect("/b/master");
+            } else {
+                ctx.redirect("/");
+            }
         } else {
             Logger.info("[Login] redirect to " + path);
             ctx.redirect(path);

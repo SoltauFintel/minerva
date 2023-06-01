@@ -1,9 +1,15 @@
 package minerva.book;
 
+import minerva.MinervaWebapp;
+
 public class DeleteBookPage extends BPage {
 
     @Override
     protected void execute() {
+        if (MinervaWebapp.factory().isCustomerVersion()) {
+            throw new RuntimeException("This operation is not allowed.");
+        }
+        
         put("bookTitle", esc(book.getTitle()));
         header(n("deleteBook"));
         

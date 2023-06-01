@@ -1,7 +1,9 @@
 <ul class="nav" id="side-menu">
-    <li>
-        <a href="/"><i class="fa fa-home"></i> Workspaces</a>
-    </li>
+    {{if not isCustomerVersion}}
+        <li>
+            <a href="/"><i class="fa fa-home"></i> Workspaces</a>
+        </li>
+    {{/if}}
     <li>
         <a href="/b/{{branch}}"><i class="fa fa-book"></i> {{booksLabel}}</a>
     </li>

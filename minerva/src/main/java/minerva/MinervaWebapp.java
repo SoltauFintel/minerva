@@ -151,6 +151,7 @@ public class MinervaWebapp extends RouteDefinitions {
             page.put("booksLabel", "Bücher");
             page.put("branch0", "");
             booksForMenu(ctx, page, hasUser);
+            page.put("isCustomerVersion", MinervaWebapp.factory().isCustomerVersion());
             if (hasUser) {
                 UserSO user = StatesSO.get(ctx).getUser();
                 String userLang = user.getLanguage();

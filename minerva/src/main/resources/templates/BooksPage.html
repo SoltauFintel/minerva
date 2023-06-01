@@ -9,8 +9,10 @@
             <p><span title="Commit: {{hash7}}">Branch: {{branch}}</span></p>
         {{/if}}
         <p style="margin-top: 2em;">
-            <a href="/b/{{branch}}/add" class="btn btn-primary br"><i class="fa fa-book"></i>
-                {{N.newBook}}</a>
+            {{if not isCustomerVersion}}
+                <a href="/b/{{branch}}/add" class="btn btn-primary br"><i class="fa fa-book"></i>
+                    {{N.newBook}}</a>
+            {{/if}}
             {{each l in langs}}
                 <a href="/b/{{branch}}/select-language/{{l.lang}}"
                     class="btn btn-{{if l.selected}}success{{else}}default{{/if}}"><i
@@ -33,8 +35,10 @@
                             class="fa fa-pencil"></i></a>
                         <a href="/b/{{branch}}/{{b.folder}}/notes" class="btn btn-xs btn-default" title="{{N.notes}}"><i
                             class="fa fa-comments-o"></i></a>
-                        <a href="/b/{{branch}}/{{b.folder}}/delete" class="btn btn-xs btn-danger" title="{{N.delete}}"><i
-                            class="fa fa-trash-o"></i></a>
+                        {{if not isCustomerVersion}}
+                            <a href="/b/{{branch}}/{{b.folder}}/delete" class="btn btn-xs btn-danger" title="{{N.delete}}"><i
+                                class="fa fa-trash-o"></i></a>
+                        {{/if}}
                     </td>
                 </tr>
             {{/each}}
@@ -44,14 +48,16 @@
         <p style="margin-top: 4cm;">
             <a href="/w/{{branch}}/tag-cloud?m=n" class="btn btn-default brr"><i
                 class="fa fa-cloud"></i> {{N.tagCloud}}</a>
-            <a href="/w/{{branch}}/pull" class="btn btn-default brr" title="pull"
-                onclick="document.querySelector('#s1').style='';"><i class="fa fa-undo"></i>
-                {{N.pullWS}}! <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
-            <a href="/w/{{branch}}/pull?force=1" class="btn btn-default brr" title="force clone"
-                onclick="document.querySelector('#s2').style='';"><i class="fa fa-undo" style="color: #900;"></i>
-                {{N.cloneWS}}! <i id="s2" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
-            <a href="/w/{{branch}}/delete" class="btn btn-danger brr"><i
-                class="fa fa-trash-o"></i> {{N.deleteWS}}...</a>
+            {{if gitlab}}
+                <a href="/w/{{branch}}/pull" class="btn btn-default brr" title="pull"
+                    onclick="document.querySelector('#s1').style='';"><i class="fa fa-undo"></i>
+                    {{N.pullWS}}! <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+                <a href="/w/{{branch}}/pull?force=1" class="btn btn-default brr" title="force clone"
+                    onclick="document.querySelector('#s2').style='';"><i class="fa fa-undo" style="color: #900;"></i>
+                    {{N.cloneWS}}! <i id="s2" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+                <a href="/w/{{branch}}/delete" class="btn btn-danger brr"><i
+                    class="fa fa-trash-o"></i> {{N.deleteWS}}...</a>
+            {{/if}}
             {{if migrationAllowed}}
                 <a href="/migration/{{branch}}" class="btn btn-danger brr"><i class="fa fa-cloud-download"></i>
                     Confluence Import...</a>
