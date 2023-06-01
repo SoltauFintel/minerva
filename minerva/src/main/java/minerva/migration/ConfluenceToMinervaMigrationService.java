@@ -102,12 +102,12 @@ public class ConfluenceToMinervaMigrationService {
         if (files == null) {
             throw new RuntimeException("files is null");
         }
-        final String ticketSystemUrl = System.getenv("MINERVA_TICKETSYSTEMURL");
-        if (StringService.isNullOrEmpty(ticketSystemUrl)) {
-            throw new RuntimeException("Env var MINERVA_TICKETSYSTEMURL is not set!");
+        final String oldUrl = System.getenv("MINERVA_OLDURL");
+        if (StringService.isNullOrEmpty(oldUrl)) {
+            throw new RuntimeException("Env var MINERVA_OLDURL is not set!");
         }
-        final String xde = "de: " + ticketSystemUrl;
-        final String xen = "en: " + ticketSystemUrl;
+        final String xde = "de: " + oldUrl;
+        final String xen = "en: " + oldUrl;
 
         for (File file : files) {
             String content = new String(Files.readAllBytes(file.toPath())).replace("\r\n", "\n");
