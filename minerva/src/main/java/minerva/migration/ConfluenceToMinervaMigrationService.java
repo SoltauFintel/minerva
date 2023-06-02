@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -12,11 +13,11 @@ import java.util.Set;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.IdGenerator;
 import minerva.MinervaWebapp;
 import minerva.access.DirAccess;
 import minerva.base.FileService;
 import minerva.base.NlsString;
-import minerva.base.StringService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
@@ -26,11 +27,12 @@ public class ConfluenceToMinervaMigrationService {
     private final File sourceFolder;
     private final WorkspaceSO workspace;
     private final List<String> langs;
-    private Map<String, String> paerchen;
     private ConfluencePage root_de;
     private ConfluencePage root_en;
     public int gef = 0, gesamt = 0;
     private File htmlSourceFolder;
+    private Map<String, String> deEnMap;
+    private List<EnglishSoloPage> englishSoloPages;
 
     public ConfluenceToMinervaMigrationService(File sourceFolder, WorkspaceSO workspace, List<String> langs) {
         this.sourceFolder = sourceFolder;
@@ -48,7 +50,10 @@ public class ConfluenceToMinervaMigrationService {
         Logger.info("Migration init phase completed");
 
         // Schritt 2: Confluence Daten laden
-        readMappings(new File(sourceFolder, "mappings2"));
+        File csvFile = new File(sourceFolder, "html/mapping-tabelle-csv.csv");
+        deEnMap = readMappings(csvFile);
+        englishSoloPages = readMappings_soloEnId(csvFile);
+        Logger.info("DE->EN mappings: " + deEnMap.size() + ", solo EN IDs: " + englishSoloPages.size());
         htmlSourceFolder = new File(sourceFolder, "html");
         readHtmlFiles(htmlSourceFolder);
 
@@ -95,47 +100,6 @@ public class ConfluenceToMinervaMigrationService {
         root_en = root.getSubpages().get(1);
     }
 
-    private void readMappings(File mappingsDir) throws IOException {
-        Logger.info("readMappings: " + mappingsDir.getAbsolutePath());
-        paerchen = new HashMap<>();
-        File[] files = mappingsDir.listFiles();
-        if (files == null) {
-            throw new RuntimeException("files is null");
-        }
-        final String oldUrl = System.getenv("MINERVA_OLDURL");
-        if (StringService.isNullOrEmpty(oldUrl)) {
-            throw new RuntimeException("Env var MINERVA_OLDURL is not set!");
-        }
-        final String xde = "de: " + oldUrl;
-        final String xen = "en: " + oldUrl;
-
-        for (File file : files) {
-            String content = new String(Files.readAllBytes(file.toPath())).replace("\r\n", "\n");
-            String de = "", en = "";
-            for (String line : content.split("\n")) {
-                if (line.trim().isBlank()) {
-                } else if (line.startsWith("de:")) {
-                    if (line.startsWith(xde)) {
-                        de = line.substring(xde.length()).trim();
-                    }
-                } else if (line.startsWith("en:")) {
-                    if (line.startsWith(xen)) {
-                        en = line.substring(xen.length()).trim();
-                    }
-                } else { // GO Key
-                    if (!de.isEmpty() || !en.isEmpty()) {
-                        if (!(en.isBlank() && !StringService.isNullOrEmpty(paerchen.get(de)))) {
-                            paerchen.put(de, en);
-                        }
-                    }
-                    de = "";
-                    en = "";
-                }
-            }
-        }
-        Logger.info("Pärchen: " + paerchen.size());
-    }
-
     private void migrateBook(ConfluencePage sp, int position) {
         Map<String, String> files = new HashMap<>();
 
@@ -169,6 +133,36 @@ public class ConfluenceToMinervaMigrationService {
         for (ConfluencePage sub : sp.getSubpages()) {
             SeiteSO subTp = book.getSeiten().createSeite(book.getISeite(), book, sub.getId());
             migratePage(sub, subTp, files);
+        }
+        
+        // migrate solo English pages ----
+        if ("Benutzerhandbuch".equals(sp.getTitle())) {
+            Logger.info("Migrating " + englishSoloPages.size() + " solo English pages...");
+            final SeiteSO parent = book.getSeiten().createSeite(book.getISeite(), book, IdGenerator.createId6());
+            parent.getSeite().getTitle().setString("de", "#English solo pages");
+            parent.getSeite().getTitle().setString("en", "English solo pages");
+            parent.getSeite().getTags().add("nicht_drucken");
+            parent.getSeite().getTags().add("english-solo-pages");
+            parent.saveMetaTo(files);
+            for (EnglishSoloPage englishSoloPage : englishSoloPages) {
+                ConfluencePage page = findPage(root_en, englishSoloPage.getId());
+                if (page == null) {
+                    Logger.error("English solo page not found: " + englishSoloPage.getId());
+                } else {
+                    SeiteSO theParent = parent;
+                    if (!englishSoloPage.getParentId().isEmpty()) {
+                        final SeiteSO parent2 = book.getSeiten()._byId(englishSoloPage.getParentId());
+                        if (parent2 != null) {
+                            theParent = parent2;
+                        } else {
+                            Logger.error("Parent page " + englishSoloPage.getParentId()
+                                    + " not found for English solo page #" + englishSoloPage.getId());
+                        }
+                    }
+                    SeiteSO subTp = theParent.getSeiten().createSeite(theParent, theParent.getBook(), englishSoloPage.getId());
+                    migrateEnglishPage(page, subTp, files);
+                }
+            }
         }
 
         // commit and push everything ----
@@ -238,8 +232,29 @@ public class ConfluenceToMinervaMigrationService {
         }
     }
 
+    private void migrateEnglishPage(ConfluencePage sp, SeiteSO tp, Map<String, String> files) {
+        Seite seite = tp.getSeite();
+        seite.setSorted(false);
+        seite.getTitle().setString("de", "#" + sp.getTitle());
+        seite.getTitle().setString("en", sp.getTitle());
+        seite.getTags().addAll(sp.getLabels());
+
+        String html = FileService.loadPlainTextFile(new File(htmlSourceFolder, sp.getId() + ".html"));
+        html = migrateImages(tp, seite, html, files);
+        tp.getContent().setString("de", "");
+        tp.getContent().setString("en", processHTML(html));
+
+        tp.saveMetaTo(files);
+        tp.saveHtmlTo(files, langs);
+
+        for (ConfluencePage sub : sp.getSubpages()) {
+            SeiteSO subTp = tp.getSeiten().createSeite(tp, tp.getBook(), sub.getId());
+            migrateEnglishPage(sub, subTp, files);
+        }
+    }
+
     private ConfluencePage findEnglishPage(ConfluencePage de) {
-        String enId = paerchen.get(de.getId());
+        String enId = deEnMap.get(de.getId());
         if (enId != null) {
             return findPage(root_en, enId);
         }
@@ -317,5 +332,45 @@ public class ConfluenceToMinervaMigrationService {
             o = html.indexOf(x1, oo + x2.length());
         }
         return set;
+    }
+    
+    private Map<String, String> readMappings(File csvFile) {
+        Map<String, String> map = new HashMap<>(); // key: de ID, value: en ID
+        String content = FileService.loadPlainTextFile(csvFile);
+        if (content == null) {
+            throw new RuntimeException("File not found: " + csvFile.getAbsolutePath());
+        }
+        String[] lines = content.split("\r\n");
+        for (int i = 1 /* omit 1st line */; i < lines.length; i++) {
+            String line = lines[i];
+            String[] col = line.split(";");
+            String deId = col.length > 2 ? col[2] : "";
+            String enId = col.length > 6 ? col[6] : "";
+            if (!deId.isEmpty() && !enId.isEmpty()) {
+                map.put(deId, enId);
+            }
+        }
+        return map;
+    }
+
+    private List<EnglishSoloPage> readMappings_soloEnId(File csvFile) {
+        List<EnglishSoloPage> ret = new ArrayList<>();
+        String[] lines = FileService.loadPlainTextFile(csvFile).split("\r\n");
+        for (int i = 1 /* omit 1st line */; i < lines.length; i++) {
+            String line = lines[i];
+            String[] col = line.split(";");
+            String deId = col.length > 2 ? col[2].trim() : "";
+            String enId = col.length > 6 ? col[6].trim() : "";
+            if (deId.isEmpty() && !enId.isEmpty()) {
+                String parentId = col.length > 8 ? col[8].trim() : "";
+                if (parentId.startsWith("parent=")) {
+                    parentId = parentId.substring("parent=".length()).trim();
+                } else {
+                    parentId = "";
+                }
+                ret.add(new EnglishSoloPage(enId, parentId));
+            }
+        }
+        return ret;
     }
 }

@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.pmw.tinylog.Logger;
 
+import minerva.base.StringService;
 import minerva.model.WorkspaceSO;
 import minerva.user.UPage;
 
@@ -12,8 +13,11 @@ public class MigrationPage extends UPage {
     @Override
     protected void execute() {
         String branch = ctx.pathParam("branch");
-        String sourceFolder = "/";
-//        String sourceFolder = "/dat/online-help";
+        String sourceFolder = System.getenv("MINERVA_MIGRATIONSOURCEFOLDER");
+        if (StringService.isNullOrEmpty(sourceFolder)) {
+            sourceFolder = "/";
+        }
+        Logger.info("source folder: " + sourceFolder);
 
         if ("master".equals(branch)) {
             throw new RuntimeException("Migration nicht für master erlaubt! (Schutz)");

@@ -8,6 +8,7 @@ Minerva was programmed with Java 17 and is based on the web framework Amalia.
 ## Environment variables
 
 - MINERVA_MIGRATION=1: migration enabled
+- MINERVA_MIGRATIONSOURCEFOLDER: migration source folder, default is '/'
 - MINERVA_OLDURL: Confluence URL begin ( http://confluence-host/pages/viewpage.action?pageId= ), needed for migration
 - MINERVA_USERFOLDER: set user folder for any user to static value, only for file-system mode
 - MINERVA_KUNDE=1: customer version enabled (only 1 book allowed)
