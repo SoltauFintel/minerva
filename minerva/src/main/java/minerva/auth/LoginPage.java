@@ -3,6 +3,7 @@ package minerva.auth;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.auth.webcontext.WebContext;
+import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.web.action.Page;
 import minerva.MinervaWebapp;
 import minerva.model.StatesSO;
@@ -33,6 +34,10 @@ public class LoginPage extends Page {
             return;
         }
         
+        login2(ctx, login, user);
+    }
+    
+    public static void login2(Context ctx, String login, User user) {
         // An Webanwendung/Session anmelden.
         WebContext wctx = new WebContext(ctx);
         wctx.session().setUserId(login);

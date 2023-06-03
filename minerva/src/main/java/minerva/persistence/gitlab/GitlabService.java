@@ -7,22 +7,19 @@ import org.gitlab4j.api.GitLabApi;
 import org.gitlab4j.api.GitLabApiException;
 
 import github.soltaufintel.amalia.web.config.AppConfig;
+import minerva.model.GitFactory;
 
 public class GitlabService {
-    private final String gitlabUrl;
     private final String project;
-    private final String user;
-    private final String password;
+    private final GitlabUser user;
     
     public GitlabService(GitlabUser user) {
-        this(new AppConfig(), user.getLogin(), user.getPassword());
+        this(new AppConfig(), user);
     }
     
-    public GitlabService(AppConfig config, String user, String password) {
-        this.gitlabUrl = config.get("gitlab.url");
+    public GitlabService(AppConfig config, GitlabUser user) {
         this.project = config.get("gitlab.project");
         this.user = user;
-        this.password = password;
     }
     
     /**
@@ -30,18 +27,21 @@ public class GitlabService {
      * @throws GitLabApiException if login fails
      */
     public String login() throws GitLabApiException {
-        try (GitLabApi g = GitLabApi.oauth2Login(gitlabUrl, user, password)) {
+        try (GitLabApi g = GitFactory.getGitLabApi(user)) {
             String mail = g.getUserApi().getCurrentUser().getEmail();
             if (mail == null || mail.isEmpty()) {
-                return user + "@minerva.de";
+                return user.getLogin() + "@minerva.de";
             }
             return mail;
         }
     }
     
     public List<String> getAllBranches() {
-        try (GitLabApi g = GitLabApi.oauth2Login(gitlabUrl, user, password)) {
-            return g.getRepositoryApi().getBranches(project).stream().map(i -> i.getName()).sorted().collect(Collectors.toList());
+        try (GitLabApi g = GitFactory.getGitLabApi(user)) {
+            return g.getRepositoryApi().getBranches(project).stream()
+                    .map(i -> i.getName())
+                    .sorted()
+                    .collect(Collectors.toList());
         } catch (GitLabApiException e) {
             throw new RuntimeException("Error reading all Git branches", e);
         }

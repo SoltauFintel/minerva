@@ -17,10 +17,12 @@ public class GitlabLoginService implements LoginService {
         if (StringService.isNullOrEmpty(login) || StringService.isNullOrEmpty(password)) {
             return null;
         }
-        String mail = MinervaWebapp.factory().getGitlabSystem().login(login, password);
+        GitlabUser user = new GitlabUser(login, password);
+        String mail = MinervaWebapp.factory().getGitlabSystem().login(user);
         if (mail == null) {
             return null;
         }
-        return new GitlabUser(login, password, mail);
+        user.setMail(mail);
+        return user;
     }
 }

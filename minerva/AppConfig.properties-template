@@ -4,5 +4,9 @@ app.name=minerva
 
 backend=gitlab
 workspaces=C:/somewhere-outside-eclipse/minerva-workspaces
-gitlab.url=http://localhost:8000
+
+gitlab.url=http://gitlab-host:port
 gitlab.project=
+gitlab-auth-callback=http://minerva-host:port/gitlab-auth-callback
+gitlab-appid=
+gitlab-secret=

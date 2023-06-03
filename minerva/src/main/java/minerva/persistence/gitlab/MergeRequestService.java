@@ -7,11 +7,12 @@ import org.gitlab4j.api.models.MergeRequest;
 import org.gitlab4j.api.models.MergeRequestParams;
 
 import minerva.base.StringService;
+import minerva.model.GitFactory;
 
 public class MergeRequestService {
 
-    public void createAndSquashMergeRequest(String title, String branch, String targetBranch, String gitlabUrl, String project, String user, String password) throws GitLabApiException {
-        try (GitLabApi gitLabApi = GitLabApi.oauth2Login(gitlabUrl, user, password)) {
+    public void createAndSquashMergeRequest(String title, String branch, String targetBranch, String gitlabUrl, String project, GitlabUser user) throws GitLabApiException {
+        try (GitLabApi gitLabApi = GitFactory.getGitLabApi(user)) {
             MergeRequestParams params = new MergeRequestParams()
                     .withSourceBranch(branch)
                     .withTargetBranch(targetBranch)

@@ -28,4 +28,9 @@ public class User {
     public void setLanguage(String language) {
         this.language = language;
     }
+
+    // TODO bei GitlabUser könnte man hier den richtigen Namen setzen
+    public String getRealName() {
+        return getLogin();
+    }
 }

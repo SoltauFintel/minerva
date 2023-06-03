@@ -23,9 +23,9 @@ public class EditSeitePage extends ViewSeitePage {
             if (MinervaWebapp.factory().isGitlab()) {
                 WorkspaceSO workspace = seiteSO.getBook().getWorkspace();
                 File workspaceFolder = new File(workspace.getFolder());
-                GitlabUser gu = (GitlabUser) user.getUser();
+                GitlabUser gitlabUser = (GitlabUser) user.getUser();
                 boolean areThereRemoteUpdates = new UpToDateCheckService().areThereRemoteUpdates(workspaceFolder,
-                        workspace.getBranch(), gu.getLogin(), gu.getPassword());
+                        workspace.getBranch(), gitlabUser);
                 if (areThereRemoteUpdates) {
                     workspace.pull();
                     seiteSO.freshcheck(langs);

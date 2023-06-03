@@ -16,8 +16,10 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.RefNotFoundException;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.transport.RefSpec;
-import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.pmw.tinylog.Logger;
+
+import minerva.model.GitFactory;
+import minerva.persistence.gitlab.GitlabUser;
 
 /**
  * Control Git repository with quite low level functions: clone, fetch, pull, tag, branch, commit, select branch/commit.
@@ -62,34 +64,34 @@ public class GitService {
      * @param url URL of remote Git repository
      * <br>Please be careful that there is no leading or trailing whitespace within the arguments!
      * This may end in an "Illegal character in path" URI exception.
-     * @param user user to log into remote Git repository, e.g. "builder"
-     * @param password password to log into remote Git repository, e.g. "builderpwd"
+     * @param user user to log into remote Git repository
      * @param branch which branch should be active after clone, e.g. "master"
      * @param bare false: with repository and with workspace, true: with repository and without workspace
      */
-    public void clone(String url, String user, String password, String branch, boolean bare) {
+    public void clone(String url, GitlabUser user, String branch, boolean bare) {
         try (Git result = Git.cloneRepository()
-                .setURI(url)
-                .setCredentialsProvider(new UsernamePasswordCredentialsProvider(user, password))
+                .setURI(GitFactory.handleUrl(url, user))
+                .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
                 .setBranch(branch)
                 .setDirectory(workspace)
                 .setBare(bare)
                 .call()) {
         } catch (Exception e) {
-            Logger.error("Error cloning Git repository! URL: " + url + " | user: " + user + " | branch: " + branch);
+            e.printStackTrace(); // TODO brauch ich für Fehleranalyse   (Wieso wird so viel Stacktrace geschluckt???)
+            Logger.error("Error cloning Git repository! URL: " + url + " | user: " + user.getLogin()
+                + " | branch: " + branch);
             throw new RuntimeException("Error cloning Git repository!", e);
         }
     }
     
     /**
      * Git fetch action
-     * @param user user to log into remote Git repository, e.g. "builder"
-     * @param password password to log into remote Git repository
+     * @param user user to log into remote Git repository
      */
-    public void fetch(String user, String password) {
+    public void fetch(GitlabUser user) {
         try (Git git = Git.open(workspace)) {
             git.fetch()
-                .setCredentialsProvider(new UsernamePasswordCredentialsProvider(user, password))
+                .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
                 .call();
         } catch (Exception e) {
             throw new RuntimeException("Error fetching Git repository!", e);
@@ -99,13 +101,12 @@ public class GitService {
     /**
      * Git pull action
      * <p>Please call clearTags() before if you want to ensure that deleted tags on remote do not exist in local repo.</p>
-     * @param user user to log into remote Git repository, e.g. "builder"
-     * @param password password to log into remote Git repository
+     * @param user user to log into remote Git repository
      */
-    public void pull(String user, String password) {
+    public void pull(GitlabUser user) {
         try (Git git = Git.open(workspace)) {
             git.pull()
-                .setCredentialsProvider(new UsernamePasswordCredentialsProvider(user, password))
+                .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
                 .call();
         } catch (Exception e) {
             throw new RuntimeException("Error pulling Git repository!", e);
@@ -182,17 +183,16 @@ public class GitService {
      * @param tagName e.g. "3.18.4"
      */
     public void tag(String tagName) {
-        tag(tagName, null, null, null);
+        tag(tagName, null, null);
     }
     
     /**
      * Creates tag on given commit and pushs it.
      * @param tagName e.g. "3.18.4"
      * @param commit null: current commit, otherwise commit hash or tag name
-     * @param user user to log into remote Git repository, e.g. "builder", null: don't push
-     * @param password password to log into remote Git repository
+     * @param user user to log into remote Git repository, null: don't push
      */
-    public void tag(String tagName, String commit, String user, String password) {
+    public void tag(String tagName, String commit, GitlabUser user) {
         // TO.DO Maybe there's an better implementation for this!
         String m = null;
         if (commit != null) {
@@ -200,7 +200,7 @@ public class GitService {
             selectCommit(commit);
         }
         try {
-            tag(tagName, user, password);
+            tag(tagName, user);
         } finally {
             if (commit != null) {
                 switchToBranch(m);
@@ -208,7 +208,7 @@ public class GitService {
         }
     }
     
-    private void tag(String tagName, String user, String password) {
+    private void tag(String tagName, GitlabUser user) {
         String action = "creating";
         try (Git git = Git.open(workspace)) {
             // step 1: create
@@ -224,7 +224,7 @@ public class GitService {
                     git.push()
                         .setPushTags()
                         .setRefSpecs(new RefSpec(tagName))
-                        .setCredentialsProvider(new UsernamePasswordCredentialsProvider(user, password))
+                        .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
                         .call();
                 } catch (Exception up) {
                     try {
@@ -278,7 +278,7 @@ public class GitService {
      * @param name branch name, e.g. "3.21.x"
      */
     public void branch(String name) {
-        branch(name, null, null, null);
+        branch(name, null, null);
     }
 
     /**
@@ -286,10 +286,9 @@ public class GitService {
      * This method creates no root tag!
      * @param name branch name, e.g. "3.21.x"
      * @param commit null: current commit, otherwise commit hash or tag name
-     * @param user user to log into remote Git repository, e.g. "builder", null: don't push
-     * @param password password to log into remote Git repository
+     * @param user user to log into remote Git repository, null: don't push
      */
-    public void branch(String name, String commit, String user, String password) {
+    public void branch(String name, String commit, GitlabUser user) {
         // TO.DO Maybe there's an better implementation for this! branchCreate().setStartPoint?
         String m = null;
         if (commit != null) {
@@ -297,7 +296,7 @@ public class GitService {
             selectCommit(commit);
         }
         try {
-            branch(name, user, password);
+            branch(name, user);
         } finally {
             if (commit != null) {
                 switchToBranch(m);
@@ -305,7 +304,7 @@ public class GitService {
         }
     }
     
-    private void branch(String name, String user, String password) {
+    private void branch(String name, GitlabUser user) {
         String action = "creating";
         try (Git git = Git.open(workspace)) {
             // step 1: create
@@ -320,7 +319,7 @@ public class GitService {
                     git.push()
                         .setRemote("origin")
                         .setRefSpecs(new RefSpec(name + ":" + name))
-                        .setCredentialsProvider(new UsernamePasswordCredentialsProvider(user, password))
+                        .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
                         .call();
                 } catch (Exception up) {
                     try {
@@ -431,7 +430,7 @@ public class GitService {
      * @param removeFilenames files to delete
      * @return commit hash of newly created commit
      */
-    public String commit(String commitMessage, String authorName, String mail, String user, String password,
+    public String commit(String commitMessage, String authorName, String mail, GitlabUser user,
             Set<String> addFilenames, Set<String> removeFilenames) {
         if (commitMessage == null || commitMessage.trim().isEmpty()) {
             throw new IllegalArgumentException("commitMessage must not be empty!");
@@ -461,7 +460,7 @@ public class GitService {
                 .call();
             if (user != null) {
                 git.push()
-                    .setCredentialsProvider(new UsernamePasswordCredentialsProvider(user, password))
+                    .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
                     .call();
             }
             return commit.getName();

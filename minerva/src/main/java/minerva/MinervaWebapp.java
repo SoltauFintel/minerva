@@ -35,6 +35,8 @@ import minerva.model.BooksSO;
 import minerva.model.StatesSO;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
+import minerva.persistence.gitlab.GitlabAuthAction;
+import minerva.persistence.gitlab.GitlabAuthCallbackAction;
 import minerva.seite.AddSeiteAction;
 import minerva.seite.DeleteSeitePage;
 import minerva.seite.EditSeitePage;
@@ -123,6 +125,9 @@ public class MinervaWebapp extends RouteDefinitions {
         // Sonstiges
         get("/message", MessagePage.class);
         get("/migration/:branch", MigrationPage.class);
+        get("/gitlab-auth", GitlabAuthAction.class);
+        get("/gitlab-auth-callback", GitlabAuthCallbackAction.class);
+        addNotProtected("/gitlab-auth");
     }
 
     public static void main(String[] args) {

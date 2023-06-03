@@ -6,7 +6,9 @@
         <form action="/login" method="post" class="form-horizontal">
             <fieldset>
                 <div class="form-group">
-                    <div class="col-lg-offset-2 col-lg-5">{{if withPassword}}Bitte melden Sie sich mit Ihren Gitlab Zugangsdaten an.{{else}}Bitte geben Sie Ihren Namen an!{{/if}}</div>
+                    <div class="col-lg-offset-2 col-lg-5">{{if withPassword}}Bitte melden Sie sich mit Ihren
+                        <a href="/gitlab-auth">Gitlab</a> Zugangsdaten an.{{else}}Bitte geben Sie Ihren Namen
+                        an!{{/if}}</div>
                 </div>
                 <div class="form-group">
                     <label for="minerva_user" class="col-lg-2 control-label">Benutzername</label>

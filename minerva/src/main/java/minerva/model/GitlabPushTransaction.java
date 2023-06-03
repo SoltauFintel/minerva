@@ -57,7 +57,7 @@ public class GitlabPushTransaction {
             String x = workspace.getFolder() + "/";
             Set<String> filesToAdd = addFilenames.stream().map(dn -> dn.replace(x, "")).collect(Collectors.toSet());
             Set<String> filesToRemove = removeFilenames.stream().map(dn -> dn.replace(x, "")).collect(Collectors.toSet());
-            git.commit(commitMessage, user.getLogin(), user.getMail(), user.getLogin(), user.getPassword(), filesToAdd,
+            git.commit(commitMessage, user.getRealName(), user.getMail(), user, filesToAdd,
                     filesToRemove);
         } catch (MinervaEmptyCommitException ex) {
             Logger.info("no changes -> no commit and no merge request needed\nadd: "
@@ -75,7 +75,7 @@ public class GitlabPushTransaction {
                     workBranch,
                     workspace.getBranch(),
                     repo.getGitlabSystemUrl(), repo.getProject(),
-                    user.getLogin(), user.getPassword());
+                    user);
             doPull = true;
         } catch (GitLabApiException e) {
             throw new RuntimeException( //

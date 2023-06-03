@@ -4,6 +4,8 @@ import org.gitlab4j.api.GitLabApi;
 import org.gitlab4j.api.GitLabApiException;
 import org.pmw.tinylog.Logger;
 
+import minerva.persistence.gitlab.GitlabUser;
+
 public class GitlabSystemSO {
     private final String url;
     
@@ -16,12 +18,11 @@ public class GitlabSystemSO {
     }
 
     /**
-     * @param user Gitlab login
-     * @param password Gitlab password
+     * @param user GitlabUser
      * @return Gitlab user mail address, null if can't log in
      */
-    public String login(String user, String password) {
-        try (GitLabApi g = GitLabApi.oauth2Login(url, user, password)) {
+    public String login(GitlabUser user) {
+        try (GitLabApi g = GitFactory.getGitLabApi(user)) {
             String mail = g.getUserApi().getCurrentUser().getEmail();
             if (mail == null || mail.isEmpty()) {
                 return user + "@minerva.de";

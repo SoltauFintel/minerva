@@ -34,11 +34,11 @@ public class GitlabRepositorySO {
         GitService git = new GitService(workspaceFolder);
         if (new File(workspaceFolder, ".git").exists()) {
             if (!git.getCurrentBranch().equals(branch)) {
-                git.fetch(user.getLogin(), user.getPassword());
+                git.fetch(user);
                 git.switchToBranch(branch);
             }
             try {
-                git.pull(user.getLogin(), user.getPassword());
+                git.pull(user);
             } catch (Exception e) {
                 Logger.error(e);
                 pull(workspace, true);
@@ -49,7 +49,7 @@ public class GitlabRepositorySO {
             String url = gitlab.getUrl() + "/" + project;
             Logger.info((forceClone ? "force " : "") + "clone from " + url
                     + " into " + workspaceFolder.getAbsolutePath());
-            git.clone(url, user.getLogin(), user.getPassword(), branch, false);
+            git.clone(url, user, branch, false);
         }
     }
     
