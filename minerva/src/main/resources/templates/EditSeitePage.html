@@ -1,7 +1,7 @@
 {{master: master_ck}}
 
 <div class="row">
-    <ul class="nav nav-tabs" id="langTabs" style="margin-top: 1em;">
+    <ul class="nav nav-tabs mt1" id="langTabs">
         {{each L in languages}}
             <li role="presentation"{{if L.active}} class="active"{{/if}}><a href="#{{L.lang}}"
                 class="{{L.LANG}}">{{N.language}} {{L.LANG}}</a></li>
@@ -14,7 +14,7 @@
                 {{each L in languages}}
                     <div role="tabpanel" class="tab-pane{{if L.active}} active{{/if}}" id="{{L.lang}}">
                         <div class="col-lg-12">
-                            <div class="form-group" style="margin-top: 1em;">
+                            <div class="form-group mt1">
                                 <div>
                                     <input class="form-control titelfeld{{L.LANG}}" type="text" id="titel{{L.LANG}}" name="titel{{L.LANG}}"
                                         value="{{L.titel}}" style="font-size: 24pt; height: 50px;" autofocus>

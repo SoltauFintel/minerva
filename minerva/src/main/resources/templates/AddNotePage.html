@@ -7,11 +7,10 @@
         <h3>{{pageTitle}}</h3>
         
         {{if hasParent}}
-            <pre class="noteText" style="margin-top: 2em;">{{parentText}}</pre>
+            <pre class="noteText mt2">{{parentText}}</pre>
         {{/if}}
 
-        <form action="{{viewlink}}/add-note?parent={{parentNumber}}" class="form-horizontal" method="post"
-            style="margin-top: 3em;">
+        <form action="{{viewlink}}/add-note?parent={{parentNumber}}" class="form-horizontal mt3" method="post">
             <fieldset>
                 <div class="form-group">
                     <label for="text1" class="col-lg-1 control-label">{{N.note}}</label>

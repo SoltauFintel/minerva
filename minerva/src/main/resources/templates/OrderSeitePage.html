@@ -6,14 +6,14 @@
         
         <h2>{{pageTitle}}</h2>
 
-        <p style="margin-top: 2em;">{{N.reorder1}}</p>
+        <p class="mt2">{{N.reorder1}}</p>
 
         <form class="sortable" hx-post="{{orderlink}}" hx-trigger="end"
             style="max-width: 400px;">
             {{include: OrderSeitePageSubpages}}
         </form>
         
-        <p style="margin-top: 1em;"><a href="{{fertiglink}}" class="btn btn-primary br"
+        <p class="mt1"><a href="{{fertiglink}}" class="btn btn-primary br"
             onclick="document.querySelector('#s1').style='';">{{N.fertigSpeichern}}
             <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
         <a href="{{viewlink}}" class="btn btn-default">{{N.cancel}}</a></p>
