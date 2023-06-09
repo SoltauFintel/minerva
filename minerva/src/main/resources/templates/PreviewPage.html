@@ -1,0 +1,38 @@
+{{master: master_jqueryoben}}
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="mt1" style="margin-bottom: 10px; padding-left: 0;">
+            <a {{if hasPrevlink}}href="{{prevlink}}"{{else}}disabled{{/if}} class="btn btn-default"
+                title="{{N.pageToPrev}}"><i class="fa fa-arrow-left"></i></a>
+            <a {{if hasNextlink}}href="{{nextlink}}"{{else}}disabled{{/if}} class="btn btn-default br"
+                title="{{N.pageToNext}}"><i class="fa fa-arrow-right"></i></a>
+            {{each b in books}}
+                <a href="{{b.link}}" class="btn btn-default br"><i class="fa fa-book greenbook"></i> {{b.title}}</a>
+            {{/each}}
+        </div>
+        
+        <div class="col-lg-12 mwtab" style="border: 1px solid #ddd;">
+            <div class="breadcrumbs">
+                {{each b in breadcrumbs}}
+                    {{if b.first}}<i class="fa fa-book greenbook"></i>{{/if}}
+                    <a href="{{b.link}}">{{b.title}}</a> &gt;
+                {{/each}}
+                &nbsp;<i class="fa fa-file-o"></i>&nbsp; {{titel}}
+            </div>
+            <h1 style="margin-top: 10px;">{{titel}}</h1>
+            <div class="seite">
+                {{content}}
+            </div>
+        </div>
+
+        <div class="col-lg-12 visible-lg-block mt1" style="padding-left: 0;">
+            <p>
+                <a {{if hasPrevlink}}href="{{prevlink}}"{{else}}disabled{{/if}} class="btn btn-default"
+                    title="{{N.pageToPrev}}"><i class="fa fa-arrow-left"></i></a>
+                <a {{if hasNextlink}}href="{{nextlink}}"{{else}}disabled{{/if}} class="btn btn-default br"
+                    title="{{N.pageToNext}}"><i class="fa fa-arrow-right"></i></a>
+            </p>
+        </div>
+    </div>
+</div>

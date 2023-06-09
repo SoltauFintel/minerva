@@ -37,6 +37,7 @@ import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
 import minerva.persistence.gitlab.GitlabAuthAction;
 import minerva.persistence.gitlab.GitlabAuthCallbackAction;
+import minerva.preview.PreviewPage;
 import minerva.seite.AddSeiteAction;
 import minerva.seite.DeleteSeitePage;
 import minerva.seite.EditSeitePage;
@@ -106,6 +107,7 @@ public class MinervaWebapp extends RouteDefinitions {
         post("/s-image-upload/:branch/:book/:id", ImageUploadAction.class);
         get("/s/:branch/:book/img/:id/:dn", ImageDownloadAction.class);
         get("/s-edit/:branch/:book/img/:id/:dn", ImageDownloadAction.class); // Image download must also work in edit mode.
+        get("/p/:branch/:book/:lang/img/:id/:dn", ImageDownloadAction.class); // Image download must also work in preview mode.
 
         // Links
         form("/links/:branch/:book/:id", LinkResolverPage.class);
@@ -121,7 +123,10 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/s/:branch/:book/:id/add-note", AddNotePage.class);
         form("/s/:branch/:book/:id/edit-note", EditNotePage.class);
         form("/s/:branch/:book/:id/delete-note", DeleteNoteAction.class);
-        
+
+        // Preview
+        get("/p/:branch/:book/:lang/:id", PreviewPage.class);
+
         // Sonstiges
         get("/message", MessagePage.class);
         get("/migration/:branch", MigrationPage.class);
@@ -157,6 +162,7 @@ public class MinervaWebapp extends RouteDefinitions {
             page.put("branch0", "");
             booksForMenu(ctx, page, hasUser);
             page.put("isCustomerVersion", MinervaWebapp.factory().isCustomerVersion());
+            DataList list = page.list("langsForMenu");
             if (hasUser) {
                 UserSO user = StatesSO.get(ctx).getUser();
                 String userLang = user.getLanguage();
@@ -166,6 +172,13 @@ public class MinervaWebapp extends RouteDefinitions {
                     String branch = user.getCurrentWorkspace().getBranch();
                     if (!"master".equals(branch)) {
                         page.put("branch0", esc(branch));
+                    }
+                    for (String lang : factory().getLanguages()) {
+                        DataMap map = list.add();
+                        map.put("lang", lang);
+                        map.put("previewTitle", NLS.get(userLang, "preview") + " " + lang.toUpperCase());
+                        map.put("previewlink", "/p/" + branch + "/" + user.getCurrentWorkspace()
+                            .getBooks().get(0).getBook().getFolder() + "/" + lang + "/" + PreviewPage.FIRST_PAGE);
                     }
                 }
             }

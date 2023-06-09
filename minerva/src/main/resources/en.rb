@@ -92,3 +92,4 @@ allNotes=All notes
 author=Author
 nodot=No.
 createdAt=Created
+preview=Preview
