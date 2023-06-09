@@ -8,7 +8,6 @@ import github.soltaufintel.amalia.web.action.Action;
 import github.soltaufintel.amalia.web.action.Escaper;
 import github.soltaufintel.amalia.web.config.AppConfig;
 
-// TODO Minerva-Logout -> Gitlab-Logout machen
 // TODO refresh token Sache...
 public class GitlabAuthAction extends Action {
     public static final Set<String> knownStates = new HashSet<>(); // TODO nicht die beste Technik das so zu machen,
