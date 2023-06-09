@@ -8,7 +8,7 @@ public class MoveSeitePage extends SPage {
     
     @Override
     protected void execute() {
-        header("Seite verschieben");
+        header(n("movePage"));
         put("pageTitle", esc(seite.getTitle()));
 
         StringBuilder gliederung = new StringBuilder();
