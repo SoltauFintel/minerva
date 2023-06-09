@@ -26,6 +26,16 @@
     margin-bottom: 3em;
 }
 
+.app-title {
+    color: black;
+    font-size: 18pt;
+    font-family: 'Shrikhand', cursive;
+}
+
+.h3max {
+    max-width: 800px;
+}
+
 .font8 {
     font-size: 8pt;
 }

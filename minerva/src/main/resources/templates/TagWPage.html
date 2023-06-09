@@ -16,7 +16,8 @@
                     <td><nobr><i class="fa fa-book greenbook"></i> <a href="{{s.booklink}}">{{s.book}}</a></nobr></td>
                     <td>
                         {{each tag in s.tags}}
-                            <span class="label label-tag"><a href="{{tag.link}}"><i class="fa fa-tag"></i> {{tag.tag}}</a></span>
+                            <span class="label label-tag"><a href="{{tag.link}}"><i class="fa fa-tag"></i>
+                                {{tag.tag}}</a></span>
                         {{/each}}
                     </td>
                 </tr>
