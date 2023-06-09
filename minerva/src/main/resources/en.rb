@@ -88,3 +88,7 @@ newTag=New tag
 anzahl=size
 page=Page
 book=Book
+allNotes=All notes
+author=Author
+nodot=No.
+createdAt=Created

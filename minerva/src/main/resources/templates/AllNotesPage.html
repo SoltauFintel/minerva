@@ -8,11 +8,11 @@
         <p>Branch: {{branch}}, Buch: <a href="/b/{{branch}}/{{bookFolder}}">{{bookTitle}}</a></p>
         <table class="table mt2">
             <tr style="background-color: #f5f5f5;">
-                <th>Nr.</th>
-                <th style="min-width: 300px; max-width: 800px;">Notiz</th>
-                <th>Autor</th>
-                <th style="min-width: 200px;">Seite</th>
-                <th style="width: 12em;">Erstellt am</th>
+                <th>{{N.nodot}}</th>
+                <th style="min-width: 300px; max-width: 800px;">{{N.note}}</th>
+                <th>{{N.author}}</th>
+                <th style="min-width: 200px;">{{N.page}}</th>
+                <th style="width: 12em;">{{N.createdAt}}</th>
             </tr>
             {{each n in notes}}
                 <tr>

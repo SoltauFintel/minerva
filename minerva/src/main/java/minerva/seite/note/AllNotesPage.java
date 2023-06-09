@@ -8,7 +8,6 @@ import com.github.template72.data.DataMap;
 import minerva.book.BPage;
 
 public class AllNotesPage extends BPage {
-    // TODO NLS
     
     @Override
     protected void execute() {
@@ -31,6 +30,6 @@ public class AllNotesPage extends BPage {
         }
         put("bookTitle", esc(book.getTitle()));
         putInt("n", allNotes.size());
-        header("Alle Notizen");
+        header(n("allNotes"));
     }
 }
