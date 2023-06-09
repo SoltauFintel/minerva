@@ -22,6 +22,11 @@ import minerva.user.UPage;
 
 /**
  * Gemeinsamer Code von OrderSeitePage und OrderTopLevelSeitePage
+ * 
+ * <p>Es gibt hier 3 Events: startEvent, movedEvent und endEvent. Beim startEvent wird eine Arbeitskopie gemacht,
+ * damit beim Abbruch die Original-Seiten nicht verändert werden. Beim movedEvent informiert die GUI über eine
+ * einzelne Drag & Drop Aktion = Seitenumordnung. Da gerade bei der Git-Persistenz das Speichern dauert, wird
+ * erst im endEvent gespeichert.</p>
  */
 public abstract class OrderSeiteService {
     private static final Map<String, SeitenSO> map = new HashMap<>(); // needs synchronized access
