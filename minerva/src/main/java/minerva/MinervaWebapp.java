@@ -12,6 +12,7 @@ import github.soltaufintel.amalia.web.action.Page;
 import github.soltaufintel.amalia.web.action.PageInitializer;
 import github.soltaufintel.amalia.web.builder.WebAppBuilder;
 import github.soltaufintel.amalia.web.route.RouteDefinitions;
+import minerva.auth.Login2Page;
 import minerva.auth.MinervaAuth;
 import minerva.base.MessagePage;
 import minerva.base.MinervaError404Page;
@@ -133,6 +134,8 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/gitlab-auth", GitlabAuthAction.class);
         get("/gitlab-auth-callback", GitlabAuthCallbackAction.class);
         addNotProtected("/gitlab-auth");
+        form("/login2", Login2Page.class);
+        addNotProtected("/login2");
     }
 
     public static void main(String[] args) {

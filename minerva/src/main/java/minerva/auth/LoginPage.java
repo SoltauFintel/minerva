@@ -30,7 +30,8 @@ public class LoginPage extends Page {
         // Kann User angemeldet werden?
         User user = loginService.login(login, password);
         if (user == null) { // Nein...
-            ctx.redirect("/login?m=f");
+            String name = getClass().getSimpleName().replace("Page", "").toLowerCase();
+            ctx.redirect("/" + name + "?m=f");
             return;
         }
         
