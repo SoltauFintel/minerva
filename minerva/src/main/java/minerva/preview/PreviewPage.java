@@ -2,6 +2,8 @@ package minerva.preview;
 
 import java.util.List;
 
+import org.pmw.tinylog.Logger;
+
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
@@ -29,6 +31,7 @@ public class PreviewPage extends SPage {
     @Override
     protected void execute() {
         String lang = ctx.pathParam("lang");
+        Logger.info(user.getUser().getLogin() + " | " + branch + " | " + lang + " | " + seite.getTitle());
 
         put("title", esc(seite.getSeite().getTitle().getString(lang)) + " - " + n("preview") + " " + lang.toUpperCase()
                 + TITLE_POSTFIX);
