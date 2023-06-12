@@ -168,7 +168,7 @@ public class MinervaWebapp extends RouteDefinitions {
                 String userLang = user.getLanguage();
                 page.put("abmelden", NLS.get(userLang, "logout"));
                 page.put("booksLabel", NLS.get(userLang, "books"));
-                if (user.getCurrentWorkspace() != null) {
+                if (user.getCurrentWorkspace() != null && !user.getCurrentWorkspace().getBooks().isEmpty()) {
                     String branch = user.getCurrentWorkspace().getBranch();
                     if (!"master".equals(branch)) {
                         page.put("branch0", esc(branch));
@@ -177,8 +177,9 @@ public class MinervaWebapp extends RouteDefinitions {
                         DataMap map = list.add();
                         map.put("lang", lang);
                         map.put("previewTitle", NLS.get(userLang, "preview") + " " + lang.toUpperCase());
-                        map.put("previewlink", "/p/" + branch + "/" + user.getCurrentWorkspace()
-                            .getBooks().get(0).getBook().getFolder() + "/" + lang + "/" + PreviewPage.FIRST_PAGE);
+                        map.put("previewlink", "/p/" + branch + "/"
+                                        + user.getCurrentWorkspace().getBooks().get(0).getBook().getFolder() + "/"
+                                        + lang + "/" + PreviewPage.FIRST_PAGE);
                     }
                 }
             }
