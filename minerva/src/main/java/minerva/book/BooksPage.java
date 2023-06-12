@@ -1,5 +1,7 @@
 package minerva.book;
 
+import org.pmw.tinylog.Logger;
+
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
@@ -30,7 +32,12 @@ public class BooksPage extends UPage {
         String hash = "";
         String hash7 = "";
         if (MinervaWebapp.factory().isGitlab()) {
-            hash = MinervaWebapp.factory().getGitlabRepository().getCommitHashOfHead(workspace);
+            try {
+                hash = MinervaWebapp.factory().getGitlabRepository().getCommitHashOfHead(workspace);
+            } catch (Exception e) {
+                Logger.error("Can't load hash of HEAD commit.");
+                hash = "";
+            }
             if (hash != null && hash.length() > 7) {
                 hash7 = hash.substring(0, 7);
             }
@@ -42,11 +49,14 @@ public class BooksPage extends UPage {
         put("hash7", esc(hash7));
         put("migrationAllowed", "1".equals(System.getenv("MINERVA_MIGRATION")));
         DataList list = list("books");
-        for (BookSO book : books) {
-            DataMap map = list.add();
-            map.put("title", esc(book.getBook().getTitle().getString(userLang)));
-            map.put("folder", esc(book.getBook().getFolder()));
+        if (books != null) {
+            for (BookSO book : books) {
+                DataMap map = list.add();
+                map.put("title", esc(book.getBook().getTitle().getString(userLang)));
+                map.put("folder", esc(book.getBook().getFolder()));
+            }
         }
+        put("booksOk", books != null);
         
         DataList list2 = list("langs");
         for (String lang : langs) {

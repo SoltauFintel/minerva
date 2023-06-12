@@ -35,7 +35,6 @@ import minerva.model.BookSO;
 import minerva.model.BooksSO;
 import minerva.model.StatesSO;
 import minerva.model.UserSO;
-import minerva.model.WorkspaceSO;
 import minerva.persistence.gitlab.GitlabAuthAction;
 import minerva.persistence.gitlab.GitlabAuthCallbackAction;
 import minerva.preview.PreviewPage;
@@ -154,25 +153,38 @@ public class MinervaWebapp extends RouteDefinitions {
         
         @Override
         public void initPage(Context ctx, Page page) {
-            page.put("title", "Minerva");
             WebContext wctx = new WebContext(ctx);
             boolean hasUser = wctx.session().isLoggedIn();
+            String branch = "";
+            BooksSO books = null;
+            String userLang = "de";
+            if (hasUser) {
+                UserSO user = StatesSO.get(ctx).getUser();
+                userLang = user.getLanguage();
+                if (user.getCurrentWorkspace() != null) {
+                    branch = user.getCurrentWorkspace().getBranch();
+                    if (user.getCurrentWorkspace().getBooks() != null //
+                            && !user.getCurrentWorkspace().getBooks().isEmpty()) {
+                        books = user.getCurrentWorkspace().getBooks();
+                    }
+                }
+            }
+
+            page.put("title", "Minerva");
             page.put("abmelden", "Abmelden");
             page.put("hasUser", hasUser);
             page.put("user", esc(wctx.session().getLogin()));
             page.put("gitlab", factory().getConfig().isGitlab());
             page.put("booksLabel", "Bücher");
             page.put("branch0", "");
-            booksForMenu(ctx, page, hasUser);
+            booksForMenu(hasUser, userLang, books, page);
             page.put("isCustomerVersion", MinervaWebapp.factory().isCustomerVersion());
+            page.put("branch", esc(branch));
             DataList list = page.list("langsForMenu");
             if (hasUser) {
-                UserSO user = StatesSO.get(ctx).getUser();
-                String userLang = user.getLanguage();
                 page.put("abmelden", NLS.get(userLang, "logout"));
                 page.put("booksLabel", NLS.get(userLang, "books"));
-                if (user.getCurrentWorkspace() != null && !user.getCurrentWorkspace().getBooks().isEmpty()) {
-                    String branch = user.getCurrentWorkspace().getBranch();
+                if (books != null) {
                     if (!"master".equals(branch)) {
                         page.put("branch0", esc(branch));
                     }
@@ -181,32 +193,26 @@ public class MinervaWebapp extends RouteDefinitions {
                         map.put("lang", lang);
                         map.put("previewTitle", NLS.get(userLang, "preview") + " " + lang.toUpperCase());
                         map.put("previewlink", "/p/" + branch + "/"
-                                        + user.getCurrentWorkspace().getBooks().get(0).getBook().getFolder() + "/"
+                                        + books.get(0).getBook().getFolder() + "/"
                                         + lang + "/" + PreviewPage.FIRST_PAGE);
                     }
                 }
             }
         }
 
-        private void booksForMenu(Context ctx, Page page, boolean hasUser) {
+        private void booksForMenu(boolean hasUser, String userLang, BooksSO books, Page page) {
             DataList list = page.list("booksForMenu");
             page.put("bookslinkForMenu", "/w");
             if (!hasUser) {
-                page.put("branch", "");
                 return;
             }
-            UserSO user = StatesSO.get(ctx).getUser();
-            String userLang = user.getLanguage();
-            WorkspaceSO workspace = user.getCurrentWorkspace();
-            if (workspace != null) {
-                BooksSO books = workspace.getBooks();
+            if (books != null) {
                 for (BookSO book : books) {
                     DataMap map = list.add();
                     map.put("folder", esc(book.getBook().getFolder()));
                     map.put("title", esc(book.getBook().getTitle().getString(userLang)));
                 }
             }
-            page.put("branch", esc(workspace.getBranch()));
         }
     }
     
