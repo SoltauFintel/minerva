@@ -61,6 +61,17 @@
     color: #090;
 }
 
+.btn-gitlab {
+    color: black;
+    background-color: #fc6d26;
+    min-width: 300px;
+}
+
+.btn-gitlab:hover {
+    color: black;
+    background-color: #090;
+}
+
 .ck-balloon-panel {
     z-index: 1040 !important;
 }
