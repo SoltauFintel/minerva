@@ -33,7 +33,7 @@ public class GitlabAuthCallbackAction extends Action {
                     "&code=" + u(code) + //
                     "&grant_type=authorization_code&redirect_uri=" + u(cfg.get("gitlab-auth-callback"));
 
-            Answer answer = new REST("http://localhost:8000/oauth/token").post(param).fromJson(Answer.class);
+            Answer answer = new REST(cfg.get("gitlab.url") + "/oauth/token").post(param).fromJson(Answer.class);
 
             try (GitLabApi gitLabApi = GitFactory.initWithAccessToken(answer.getAccess_token())) {
                 User currentUser = gitLabApi.getUserApi().getCurrentUser();
