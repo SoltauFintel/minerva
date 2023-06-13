@@ -15,6 +15,7 @@ import minerva.base.FileService;
 import minerva.base.MList;
 
 public class WorkspacesSO extends MList<WorkspaceSO> {
+    public static final String MINERVA_BRANCH = "minerva";
     private final String userFolder;
 
     public WorkspacesSO(UserSO user, String userFolder) {
@@ -58,7 +59,7 @@ if (!workspaceFolders.contains("migration")) workspaceFolders.add("migration"); 
     public List<String> getAddableBranches(WorkspaceSO ref) {
         ref.pull();
         List<String> ret = MinervaWebapp.factory().getGitlabRepository().getBranches(ref);
-        ret.removeIf(branch -> branch.endsWith("-minerva"));
+        ret.removeIf(branch -> branch.toLowerCase().contains(MINERVA_BRANCH));
         for (WorkspaceSO w : this) {
             ret.remove(w.getBranch());
         }
