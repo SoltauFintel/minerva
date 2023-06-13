@@ -23,10 +23,6 @@ public class PreviewBookPage extends BPage {
         put("titel", esc(book.getBook().getTitle().getString(lang)));
         put("hasPrevlink", false);
         put("hasNextlink", false);
-
-        StringBuilder gliederung = new StringBuilder();
-        fillSeiten(branch, bookFolder, book.getSeiten(), lang, gliederung, book.getBook().isSorted());
-        put("gliederung", gliederung.toString());
         
         DataList list = list("books");
         for (BookSO b : books) {
@@ -34,17 +30,22 @@ public class PreviewBookPage extends BPage {
             map.put("title", esc(b.getBook().getTitle().getString(lang)));
             map.put("link", "/p/" + branch + "/" + b.getBook().getFolder() + "/" + lang);
         }
+        
+        StringBuilder gliederung = new StringBuilder();
+        fillSeiten(branch, bookFolder, book.getSeiten(), lang, gliederung, book.getBook().isSorted());
+        put("gliederung", gliederung.toString());
     }
 
+    // similar to BookPage
     private void fillSeiten(String branch, String bookFolder, SeitenSO seiten, String lang, StringBuilder gliederung,
             boolean sorted) {
         // Wegen der Rekursion ist eine Template-Datei nicht sinnvoll.
         gliederung.append("<ul>\n");
         for (SeiteSO seite : seiten) {
+            String title = esc(seite.getSeite().getTitle().getString(lang));
             String link = "/p/" + branch + "/" + bookFolder + "/" + lang + "/" + esc(seite.getSeite().getId());
-            gliederung.append("\t<li id=\"" + seite.getId() + "\"><a href=\"" + link + "\""
-                    + ">" + esc(seite.getSeite().getTitle().getString(lang)) + "</a>" + "</li>\n");
-            fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, true);
+            gliederung.append("\t<li id=\"" + seite.getId() + "\"><a href=\"" + link + "\">" + title + "</a></li>\n");
+            fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, true); // recursive
         }
         gliederung.append("</ul>\n");
     }
