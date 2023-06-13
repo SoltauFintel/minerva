@@ -40,6 +40,10 @@
     font-size: 8pt;
 }
 
+.movePageCurrent {
+    font-weight: bold;
+}
+
 .breadcrumbs {
     font-size: 8pt;
     margin-top: 1em;

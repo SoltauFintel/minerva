@@ -13,25 +13,24 @@ public class MoveSeitePage extends SPage {
         put("pageTitle", esc(seite.getTitle()));
 
         StringBuilder gliederung = new StringBuilder();
-/* TODO Baustelle        
-        gliederung.append("<ul><li><a href=\"" + viewlink
-                + "/move-ack?parentid=root\">" + esc(book.getTitle()) + "</a> (" + n("book") + ")</li>");
-        gliederung.append("<ul><li>"
-                + "<i class=\"fa fa-book\" style=\"color: #090;\"></i> "
-                + "<a href=\"/s/" + branch + "/" + bookFolder + "/" + esc(id) + "/moved?parentid=root\">"
-                + esc(book.getTitle()) + "</a></li>");
-*/
+        gliederung.append("<ul>");
+        book(book, viewlink + "/move-ack?parentid=root", gliederung);
+        
         fillSeiten(branch, bookFolder, book.getSeiten(), user.getLanguage(), gliederung, false);
-        for (BookSO b : book.getWorkspace().getBooks()) {
-            String bf = b.getBook().getFolder();
+        
+        for (BookSO otherBook : book.getWorkspace().getBooks()) {
+            String bf = otherBook.getBook().getFolder();
             if (!bf.equals(bookFolder)) {
-                gliederung.append("<li><a href=\"" + viewlink + "/move-ack?folder="
-                        + Escaper.urlEncode(bf, "") + "\">" + b.getTitle() + "</a> ("
-                        + n("otherBook") + ")</li>");
+                book(otherBook, viewlink + "/move-ack?folder=" + Escaper.urlEncode(bf, ""), gliederung);
             }
         }
         gliederung.append("</ul>");
         put("gliederung", gliederung.toString());
+    }
+    
+    private void book(BookSO book, String href, StringBuilder gliederung) {
+        gliederung.append("<li class=\"mt1\"><i class=\"fa fa-book greenbook\"></i> "
+                + "<a href=\"" + href + "\">" + esc(book.getTitle()) + "</a></li>");
     }
 
     private void fillSeiten(String branch, String bookFolder, SeitenSO seiten, String lang,
@@ -43,7 +42,7 @@ public class MoveSeitePage extends SPage {
                 gliederung.append("\t<li>" + esc(seite.getSeite().getTitle().getString(lang)) + "</li>\n");
                 fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, true);
             } else if (seite.getId().equals(id)) {
-                gliederung.append("\t<li style=\"font-weight: bold;\">"
+                gliederung.append("\t<li class=\"movePageCurrent\">"
                         + esc(seite.getSeite().getTitle().getString(lang)) + "</li>\n");
                 fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, true);
             } else if (this.seite.getSeite().getParentId().equals(seite.getId())) {
