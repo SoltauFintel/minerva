@@ -23,13 +23,15 @@ import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.Seite;
 
+/**
+ * This migration is based on the Confluence export for the online help (.html files).
+ */
 public class ConfluenceToMinervaMigrationService {
     private final File sourceFolder;
     private final WorkspaceSO workspace;
     private final List<String> langs;
     private ConfluencePage root_de;
     private ConfluencePage root_en;
-    public int gef = 0, gesamt = 0;
     private File htmlSourceFolder;
     private Map<String, String> deEnMap;
     private List<EnglishSoloPage> englishSoloPages;
