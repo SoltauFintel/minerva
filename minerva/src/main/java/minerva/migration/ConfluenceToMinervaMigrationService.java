@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.IdGenerator;
@@ -309,6 +311,12 @@ public class ConfluenceToMinervaMigrationService {
     }
 
     private String processHTML(String html) {
+        // remove toc
+        if (html.contains("toc-macro")) {
+            Document doc = Jsoup.parse(html);
+            doc.selectXpath("//div[contains(@class,'toc-macro')]").remove();
+            html = doc.toString();
+        }
         // Links
         Set<String> href = extract(html, "href=\"");
         for (String h : href) {
