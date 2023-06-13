@@ -15,6 +15,8 @@ import org.pmw.tinylog.Logger;
 
 import minerva.base.FileService;
 import minerva.model.WorkspaceSO;
+import minerva.seite.ChangeFile;
+import minerva.seite.IMoveFile;
 import minerva.seite.MoveFile;
 
 /**
@@ -128,22 +130,28 @@ public abstract class AbstractDirAccess implements DirAccess {
     }
     
     @Override
-    public void moveFiles(List<MoveFile> files, String commitMessage, WorkspaceSO workspace) {
-        for (MoveFile f : files) {
-            File source = new File(f.getOldFile());
-            File target = new File(f.getNewFile());
-            if (!source.exists()) {
-                Logger.warn("(move-to-book) " + source.getAbsolutePath() + " not found. -> skipped");
-            } else if (source.isDirectory()) {
-                try {
-                    FileUtils.moveDirectory(source, target);
-                } catch (IOException e) {
-                    Logger.error(e, "Error moving folder " + source.getAbsolutePath());
-                    throw new RuntimeException("Error moving images folder to other book! Please pull workspace!");
+    public void moveFiles(List<IMoveFile> files, String commitMessage, WorkspaceSO workspace) {
+        for (IMoveFile f : files) {
+            if (f instanceof MoveFile mf) {
+                File source = new File(mf.getOldFile());
+                File target = new File(mf.getNewFile());
+                if (!source.exists()) {
+                    Logger.warn("(move-to-book) " + source.getAbsolutePath() + " not found. -> skipped");
+                } else if (source.isDirectory()) {
+                    try {
+                        FileUtils.moveDirectory(source, target);
+                    } catch (IOException e) {
+                        Logger.error(e, "Error moving folder " + source.getAbsolutePath());
+                        throw new RuntimeException("Error moving images folder to other book! Please pull workspace!");
+                    }
+                } else if (source.isFile()) {
+                    target.getParentFile().mkdirs();
+                    source.renameTo(target);
                 }
-            } else if (source.isFile()) {
-                target.getParentFile().mkdirs();
-                source.renameTo(target);
+            } else if (f instanceof ChangeFile cf) {
+                FileService.savePlainTextFile(new File(cf.getFilename()), cf.getContent());
+            } else if (f != null) {
+                Logger.error("Unknown IMoveFile class: " + f.getClass().getName());
             }
         }
     }

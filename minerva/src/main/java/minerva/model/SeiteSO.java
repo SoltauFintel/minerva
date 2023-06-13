@@ -21,8 +21,9 @@ import minerva.access.MultiPurposeDirAccess;
 import minerva.base.NlsString;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
+import minerva.seite.ChangeFile;
+import minerva.seite.IMoveFile;
 import minerva.seite.MoveFile;
-import minerva.seite.MoveFolder;
 import minerva.seite.Seite;
 
 public class SeiteSO implements ISeite {
@@ -257,28 +258,33 @@ public class SeiteSO implements ISeite {
         BookSO targetBook = workspace.getBooks().byFolder(targetBookFolder);
         int newPosition = targetBook.getSeiten().calculateNextPosition();
         
-        List<MoveFile> files = new ArrayList<>();
+        List<IMoveFile> files = new ArrayList<>();
+        changePageTo(newPosition, files);
         movePageToBookTo(targetBook, langs, files);
-        String commitMessage = "moved page " + getTitle() + " to book " + targetBookFolder;
-        dao().moveFiles(files, commitMessage + " (commit 1/2)", workspace);
-        // From now on the files are in the other book folder!
+        String commitMessage = "moved page \"" + getTitle() + "\" (#" + getId() + ") to book " + targetBookFolder;
+        dao().moveFiles(files, commitMessage, workspace);
         
         workspace.pull();
-        // From now there are new objects in memory!
-        
-        targetBook = workspace.getBooks().byFolder(targetBookFolder); // retrieve again
-        SeiteSO newSeite = targetBook.getSeiten().byId(getId()); // retrieve again
-        newSeite.getSeite().setPosition(newPosition);
-        newSeite.getSeite().setParentId(ROOT_ID);
-        newSeite.saveMeta(commitMessage + " (commit 2/2)");
     }
     
-    public void movePageToBookTo(BookSO targetBook, List<String> langs, List<MoveFile> files) {
+    private void changePageTo(int newPosition, List<IMoveFile> files) {
+        seite.setParentId(ROOT_ID);
+        seite.setPosition(newPosition);
+        files.add(new ChangeFile(filenameMeta(), StringService.prettyJSON(seite)));
+    }
+    
+    private void movePageToBookTo(BookSO targetBook, List<String> langs, List<IMoveFile> files) {
         files.add(new MoveFile(filenameMeta(), targetBook.getFolder() + "/" + getId() + META_SUFFIX));
+        
+        // html files for all languages
         for (String lang : langs) {
             files.add(new MoveFile(filenameHtml(lang), targetBook.getFolder() + "/" + lang + "/" + getId() + ".html"));
         }
-        files.add(new MoveFolder(book.getFolder() + "/img/" + getId(), targetBook.getFolder() + "/img/" + getId()));
+        
+        // img folder
+        files.add(new MoveFile(book.getFolder() + "/img/" + getId(), targetBook.getFolder() + "/img/" + getId()));
+        
+        // subpages
         for (SeiteSO seite : seiten) {
             seite.movePageToBookTo(targetBook, langs, files); // recursive
         }

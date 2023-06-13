@@ -99,9 +99,9 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/s/:branch/:book/:parentid/add", AddSeiteAction.class);
         form("/s/:branch/:book/:id/order", OrderSeitePage.class);
         get("/s/:branch/:book/:id/sort", SortSeiteAction.class);
-        get("/s/:branch/:book/:id/move", MoveSeitePage.class);
+        get("/s/:branch/:book/:id/move", MoveSeitePage.class); // TODO move-select-target
         get("/s/:branch/:book/:id/move-ack", MoveSeiteAckPage.class);
-        get("/s/:branch/:book/:id/moved", MoveSeiteAction.class);
+        get("/s/:branch/:book/:id/moved", MoveSeiteAction.class); // TODO move
         
         // Image
         post("/s-image-upload/:branch/:book/:id", ImageUploadAction.class);

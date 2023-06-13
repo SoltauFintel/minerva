@@ -9,6 +9,7 @@ import minerva.MinervaWebapp;
 import minerva.access.AbstractDirAccess;
 import minerva.model.GitlabRepositorySO;
 import minerva.model.WorkspaceSO;
+import minerva.seite.IMoveFile;
 import minerva.seite.MoveFile;
 
 public class GitlabDirAccess extends AbstractDirAccess {
@@ -33,12 +34,14 @@ public class GitlabDirAccess extends AbstractDirAccess {
     }
     
     @Override
-    public void moveFiles(List<MoveFile> files, String commitMessage, WorkspaceSO workspace) {
+    public void moveFiles(List<IMoveFile> files, String commitMessage, WorkspaceSO workspace) {
         Set<String> add = new HashSet<>();
         Set<String> rm = new HashSet<>();
-        for (MoveFile f : files) {
-            add.add(f.getNewFile());
-            rm.add(f.getOldFile());
+        for (IMoveFile f : files) {
+            if (f instanceof MoveFile mf) {
+                add.add(mf.getNewFile());
+                rm.add(mf.getOldFile());
+            }
         }
         repo.push(commitMessage, workspace, add, rm,
                 () -> super.moveFiles(files, commitMessage, workspace));

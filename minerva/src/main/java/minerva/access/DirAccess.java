@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import minerva.model.WorkspaceSO;
-import minerva.seite.MoveFile;
+import minerva.seite.IMoveFile;
 
 /**
  * That's an generic DAO.
@@ -47,5 +47,5 @@ public interface DirAccess {
      */
     void deleteFiles(Set<String> filenames, String commitMessage, WorkspaceSO workspace, List<String> cantBeDeleted);
 
-    void moveFiles(List<MoveFile> files, String commitMessage, WorkspaceSO workspace);
+    void moveFiles(List<IMoveFile> files, String commitMessage, WorkspaceSO workspace);
 }

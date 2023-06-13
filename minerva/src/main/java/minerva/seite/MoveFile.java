@@ -1,6 +1,9 @@
 package minerva.seite;
 
-public class MoveFile {
+/**
+ * Move file (without changing its content) or move whole folder
+ */
+public class MoveFile implements IMoveFile {
     private final String oldFile;
     private final String newFile;
 
