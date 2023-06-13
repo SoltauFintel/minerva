@@ -14,19 +14,6 @@ import minerva.seite.NavigateService;
 import minerva.seite.SPage;
 
 public class PreviewPage extends SPage {
-    // TODO Die _1 Seite muss die Gliederung anzeigen.
-    public static final String FIRST_PAGE = "_1";
-    
-    @Override
-    protected SeiteSO getSeite() {
-        if (FIRST_PAGE.equals(id)) {
-            if (book.getSeiten().isEmpty()) {
-                throw new RuntimeException("Empty book can not be displayed.");
-            }
-            id = book.getSeiten().get(0).getId();
-        }
-        return super.getSeite();
-    }
     
     @Override
     protected void execute() {
@@ -49,7 +36,7 @@ public class PreviewPage extends SPage {
         for (BookSO b : books) {
             DataMap map = list.add();
             map.put("title", esc(b.getBook().getTitle().getString(lang)));
-            map.put("link", "/p/" + branch + "/" + b.getBook().getFolder() + "/" + lang + "/" + FIRST_PAGE);
+            map.put("link", "/p/" + branch + "/" + b.getBook().getFolder() + "/" + lang);
         }
     }
     
@@ -69,7 +56,7 @@ public class PreviewPage extends SPage {
             map.put("title", esc(b.getTitle().getString(lang)));
             String link = b.getLink();
             if (link.startsWith("/b/")) { // book link
-                link = link.replace("/b/", "/p/") + "/" + lang + "/" + FIRST_PAGE;
+                link = link.replace("/b/", "/p/") + "/" + lang;
             } else { // page link
                 link = link.replace("/s/", "/p/");
                 int o = link.lastIndexOf("/");

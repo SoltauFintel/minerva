@@ -37,6 +37,7 @@ import minerva.model.StatesSO;
 import minerva.model.UserSO;
 import minerva.persistence.gitlab.GitlabAuthAction;
 import minerva.persistence.gitlab.GitlabAuthCallbackAction;
+import minerva.preview.PreviewBookPage;
 import minerva.preview.PreviewPage;
 import minerva.seite.AddSeiteAction;
 import minerva.seite.DeleteSeitePage;
@@ -126,6 +127,7 @@ public class MinervaWebapp extends RouteDefinitions {
 
         // Preview
         get("/p/:branch/:book/:lang/:id", PreviewPage.class);
+        get("/p/:branch/:book/:lang", PreviewBookPage.class);
 
         // Sonstiges
         get("/message", MessagePage.class);
@@ -192,9 +194,8 @@ public class MinervaWebapp extends RouteDefinitions {
                         DataMap map = list.add();
                         map.put("lang", lang);
                         map.put("previewTitle", NLS.get(userLang, "preview") + " " + lang.toUpperCase());
-                        map.put("previewlink", "/p/" + branch + "/"
-                                        + books.get(0).getBook().getFolder() + "/"
-                                        + lang + "/" + PreviewPage.FIRST_PAGE);
+                        String folder = books.get(0).getBook().getFolder();
+                        map.put("previewlink", "/p/" + branch + "/" + folder + "/" + lang);
                     }
                 }
             }
