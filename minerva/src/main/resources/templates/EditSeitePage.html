@@ -71,12 +71,14 @@ function MyCustomUploadAdapterPlugin( editor ) {
 {{/each}}
 
 document.querySelector('#submit').addEventListener('click', () => {
-    $.post("{{postcontentslink}}", {
-        {{each L in languages}}
-            content{{L.LANG}}: editor{{L.LANG}}.getData(),
-        {{/each}}
-        version: document.querySelector('#version').value
-    });
+    setTimeout(function() { // Firefox problem NS_BINDING_ABORTED
+        $.post("{{postcontentslink}}", {
+            {{each L in languages}}
+                content{{L.LANG}}: editor{{L.LANG}}.getData(),
+            {{/each}}
+            version: document.querySelector('#version').value
+        });
+    }, 0);
 } );
 
 $('#langTabs a').click(function (e) {
