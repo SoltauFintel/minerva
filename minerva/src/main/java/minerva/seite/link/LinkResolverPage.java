@@ -94,7 +94,7 @@ public class LinkResolverPage extends SPage {
             String link = pre + "&s=" + Escaper.urlEncode(seite.getId(), "");
             html += addResult(link, n("linkResolver1").replace("$t", esc(seite.getTitle())), nr++);
         }
-        html += addResult(pre, n("linkResolver0"), nr);
+        html += addResult(pre, "<i class=\"fa fa-ban\"></i> " + n("linkResolver0"), nr);
         return html;
     }
 
