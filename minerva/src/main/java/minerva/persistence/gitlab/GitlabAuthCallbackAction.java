@@ -24,10 +24,7 @@ public class GitlabAuthCallbackAction extends Action {
             ctx.redirect("/");
         } else if (GitlabAuthAction.knownStates.contains(state)) {
             // state ok
-            Logger.info("GitlabAuthCallback " + ctx.method() + " | state is ok | code received");
-
             AppConfig cfg = new AppConfig();
-
             String param = "client_id=" + u(cfg.get("gitlab-appid")) + //
                     "&client_secret=" + u(cfg.get("gitlab-secret")) + //
                     "&code=" + u(code) + //
@@ -44,9 +41,7 @@ public class GitlabAuthCallbackAction extends Action {
                 user.setAccessToken(answer.getAccess_token());
                 user.setRefreshToken(answer.getRefresh_token());
                 LoginPage.login2(ctx, login, user);
-                Logger.info("--------------------------------");
-                Logger.info("Login by OAuth2 access token ok. " + login + ", " + mail);
-                Logger.info("--------------------------------");
+                Logger.info("Login by OAuth2 access token ok. " + login + " <" + mail + ">");
                 // kein Redirect, ich versteh nicht warum. Denn andernfalls tritt IllegalStateException auf.
             } catch (GitLabApiException e) {
                 Logger.error(e);
