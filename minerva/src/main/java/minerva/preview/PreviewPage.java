@@ -28,7 +28,7 @@ public class PreviewPage extends SPage {
         fillBreadcrumbs(lang, list("breadcrumbs"));
         
         String onlyBookFolder = "/p/" + branch + "/" + bookFolder + "/" + lang + "/";
-        NavigateService nav = new NavigateService();
+        NavigateService nav = new NavigateService(true, lang);
         navlink("prevlink", nav.previousPage(seite), id, onlyBookFolder);
         navlink("nextlink", nav.nextPage(seite), id, onlyBookFolder);
         
