@@ -212,8 +212,9 @@ public class ConfluenceToMinervaMigrationService {
         
         Seite seite = tp.getSeite();
         seite.setSorted(false);
-        seite.getTitle().setString("de", sp.getTitle());
-        seite.getTitle().setString("en", en == null ? "#en " + sp.getTitle() : en.getTitle());
+        seite.getTitle().setString("de", removeUnderscores(sp.getTitle()));
+        seite.getTitle().setString("en", en == null ?
+                "#en " + removeUnderscores(sp.getTitle()) : removeUnderscores(en.getTitle()));
         seite.getTags().addAll(sp.getLabels());
 
         String html = FileService.loadPlainTextFile(new File(htmlSourceFolder, sp.getId() + ".html"));
@@ -234,6 +235,16 @@ public class ConfluenceToMinervaMigrationService {
             SeiteSO subTp = tp.getSeiten().createSeite(tp, tp.getBook(), sub.getId());
             migratePage(sub, subTp, files);
         }
+    }
+
+    private String removeUnderscores(String title) {
+        while (title.endsWith("_")) {
+            title = title.substring(0, title.length() - 1).trim();
+        }
+        while (title.startsWith("_")) {
+            title = title.substring(1).trim();
+        }
+        return title.isEmpty() ? "#empty" : title;
     }
 
     private void migrateEnglishPage(ConfluencePage sp, SeiteSO tp, Map<String, String> files) {
