@@ -31,21 +31,27 @@ public class PreviewBookPage extends BPage {
             map.put("link", "/p/" + branch + "/" + b.getBook().getFolder() + "/" + lang);
         }
         
+        long start = System.currentTimeMillis();
         StringBuilder gliederung = new StringBuilder();
         fillSeiten(branch, bookFolder, book.getSeiten(), lang, gliederung, book.getBook().isSorted());
         put("gliederung", gliederung.toString());
+        Logger.debug("Preview gliederung " + (System.currentTimeMillis() - start) + "ms");
     }
 
-    // similar to BookPage
     private void fillSeiten(String branch, String bookFolder, SeitenSO seiten, String lang, StringBuilder gliederung,
             boolean sorted) {
         // Wegen der Rekursion ist eine Template-Datei nicht sinnvoll.
         gliederung.append("<ul>\n");
         for (SeiteSO seite : seiten) {
-            String title = esc(seite.getSeite().getTitle().getString(lang));
-            String link = "/p/" + branch + "/" + bookFolder + "/" + lang + "/" + esc(seite.getSeite().getId());
-            gliederung.append("\t<li id=\"" + seite.getId() + "\"><a href=\"" + link + "\">" + title + "</a></li>\n");
-            fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, true); // recursive
+            int hasContent = seite.hasContent(lang);
+            if (hasContent > 0) {
+                String title = esc(seite.getSeite().getTitle().getString(lang));
+                String link = "/p/" + branch + "/" + bookFolder + "/" + lang + "/" + esc(seite.getSeite().getId());
+                String nc = hasContent == 2 ? " class=\"noContent\"" : "";
+                gliederung.append("\t<li id=\"" + seite.getId() + "\"><a href=\"" + link + "\"" + nc + ">" + title
+                        + "</a></li>\n");
+                fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, true); // recursive
+            }
         }
         gliederung.append("</ul>\n");
     }

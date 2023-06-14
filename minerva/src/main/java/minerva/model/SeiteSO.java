@@ -11,6 +11,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.pmw.tinylog.Logger;
 
 import com.google.gson.Gson;
@@ -374,5 +377,32 @@ public class SeiteSO implements ISeite {
 
     private DirAccess dao() {
         return book.dao();
+    }
+
+    /**
+     * @return 1: page is not empty, 2: page is empty, but at least one subpage is not empty,
+     * 0: page and subpages are empty, 3: error (which should be interpreted as "page is not empty"
+     * to be on the safe side)
+     */
+    public int hasContent(String lang) {
+        // In theory, this approach is a bit expensive since all content must be loaded and must be parsed.
+        // However in practice it takes less than 0.4 seconds on the first call.
+        try {
+            String html = getContent().getString(lang);
+            Document doc = Jsoup.parse(html);
+            Elements body = doc.select("body");
+            if (body != null && !body.isEmpty() && body.get(0).childrenSize() > 0) {
+                return 1;
+            }
+            for (SeiteSO sub : seiten) {
+                if (sub.hasContent(lang) > 0) {
+                    return 2;
+                }
+            }
+            return 0;
+        } catch (Exception e) {
+            Logger.error(e);
+            return 3;
+        }
     }
 }
