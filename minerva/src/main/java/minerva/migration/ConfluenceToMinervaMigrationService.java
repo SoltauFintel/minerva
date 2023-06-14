@@ -251,8 +251,8 @@ public class ConfluenceToMinervaMigrationService {
     private void migrateEnglishPage(ConfluencePage sp, SeiteSO tp, Map<String, String> files) {
         Seite seite = tp.getSeite();
         seite.setSorted(false);
-        seite.getTitle().setString("de", "//" + sp.getTitle());
-        seite.getTitle().setString("en", sp.getTitle());
+        seite.getTitle().setString("de", "//" + removeUnderscores(sp.getTitle()));
+        seite.getTitle().setString("en", removeUnderscores(sp.getTitle()));
         seite.getTags().addAll(sp.getLabels());
 
         String html = FileService.loadPlainTextFile(new File(htmlSourceFolder, sp.getId() + ".html"));
