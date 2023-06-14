@@ -95,3 +95,4 @@ nodot=Nr.
 createdAt=Erstellt am
 preview=Vorschau
 otherBook=anderes Buch
+reindex=Erneut indizieren

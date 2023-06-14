@@ -39,6 +39,8 @@ import minerva.persistence.gitlab.GitlabAuthAction;
 import minerva.persistence.gitlab.GitlabAuthCallbackAction;
 import minerva.preview.PreviewBookPage;
 import minerva.preview.PreviewPage;
+import minerva.search.SearchPage;
+import minerva.search.indexing.IndexWorkspaceAction;
 import minerva.seite.AddSeiteAction;
 import minerva.seite.DeleteSeitePage;
 import minerva.seite.EditSeitePage;
@@ -82,6 +84,8 @@ public class MinervaWebapp extends RouteDefinitions {
         // Book
         get("/b/:branch", BooksPage.class);
         form("/b/:branch/add", AddBookPage.class);
+        get("/b/:branch/index", IndexWorkspaceAction.class);
+        get("/b/:branch/search", SearchPage.class);
         form("/b/:branch/:book/edit", EditBookPage.class);
         get("/b/:branch/:book/delete", DeleteBookPage.class);
         get("/b/:branch/select-language/:lang", SelectLanguageAction.class);
@@ -128,7 +132,7 @@ public class MinervaWebapp extends RouteDefinitions {
         // Preview
         get("/p/:branch/:book/:lang/:id", PreviewPage.class);
         get("/p/:branch/:book/:lang", PreviewBookPage.class);
-
+        
         // Sonstiges
         get("/message", MessagePage.class);
         get("/migration/:branch", MigrationPage.class);

@@ -10,3 +10,5 @@ gitlab.project=
 gitlab-auth-callback=http://minerva-host:port/gitlab-auth-callback
 gitlab-appid=
 gitlab-secret=
+
+search.url=

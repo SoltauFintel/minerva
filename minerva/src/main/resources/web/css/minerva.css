@@ -96,6 +96,10 @@
     color: #c00;
 }
 
+.search-result {
+    margin-bottom: 1em;
+}
+
 .noContent {
     color: #99c;
 }

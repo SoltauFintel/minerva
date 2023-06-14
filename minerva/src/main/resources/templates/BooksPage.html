@@ -65,11 +65,13 @@
                     class="fa fa-trash-o"></i> {{N.deleteWS}}...</a>
             {{/if}}
             {{if booksOk}}
+                <a href="/b/{{branch}}/index" class="btn btn-default brr">{{N.reindex}}!</a>
                 {{if migrationAllowed}}
                     <a href="/migration/{{branch}}" class="btn btn-danger brr"><i class="fa fa-cloud-download"></i>
                         Confluence Import...</a>
                 {{/if}}
             {{/if}}
+            <p><a href="/b/{{branch}}/search?lang=de">Suchen</a></p>
         </p>
     </div>
 </div>

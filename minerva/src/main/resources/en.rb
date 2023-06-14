@@ -95,3 +95,4 @@ nodot=No.
 createdAt=Created
 preview=Preview
 otherBook=other book
+reindex=Reindex

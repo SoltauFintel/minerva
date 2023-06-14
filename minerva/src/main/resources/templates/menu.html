@@ -7,6 +7,16 @@
     <li>
         <a href="/b/{{branch}}"><i class="fa fa-book"></i> {{booksLabel}}</a>
     </li>
+    <li class="sidebar-search">
+        <form action="/b/{{branch}}/search">
+            <div class="input-group custom-search-form">
+                <input class="form-control" placeholder="Suche" type="text" id="q" name="q">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </form>
+    </li>
     {{each b in booksForMenu}}
         <li>
             <a href="/b/{{branch}}/{{b.folder}}"><i class="fa fa-book greenbook"></i> {{b.title}}</a>
