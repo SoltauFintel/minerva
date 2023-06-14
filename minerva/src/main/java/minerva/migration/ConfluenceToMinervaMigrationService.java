@@ -67,7 +67,7 @@ public class ConfluenceToMinervaMigrationService {
         for (ConfluencePage sp : root_de.getSubpages()) {
             migrateBook(sp, position++);
         }
-        Logger.info("Migration fertig");
+        Logger.info("---- Migration finished ----");
     }
 
     private void deleteWorkspace() {
@@ -88,7 +88,7 @@ public class ConfluenceToMinervaMigrationService {
             }
         }
         if (filenames.isEmpty()) {
-            Logger.info("[Migration] deleteWorkspace() muss nichts machen");
+            Logger.info("[Migration] deleteWorkspace() has nothing to do");
         } else {
             MinervaWebapp.factory().getGitlabRepository().push("(Migration) empty branch " + workspace.getBranch(),
                     workspace, new HashSet<>(), filenames, () -> {
@@ -143,7 +143,7 @@ public class ConfluenceToMinervaMigrationService {
         if ("Benutzerhandbuch".equals(sp.getTitle())) {
             Logger.info("Migrating " + englishSoloPages.size() + " solo English pages...");
             final SeiteSO parent = book.getSeiten().createSeite(book.getISeite(), book, IdGenerator.createId6());
-            parent.getSeite().getTitle().setString("de", "#English solo pages");
+            parent.getSeite().getTitle().setString("de", "//English solo pages");
             parent.getSeite().getTitle().setString("en", "English solo pages");
             parent.getSeite().getTags().add("nicht_drucken");
             parent.getSeite().getTags().add("english-solo-pages");
@@ -160,7 +160,7 @@ public class ConfluenceToMinervaMigrationService {
                             theParent = parent2;
                         } else {
                             Logger.error("Parent page " + englishSoloPage.getParentId()
-                                    + " not found for English solo page #" + englishSoloPage.getId());
+                                    + " not found for English solo page " + englishSoloPage.getId());
                         }
                     }
                     SeiteSO subTp = theParent.getSeiten().createSeite(theParent, theParent.getBook(), englishSoloPage.getId());
@@ -192,7 +192,7 @@ public class ConfluenceToMinervaMigrationService {
         default:
             String bn = buchname.toLowerCase().trim();
             if (bn.startsWith("programm") && bn.endsWith("nderungen")) {
-                Logger.warn("Unbekannter Buchname: " + buchname + " -> folder: releaenotes   (spezial)");
+                Logger.warn("Unknown book name: " + buchname + " -> folder: releaenotes   (special)");
                 return "releasenotes";
             }
             String ret = "";
@@ -214,7 +214,7 @@ public class ConfluenceToMinervaMigrationService {
         seite.setSorted(false);
         seite.getTitle().setString("de", removeUnderscores(sp.getTitle()));
         seite.getTitle().setString("en", en == null ?
-                "#en " + removeUnderscores(sp.getTitle()) : removeUnderscores(en.getTitle()));
+                "//en " + removeUnderscores(sp.getTitle()) : removeUnderscores(en.getTitle()));
         seite.getTags().addAll(sp.getLabels());
 
         String html = FileService.loadPlainTextFile(new File(htmlSourceFolder, sp.getId() + ".html"));
@@ -238,19 +238,20 @@ public class ConfluenceToMinervaMigrationService {
     }
 
     private String removeUnderscores(String title) {
-        while (title.endsWith("_")) {
-            title = title.substring(0, title.length() - 1).trim();
+        if (title == null) {
+            return "//null";
         }
-        while (title.startsWith("_")) {
-            title = title.substring(1).trim();
+        title = title.replace("_", " ");
+        while (title.contains("  ")) {
+            title = title.replace("  ", " ");
         }
-        return title.isEmpty() ? "#empty" : title;
+        return title.isBlank() ? "//empty" : title.trim();
     }
 
     private void migrateEnglishPage(ConfluencePage sp, SeiteSO tp, Map<String, String> files) {
         Seite seite = tp.getSeite();
         seite.setSorted(false);
-        seite.getTitle().setString("de", "#" + sp.getTitle());
+        seite.getTitle().setString("de", "//" + sp.getTitle());
         seite.getTitle().setString("en", sp.getTitle());
         seite.getTags().addAll(sp.getLabels());
 
