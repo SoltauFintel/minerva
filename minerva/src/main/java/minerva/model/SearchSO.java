@@ -1,13 +1,17 @@
 package minerva.model;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.pmw.tinylog.Logger;
+
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import github.soltaufintel.amalia.rest.REST;
+import github.soltaufintel.amalia.rest.RestResponse;
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.base.StringService;
 import minerva.search.SearchResult;
@@ -21,9 +25,11 @@ public class SearchSO {
     private final String host;
     private final WorkspaceSO workspace;
     private final List<String> langs;
+    private final String sitePrefix;
     
-    public SearchSO(String searchHost, WorkspaceSO workspace, List<String> langs) {
+    public SearchSO(String searchHost, String sitePrefix, WorkspaceSO workspace, List<String> langs) {
         this.host = searchHost;
+        this.sitePrefix = sitePrefix;
         this.workspace = workspace;
         this.langs = langs;
     }
@@ -33,13 +39,16 @@ public class SearchSO {
         for (BookSO book : workspace.getBooks()) {
             index(book.getSeiten());
         }
+        Logger.info("All books of workspace " + workspace.getBranch() + " have been indexed.");
     }
     
     private void createSite() {
         for (String lang : langs) {
             CreateSiteRequest req = new CreateSiteRequest();
             req.setLanguage(lang);
-            post("/indexing/" + getSiteName(lang), req);
+            String siteName = getSiteName(lang);
+            Logger.info("create site: " + siteName);
+            post("/indexing/" + siteName, req);
         }
     }
     
@@ -59,31 +68,38 @@ public class SearchSO {
      * @param seite page
      */
     public void index(SeiteSO seite) {
-        try {
-            for (String lang : langs) {
-                String html = "<title>" + Escaper.esc(seite.getSeite().getTitle().getString(lang)) + "</title>"
-                        + seite.getContent().getString(lang);
-                String w = new String(html.getBytes(), "windows-1252");
-                CreatePageRequest req = new CreatePageRequest();
-                req.setHtml(w);
-                req.setPath(seite.getBook().getBook().getFolder() + "/" + seite.getId());
-                post("/indexing/" + getSiteName(lang) + "/page", req);
-            }
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+        for (String lang : langs) {
+            CreatePageRequest req = new CreatePageRequest();
+            req.setHtml("<title>" + Escaper.esc(seite.getSeite().getTitle().getString(lang)) + "</title>"
+                    + seite.getContent().getString(lang));
+            req.setPath(seite.getBook().getBook().getFolder() + "/" + seite.getId());
+            post("/indexing/" + getSiteName(lang) + "/page", req);
         }
     }
     
     private String getSiteName(String lang) {
-        return "minerva-" + workspace.getBranch() + "-" + lang;
+        return sitePrefix + workspace.getBranch() + "-" + lang;
     }
     
     private void post(String url, Object data) {
-        new REST(host + url).post(data).close();
+        if (host != null) {
+            new REST(host + url) {
+                @Override
+                protected RestResponse request(HttpEntityEnclosingRequestBase request, Object data) {
+                    try {
+                        return request(request, new Gson().toJson(data), "application/json; charset=cp1252");
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+            .post(data)
+            .close();
+        }
     }
     
     public List<SearchResult> search(String x, String lang) {
-        if (StringService.isNullOrEmpty(x)) {
+        if (StringService.isNullOrEmpty(x) || host == null) {
             return new ArrayList<>();
         }
         String url = host + "/search/" + getSiteName(lang) + "?q=" + Escaper.urlEncode(x, "");

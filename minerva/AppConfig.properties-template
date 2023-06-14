@@ -12,3 +12,4 @@ gitlab-appid=
 gitlab-secret=
 
 search.url=
+search.site.prefix=minerva-

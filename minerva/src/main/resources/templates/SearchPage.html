@@ -5,7 +5,6 @@
         <h1 class="page-header">Volltextsuche</h1>
 
         <form action="/b/{{branch}}/search" style="margin-top: 2em; margin-bottom: 2em; width: 400px;">
-            <input type="hidden" name="lang" value="{{lang}}">
             <div class="input-group custom-search-form">
                 <input class="form-control" placeholder="Suche" type="text" id="q" name="q" value="{{q}}" autofocus>
                 <span class="input-group-btn">
@@ -19,10 +18,13 @@
         {{/if}}
         
         <ul>
-            {{each r in result}}
-                <li class="search-result"><a href="{{r.path}}">{{r.title}}</a>
-                    <br>{{r.content}}
-                </li>
+            {{each L in langs}}
+                {{each r in L.result}}
+                    <li class="search-result"><a href="/s/{{branch}}/{{r.path}}">{{r.title}}</a>
+                        <sub class="langColor">[{{L.lang}}]</sub>
+                        <br/><div class="textfrag">{{r.content}}</div>
+                    </li>
+                {{/each}}
             {{/each}}
         </ul>
     </div>

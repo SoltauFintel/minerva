@@ -183,6 +183,64 @@
     margin-bottom: 1em;
 }
 
+.search-result a {
+    font-weight: bold;
+}
+
+.highlight {
+}
+
+.highlight1 {
+    background-color: #FFFF99;
+    /*background-color: #FF6347;*/
+}
+
+.highlight2 {
+    background-color: #90EE90;
+}
+
+.highlight3 {
+    background-color: #87CEFA;
+}
+
+.highlight4 {
+    background-color: #ffb6c1;
+}
+
+.highlight5 {
+    background-color: #00ffff;
+}
+
+.highlight6 {
+    background-color: #00ff7f;
+}
+
+.highlight7 {
+    background-color: #ffa500;
+}
+
+.highlight8 {
+    background-color: #ee82ee;
+}
+
+.highlight9 {
+    background-color: #ffd700;
+}
+
+.highlight10 {
+    background-color: #FFBBFF;
+}
+
+.textfrag {
+    font-size: 10pt;
+    width: 500px;
+    max-width: 500px;
+}
+
+.langColor {
+    color: #999;
+}
+
 /* ---- ViewSeitePage: HTML from CKEditor display ---- */
 
 figure table td {

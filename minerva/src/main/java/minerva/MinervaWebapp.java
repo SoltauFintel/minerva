@@ -182,7 +182,9 @@ public class MinervaWebapp extends RouteDefinitions {
             page.put("user", esc(wctx.session().getLogin()));
             page.put("gitlab", factory().getConfig().isGitlab());
             page.put("booksLabel", "Bücher");
+            page.put("searchPlaceholder", "");
             page.put("branch0", "");
+            page.put("q", "");
             booksForMenu(hasUser, userLang, books, page);
             page.put("isCustomerVersion", MinervaWebapp.factory().isCustomerVersion());
             page.put("branch", esc(branch));
@@ -190,6 +192,7 @@ public class MinervaWebapp extends RouteDefinitions {
             if (hasUser) {
                 page.put("abmelden", NLS.get(userLang, "logout"));
                 page.put("booksLabel", NLS.get(userLang, "books"));
+                page.put("searchPlaceholder", NLS.get(userLang, "searchPlaceholder"));
                 if (books != null) {
                     if (!"master".equals(branch)) {
                         page.put("branch0", esc(branch));
