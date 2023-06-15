@@ -10,7 +10,7 @@ import minerva.model.SeiteSO;
 import minerva.seite.SPage;
 
 public class LinkResolverPage extends SPage {
-    private String pre;
+    private String linkPrefix;
     private List<SeiteSO> result;
 
     @Override
@@ -51,7 +51,7 @@ public class LinkResolverPage extends SPage {
             link = linksModel.getLinks().get(index);
         }
         String href = link == null ? "" : esc(link.getHref());
-        pre = "/links/" + branch + "/" + bookFolder + "/" + id + "?key=" + key + "&index=" + (index + 1);
+        linkPrefix = "/links/" + branch + "/" + bookFolder + "/" + id + "?key=" + key + "&index=" + (index + 1);
         result = new ArrayList<>();
         search(href, key, index);
 
@@ -75,7 +75,7 @@ public class LinkResolverPage extends SPage {
             result = book.getSeiten().searchInTitle(search.toLowerCase(), id, langs);
             Logger.info("search: \"" + search + "\", found: " + result.size());
         }
-        pre = "/links/" + branch + "/" + bookFolder + "/" + id + "?key=" + key + "&index=" + (index + 1);
+        linkPrefix = "/links/" + branch + "/" + bookFolder + "/" + id + "?key=" + key + "&index=" + (index + 1);
     }
 
     @Override
@@ -91,10 +91,10 @@ public class LinkResolverPage extends SPage {
         String html = "";
         int nr = 1;
         for (SeiteSO seite : result) {
-            String link = pre + "&s=" + Escaper.urlEncode(seite.getId(), "");
+            String link = linkPrefix + "&s=" + Escaper.urlEncode(seite.getId(), "");
             html += addResult(link, n("linkResolver1").replace("$t", esc(seite.getTitle())), nr++);
         }
-        html += addResult(pre, "<i class=\"fa fa-ban\"></i> " + n("linkResolver0"), nr);
+        html += addResult(linkPrefix, "<i class=\"fa fa-ban\"></i> " + n("linkResolver0"), nr);
         return html;
     }
 
