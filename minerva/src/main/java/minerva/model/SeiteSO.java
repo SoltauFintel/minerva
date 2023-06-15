@@ -324,6 +324,14 @@ public class SeiteSO implements ISeite {
             // Wenn book.sorted=true ist und ein Seitentitel geändert worden ist, muss neu sortiert werden.
             book.getSeiten().sort();
         }
+        
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                book.getWorkspace().getSearch().index(SeiteSO.this);
+                Logger.debug("Page " + SeiteSO.this.getId() + " has been reindexed.");
+            }
+        }).run();
     }
 
     public void saveMeta(String commitMessage) {
