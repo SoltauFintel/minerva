@@ -22,7 +22,7 @@ public class DeleteSeitePage extends SPage {
             if (parentId.equals(SeiteSO.ROOT_ID)) {
                 ctx.redirect(booklink);
             } else {
-                ctx.redirect(viewlink);
+                ctx.redirect("/s/" + esc(branch) + "/" + esc(bookFolder) + "/" + esc(parentId));
             }
         }
     }
