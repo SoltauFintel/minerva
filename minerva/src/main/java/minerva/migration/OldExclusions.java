@@ -8,9 +8,6 @@ import java.util.Set;
 
 import minerva.base.StringService;
 
-/**
- * Use: setCustomer() and call contains() for every label to be checked for
- */
 public class OldExclusions {
     /** key: customer, value: tag list */
     private final Map<String, List<String>> customers = new HashMap<>();
