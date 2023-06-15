@@ -103,4 +103,8 @@ public class WorkspaceSO {
         return new SearchSO(config.get("search.url"), config.get("search.site.prefix", "minerva-"),
                 this, MinervaWebapp.factory().getLanguages());
     }
+    
+    public ExclusionsSO getExclusions() {
+        return new ExclusionsSO(this);
+    }
 }

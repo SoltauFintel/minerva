@@ -22,12 +22,12 @@ public class OldExclusionsService {
         return customer;
     }
     
-    public void setContent(Set<String> labels) {
+    public void setTags(Set<String> labels) {
         this.labels = labels;
     }
 
-    public boolean isAccessible() {
-        return isAccessible(OldExclusions.getInstance(), labels, customer);
+    public boolean isAccessible(OldExclusions ex) {
+        return isAccessible(ex, labels, customer);
     }
     
     static boolean isAccessible(OldExclusions exclusions, Set<String> labels, String pCustomer) {

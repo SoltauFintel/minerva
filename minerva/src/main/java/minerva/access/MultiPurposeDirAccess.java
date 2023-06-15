@@ -32,6 +32,13 @@ public class MultiPurposeDirAccess {
         save(filename, StringService.prettyJSON(data), commitMessage, workspace);
     }
 
+    public String load(String dn) {
+        Set<String> filenames = new HashSet<>();
+        filenames.add(dn);
+        Map<String, String> files = access.loadFiles(filenames);
+        return files.get(dn);
+    }
+    
     public <T> T load(String dn, Class<T> type) {
         Set<String> filenames = new HashSet<>();
         filenames.add(dn);

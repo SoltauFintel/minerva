@@ -28,6 +28,7 @@ import minerva.book.SelectLanguageAction;
 import minerva.book.SortTopLevelSeiteAction;
 import minerva.config.MinervaConfig;
 import minerva.config.MinervaFactory;
+import minerva.exclusions.ExclusionsEditPage;
 import minerva.image.ImageDownloadAction;
 import minerva.image.ImageUploadAction;
 import minerva.migration.MigrationPage;
@@ -79,6 +80,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w", CurrentWorkspaceAction.class);
         get("/w/:branch/pull", PullWorkspace.class);
         get("/w/:branch/delete", DeleteWorkspacePage.class);
+        form("/w/:branch/exclusions/edit", ExclusionsEditPage.class);
         form("/create-workspace", AddWorkspacePage.class);
         
         // Book
@@ -189,11 +191,13 @@ public class MinervaWebapp extends RouteDefinitions {
             booksForMenu(hasUser, userLang, books, page);
             page.put("isCustomerVersion", MinervaWebapp.factory().isCustomerVersion());
             page.put("branch", esc(branch));
+            page.put("exclusionsTitle", "Exclusions");
             DataList list = page.list("langsForMenu");
             if (hasUser) {
                 page.put("abmelden", NLS.get(userLang, "logout"));
                 page.put("booksLabel", NLS.get(userLang, "books"));
                 page.put("searchPlaceholder", NLS.get(userLang, "searchPlaceholder"));
+                page.put("exclusionsTitle", NLS.get(userLang, "exclusions"));
                 if (books != null) {
                     if (!"master".equals(branch)) {
                         page.put("branch0", esc(branch));

@@ -1,14 +1,10 @@
 package minerva.seite;
 
-import java.io.File;
-
 import org.pmw.tinylog.Logger;
 
-import minerva.MinervaWebapp;
 import minerva.base.NlsString;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
-import minerva.persistence.gitlab.GitlabUser;
 import minerva.persistence.gitlab.UpToDateCheckService;
 import minerva.seite.link.LinksModel;
 
@@ -19,18 +15,8 @@ public class EditSeitePage extends ViewSeitePage {
         if (isPOST()) {
             save(branch, bookFolder, id, seiteSO);
         } else { // edit
-            
-            if (MinervaWebapp.factory().isGitlab()) {
-                WorkspaceSO workspace = seiteSO.getBook().getWorkspace();
-                File workspaceFolder = new File(workspace.getFolder());
-                GitlabUser gitlabUser = (GitlabUser) user.getUser();
-                boolean areThereRemoteUpdates = new UpToDateCheckService().areThereRemoteUpdates(workspaceFolder,
-                        workspace.getBranch(), gitlabUser);
-                if (areThereRemoteUpdates) {
-                    workspace.pull();
-                    seiteSO.freshcheck(langs);
-                }
-            }
+            WorkspaceSO workspace = seiteSO.getBook().getWorkspace();
+            UpToDateCheckService.check(workspace, () -> seiteSO.freshcheck(langs));
             
             super.execute2(branch, bookFolder, id, seiteSO);
         }

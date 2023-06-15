@@ -103,3 +103,4 @@ reindex-complete=All books have been reindexed.
 viewBook=View book in editing area
 viewPage=View page in editing area
 hasNote=comment(s) available
+exclusions=Exclusions

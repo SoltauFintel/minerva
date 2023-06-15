@@ -271,6 +271,12 @@
     color: #999;
 }
 
+.textareaExclusions {
+    white-space: nowrap;
+    overflow-x: auto;
+    font-family: 'Courier New', monospace;
+}
+
 /* ---- ViewSeitePage: HTML from CKEditor display ---- */
 
 figure table td {
