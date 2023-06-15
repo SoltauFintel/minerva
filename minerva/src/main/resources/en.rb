@@ -69,13 +69,13 @@ deleteWS3=Workspace "master" is not allowed to be deleted!
 deleteWS4=Last workspace can not be deleted!
 keepWS=Keep workspace
 
-note=Note
-addNote=Add note
-editNote=Edit note
-notes=Notes
+note=Comment
+addNote=Add comment
+editNote=Edit comment
+notes=Comments
 backToPage=Back to page
 reply=Reply
-deleteQ=Delete note?
+deleteQ=Delete comment?
 
 movePage=Move page
 movePage1=Page $t gets page $p as the new parent page.
@@ -89,7 +89,7 @@ newTag=New tag
 anzahl=size
 page=Page
 book=Book
-allNotes=All notes
+allNotes=All comments
 author=Author
 nodot=No.
 createdAt=Created

@@ -69,13 +69,13 @@ deleteWS3=Workspace "master" darf nicht gelöscht werden!
 deleteWS4=Der letzte Workspace darf nicht gelöscht werden!
 keepWS=Workspace behalten
 
-note=Notiz
-addNote=Neue Notiz schreiben
-editNote=Notiz bearbeiten
-notes=Notizen
+note=Kommentar
+addNote=Neuen Kommentar schreiben
+editNote=Kommentar bearbeiten
+notes=Kommentare
 backToPage=Zurück zur Seite
 reply=Antworten
-deleteQ=Hiermit löschen Sie die Notiz.
+deleteQ=Hiermit löschen Sie diesen Kommentar.
 
 movePage=Seite verschieben
 movePage1=Die Seite "$t" erhält die Seite "$p" als neue übergeordnete Seite.
@@ -89,7 +89,7 @@ newTag=Neues tag
 anzahl=Anzahl
 page=Seite
 book=Buch
-allNotes=Alle Notizen
+allNotes=Alle Kommentare
 author=Autor
 nodot=Nr.
 createdAt=Erstellt am
