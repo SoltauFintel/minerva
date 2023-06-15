@@ -115,6 +115,11 @@
     margin-left: 2cm;
 }
 
+.has-note {
+    color: #cce;
+    margin-left: 6px;
+}
+
 .noteChanged {
     color: #900;
 }

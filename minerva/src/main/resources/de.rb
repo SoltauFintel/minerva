@@ -102,3 +102,4 @@ treffer=Treffer
 reindex-complete=Alle Bücher wurden neu indiziert.
 viewBook=Buch im Bearbeitungsbereich anzeigen
 viewPage=Seite im Bearbeitungsbereich anzeigen
+hasNote=Kommentar(e) vorhanden

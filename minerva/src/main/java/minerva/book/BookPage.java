@@ -28,10 +28,21 @@ public class BookPage extends BPage {
             boolean sorted) {
         // Wegen der Rekursion ist eine Template-Datei nicht sinnvoll.
         gliederung.append("<ul>\n");
+        String hasNote = " <i class=\"fa fa-comment-o has-note\" title=\"" + n("hasNote") + "\"></i>";
         for (SeiteSO seite : seiten) {
             String title = esc(seite.getSeite().getTitle().getString(lang));
             String link = "/s/" + branch + "/" + bookFolder + "/" + esc(seite.getSeite().getId());
-            gliederung.append("\t<li id=\"" + seite.getId() + "\"><a href=\"" + link + "\">" + title + "</a></li>\n");
+            gliederung.append("\t<li id=\"");
+            gliederung.append(seite.getId());
+            gliederung.append("\"><a href=\"");
+            gliederung.append(link);
+            gliederung.append("\">");
+            gliederung.append(title);
+            gliederung.append("</a>");
+            if (!seite.getSeite().getNotes().isEmpty()) {
+                gliederung.append(hasNote);
+            }
+            gliederung.append("</li>\n");
             fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, true); // recursive
         }
         gliederung.append("</ul>\n");

@@ -48,8 +48,14 @@ public class PreviewBookPage extends BPage {
                 String title = esc(seite.getSeite().getTitle().getString(lang));
                 String link = "/p/" + branch + "/" + bookFolder + "/" + lang + "/" + esc(seite.getSeite().getId());
                 String nc = hasContent == 2 ? " class=\"noContent\"" : "";
-                gliederung.append("\t<li id=\"" + seite.getId() + "\"><a href=\"" + link + "\"" + nc + ">" + title
-                        + "</a></li>\n");
+                gliederung.append("\t<li id=\"");
+                gliederung.append(seite.getId());
+                gliederung.append("\"><a href=\"");
+                gliederung.append(link);
+                gliederung.append("\"");
+                gliederung.append(nc);
+                gliederung.append(">" + title);
+                gliederung.append("</a></li>\n");
                 fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, true); // recursive
             }
         }

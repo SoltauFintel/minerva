@@ -29,8 +29,11 @@ public class MoveSeitePage extends SPage {
     }
     
     private void book(BookSO book, String href, StringBuilder gliederung) {
-        gliederung.append("<li class=\"mt1\"><i class=\"fa fa-book greenbook\"></i> "
-                + "<a href=\"" + href + "\">" + esc(book.getTitle()) + "</a></li>");
+        gliederung.append("<li class=\"mt1\"><i class=\"fa fa-book greenbook\"></i> <a href=\"");
+        gliederung.append(href);
+        gliederung.append("\">");
+        gliederung.append(esc(book.getTitle()));
+        gliederung.append("</a></li>");
     }
 
     private void fillSeiten(String branch, String bookFolder, SeitenSO seiten, String lang,
@@ -39,21 +42,30 @@ public class MoveSeitePage extends SPage {
         gliederung.append("<ul>\n");
         for (SeiteSO seite : seiten) {
             if (noLink) {
-                gliederung.append("\t<li>" + esc(seite.getSeite().getTitle().getString(lang)) + "</li>\n");
+                gliederung.append("\t<li>");
+                gliederung.append(esc(seite.getSeite().getTitle().getString(lang)));
+                gliederung.append("</li>\n");
                 fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, true);
             } else if (seite.getId().equals(id)) {
-                gliederung.append("\t<li class=\"movePageCurrent\">"
-                        + esc(seite.getSeite().getTitle().getString(lang)) + "</li>\n");
+                gliederung.append("\t<li class=\"movePageCurrent\">");
+                gliederung.append(esc(seite.getSeite().getTitle().getString(lang)));
+                gliederung.append("</li>\n");
                 fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, true);
             } else if (this.seite.getSeite().getParentId().equals(seite.getId())) {
                 // current parent page
-                gliederung.append("\t<li>" + esc(seite.getSeite().getTitle().getString(lang))
-                    + " <i>(" + n("currentParentPage") + ")</i></li>\n");
+                gliederung.append("\t<li>");
+                gliederung.append(esc(seite.getSeite().getTitle().getString(lang)));
+                gliederung.append(" <i>(");
+                gliederung.append(n("currentParentPage"));
+                gliederung.append(")</i></li>\n");
                 fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, false);
             } else {
                 String link = viewlink + "/move-ack?parentid=" + Escaper.urlEncode(seite.getId(), "");
-                gliederung.append("\t<li><a href=\"" + link + "\">" + esc(seite.getSeite().getTitle().getString(lang))
-                        + "</a></li>\n");
+                gliederung.append("\t<li><a href=\"");
+                gliederung.append(link);
+                gliederung.append("\">");
+                gliederung.append(esc(seite.getSeite().getTitle().getString(lang)));
+                gliederung.append("</a></li>\n");
                 fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, false);
             }
         }
