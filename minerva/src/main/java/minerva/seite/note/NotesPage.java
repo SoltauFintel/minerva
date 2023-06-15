@@ -22,7 +22,7 @@ public class NotesPage extends SPage {
         StringBuilder sb = new StringBuilder();
         for (Note note : notes) {
             DataMap m = new DataMap();
-            m.put("color", color(ebene));
+            m.put("color", ebene >= 1 && ebene <= 7 ? "E" + ebene : "E");
             m.putInt("number", note.getNumber());
             m.put("user", esc(note.getUser()));
             m.put("created", esc(note.getCreated()));
@@ -37,19 +37,5 @@ public class NotesPage extends SPage {
             sb.append(Page.templates.render("NotePiece", m));
         }
         return sb.toString();
-    }
-    
-    private String color(int ebene) {
-        String color = "000";
-        switch (ebene) {
-            case 1: color = "0a0"; break;
-            case 2: color = "00f"; break;
-            case 3: color = "c00"; break;
-            case 4: color = "09f"; break;
-            case 5: color = "f09"; break;
-            case 6: color = "f90"; break;
-            case 7: color = "832"; break;
-        }
-        return color;
     }
 }

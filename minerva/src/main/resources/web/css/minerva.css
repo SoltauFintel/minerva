@@ -132,6 +132,31 @@
     white-space: pre-wrap;
 }
 
+.noteE { /* default */
+    color: #000;
+}
+.noteE1 {
+    color: #0a0;
+}
+.noteE2 {
+    color: #00f;
+}
+.noteE3 {
+    color: #c00;
+}
+.noteE4 {
+    color: #09f;
+}
+.noteE5 {
+    color: #f09;
+}
+.noteE6 {
+    color: #f90;
+}
+.noteE7 {
+    color: #832;
+}
+
 .ck-toolbar {
     background-color: #f5f5f9 !important;
 }
