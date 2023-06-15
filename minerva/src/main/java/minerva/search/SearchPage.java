@@ -37,6 +37,7 @@ public class SearchPage extends UPage {
                     + " | search for \"" + q + "\": " + n + " page" + (n == 1 ? "" : "s"));
 
             put("branch", esc(branch));
+            put("searchFocus", true);
             put("q", esc(q));
             put("hasq", !StringService.isNullOrEmpty(q));
             DataList list = list("langs");

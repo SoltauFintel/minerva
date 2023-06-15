@@ -183,6 +183,7 @@ public class MinervaWebapp extends RouteDefinitions {
             page.put("gitlab", factory().getConfig().isGitlab());
             page.put("booksLabel", "Bücher");
             page.put("searchPlaceholder", "");
+            page.put("searchFocus", false);
             page.put("branch0", "");
             page.put("q", "");
             booksForMenu(hasUser, userLang, books, page);
