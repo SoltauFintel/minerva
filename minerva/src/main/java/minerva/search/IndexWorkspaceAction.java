@@ -1,4 +1,4 @@
-package minerva.search.indexing;
+package minerva.search;
 
 import minerva.user.UAction;
 

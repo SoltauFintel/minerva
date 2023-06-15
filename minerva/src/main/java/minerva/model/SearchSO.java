@@ -14,9 +14,9 @@ import github.soltaufintel.amalia.rest.REST;
 import github.soltaufintel.amalia.rest.RestResponse;
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.base.StringService;
+import minerva.search.CreatePageRequest;
+import minerva.search.CreateSiteRequest;
 import minerva.search.SearchResult;
-import minerva.search.indexing.CreatePageRequest;
-import minerva.search.indexing.CreateSiteRequest;
 
 /**
  * Indexing and search function

@@ -1,4 +1,4 @@
-package minerva.search.indexing;
+package minerva.search;
 
 public class CreateSiteRequest {
 	private String host;
