@@ -8,7 +8,7 @@ import java.util.Set;
 
 import minerva.base.StringService;
 
-public class OldExclusions {
+public class Exclusions {
     /** key: customer, value: tag list */
     private final Map<String, List<String>> customers = new HashMap<>();
     
@@ -16,7 +16,7 @@ public class OldExclusions {
      * @param content exclusions text file content with customer names in [...]
      * and tags for exclusions in separate lines
      */
-    public OldExclusions(String content) {
+    public Exclusions(String content) {
         List<String> exList = null;
         for (String line : content.replace("\r\n", "\n").split("\n")) {
             int o = line.indexOf("//");

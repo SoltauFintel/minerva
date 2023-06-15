@@ -4,8 +4,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import minerva.access.MultiPurposeDirAccess;
-import minerva.migration.OldExclusions;
-import minerva.migration.OldExclusionsService;
+import minerva.migration.Exclusions;
+import minerva.migration.ExclusionsService;
 
 public class ExclusionsSO {
     private static final String DN = "exclusions.txt";
@@ -31,9 +31,9 @@ public class ExclusionsSO {
     // Ist nicht so interessant.
     public TreeSet<String> getVisibleForCustomers(Set<String> tags) {
         TreeSet<String> ret = new TreeSet<>();
-        OldExclusions o = new OldExclusions(get());
+        Exclusions o = new Exclusions(get());
         for (String customer : o.getCustomers()) {
-            OldExclusionsService sv = new OldExclusionsService();
+            ExclusionsService sv = new ExclusionsService();
             sv.setCustomer(customer);
             sv.setTags(tags);
             if (sv.isAccessible(o)) {

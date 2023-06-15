@@ -2,9 +2,9 @@ package minerva.migration;
 
 import java.util.Set;
 
-import minerva.migration.OldExclusions.LabelClass;
+import minerva.migration.Exclusions.LabelClass;
 
-public class OldExclusionsService {
+public class ExclusionsService {
     private String customer;
     private Set<String> labels;
 
@@ -26,11 +26,11 @@ public class OldExclusionsService {
         this.labels = labels;
     }
 
-    public boolean isAccessible(OldExclusions ex) {
+    public boolean isAccessible(Exclusions ex) {
         return isAccessible(ex, labels, customer);
     }
     
-    static boolean isAccessible(OldExclusions exclusions, Set<String> labels, String pCustomer) {
+    static boolean isAccessible(Exclusions exclusions, Set<String> labels, String pCustomer) {
         boolean ret = true;
         boolean voteForON = false;
         for (String label : labels) {
