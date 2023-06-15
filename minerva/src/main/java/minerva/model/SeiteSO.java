@@ -195,25 +195,31 @@ public class SeiteSO implements ISeite {
         return notes;
     }
     
-    /**
-     * Nach dem Aufruf ist die komplette BookSO/SeiteSO-Struktur neu aufzubauen.
-     */
     public void remove() {
         Set<String> filenamesToDelete = new HashSet<>();
         List<String> langs = MinervaWebapp.factory().getLanguages();
         remove(filenamesToDelete, langs);
+
         List<String> cantBeDeleted = new ArrayList<>();
-        
         dao().deleteFiles(filenamesToDelete, "delete page " + getId(), book.getWorkspace(), cantBeDeleted);
+        boolean success = cantBeDeleted.isEmpty();
+
+        if (success) {
+            new Thread(() -> {  // Access index in background so user does not have to wait for completion.
+                book.getWorkspace().getSearch().unindex(SeiteSO.this);
+                Logger.debug("Deleted page " + SeiteSO.this.getId() + " has been removed from search index.");
+            }).start();
+        }
+        
         book.getWorkspace().pull(); // Datenstruktur neu aufbauen (auch wenn cantBeDeleted nicht leer ist)
         
-        if (cantBeDeleted.isEmpty()) {
+        if (success) {
             Logger.info("Delete page " + getId() + " complete.");
         } else {
             Logger.error("Tried to delete page " + getId() + ": These files could not be deleted:"
                     + cantBeDeleted.stream().map(i -> "\n  - " + i).collect(Collectors.joining())
                     + "\n  Please delete these files manually.");
-            throw new RuntimeException("Es konnten nicht alle Dateien gelöscht werden!"
+            throw new RuntimeException("Es konnten nicht alle Dateien gelöscht werden!" // TODO UserMessage
                     + "\nBitte an Administrator wenden. ID " + getId());
         }
     }
@@ -325,12 +331,9 @@ public class SeiteSO implements ISeite {
             book.getSeiten().sort();
         }
         
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                book.getWorkspace().getSearch().index(SeiteSO.this);
-                Logger.debug("Page " + SeiteSO.this.getId() + " has been reindexed.");
-            }
+        new Thread(() -> {  // Access index in background so user does not have to wait for completion.
+            book.getWorkspace().getSearch().index(SeiteSO.this);
+            Logger.debug("Page " + SeiteSO.this.getId() + " has been reindexed.");
         }).run();
     }
 

@@ -75,13 +75,24 @@ public class SearchSO {
             CreatePageRequest req = new CreatePageRequest();
             req.setHtml("<title>" + Escaper.esc(seite.getSeite().getTitle().getString(lang)) + "</title>"
                     + seite.getContent().getString(lang));
-            req.setPath(seite.getBook().getBook().getFolder() + "/" + seite.getId());
+            req.setPath(getPath(seite));
             post("/indexing/" + getSiteName(lang) + "/page", req);
         }
     }
-    
+
+    public void unindex(SeiteSO seite) {
+        for (String lang : langs) {
+            String url = "/indexing/" + getSiteName(lang) + "/page?path=" + Escaper.urlEncode(getPath(seite), "");
+            new REST(host + url).delete().close();
+        }
+    }
+
     private String getSiteName(String lang) {
         return sitePrefix + workspace.getBranch() + "-" + lang;
+    }
+    
+    private String getPath(SeiteSO seite) {
+        return seite.getBook().getBook().getFolder() + "/" + seite.getId();
     }
     
     private void post(String url, Object data) {
