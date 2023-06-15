@@ -34,7 +34,7 @@ public class SearchPage extends UPage {
                 }
             }
             Logger.info(user.getUser().getLogin() + " | " + branch
-                    + " | search for \"" + q + "\": " + n + " page" + (n == 1 ? "" : "s"));
+                    + " | Search for \"" + q + "\": " + n + " page" + (n == 1 ? "" : "s"));
 
             put("branch", esc(branch));
             put("searchFocus", true);

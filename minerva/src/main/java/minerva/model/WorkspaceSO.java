@@ -47,7 +47,7 @@ public class WorkspaceSO {
                 dao().initWorkspace(this, false);
                 ok = Boolean.TRUE;
                 books = new BooksSO(this);
-                info("User $l accesses workspace $b for the first time. Books: $n");
+                info("$l | $b | User accesses workspace for the first time. Books: $n");
             } catch (Exception e) {
                 if (Boolean.FALSE.equals(ok)) {
                     Logger.error("Can't init workspace");

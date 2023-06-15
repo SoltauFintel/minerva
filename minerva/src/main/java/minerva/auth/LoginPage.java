@@ -58,7 +58,7 @@ public class LoginPage extends Page {
                 ctx.redirect("/");
             }
         } else {
-            Logger.info("[Login] redirect to " + path);
+            Logger.info(login + " | Redirect to " + path + " after login");
             ctx.redirect(path);
         }
     }

@@ -11,7 +11,7 @@ import github.soltaufintel.amalia.web.config.AppConfig;
 // TODO refresh token Sache...
 public class GitlabAuthAction extends Action {
     public static final Set<String> knownStates = new HashSet<>(); // TODO nicht die beste Technik das so zu machen,
-    // aber mit session hatte es nicht auf Anhieb geklappt.
+    // aber mit session hatte es nicht auf Anhieb geklappt. TODO Set overflow
     
     @Override
     protected void execute() {

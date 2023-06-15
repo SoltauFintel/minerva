@@ -41,8 +41,8 @@ public class GitlabAuthCallbackAction extends Action {
                 user.setAccessToken(answer.getAccess_token());
                 user.setRefreshToken(answer.getRefresh_token());
                 LoginPage.login2(ctx, login, user);
-                Logger.info("Login by OAuth2 access token ok. " + login + " <" + mail + ">");
-                // kein Redirect, ich versteh nicht warum. Denn andernfalls tritt IllegalStateException auf.
+                Logger.info(login + " | Login by OAuth2 access token ok. <" + mail + ">");
+                // Kein Redirect. Ich versteh nicht warum. Denn andernfalls tritt eine IllegalStateException auf.
             } catch (GitLabApiException e) {
                 Logger.error(e);
                 ctx.redirect("/");
