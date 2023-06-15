@@ -1,0 +1,17 @@
+{{master: master}}
+
+<div class="row"> 
+    <div class="col-lg-12">
+        <h1 class="page-header">{{header}}</h1>
+        
+        <p>{{N.book}}: {{bookTitle}}</p>
+
+        {{each l in links}}
+            <h2>{{l.href}}</h2>
+            <p>
+                title: {{l.aTitle}}<br/>
+                page: <a href="{{l.viewlink}}">{{l.pageTitle}}</a>
+            </p>
+        {{/each}}
+    </div>
+</div>
