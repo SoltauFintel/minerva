@@ -23,6 +23,9 @@ public class MessagePage extends UPage {
         case 2:
             put("h2", n("noBranches"));
             break;
+        case 3:
+            put("h2", n("reindex-complete"));
+            break;
         default:
             Logger.error("[MessagePage] unsupported m value: " + m);
             put("h2", "Sorry, no message text for this message.");

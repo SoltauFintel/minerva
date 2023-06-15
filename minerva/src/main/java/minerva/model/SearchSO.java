@@ -35,11 +35,14 @@ public class SearchSO {
     }
 
     public void indexBooks() {
+        long start = System.currentTimeMillis();
         createSite();
         for (BookSO book : workspace.getBooks()) {
             index(book.getSeiten());
         }
-        Logger.info("All books of workspace " + workspace.getBranch() + " have been indexed.");
+        long end = System.currentTimeMillis();
+        Logger.info("All books of workspace " + workspace.getBranch() + " have been reindexed. "
+                + (end - start) + "ms");
     }
     
     private void createSite() {

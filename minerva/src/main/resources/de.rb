@@ -97,3 +97,4 @@ preview=Vorschau
 otherBook=anderes Buch
 reindex=Erneut indizieren
 searchPlaceholder=Suche
+reindex-complete=Alle Bücher wurden neu indiziert.

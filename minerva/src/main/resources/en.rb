@@ -97,3 +97,4 @@ preview=Preview
 otherBook=other book
 reindex=Reindex
 searchPlaceholder=search
+reindex-complete=All books have been reindexed.

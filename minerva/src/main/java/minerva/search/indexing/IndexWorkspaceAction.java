@@ -10,6 +10,6 @@ public class IndexWorkspaceAction extends UAction {
         
         user.getWorkspace(branch).getSearch().indexBooks();
 
-        ctx.redirect("/b/" + branch);
+        ctx.redirect("/message?m=3");
     }
 }
