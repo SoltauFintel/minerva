@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.pmw.tinylog.Logger;
+
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
@@ -31,6 +33,8 @@ public class SearchPage extends UPage {
                     results.put(lang, result);
                 }
             }
+            Logger.info(user.getUser().getLogin() + " | " + branch
+                    + " | search for \"" + q + "\": " + n + " page" + (n == 1 ? "" : "s"));
 
             put("branch", esc(branch));
             put("q", esc(q));
