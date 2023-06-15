@@ -56,6 +56,7 @@ public class PreviewBookPage extends BPage {
                 gliederung.append(nc);
                 gliederung.append(">" + title);
                 gliederung.append("</a></li>\n");
+                
                 fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, true); // recursive
             }
         }
