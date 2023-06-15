@@ -98,3 +98,5 @@ otherBook=anderes Buch
 reindex=Erneut indizieren
 searchPlaceholder=Suche
 reindex-complete=Alle Bücher wurden neu indiziert.
+viewBook=Buch im Bearbeitungsbereich anzeigen
+viewPage=Seite im Bearbeitungsbereich anzeigen
