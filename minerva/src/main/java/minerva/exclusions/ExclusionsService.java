@@ -1,8 +1,8 @@
-package minerva.migration;
+package minerva.exclusions;
 
 import java.util.Set;
 
-import minerva.migration.Exclusions.LabelClass;
+import minerva.exclusions.Exclusions.LabelClass;
 
 public class ExclusionsService {
     private String customer;

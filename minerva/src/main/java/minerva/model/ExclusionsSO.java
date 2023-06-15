@@ -4,8 +4,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import minerva.access.MultiPurposeDirAccess;
-import minerva.migration.Exclusions;
-import minerva.migration.ExclusionsService;
+import minerva.exclusions.Exclusions;
+import minerva.exclusions.ExclusionsService;
 
 public class ExclusionsSO {
     private static final String DN = "exclusions.txt";
