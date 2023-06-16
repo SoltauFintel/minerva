@@ -7,14 +7,17 @@ import minerva.exclusions.Exclusions.LabelClass;
 public class ExclusionsService {
     private String customer;
     private Set<String> labels;
+    private Exclusions exclusions;
+    
+    public Exclusions getExclusions() {
+        return exclusions;
+    }
+
+    public void setExclusions(Exclusions exclusions) {
+        this.exclusions = exclusions;
+    }
 
     public void setCustomer(String customer) {
-        if (customer == null) {
-            throw new IllegalArgumentException("customer must not be null in ExclusionsService.setCustomer()!"
-                    + " This can happen if there was no mapping table request.");
-        } else if (customer.contains("-")) {
-            throw new IllegalArgumentException("ExclusionsService.setCustomer(\"" + customer + "\"): A '-' in the customer name is not allowed!");
-        }
         this.customer = customer;
     }
 
@@ -26,11 +29,19 @@ public class ExclusionsService {
         this.labels = labels;
     }
 
-    public boolean isAccessible(Exclusions ex) {
-        return isAccessible(ex, labels, customer);
+    public boolean isAccessible() {
+        return isAccessible(exclusions, labels, customer);
+    }
+
+    public boolean isAccessible(Set<String> tags) {
+        setTags(tags);
+        return isAccessible();
     }
     
     static boolean isAccessible(Exclusions exclusions, Set<String> labels, String pCustomer) {
+        if ("-".equals(pCustomer)) {
+            return true;
+        }
         boolean ret = true;
         boolean voteForON = false;
         for (String label : labels) {

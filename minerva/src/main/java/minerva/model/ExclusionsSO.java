@@ -32,11 +32,12 @@ public class ExclusionsSO {
     public TreeSet<String> getVisibleForCustomers(Set<String> tags) {
         TreeSet<String> ret = new TreeSet<>();
         Exclusions o = new Exclusions(get());
+        ExclusionsService sv = new ExclusionsService();
+        sv.setExclusions(o);
+        sv.setTags(tags);
         for (String customer : o.getCustomers()) {
-            ExclusionsService sv = new ExclusionsService();
             sv.setCustomer(customer);
-            sv.setTags(tags);
-            if (sv.isAccessible(o)) {
+            if (sv.isAccessible()) {
                 ret.add(customer);
             }
         }
