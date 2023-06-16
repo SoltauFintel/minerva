@@ -55,9 +55,9 @@
             {{if booksOk}}
                 <a href="/w/{{branch}}/tag-cloud?m=n" class="btn btn-default brr"><i
                     class="fa fa-cloud"></i> {{N.tagCloud}}</a>
-                <a href="/w/{{branch}}/exclusions/edit" class="btn btn-default brr">{{N.exclusions}}</a>
             {{/if}}
             {{if gitlab}}
+                <a href="/w/{{branch}}/exclusions/edit" class="btn btn-default brr">{{N.exclusions}}</a>
                 <a href="/w/{{branch}}/pull" class="btn btn-default brr" title="pull"
                     onclick="document.querySelector('#s1').style='';"><i class="fa fa-refresh"></i>
                     {{N.pullWS}}! <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
