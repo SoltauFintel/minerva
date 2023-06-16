@@ -333,9 +333,11 @@ public class ConfluenceToMinervaMigrationService {
 
     private String processHTML(String html) {
         // remove toc
-        if (html.contains("toc-macro")) {
+        // remove <style>
+        if (html.contains("toc-macro") || html.contains("<style")) {
             Document doc = Jsoup.parse(html);
             doc.selectXpath("//div[contains(@class,'toc-macro')]").remove();
+            doc.selectXpath("//style").remove();
             html = doc.toString();
         }
         // Links
