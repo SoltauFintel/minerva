@@ -340,6 +340,11 @@ public class ConfluenceToMinervaMigrationService {
             doc.selectXpath("//style").remove();
             html = doc.toString();
         }
+        // <h1> runterstufen usw.
+        for (int h = 6; h >= 1; h--) {
+            int n = h + 1;
+            html = html.replace("<h" + h, "<h" + n).replace("</h" + h + ">", "</h" + n + ">");
+        }
         // Links
         Set<String> href = extract(html, "href=\"");
         for (String h : href) {
