@@ -26,7 +26,7 @@ public class SeitenSO extends MList<SeiteSO> {
 
     private static Comparator<SeiteSO> getComparator(ISeite parent) {
         if (parent.isSorted()) {
-            return (a, b) -> a.getTitle().compareToIgnoreCase(b.getTitle());
+            return (a, b) -> a.getSortTitle().compareTo(b.getSortTitle());
         } else {
             return (a, b) -> Integer.valueOf(a.getSeite().getPosition())
                     .compareTo(Integer.valueOf(b.getSeite().getPosition()));
