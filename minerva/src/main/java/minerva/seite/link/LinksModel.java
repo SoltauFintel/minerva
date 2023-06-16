@@ -66,7 +66,7 @@ public class LinksModel {
     }
 
     private boolean validLink(String href, List<BookSO> books) {
-        if (href.startsWith("http://") || href.startsWith("https://") || href.startsWith("#")) {
+        if (href.isBlank() || href.startsWith("http://") || href.startsWith("https://") || href.startsWith("#")) {
             return true;
         }
         for (BookSO book : books) {
