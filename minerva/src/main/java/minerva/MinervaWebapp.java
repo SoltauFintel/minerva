@@ -185,6 +185,7 @@ public class MinervaWebapp extends RouteDefinitions {
             page.put("title", "Minerva");
             page.put("abmelden", "Abmelden");
             page.put("hasUser", hasUser);
+            page.put("VERSION", VERSION);
             page.put("user", esc(wctx.session().getLogin()));
             page.put("gitlab", factory().getConfig().isGitlab());
             page.put("booksLabel", "Bücher");
