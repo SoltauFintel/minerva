@@ -106,3 +106,5 @@ hasNote=Kommentar(e) vorhanden
 exclusions=Ausschlüsse
 noSpecificCustomer=kein Kunde
 addMoreTags=Weitere tags hinzufügen
+noTags=keine tags vorhanden
+noNotes=keine Kommentare vorhanden

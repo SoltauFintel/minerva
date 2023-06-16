@@ -28,6 +28,8 @@ public class TagsPage extends SPage {
             for (String tag : book.getWorkspace().getExclusions().getSuggestedTags(seite.getSeite().getTags())) {
                 list2.add().put("tag", esc(tag));
             }
+            put("hasSuggestedTags", !list2.isEmpty());
+            put("hasTags", !list.isEmpty());
         }
     }
 }
