@@ -36,6 +36,10 @@ public class Exclusions {
     public Set<String> getCustomers() {
         return customers.keySet();
     }
+    
+    public List<String> getTags(String customer) {
+        return customers.get(customer);
+    }
 
     public enum LabelClass {
         /** normal exclusion label */

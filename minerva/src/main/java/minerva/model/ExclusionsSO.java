@@ -47,4 +47,19 @@ public class ExclusionsSO {
     public TreeSet<String> getCustomers() {
         return new TreeSet<>(new Exclusions(get()).getCustomers());
     }
+
+    public TreeSet<String> getSuggestedTags(Set<String> tags) {
+        TreeSet<String> ret = new TreeSet<>();
+        Exclusions o = new Exclusions(get());
+        for (String customer : o.getCustomers()) {
+            for (String tag : o.getTags(customer)) {
+                if (tag.startsWith("+") || tag.startsWith("-")) {
+                    tag = tag.substring(1);
+                }
+                ret.add(tag);
+            }
+        }
+        ret.removeAll(tags);
+        return ret;
+    }
 }

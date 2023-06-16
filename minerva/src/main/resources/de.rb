@@ -105,3 +105,4 @@ viewPage=Seite im Bearbeitungsbereich anzeigen
 hasNote=Kommentar(e) vorhanden
 exclusions=Ausschlüsse
 noSpecificCustomer=kein Kunde
+addMoreTags=Weitere tags hinzufügen

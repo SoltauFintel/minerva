@@ -5,26 +5,8 @@
         <h1 class="page-header">{{header}}</h1>
         
         <h2 style="margin-bottom: 26px;"><a href="{{viewlink}}">{{pageTitle}}</a></h2>
-        
-        <form action="{{addlink}}" method="post" class="form-horizontal mt3">
-            <fieldset>
-                <div class="form-group">
-                    <label for="tag" class="col-lg-1 control-label">Neues tag</label>
-                    <div class="col-lg-2">
-                        <input class="form-control" type="text" id="tag" name="tag" autofocus>
-                    </div>
-                    <div class="col-lg-2">
-                        <button type="submit" class="btn btn-primary br"
-                            onclick="document.getElementById('s1').style='';">{{N.save}}
-                            <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
-                        
-                        <!-- Idee: noch beliebte tags hier anbieten (1-Klick create) -->
-                    </div>
-                </div>
-            </fieldset>
-        </form>
 
-        <div class="mt2">
+        <div class="mt3">
             {{each tag in tags}}
                 <p>
                     <span class="label label-tag" style="font-size: 10pt;"><a href="/w/{{branch}}/tag/{{tag.tag}}"><i
@@ -36,6 +18,33 @@
             {{/each}}
         </div>
         
+        <hr class="mt3"/>
+        <form action="{{addlink}}" method="post" class="form-horizontal">
+            <fieldset>
+                <div class="form-group">
+                    <label for="tag" class="col-lg-1 control-label">Neues tag</label>
+                    <div class="col-lg-2">
+                        <input class="form-control" type="text" id="tag" name="tag" autofocus>
+                    </div>
+                    <div class="col-lg-2">
+                        <button type="submit" class="btn btn-primary br"
+                            onclick="document.getElementById('s1').style='';">{{N.save}}
+                            <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        <p>
+            <span style="margin-right: 16px;">{{N.addMoreTags}}:</span>
+            {{each t in suggestedTags}}
+                <a class="label" onclick="addTag('{{t.tag}}');"
+                    style="background-color: #9090a0; cursor: pointer; font-weight: normal;"><i
+                    class="fa fa-plus"></i> {{t.tag}}</a>
+            {{/each}}
+        </p>
+        
+        <hr/>
         <p style="margin-top: 4em;">
             <a href="{{viewlink}}" class="btn btn-default br"><i class="fa fa-arrow-left"></i>
                 {{N.backToPage}} "{{pageTitle}}"</a>
@@ -53,5 +62,15 @@
             document.getElementById('s2').style='';
         }
         return ok
+    }
+    
+    function addTag(tag) {
+        v = document.getElementById('tag').value
+        if (v == tag || v.includes(',' + tag) || v.includes(tag + ',')) return;
+        if (v == '') {
+            document.getElementById('tag').value = tag;
+        } else {
+            document.getElementById('tag').value = v + "," + tag;
+        }
     }
 </script>

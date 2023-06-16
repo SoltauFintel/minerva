@@ -105,3 +105,4 @@ viewPage=View page in editing area
 hasNote=comment(s) available
 exclusions=Exclusions
 noSpecificCustomer=no specific customer
+addMoreTags=Add tags

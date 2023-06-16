@@ -16,6 +16,7 @@ public class TagsPage extends SPage {
             seite.tags().addTag(tag);
             ctx.redirect(me);
         } else { // list tags
+            header("tags");
             put("addlink", me);
             DataList list = list("tags");
             seite.getSeite().getTags().stream().sorted().forEach(tag -> {
@@ -23,7 +24,10 @@ public class TagsPage extends SPage {
                 map.put("tag", esc(tag));
                 map.put("deletelink", viewlink + "/delete-tag?tag=" + Escaper.urlEncode(tag, ""));
             });
-            header("tags");
+            DataList list2 = list("suggestedTags");
+            for (String tag : book.getWorkspace().getExclusions().getSuggestedTags(seite.getSeite().getTags())) {
+                list2.add().put("tag", esc(tag));
+            }
         }
     }
 }
