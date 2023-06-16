@@ -71,7 +71,7 @@ keepWS=Keep workspace
 
 note=Comment
 addNote=Add comment
-editNote=Edit comment
+editNote=Edit comment #$no
 notes=Comments
 backToPage=Back to page
 reply=Reply

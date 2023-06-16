@@ -10,6 +10,9 @@ public class EditNotePage extends SPage {
 
     @Override
     protected void execute() {
+        if (ctx.queryParam("number") == null) {
+            throw new RuntimeException("Can't display page because parameter number not set.");
+        }
         int number = Integer.parseInt(ctx.queryParam("number"));
 
         Note note = seite.notes().noteByNumber(number);
@@ -23,7 +26,7 @@ public class EditNotePage extends SPage {
             
             ctx.redirect(viewlink + "/notes");
         } else {
-            header(n("editNote"));
+            header(n("editNote").replace("$no", "" + note.getNumber()));
             putInt("number", note.getNumber());
             put("user", esc(note.getUser()));
             put("created", esc(note.getCreated()));

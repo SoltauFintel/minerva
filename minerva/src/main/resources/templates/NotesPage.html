@@ -6,6 +6,13 @@
         
         <h2 style="margin-bottom: 26px;"><a href="{{viewlink}}">{{pageTitle}}</a></h2>
 
+        {{if showTopCreateButton}}
+            <p class="mb2">
+                <a href="{{viewlink}}/add-note?parent=0" class="btn btn-primary br"><i class="fa fa-comment"></i>
+                    {{N.addNote}}</a>
+            </p>
+        {{/if}}
+        
         {{noteHTML}}
 
         <p class="mt2">

@@ -141,6 +141,11 @@
 
 .noteText {
     white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+}
+
+.noteTextarea {
+    font-family: 'Courier New', monospace;
 }
 
 .noteE { /* default */
@@ -156,13 +161,13 @@
     color: #00f;
 }
 .noteE4 {
-    color: #09f;
-}
-.noteE5 {
     color: #f09;
 }
-.noteE6 {
+.noteE5 {
     color: #f90;
+}
+.noteE6 {
+    color: #09f;
 }
 .noteE7 {
     color: #832;

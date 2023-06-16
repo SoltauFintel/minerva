@@ -16,6 +16,7 @@ public class NotesPage extends SPage {
         header(n("notes"));
         put("noteHTML", noteHTML(seite.getSeite().getNotes(), 1));
         put("hasNotes", !seite.getSeite().getNotes().isEmpty());
+        put("showTopCreateButton", seite.notes().getNotesSize() >= 4);
     }
 
     private String noteHTML(List<Note> notes, int ebene) {

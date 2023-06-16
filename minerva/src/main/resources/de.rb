@@ -71,7 +71,7 @@ keepWS=Workspace behalten
 
 note=Kommentar
 addNote=Neuen Kommentar schreiben
-editNote=Kommentar bearbeiten
+editNote=Kommentar #$no bearbeiten
 notes=Kommentare
 backToPage=Zurück zur Seite
 reply=Antworten
