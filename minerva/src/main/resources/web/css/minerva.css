@@ -209,8 +209,17 @@
 }
 
 .seite h3 {
-    color: #090;
+    color: #080;
 }
+
+.ck-content h2 {
+    color: #c00;
+}
+
+.ck-content h3 {
+    color: #080;
+}
+
 
 #search-results td {
     border: 0;
