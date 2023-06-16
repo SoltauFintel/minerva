@@ -374,7 +374,7 @@ public class SeiteSO implements ISeite {
         dao().saveFiles(files, commitMessage.replace("$t", getTitle()), book.getWorkspace());
     }
 
-    private String filenameMeta() {
+    public String filenameMeta() {
         return book.getFolder() + "/" + getId() + META_SUFFIX;
     }
     

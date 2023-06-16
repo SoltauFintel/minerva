@@ -41,13 +41,22 @@ public class UserSO {
         this.currentWorkspace = currentWorkspace;
     }
     
+    /**
+     * @param branch -
+     * @param bookFolder -
+     * @param parentSeiteId -
+     * @return page ID
+     */
     public String createSeite(String branch, String bookFolder, String parentSeiteId) {
+        String id;
         BookSO book = getWorkspace(branch).getBooks().byFolder(bookFolder);
         if (SeiteSO.ROOT_ID.equals(parentSeiteId)) {
-            return book.createTopLevelSeite();
+            id = book.createTopLevelSeite();
+        } else {
+            SeiteSO parentSeite = book.getSeiten().byId(parentSeiteId);
+            id = parentSeite.getSeiten().createSeite(parentSeite, book, dao);
         }
-        SeiteSO parentSeite = book.getSeiten().byId(parentSeiteId);
-        return parentSeite.getSeiten().createSeite(parentSeite, book);
+        return id;
     }
     
     public DirAccess dao() {

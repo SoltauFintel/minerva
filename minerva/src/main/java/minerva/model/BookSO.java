@@ -90,8 +90,11 @@ public class BookSO {
         return workspace.getUser();
     }
     
+    /**
+     * @return page ID
+     */
     public String createTopLevelSeite() {
-        return seiten.createSeite(getISeite(), this);
+        return seiten.createSeite(getISeite(), this, dao());
     }
     
     public String getTitle() {

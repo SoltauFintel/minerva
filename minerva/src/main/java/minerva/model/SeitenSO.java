@@ -9,6 +9,8 @@ import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.IdGenerator;
 import minerva.MinervaWebapp;
+import minerva.access.DirAccess;
+import minerva.access.MultiPurposeDirAccess;
 import minerva.base.MList;
 import minerva.seite.Breadcrumb;
 import minerva.seite.IBreadcrumbLinkBuilder;
@@ -71,8 +73,21 @@ public class SeitenSO extends MList<SeiteSO> {
         return null;
     }
 
-    public String createSeite(ISeite parent, BookSO book) {
-        return createSeite(parent, book, IdGenerator.createId6()).getId();
+    /**
+     * @param parent -
+     * @param book -
+     * @return page ID
+     */
+    public String createSeite(ISeite parent, BookSO book, DirAccess dao) {
+        SeiteSO neueSeite = createSeite(parent, book, IdGenerator.createId6());
+        
+        // Check if page already exists (ID collision) (should never happen)
+        if (new MultiPurposeDirAccess(dao).load(neueSeite.filenameMeta()) != null) {
+            Logger.error("createSeite error: file already exists: " + neueSeite.filenameMeta());
+            throw new RuntimeException("File already exists! Please try again.");
+        }
+        
+        return neueSeite.getId();
     }
 
     /**
