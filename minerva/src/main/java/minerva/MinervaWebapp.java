@@ -192,6 +192,8 @@ public class MinervaWebapp extends RouteDefinitions {
             page.put("searchPlaceholder", "");
             page.put("searchFocus", false);
             page.put("branch0", "");
+            page.put("previewTitle", "Preview");
+            page.put("previewlink", "/p/master");
             page.put("q", "");
             booksForMenu(hasUser, userLang, books, page);
             page.put("isCustomerVersion", MinervaWebapp.factory().isCustomerVersion());
