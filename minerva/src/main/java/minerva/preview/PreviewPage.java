@@ -7,6 +7,8 @@ import org.pmw.tinylog.Logger;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import minerva.exclusions.Exclusions;
+import minerva.exclusions.ExclusionsService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.seite.Breadcrumb;
@@ -22,6 +24,17 @@ public class PreviewPage extends SPage {
         Logger.info(user.getUser().getLogin() + " | " + branch + " | " + customer + " | "
                 + lang + " | " + seite.getTitle());
 
+        if (seite.hasContent(lang) == 0) {
+            throw new RuntimeException("Empty page is not part of preview");
+        }
+        ExclusionsService sv = new ExclusionsService();
+        sv.setExclusions(new Exclusions(book.getWorkspace().getExclusions().get()));
+        sv.setCustomer(customer);
+        sv.setSeite(seite);
+        if (!sv.isAccessible()) {
+            throw new RuntimeException("Page is not accessible in preview for customer " + esc(customer));
+        }
+        
         put("title", esc(seite.getSeite().getTitle().getString(lang)) + " - " + n("preview") + " " + lang.toUpperCase()
                 + TITLE_POSTFIX);
         put("titel", esc(seite.getSeite().getTitle().getString(lang)));
@@ -30,7 +43,7 @@ public class PreviewPage extends SPage {
         fillBreadcrumbs(customer, lang, list("breadcrumbs"));
         
         String onlyBookFolder = "/p/" + branch + "/" + esc(customer) + "/" + bookFolder + "/" + lang + "/";
-        NavigateService nav = new NavigateService(true, lang);
+        NavigateService nav = new NavigateService(true, lang, sv);
         navlink("prevlink", nav.previousPage(seite), id, onlyBookFolder);
         navlink("nextlink", nav.nextPage(seite), id, onlyBookFolder);
         

@@ -1,24 +1,35 @@
 package minerva.seite;
 
 import minerva.MinervaWebapp;
+import minerva.exclusions.ExclusionsService;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 
 public class NavigateService {
     private final boolean omitEmptyPages;
     private final String lang;
+    private final ExclusionsService exclusions;
     private SeiteSO parent;
 
+    /**
+     * include all pages constructor
+     */
     public NavigateService() {
-        this(false, "");
+        this(false, "", null);
     }
 
-    public NavigateService(boolean omitEmptyPages, String lang) {
+    /**
+     * @param omitEmptyPages true: omit empty pages, false: include all pages
+     * @param lang must be a valid value if omitEmptyPages is true
+     * @param exclusions if not null: omit page if not accessible
+     */
+    public NavigateService(boolean omitEmptyPages, String lang, ExclusionsService exclusions) {
         if (omitEmptyPages && !MinervaWebapp.factory().getLanguages().contains(lang)) {
             throw new IllegalArgumentException("Argument lang must be specified if omitEmptyPages is true!");
         }
         this.omitEmptyPages = omitEmptyPages;
         this.lang = lang;
+        this.exclusions = exclusions;
     }
 
     public SeiteSO nextPage(final SeiteSO current) {
@@ -111,6 +122,15 @@ public class NavigateService {
     }
     
     private boolean valid(SeiteSO seite) {
-        return !omitEmptyPages || seite.hasContent(lang) > 0;
+        if (omitEmptyPages && seite.hasContent(lang) == 0) {
+            return false;
+        }
+        if (exclusions != null) {
+            exclusions.setSeite(seite);
+            if (!exclusions.isAccessible()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

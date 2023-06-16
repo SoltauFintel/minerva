@@ -101,7 +101,7 @@ public class ViewSeitePage extends SPage {
         String booklink = "/b/" + branch + "/" + bookFolder;
         put("booklink", booklink);
         put("parentlink", seiteSO.hasNoParent() ? booklink : onlyBookFolder + seite.getParentId());
-        NavigateService nav = new NavigateService();
+        NavigateService nav = new NavigateService(); // TODO Ist das noch richtig? vgl. BookPage
         navlink("prevlink", nav.previousPage(seiteSO), id, onlyBookFolder);
         navlink("nextlink", nav.nextPage(seiteSO), id, onlyBookFolder);
         
