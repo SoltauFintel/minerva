@@ -8,7 +8,7 @@ import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
 
 public class ExclusionsSO {
-    private static final String DN = "exclusions.txt";
+    public static final String DN = "exclusions.txt";
     private final WorkspaceSO workspace;
     
     public ExclusionsSO(WorkspaceSO workspace) {

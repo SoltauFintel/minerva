@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.jsoup.Jsoup;
@@ -21,6 +22,7 @@ import minerva.access.DirAccess;
 import minerva.base.FileService;
 import minerva.base.NlsString;
 import minerva.model.BookSO;
+import minerva.model.ExclusionsSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.Seite;
@@ -35,7 +37,10 @@ public class ConfluenceToMinervaMigrationService {
     private ConfluencePage root_de;
     private ConfluencePage root_en;
     private File htmlSourceFolder;
+    /** key: German page ID, value: English page ID */
     private Map<String, String> deEnMap;
+    /** key: English page ID, value: German page ID */
+    private Map<String, String> enDeMap;
     private List<EnglishSoloPage> englishSoloPages;
 
     public ConfluenceToMinervaMigrationService(File sourceFolder, WorkspaceSO workspace, List<String> langs) {
@@ -56,6 +61,10 @@ public class ConfluenceToMinervaMigrationService {
         // Schritt 2: Confluence Daten laden
         File csvFile = new File(sourceFolder, "html/mapping-tabelle-csv.csv");
         deEnMap = readMappings(csvFile);
+        enDeMap = new HashMap<>();
+        for (Entry<String, String> e : deEnMap.entrySet()) {
+            enDeMap.put(e.getValue(), e.getKey()); // create reversed map
+        }
         englishSoloPages = readMappings_soloEnId(csvFile);
         Logger.info("DE->EN mappings: " + deEnMap.size() + ", solo EN IDs: " + englishSoloPages.size());
         htmlSourceFolder = new File(sourceFolder, "html");
@@ -78,7 +87,7 @@ public class ConfluenceToMinervaMigrationService {
         Set<String> filenames = new HashSet<>();
         String x = workspace.getFolder() + "/";
         for (File file : files) {
-            if (file.getName().startsWith(".")) {
+            if (file.getName().startsWith(".") || file.getName().equals(ExclusionsSO.DN)) {
             } else if (file.isDirectory()) {
                 FileService.deleteFolder(file);
                 filenames.add(file.getAbsolutePath().replace("\\", "/").replace(x, ""));
@@ -335,10 +344,16 @@ public class ConfluenceToMinervaMigrationService {
             if (h.startsWith("/html/") && h.endsWith(".html")) {
                 String to = h.substring("/html/".length());
                 to = to.substring(0, to.length() - ".html".length());
+                to = englishToGermanLink(to);
                 html = html.replace(h, to);
             }
         }
         return html;
+    }
+
+    private String englishToGermanLink(String href) {
+        String ret = enDeMap.get(href);
+        return ret == null ? href : ret;
     }
 
     private Set<String> extract(String html, final String x1) {
