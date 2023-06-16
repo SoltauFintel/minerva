@@ -3,7 +3,9 @@
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">{{header}}</h1>
-        <h3>{{pageTitle}}</h3>
+        
+        <h2 style="margin-bottom: 26px;"><a href="{{viewlink}}">{{pageTitle}}</a></h2>
+        
         <form action="{{addlink}}" method="post" class="form-horizontal mt3">
             <fieldset>
                 <div class="form-group">
@@ -35,7 +37,8 @@
         </div>
         
         <p style="margin-top: 4em;">
-            <a href="{{viewlink}}" class="btn btn-default br">&lt;&lt; {{N.backToPage}} "{{pageTitle}}"</a>
+            <a href="{{viewlink}}" class="btn btn-default br"><i class="fa fa-arrow-left"></i>
+                {{N.backToPage}} "{{pageTitle}}"</a>
             <a href="{{viewlink}}/delete-tag?tag=$all" class="btn btn-danger br"
                 onclick="return deleteAll();"><i class="fa fa-trash"></i> {{N.deleteAllTags}}
                 <i id="s2" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
