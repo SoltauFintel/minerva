@@ -341,7 +341,9 @@ public class ConfluenceToMinervaMigrationService {
         // Links
         Set<String> href = extract(html, "href=\"");
         for (String h : href) {
-            if (h.startsWith("/html/") && h.endsWith(".html")) {
+            if (h.contains("/pages/createpage.action")) {
+                html = html.replace(h, "#"); // kill it
+            } else if (h.startsWith("/html/") && h.endsWith(".html")) {
                 String to = h.substring("/html/".length());
                 to = to.substring(0, to.length() - ".html".length());
                 to = englishToGermanLink(to);
