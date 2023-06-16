@@ -39,6 +39,7 @@ import minerva.model.UserSO;
 import minerva.persistence.gitlab.GitlabAuthAction;
 import minerva.persistence.gitlab.GitlabAuthCallbackAction;
 import minerva.preview.PreviewBookPage;
+import minerva.preview.PreviewCustomerPage;
 import minerva.preview.PreviewPage;
 import minerva.search.IndexWorkspaceAction;
 import minerva.search.SearchPage;
@@ -134,8 +135,9 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/s/:branch/:book/:id/delete-note", DeleteNoteAction.class);
 
         // Preview
-        get("/p/:branch/:book/:lang/:id", PreviewPage.class);
-        get("/p/:branch/:book/:lang", PreviewBookPage.class);
+        get("/p/:branch/:customer/:book/:lang/:id", PreviewPage.class);
+        get("/p/:branch/:customer/:book/:lang", PreviewBookPage.class);
+        get("/p/:branch", PreviewCustomerPage.class);
         
         // Sonstiges
         get("/message", MessagePage.class);
@@ -194,7 +196,6 @@ public class MinervaWebapp extends RouteDefinitions {
             page.put("isCustomerVersion", MinervaWebapp.factory().isCustomerVersion());
             page.put("branch", esc(branch));
             page.put("exclusionsTitle", "Exclusions");
-            DataList list = page.list("langsForMenu");
             if (hasUser) {
                 page.put("abmelden", NLS.get(userLang, "logout"));
                 page.put("booksLabel", NLS.get(userLang, "books"));
@@ -204,13 +205,8 @@ public class MinervaWebapp extends RouteDefinitions {
                     if (!"master".equals(branch)) {
                         page.put("branch0", esc(branch));
                     }
-                    for (String lang : factory().getLanguages()) {
-                        DataMap map = list.add();
-                        map.put("lang", lang);
-                        map.put("previewTitle", NLS.get(userLang, "preview") + " " + lang.toUpperCase());
-                        String folder = books.get(0).getBook().getFolder();
-                        map.put("previewlink", "/p/" + branch + "/" + folder + "/" + lang);
-                    }
+                    page.put("previewTitle", NLS.get(userLang, "preview"));
+                    page.put("previewlink", "/p/" + branch);
                 }
             }
         }

@@ -42,4 +42,8 @@ public class ExclusionsSO {
         }
         return ret;
     }
+
+    public TreeSet<String> getCustomers() {
+        return new TreeSet<>(new Exclusions(get()).getCustomers());
+    }
 }

@@ -76,6 +76,12 @@
     background-color: #ea8100;
 }
 
+.btn-preview {
+    min-width: 200px;
+    margin-top: 8px;
+    margin-right: 4px;
+}
+
 .ck-balloon-panel {
     z-index: 1040 !important;
 }

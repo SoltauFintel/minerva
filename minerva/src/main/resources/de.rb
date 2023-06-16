@@ -104,3 +104,4 @@ viewBook=Buch im Bearbeitungsbereich anzeigen
 viewPage=Seite im Bearbeitungsbereich anzeigen
 hasNote=Kommentar(e) vorhanden
 exclusions=Ausschlüsse
+noSpecificCustomer=kein Kunde

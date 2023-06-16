@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import minerva.access.DirAccess;
 import minerva.book.Book;
 import minerva.seite.Breadcrumb;
+import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.Seite;
 import minerva.seite.note.NoteWithSeite;
 import minerva.seite.tag.TagNList;
@@ -133,12 +134,12 @@ public class BookSO {
         seiten.forEach(seite -> seite.tags().addAllTags(tags));
     }
 
-    public List<Breadcrumb> getBreadcrumbs(String seiteId) {
+    public List<Breadcrumb> getBreadcrumbs(String seiteId, IBreadcrumbLinkBuilder builder) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>();
-        if (seiten.breadcrumbs(seiteId, breadcrumbs)) {
+        if (seiten.getBreadcrumbs(seiteId, builder, breadcrumbs)) {
             Breadcrumb b = new Breadcrumb();
             b.setTitle(book.getTitle());
-            b.setLink("/b/" + workspace.getBranch() + "/" + book.getFolder());
+            b.setLink(builder.build(workspace.getBranch(), book.getFolder(), null));
             breadcrumbs.add(b);
         }
         return breadcrumbs;

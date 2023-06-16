@@ -11,6 +11,7 @@ import github.soltaufintel.amalia.base.IdGenerator;
 import minerva.MinervaWebapp;
 import minerva.base.MList;
 import minerva.seite.Breadcrumb;
+import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.Note;
 import minerva.seite.Seite;
 import minerva.seite.note.NoteWithSeite;
@@ -128,16 +129,17 @@ public class SeitenSO extends MList<SeiteSO> {
         return ret;
     }
     
-    public boolean breadcrumbs(String seiteId, List<Breadcrumb> breadcrumbs) {
+    public boolean getBreadcrumbs(String seiteId, IBreadcrumbLinkBuilder builder, List<Breadcrumb> breadcrumbs) {
         for (SeiteSO seite : this) {
             if (seite.getId().equals(seiteId)) {
                 return true; // gefunden, Ende der Suche
             }
-            if (seite.getSeiten().breadcrumbs(seiteId, breadcrumbs)) {
+            if (seite.getSeiten().getBreadcrumbs(seiteId, builder, breadcrumbs)) {
                 Breadcrumb b = new Breadcrumb();
                 b.setTitle(seite.getSeite().getTitle());
-                b.setLink("/s/" + seite.getBook().getWorkspace().getBranch() + "/"
-                        + seite.getBook().getBook().getFolder() + "/" + seite.getId());
+                b.setLink(builder.build(seite.getBook().getWorkspace().getBranch(),
+                        seite.getBook().getBook().getFolder(),
+                        seite.getId()));
                 breadcrumbs.add(b);
                 return true;
             }

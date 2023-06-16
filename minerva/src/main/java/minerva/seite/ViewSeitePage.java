@@ -132,7 +132,7 @@ public class ViewSeitePage extends SPage {
     }
 
     private void fillBreadcrumbs(String lang, DataList list) {
-        List<Breadcrumb> breadcrumbs = book.getBreadcrumbs(id);
+        List<Breadcrumb> breadcrumbs = book.getBreadcrumbs(id, new ViewAreaBreadcrumbLinkBuilder());
         for (int i = breadcrumbs.size() - 1; i >= 0; i--) {
             Breadcrumb b = breadcrumbs.get(i);
             DataMap map = list.add();
