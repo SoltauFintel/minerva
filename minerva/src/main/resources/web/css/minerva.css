@@ -152,6 +152,11 @@
     font-family: 'Courier New', monospace;
 }
 
+.notePersons {
+    font-size: 8pt;
+    color: #666;
+}
+
 .noteE { /* default */
     color: #000;
 }

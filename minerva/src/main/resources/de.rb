@@ -109,3 +109,9 @@ addMoreTags=Weitere tags hinzufügen
 noTags=keine tags vorhanden
 noNotes=keine Kommentare vorhanden
 allPages=Alle Seiten anzeigen
+
+done=Erledigt
+doneNote=Kommentar als erledigt kennzeichnen
+undoneNote=Kommentar als unerledigt kennzeichnen
+zustaendig=zuständig
+doneBy=erledigt durch

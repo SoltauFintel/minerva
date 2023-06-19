@@ -25,6 +25,7 @@ public class MinervaFactory {
     private final GitlabSystemSO gitlabSystem;
     private final GitlabRepositorySO gitlabRepository;
     private final List<String> languages;
+    private final List<String> persons;
     
     public MinervaFactory(MinervaConfig config) {
         this.config = config;
@@ -44,6 +45,7 @@ public class MinervaFactory {
             folder = "";
         }
         System.out.println("languages: " + languages + " | backend: " + getPersistenceInfo() + folder);
+        persons = config.getPersons();
     }
 
     public MinervaConfig getConfig() {
@@ -91,5 +93,9 @@ public class MinervaFactory {
                 title.setString(lang, "New page " + something);
             }
         }
+    }
+    
+    public List<String> getPersons() {
+        return persons;
     }
 }

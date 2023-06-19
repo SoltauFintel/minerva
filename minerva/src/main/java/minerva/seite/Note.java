@@ -13,6 +13,9 @@ public class Note {
     private String changed;
     private String text;
     private final List<Note> notes = new ArrayList<>();
+    private final List<String> persons = new ArrayList<>();
+    private boolean done = false;
+    private String doneBy;
     
     public int getNumber() {
         return number;
@@ -56,5 +59,25 @@ public class Note {
 
     public List<Note> getNotes() {
         return notes;
+    }
+
+    public List<String> getPersons() {
+        return persons;
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
+    public String getDoneBy() {
+        return doneBy;
+    }
+
+    public void setDoneBy(String doneBy) {
+        this.doneBy = doneBy;
     }
 }

@@ -61,6 +61,7 @@ import minerva.seite.note.AddNotePage;
 import minerva.seite.note.AllNotesPage;
 import minerva.seite.note.DeleteNoteAction;
 import minerva.seite.note.EditNotePage;
+import minerva.seite.note.NoteDoneAction;
 import minerva.seite.note.NotesPage;
 import minerva.seite.tag.DeleteTagAction;
 import minerva.seite.tag.TagCloudPage;
@@ -134,6 +135,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/s/:branch/:book/:id/add-note", AddNotePage.class);
         form("/s/:branch/:book/:id/edit-note", EditNotePage.class);
         form("/s/:branch/:book/:id/delete-note", DeleteNoteAction.class);
+        form("/s/:branch/:book/:id/note-done", NoteDoneAction.class);
 
         // Preview
         get("/p/:branch/:customer/:book/:lang/:id", PreviewPage.class);

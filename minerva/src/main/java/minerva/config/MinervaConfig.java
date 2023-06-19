@@ -2,6 +2,7 @@ package minerva.config;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import github.soltaufintel.amalia.web.config.AppConfig;
@@ -77,5 +78,16 @@ public class MinervaConfig {
     
     private String get(String key) {
         return config.get(key);
+    }
+
+    public List<String> getPersons() {
+        List<String> ret = new ArrayList<>();
+        for (String name : get("persons").split(",")) {
+            if (!name.isBlank()) {
+                ret.add(name.trim());
+            }
+        }
+        Collections.sort(ret);
+        return ret;
     }
 }

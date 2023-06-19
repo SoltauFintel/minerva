@@ -5,12 +5,29 @@
         <span class="noteUser">{{user}}</span> -
         <span class="noteCreated" title="created">{{created}}</span>{{if hasChanged}} -
         <span class="noteChanged" title="changed">{{changed}}</span>{{/if}}
+        {{if hasPersons}}
+            &mdash; {{N.zustaendig}}:
+                {{each p in persons}}
+                    <span{{if not done}}{{if p.me}} style="background-color: #ff0; font-weight: bold;"{{/if}}{{/if}}
+                    >{{p.name}}</span>{{if not p.last}}, {{/if}}
+                {{/each}}
+        {{/if}}
+        {{if done}}
+            &mdash; <span style="color: #090;"><i class="fa fa-check"></i> {{N.doneBy}} {{doneBy}}</span>
+        {{/if}}
     </p>
     <pre class="noteText">{{text}}</pre>
     <p>
         {{if addAllowed}}
             <a href="{{viewlink}}/add-note?parent={{number}}" class="btn btn-default btn-xs br"><i
                 class="fa fa-comments"></i> {{N.reply}}</a>
+        {{/if}}
+        {{if done}}
+            <a href="{{viewlink}}/note-done?number={{number}}&m=u" title="{{N.undoneNote}}"
+                class="btn btn-default btn-xs"><i class="fa fa-undo"></i></a>
+        {{else}}
+            <a href="{{viewlink}}/note-done?number={{number}}" title="{{N.doneNote}}"
+                class="btn btn-default btn-xs br"><i class="fa fa-check"></i> {{N.done}}!</a>
         {{/if}}
         {{if editAllowed}}
             <a href="{{viewlink}}/edit-note?number={{number}}" title="{{N.edit}}"

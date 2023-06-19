@@ -109,3 +109,9 @@ addMoreTags=Add tags
 noTags=no tags
 noNotes=no comments
 allPages=Show all pages
+
+done=Done
+doneNote=set comment as done
+undoneNote=set comment as not done
+zustaendig=assigned to
+doneBy=done by

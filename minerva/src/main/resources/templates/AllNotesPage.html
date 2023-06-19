@@ -10,7 +10,7 @@
             <tr style="background-color: #f5f5f5;">
                 <th>{{N.nodot}}</th>
                 <th style="min-width: 300px; max-width: 800px;">{{N.note}}</th>
-                <th>{{N.author}}</th>
+                <th>{{N.author}}<br/><br/>Zuständig</th>
                 <th style="min-width: 200px;">{{N.page}}</th>
                 <th style="width: 12em;">{{N.createdAt}}</th>
             </tr>
@@ -18,7 +18,7 @@
                 <tr>
                     <td><a href="{{n.link}}">#{{n.number}}</a></td>
                     <td><pre class="noteText">{{n.text}}</pre></td>
-                    <td>{{n.user}}</td>
+                    <td>{{n.user}}{{if n.hasPersons}}<br/><br/>{{n.persons}}{{/if}}</td>
                     <td><a href="{{n.pagelink}}">{{n.pageTitle}}</a></td>
                     <td>{{n.created}}</td>
                 </tr>
