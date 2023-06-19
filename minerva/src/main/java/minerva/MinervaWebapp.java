@@ -26,6 +26,7 @@ import minerva.book.EditBookPage;
 import minerva.book.OrderTopLevelSeitePage;
 import minerva.book.SelectLanguageAction;
 import minerva.book.SortTopLevelSeiteAction;
+import minerva.config.InfoAction;
 import minerva.config.MinervaConfig;
 import minerva.config.MinervaFactory;
 import minerva.exclusions.ExclusionsEditPage;
@@ -147,6 +148,8 @@ public class MinervaWebapp extends RouteDefinitions {
         addNotProtected("/gitlab-auth");
         form("/login2", Login2Page.class);
         addNotProtected("/login2");
+        get("/rest/info", InfoAction.class);
+        addNotProtected("/rest/info");
     }
 
     public static void main(String[] args) {
