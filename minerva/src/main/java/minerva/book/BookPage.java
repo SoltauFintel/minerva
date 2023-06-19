@@ -1,5 +1,8 @@
 package minerva.book;
 
+import com.github.template72.data.DataList;
+import com.github.template72.data.DataMap;
+
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 
@@ -19,9 +22,16 @@ public class BookPage extends BPage {
         put("isSorted", sorted);
         put("Sortierung", n(sorted ?  "alfaSorted" : "manuSorted"));
 
-        StringBuilder gliederung = new StringBuilder();
-        fillSeiten(branch, bookFolder, book.getSeiten(), userLang, gliederung, book.getBook().isSorted());
-        put("gliederung", gliederung.toString());
+        DataList list = list("languages");
+        for (String lang : langs) {
+            DataMap map = list.add();
+            StringBuilder gliederung = new StringBuilder();
+            fillSeiten(branch, bookFolder, book.getSeiten(), lang, gliederung, book.getBook().isSorted());
+            map.put("lang", lang);
+            map.put("LANG", lang.toUpperCase());
+            map.put("gliederung", gliederung.toString());
+            map.put("active", user.getPageLanguage().equals(lang));
+        }
     }
 
     private void fillSeiten(String branch, String bookFolder, SeitenSO seiten, String lang, StringBuilder gliederung,
