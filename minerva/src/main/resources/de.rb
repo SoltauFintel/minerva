@@ -108,3 +108,4 @@ noSpecificCustomer=kein Kunde
 addMoreTags=Weitere tags hinzufügen
 noTags=keine tags vorhanden
 noNotes=keine Kommentare vorhanden
+allPages=Alle Seiten anzeigen

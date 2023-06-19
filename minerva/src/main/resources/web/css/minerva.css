@@ -110,6 +110,10 @@
     color: #99c;
 }
 
+.hiddenPage {
+    color: #800000;
+}
+
 .kasten {
     border: 1px solid #ccc;
     margin-bottom: 6px;
