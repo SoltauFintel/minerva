@@ -91,6 +91,11 @@ public class SeiteSO implements ISeite {
         return seiten;
     }
 
+    public SeitenSO getSeiten(String lang) {
+        seiten.sort(lang);
+        return seiten;
+    }
+
     @Override
     public String getId() {
         return seite.getId();

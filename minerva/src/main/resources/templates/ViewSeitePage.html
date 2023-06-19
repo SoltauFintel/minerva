@@ -4,9 +4,9 @@
     <div class="col-lg-9">
         <div class="mt1" style="margin-bottom: 10px; padding-left: 0;">
             <a {{if hasPrevlink}}href="{{prevlink}}"{{else}}disabled{{/if}} class="btn btn-default"
-                title="{{N.pageToPrev}}"><i class="fa fa-arrow-left"></i></a>
+                title="{{N.pageToPrev}}" id="prev1"><i class="fa fa-arrow-left"></i></a>
             <a {{if hasNextlink}}href="{{nextlink}}"{{else}}disabled{{/if}} class="btn btn-default br"
-                title="{{N.pageToNext}}"><i class="fa fa-arrow-right"></i></a>
+                title="{{N.pageToNext}}" id="next1"><i class="fa fa-arrow-right"></i></a>
         </div>
         
         <ul class="nav nav-tabs" id="langTabs">
@@ -39,9 +39,9 @@
         <div class="col-lg-12 visible-lg-block mt1" style="padding-left: 0;">
             <p>
                 <a {{if hasPrevlink}}href="{{prevlink}}"{{else}}disabled{{/if}} class="btn btn-default"
-                    title="{{N.pageToPrev}}"><i class="fa fa-arrow-left"></i></a>
+                    title="{{N.pageToPrev}}" id="prev2"><i class="fa fa-arrow-left"></i></a>
                 <a {{if hasNextlink}}href="{{nextlink}}"{{else}}disabled{{/if}} class="btn btn-default br"
-                    title="{{N.pageToNext}}"><i class="fa fa-arrow-right"></i></a>
+                    title="{{N.pageToNext}}" id="next2"><i class="fa fa-arrow-right"></i></a>
                 <a href="{{editlink}}" class="btn btn-primary br" style="min-width: 100px;"><i
                     class="fa fa-pencil"></i> {{N.edit}}</a>
             </p>
@@ -64,12 +64,13 @@
         <h4>{{N.subpages}} ({{subpagesSize}})</h4>
         {{if hasSubPages}}
             {{each L in languages}}
-                {{L.lang}}
-                <ul>
-                    {{each s in L.subpages}}
-                        <li><a href="{{s.viewlink}}">{{s.titel}}</a></li>
-                    {{/each}}
-                </ul>
+                <div id="subpages_{{L.lang}}"{{if not L.active}} hidden{{/if}}>
+                    <ul>
+                        {{each s in L.subpages}}
+                            <li><a href="{{s.viewlink}}">{{s.titel}}</a></li>
+                        {{/each}}
+                    </ul>
+                </div>
             {{/each}}
         {{/if}}
         <p>
@@ -110,7 +111,9 @@
     $('#langTabs a').click(function (e) {
         e.preventDefault()
         $(this).tab('show')
-        $.get("/b/{{branch}}/language?m=page&lang=" + e.target.hash.substring(1));
+        lang = e.target.hash.substring(1)
+        $.get("/b/{{branch}}/language?m=page&lang=" + lang);
+        {{tabcode}}
     })
     
     function sort() {

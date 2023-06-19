@@ -65,6 +65,11 @@ public class BookSO {
         return seiten;
     }
 
+    public SeitenSO getSeiten(String lang) {
+        seiten.sort(lang);
+        return seiten;
+    }
+
     public Book getBook() {
         return book;
     }

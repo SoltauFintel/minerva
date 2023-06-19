@@ -72,11 +72,13 @@ public class ViewSeitePage extends SPage {
     static void fillSubpages(SeitenSO seiten, String lang, DataList subpages, String branch, String bookFolder) {
         seiten.sort(lang);
         for (SeiteSO sub : seiten) {
-            DataMap map = subpages.add();
-            map.put("id", Escaper.esc(sub.getId()));
-            map.put("titel", Escaper.esc(sub.getSeite().getTitle().getString(lang)));
-            map.put("viewlink", "/s/" + branch + "/" + bookFolder + "/" + Escaper.esc(sub.getId()));
-            map.putInt("position", sub.getSeite().getPosition());
+            if (sub.hasContent(lang) > 0) {
+                DataMap map = subpages.add();
+                map.put("id", Escaper.esc(sub.getId()));
+                map.put("titel", Escaper.esc(sub.getSeite().getTitle().getString(lang)));
+                map.put("viewlink", "/s/" + branch + "/" + bookFolder + "/" + Escaper.esc(sub.getId()));
+                map.putInt("position", sub.getSeite().getPosition());
+            }
         }
     }
 
@@ -101,9 +103,10 @@ public class ViewSeitePage extends SPage {
         String booklink = "/b/" + branch + "/" + bookFolder;
         put("booklink", booklink);
         put("parentlink", seiteSO.hasNoParent() ? booklink : onlyBookFolder + seite.getParentId());
-        NavigateService nav = new NavigateService(); // TODO Ist das noch richtig? vgl. BookPage
+        NavigateService nav = new NavigateService(true, user.getPageLanguage(), null);
         navlink("prevlink", nav.previousPage(seiteSO), id, onlyBookFolder);
         navlink("nextlink", nav.nextPage(seiteSO), id, onlyBookFolder);
+        put("tabcode", getTabCode(nav, seiteSO, id, onlyBookFolder));
         
         // Standard
         String withSeiteId = onlyBookFolder + id;
@@ -129,6 +132,50 @@ public class ViewSeitePage extends SPage {
         String has = "has" + name.substring(0, 1).toUpperCase() + name.substring(1);
         put(has, !nav_id.equals(seiteId));
         put(name, onlyBookFolder + nav_id);
+    }
+    
+    private String getTabCode(NavigateService nav0, SeiteSO seiteSO, String seiteId, String onlyBookFolder) {
+        String ret = "", ret2 = "";
+        for (String lang : langs) {
+            NavigateService nav = new NavigateService(true, lang, null);
+            SeiteSO prevSeite = nav.previousPage(seiteSO);
+            boolean has;
+            String link;
+            if (prevSeite.getId().equals(seiteId)) {
+                has = false;
+                link = "";
+            } else {
+                has = true;
+                link = onlyBookFolder + prevSeite.getId();
+            }
+            ret += "if (lang == \"" + lang + "\") {\n";
+            ret += "  $(\"#prev1\").attr(\"disabled\", " + !has + ")\n";
+            ret += "  $(\"#prev1\").attr(\"href\", \"" + link + "\")\n";
+            ret += "  $(\"#prev2\").attr(\"disabled\", " + !has + ")\n";
+            ret += "  $(\"#prev2\").attr(\"href\", \"" + link + "\")\n";
+            ret += "}\n";
+            ret2 += "$(\"#subpages_" + lang + "\").attr(\"hidden\", lang != \"" + lang + "\")\n";
+        }
+        for (String lang : langs) {
+            NavigateService nav = new NavigateService(true, lang, null);
+            SeiteSO prevSeite = nav.nextPage(seiteSO);
+            boolean has;
+            String link;
+            if (prevSeite.getId().equals(seiteId)) {
+                has = false;
+                link = "";
+            } else {
+                has = true;
+                link = onlyBookFolder + prevSeite.getId();
+            }
+            ret += "if (lang == \"" + lang + "\") {\n";
+            ret += "  $(\"#next1\").attr(\"disabled\", " + !has + ")\n";
+            ret += "  $(\"#next1\").attr(\"href\", \"" + link + "\")\n";
+            ret += "  $(\"#next2\").attr(\"disabled\", " + !has + ")\n";
+            ret += "  $(\"#next2\").attr(\"href\", \"" + link + "\")\n";
+            ret += "}\n";
+        }
+        return ret + ret2;
     }
 
     private void fillBreadcrumbs(String lang, DataList list) {

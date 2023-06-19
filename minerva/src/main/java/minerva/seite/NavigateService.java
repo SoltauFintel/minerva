@@ -12,13 +12,6 @@ public class NavigateService {
     private SeiteSO parent;
 
     /**
-     * include all pages constructor
-     */
-    public NavigateService() {
-        this(false, "", null);
-    }
-
-    /**
      * @param omitEmptyPages true: omit empty pages, false: include all pages
      * @param lang must be a valid value if omitEmptyPages is true
      * @param exclusions if not null: omit page if not accessible
@@ -53,7 +46,7 @@ public class NavigateService {
     }
     
     private SeiteSO getFirstSubpage(SeiteSO parent) {
-        for (SeiteSO seite : parent.getSeiten()) {
+        for (SeiteSO seite : parent.getSeiten(lang)) {
             if (valid(seite)) {
                 return seite;
             }
@@ -73,7 +66,7 @@ public class NavigateService {
     }
     
     private SeiteSO lastPage(final SeiteSO page) {
-        SeitenSO seiten = page.getSeiten();
+        SeitenSO seiten = page.getSeiten(lang);
         for (int i = seiten.size() - 1; i >= 0; i--) {
             SeiteSO s = seiten.get(i);
             if (valid(s)) {
@@ -84,11 +77,11 @@ public class NavigateService {
     }
     
     private SeiteSO nextPageOnSameLevel(SeiteSO seite) {
-        SeitenSO seiten = seite.getBook().getSeiten();
+        SeitenSO seiten = seite.getBook().getSeiten(lang);
         parent = null;
         if (!seite.hasNoParent()) {
             parent = seiten.byId(seite.getSeite().getParentId());
-            seiten = parent.getSeiten();
+            seiten = parent.getSeiten(lang);
         }
         boolean pick = false;
         for (SeiteSO s : seiten) {
@@ -103,11 +96,11 @@ public class NavigateService {
     }
 
     private SeiteSO previousPageOnSameLevel(SeiteSO seite) {
-        SeitenSO seiten = seite.getBook().getSeiten();
+        SeitenSO seiten = seite.getBook().getSeiten(lang);
         parent = null;
         if (!seite.hasNoParent()) {
             parent = seiten.byId(seite.getSeite().getParentId());
-            seiten = parent.getSeiten();
+            seiten = parent.getSeiten(lang);
         }
         SeiteSO ret = null;
         for (SeiteSO s : seiten) {
