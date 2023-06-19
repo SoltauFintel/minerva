@@ -1,11 +1,8 @@
 {{master: master_jqueryoben}}
 
 <div class="row"> 
-    <div class="col-lg-12">
+    <div class="col-lg-9">
         <h1 class="page-header">{{header}}</h1>
-
-        <p class="mb2"><a href="/s/{{branch}}/{{bookFolder}}/root/add"
-            class="btn btn-primary">{{N.newPage}}</a></p>
 
         <ul class="nav nav-tabs" id="langTabs">
             {{each L in languages}}
@@ -25,15 +22,19 @@
                 </div>
             {{/each}}
         </div>
-        
-        <div>&nbsp;</div>
-        <p>
+    </div>
+    <div class="col-lg-3">
+        <p class="mb2" style="margin-top: 16px;"><a href="/s/{{branch}}/{{bookFolder}}/root/add"
+            class="btn btn-primary">{{N.newPage}}</a></p>
+        <p style="margin-top: 7em;">
             <a href="{{positionlink}}" class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"><i
                 class="fa fa-sort"></i> {{N.reorder}}</a>
             <a href="{{sortlink}}" class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"
                 onclick="return sort();"><i class="fa fa-sort-alpha-asc"></i> {{N.sort}}!
                 <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
-            <span style="color: #999;">{{Sortierung}}</span>
+        </p>
+        <p style="font-size: 8pt; color: #888;">
+            {{Sortierung}}
         </p>
     </div>
 </div>
