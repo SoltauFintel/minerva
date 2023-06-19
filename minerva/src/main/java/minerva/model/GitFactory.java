@@ -38,10 +38,11 @@ public class GitFactory {
         }
     }
     
-    public static void logout(User pUser) {
+    public static boolean logout(User pUser) {
+        boolean revokeOk = false;
         if (pUser instanceof GitlabUser user) {
             if (user.getAccessToken() == null) {
-                return;
+                return false;
             }
             AppConfig cfg = new AppConfig();
             String gitlabUrl = cfg.get("gitlab.url");
@@ -52,13 +53,14 @@ public class GitFactory {
                     + "&token=" + u(user.getAccessToken());
             String r = new REST(gitlabUrl + "/oauth/revoke").post(params).response();
             if ("{}".equals(r)) {
-                Logger.info("Gitlab revoke ok");
+                revokeOk = true;
             } else {
                 Logger.warn("Gitlab revoke failed");
             }
             user.setAccessToken(null);
             user.setRefreshToken(null);
         }
+        return revokeOk;
     }
 
     private static String u(String k) {

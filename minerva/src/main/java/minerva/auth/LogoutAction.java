@@ -1,5 +1,7 @@
 package minerva.auth;
 
+import org.pmw.tinylog.Logger;
+
 import github.soltaufintel.amalia.auth.AuthService;
 import github.soltaufintel.amalia.auth.rememberme.NoOpRememberMe;
 import github.soltaufintel.amalia.auth.webcontext.WebContext;
@@ -14,7 +16,8 @@ public class LogoutAction extends Action {
     protected void execute() {
         StateSO stateSO = StatesSO.get(ctx);
         if (stateSO != null) {
-            GitFactory.logout(stateSO.getUser().getUser());
+            boolean revoked = GitFactory.logout(stateSO.getUser().getUser());
+            Logger.info(stateSO.getUser().getUser().getLogin() + " | logout" + (revoked ? " | Gitlab revoke ok" : ""));
         }
         AuthService.logout(new WebContext(ctx), new NoOpRememberMe());
         ctx.req.session().invalidate();
