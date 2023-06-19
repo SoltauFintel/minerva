@@ -11,7 +11,8 @@
         
         <ul class="nav nav-tabs" id="langTabs">
             {{each L in languages}}
-                <li role="presentation"{{if L.active}} class="active"{{/if}}><a href="#{{L.lang}}">{{N.language}}
+                <li role="presentation"{{if L.active}} class="active"{{/if}}><a href="#{{L.lang}}"
+                    data="{{L.LANG}}">{{N.language}}
                     {{L.LANG}}</a></li>
             {{/each}}
         </ul>
@@ -62,11 +63,14 @@
         <hr/>
         <h4>{{N.subpages}} ({{subpagesSize}})</h4>
         {{if hasSubPages}}
-            <ul>
-            {{each s in subpages}}
-                <li><a href="{{s.viewlink}}">{{s.titel}}</a></li>
+            {{each L in languages}}
+                {{L.lang}}
+                <ul>
+                    {{each s in L.subpages}}
+                        <li><a href="{{s.viewlink}}">{{s.titel}}</a></li>
+                    {{/each}}
+                </ul>
             {{/each}}
-            </ul>
         {{/if}}
         <p>
             <a href="{{positionlink}}"
@@ -106,6 +110,7 @@
     $('#langTabs a').click(function (e) {
         e.preventDefault()
         $(this).tab('show')
+        $.get("/b/{{branch}}/language?m=page&lang=" + e.target.hash.substring(1));
     })
     
     function sort() {

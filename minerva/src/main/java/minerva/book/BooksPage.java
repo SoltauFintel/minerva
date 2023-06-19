@@ -25,7 +25,7 @@ public class BooksPage extends UPage {
     @Override
     protected void execute() {
         String branch = ctx.pathParam("branch");
-        String userLang = user.getLanguage();
+        String userLang = user.getGuiLanguage();
         
         WorkspaceSO workspace = user.getWorkspace(branch);
         BooksSO books = workspace.getBooks();

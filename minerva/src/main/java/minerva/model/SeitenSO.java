@@ -26,7 +26,7 @@ public class SeitenSO extends MList<SeiteSO> {
 
     private static Comparator<SeiteSO> getComparator(ISeite parent) {
         if (parent.isSorted()) {
-            return (a, b) -> a.getSortTitle().compareTo(b.getSortTitle());
+            return new SeiteTitleComparator();
         } else {
             return (a, b) -> Integer.valueOf(a.getSeite().getPosition())
                     .compareTo(Integer.valueOf(b.getSeite().getPosition()));
@@ -165,7 +165,14 @@ public class SeitenSO extends MList<SeiteSO> {
     public void onlyRemove(SeiteSO seite) {
         remove(seite);
     }
-    
+
+    public void sort(String language) {
+        if (comparator instanceof SeiteTitleComparator c) {
+            c.setLanguage(language);
+        }
+        super.sort();
+    }
+
     public void sortAll() {
         sort();
         for (SeiteSO seite : this) {

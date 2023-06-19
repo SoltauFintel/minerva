@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class MList<T> implements Iterable<T> {
     private final List<T> list = new ArrayList<>();
-    private final Comparator<T> comparator;
+    protected final Comparator<T> comparator;
     
     public MList() {
         this(null);
@@ -30,7 +30,7 @@ public class MList<T> implements Iterable<T> {
             list.sort(comparator);
         }
     }
-    
+
     public T get(int index) {
         return list.get(index);
     }

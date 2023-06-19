@@ -50,13 +50,8 @@ public class BookSO {
             }
 
             @Override
-            public String getUserLanguage() {
-                return workspace.getUser().getLanguage();
-            }
-
-            @Override
             public String getTitle() {
-                return book.getTitle().getString(getUser().getLanguage());
+                return book.getTitle().getString(getUser().getPageLanguage());
             }
             
             @Override
@@ -98,7 +93,7 @@ public class BookSO {
     }
     
     public String getTitle() {
-        return book.getTitle().getString(getUser().getLanguage());
+        return book.getTitle().getString(getUser().getGuiLanguage());
     }
 
     public void activateSorted() {

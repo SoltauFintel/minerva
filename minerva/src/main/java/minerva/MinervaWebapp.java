@@ -92,7 +92,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/b/:branch/search", SearchPage.class);
         form("/b/:branch/:book/edit", EditBookPage.class);
         get("/b/:branch/:book/delete", DeleteBookPage.class);
-        get("/b/:branch/select-language/:lang", SelectLanguageAction.class);
+        get("/b/:branch/language", SelectLanguageAction.class);
         get("/b/:branch/:book", BookPage.class);
         form("/b/:branch/:book/order", OrderTopLevelSeitePage.class);
         get("/b/:branch/:book/sort", SortTopLevelSeiteAction.class);
@@ -172,7 +172,7 @@ public class MinervaWebapp extends RouteDefinitions {
             String userLang = "de";
             if (hasUser) {
                 UserSO user = StatesSO.get(ctx).getUser();
-                userLang = user.getLanguage();
+                userLang = user.getGuiLanguage();
                 if (user.getCurrentWorkspace() != null) {
                     branch = user.getCurrentWorkspace().getBranch();
                     if (user.getCurrentWorkspace().getBooks() != null //

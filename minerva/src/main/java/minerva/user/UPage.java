@@ -23,7 +23,7 @@ public abstract class UPage extends Page {
         super.init(ctx);
         user = StatesSO.get(ctx).getUser();
         langs = MinervaWebapp.factory().getLanguages();
-        model.put("N", "en".equals(user.getLanguage()) ? NLS.dataMap_en : NLS.dataMap_de); // RB texts
+        model.put("N", "en".equals(user.getGuiLanguage()) ? NLS.dataMap_en : NLS.dataMap_de); // RB texts
     }
 
     protected void header(String title) {
@@ -38,7 +38,7 @@ public abstract class UPage extends Page {
      * @return text in user language
      */
     protected String n(String key) {
-        return NLS.get(user.getLanguage(), key);
+        return NLS.get(user.getGuiLanguage(), key);
     }
     
     protected ColumnFormularGenerator initColumnFormularGenerator(ColumnFormularGenerator gen) {

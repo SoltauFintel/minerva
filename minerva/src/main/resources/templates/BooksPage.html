@@ -15,7 +15,7 @@
                         {{N.newBook}}</a>
                 {{/if}}
                 {{each l in langs}}
-                    <a href="/b/{{branch}}/select-language/{{l.lang}}"
+                    <a href="/b/{{branch}}/language?lang={{l.lang}}"
                         class="btn btn-{{if l.selected}}success{{else}}default{{/if}}"><i
                         class="fa fa-flag"></i> {{l.lang}}</a>
                 {{/each}}

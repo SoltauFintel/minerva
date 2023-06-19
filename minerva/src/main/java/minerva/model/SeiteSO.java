@@ -102,17 +102,20 @@ public class SeiteSO implements ISeite {
     }
 
     @Override
-    public String getUserLanguage() {
-        return book.getUser().getLanguage();
-    }
-    
-    @Override
     public String getTitle() {
-        return seite.getTitle().getString(getUserLanguage());
+        return seite.getTitle().getString(book.getUser().getPageLanguage());
     }
     
     public String getSortTitle() {
         return getTitle().toLowerCase()
+                .replace("ä", "ae")
+                .replace("ö", "oe")
+                .replace("ü", "ue")
+                .replace("ß", "ss");
+    }
+
+    public String getSortTitle(String lang) {
+        return getSeite().getTitle().getString(lang).toLowerCase()
                 .replace("ä", "ae")
                 .replace("ö", "oe")
                 .replace("ü", "ue")

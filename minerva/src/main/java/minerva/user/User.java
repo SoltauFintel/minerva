@@ -5,8 +5,10 @@ import minerva.MinervaWebapp;
 public class User {
     private final String login;
     private final String folder;
-    /** Einstellung welche Sprache angezeigt wird */
-    private String language = MinervaWebapp.factory().getLanguages().get(0);
+    /** The user has a preferred language. That will be used for the GUI. */
+    private String guiLanguage = MinervaWebapp.factory().getLanguages().get(0);
+    /** The current language tab for a page. */
+    private String pageLanguage = MinervaWebapp.factory().getLanguages().get(0);
     
     public User(String login, String folder) {
         this.login = login;
@@ -21,12 +23,20 @@ public class User {
         return folder;
     }
 
-    public String getLanguage() {
-        return language;
+    public String getGuiLanguage() {
+        return guiLanguage;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
+    public void setGuiLanguage(String language) {
+        this.guiLanguage = language;
+    }
+
+    public String getPageLanguage() {
+        return pageLanguage;
+    }
+
+    public void setPageLanguage(String pageLanguage) {
+        this.pageLanguage = pageLanguage;
     }
 
     // TODO bei GitlabUser könnte man hier den richtigen Namen setzen

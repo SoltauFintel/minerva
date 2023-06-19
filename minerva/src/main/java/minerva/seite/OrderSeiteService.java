@@ -71,7 +71,7 @@ public abstract class OrderSeiteService {
             fill(branch, bookFolder, id, key, hasSeiten);
         }
 
-        ViewSeitePage.fillSubpages(seitenWC, user.getLanguage(), model.list("subpages"), branch, bookFolder);
+        ViewSeitePage.fillSubpages(seitenWC, user.getGuiLanguage(), model.list("subpages"), branch, bookFolder);
     }
 
     private SeitenSO startEvent(SeitenSO seiten, String key) {
@@ -152,7 +152,7 @@ public abstract class OrderSeiteService {
     }
     
     private String n(String key) {
-        return NLS.get(user.getLanguage(), key);
+        return NLS.get(user.getGuiLanguage(), key);
     }
 
     private SeitenSO createSeitenSO(String seiteId) {
@@ -160,11 +160,6 @@ public abstract class OrderSeiteService {
             @Override
             public boolean isSorted() {
                 return false;
-            }
-            
-            @Override
-            public String getUserLanguage() {
-                return user.getLanguage();
             }
             
             @Override

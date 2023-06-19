@@ -8,7 +8,5 @@ public interface ISeite {
 
     boolean isSorted();
     
-    String getUserLanguage();
-    
     SeitenSO getSeiten();
 }

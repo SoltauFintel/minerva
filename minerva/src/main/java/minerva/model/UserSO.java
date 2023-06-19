@@ -29,8 +29,12 @@ public class UserSO {
         return workspaces.byBranch(branch);
     }
     
-    public String getLanguage() {
-        return user.getLanguage();
+    public String getGuiLanguage() {
+        return user.getGuiLanguage();
+    }
+
+    public String getPageLanguage() {
+        return user.getPageLanguage();
     }
 
     public WorkspaceSO getCurrentWorkspace() {

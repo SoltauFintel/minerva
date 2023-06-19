@@ -16,7 +16,7 @@ public class MoveSeitePage extends SPage {
         gliederung.append("<ul>");
         book(book, viewlink + "/move-ack?parentid=root", gliederung);
         
-        fillSeiten(branch, bookFolder, book.getSeiten(), user.getLanguage(), gliederung, false);
+        fillSeiten(branch, bookFolder, book.getSeiten(), user.getGuiLanguage(), gliederung, false);
         
         for (BookSO otherBook : book.getWorkspace().getBooks()) {
             String bf = otherBook.getBook().getFolder();

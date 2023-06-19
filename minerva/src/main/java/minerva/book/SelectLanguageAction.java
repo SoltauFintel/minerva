@@ -1,6 +1,8 @@
 package minerva.book;
 
-import minerva.model.BookSO;
+import org.pmw.tinylog.Logger;
+
+import minerva.MinervaWebapp;
 import minerva.user.UAction;
 
 public class SelectLanguageAction extends UAction {
@@ -8,13 +10,24 @@ public class SelectLanguageAction extends UAction {
     @Override
     protected void execute() {
         String branch = ctx.pathParam("branch");
-        String lang = ctx.pathParam("lang");
+        String lang = ctx.queryParam("lang");
+        String m = ctx.queryParam("m");
         
-        user.getUser().setLanguage(lang);
-        for (BookSO book : user.getWorkspace(branch).getBooks()) {
-            book.getSeiten().sortAll();
+        Logger.info("language " + branch + " | " + lang + " | " + m);
+        
+        if (!MinervaWebapp.factory().getLanguages().contains(lang)) {
+            throw new RuntimeException("Illegal language value!");
         }
-        
-        ctx.redirect("/b/" + branch);
+
+        if ("page".equals(m)) { // page language
+            user.getUser().setPageLanguage(lang);
+//alt          for (BookSO book : user.getWorkspace(branch).getBooks()) {
+//              book.getSeiten().sortAll();
+//          }
+        } else { // GUI language, but also change page language
+            user.getUser().setGuiLanguage(lang);
+            user.getUser().setPageLanguage(lang);
+            ctx.redirect("/b/" + branch);
+        }
     }
 }

@@ -34,7 +34,7 @@ public class NotesPage extends SPage {
             m.put("viewlink", viewlink);
             m.put("addAllowed", ebene < 7);
             m.put("editAllowed", note.getUser().equals(seite.getLogin()));
-            m.put("N", "en".equals(user.getLanguage()) ? NLS.dataMap_en : NLS.dataMap_de); // RB texts
+            m.put("N", "en".equals(user.getGuiLanguage()) ? NLS.dataMap_en : NLS.dataMap_de); // RB texts
             sb.append(Page.templates.render("NotePiece", m));
         }
         return sb.toString();

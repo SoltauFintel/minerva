@@ -21,7 +21,7 @@ public class PreviewPage extends SPage {
     protected void execute() {
         String customer = ctx.pathParam("customer");
         String lang = ctx.pathParam("lang");
-        Logger.info(user.getUser().getLogin() + " | " + branch + " | " + customer + " | "
+        Logger.info("preview: " + user.getUser().getLogin() + " | " + branch + " | " + customer + " | "
                 + lang + " | " + seite.getTitle());
 
         if (seite.hasContent(lang) == 0) {

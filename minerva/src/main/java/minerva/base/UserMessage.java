@@ -21,6 +21,6 @@ public class UserMessage extends RuntimeException {
      * @param user for getting user language
      */
     public UserMessage(String key, UserSO user) {
-        super(NLS.get(user.getLanguage(), key));
+        super(NLS.get(user.getGuiLanguage(), key));
     }
 }

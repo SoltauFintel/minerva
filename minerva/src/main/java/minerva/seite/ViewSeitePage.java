@@ -41,11 +41,11 @@ public class ViewSeitePage extends SPage {
             map.put("lang", lang);
             map.put("titel", esc(seite.getTitle().getString(lang)));
             map.put("content", seiteSO.getContent().getString(lang));
-            map.put("active", lang.equals(user.getLanguage()));
+            map.put("active", lang.equals(user.getPageLanguage()));
             fillBreadcrumbs(lang, map.list("breadcrumbs"));
+            fillSubpages(seiteSO.getSeiten(), lang, map.list("subpages"), branch, bookFolder);
         }
         
-        fillSubpages(seiteSO.getSeiten(), user.getLanguage(), list("subpages"), branch, bookFolder);
         putInt("subpagesSize", seiteSO.getSeiten().size());
         fillTags(seite);
         putInt("tagsSize", seiteSO.getSeite().getTags().size());
@@ -55,7 +55,7 @@ public class ViewSeitePage extends SPage {
         put("parentId", esc(seite.getParentId()));
         putInt("position", seite.getPosition());
         putInt("version", seite.getVersion());
-        put("bookTitle", esc(seiteSO.getBook().getBook().getTitle().getString(user.getLanguage())));
+        put("bookTitle", esc(seiteSO.getBook().getBook().getTitle().getString(user.getPageLanguage()))); // bin usicher
         put("hasSubPages", !seiteSO.getSeiten().isEmpty());
         put("Sortierung", n(seite.isSorted() ? "alfaSorted" : "manuSorted"));
         put("isSorted", seite.isSorted());
@@ -66,11 +66,11 @@ public class ViewSeitePage extends SPage {
 
         fillLinks(branch, bookFolder, id, seiteSO, seite);
         Logger.info(user.getUser().getLogin() + " | " + seiteSO.getBook().getWorkspace().getBranch() + " | "
-                + seiteSO.getTitle());
+                + seiteSO.getTitle() + " | " + user.getPageLanguage());
     }
 
     static void fillSubpages(SeitenSO seiten, String lang, DataList subpages, String branch, String bookFolder) {
-        seiten.sort();
+        seiten.sort(lang);
         for (SeiteSO sub : seiten) {
             DataMap map = subpages.add();
             map.put("id", Escaper.esc(sub.getId()));

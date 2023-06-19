@@ -7,7 +7,7 @@ public class BookPage extends BPage {
 
     @Override
     protected void execute() {
-        String userLang = user.getLanguage();
+        String userLang = user.getGuiLanguage();
 
         String title = book.getBook().getTitle().getString(userLang);
         put("header", esc(title));
