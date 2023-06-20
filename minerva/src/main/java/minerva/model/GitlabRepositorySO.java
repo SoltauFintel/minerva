@@ -8,6 +8,7 @@ import org.pmw.tinylog.Logger;
 
 import minerva.base.FileService;
 import minerva.git.GitService;
+import minerva.git.HCommit;
 import minerva.persistence.gitlab.GitlabUser;
 
 public class GitlabRepositorySO {
@@ -91,6 +92,10 @@ public class GitlabRepositorySO {
     
     public String getCommitHashOfHead(WorkspaceSO workspace) {
         return git(workspace).getCurrentCommitHash();
+    }
+    
+    public List<HCommit> getSeiteMetaHistory(SeiteSO seite) {
+        return git(seite.getBook().getWorkspace()).getHistory(seite.gitFilenameMeta());
     }
 
     private GitService git(WorkspaceSO workspace) {

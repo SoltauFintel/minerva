@@ -1,6 +1,7 @@
 package minerva.git;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -478,5 +479,18 @@ public class GitService {
             return result.orElse(null).getHead();
         }
         throw new RuntimeException("There is no master branch!");
+    }
+    
+    public List<HCommit> getHistory(String file) {
+        try (Git git = Git.open(workspace)) {
+            Iterable<RevCommit> commits = git.log().addPath(file).call();
+            List<HCommit> ret = new ArrayList<>();
+            for (RevCommit commit : commits) {
+                ret.add(new HCommit(commit));
+            }
+            return ret;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -116,3 +116,6 @@ undoneNote=set comment as not done
 zustaendig=assigned to
 doneBy=done by
 myTasks=My tasks
+history=History
+date=Date
+newTag=New tag

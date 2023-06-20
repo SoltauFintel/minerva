@@ -53,6 +53,7 @@ import minerva.seite.MoveSeitePage;
 import minerva.seite.OrderSeitePage;
 import minerva.seite.PostContentsAction;
 import minerva.seite.PullSeiteAction;
+import minerva.seite.SeiteHistoryPage;
 import minerva.seite.SortSeiteAction;
 import minerva.seite.ViewSeitePage;
 import minerva.seite.link.CheckAllLinksPage;
@@ -116,6 +117,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/s/:branch/:book/:id/move", MoveSeitePage.class); // TODO move-select-target
         get("/s/:branch/:book/:id/move-ack", MoveSeiteAckPage.class);
         get("/s/:branch/:book/:id/moved", MoveSeiteAction.class); // TODO move
+        get("/s/:branch/:book/:id/history", SeiteHistoryPage.class);
         
         // Image
         post("/s-image-upload/:branch/:book/:id", ImageUploadAction.class);

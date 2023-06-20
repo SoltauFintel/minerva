@@ -116,3 +116,6 @@ undoneNote=Kommentar als unerledigt kennzeichnen
 zustaendig=zuständig
 doneBy=erledigt durch
 myTasks=Meine Aufgaben
+history=Historie
+date=Datum
+newTag=Neues tag

@@ -394,6 +394,10 @@ public class SeiteSO implements ISeite {
         return book.getFolder() + "/" + getId() + META_SUFFIX;
     }
     
+    public String gitFilenameMeta() {
+        return book.getBook().getFolder() + "/" + getId() + META_SUFFIX;
+    }
+    
     private String filenameHtml(String lang) {
         return book.getFolder() + "/" + lang + "/" + getId() + ".html";
     }
