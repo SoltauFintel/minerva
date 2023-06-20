@@ -33,6 +33,7 @@ public class NotesPage extends SPage {
             m.put("text", esc(note.getText()));
             fillPersons(note, m);
             m.put("done", note.isDone());
+            m.put("doneDate", esc(note.getDoneDate()));
             m.put("notes", noteHTML(note.getNotes(), ebene + 1)); // recursive
             m.put("viewlink", viewlink);
             m.put("addAllowed", ebene < 7);

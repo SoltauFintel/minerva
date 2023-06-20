@@ -81,8 +81,8 @@ public class NotesSO {
             throw new RuntimeException("Note not found!");
         } else {
             note.setDone(done);
-            note.setDoneBy(seiteSO.getLogin());
-            note.setChanged(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            note.setDoneBy(done ? seiteSO.getLogin() : null);
+            note.setDoneDate(done ? LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) : null);
             seiteSO.saveMeta(seiteSO.getTitle() + ": " + (done ? "" : "un") + "done note #" + number);
         }
     }

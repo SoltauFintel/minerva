@@ -115,3 +115,4 @@ doneNote=Kommentar als erledigt kennzeichnen
 undoneNote=Kommentar als unerledigt kennzeichnen
 zustaendig=zuständig
 doneBy=erledigt durch
+myTasks=Meine Aufgaben

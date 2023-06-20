@@ -61,6 +61,7 @@ import minerva.seite.note.AddNotePage;
 import minerva.seite.note.AllNotesPage;
 import minerva.seite.note.DeleteNoteAction;
 import minerva.seite.note.EditNotePage;
+import minerva.seite.note.MyTasksPage;
 import minerva.seite.note.NoteDoneAction;
 import minerva.seite.note.NotesPage;
 import minerva.seite.tag.DeleteTagAction;
@@ -99,6 +100,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/b/:branch/:book/order", OrderTopLevelSeitePage.class);
         get("/b/:branch/:book/sort", SortTopLevelSeiteAction.class);
         get("/b/:branch/:book/notes", AllNotesPage.class);
+        get("/b/:branch/:book/my-tasks", MyTasksPage.class);
         get("/b/:branch/:book/cal", CheckAllLinksPage.class);
         get("/b/", CurrentWorkspaceAction.class); // falls man sich dahin verirren sollte
         
@@ -204,17 +206,23 @@ public class MinervaWebapp extends RouteDefinitions {
             page.put("isCustomerVersion", MinervaWebapp.factory().isCustomerVersion());
             page.put("branch", esc(branch));
             page.put("exclusionsTitle", "Exclusions");
+            page.put("hasBook", false);
+            page.put("book0Title", "");
+            page.put("myTasks", "");
             if (hasUser) {
                 page.put("abmelden", NLS.get(userLang, "logout"));
                 page.put("booksLabel", NLS.get(userLang, "books"));
                 page.put("searchPlaceholder", NLS.get(userLang, "searchPlaceholder"));
                 page.put("exclusionsTitle", NLS.get(userLang, "exclusions"));
+                page.put("myTasks", NLS.get(userLang, "myTasks"));
                 if (books != null) {
                     if (!"master".equals(branch)) {
                         page.put("branch0", esc(branch));
                     }
                     page.put("previewTitle", NLS.get(userLang, "preview"));
                     page.put("previewlink", "/p/" + branch);
+                    page.put("hasBook", true);
+                    page.put("book0Folder", esc(books.get(0).getBook().getFolder()));
                 }
             }
         }

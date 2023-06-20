@@ -14,7 +14,7 @@ public class AllNotesPage extends BPage {
     @Override
     protected void execute() {
         DataList list = list("notes");
-        List<NoteWithSeite> allNotes = book.getAllNotes();
+        List<NoteWithSeite> allNotes = getNotes();
         for (NoteWithSeite n : allNotes) {
             DataMap map = list.add();
             Note note = n.getNote();
@@ -35,6 +35,10 @@ public class AllNotesPage extends BPage {
         }
         put("bookTitle", esc(book.getTitle()));
         putInt("n", allNotes.size());
+    }
+
+    protected List<NoteWithSeite> getNotes() {
         header(n("allNotes"));
+        return book.getAllNotes();
     }
 }

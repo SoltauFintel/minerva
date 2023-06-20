@@ -27,6 +27,11 @@
         <li>
             <a href="{{previewlink}}"><i class="fa fa-thumbs-o-up"></i> {{previewTitle}}</a>
         </li>
+        {{if hasBook}}
+            <li>
+                <a href="/b/{{branch}}/{{book0Folder}}/my-tasks"><i class="fa fa-check"></i> {{myTasks}}</a>
+            </li>
+        {{/if}}
         <li>
             <a href="/auth/logout" style="color: #900;"><i class="fa fa-sign-out"></i> {{abmelden}} ({{user}})</a>
         </li>

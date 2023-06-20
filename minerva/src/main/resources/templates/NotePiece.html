@@ -13,7 +13,8 @@
                 {{/each}}
         {{/if}}
         {{if done}}
-            &mdash; <span style="color: #090;"><i class="fa fa-check"></i> {{N.doneBy}} {{doneBy}}</span>
+            &mdash; <span style="color: #090;" title="{{doneDate}}"><i
+                        class="fa fa-check"></i> {{N.doneBy}} {{doneBy}}</span>
         {{/if}}
     </p>
     <pre class="noteText">{{text}}</pre>

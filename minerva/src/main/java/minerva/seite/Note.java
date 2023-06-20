@@ -9,13 +9,16 @@ public class Note {
     private String user;
     /** format "yyyy-MM-dd HH:mm" */
     private String created;
-    /** format "yyyy-MM-dd HH:mm" */
+    /** format "yyyy-MM-dd HH:mm", can be null or empty */
     private String changed;
     private String text;
     private final List<Note> notes = new ArrayList<>();
     private final List<String> persons = new ArrayList<>();
     private boolean done = false;
+    /** same as User.login, can be null */
     private String doneBy;
+    /** format "yyyy-MM-dd HH:mm", can be null or empty */
+    private String doneDate;
     
     public int getNumber() {
         return number;
@@ -79,5 +82,13 @@ public class Note {
 
     public void setDoneBy(String doneBy) {
         this.doneBy = doneBy;
+    }
+
+    public String getDoneDate() {
+        return doneDate;
+    }
+
+    public void setDoneDate(String doneDate) {
+        this.doneDate = doneDate;
     }
 }

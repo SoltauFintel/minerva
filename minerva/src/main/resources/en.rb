@@ -115,3 +115,4 @@ doneNote=set comment as done
 undoneNote=set comment as not done
 zustaendig=assigned to
 doneBy=done by
+myTasks=My tasks
