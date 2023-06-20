@@ -86,6 +86,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/pull", PullWorkspace.class);
         get("/w/:branch/delete", DeleteWorkspacePage.class);
         form("/w/:branch/exclusions/edit", ExclusionsEditPage.class);
+        get("/w/:branch/my-tasks", MyTasksPage.class);
         form("/create-workspace", AddWorkspacePage.class);
         
         // Book
@@ -100,7 +101,6 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/b/:branch/:book/order", OrderTopLevelSeitePage.class);
         get("/b/:branch/:book/sort", SortTopLevelSeiteAction.class);
         get("/b/:branch/:book/notes", AllNotesPage.class);
-        get("/b/:branch/:book/my-tasks", MyTasksPage.class);
         get("/b/:branch/:book/cal", CheckAllLinksPage.class);
         get("/b/", CurrentWorkspaceAction.class); // falls man sich dahin verirren sollte
         
@@ -222,7 +222,6 @@ public class MinervaWebapp extends RouteDefinitions {
                     page.put("previewTitle", NLS.get(userLang, "preview"));
                     page.put("previewlink", "/p/" + branch);
                     page.put("hasBook", true);
-                    page.put("book0Folder", esc(books.get(0).getBook().getFolder()));
                 }
             }
         }

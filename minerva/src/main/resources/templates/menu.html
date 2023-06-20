@@ -8,28 +8,28 @@
         <a href="/b/{{branch}}"><i class="fa fa-book"></i> {{booksLabel}}</a>
     </li>
     {{if hasUser}}
-        <li class="sidebar-search">
-            <form action="/b/{{branch}}/search">
-                <div class="input-group custom-search-form">
-                    <input class="form-control" placeholder="{{searchPlaceholder}}" type="text" id="q" name="q"
-                        value="{{q}}"{{if searchFocus}} autofocus{{/if}}>
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-                    </span>
-                </div>
-            </form>
-        </li>
-        {{each b in booksForMenu}}
-            <li>
-                <a href="/b/{{branch}}/{{b.folder}}"><i class="fa fa-book greenbook"></i> {{b.title}}</a>
-            </li>
-        {{/each}}
-        <li>
-            <a href="{{previewlink}}"><i class="fa fa-thumbs-o-up"></i> {{previewTitle}}</a>
-        </li>
         {{if hasBook}}
+            <li class="sidebar-search">
+                <form action="/b/{{branch}}/search">
+                    <div class="input-group custom-search-form">
+                        <input class="form-control" placeholder="{{searchPlaceholder}}" type="text" id="q" name="q"
+                            value="{{q}}"{{if searchFocus}} autofocus{{/if}}>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </form>
+            </li>
+            {{each b in booksForMenu}}
+                <li>
+                    <a href="/b/{{branch}}/{{b.folder}}"><i class="fa fa-book greenbook"></i> {{b.title}}</a>
+                </li>
+            {{/each}}
             <li>
-                <a href="/b/{{branch}}/{{book0Folder}}/my-tasks"><i class="fa fa-check"></i> {{myTasks}}</a>
+                <a href="{{previewlink}}"><i class="fa fa-thumbs-o-up"></i> {{previewTitle}}</a>
+            </li>
+            <li>
+                <a href="/w/{{branch}}/my-tasks"><i class="fa fa-check"></i> {{myTasks}}</a>
             </li>
         {{/if}}
         <li>
