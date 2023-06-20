@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 
 import minerva.access.DirAccess;
 import minerva.book.Book;
+import minerva.exclusions.ExclusionsService;
 import minerva.seite.Breadcrumb;
 import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.Seite;
@@ -145,5 +146,14 @@ public class BookSO {
             breadcrumbs.add(b);
         }
         return breadcrumbs;
+    }
+
+    public boolean hasContent(String lang, ExclusionsService sv) {
+        for (SeiteSO seite : seiten) {
+            if (seite.hasContent(lang) > 0 && sv.isAccessible(seite.getSeite().getTags())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

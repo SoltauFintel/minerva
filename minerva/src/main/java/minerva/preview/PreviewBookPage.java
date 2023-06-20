@@ -33,9 +33,11 @@ public class PreviewBookPage extends BPage {
         
         DataList list = list("books");
         for (BookSO b : books) {
-            DataMap map = list.add();
-            map.put("title", esc(b.getBook().getTitle().getString(lang)));
-            map.put("link", "/p/" + branch + "/" + esc(customer) + "/" + b.getBook().getFolder() + "/" + lang);
+            if (b.hasContent(lang, sv)) {
+                DataMap map = list.add();
+                map.put("title", esc(b.getBook().getTitle().getString(lang)));
+                map.put("link", "/p/" + branch + "/" + esc(customer) + "/" + b.getBook().getFolder() + "/" + lang);
+            }
         }
         
         long start = System.currentTimeMillis();
