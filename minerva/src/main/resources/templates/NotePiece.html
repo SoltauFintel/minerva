@@ -25,10 +25,14 @@
         {{/if}}
         {{if done}}
             <a href="{{viewlink}}/note-done?number={{number}}&m=u" title="{{N.undoneNote}}"
-                class="btn btn-default btn-xs"><i class="fa fa-undo"></i></a>
+                onclick="document.querySelector('#nd_{{number}}').style='';"
+                class="btn btn-default btn-xs"><i class="fa fa-undo"></i> <i id="nd_{{number}}"
+                class="fa fa-delicious fa-spin" style="display: none;"></i></a>
         {{else}}
             <a href="{{viewlink}}/note-done?number={{number}}" title="{{N.doneNote}}"
-                class="btn btn-default btn-xs br"><i class="fa fa-check"></i> {{N.done}}!</a>
+                onclick="document.querySelector('#nd_{{number}}').style='';"
+                class="btn btn-default btn-xs br"><i class="fa fa-check"></i> {{N.done}}! <i id="nd_{{number}}"
+                class="fa fa-delicious fa-spin" style="display: none;"></i></a>
         {{/if}}
         {{if editAllowed}}
             <a href="{{viewlink}}/edit-note?number={{number}}" title="{{N.edit}}"
