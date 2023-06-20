@@ -40,8 +40,13 @@
     </div>
     
     <div class="col-lg-3">
-        <p class="mb2" style="margin-top: 16px;"><a href="/s/{{branch}}/{{bookFolder}}/root/add"
-            class="btn btn-default">{{N.newPage}}</a></p>
+        <p class="mb2" style="margin-top: 16px;">
+            <a href="/s/{{branch}}/{{bookFolder}}/root/add"
+                class="btn btn-default br">{{N.newPage}}</a>
+            <a href="/w/{{branch}}/pull?book={{bookFolder}}" class="btn btn-default" title="{{N.pullWS}}!"
+                onclick="document.querySelector('#s01').style='';"><i class="fa fa-refresh"></i>
+                <i id="s01" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+        </p>
         <p style="margin-top: 7em;">
             <a href="{{positionlink}}" class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"><i
                 class="fa fa-sort"></i> {{N.reorder}}</a>

@@ -1,5 +1,7 @@
 package minerva.model;
 
+import java.time.LocalDateTime;
+
 import minerva.MinervaWebapp;
 import minerva.access.DirAccess;
 import minerva.user.User;
@@ -9,7 +11,8 @@ public class UserSO {
     private final WorkspacesSO workspaces;
     private WorkspaceSO currentWorkspace;
     private DirAccess dao;
-
+    private LocalDateTime lastAction;
+    
     public UserSO(User user) {
         this.user = user;
         String userFolder = MinervaWebapp.factory().getConfig().getWorkspacesFolder() + "/" + user.getFolder();
@@ -65,5 +68,13 @@ public class UserSO {
     
     public DirAccess dao() {
         return dao;
+    }
+
+    public LocalDateTime getLastAction() {
+        return lastAction;
+    }
+
+    public void setLastAction(LocalDateTime lastAction) {
+        this.lastAction = lastAction;
     }
 }

@@ -1,5 +1,6 @@
 package minerva.model;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,5 +45,9 @@ public class StatesSO {
 
     private static String key(Context ctx) {
         return ctx.req.session().id();
+    }
+    
+    public static Collection<StateSO> getStates() {
+        return states.values();
     }
 }
