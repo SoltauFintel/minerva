@@ -13,7 +13,6 @@ import minerva.book.Book;
 import minerva.seite.Breadcrumb;
 import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.Seite;
-import minerva.seite.note.NoteWithSeite;
 import minerva.seite.tag.TagNList;
 
 public class BookSO {
@@ -146,11 +145,5 @@ public class BookSO {
             breadcrumbs.add(b);
         }
         return breadcrumbs;
-    }
-
-    public List<NoteWithSeite> getAllNotes() {
-        return seiten.getAllNotes().stream()
-                .sorted((a,b) -> b.getNote().getCreated().compareTo(a.getNote().getCreated()))
-                .collect(Collectors.toList());
     }
 }

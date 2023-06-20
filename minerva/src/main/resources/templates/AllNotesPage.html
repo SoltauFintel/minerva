@@ -17,7 +17,9 @@
             {{each n in notes}}
                 <tr>
                     <td><a href="{{n.link}}">#{{n.number}}</a></td>
-                    <td><pre class="noteText">{{n.text}}</pre></td>
+                    <td><pre id="na{{n.id}}" class="noteText">{{n.text1}}{{if n.hasMoreText}}<a
+                        onclick="moreText('{{n.id}}');" class="noteMehr">mehr...</a>{{/if}}</pre><pre
+                        id="nb{{n.id}}" class="noteText" hidden>{{n.completeText}}</pre></td>
                     <td>{{n.user}}{{if n.hasPersons}}<br/><br/>{{n.persons}}{{/if}}</td>
                     <td><a href="{{n.pagelink}}">{{n.pageTitle}}</a></td>
                     <td>{{n.created}}</td>
@@ -26,3 +28,11 @@
         </table>
     </div>
 </div>
+
+<script>
+    function moreText(id) {
+        console.log(id)
+        $('#na' + id).attr('hidden', true)
+        $('#nb' + id).attr('hidden', false)
+    }
+</script>

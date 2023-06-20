@@ -144,12 +144,16 @@
 }
 
 .noteText {
-    white-space: pre-wrap;
+    white-space: break-spaces;
     font-family: 'Courier New', monospace;
 }
 
 .noteTextarea {
     font-family: 'Courier New', monospace;
+}
+
+.noteMehr {
+    padding-left: 8px; cursor: pointer; font-family: 'Courier New', monospace; color: #c0c;
 }
 
 .notePersons {
