@@ -15,7 +15,7 @@ public class EditBookPage extends BPage {
             book.getBook().setTitle(title);
             book.getBook().setPosition(Integer.parseInt(ctx.queryParam("position")));
             books.sort(); // Position könnte geändert sein
-            books.save("edit book " + book.getFolder());
+            books.save(book.cm("edit book"));
 
             ctx.redirect("/b/" + branch);
         } else {

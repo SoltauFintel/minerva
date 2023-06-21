@@ -408,21 +408,9 @@ public class GitService {
         }
     }
 
-//    /**
-//     * Add all changes and commit them.
-//     * See other commit() method if you also want to push the commit.
-//     * @param commitMessage -
-//     * @param authorName also committer name
-//     * @param mail email address of author/committer
-//     * @return commit hash of newly created commit
-//     */
-//    public String commit(String commitMessage, String authorName, String mail) {
-//        return commit(commitMessage, authorName, mail, null, null, "."/*=all files*/);
-//    }
-    
     /**
      * Add all changes, commit and push them.
-     * @param commitMessage -
+     * @param commitMessage not null
      * @param authorName also committer name
      * @param mail email address of author/committer
      * @param user user to log into remote Git repository, null: don't push
@@ -431,10 +419,10 @@ public class GitService {
      * @param removeFilenames files to delete
      * @return commit hash of newly created commit
      */
-    public String commit(String commitMessage, String authorName, String mail, GitlabUser user,
+    public String commit(CommitMessage commitMessage, String authorName, String mail, GitlabUser user,
             Set<String> addFilenames, Set<String> removeFilenames) {
-        if (commitMessage == null || commitMessage.trim().isEmpty()) {
-            throw new IllegalArgumentException("commitMessage must not be empty!");
+        if (commitMessage == null) {
+            throw new IllegalArgumentException("commitMessage must not be null!");
         }
         if (authorName == null || authorName.trim().isEmpty()) {
             throw new IllegalArgumentException("authorName must not be empty!");
@@ -454,7 +442,7 @@ public class GitService {
                 rm.call();
             }
             RevCommit commit = git.commit()
-                .setMessage(commitMessage)
+                .setMessage(commitMessage.toString())
                 .setAuthor(authorName, mail)
                 .setCommitter(authorName, mail)
                 .setAllowEmpty(false)

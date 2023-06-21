@@ -7,6 +7,7 @@ import java.util.Set;
 
 import minerva.MinervaWebapp;
 import minerva.access.AbstractDirAccess;
+import minerva.git.CommitMessage;
 import minerva.model.GitlabRepositorySO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.IMoveFile;
@@ -21,20 +22,20 @@ public class GitlabDirAccess extends AbstractDirAccess {
     }
 
     @Override
-    public void saveFiles(Map<String, String> files, String commitMessage, WorkspaceSO workspace) {
+    public void saveFiles(Map<String, String> files, CommitMessage commitMessage, WorkspaceSO workspace) {
         repo.push(commitMessage, workspace, files.keySet(), emptySet(),
                 () -> super.saveFiles(files, commitMessage, workspace));
     }
 
     @Override
-    public void deleteFiles(Set<String> filenames, String commitMessage, WorkspaceSO workspace,
+    public void deleteFiles(Set<String> filenames, CommitMessage commitMessage, WorkspaceSO workspace,
             List<String> cantBeDeleted) {
         repo.push(commitMessage, workspace, emptySet(), filenames,
                 () -> super.deleteFiles(filenames, commitMessage, workspace, cantBeDeleted));
     }
     
     @Override
-    public void moveFiles(List<IMoveFile> files, String commitMessage, WorkspaceSO workspace) {
+    public void moveFiles(List<IMoveFile> files, CommitMessage commitMessage, WorkspaceSO workspace) {
         Set<String> add = new HashSet<>();
         Set<String> rm = new HashSet<>();
         for (IMoveFile f : files) {

@@ -99,7 +99,8 @@ public class ConfluenceToMinervaMigrationService {
         if (filenames.isEmpty()) {
             Logger.info("[Migration] deleteWorkspace() has nothing to do");
         } else {
-            MinervaWebapp.factory().getGitlabRepository().push("(Migration) empty branch " + workspace.getBranch(),
+            MinervaWebapp.factory().getGitlabRepository().push(
+                    new MigrationCommitMessage("empty branch " + workspace.getBranch()),
                     workspace, new HashSet<>(), filenames, () -> {
                     });
             Logger.info("[Migration] deleteWorkspace() ok");
@@ -181,7 +182,7 @@ public class ConfluenceToMinervaMigrationService {
         // commit and push everything ----
         Logger.info("saving " + files.size() + " files for book \"" + sp.getTitle() + "\"...");
         if (!files.isEmpty()) {
-            workspace.dao().saveFiles(files, "Migration " + sp.getTitle(), workspace);
+            workspace.dao().saveFiles(files, new MigrationCommitMessage(sp.getTitle()), workspace);
         }
     }
 

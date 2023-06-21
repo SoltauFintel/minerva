@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import minerva.git.CommitMessage;
 import minerva.model.WorkspaceSO;
 import minerva.seite.IMoveFile;
 
@@ -36,7 +37,7 @@ public interface DirAccess {
      * @param commitMessage -
      * @param workspace -
      */
-    void saveFiles(Map<String, String> files, String commitMessage, WorkspaceSO workspace);
+    void saveFiles(Map<String, String> files, CommitMessage commitMessage, WorkspaceSO workspace);
 
     /**
      * @param filenames zu löschende Ordner (Eintrag endet mit '/*') oder Dateien
@@ -45,7 +46,7 @@ public interface DirAccess {
      * @param cantBeDeleted not null, nach dem Aufruf sind dadrin die Dateien, die nicht gelöscht werden konnten
      * @return Liste der Dateien, die nicht gelöscht werden konnten
      */
-    void deleteFiles(Set<String> filenames, String commitMessage, WorkspaceSO workspace, List<String> cantBeDeleted);
+    void deleteFiles(Set<String> filenames, CommitMessage commitMessage, WorkspaceSO workspace, List<String> cantBeDeleted);
 
-    void moveFiles(List<IMoveFile> files, String commitMessage, WorkspaceSO workspace);
+    void moveFiles(List<IMoveFile> files, CommitMessage commitMessage, WorkspaceSO workspace);
 }

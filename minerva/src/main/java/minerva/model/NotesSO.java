@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.pmw.tinylog.Logger;
 
+import minerva.git.CommitMessage;
 import minerva.seite.Note;
 
 public class NotesSO {
@@ -30,7 +31,7 @@ public class NotesSO {
         } else {
             parent.getNotes().add(note);
         }
-        seiteSO.saveMeta(seiteSO.getTitle() + ": add note #" + note.getNumber());
+        seiteSO.saveMeta(new CommitMessage(seiteSO, "note #" + note.getNumber() + " added"));
     }
 
     public Note noteByNumber(int number) {
@@ -56,7 +57,7 @@ public class NotesSO {
     
     public void deleteNote(int number) {
         if (_deleteNote(seiteSO.getSeite().getNotes(), number)) {
-            seiteSO.saveMeta(seiteSO.getTitle() + ": delete note #" + number);
+            seiteSO.saveMeta(new CommitMessage(seiteSO, "note #" + number + " deleted"));
         }
     }
     
@@ -83,7 +84,7 @@ public class NotesSO {
             note.setDone(done);
             note.setDoneBy(done ? seiteSO.getLogin() : null);
             note.setDoneDate(done ? LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) : null);
-            seiteSO.saveMeta(seiteSO.getTitle() + ": " + (done ? "" : "un") + "done note #" + number);
+            seiteSO.saveMeta(new CommitMessage(seiteSO, "note #" + number + (done ? " done" : " undone")));
         }
     }
 

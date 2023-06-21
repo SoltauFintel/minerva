@@ -9,6 +9,7 @@ import org.jsoup.Jsoup;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.IdGenerator;
+import minerva.git.CommitMessage;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 
@@ -97,7 +98,7 @@ public class LinksModel {
             }
         }
         if (dirty) {
-            seite.saveHtml("replaced links: $t", langs);
+            seite.saveHtml(new CommitMessage(seite, "links replaced"), langs);
         }
     }
 

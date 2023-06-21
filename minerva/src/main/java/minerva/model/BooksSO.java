@@ -13,6 +13,7 @@ import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.book.Book;
 import minerva.book.Books;
+import minerva.git.CommitMessage;
 
 public class BooksSO extends MList<BookSO> {
     private static final String DN = "books.json";
@@ -63,10 +64,10 @@ public class BooksSO extends MList<BookSO> {
         
         add(new BookSO(workspace, book));
         books.getBooks().add(book);
-        save("create new book " + bookFolder);
+        save(new CommitMessage(bookFolder + ": new book created"));
     }
     
-    public void save(String commitMessage) {
+    public void save(CommitMessage commitMessage) {
         new MultiPurposeDirAccess(workspace.dao()).save(filename(), books, commitMessage, workspace);
     }
     
@@ -81,9 +82,10 @@ public class BooksSO extends MList<BookSO> {
 
     public void remove(String folder) {
         BookSO x = byFolder(folder);
+        CommitMessage cm = x.cm("book deleted");
         books.getBooks().removeIf(i -> i.getFolder().equals(folder));
         remove(x);
-        save("delete book " + folder);
+        save(cm);
     }
     
     public BookSO byFolder(String folder) {

@@ -9,6 +9,7 @@ import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.pmw.tinylog.Logger;
 
 import minerva.base.FileService;
+import minerva.git.CommitMessage;
 import minerva.git.GitService;
 import minerva.git.HCommit;
 import minerva.persistence.gitlab.GitlabAuthCallbackAction;
@@ -69,7 +70,7 @@ public class GitlabRepositorySO {
         }
     }
     
-    public void push(String commitMessage, WorkspaceSO workspace,
+    public void push(CommitMessage commitMessage, WorkspaceSO workspace,
             Set<String> addFilenames, Set<String> removeFilenames, SaveProcedure saveFiles) {
         GitlabPushTransaction tx = new GitlabPushTransaction(this, commitMessage, workspace);
         tx.createWorkBranch();

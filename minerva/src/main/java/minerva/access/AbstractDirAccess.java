@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils;
 import org.pmw.tinylog.Logger;
 
 import minerva.base.FileService;
+import minerva.git.CommitMessage;
 import minerva.model.WorkspaceSO;
 import minerva.seite.ChangeFile;
 import minerva.seite.IMoveFile;
@@ -63,7 +64,7 @@ public abstract class AbstractDirAccess implements DirAccess {
     }
 
     @Override
-    public void saveFiles(Map<String, String> files, String commitMessage, WorkspaceSO workspace) {
+    public void saveFiles(Map<String, String> files, CommitMessage commitMessage, WorkspaceSO workspace) {
         for (Entry<String, String> e : files.entrySet()) {
             File file = new File(e.getKey());
             if (e.getValue() == null) {
@@ -77,7 +78,7 @@ public abstract class AbstractDirAccess implements DirAccess {
     }
     
     @Override
-    public void deleteFiles(Set<String> filenames, String commitMessage, WorkspaceSO workspace, List<String> cantBeDeleted) {
+    public void deleteFiles(Set<String> filenames, CommitMessage commitMessage, WorkspaceSO workspace, List<String> cantBeDeleted) {
         if (cantBeDeleted == null) {
             throw new IllegalArgumentException("cantBeDeleted must not be null");
         }
@@ -130,7 +131,7 @@ public abstract class AbstractDirAccess implements DirAccess {
     }
     
     @Override
-    public void moveFiles(List<IMoveFile> files, String commitMessage, WorkspaceSO workspace) {
+    public void moveFiles(List<IMoveFile> files, CommitMessage commitMessage, WorkspaceSO workspace) {
         for (IMoveFile f : files) {
             if (f instanceof MoveFile mf) {
                 File source = new File(mf.getOldFile());

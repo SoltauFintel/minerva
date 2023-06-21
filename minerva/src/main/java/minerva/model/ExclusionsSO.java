@@ -6,6 +6,7 @@ import java.util.TreeSet;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
+import minerva.git.CommitMessage;
 
 public class ExclusionsSO {
     public static final String DN = "exclusions.txt";
@@ -21,7 +22,10 @@ public class ExclusionsSO {
     }
     
     public void set(String exclusions) {
-        access().save(workspace.getFolder() + "/" + DN, exclusions == null ? "" : exclusions, DN, workspace);
+        access().save(workspace.getFolder() + "/" + DN, //
+                exclusions == null ? "" : exclusions, //
+                new CommitMessage(DN), //
+                workspace);
     }
     
     private MultiPurposeDirAccess access() {

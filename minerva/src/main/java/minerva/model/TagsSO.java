@@ -3,6 +3,7 @@ package minerva.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import minerva.git.CommitMessage;
 import minerva.seite.tag.TagNList;
 
 public class TagsSO {
@@ -24,7 +25,7 @@ public class TagsSO {
             dirty = addTag2(tag);
         }
         if (dirty) {
-            seiteSO.saveMeta("added tag " + tag + " to page: $t");
+            seiteSO.saveMeta(new CommitMessage(seiteSO, "tag " + tag + " added"));
         }
     }
 
@@ -56,10 +57,10 @@ public class TagsSO {
     public void deleteTag(String tag) {
         if ("$all".equals(tag)) {
             seiteSO.getSeite().getTags().clear();
-            seiteSO.saveMeta("removed all tags from page: $t");
+            seiteSO.saveMeta(new CommitMessage(seiteSO, "all tags deleted"));
         } else {
             seiteSO.getSeite().getTags().remove(tag);
-            seiteSO.saveMeta("removed tag " + tag + " from page: $t");
+            seiteSO.saveMeta(new CommitMessage(seiteSO, "tag " + tag + " deleted"));
         }
     }
 

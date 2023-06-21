@@ -9,6 +9,7 @@ import com.github.template72.data.DataMap;
 import com.github.template72.data.IDataMap;
 
 import minerva.MinervaWebapp;
+import minerva.git.CommitMessage;
 import minerva.seite.Note;
 import minerva.seite.SPage;
 
@@ -31,7 +32,7 @@ public class EditNotePage extends SPage {
             note.getPersons().clear();
             note.getPersons().addAll(persons);
             note.setChanged(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-            seite.saveMeta(seite.getTitle() + ": edit note #" + note.getNumber());
+            seite.saveMeta(new CommitMessage(seite, "note #" + note.getNumber() + " modified"));
             // TODO Nicht speichern wenn sich nix geändert hat.
             
             ctx.redirect(viewlink + "/notes");

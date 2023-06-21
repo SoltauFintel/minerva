@@ -24,6 +24,7 @@ import minerva.access.MultiPurposeDirAccess;
 import minerva.base.NlsString;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
+import minerva.git.CommitMessage;
 import minerva.seite.ChangeFile;
 import minerva.seite.IMoveFile;
 import minerva.seite.MoveFile;
@@ -199,7 +200,7 @@ public class SeiteSO implements ISeite {
 
     public void activateSorted() {
         seite.setSorted(true);
-        saveMeta("sort subpages alphabetically: $t");
+        saveMeta(new CommitMessage(this, "subpages sorted alphabetically"));
         book.getWorkspace().pull(); // ja, ist etwas brutal...
     }
 
@@ -217,7 +218,8 @@ public class SeiteSO implements ISeite {
         remove(filenamesToDelete, langs);
 
         List<String> cantBeDeleted = new ArrayList<>();
-        dao().deleteFiles(filenamesToDelete, "delete page " + getId(), book.getWorkspace(), cantBeDeleted);
+        dao().deleteFiles(filenamesToDelete,
+                new CommitMessage(this, "page deleted"), book.getWorkspace(), cantBeDeleted);
         boolean success = cantBeDeleted.isEmpty();
 
         if (success) {
@@ -271,7 +273,7 @@ public class SeiteSO implements ISeite {
             book.getSeiten().byId(seite.getParentId()).getSeiten().onlyRemove(this);
         }
         seite.setParentId(parentId);
-        saveMeta("moved page " + getTitle());
+        saveMeta(new CommitMessage(this, "page moved"));
         book.getWorkspace().pull();
     }
 
@@ -286,8 +288,7 @@ public class SeiteSO implements ISeite {
         List<IMoveFile> files = new ArrayList<>();
         changePageTo(newPosition, files);
         movePageToBookTo(targetBook, langs, files);
-        String commitMessage = "moved page \"" + getTitle() + "\" (#" + getId() + ") to book " + targetBookFolder;
-        dao().moveFiles(files, commitMessage, workspace);
+        dao().moveFiles(files, new CommitMessage(this, "page moved to book " + targetBookFolder), workspace);
         
         workspace.pull();
     }
@@ -338,7 +339,7 @@ public class SeiteSO implements ISeite {
         saveHtmlTo(files, langs);
         images.forEach(filename -> files.put(filenameImage(filename), IMAGE));
         
-        dao().saveFiles(files, getTitle(), book.getWorkspace());
+        dao().saveFiles(files, new CommitMessage(this, ""), book.getWorkspace());
         
         images.clear();
 
@@ -353,13 +354,13 @@ public class SeiteSO implements ISeite {
         }).run();
     }
 
-    public void saveMeta(String commitMessage) {
+    public void saveMeta(CommitMessage commitMessage) {
         Map<String, String> files = new HashMap<>();
         saveMetaTo(files);
         saveFiles(files, commitMessage);
     }
 
-    public void saveHtml(String commitMessage, List<String> langs) {
+    public void saveHtml(CommitMessage commitMessage, List<String> langs) {
         Map<String, String> files = new HashMap<>();
         saveHtmlTo(files, langs);
         saveFiles(files, commitMessage);
@@ -383,11 +384,11 @@ public class SeiteSO implements ISeite {
             saveMetaTo(files);
         }
         reorderdSeiten.setPositionsAndSaveTo(files);
-        saveFiles(files, "reordering subpages of: $t");
+        saveFiles(files, new CommitMessage(this, "subpages reorderd"));
     }
 
-    private void saveFiles(Map<String, String> files, String commitMessage) {
-        dao().saveFiles(files, commitMessage.replace("$t", getTitle()), book.getWorkspace());
+    private void saveFiles(Map<String, String> files, CommitMessage commitMessage) {
+        dao().saveFiles(files, commitMessage, book.getWorkspace());
     }
 
     public String filenameMeta() {

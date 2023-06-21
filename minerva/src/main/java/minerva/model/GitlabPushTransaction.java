@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.gitlab4j.api.GitLabApiException;
 import org.pmw.tinylog.Logger;
 
+import minerva.git.CommitMessage;
 import minerva.git.GitService;
 import minerva.git.MinervaEmptyCommitException;
 import minerva.persistence.gitlab.GitlabUser;
@@ -21,14 +22,17 @@ import minerva.persistence.gitlab.MergeRequestService;
  */
 public class GitlabPushTransaction {
     private final GitlabRepositorySO repo;
-    private final String commitMessage;
+    private final CommitMessage commitMessage;
     private final WorkspaceSO workspace;
     private String workBranch;
     private GitService git;
     private GitlabUser user;
     private boolean doPull = false;
     
-    public GitlabPushTransaction(GitlabRepositorySO repo, String commitMessage, WorkspaceSO workspace) {
+    public GitlabPushTransaction(GitlabRepositorySO repo, CommitMessage commitMessage, WorkspaceSO workspace) {
+        if (commitMessage == null) {
+            throw new IllegalArgumentException("commitMessage must not be null");
+        }
         this.repo = repo;
         this.commitMessage = commitMessage;
         this.workspace = workspace;
@@ -71,7 +75,7 @@ public class GitlabPushTransaction {
 
     public void doMergeRequest() {
         try {
-            new MergeRequestService().createAndSquashMergeRequest(commitMessage,
+            new MergeRequestService().createAndSquashMergeRequest(commitMessage.toString(),
                     workBranch,
                     workspace.getBranch(),
                     repo.getGitlabSystemUrl(), repo.getProject(),

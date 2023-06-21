@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import minerva.access.DirAccess;
 import minerva.book.Book;
 import minerva.exclusions.ExclusionsService;
+import minerva.git.CommitMessage;
 import minerva.seite.Breadcrumb;
 import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.Seite;
@@ -109,7 +110,7 @@ public class BookSO {
     private void saveBook() {
         BooksSO books = workspace.getBooks();
         books.incVersion();
-        books.save("alphabetical sorting enabled for: " + getTitle());
+        books.save(cm("alphabetical sorting enabled"));
         workspace.pull(); // ja, ist etwas brutal...
     }
 
@@ -122,7 +123,7 @@ public class BookSO {
             workspace.getBooks().saveTo(files);
         }
         reorderdSeiten.setPositionsAndSaveTo(files);
-        dao().saveFiles(files, "reordering subpages of: " + getTitle(), workspace);
+        dao().saveFiles(files, cm("subpages reorderd"), workspace);
     }
 
     public List<SeiteSO> findTag(String tag) {
@@ -155,5 +156,9 @@ public class BookSO {
             }
         }
         return false;
+    }
+    
+    public CommitMessage cm(String comment) {
+        return new CommitMessage(book.getFolder() + ": " + comment);
     }
 }

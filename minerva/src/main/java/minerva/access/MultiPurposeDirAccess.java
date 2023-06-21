@@ -10,6 +10,7 @@ import org.pmw.tinylog.Logger;
 import com.google.gson.Gson;
 
 import minerva.base.StringService;
+import minerva.git.CommitMessage;
 import minerva.model.WorkspaceSO;
 
 /**
@@ -22,13 +23,13 @@ public class MultiPurposeDirAccess {
         this.access = access;
     }
 
-    public void save(String filename, String text, String commitMessage, WorkspaceSO workspace) {
+    public void save(String filename, String text, CommitMessage commitMessage, WorkspaceSO workspace) {
         Map<String, String> files = new HashMap<>();
         files.put(filename, text);    
         access.saveFiles(files, commitMessage, workspace);
     }
 
-    public <T> void save(String filename, T data, String commitMessage, WorkspaceSO workspace) {
+    public <T> void save(String filename, T data, CommitMessage commitMessage, WorkspaceSO workspace) {
         save(filename, StringService.prettyJSON(data), commitMessage, workspace);
     }
 
