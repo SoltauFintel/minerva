@@ -98,9 +98,11 @@
         <h4>{{N.notes}} ({{notesSize}})</h4>
         <p><a href="{{viewlink}}/notes" class="btn btn-default btn-sm">{{N.edit}}</a></p>
         <hr style="margin-bottom: 16px;"/>
-        <p>
-            <a href="{{viewlink}}/history" class="btn btn-default br"><i class="fa fa-clock-o"></i> {{N.history}}</a>
-        </p>
+        {{if gitlab}}
+            <p>
+                <a href="{{viewlink}}/history" class="btn btn-default br"><i class="fa fa-clock-o"></i> {{N.history}}</a>
+            </p>
+        {{/if}}
         <p>
             <a href="{{movelink}}" class="btn btn-default br">{{N.movePage}}</a>
         </p>

@@ -5,6 +5,8 @@
         <h1 class="page-header">{{header}}</h1>
                 
         <h2><a href="{{viewlink}}">{{pageTitle}}</a></h2>
+        
+        <p class="mt2">{{N.authors}}: {{authors}}</p>
 
         <table class="table table-striped table-hover mt2" style="width: auto;">
             <tr>
@@ -18,9 +20,15 @@
                     <td>{{c.date}}</td>
                     <td>{{c.author}}</td>
                     <td>{{c.message}}</td>
-                    <td>{{c.hash7}}</td>
+                    <td><a href="{{c.gitlabCommitLink}}"
+                        target="_blank">{{c.hash7}}</a></td>
                 </tr>
             {{/each}}
         </table>
+        
+        <p>
+            {{N.anzahl}}: {{n}}
+            <br/><span style="font-size: 8pt; color: #999;">{{N.historyFor}} {{filename}}</span>
+        </p>
     </div>
 </div>
