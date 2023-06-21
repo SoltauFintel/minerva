@@ -2,6 +2,8 @@ package minerva;
 
 import static github.soltaufintel.amalia.web.action.Escaper.esc;
 
+import org.pmw.tinylog.Level;
+
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
@@ -17,6 +19,7 @@ import minerva.auth.MinervaAuth;
 import minerva.base.MessagePage;
 import minerva.base.MinervaError404Page;
 import minerva.base.MinervaErrorPage;
+import minerva.base.MinervaLoggingInitializer;
 import minerva.base.NLS;
 import minerva.book.AddBookPage;
 import minerva.book.BookPage;
@@ -160,6 +163,7 @@ public class MinervaWebapp extends RouteDefinitions {
 
     public static void main(String[] args) {
         WebApp webapp = new WebAppBuilder(VERSION)
+            .withLogging(new MinervaLoggingInitializer(Level.INFO))
             .withTemplatesFolders(MinervaWebapp.class, "/templates")
             .withPageInitializer(new MinervaPageInitializer())
             .withErrorPage(MinervaErrorPage.class, MinervaError404Page.class)
