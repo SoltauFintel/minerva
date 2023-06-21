@@ -121,3 +121,4 @@ history=History
 date=Date
 newTag=New tag
 historyFor=Git history for file
+editTags=Edit tags

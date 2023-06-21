@@ -1,5 +1,11 @@
 {{master: master_jqueryoben}}
 
+<style>
+.mw {
+    min-width: 200px;
+}
+</style>
+
 <div class="row">
     <div class="col-lg-9">
         <div class="mt1" style="margin-bottom: 10px; padding-left: 0;">
@@ -86,28 +92,28 @@
             Position: {{position}} | {{Sortierung}}
         </p>
         <hr/>
-        <h4>tags ({{tagsSize}})</h4>
+        <h4>tags ({{tagsSize}}) &nbsp;<a href="{{edittagslink}}" class="btn btn-default btn-xs">{{N.editTags}}</a></h4>
         <p>
             {{each tag in tags}}
-                <span class="label label-tag"><i class="fa fa-tag"></i> <a
-                    href="{{tag.link}}">{{tag.tag}}</a></span>
+                <span class="label label-tag"><a
+                    href="{{tag.link}}"><i class="fa fa-tag"></i> {{tag.tag}}</a></span>
             {{/each}}
         </p>
-        <p class="mt1"><a href="{{edittagslink}}" class="btn btn-default btn-sm">{{N.edit}}</a></p>
         <hr/>
-        <h4>{{N.notes}} ({{notesSize}})</h4>
-        <p><a href="{{viewlink}}/notes" class="btn btn-default btn-sm">{{N.edit}}</a></p>
-        <hr style="margin-bottom: 16px;"/>
+        
+        <p><a href="{{viewlink}}/notes" class="btn btn-default mw"><i class="fa fa-comment"></i>
+            {{N.notes}} ({{notesSize}})</a></p>
+            
         {{if gitlab}}
             <p>
-                <a href="{{viewlink}}/history" class="btn btn-default br"><i class="fa fa-clock-o"></i> {{N.history}}</a>
+                <a href="{{viewlink}}/history" class="btn btn-default mw"><i class="fa fa-clock-o"></i> {{N.history}}</a>
             </p>
         {{/if}}
         <p>
-            <a href="{{movelink}}" class="btn btn-default br">{{N.movePage}}</a>
+            <a href="{{movelink}}" class="btn btn-default mw">{{N.movePage}}</a>
         </p>
         <p>
-            <a href="{{deletelink}}" class="btn btn-danger br"><i class="fa fa-trash"></i> {{N.deletePage}}...</a>
+            <a href="{{deletelink}}" class="btn btn-danger mw"><i class="fa fa-trash"></i> {{N.deletePage}}...</a>
         </p>
     </div>
 </div>
