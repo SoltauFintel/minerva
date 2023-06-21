@@ -81,7 +81,7 @@ public class GitService {
             e.printStackTrace(); // TODO brauch ich für Fehleranalyse   (Wieso wird so viel Stacktrace geschluckt???)
             Logger.error("Error cloning Git repository! URL: " + url + " | user: " + user.getLogin()
                 + " | branch: " + branch);
-            throw new RuntimeException("Error cloning Git repository!", e);
+            throw new RuntimeException("Error accessing Git repository! Please try logout and login.", e);
         }
     }
     
