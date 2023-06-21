@@ -1,0 +1,54 @@
+package minerva.base;
+
+import github.soltaufintel.amalia.auth.webcontext.WebContext;
+import github.soltaufintel.amalia.spark.Context;
+import minerva.model.BooksSO;
+import minerva.model.StatesSO;
+import minerva.model.UserSO;
+
+public class MinervaPageInitModel {
+    private final String login;
+    private final boolean hasUser;
+    private String branch;
+    private String userLang;
+    private BooksSO books;
+    
+    public MinervaPageInitModel(Context ctx) {
+        WebContext wctx = new WebContext(ctx);
+        login = wctx.session().getLogin();
+        hasUser = wctx.session().isLoggedIn();
+        branch = "";
+        userLang = "de";
+        if (hasUser) {
+            UserSO user = StatesSO.get(ctx).getUser();
+            userLang = user.getGuiLanguage();
+            if (user.getCurrentWorkspace() != null) {
+                branch = user.getCurrentWorkspace().getBranch();
+                if (user.getCurrentWorkspace().getBooks() != null //
+                        && !user.getCurrentWorkspace().getBooks().isEmpty()) {
+                    books = user.getCurrentWorkspace().getBooks();
+                }
+            }
+        }
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public boolean hasUser() {
+        return hasUser;
+    }
+
+    public String getUserLang() {
+        return userLang;
+    }
+
+    public BooksSO getBooks() {
+        return books;
+    }
+
+    public String getBranch() {
+        return branch;
+    }
+}

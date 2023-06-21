@@ -1,17 +1,8 @@
 package minerva;
 
-import static github.soltaufintel.amalia.web.action.Escaper.esc;
-
 import org.pmw.tinylog.Level;
 
-import com.github.template72.data.DataList;
-import com.github.template72.data.DataMap;
-
-import github.soltaufintel.amalia.auth.webcontext.WebContext;
-import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.web.WebApp;
-import github.soltaufintel.amalia.web.action.Page;
-import github.soltaufintel.amalia.web.action.PageInitializer;
 import github.soltaufintel.amalia.web.builder.WebAppBuilder;
 import github.soltaufintel.amalia.web.route.RouteDefinitions;
 import minerva.auth.Login2Page;
@@ -20,7 +11,7 @@ import minerva.base.MessagePage;
 import minerva.base.MinervaError404Page;
 import minerva.base.MinervaErrorPage;
 import minerva.base.MinervaLoggingInitializer;
-import minerva.base.NLS;
+import minerva.base.MinervaPageInitializer;
 import minerva.book.AddBookPage;
 import minerva.book.BookPage;
 import minerva.book.BooksPage;
@@ -36,10 +27,6 @@ import minerva.exclusions.ExclusionsEditPage;
 import minerva.image.ImageDownloadAction;
 import minerva.image.ImageUploadAction;
 import minerva.migration.MigrationPage;
-import minerva.model.BookSO;
-import minerva.model.BooksSO;
-import minerva.model.StatesSO;
-import minerva.model.UserSO;
 import minerva.persistence.gitlab.GitlabAuthAction;
 import minerva.persistence.gitlab.GitlabAuthCallbackAction;
 import minerva.preview.PreviewBookPage;
@@ -172,80 +159,6 @@ public class MinervaWebapp extends RouteDefinitions {
             .withRoutes(new MinervaWebapp())
             .build();
         webapp.boot();
-    }
-    
-    public static class MinervaPageInitializer extends PageInitializer {
-        
-        @Override
-        public void initPage(Context ctx, Page page) {
-            WebContext wctx = new WebContext(ctx);
-            boolean hasUser = wctx.session().isLoggedIn();
-            String branch = "";
-            BooksSO books = null;
-            String userLang = "de";
-            if (hasUser) {
-                UserSO user = StatesSO.get(ctx).getUser();
-                userLang = user.getGuiLanguage();
-                if (user.getCurrentWorkspace() != null) {
-                    branch = user.getCurrentWorkspace().getBranch();
-                    if (user.getCurrentWorkspace().getBooks() != null //
-                            && !user.getCurrentWorkspace().getBooks().isEmpty()) {
-                        books = user.getCurrentWorkspace().getBooks();
-                    }
-                }
-            }
-
-            page.put("title", "Minerva");
-            page.put("abmelden", "Abmelden");
-            page.put("hasUser", hasUser);
-            page.put("VERSION", VERSION);
-            page.put("user", esc(wctx.session().getLogin()));
-            page.put("gitlab", factory().getConfig().isGitlab());
-            page.put("booksLabel", "Bücher");
-            page.put("searchPlaceholder", "");
-            page.put("searchFocus", false);
-            page.put("branch0", "");
-            page.put("previewTitle", "Preview");
-            page.put("previewlink", "/p/master");
-            page.put("q", "");
-            booksForMenu(hasUser, userLang, books, page);
-            page.put("isCustomerVersion", MinervaWebapp.factory().isCustomerVersion());
-            page.put("branch", esc(branch));
-            page.put("exclusionsTitle", "Exclusions");
-            page.put("hasBook", false);
-            page.put("book0Title", "");
-            page.put("myTasks", "");
-            if (hasUser) {
-                page.put("abmelden", NLS.get(userLang, "logout"));
-                page.put("booksLabel", NLS.get(userLang, "books"));
-                page.put("searchPlaceholder", NLS.get(userLang, "searchPlaceholder"));
-                page.put("exclusionsTitle", NLS.get(userLang, "exclusions"));
-                page.put("myTasks", NLS.get(userLang, "myTasks"));
-                if (books != null) {
-                    if (!"master".equals(branch)) {
-                        page.put("branch0", esc(branch));
-                    }
-                    page.put("previewTitle", NLS.get(userLang, "preview"));
-                    page.put("previewlink", "/p/" + branch);
-                    page.put("hasBook", true);
-                }
-            }
-        }
-
-        private void booksForMenu(boolean hasUser, String userLang, BooksSO books, Page page) {
-            DataList list = page.list("booksForMenu");
-            page.put("bookslinkForMenu", "/w");
-            if (!hasUser) {
-                return;
-            }
-            if (books != null) {
-                for (BookSO book : books) {
-                    DataMap map = list.add();
-                    map.put("folder", esc(book.getBook().getFolder()));
-                    map.put("title", esc(book.getBook().getTitle().getString(userLang)));
-                }
-            }
-        }
     }
     
     public static MinervaFactory factory() {
