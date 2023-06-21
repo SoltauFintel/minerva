@@ -82,12 +82,15 @@ public class MinervaConfig {
 
     public List<String> getPersons() {
         List<String> ret = new ArrayList<>();
-        for (String name : get("persons").split(",")) {
-            if (!name.isBlank()) {
-                ret.add(name.trim());
+        String persons = get("persons");
+        if (persons != null) {
+            for (String name : persons.split(",")) {
+                if (!name.isBlank()) {
+                    ret.add(name.trim());
+                }
             }
+            Collections.sort(ret);
         }
-        Collections.sort(ret);
         return ret;
     }
 }
