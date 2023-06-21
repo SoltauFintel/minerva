@@ -1,7 +1,5 @@
 package minerva.book;
 
-import org.pmw.tinylog.Logger;
-
 import minerva.MinervaWebapp;
 import minerva.user.UAction;
 
@@ -12,8 +10,6 @@ public class SelectLanguageAction extends UAction {
         String branch = ctx.pathParam("branch");
         String lang = ctx.queryParam("lang");
         String m = ctx.queryParam("m");
-        
-        Logger.info("language " + branch + " | " + lang + " | " + m);
         
         if (!MinervaWebapp.factory().getLanguages().contains(lang)) {
             throw new RuntimeException("Illegal language value!");
