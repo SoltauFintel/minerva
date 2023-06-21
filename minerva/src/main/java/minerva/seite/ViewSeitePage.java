@@ -43,10 +43,9 @@ public class ViewSeitePage extends SPage {
             map.put("content", seiteSO.getContent().getString(lang));
             map.put("active", lang.equals(user.getPageLanguage()));
             fillBreadcrumbs(lang, map.list("breadcrumbs"));
-            fillSubpages(seiteSO.getSeiten(), lang, map.list("subpages"), branch, bookFolder);
+            map.putInt("subpagesSize", fillSubpages(seiteSO.getSeiten(), lang, map.list("subpages"), branch, bookFolder));
         }
         
-        putInt("subpagesSize", seiteSO.getSeiten().size());
         fillTags(seite);
         putInt("tagsSize", seiteSO.getSeite().getTags().size());
         
@@ -69,7 +68,8 @@ public class ViewSeitePage extends SPage {
                 + seiteSO.getTitle() + " | " + user.getPageLanguage());
     }
 
-    static void fillSubpages(SeitenSO seiten, String lang, DataList subpages, String branch, String bookFolder) {
+    static int fillSubpages(SeitenSO seiten, String lang, DataList subpages, String branch, String bookFolder) {
+        int n = 0;
         seiten.sort(lang);
         for (SeiteSO sub : seiten) {
             if (sub.hasContent(lang) > 0) {
@@ -78,8 +78,10 @@ public class ViewSeitePage extends SPage {
                 map.put("titel", Escaper.esc(sub.getSeite().getTitle().getString(lang)));
                 map.put("viewlink", "/s/" + branch + "/" + bookFolder + "/" + Escaper.esc(sub.getId()));
                 map.putInt("position", sub.getSeite().getPosition());
+                n++;
             }
         }
+        return n;
     }
 
     private void fillTags(Seite seite) {
