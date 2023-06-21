@@ -4,11 +4,14 @@ import java.io.File;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jgit.api.errors.TransportException;
+import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.pmw.tinylog.Logger;
 
 import minerva.base.FileService;
 import minerva.git.GitService;
 import minerva.git.HCommit;
+import minerva.persistence.gitlab.GitlabAuthCallbackAction;
 import minerva.persistence.gitlab.GitlabUser;
 
 public class GitlabRepositorySO {
@@ -38,12 +41,24 @@ public class GitlabRepositorySO {
                 git.fetch(user);
                 git.switchToBranch(branch);
             }
-            try {
-                git.pull(user);
-            } catch (Exception e) {
-                Logger.error(e);
-                pull(workspace, true);
-                return;
+            for (int trial = 1; trial <= 2; trial++) {
+                try {
+                    git.pull(user);
+                    break;
+                } catch (Exception e) {
+                    Logger.error(e);
+                    if (e.getCause() instanceof RepositoryNotFoundException) {
+                        pull(workspace, true);
+                    } else if (trial == 1 && e.getCause() instanceof TransportException) {
+                        // TODO Dieser Fehler kann auch bei anderen Git Aktionen auftreten und müsste dort
+                        //      ebenso behandelt werden!                        
+                        // TODO Fehlertext vom e.cause noch genauer untersuchen! Muss wohl irgendwas mit
+                        //      "not authenticated" sein.
+                        GitlabAuthCallbackAction.refreshToken(user);
+                        continue;
+                    }
+                    return;
+                }
             }
         } else {
             workspaceFolder.mkdirs();

@@ -12,7 +12,11 @@ import github.soltaufintel.amalia.web.config.AppConfig;
 import minerva.auth.LoginPage;
 import minerva.model.GitFactory;
 
+/**
+ * This action is called by Gitlab after authentication.
+ */
 public class GitlabAuthCallbackAction extends Action {
+    // TODO move code to service class
 
     @Override
     protected void execute() {
@@ -28,7 +32,8 @@ public class GitlabAuthCallbackAction extends Action {
             String param = "client_id=" + u(cfg.get("gitlab-appid")) + //
                     "&client_secret=" + u(cfg.get("gitlab-secret")) + //
                     "&code=" + u(code) + //
-                    "&grant_type=authorization_code&redirect_uri=" + u(cfg.get("gitlab-auth-callback"));
+                    "&grant_type=authorization_code" + //
+                    "&redirect_uri=" + u(cfg.get("gitlab-auth-callback"));
 
             Answer answer = new REST(cfg.get("gitlab.url") + "/oauth/token").post(param).fromJson(Answer.class);
 
@@ -42,7 +47,7 @@ public class GitlabAuthCallbackAction extends Action {
                 user.setRefreshToken(answer.getRefresh_token());
                 LoginPage.login2(ctx, login, user);
                 Logger.info(login + " | Login by OAuth2 access token ok. <" + mail + ">");
-                // Kein Redirect. Ich versteh nicht warum. Denn andernfalls tritt eine IllegalStateException auf.
+                // Redirect is done login2().
             } catch (GitLabApiException e) {
                 Logger.error(e);
                 ctx.redirect("/");
@@ -53,7 +58,20 @@ public class GitlabAuthCallbackAction extends Action {
         }
     }
 
-    private String u(String k) {
+    public static void refreshToken(GitlabUser user) {
+        AppConfig cfg = new AppConfig();
+        String param = "client_id=" + u(cfg.get("gitlab-appid")) + //
+                "&client_secret=" + u(cfg.get("gitlab-secret")) + //
+                "&refresh_token=" + u(user.getRefreshToken()) + //
+                "&grant_type=refresh_token" + //
+                "&redirect_uri=" + u(cfg.get("gitlab-auth-callback"));        
+        Answer answer = new REST(cfg.get("gitlab.url") + "/oauth/token").post(param).fromJson(Answer.class);
+        user.setAccessToken(answer.getAccess_token());
+        user.setRefreshToken(answer.getRefresh_token());
+        Logger.info(user.getLogin() + " | Gitlab access token refreshed");
+    }
+
+    private static String u(String k) {
         return Escaper.urlEncode(k, "");
     }
 }
