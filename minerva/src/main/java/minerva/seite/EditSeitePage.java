@@ -6,7 +6,7 @@ import minerva.base.NlsString;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.persistence.gitlab.UpToDateCheckService;
-import minerva.seite.link.LinksModel;
+import minerva.seite.link.InvalidLinksModel;
 
 public class EditSeitePage extends ViewSeitePage {
 
@@ -50,7 +50,7 @@ public class EditSeitePage extends ViewSeitePage {
         Logger.info(user.getUser().getLogin() + " | " + branch + " | " + title.getString(langs.get(0)) + " -> Page #"
                 + seiteSO.getId() + " saved. " + (System.currentTimeMillis() - start) + "ms");
         
-        LinksModel linksModel = new LinksModel(seiteSO, langs);
+        InvalidLinksModel linksModel = new InvalidLinksModel(seiteSO, langs);
         if (linksModel.hasLinks()) {
             // Es müssen noch Links aufgelöst werden.
             user.setLinksModel(linksModel);

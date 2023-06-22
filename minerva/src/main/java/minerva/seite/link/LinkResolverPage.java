@@ -25,7 +25,7 @@ public class LinkResolverPage extends SPage {
     }
 
     private void showPage(int index) {
-        LinksModel linksModel = user.getLinksModel();
+        InvalidLinksModel linksModel = user.getLinksModel();
 
         if (linksModel == null || index < 0) {
             throw new RuntimeException("Error while resolving links: unknown key or index");
@@ -57,7 +57,7 @@ public class LinkResolverPage extends SPage {
         fill(index, linksModel, link, href);
     }
 
-    private void fill(int index, LinksModel linksModel, Link link, String href) {
+    private void fill(int index, InvalidLinksModel linksModel, Link link, String href) {
         put("href", href);
         put("aTitle", link == null ? "" : esc(link.getTitle()));
         putInt("nextIndex", index + 1);

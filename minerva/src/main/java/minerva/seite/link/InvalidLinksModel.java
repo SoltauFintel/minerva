@@ -10,10 +10,10 @@ import minerva.model.SeiteSO;
 /**
  * Invalid links for LinksResolverPage
  */
-public class LinksModel {
+public class InvalidLinksModel {
     private final List<Link> links = new ArrayList<>();
 
-    public LinksModel(SeiteSO seite, List<String> langs) {
+    public InvalidLinksModel(SeiteSO seite, List<String> langs) {
         List<BookSO> books = new ArrayList<>();
         books.add(seite.getBook());
         for (String lang : langs) {

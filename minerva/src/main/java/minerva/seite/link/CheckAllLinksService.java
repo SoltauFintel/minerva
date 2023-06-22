@@ -30,7 +30,7 @@ public class CheckAllLinksService {
     }
 
     private void check(SeiteSO seite, List<CALBrokenLink> links) {
-        LinksModel lm = new LinksModel(seite, langs);
+        InvalidLinksModel lm = new InvalidLinksModel(seite, langs);
         for (Link link : lm.getLinks()) {
             links.add(new CALBrokenLink(link, seite));
         }
