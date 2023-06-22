@@ -61,18 +61,10 @@ public class ViewSeitePage extends SPage {
         int n = seiteSO.notes().getNotesSize();
         putInt("notesSize", n);
         put("hasNotes", n > 0);
-        List<PageChange> changes = seiteSO.getSeite().getChanges();
-        put("hasLastChange", !changes.isEmpty());
-        if (!changes.isEmpty()) {
-            PageChange change = changes.get(changes.size() - 1);
-            String lastChangeInfo = n("lastChangeInfo")
-                .replace("$d", change.getDate())
-                .replace("$u", change.getUser())
-                .replace("$c", change.getComment());
-            put("lastChangeInfo", esc(lastChangeInfo));
-            put("lastChange", esc(change.getComment()));
-            put("lastChangeDate", esc(change.getDate()));
-            put("lastChangeUser", esc(change.getUser()));
+        PageChange change = seiteSO.getLastChange();
+        put("hasLastChange", change != null);
+        if (change != null) {
+            fillLastChange(change, seiteSO.getTitle(), n("lastChangeInfo"), model);
         }
         header(modifyHeader(seiteSO.getTitle()));
 
@@ -80,7 +72,19 @@ public class ViewSeitePage extends SPage {
         Logger.info(user.getUser().getLogin() + " | " + seiteSO.getBook().getWorkspace().getBranch() + " | "
                 + seiteSO.getTitle() + " | " + user.getPageLanguage());
     }
-
+    
+    public static void fillLastChange(PageChange change, String pageTitle, String infotext, DataMap model) {
+        String lastChangeInfo = infotext
+            .replace("$d", change.getDate())
+            .replace("$u", change.getUser())
+            .replace("$c", change.getComment())
+            .replace("$p", pageTitle);
+        model.put("lastChangeInfo", Escaper.esc(lastChangeInfo));
+        model.put("lastChange", Escaper.esc(change.getComment()));
+        model.put("lastChangeDate", Escaper.esc(change.getDate()));
+        model.put("lastChangeUser", Escaper.esc(change.getUser()));
+    }
+    
     static int fillSubpages(SeitenSO seiten, String lang, DataList subpages, String branch, String bookFolder) {
         int n = 0;
         seiten.sort(lang);

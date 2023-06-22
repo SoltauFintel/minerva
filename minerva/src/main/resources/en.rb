@@ -124,3 +124,4 @@ historyFor=Git history for file
 editTags=Edit tags
 whatChanged=What did you change?
 lastChangeInfo=last change from $d by $u: $c
+lastChangeInfoForBook=last change of page "$p" from $d by $u: $c

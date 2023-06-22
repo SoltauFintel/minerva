@@ -5,6 +5,7 @@ import com.github.template72.data.DataMap;
 
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
+import minerva.seite.ViewSeitePage;
 
 public class BookPage extends BPage {
 
@@ -24,6 +25,11 @@ public class BookPage extends BPage {
         put("Sortierung", n(sorted ?  "alfaSorted" : "manuSorted"));
         put("hasPrevlink", false);
         put("hasNextlink", false);
+        SeiteSO change = book.getLastChange();
+        put("hasLastChange", change != null);
+        if (change != null) {
+            ViewSeitePage.fillLastChange(change.getLastChange(), change.getTitle(), n("lastChangeInfoForBook"), model);
+        }
 
         DataList list = list("languages");
         for (String lang : langs) {

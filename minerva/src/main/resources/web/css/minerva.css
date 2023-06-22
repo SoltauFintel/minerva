@@ -26,6 +26,12 @@
     margin-bottom: 3em;
 }
 
+.last-change {
+    color: #999;
+    font-style: italic;
+    font-size: 8pt;
+}
+
 .app-title {
     color: black;
     font-size: 18pt;

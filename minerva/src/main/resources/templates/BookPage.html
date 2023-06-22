@@ -35,6 +35,9 @@
                     title="{{N.pageToPrev}}" id="prev2"><i class="fa fa-arrow-left"></i></a>
                 <a {{if hasNextlink}}href="{{nextlink}}"{{else}}disabled{{/if}} class="btn btn-default br"
                     title="{{N.pageToNext}}" id="next2"><i class="fa fa-arrow-right"></i></a>
+                {{if hasLastChange}}
+                    <span class="last-change">{{lastChangeInfo}}</span>
+                {{/if}}
             </p>
         </div>
     </div>

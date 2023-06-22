@@ -29,6 +29,7 @@ import minerva.seite.ChangeFile;
 import minerva.seite.IMoveFile;
 import minerva.seite.IPageChangeStrategy;
 import minerva.seite.MoveFile;
+import minerva.seite.PageChange;
 import minerva.seite.Seite;
 
 public class SeiteSO implements ISeite {
@@ -440,5 +441,10 @@ public class SeiteSO implements ISeite {
             Logger.error(e);
             return 3;
         }
+    }
+    
+    public PageChange getLastChange() {
+        List<PageChange> changes = seite.getChanges();
+        return changes.isEmpty() ? null : changes.get(changes.size() - 1);
     }
 }

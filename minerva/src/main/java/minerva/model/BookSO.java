@@ -161,4 +161,8 @@ public class BookSO {
     public CommitMessage cm(String comment) {
         return new CommitMessage(book.getFolder() + ": " + comment);
     }
+    
+    public SeiteSO getLastChange() {
+        return getSeiten().getLastChange();
+    }
 }

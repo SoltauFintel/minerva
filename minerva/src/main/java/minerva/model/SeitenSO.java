@@ -15,6 +15,7 @@ import minerva.base.MList;
 import minerva.seite.Breadcrumb;
 import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.Note;
+import minerva.seite.PageChange;
 import minerva.seite.Seite;
 import minerva.seite.note.NoteWithSeite;
 
@@ -194,5 +195,28 @@ public class SeitenSO extends MList<SeiteSO> {
             result.add(new NoteWithSeite(note, seite));
             findAllNotes(seite, note.getNotes(), result); // recursive
         }
+    }
+
+    public SeiteSO getLastChange() {
+        SeiteSO maxSeite = null;
+        PageChange maxChange = null;
+        for (SeiteSO seite : this) {
+            PageChange c = seite.getLastChange();
+            if (later(c, maxChange)) {
+                maxSeite = seite;
+                maxChange = c;
+            }
+            SeiteSO sub = seite.getSeiten().getLastChange(); // recursive
+            c = sub == null ? null : sub.getLastChange();
+            if (later(c, maxChange)) {
+                maxSeite = sub;
+                maxChange = c;
+            }
+        }
+        return maxSeite;
+    }
+
+    private boolean later(PageChange test, PageChange max) {
+        return test != null && (max == null || test.getDate().compareTo(max.getDate()) > 0);
     }
 }
