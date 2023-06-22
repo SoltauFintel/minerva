@@ -16,11 +16,19 @@ public class MoveSeiteAckPage extends SPage {
         String text;
         header(n("movePage"));
         if (folder == null || folder.isEmpty()) {
-            SeiteSO parent = book.getSeiten().byId(parentId);
+            String parentTitle;
+            if (SeiteSO.ROOT_ID.equals(parentId)) {
+                parentTitle = book.getTitle();
+            } else {
+                SeiteSO parent = book.getSeiten().byId(parentId);
+                parentTitle = parent.getTitle();
+            }
     
             put("moveToBook", false);
             put("parentId", esc(parentId));
-            text = n("movePage1").replace("$p", esc(parent.getTitle())).replace("$t", esc(seite.getTitle()));
+            text = n("movePage1")
+                    .replace("$t", esc(seite.getTitle()))
+                    .replace("$p", esc(parentTitle));
         } else {
             put("moveToBook", true);
             put("folder", esc(folder));
