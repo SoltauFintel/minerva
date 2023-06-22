@@ -49,7 +49,7 @@ public class LinkResolverPage extends SPage {
         } else {
             link = linksModel.getLinks().get(index);
         }
-        String href = link == null ? "" : esc(link.getHref());
+        String href = link == null ? "" : link.getHref();
         linkPrefix = "/links/" + branch + "/" + bookFolder + "/" + id + "?index=" + (index + 1);
         result = new ArrayList<>();
         search(href, index);

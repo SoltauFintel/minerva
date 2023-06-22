@@ -14,8 +14,6 @@ public class LinksModel {
     private static final String x1 = "href=\"";
     private final List<Link> links = new ArrayList<>();
 
-    // TODO esc  (& wird geschluckt)
-    
     public LinksModel(SeiteSO seite, List<String> langs) {
         List<BookSO> books = new ArrayList<>();
         books.add(seite.getBook());
@@ -36,7 +34,6 @@ public class LinksModel {
             if (oo > o) {
                 String href = html.substring(o, oo);
                 if (!validLink(href, books)) {
-                    // TODO doppelte Links vermeiden
                     Link link = new Link();
                     link.setHref(href);
                     int ooo = html.indexOf("</a>", oo);
@@ -44,7 +41,16 @@ public class LinksModel {
                         int oooo = html.indexOf(">", oo);
                         link.setTitle(plainText(html.substring(oooo + 1, ooo)));
                     }
-                    links.add(link);
+                    boolean gef = false;
+                    for (Link x : links) {
+                        if (x.getHref().equals(link.getHref()) && x.getTitle().equals(link.getTitle())) {
+                            gef = true;
+                            break;
+                        }
+                    }
+                    if (!gef) {
+                        links.add(link);
+                    }
                 }
             }
             o = html.indexOf(x1, o);
