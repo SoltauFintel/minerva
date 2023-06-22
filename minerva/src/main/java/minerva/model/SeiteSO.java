@@ -447,4 +447,12 @@ public class SeiteSO implements ISeite {
         List<PageChange> changes = seite.getChanges();
         return changes.isEmpty() ? null : changes.get(changes.size() - 1);
     }
+
+    /**
+     * @param langs -
+     * @return all pages that contain a link to this page
+     */
+    public List<SeiteSO> linksTo(List<String> langs) {
+        return book.getSeiten().findLink(getId(), langs);
+    }
 }

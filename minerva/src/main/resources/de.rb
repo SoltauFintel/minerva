@@ -125,3 +125,5 @@ editTags=tags bearbeiten
 whatChanged=Was haben Sie geändert?
 lastChangeInfo=letzte Änderung am $d durch $u: $c
 lastChangeInfoForBook=letzte Änderung von Seite "$p" am $d durch $u: $c
+pageLinkToThisPage=Diese Seite verlinkt auf die zu löschende Seite. Es wird empfohlen erst die Links zu korrigieren, damit keine Broken Links entstehen.
+pagesLinkToThisPage=Diese Seiten verlinken auf die zu löschende Seite. Es wird empfohlen erst die Links zu korrigieren, damit keine Broken Links entstehen.

@@ -17,6 +17,7 @@ import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.Note;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
+import minerva.seite.link.LinkService;
 import minerva.seite.note.NoteWithSeite;
 
 public class SeitenSO extends MList<SeiteSO> {
@@ -218,5 +219,20 @@ public class SeitenSO extends MList<SeiteSO> {
 
     private boolean later(PageChange test, PageChange max) {
         return test != null && (max == null || test.getDate().compareTo(max.getDate()) > 0);
+    }
+
+    public List<SeiteSO> findLink(String href, List<String> langs) {
+        List<SeiteSO> ret = new ArrayList<>();
+        for (SeiteSO seite : this) {
+            for (String lang : langs) {
+                if (LinkService.extractLinks(seite.getContent().getString(lang), false).stream()
+                        .anyMatch(link -> link.getHref().equals(href))) {
+                    ret.add(seite);
+                    break;
+                }
+            }
+            ret.addAll(seite.getSeiten().findLink(href, langs)); // recursive
+        }
+        return ret;
     }
 }

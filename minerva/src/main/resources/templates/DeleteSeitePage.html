@@ -8,6 +8,15 @@
         
         <p>{{N.deletePage2}}</p>
         
+        {{if hasLinkingPages}}
+            <p>{{pagesLinkToThisPage}}</p>
+            <ul>
+                {{each s in linkingPages}}
+                    <li><a href="{{s.link}}">{{s.title}}</a></li>
+                {{/each}}
+            </ul>
+        {{/if}}
+        
         <p class="mt2">
             <a href="{{viewlink}}/delete?m=d" class="btn btn-danger br"
                 onclick="document.getElementById('s1').style='';"><i

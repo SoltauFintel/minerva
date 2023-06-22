@@ -125,3 +125,5 @@ editTags=Edit tags
 whatChanged=What did you change?
 lastChangeInfo=last change from $d by $u: $c
 lastChangeInfoForBook=last change of page "$p" from $d by $u: $c
+pageLinkToThisPage=This page links to this page. It is recommended to correct the links first so that no broken links are created.
+pagesLinkToThisPage=These pages link to this page. It is recommended to correct the links first so that no broken links are created.
