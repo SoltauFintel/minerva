@@ -35,7 +35,11 @@ public class MinervaConfig {
      * true: persistence with local file system and remote Gitlab
      */
     public boolean isGitlab() {
-        return "gitlab".equalsIgnoreCase(config.get("backend"));
+        String backend = System.getenv("BACKEND"); // for setting backend to file-system in IDE mode
+        if (StringService.isNullOrEmpty(backend)) {
+            backend = config.get("backend");
+        }
+        return "gitlab".equalsIgnoreCase(backend);
     }
     
     public String getWorkspacesFolder() {
