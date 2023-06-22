@@ -9,7 +9,6 @@ import org.pmw.tinylog.Logger;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
-import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.base.StringService;
 import minerva.user.UPage;
 
@@ -56,9 +55,5 @@ public class SearchPage extends UPage {
                 });
             putInt("n", n);
         }
-    }
-    
-    private String u(String text) {
-        return Escaper.urlEncode(text, "");
     }
 }

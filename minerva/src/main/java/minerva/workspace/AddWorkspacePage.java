@@ -25,7 +25,7 @@ public class AddWorkspacePage extends UPage {
             if (branches.isEmpty()) {
                 ctx.redirect("/message?m=2");
             } else {
-                combobox("branches", branches, null, false, model);
+                combobox("branches", branches, (String) null, false, model);
                 header(n("createWS"));
                 
                 ColumnFormularGenerator gen = new ColumnFormularGenerator(1, 1);

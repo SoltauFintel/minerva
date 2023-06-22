@@ -9,7 +9,7 @@ import minerva.base.NlsString;
 
 /**
  * Entity for holding page meta data.
- * It is called Seite (German) so that there is no confusion with the Amalia Page concept.
+ * It is called Seite (German) so that there is no confusion with the amalia Page concept.
  */
 public class Seite {
     private String id;
