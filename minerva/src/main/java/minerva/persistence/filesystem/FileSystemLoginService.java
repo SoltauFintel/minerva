@@ -1,5 +1,7 @@
 package minerva.persistence.filesystem;
 
+import org.pmw.tinylog.Logger;
+
 import minerva.auth.LoginService;
 import minerva.base.StringService;
 import minerva.user.User;
@@ -18,9 +20,10 @@ public class FileSystemLoginService implements LoginService {
             return null;
         }
         String folder = System.getenv("MINERVA_USERFOLDER");
-        if (!StringService.isNullOrEmpty(folder)) {
+        if (StringService.isNullOrEmpty(folder)) {
             folder = login;
         }
+        Logger.debug(login + " | folder: " + folder);
         return new User(login, folder);
     }
 }

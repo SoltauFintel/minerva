@@ -21,6 +21,7 @@ public class LoginPage extends Page {
             Logger.info("LoginPage POST " + login);
             login(login, password, loginService);
         } else {
+            Logger.debug("LoginPage " + loginService.getClass().getSimpleName());
             put("loginError", "f".equals(ctx.queryParam("m")));
             put("withPassword", loginService.withPassword());
         }
