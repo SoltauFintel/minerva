@@ -12,7 +12,8 @@ import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 
 public class ViewSeitePage extends SPage {
-
+    private boolean returnEmpty = false;
+    
     @Override
     protected SeiteSO getSeite() {
         return book.getSeiten()._byId(id);
@@ -25,6 +26,7 @@ public class ViewSeitePage extends SPage {
         }
         if (seite == null) {
             Logger.error("Page not found: " + id);
+            returnEmpty = true;
             ctx.redirect("/message?m=1");
             return;
         }
@@ -207,5 +209,13 @@ public class ViewSeitePage extends SPage {
             map.put("first", i == breadcrumbs.size() - 1);
             map.put("last", i == 0);
         }
+    }
+    
+    @Override
+    protected String render() {
+        if (returnEmpty) {
+            return "";
+        }
+        return super.render();
     }
 }
