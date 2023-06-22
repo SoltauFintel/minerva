@@ -27,13 +27,14 @@ public class EditNotePage extends SPage {
         if (isPOST()) {
             String text = ctx.formParam("text1");
             List<String> persons = AddNotePage.toPersons(ctx);
-
-            note.setText(text);
-            note.getPersons().clear();
-            note.getPersons().addAll(persons);
-            note.setChanged(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-            seite.saveMeta(new CommitMessage(seite, "note #" + note.getNumber() + " modified"));
-            // TODO Nicht speichern wenn sich nix geändert hat.
+            
+            if (!note.getText().equals(text) || !note.getPersons().equals(persons)) {
+                note.setText(text);
+                note.getPersons().clear();
+                note.getPersons().addAll(persons);
+                note.setChanged(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+                seite.saveMeta(new CommitMessage(seite, "note #" + note.getNumber() + " modified"));
+            }
             
             ctx.redirect(viewlink + "/notes");
         } else {
