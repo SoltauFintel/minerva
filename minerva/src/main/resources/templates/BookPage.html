@@ -47,8 +47,8 @@
             <a href="/s/{{branch}}/{{bookFolder}}/root/add"
                 class="btn btn-default br">{{N.newPage}}</a>
             <a href="/w/{{branch}}/pull?book={{bookFolder}}" class="btn btn-default" title="{{N.pullWS}}!"
-                onclick="document.querySelector('#s01').style='';"><i class="fa fa-refresh"></i>
-                <i id="s01" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+                onclick="document.getElementById('s_pull').classList.add('fa-spin');"><i
+                class="fa fa-refresh" id="s_pull"></i></a>
         </p>
         <p style="margin-top: 7em;">
             <a href="{{positionlink}}" class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"><i
