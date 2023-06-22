@@ -135,7 +135,7 @@ public class ViewSeitePage extends SPage {
         put("positionlink", withSeiteId + "/order");
         put("sortlink", withSeiteId + "/sort");
         put("edittagslink", withSeiteId + "/tags");
-        put("movelink", withSeiteId + "/move");
+        put("movelink", withSeiteId + "/move-select-target");
         put("deletelink", withSeiteId + "/delete");
         
         // Edit

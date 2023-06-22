@@ -104,9 +104,9 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/s/:branch/:book/:parentid/add", AddSeiteAction.class);
         form("/s/:branch/:book/:id/order", OrderSeitePage.class);
         get("/s/:branch/:book/:id/sort", SortSeiteAction.class);
-        get("/s/:branch/:book/:id/move", MoveSeitePage.class); // TODO move-select-target
+        get("/s/:branch/:book/:id/move-select-target", MoveSeitePage.class);
         get("/s/:branch/:book/:id/move-ack", MoveSeiteAckPage.class);
-        get("/s/:branch/:book/:id/moved", MoveSeiteAction.class); // TODO move
+        get("/s/:branch/:book/:id/move", MoveSeiteAction.class);
         get("/s/:branch/:book/:id/history", SeiteHistoryPage.class);
         
         // Image
