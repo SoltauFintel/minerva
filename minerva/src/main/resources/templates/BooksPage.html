@@ -10,7 +10,7 @@
                 <p><span title="Commit: {{hash7}}">Branch: {{branch}}</span></p>
             {{/if}}
             <p class="mt2">
-                {{if not isCustomerVersion}}
+                {{if addBookAllowed}}
                     <a href="/b/{{branch}}/add" class="btn btn-primary br"><i class="fa fa-book"></i>
                         {{N.newBook}}</a>
                 {{/if}}

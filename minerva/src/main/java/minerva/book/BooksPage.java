@@ -48,6 +48,7 @@ public class BooksPage extends UPage {
         put("hash", esc(hash));
         put("hash7", esc(hash7));
         put("migrationAllowed", "1".equals(System.getenv("MINERVA_MIGRATION")));
+        put("addBookAllowed", !MinervaWebapp.factory().isCustomerVersion() || books.isEmpty());
         DataList list = list("books");
         if (books != null) {
             for (BookSO book : books) {

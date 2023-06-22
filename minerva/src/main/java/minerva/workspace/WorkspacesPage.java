@@ -15,10 +15,6 @@ public class WorkspacesPage extends UPage {
 
     @Override
     protected void execute() {
-        if (MinervaWebapp.factory().isCustomerVersion()) {
-            throw new RuntimeException("Page in this program version not availabe");
-        }
-
         DataList list = list("workspaces");
         for (WorkspaceSO workspace : user.getWorkspaces()) {
             DataMap map = list.add();
@@ -34,5 +30,12 @@ public class WorkspacesPage extends UPage {
         list2.sort((a,b) -> b.get("lastAction").toString().compareTo(a.get("lastAction").toString()));
         put("persistenceInfo", MinervaWebapp.factory().getPersistenceInfo());
         header("Workspaces");
+
+        if (MinervaWebapp.factory().isCustomerVersion()) {
+            if (user.getCurrentWorkspace() == null) {
+                throw new RuntimeException("Page in this program version not availabe");
+            }
+            ctx.redirect("/b/" + user.getCurrentWorkspace().getBranch());
+        }
     }
 }

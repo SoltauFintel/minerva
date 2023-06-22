@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import github.soltaufintel.amalia.web.action.Escaper;
+import minerva.MinervaWebapp;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.base.FileService;
 import minerva.base.MList;
@@ -37,6 +38,9 @@ public class BooksSO extends MList<BookSO> {
     }
     
     public void createBook(String bookFolder, NlsString title, List<String> langs, int position) {
+        if (!(MinervaWebapp.factory().isGitlab() || isEmpty())) {
+            throw new RuntimeException("It is not allowed to create another book.");
+        }
         if (StringService.isNullOrEmpty(bookFolder)) {
             throw new UserMessage("error.enterFolder", workspace);
         }
