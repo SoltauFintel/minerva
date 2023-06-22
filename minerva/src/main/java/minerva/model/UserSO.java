@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import minerva.MinervaWebapp;
 import minerva.access.DirAccess;
+import minerva.seite.link.LinksModel;
 import minerva.user.User;
 
 public class UserSO {
@@ -12,6 +13,8 @@ public class UserSO {
     private WorkspaceSO currentWorkspace;
     private DirAccess dao;
     private LocalDateTime lastAction;
+    private LinksModel linksModel;
+    private SeitenSO orderPagesModel; // SeitenSO working copy
     
     public UserSO(User user) {
         this.user = user;
@@ -76,5 +79,21 @@ public class UserSO {
 
     public void setLastAction(LocalDateTime lastAction) {
         this.lastAction = lastAction;
+    }
+
+    public LinksModel getLinksModel() {
+        return linksModel;
+    }
+
+    public void setLinksModel(LinksModel linksModel) {
+        this.linksModel = linksModel;
+    }
+
+    public SeitenSO getOrderPagesModel() {
+        return orderPagesModel;
+    }
+
+    public void setOrderPagesModel(SeitenSO orderPagesModel) {
+        this.orderPagesModel = orderPagesModel;
     }
 }

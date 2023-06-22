@@ -1,14 +1,11 @@
 package minerva.seite.link;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.pmw.tinylog.Logger;
 
-import github.soltaufintel.amalia.base.IdGenerator;
 import minerva.git.CommitMessage;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
@@ -16,8 +13,6 @@ import minerva.model.SeiteSO;
 public class LinksModel {
     private static final String x1 = "href=\"";
     private final List<Link> links = new ArrayList<>();
-    private static final Map<String, LinksModel> models = new HashMap<>();
-    private static final String HANDLE = "models";
 
     // TODO esc  (& wird geschluckt)
     
@@ -107,19 +102,5 @@ public class LinksModel {
             html = html.replace(x1 + link.getHref() + "\"", x1 + link.getSeiteId() + "\"");
         }
         return html;
-    }
-
-    public static String init(LinksModel model) {
-        String key = IdGenerator.genId();
-        synchronized (HANDLE) {
-            models.put(key, model);
-        }
-        return key;
-    }
-
-    public static LinksModel get(String key) {
-        synchronized (HANDLE) {
-            return models.get(key);
-        }
     }
 }

@@ -15,18 +15,17 @@ public class LinkResolverPage extends SPage {
 
     @Override
     protected void execute() {
-        String key = ctx.queryParam("key");
         int index = Integer.valueOf(ctx.queryParam("index"));
 
         if (isPOST()) {
-            search(ctx.formParam("search"), key, index);
+            search(ctx.formParam("search"), index);
         } else {
-            showPage(key, index);
+            showPage(index);
         }
     }
 
-    private void showPage(String key, int index) {
-        LinksModel linksModel = LinksModel.get(key);
+    private void showPage(int index) {
+        LinksModel linksModel = user.getLinksModel();
 
         if (linksModel == null || index < 0) {
             throw new RuntimeException("Error while resolving links: unknown key or index");
@@ -51,31 +50,30 @@ public class LinkResolverPage extends SPage {
             link = linksModel.getLinks().get(index);
         }
         String href = link == null ? "" : esc(link.getHref());
-        linkPrefix = "/links/" + branch + "/" + bookFolder + "/" + id + "?key=" + key + "&index=" + (index + 1);
+        linkPrefix = "/links/" + branch + "/" + bookFolder + "/" + id + "?index=" + (index + 1);
         result = new ArrayList<>();
-        search(href, key, index);
+        search(href, index);
 
-        fill(key, index, linksModel, link, href);
+        fill(index, linksModel, link, href);
     }
 
-    private void fill(String key, int index, LinksModel linksModel, Link link, String href) {
+    private void fill(int index, LinksModel linksModel, Link link, String href) {
         put("href", href);
         put("aTitle", link == null ? "" : esc(link.getTitle()));
         putInt("nextIndex", index + 1);
         putInt("index", index);
         putInt("size", linksModel.getLinks().size());
-        put("key", Escaper.urlEncode(key, ""));
         put("result0", makeSearchHTML());
     }
 
-    private void search(String search, String key, int index) {
+    private void search(String search, int index) {
         if (search.trim().length() <= 1) {
             result = new ArrayList<>();
         } else {
             result = book.getSeiten().searchInTitle(search.toLowerCase(), id, langs);
             Logger.info("search: \"" + search + "\", found: " + result.size());
         }
-        linkPrefix = "/links/" + branch + "/" + bookFolder + "/" + id + "?key=" + key + "&index=" + (index + 1);
+        linkPrefix = "/links/" + branch + "/" + bookFolder + "/" + id + "?index=" + (index + 1);
     }
 
     @Override

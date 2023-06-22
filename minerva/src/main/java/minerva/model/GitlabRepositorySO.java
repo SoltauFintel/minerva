@@ -12,7 +12,7 @@ import minerva.base.FileService;
 import minerva.git.CommitMessage;
 import minerva.git.GitService;
 import minerva.git.HCommit;
-import minerva.persistence.gitlab.GitlabAuthCallbackAction;
+import minerva.persistence.gitlab.GitlabAuthService;
 import minerva.persistence.gitlab.GitlabUser;
 
 public class GitlabRepositorySO {
@@ -55,7 +55,7 @@ public class GitlabRepositorySO {
                         //      ebenso behandelt werden!                        
                         // TODO Fehlertext vom e.cause noch genauer untersuchen! Muss wohl irgendwas mit
                         //      "not authenticated" sein.
-                        GitlabAuthCallbackAction.refreshToken(user);
+                        new GitlabAuthService().refreshToken(user);
                         continue;
                     }
                     return;

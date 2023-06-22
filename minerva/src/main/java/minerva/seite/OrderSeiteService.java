@@ -1,15 +1,12 @@
 package minerva.seite;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.pmw.tinylog.Logger;
 
 import com.github.template72.data.DataMap;
 
-import github.soltaufintel.amalia.base.IdGenerator;
 import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.web.action.Escaper;
 import github.soltaufintel.amalia.web.action.Page;
@@ -29,8 +26,6 @@ import minerva.user.UPage;
  * erst im endEvent gespeichert.</p>
  */
 public abstract class OrderSeiteService {
-    private static final Map<String, SeitenSO> map = new HashMap<>(); // needs synchronized access
-    private static final String handle = "map";
     private final Context ctx;
     private final boolean post;
     private final DataMap model;
@@ -57,24 +52,21 @@ public abstract class OrderSeiteService {
     }
 
     public void execute() {
-        String key = ctx.queryParam("key");
-        
         SeitenSO seitenWC; // working copy
         if (post) {
-            seitenWC = movedEvent(key);
+            seitenWC = movedEvent();
         } else if (isEndEvent()) {
-            seitenWC = endEvent(branch, bookFolder, id, key);
-            fill(branch, bookFolder, id, key, hasSeiten);
+            seitenWC = endEvent(branch, bookFolder, id);
+            fill(branch, bookFolder, id, hasSeiten);
         } else { // init
-            key = IdGenerator.genId();
-            seitenWC = startEvent(hasSeiten.getSeiten(), key);
-            fill(branch, bookFolder, id, key, hasSeiten);
+            seitenWC = startEvent(hasSeiten.getSeiten());
+            fill(branch, bookFolder, id, hasSeiten);
         }
 
         ViewSeitePage.fillSubpages(seitenWC, user.getGuiLanguage(), model.list("subpages"), branch, bookFolder);
     }
 
-    private SeitenSO startEvent(SeitenSO seiten, String key) {
+    private SeitenSO startEvent(SeitenSO seiten) {
         SeitenSO seitenWC = createSeitenSO(id); // create working copy
         int position = 1;
         for (SeiteSO sub : seiten) {
@@ -82,35 +74,26 @@ public abstract class OrderSeiteService {
             copy.getSeite().setPosition(position++);
             seitenWC.add(copy);
         }
-        synchronized (handle) {
-            map.put(key, seitenWC);
-        }
-        model.put("key", key);
+        user.setOrderPagesModel(seitenWC);
         return seitenWC;
     }
 
-    private SeitenSO movedEvent(String key) {
-        SeitenSO seitenWC;
+    private SeitenSO movedEvent() {
         List<String> neueReihenfolge = Arrays.asList(ctx.req.queryParamsValues("item"));
-        synchronized (handle) {
-            seitenWC = fetchSeiten(key);
-            seitenWC.order(neueReihenfolge, (seite, id) -> seite.getId().equals(id));
-            int position = 1;
-            for (SeiteSO s : seitenWC) {
-                s.getSeite().setPosition(position++);
-            }
-            map.put(key, seitenWC);
+        SeitenSO seitenWC = fetchSeiten();
+        seitenWC.order(neueReihenfolge, (seite, id) -> seite.getId().equals(id));
+        int position = 1;
+        for (SeiteSO s : seitenWC) {
+            s.getSeite().setPosition(position++);
         }
         return seitenWC;
     }
 
     // whole action completed, save it
-    private SeitenSO endEvent(String branch, String bookFolder, String id, String key) {
-        SeitenSO seitenWC;
-        synchronized (handle) {
-            seitenWC = fetchSeiten(key);
-            saveSubpagesAfterReordering(seitenWC);
-        }
+    private SeitenSO endEvent(String branch, String bookFolder, String id) {
+        SeitenSO seitenWC = fetchSeiten();
+        saveSubpagesAfterReordering(seitenWC);
+        user.setOrderPagesModel(null);
         Logger.info("Subpages have been saved after reordering.");
         
         ctx.redirect(goBackLink);
@@ -123,21 +106,21 @@ public abstract class OrderSeiteService {
         return "end".equals(ctx.queryParam("m"));
     }
 
-    private SeitenSO fetchSeiten(String key) {
-        SeitenSO seitenWC = map.get(key);
+    private SeitenSO fetchSeiten() {
+        SeitenSO seitenWC = user.getOrderPagesModel();
         if (seitenWC == null) {
             throw new RuntimeException("Page reordering is corrupt. Please reload page.");
         }
         return seitenWC;
     }
 
-    private void fill(String branch, String bookFolder, String id, String key, ISeite seite) {
+    private void fill(String branch, String bookFolder, String id, ISeite seite) {
         String title = n("reorderSubpages");
         model.put("header", title);
         model.put("title", title + UPage.TITLE_POSTFIX);
         model.put("pageTitle", Escaper.esc(seite.getTitle()));
-        model.put("orderlink", goBackLink + "/order?key=" + key);
-        model.put("fertiglink", goBackLink + "/order?key=" + key + "&m=end");
+        model.put("orderlink", goBackLink + "/order");
+        model.put("fertiglink", goBackLink + "/order?m=end");
     }
 
     public String render() {

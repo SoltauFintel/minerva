@@ -47,8 +47,8 @@ public class EditSeitePage extends ViewSeitePage {
         LinksModel linksModel = new LinksModel(seiteSO, langs);
         if (linksModel.hasLinks()) {
             // Es müssen noch Links aufgelöst werden.
-            String key = LinksModel.init(linksModel);
-            ctx.redirect("/links/" + branch + "/" + bookFolder + "/" + id + "?key=" + key + "&index=0");
+            user.setLinksModel(linksModel);
+            ctx.redirect("/links/" + branch + "/" + bookFolder + "/" + id + "?index=0");
         } else {
             // Keine Links vorhanden oder Links so in Ordnung.
             ctx.redirect("/s/" + branch + "/" + bookFolder + "/" + id);
