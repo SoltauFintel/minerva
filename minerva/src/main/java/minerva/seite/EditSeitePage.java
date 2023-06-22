@@ -70,6 +70,7 @@ public class EditSeitePage extends ViewSeitePage {
                 throw new RuntimeException("Interrupt while waiting for the save to complete. Page ID: " + id, e);
             }
         } while (System.currentTimeMillis() - start < max);
-        throw new RuntimeException("Timeout while waiting for the save to complete. Page ID: " + id);
+        throw new RuntimeException("Timeout while waiting for the save to complete."
+                + " Please update workspace. Page ID: " + id);
     }
 }
