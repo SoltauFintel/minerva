@@ -24,7 +24,6 @@ public class LinksModel {
         }
     }
 
-    // TODO z.T. ähnlicher Code zu ConfluenceToMinervaMigrationService.extract()
     private List<Link> find(String html, List<BookSO> books) {
         List<Link> links = new ArrayList<>();
         int o = html.indexOf(x1);
