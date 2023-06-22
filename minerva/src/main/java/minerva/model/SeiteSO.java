@@ -290,7 +290,7 @@ public class SeiteSO implements ISeite {
         List<IMoveFile> files = new ArrayList<>();
         changePageTo(newPosition, files);
         movePageToBookTo(targetBook, langs, files);
-        dao().moveFiles(files, new CommitMessage(this, "page moved to book " + targetBookFolder), workspace);
+        dao().moveFiles(files, new CommitMessage(this, "moved to book " + targetBookFolder), workspace);
         
         workspace.pull();
     }
