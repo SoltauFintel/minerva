@@ -1,11 +1,11 @@
 package minerva.seite.link;
 
 public class Link {
-    /** href Attribut des a tags */
+    /** href attribute of the a tag */
     private String href;
-    /** Text zwischen den a tags */
-    private String title;
-    /** neuer href Wert, null wenn Benutzer noch keinen entschieden hat */
+    /** Plain text between the starting and the closing a tag, can be empty */
+    private String title = "";
+    /** new href value (page ID), null if user hasn't decided a value yet */
     private String seiteId;
 
     public String getHref() {
@@ -16,12 +16,19 @@ public class Link {
         this.href = href;
     }
 
+    /**
+     * @return not null, can be empty
+     */
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        if (title == null) {
+            this.title = "";
+        } else {
+            this.title = title;
+        }
     }
 
     public String getSeiteId() {
