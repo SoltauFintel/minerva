@@ -13,15 +13,13 @@
                 <th>{{N.date}}</th>
                 <th>{{N.author}}</th>
                 <th>Commit message</th>
-                <th>Commit ID</th>
             </tr>
             {{each c in commits}}
                 <tr>
                     <td>{{c.date}}</td>
                     <td>{{c.author}}</td>
-                    <td>{{c.message}}</td>
                     <td><a href="{{c.gitlabCommitLink}}"
-                        target="_blank">{{c.hash7}}</a></td>
+                        target="_blank">{{c.message}}</a></td>
                 </tr>
             {{/each}}
         </table>
