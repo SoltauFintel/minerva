@@ -237,6 +237,7 @@ public class ConfluenceToMinervaMigrationService {
             html_en = processHTML(html_en);
         }
         tp.getContent().setString("en", html_en);
+        MinervaWebapp.factory().getPageChangeStrategy().set("Migration", tp);
 
         tp.saveMetaTo(files);
         tp.saveHtmlTo(files, langs);

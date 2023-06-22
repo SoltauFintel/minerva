@@ -1,19 +1,25 @@
 package minerva.config;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import minerva.access.DirAccess;
 import minerva.auth.LoginService;
 import minerva.base.NlsString;
 import minerva.base.StringService;
+import minerva.git.CommitMessage;
 import minerva.model.GitlabRepositorySO;
 import minerva.model.GitlabSystemSO;
+import minerva.model.SeiteSO;
 import minerva.model.UserSO;
 import minerva.persistence.filesystem.FileSystemDirAccess;
 import minerva.persistence.filesystem.FileSystemLoginService;
 import minerva.persistence.gitlab.GitlabDirAccess;
 import minerva.persistence.gitlab.GitlabLoginService;
+import minerva.seite.IPageChangeStrategy;
+import minerva.seite.PageChange;
 
 /**
  * Wenn zwischen FileSystem und Gitlab Persistenz zu unterscheiden ist, liefert
@@ -26,6 +32,7 @@ public class MinervaFactory {
     private final GitlabRepositorySO gitlabRepository;
     private final List<String> languages;
     private final List<String> persons;
+    private final IPageChangeStrategy pageChangeStrategy;
     
     public MinervaFactory(MinervaConfig config) {
         this.config = config;
@@ -46,6 +53,33 @@ public class MinervaFactory {
         }
         System.out.println("languages: " + languages + " | backend: " + getPersistenceInfo() + folder);
         persons = config.getPersons();
+        
+        // denkbar wären: A. alle speichern
+        //   B. nur 1 speichern
+        //   C. alle speichern, aber nur letzten anzeigen
+        //   D. Git Historie
+        pageChangeStrategy = new IPageChangeStrategy() { // strategy B
+            @Override
+            public void set(String comment, SeiteSO seite) {
+                PageChange change = new PageChange();
+                change.setComment(comment);
+                change.setUser(seite.getLogin());
+                change.setDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+                List<PageChange> changes = seite.getSeite().getChanges();
+                changes.clear();
+                changes.add(change);
+            }
+            
+            @Override
+            public CommitMessage getCommitMessage(String comment, SeiteSO seite) {
+                return new CommitMessage(seite, comment);
+            }
+            
+            @Override
+            public List<PageChange> getChanges(SeiteSO seite) {
+                return seite.getSeite().getChanges();
+            }
+        };
     }
 
     public MinervaConfig getConfig() {
@@ -97,5 +131,9 @@ public class MinervaFactory {
     
     public List<String> getPersons() {
         return persons;
+    }
+
+    public IPageChangeStrategy getPageChangeStrategy() {
+        return pageChangeStrategy;
     }
 }

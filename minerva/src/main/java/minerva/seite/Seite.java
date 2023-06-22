@@ -21,7 +21,7 @@ public class Seite {
     private int version = 1;
     private List<Note> notes = new ArrayList<>();
     private int nextNoteNumber = 1;
-    // TO-DO letzte Änderung (Name, Timestamp, Grund)
+    private final List<PageChange> changes = new ArrayList<>();
 
     public Seite() {
     }
@@ -102,5 +102,9 @@ public class Seite {
 
     public void setNextNoteNumber(int nextNoteNumber) {
         this.nextNoteNumber = nextNoteNumber;
+    }
+
+    public List<PageChange> getChanges() {
+        return changes;
     }
 }

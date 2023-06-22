@@ -61,6 +61,19 @@ public class ViewSeitePage extends SPage {
         int n = seiteSO.notes().getNotesSize();
         putInt("notesSize", n);
         put("hasNotes", n > 0);
+        List<PageChange> changes = seiteSO.getSeite().getChanges();
+        put("hasLastChange", !changes.isEmpty());
+        if (!changes.isEmpty()) {
+            PageChange change = changes.get(changes.size() - 1);
+            String lastChangeInfo = n("lastChangeInfo")
+                .replace("$d", change.getDate())
+                .replace("$u", change.getUser())
+                .replace("$c", change.getComment());
+            put("lastChangeInfo", esc(lastChangeInfo));
+            put("lastChange", esc(change.getComment()));
+            put("lastChangeDate", esc(change.getDate()));
+            put("lastChangeUser", esc(change.getUser()));
+        }
         header(modifyHeader(seiteSO.getTitle()));
 
         fillLinks(branch, bookFolder, id, seiteSO, seite);

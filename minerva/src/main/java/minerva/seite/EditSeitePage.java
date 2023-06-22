@@ -30,6 +30,12 @@ public class EditSeitePage extends ViewSeitePage {
     private void save(String branch, String bookFolder, String id, SeiteSO seiteSO) {
         long start = System.currentTimeMillis();
         int version = Integer.parseInt(ctx.formParam("version"));
+        String comment = ctx.formParam("comment");
+        if (comment == null) {
+            comment = "";
+        } else {
+            comment = comment.trim();
+        }
         NlsString title = new NlsString();
         for (String lang : langs) {
             String LANG = lang.toUpperCase();
@@ -38,7 +44,7 @@ public class EditSeitePage extends ViewSeitePage {
         
         PostContentsData data = waitForContent(branch, bookFolder, id, version);
         
-        seiteSO.saveAll(title, data.getContent(), version, langs);
+        seiteSO.saveAll(title, data.getContent(), version, comment, langs);
         data.setDone(true);
         
         Logger.info(user.getUser().getLogin() + " | " + branch + " | " + title.getString(langs.get(0)) + " -> Page #"

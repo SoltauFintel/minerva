@@ -122,3 +122,5 @@ date=Date
 newTag=New tag
 historyFor=Git history for file
 editTags=Edit tags
+whatChanged=What did you change?
+lastChangeInfo=last change from $d by $u: $c

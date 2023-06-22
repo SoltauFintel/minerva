@@ -27,6 +27,7 @@ import minerva.base.UserMessage;
 import minerva.git.CommitMessage;
 import minerva.seite.ChangeFile;
 import minerva.seite.IMoveFile;
+import minerva.seite.IPageChangeStrategy;
 import minerva.seite.MoveFile;
 import minerva.seite.Seite;
 
@@ -316,7 +317,7 @@ public class SeiteSO implements ISeite {
         }
     }
 
-    public void saveAll(NlsString newTitle, NlsString newContent, int version, List<String> langs) {
+    public void saveAll(NlsString newTitle, NlsString newContent, int version, String comment, List<String> langs) {
         if (getSeite().getVersion() != version) {
             throw new UserMessage("error.simultaneousEditing", book.getWorkspace());
         }
@@ -333,13 +334,16 @@ public class SeiteSO implements ISeite {
             seite.getTitle().setString(lang, newTitle.getString(lang));
             content.setString(lang, newContent.getString(lang));
         }
+        IPageChangeStrategy strat = MinervaWebapp.factory().getPageChangeStrategy();
+        strat.set(comment, this);
+        CommitMessage commitMessage = strat.getCommitMessage(comment, this);
         
         Map<String, String> files = new HashMap<>();
         saveMetaTo(files);
         saveHtmlTo(files, langs);
         images.forEach(filename -> files.put(filenameImage(filename), IMAGE));
         
-        dao().saveFiles(files, new CommitMessage(this, ""), book.getWorkspace());
+        dao().saveFiles(files, commitMessage, book.getWorkspace());
         
         images.clear();
 
