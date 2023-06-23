@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import github.soltaufintel.amalia.web.config.AppConfig;
 import minerva.MinervaWebapp;
 import minerva.git.HCommit;
 import minerva.model.GitlabRepositorySO;
@@ -21,7 +22,8 @@ public class SeiteHistoryPage extends SPage {
         }
 
         GitlabRepositorySO repo = MinervaWebapp.factory().getGitlabRepository();
-        String url = repo.getProjectUrl() + "/-/commit/"; // http://host:port/user/repo/-/commit/
+        AppConfig cfg = new AppConfig();
+        String url = repo.getProjectUrl() + cfg.get("gitlab.commit-path", "/commit/"); // http://host:port/user/repo/-/commit/
         List<HCommit> commits = repo.getSeiteMetaHistory(seite);
         Set<String> authors = new TreeSet<>();
 

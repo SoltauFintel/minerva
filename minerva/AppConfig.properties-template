@@ -7,6 +7,8 @@ workspaces=C:/somewhere-outside-eclipse/minerva-workspaces
 
 gitlab.url=http://gitlab-host:port
 gitlab.project=
+# /commit/ (default) or in newer Gitlab version /-/commit/
+gitlab.commit-path=/commit/
 gitlab-auth-callback=http://minerva-host:port/gitlab-auth-callback
 gitlab-appid=
 gitlab-secret=
