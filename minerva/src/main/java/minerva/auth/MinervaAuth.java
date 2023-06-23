@@ -7,7 +7,6 @@ import github.soltaufintel.amalia.auth.IAuthService;
 import github.soltaufintel.amalia.auth.rememberme.NoOpRememberMe;
 import github.soltaufintel.amalia.auth.webcontext.WebContext;
 import github.soltaufintel.amalia.spark.Context;
-import github.soltaufintel.amalia.web.config.AppConfig;
 import minerva.model.StateSO;
 import minerva.model.StatesSO;
 import minerva.model.UserSO;
@@ -16,7 +15,6 @@ public class MinervaAuth extends AbstractAuth {
     
     public MinervaAuth() {
         super(new NoOpRememberMe(), new MinervaAuthRoutes());
-        WebContext.setCookieName(new AppConfig());
     }
     
     @Override

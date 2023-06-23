@@ -154,8 +154,8 @@ public class MinervaWebapp extends RouteDefinitions {
             .withTemplatesFolders(MinervaWebapp.class, "/templates")
             .withPageInitializer(new MinervaPageInitializer())
             .withErrorPage(MinervaErrorPage.class, MinervaError404Page.class)
-            .withAuth(new MinervaAuth())
             .withInitializer(config -> factory = new MinervaFactory(new MinervaConfig(config)))
+            .withAuth(new MinervaAuth())
             .withRoutes(new MinervaWebapp())
             .build();
         webapp.boot();

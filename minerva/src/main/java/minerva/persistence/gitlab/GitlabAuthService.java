@@ -8,19 +8,19 @@ import org.pmw.tinylog.Logger;
 import github.soltaufintel.amalia.base.IdGenerator;
 import github.soltaufintel.amalia.rest.REST;
 import github.soltaufintel.amalia.web.action.Escaper;
-import github.soltaufintel.amalia.web.config.AppConfig;
+import minerva.MinervaWebapp;
 import minerva.base.Tosmap;
+import minerva.config.MinervaConfig;
 import minerva.model.GitFactory;
 
 public class GitlabAuthService {
     private static final String STATE_PREFIX = "minerva-state-";
-    private final AppConfig cfg = new AppConfig();
     
     public String getAuthUrl() {
-        String appId = u(cfg.get("gitlab.appid"));
+        String appId = u(cfg().getGitlabAppId());
         String state = createState();
-        String callback = u(cfg.get("gitlab.auth-callback"));
-        String url = cfg.get("gitlab.url") + "/oauth/authorize?scope=api&client_id=" + appId
+        String callback = u(cfg().getGitlabAuthCallback());
+        String url = cfg().getGitlabUrl() + "/oauth/authorize?scope=api&client_id=" + appId
                 + "&redirect_uri=" + callback + "&response_type=code&state=" + state;
         return url;
     }
@@ -37,7 +37,7 @@ public class GitlabAuthService {
             return false;
         } else if (isStateValid(state)) {
             String param = getParam() + "&code=" + u(code) + "&grant_type=authorization_code";
-            Answer answer = new REST(cfg.get("gitlab.url") + "/oauth/token").post(param).fromJson(Answer.class);
+            Answer answer = new REST(cfg().getGitlabUrl() + "/oauth/token").post(param).fromJson(Answer.class);
 
             try (GitLabApi gitLabApi = GitFactory.initWithAccessToken(answer.getAccess_token())) {
                 initUser(gitLabApi, loginAction, answer);
@@ -78,7 +78,7 @@ public class GitlabAuthService {
 
     public void refreshToken(GitlabUser user) {
         String param = getParam() + "&grant_type=refresh_token&refresh_token=" + u(user.getRefreshToken());
-        Answer answer = new REST(cfg.get("gitlab.url") + "/oauth/token").post(param).fromJson(Answer.class);
+        Answer answer = new REST(cfg().getGitlabUrl() + "/oauth/token").post(param).fromJson(Answer.class);
         
         user.setAccessToken(answer.getAccess_token());
         user.setRefreshToken(answer.getRefresh_token());
@@ -87,9 +87,13 @@ public class GitlabAuthService {
     }
     
     private String getParam() {
-        return "client_id=" + u(cfg.get("gitlab.appid")) + //
-                "&client_secret=" + u(cfg.get("gitlab.secret")) + //
-                "&redirect_uri=" + u(cfg.get("gitlab.auth-callback"));
+        return "client_id=" + u(cfg().getGitlabAppId()) + //
+                "&client_secret=" + u(cfg().getGitlabSecret()) + //
+                "&redirect_uri=" + u(cfg().getGitlabAuthCallback());
+    }
+    
+    private MinervaConfig cfg() {
+        return MinervaWebapp.factory().getConfig();
     }
     
     private String u(String k) {

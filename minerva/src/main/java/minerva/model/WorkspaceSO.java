@@ -6,9 +6,10 @@ import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
-import github.soltaufintel.amalia.web.config.AppConfig;
 import minerva.MinervaWebapp;
 import minerva.access.DirAccess;
+import minerva.config.MinervaConfig;
+import minerva.config.MinervaFactory;
 import minerva.seite.tag.TagNList;
 
 public class WorkspaceSO {
@@ -99,9 +100,9 @@ public class WorkspaceSO {
     }
     
     public SearchSO getSearch() {
-        AppConfig config = new AppConfig();
-        return new SearchSO(config.get("search.url"), config.get("search.site-prefix", "minerva-"),
-                this, MinervaWebapp.factory().getLanguages());
+        MinervaFactory fac = MinervaWebapp.factory();
+        MinervaConfig cfg = fac.getConfig();
+        return new SearchSO(cfg.getSearchUrl(), cfg.getSearchSitePrefix(), this, fac.getLanguages());
     }
     
     public ExclusionsSO getExclusions() {

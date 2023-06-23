@@ -5,15 +5,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import github.soltaufintel.amalia.auth.webcontext.WebContext;
 import github.soltaufintel.amalia.web.config.AppConfig;
 import minerva.base.StringService;
 
 public class MinervaConfig {
-    // TODO Alle AppConfig Zugriffe hier in diese Klasse zentralisieren.
     private final AppConfig config;
 
     public MinervaConfig(AppConfig config) {
         this.config = config;
+        WebContext.setCookieName(this.config);
     }
     
     public List<String> getLanguages() {
@@ -97,5 +98,29 @@ public class MinervaConfig {
             Collections.sort(ret);
         }
         return ret;
+    }
+    
+    public String getGitlabAppId() {
+        return config.get("gitlab.appid");
+    }
+    
+    public String getGitlabSecret() {
+        return config.get("gitlab.secret");
+    }
+    
+    public String getGitlabAuthCallback() {
+        return config.get("gitlab.auth-callback");
+    }
+
+    public String getGitlabCommitPath() {
+        return config.get("gitlab.commit-path", "/commit/");
+    }
+    
+    public String getSearchUrl() {
+        return config.get("search.url");
+    }
+    
+    public String getSearchSitePrefix() {
+        return config.get("search.site-prefix", "minerva-");
     }
 }

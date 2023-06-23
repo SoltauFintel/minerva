@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import org.gitlab4j.api.GitLabApi;
 import org.gitlab4j.api.GitLabApiException;
 
-import github.soltaufintel.amalia.web.config.AppConfig;
+import minerva.MinervaWebapp;
 import minerva.model.GitFactory;
 
 public class GitlabService {
@@ -14,11 +14,7 @@ public class GitlabService {
     private final GitlabUser user;
     
     public GitlabService(GitlabUser user) {
-        this(new AppConfig(), user);
-    }
-    
-    public GitlabService(AppConfig config, GitlabUser user) {
-        this.project = config.get("gitlab.project");
+        this.project = MinervaWebapp.factory().getConfig().getGitlabProject();
         this.user = user;
     }
     

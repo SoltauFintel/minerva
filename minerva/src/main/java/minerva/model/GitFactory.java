@@ -8,7 +8,8 @@ import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.rest.REST;
 import github.soltaufintel.amalia.web.action.Escaper;
-import github.soltaufintel.amalia.web.config.AppConfig;
+import minerva.MinervaWebapp;
+import minerva.config.MinervaConfig;
 import minerva.persistence.gitlab.GitlabUser;
 import minerva.user.User;
 
@@ -28,7 +29,7 @@ public class GitFactory {
      * @throws GitLabApiException
      */
     public static GitLabApi getGitLabApi(GitlabUser user) throws GitLabApiException {
-        String gitlabUrl = new AppConfig().get("gitlab.url");
+        String gitlabUrl = MinervaWebapp.factory().getConfig().getGitlabUrl();
         if (user.getAccessToken() == null) {
             Logger.debug("GitLabApi via login+password");
             return GitLabApi.oauth2Login(gitlabUrl, user.getLogin(), user.getPassword());
@@ -44,10 +45,10 @@ public class GitFactory {
             if (user.getAccessToken() == null) {
                 return false;
             }
-            AppConfig cfg = new AppConfig();
-            String gitlabUrl = cfg.get("gitlab.url");
-            String appId = cfg.get("gitlab.appid");
-            String secret = cfg.get("gitlab.secret");
+            MinervaConfig cfg = MinervaWebapp.factory().getConfig();
+            String gitlabUrl = cfg.getGitlabUrl();
+            String appId = cfg.getGitlabAppId();
+            String secret = cfg.getGitlabSecret();
             String params = "client_id=" + u(appId) //
                     + "&client_secret=" + u(secret) //
                     + "&token=" + u(user.getAccessToken());
@@ -73,7 +74,7 @@ public class GitFactory {
      * @return GitLabApi
      */
     public static GitLabApi initWithAccessToken(String accessToken) {
-        String gitlabUrl = new AppConfig().get("gitlab.url");
+        String gitlabUrl = MinervaWebapp.factory().getConfig().getGitlabUrl();
         Logger.debug("GitLabApi via access token");
         return new GitLabApi(gitlabUrl, TokenType.OAUTH2_ACCESS, accessToken);
     }
