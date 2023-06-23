@@ -46,8 +46,8 @@ public class GitFactory {
             }
             AppConfig cfg = new AppConfig();
             String gitlabUrl = cfg.get("gitlab.url");
-            String appId = cfg.get("gitlab-appid");
-            String secret = cfg.get("gitlab-secret");
+            String appId = cfg.get("gitlab.appid");
+            String secret = cfg.get("gitlab.secret");
             String params = "client_id=" + u(appId) //
                     + "&client_secret=" + u(secret) //
                     + "&token=" + u(user.getAccessToken());

@@ -9,6 +9,7 @@ import github.soltaufintel.amalia.web.config.AppConfig;
 import minerva.base.StringService;
 
 public class MinervaConfig {
+    // TODO Alle AppConfig Zugriffe hier in diese Klasse zentralisieren.
     private final AppConfig config;
 
     public MinervaConfig(AppConfig config) {

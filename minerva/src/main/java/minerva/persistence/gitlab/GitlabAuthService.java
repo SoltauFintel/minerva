@@ -17,9 +17,9 @@ public class GitlabAuthService {
     private final AppConfig cfg = new AppConfig();
     
     public String getAuthUrl() {
-        String appId = u(cfg.get("gitlab-appid"));
+        String appId = u(cfg.get("gitlab.appid"));
         String state = createState();
-        String callback = u(cfg.get("gitlab-auth-callback"));
+        String callback = u(cfg.get("gitlab.auth-callback"));
         String url = cfg.get("gitlab.url") + "/oauth/authorize?scope=api&client_id=" + appId
                 + "&redirect_uri=" + callback + "&response_type=code&state=" + state;
         return url;
@@ -87,9 +87,9 @@ public class GitlabAuthService {
     }
     
     private String getParam() {
-        return "client_id=" + u(cfg.get("gitlab-appid")) + //
-                "&client_secret=" + u(cfg.get("gitlab-secret")) + //
-                "&redirect_uri=" + u(cfg.get("gitlab-auth-callback"));
+        return "client_id=" + u(cfg.get("gitlab.appid")) + //
+                "&client_secret=" + u(cfg.get("gitlab.secret")) + //
+                "&redirect_uri=" + u(cfg.get("gitlab.auth-callback"));
     }
     
     private String u(String k) {

@@ -6,14 +6,14 @@ backend=gitlab
 workspaces=C:/somewhere-outside-eclipse/minerva-workspaces
 
 gitlab.url=http://gitlab-host:port
-gitlab.project=
+gitlab.project=user/project
 # /commit/ (default) or in newer Gitlab version /-/commit/
 gitlab.commit-path=/commit/
-gitlab-auth-callback=http://minerva-host:port/gitlab-auth-callback
-gitlab-appid=
-gitlab-secret=
+gitlab.auth-callback=http://minerva-host:port/gitlab-auth-callback
+gitlab.appid=hex-string
+gitlab.secret=hex-string
 
-search.url=
-search.site.prefix=minerva-
+search.url=http://server:port
+search.site-prefix=minerva-
 
-persons=
+persons=user1,user2

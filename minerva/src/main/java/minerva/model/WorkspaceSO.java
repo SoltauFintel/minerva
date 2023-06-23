@@ -100,7 +100,7 @@ public class WorkspaceSO {
     
     public SearchSO getSearch() {
         AppConfig config = new AppConfig();
-        return new SearchSO(config.get("search.url"), config.get("search.site.prefix", "minerva-"),
+        return new SearchSO(config.get("search.url"), config.get("search.site-prefix", "minerva-"),
                 this, MinervaWebapp.factory().getLanguages());
     }
     
