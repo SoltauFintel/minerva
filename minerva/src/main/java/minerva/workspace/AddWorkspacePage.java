@@ -8,7 +8,8 @@ import minerva.MinervaWebapp;
 import minerva.user.UPage;
 
 public class AddWorkspacePage extends UPage {
-
+    private boolean render = false;
+    
     @Override
     protected void execute() {
         if (!MinervaWebapp.factory().isGitlab()) {
@@ -33,12 +34,13 @@ public class AddWorkspacePage extends UPage {
                 TemplatesInitializer.fp.setContent(gen
                         .combobox("branch", "Branch", 4, "branches", true)
                         .getHTML("/create-workspace", "/"));
+                render = true;
             }
         }
     }
     
     @Override
-    protected String getPage() {
-        return "formular/" + super.getPage();
+    protected String render() {
+        return render ? templates.render("formular/" + super.getPage(), model) : "";
     }
 }
