@@ -35,6 +35,7 @@ import minerva.preview.PreviewPage;
 import minerva.search.IndexWorkspaceAction;
 import minerva.search.SearchPage;
 import minerva.seite.AddSeiteAction;
+import minerva.seite.AllHelpKeysPage;
 import minerva.seite.DeleteSeitePage;
 import minerva.seite.EditSeitePage;
 import minerva.seite.HelpKeysPage;
@@ -80,6 +81,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/w/:branch/exclusions/edit", ExclusionsEditPage.class);
         get("/w/:branch/my-tasks", MyTasksPage.class);
         form("/create-workspace", AddWorkspacePage.class);
+        get("/w/:branch/help-keys", AllHelpKeysPage.class);
         
         // Book
         get("/b/:branch", BooksPage.class);

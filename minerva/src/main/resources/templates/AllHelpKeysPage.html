@@ -1,0 +1,20 @@
+{{master: master}}
+
+<style>
+.h {
+    font-family: 'Courier New';
+    font-size: 10pt;
+}
+</style>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">{{header}}</h1>
+    </div>      
+    <div class="col-lg-12">
+        {{each hk in helpKeys}}
+            <a href="{{hk.link}}" class="h" title="{{hk.pageTitle}}">{{hk.helpKey}}</a><br/>
+        {{/each}}
+        <p class="mt2">{{N.anzahl}}: {{n}}</p>
+    </div>
+</div>

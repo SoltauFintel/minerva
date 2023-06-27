@@ -128,3 +128,4 @@ lastChangeInfoForBook=letzte Änderung von Seite "$p" am $d durch $u: $c
 pageLinkToThisPage=Diese Seite verlinkt auf die zu löschende Seite. Es wird empfohlen erst die Links zu korrigieren, damit keine Broken Links entstehen.
 pagesLinkToThisPage=Diese Seiten verlinken auf die zu löschende Seite. Es wird empfohlen erst die Links zu korrigieren, damit keine Broken Links entstehen.
 helpKeys=Hilfe-Keys
+allHelpKeys=Alle Hilfe-Keys

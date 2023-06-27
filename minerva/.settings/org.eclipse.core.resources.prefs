@@ -3,6 +3,7 @@ encoding//gradle/docker.gradle=UTF-8
 encoding//src/main/resources/de.rb=UTF-8
 encoding//src/main/resources/en.rb=UTF-8
 encoding//src/main/resources/templates/AddNotePage.html=UTF-8
+encoding//src/main/resources/templates/AllHelpKeysPage.html=UTF-8
 encoding//src/main/resources/templates/AllNotesPage.html=UTF-8
 encoding//src/main/resources/templates/BookPage.html=UTF-8
 encoding//src/main/resources/templates/DeleteBookPage.html=UTF-8

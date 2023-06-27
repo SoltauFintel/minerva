@@ -57,16 +57,11 @@
                     class="fa fa-cloud"></i> {{N.tagCloud}}</a>
             {{/if}}
             {{if gitlab}}
-                <a href="/w/{{branch}}/exclusions/edit" class="btn btn-default brr">{{N.exclusions}}</a>
-                <a href="/w/{{branch}}/pull" class="btn btn-default brr" title="pull"
-                    onclick="document.querySelector('#s1').style='';"><i class="fa fa-refresh"></i>
-                    {{N.pullWS}}! <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
-                <a href="/w/{{branch}}/pull?force=1" class="btn btn-default brr" title="force clone"
-                    onclick="document.querySelector('#s2').style='';"><i class="fa fa-refresh" style="color: #900;"></i>
-                    {{N.cloneWS}}! <i id="s2" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
-                <a href="/w/{{branch}}/delete" class="btn btn-danger brr"><i
-                    class="fa fa-trash-o"></i> {{N.deleteWS}}...</a>
+                <a href="/w/{{branch}}/exclusions/edit" class="btn btn-default brr"><i class="fa fa-bank"></i>
+                    {{N.exclusions}}</a>
             {{/if}}
+            <a href="/w/{{branch}}/help-keys" class="btn btn-default brr"><i class="fa fa-question-circle"></i>
+                {{N.allHelpKeys}}</a>
             {{if booksOk}}
                 <a href="/b/{{branch}}/index" class="btn btn-default brr"
                     onclick="document.querySelector('#s3').style='';">{{N.reindex}}!
@@ -75,6 +70,18 @@
                     <a href="/migration/{{branch}}" class="btn btn-danger brr"><i class="fa fa-cloud-download"></i>
                         Confluence Import...</a>
                 {{/if}}
+            {{/if}}
+        </p>
+        <p>
+            {{if gitlab}}
+                <a href="/w/{{branch}}/pull" class="btn btn-default brr" title="pull"
+                    onclick="document.querySelector('#s1').style='';"><i class="fa fa-refresh"></i>
+                    {{N.pullWS}}! <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+                <a href="/w/{{branch}}/pull?force=1" class="btn btn-default brr" title="force clone"
+                    onclick="document.querySelector('#s2').style='';"><i class="fa fa-refresh" style="color: #900;"></i>
+                    {{N.cloneWS}}! <i id="s2" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+                <a href="/w/{{branch}}/delete" class="btn btn-danger brr"><i
+                    class="fa fa-trash-o"></i> {{N.deleteWS}}...</a>
             {{/if}}
         </p>
     </div>
