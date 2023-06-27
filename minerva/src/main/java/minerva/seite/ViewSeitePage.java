@@ -69,6 +69,9 @@ public class ViewSeitePage extends SPage {
             fillLastChange(change, seiteSO.getTitle(), n("lastChangeInfo"), model);
         }
         putInt("helpKeysSize", seite.getHelpKeys().size());
+        String oneHelpKey = getOneHelpKey(seite.getHelpKeys());
+        put("oneHelpKey", esc(oneHelpKey));
+        put("hasOneHelpKey", !oneHelpKey.isEmpty());
         header(modifyHeader(seiteSO.getTitle()));
 
         fillLinks(branch, bookFolder, id, seiteSO, seite);
@@ -218,5 +221,15 @@ public class ViewSeitePage extends SPage {
             return "";
         }
         return super.render();
+    }
+    
+    private String getOneHelpKey(List<String> helpKeys) {
+        if (helpKeys.size() == 1) {
+            String ret = helpKeys.get(0).trim();
+            if (!ret.isEmpty() && ret.length() <= 40) {
+                return ret;
+            }
+        }
+        return "";
     }
 }

@@ -21,8 +21,12 @@ public class OldHelpKeysReader {
     }
     
     public void readMappings(File mappingsDir) throws Exception {
+        if (!mappingsDir.isDirectory()) {
+            throw new RuntimeException("Mappings folder does not exist: " + mappingsDir.getAbsolutePath());
+        }
         File[] files = mappingsDir.listFiles();
         if (files == null) {
+            Logger.error("mappings files is null");
             return;
         }
         for (File file : files) {

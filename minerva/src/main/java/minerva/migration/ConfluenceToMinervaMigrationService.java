@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -433,13 +434,22 @@ public class ConfluenceToMinervaMigrationService {
         }
     }
 
-    private void migrateHelpKeys(ConfluencePage sp, ConfluencePage en, SeiteSO tp) {
-        tp.getSeite().getHelpKeys().clear();
-        addHelpKeys(helpKeysCollection.getHelpKeys(sp.getId()), tp.getSeite().getHelpKeys());
-        addHelpKeys(helpKeysCollection.getHelpKeys(en.getId()), tp.getSeite().getHelpKeys());
+    private void migrateHelpKeys(ConfluencePage de, ConfluencePage en, SeiteSO tp) {
+        List<String> helpKeys = tp.getSeite().getHelpKeys();
+        helpKeys.clear();
+        if (de != null) {
+            addHelpKeys(helpKeysCollection.getHelpKeys(de.getId()), helpKeys);
+        }
+        if (en != null) {
+            addHelpKeys(helpKeysCollection.getHelpKeys(en.getId()), helpKeys);
+        }
+        Collections.sort(helpKeys);
     }
 
     private void addHelpKeys(List<String> source, List<String> target) {
+        if (source == null) {
+            return;
+        }
         for (String helpKey : source) {
             if (!target.contains(helpKey)) {
                 target.add(helpKey);

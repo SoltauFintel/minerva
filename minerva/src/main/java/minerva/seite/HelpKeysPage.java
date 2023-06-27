@@ -1,5 +1,6 @@
 package minerva.seite;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +29,7 @@ public class HelpKeysPage extends SPage {
                 helpKeys.add(helpKey);
             }
         }
+        Collections.sort(helpKeys);
         seite.saveMeta(new CommitMessage(seite, "help keys"));
     }
 }
