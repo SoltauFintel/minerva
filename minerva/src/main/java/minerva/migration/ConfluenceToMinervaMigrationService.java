@@ -32,6 +32,7 @@ import minerva.seite.Seite;
  */
 public class ConfluenceToMinervaMigrationService {
     private final File sourceFolder;
+    private final File helpKeysFolder;
     private final WorkspaceSO workspace;
     private final List<String> langs;
     private ConfluencePage root_de;
@@ -42,9 +43,12 @@ public class ConfluenceToMinervaMigrationService {
     /** key: English page ID, value: German page ID */
     private Map<String, String> enDeMap;
     private List<EnglishSoloPage> englishSoloPages;
+    private OldHelpKeysReader helpKeysCollection;
 
-    public ConfluenceToMinervaMigrationService(File sourceFolder, WorkspaceSO workspace, List<String> langs) {
+    public ConfluenceToMinervaMigrationService(File sourceFolder, File helpKeysFolder,
+            WorkspaceSO workspace, List<String> langs) {
         this.sourceFolder = sourceFolder;
+        this.helpKeysFolder = helpKeysFolder;
         this.workspace = workspace;
         this.langs = langs;
     }
@@ -57,8 +61,12 @@ public class ConfluenceToMinervaMigrationService {
         deleteWorkspace();
         workspace.pull(); // nochmal, um Objektstruktur neu aufzubauen
         Logger.info("Migration init phase completed");
+        
+        // Schritt 2: Hilfe-Keys laden
+        helpKeysCollection = new OldHelpKeysReader();
+        helpKeysCollection.readMappings(helpKeysFolder);
 
-        // Schritt 2: Confluence Daten laden
+        // Schritt 3: Confluence Daten laden
         File csvFile = new File(sourceFolder, "html/mapping-tabelle-csv.csv");
         deEnMap = readMappings(csvFile);
         enDeMap = new HashMap<>();
@@ -70,7 +78,7 @@ public class ConfluenceToMinervaMigrationService {
         htmlSourceFolder = new File(sourceFolder, "html");
         readHtmlFiles(htmlSourceFolder);
 
-        // Schritt 3: Inhalte übertragen
+        // Schritt 4: Inhalte übertragen
         Logger.info("Migration main part starts");
         int position = 1;
         for (ConfluencePage sp : root_de.getSubpages()) {
@@ -141,43 +149,14 @@ public class ConfluenceToMinervaMigrationService {
         workspace.getBooks().createBook(folder, titles, langs, position);
         BookSO book = workspace.getBooks().byFolder(folder);
 
-        // migrate first page ----
-        /*SeiteSO seite1 = book.getSeiten().createSeite(book.getISeite(), book, sp.getId());
-        migratePage(sp, seite1, files);*/
+        // migrate pages ----
         for (ConfluencePage sub : sp.getSubpages()) {
             SeiteSO subTp = book.getSeiten().createSeite(book.getISeite(), book, sub.getId());
             migratePage(sub, subTp, files);
         }
         
         // migrate solo English pages ----
-        if ("Benutzerhandbuch".equals(sp.getTitle())) {
-            Logger.info("Migrating " + englishSoloPages.size() + " solo English pages...");
-            final SeiteSO parent = book.getSeiten().createSeite(book.getISeite(), book, IdGenerator.createId6());
-            parent.getSeite().getTitle().setString("de", "//English solo pages");
-            parent.getSeite().getTitle().setString("en", "English solo pages");
-            parent.getSeite().getTags().add("nicht_drucken");
-            parent.getSeite().getTags().add("english-solo-pages");
-            parent.saveMetaTo(files);
-            for (EnglishSoloPage englishSoloPage : englishSoloPages) {
-                ConfluencePage page = findPage(root_en, englishSoloPage.getId());
-                if (page == null) {
-                    Logger.error("English solo page not found: " + englishSoloPage.getId());
-                } else {
-                    SeiteSO theParent = parent;
-                    if (!englishSoloPage.getParentId().isEmpty()) {
-                        final SeiteSO parent2 = book.getSeiten()._byId(englishSoloPage.getParentId());
-                        if (parent2 != null) {
-                            theParent = parent2;
-                        } else {
-                            Logger.error("Parent page " + englishSoloPage.getParentId()
-                                    + " not found for English solo page " + englishSoloPage.getId());
-                        }
-                    }
-                    SeiteSO subTp = theParent.getSeiten().createSeite(theParent, theParent.getBook(), englishSoloPage.getId());
-                    migrateEnglishPage(page, subTp, files);
-                }
-            }
-        }
+        migrateEnglishSoloPages(sp, files, book);
 
         // commit and push everything ----
         Logger.info("saving " + files.size() + " files for book \"" + sp.getTitle() + "\"...");
@@ -237,6 +216,7 @@ public class ConfluenceToMinervaMigrationService {
             html_en = processHTML(html_en);
         }
         tp.getContent().setString("en", html_en);
+        migrateHelpKeys(sp, en, tp);
         MinervaWebapp.factory().getPageChangeStrategy().set("Migration", tp);
 
         tp.saveMetaTo(files);
@@ -420,5 +400,50 @@ public class ConfluenceToMinervaMigrationService {
             }
         }
         return ret;
+    }
+
+    private void migrateEnglishSoloPages(ConfluencePage sp, Map<String, String> files, BookSO book) {
+        if ("Benutzerhandbuch".equals(sp.getTitle())) {
+            Logger.info("Migrating " + englishSoloPages.size() + " solo English pages...");
+            final SeiteSO parent = book.getSeiten().createSeite(book.getISeite(), book, IdGenerator.createId6());
+            parent.getSeite().getTitle().setString("de", "//English solo pages");
+            parent.getSeite().getTitle().setString("en", "English solo pages");
+            parent.getSeite().getTags().add("nicht_drucken");
+            parent.getSeite().getTags().add("english-solo-pages");
+            parent.saveMetaTo(files);
+            for (EnglishSoloPage englishSoloPage : englishSoloPages) {
+                ConfluencePage page = findPage(root_en, englishSoloPage.getId());
+                if (page == null) {
+                    Logger.error("English solo page not found: " + englishSoloPage.getId());
+                } else {
+                    SeiteSO theParent = parent;
+                    if (!englishSoloPage.getParentId().isEmpty()) {
+                        final SeiteSO parent2 = book.getSeiten()._byId(englishSoloPage.getParentId());
+                        if (parent2 != null) {
+                            theParent = parent2;
+                        } else {
+                            Logger.error("Parent page " + englishSoloPage.getParentId()
+                                    + " not found for English solo page " + englishSoloPage.getId());
+                        }
+                    }
+                    SeiteSO subTp = theParent.getSeiten().createSeite(theParent, theParent.getBook(), englishSoloPage.getId());
+                    migrateEnglishPage(page, subTp, files);
+                }
+            }
+        }
+    }
+
+    private void migrateHelpKeys(ConfluencePage sp, ConfluencePage en, SeiteSO tp) {
+        tp.getSeite().getHelpKeys().clear();
+        addHelpKeys(helpKeysCollection.getHelpKeys(sp.getId()), tp.getSeite().getHelpKeys());
+        addHelpKeys(helpKeysCollection.getHelpKeys(en.getId()), tp.getSeite().getHelpKeys());
+    }
+
+    private void addHelpKeys(List<String> source, List<String> target) {
+        for (String helpKey : source) {
+            if (!target.contains(helpKey)) {
+                target.add(helpKey);
+            }
+        }
     }
 }

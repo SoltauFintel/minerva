@@ -17,7 +17,12 @@ public class MigrationPage extends UPage {
         if (StringService.isNullOrEmpty(sourceFolder)) {
             sourceFolder = "/";
         }
-        Logger.info("source folder: " + sourceFolder);
+        Logger.info("source folder   : " + sourceFolder);
+        String helpKeysFolder = System.getenv("MINERVA_MIGRATIONHELPKEYSFOLDER");
+        if (StringService.isNullOrEmpty(helpKeysFolder)) {
+            helpKeysFolder = "/mappings2";
+        }
+        Logger.info("help keys folder: " + helpKeysFolder);
 
         if ("master".equals(branch)) {
             throw new RuntimeException("Migration nicht für master erlaubt! (Schutz)");
@@ -25,7 +30,8 @@ public class MigrationPage extends UPage {
         if ("1".equals(ctx.queryParam("m"))) {
             WorkspaceSO workspace = user.getWorkspace(branch);
             try {
-                new ConfluenceToMinervaMigrationService(new File(sourceFolder), workspace, langs).migrate();
+                new ConfluenceToMinervaMigrationService(new File(sourceFolder), new File(helpKeysFolder),
+                        workspace, langs).migrate();
             } catch (Exception e) {
                 Logger.error(e);
                 throw new RuntimeException("Migration error. See log.");
