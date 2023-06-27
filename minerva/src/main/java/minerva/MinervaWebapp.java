@@ -37,6 +37,7 @@ import minerva.search.SearchPage;
 import minerva.seite.AddSeiteAction;
 import minerva.seite.DeleteSeitePage;
 import minerva.seite.EditSeitePage;
+import minerva.seite.HelpKeysPage;
 import minerva.seite.MoveSeiteAckPage;
 import minerva.seite.MoveSeiteAction;
 import minerva.seite.MoveSeitePage;
@@ -108,6 +109,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/s/:branch/:book/:id/move-ack", MoveSeiteAckPage.class);
         get("/s/:branch/:book/:id/move", MoveSeiteAction.class);
         get("/s/:branch/:book/:id/history", SeiteHistoryPage.class);
+        form("/s/:branch/:book/:id/help-keys", HelpKeysPage.class);
         
         // Image
         post("/s-image-upload/:branch/:book/:id", ImageUploadAction.class);

@@ -68,6 +68,7 @@ public class ViewSeitePage extends SPage {
         if (change != null) {
             fillLastChange(change, seiteSO.getTitle(), n("lastChangeInfo"), model);
         }
+        putInt("helpKeysSize", seite.getHelpKeys().size());
         header(modifyHeader(seiteSO.getTitle()));
 
         fillLinks(branch, bookFolder, id, seiteSO, seite);

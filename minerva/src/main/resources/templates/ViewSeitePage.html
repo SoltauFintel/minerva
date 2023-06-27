@@ -106,16 +106,21 @@
         </p>
         <hr/>
         
-        <p><a href="{{viewlink}}/notes" class="btn btn-default mw"><i class="fa fa-comment"></i>
-            {{N.notes}} ({{notesSize}})</a></p>
-            
+        <p>
+            <a href="{{viewlink}}/notes" class="btn btn-default mw"><i class="fa fa-comment"></i>
+                {{N.notes}} ({{notesSize}})</a>
+        </p>
+        <p>
+            <a href="{{viewlink}}/help-keys" class="btn btn-default mw"><i class="fa fa-question-circle"></i>
+                {{N.helpKeys}} ({{helpKeysSize}})</a>
+        </p>
         {{if gitlab}}
             <p>
                 <a href="{{viewlink}}/history" class="btn btn-default mw"><i class="fa fa-clock-o"></i> {{N.history}}</a>
             </p>
         {{/if}}
         <p>
-            <a href="{{movelink}}" class="btn btn-default mw">{{N.movePage}}</a>
+            <a href="{{movelink}}" class="btn btn-default mw"><i class="fa fa-arrow-right"></i> {{N.movePage}}</a>
         </p>
         <p>
             <a href="{{deletelink}}" class="btn btn-danger mw"><i class="fa fa-trash"></i> {{N.deletePage}}...</a>

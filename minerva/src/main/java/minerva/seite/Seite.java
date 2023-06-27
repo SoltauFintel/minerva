@@ -19,6 +19,7 @@ public class Seite {
     private boolean sorted = true;
     private final Set<String> tags = new TreeSet<>();
     private int version = 1;
+    private final List<String> helpKeys = new ArrayList<>();
     private List<Note> notes = new ArrayList<>();
     private int nextNoteNumber = 1;
     private final List<PageChange> changes = new ArrayList<>();
@@ -106,5 +107,9 @@ public class Seite {
 
     public List<PageChange> getChanges() {
         return changes;
+    }
+
+    public List<String> getHelpKeys() {
+        return helpKeys;
     }
 }
