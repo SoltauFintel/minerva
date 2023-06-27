@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class FileService {
     }
 
     public static <T> void saveJsonFile(File file, T data) {
-        savePlainTextFile(file, data == null ? null : new Gson().toJson(data));
+        savePlainTextFile(file, data == null ? null : StringService.prettyJSON(data));
     }
     
     public static boolean isLegalFilename(String filename) {
@@ -82,6 +83,26 @@ public class FileService {
         try {
             FileUtils.deleteDirectory(folder);
         } catch (IOException ignore) {
+        }
+    }
+    
+    public static void copyFile(File fromFile, File toDir) {
+        try {
+            toDir.mkdirs();
+            Files.copy(fromFile.toPath(), new File(toDir, fromFile.getName()).toPath(), //
+                    StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            Logger.error(e);
+            throw new RuntimeException("Publish error. See log.");
+        }
+    }
+    
+    public static void copyFiles(File fromDir, File toDir) {
+        File[] files = fromDir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                copyFile(file, toDir);
+            }
         }
     }
 }

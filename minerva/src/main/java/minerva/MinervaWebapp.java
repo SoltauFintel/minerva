@@ -5,6 +5,7 @@ import org.pmw.tinylog.Level;
 import github.soltaufintel.amalia.web.WebApp;
 import github.soltaufintel.amalia.web.builder.LoggingInitializer;
 import github.soltaufintel.amalia.web.builder.WebAppBuilder;
+import github.soltaufintel.amalia.web.config.AppConfig;
 import github.soltaufintel.amalia.web.route.RouteDefinitions;
 import minerva.auth.Login2Page;
 import minerva.auth.MinervaAuth;
@@ -32,6 +33,7 @@ import minerva.persistence.gitlab.GitlabAuthCallbackAction;
 import minerva.preview.PreviewBookPage;
 import minerva.preview.PreviewCustomerPage;
 import minerva.preview.PreviewPage;
+import minerva.publish.PublishAction;
 import minerva.search.IndexWorkspaceAction;
 import minerva.search.SearchPage;
 import minerva.seite.AddSeiteAction;
@@ -66,6 +68,7 @@ import minerva.workspace.CurrentWorkspaceAction;
 import minerva.workspace.DeleteWorkspacePage;
 import minerva.workspace.PullWorkspace;
 import minerva.workspace.WorkspacesPage;
+import spark.Spark;
 
 public class MinervaWebapp extends RouteDefinitions {
     public static final String VERSION = "0.2.0";
@@ -150,6 +153,8 @@ public class MinervaWebapp extends RouteDefinitions {
         addNotProtected("/login2");
         get("/rest/info", InfoAction.class);
         addNotProtected("/rest/info");
+        Spark.get("/rest/publish", new PublishAction());
+        addNotProtected("/rest/publish");
     }
 
     public static void main(String[] args) {
@@ -167,5 +172,9 @@ public class MinervaWebapp extends RouteDefinitions {
     
     public static MinervaFactory factory() {
         return factory;
+    }
+    
+    public static void bootForTest() {
+        factory = new MinervaFactory(new MinervaConfig(new AppConfig()));        
     }
 }

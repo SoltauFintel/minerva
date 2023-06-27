@@ -404,7 +404,7 @@ public class SeiteSO implements ISeite {
         return book.getBook().getFolder() + "/" + getId() + META_SUFFIX;
     }
     
-    private String filenameHtml(String lang) {
+    public String filenameHtml(String lang) {
         return book.getFolder() + "/" + lang + "/" + getId() + ".html";
     }
 

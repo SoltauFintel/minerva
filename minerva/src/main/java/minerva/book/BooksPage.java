@@ -58,6 +58,8 @@ public class BooksPage extends UPage {
             }
         }
         put("booksOk", books != null);
+        put("publishLink", "/rest/publish?branch=" + u(branch) + "&login=" + u(System.getenv("MP_USER")) + "&password="
+                + u(System.getenv("MP_PASS")) + "&lang=" + u("de,en"));
         
         DataList list2 = list("langs");
         for (String lang : langs) {
