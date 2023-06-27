@@ -31,6 +31,8 @@ public class PublishService {
         this.langs = langs;
     }
 
+    // TODO Muss ich pullen?
+    
     public void publish(WorkspaceSO workspace) {
         String login = workspace.getUser().getUser().getLogin();
         Logger.info(login + " | " + workspace.getBranch() + " | Publishing to " + targetFolder + " ...");
@@ -86,10 +88,16 @@ public class PublishService {
                 pages.put(lang, p);
 
                 // copy .html files
-                FileService.copyFile(new File(seite.filenameHtml(lang)), new File(targetFolder, "publish/" + lang));
+                File src = new File(seite.filenameHtml(lang));
+                if (src.isFile()) {
+                    FileService.copyFile(src, new File(targetFolder, "publish/" + lang));
+                }
             }
             // copy images
-            FileService.copyFiles(new File(sourceImgFolder, seite.getId()), targetImgFolder);
+            File src = new File(sourceImgFolder, seite.getId());
+            if (src.isDirectory()) {
+                FileService.copyFiles(src, targetImgFolder);
+            }
 
             copyHtmlAndImg(seite.getSeiten(), pages); // recursive
         }
