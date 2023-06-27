@@ -56,12 +56,12 @@
                 <a href="/w/{{branch}}/tag-cloud?m=n" class="btn btn-default brr"><i
                     class="fa fa-cloud"></i> {{N.tagCloud}}</a>
             {{/if}}
+            <a href="/w/{{branch}}/help-keys" class="btn btn-default brr"><i class="fa fa-question-circle"></i>
+                {{N.allHelpKeys}}</a>
             {{if gitlab}}
                 <a href="/w/{{branch}}/exclusions/edit" class="btn btn-default brr"><i class="fa fa-bank"></i>
                     {{N.exclusions}}</a>
             {{/if}}
-            <a href="/w/{{branch}}/help-keys" class="btn btn-default brr"><i class="fa fa-question-circle"></i>
-                {{N.allHelpKeys}}</a>
             {{if booksOk}}
                 <a href="/b/{{branch}}/index" class="btn btn-default brr"
                     onclick="document.querySelector('#s3').style='';">{{N.reindex}}!
