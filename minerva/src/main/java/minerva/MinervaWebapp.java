@@ -1,5 +1,8 @@
 package minerva;
 
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.util.thread.QueuedThreadPool;
+import org.eclipse.jetty.util.thread.ThreadPool;
 import org.pmw.tinylog.Level;
 
 import github.soltaufintel.amalia.web.WebApp;
@@ -69,6 +72,11 @@ import minerva.workspace.DeleteWorkspacePage;
 import minerva.workspace.PullWorkspace;
 import minerva.workspace.WorkspacesPage;
 import spark.Spark;
+import spark.embeddedserver.EmbeddedServers;
+import spark.embeddedserver.jetty.EmbeddedJettyServer;
+import spark.embeddedserver.jetty.JettyHandler;
+import spark.embeddedserver.jetty.JettyServerFactory;
+import spark.http.matching.MatcherFilter;
 
 public class MinervaWebapp extends RouteDefinitions {
     public static final String VERSION = "0.2.0";
@@ -158,6 +166,7 @@ public class MinervaWebapp extends RouteDefinitions {
     }
 
     public static void main(String[] args) {
+        setSessionIdCookieName("SESSIONID_" + new AppConfig().get("app.name", "minerva"));
         WebApp webapp = new WebAppBuilder(VERSION)
             .withLogging(new LoggingInitializer(Level.INFO, "{date} {level}  {message}"))
             .withTemplatesFolders(MinervaWebapp.class, "/templates")
@@ -170,6 +179,36 @@ public class MinervaWebapp extends RouteDefinitions {
         webapp.boot();
     }
     
+    private static void setSessionIdCookieName(String sessionIdCookieName) { // TODO Amalia / und es gibt doch irgendwo anders noch so ne app.name/cookie Stelle?!
+        EmbeddedServers.add(EmbeddedServers.Identifiers.JETTY, (routeMatcher, staticFilesConfiguration, exceptionMapper, hasMultipleHandler) -> {
+            MatcherFilter matcherFilter = new MatcherFilter(routeMatcher, staticFilesConfiguration, exceptionMapper, false, hasMultipleHandler);
+            matcherFilter.init(null);
+            JettyHandler handler = new JettyHandler(matcherFilter);
+            handler.getSessionCookieConfig().setName(sessionIdCookieName);
+            JettyServerFactory serverFactory = new JettyServerFactory() {
+                @Override
+                public Server create(int maxThreads, int minThreads, int threadTimeoutMillis) {
+                    Server server;
+                    if (maxThreads > 0) {
+                        int max = maxThreads;
+                        int min = (minThreads > 0) ? minThreads : 8;
+                        int idleTimeout = (threadTimeoutMillis > 0) ? threadTimeoutMillis : 60000;
+                        server = new Server(new QueuedThreadPool(max, min, idleTimeout));
+                    } else {
+                        server = new Server();
+                    }
+                    return server;
+                }
+                
+                @Override
+                public Server create(ThreadPool threadPool) {
+                    return threadPool != null ? new Server(threadPool) : new Server();
+                }
+            };
+            return new EmbeddedJettyServer(serverFactory, handler);
+        });
+    }
+
     public static MinervaFactory factory() {
         return factory;
     }
