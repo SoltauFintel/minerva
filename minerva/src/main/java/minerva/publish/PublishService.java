@@ -31,8 +31,6 @@ public class PublishService {
         this.langs = langs;
     }
 
-    // TODO Muss ich pullen?
-    
     public void publish(WorkspaceSO workspace) {
         String login = workspace.getUser().getUser().getLogin();
         Logger.info(login + " | " + workspace.getBranch() + " | Publishing to " + targetFolder + " ...");

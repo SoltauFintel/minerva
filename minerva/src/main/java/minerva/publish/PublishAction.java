@@ -16,6 +16,7 @@ import spark.Response;
 import spark.Route;
 
 public class PublishAction implements Route {
+    // TODO PublishAction sollte nicht zeitgleich mehrfach aufgerufen werden!
 
     @Override
     public Object handle(Request req, Response res) throws Exception {
