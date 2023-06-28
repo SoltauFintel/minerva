@@ -96,7 +96,7 @@ public class PublishService {
             // copy images
             File src = new File(sourceImgFolder, seite.getId());
             if (src.isDirectory()) {
-                FileService.copyFiles(src, targetImgFolder);
+                FileService.copyFiles(src, new File(targetImgFolder, seite.getId()));
             }
 
             copyHtmlAndImg(seite.getSeiten(), pages); // recursive
