@@ -409,7 +409,7 @@ public class ConfluenceToMinervaMigrationService {
             final SeiteSO parent = book.getSeiten().createSeite(book.getISeite(), book, IdGenerator.createId6());
             parent.getSeite().getTitle().setString("de", "//English solo pages");
             parent.getSeite().getTitle().setString("en", "English solo pages");
-            parent.getSeite().getTags().add("nicht_drucken");
+            parent.getSeite().getTags().add("nicht_oh");
             parent.getSeite().getTags().add("english-solo-pages");
             parent.saveMetaTo(files);
             for (EnglishSoloPage englishSoloPage : englishSoloPages) {
