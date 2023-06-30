@@ -19,13 +19,4 @@ public class Books {
     public void setVersion(int version) {
         this.version = version;
     }
-
-    @Deprecated
-    public Book find(String folder) {
-        return books.stream().filter(book -> book.getFolder().equals(folder)).findFirst().orElse(null);
-    }
-    
-    public Book byFolder(String folder) {
-        return books.stream().filter(book -> book.getFolder().equals(folder)).findFirst().orElse(null);
-    }
 }
