@@ -13,5 +13,4 @@ public class InfoAction extends Action {
     protected String render() {
         return "Minerva " + MinervaWebapp.VERSION;
     }
-
 }

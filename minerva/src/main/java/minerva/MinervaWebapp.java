@@ -1,8 +1,5 @@
 package minerva;
 
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.util.thread.QueuedThreadPool;
-import org.eclipse.jetty.util.thread.ThreadPool;
 import org.pmw.tinylog.Level;
 
 import github.soltaufintel.amalia.web.WebApp;
@@ -66,17 +63,13 @@ import minerva.seite.tag.DeleteTagAction;
 import minerva.seite.tag.TagCloudPage;
 import minerva.seite.tag.TagWPage;
 import minerva.seite.tag.TagsPage;
+import minerva.subscription.SubscribeAction;
 import minerva.workspace.AddWorkspacePage;
 import minerva.workspace.CurrentWorkspaceAction;
 import minerva.workspace.DeleteWorkspacePage;
 import minerva.workspace.PullWorkspace;
 import minerva.workspace.WorkspacesPage;
 import spark.Spark;
-import spark.embeddedserver.EmbeddedServers;
-import spark.embeddedserver.jetty.EmbeddedJettyServer;
-import spark.embeddedserver.jetty.JettyHandler;
-import spark.embeddedserver.jetty.JettyServerFactory;
-import spark.http.matching.MatcherFilter;
 
 public class MinervaWebapp extends RouteDefinitions {
     public static final String VERSION = "0.2.0";
@@ -84,6 +77,9 @@ public class MinervaWebapp extends RouteDefinitions {
     
     @Override
     public void routes() {
+        // TODO /w (=Workspace(s)) und /b (=Book(s)) sind nicht klar getrennt, wobei
+        //      Workspace=Books was ja auch keine klare Trennung ist. Vielleicht /b nur bei (1) book verwenden?!
+        
         // Workspace
         get("/", WorkspacesPage.class);
         get("/w", CurrentWorkspaceAction.class);
@@ -159,14 +155,15 @@ public class MinervaWebapp extends RouteDefinitions {
         addNotProtected("/gitlab-auth");
         form("/login2", Login2Page.class);
         addNotProtected("/login2");
-        get("/rest/info", InfoAction.class);
-        addNotProtected("/rest/info");
-        Spark.get("/rest/publish", new PublishAction());
-        addNotProtected("/rest/publish");
+        
+        // REST API
+        addNotProtected("/rest");
+        get("/rest/info", InfoAction.class); // not protected
+        Spark.get("/rest/publish", new PublishAction()); // protected by query params // TODO Ist das mit Amalia Code möglich?
+        get("/rest/subscribe", SubscribeAction.class); // protected by known subscribers
     }
 
     public static void main(String[] args) {
-        setSessionIdCookieName("SESSIONID_" + new AppConfig().get("app.name", "minerva"));
         WebApp webapp = new WebAppBuilder(VERSION)
             .withLogging(new LoggingInitializer(Level.INFO, "{date} {level}  {message}"))
             .withTemplatesFolders(MinervaWebapp.class, "/templates")
@@ -179,36 +176,6 @@ public class MinervaWebapp extends RouteDefinitions {
         webapp.boot();
     }
     
-    private static void setSessionIdCookieName(String sessionIdCookieName) { // TODO Amalia / und es gibt doch irgendwo anders noch so ne app.name/cookie Stelle?!
-        EmbeddedServers.add(EmbeddedServers.Identifiers.JETTY, (routeMatcher, staticFilesConfiguration, exceptionMapper, hasMultipleHandler) -> {
-            MatcherFilter matcherFilter = new MatcherFilter(routeMatcher, staticFilesConfiguration, exceptionMapper, false, hasMultipleHandler);
-            matcherFilter.init(null);
-            JettyHandler handler = new JettyHandler(matcherFilter);
-            handler.getSessionCookieConfig().setName(sessionIdCookieName);
-            JettyServerFactory serverFactory = new JettyServerFactory() {
-                @Override
-                public Server create(int maxThreads, int minThreads, int threadTimeoutMillis) {
-                    Server server;
-                    if (maxThreads > 0) {
-                        int max = maxThreads;
-                        int min = (minThreads > 0) ? minThreads : 8;
-                        int idleTimeout = (threadTimeoutMillis > 0) ? threadTimeoutMillis : 60000;
-                        server = new Server(new QueuedThreadPool(max, min, idleTimeout));
-                    } else {
-                        server = new Server();
-                    }
-                    return server;
-                }
-                
-                @Override
-                public Server create(ThreadPool threadPool) {
-                    return threadPool != null ? new Server(threadPool) : new Server();
-                }
-            };
-            return new EmbeddedJettyServer(serverFactory, handler);
-        });
-    }
-
     public static MinervaFactory factory() {
         return factory;
     }

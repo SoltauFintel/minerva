@@ -1,18 +1,10 @@
 package minerva.publish;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import org.pmw.tinylog.Logger;
 
@@ -104,20 +96,7 @@ public class PublishService {
     public Path zip() {
         File zipFile = new File(targetFolder, "publish.zip");
         File sourceFolder = new File(targetFolder, "publish");
-        int startOfFilenameWithRelativePath = sourceFolder.getAbsolutePath().length() + 1;
-        try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))) {
-            Files.walkFileTree(sourceFolder.toPath(), new SimpleFileVisitor<Path>() {
-                @Override
-                public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) throws IOException {
-                    out.putNextEntry(new ZipEntry(path.toFile().getAbsolutePath().substring(startOfFilenameWithRelativePath)));
-                    Files.copy(path, out);
-                    out.closeEntry();
-                    return super.visitFile(path, attrs);
-                }
-            });
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        FileService.zip(sourceFolder, zipFile);
         return zipFile.toPath();
     }
 }
