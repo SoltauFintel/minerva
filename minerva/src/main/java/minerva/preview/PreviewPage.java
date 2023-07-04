@@ -31,7 +31,7 @@ public class PreviewPage extends SPage {
         sv.setExclusions(new Exclusions(book.getWorkspace().getExclusions().get()));
         sv.setCustomer(customer);
         sv.setSeite(seite);
-        if (!sv.isAccessible()) {
+        if (!sv.isAccessible() || seite.getSeite().getTags().contains("invisible")) {
             throw new RuntimeException("Page is not accessible in preview for customer " + esc(customer));
         }
         

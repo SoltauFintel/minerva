@@ -1,5 +1,7 @@
 package minerva.preview;
 
+import java.util.Set;
+
 import org.pmw.tinylog.Logger;
 
 import com.github.template72.data.DataList;
@@ -53,7 +55,8 @@ public class PreviewBookPage extends BPage {
         gliederung.append("<ul>\n");
         for (SeiteSO seite : seiten) {
             int hasContent = seite.hasContent(lang);
-            if (hasContent > 0 && sv.isAccessible(seite.getSeite().getTags())) {
+            Set<String> tags = seite.getSeite().getTags();
+            if (hasContent > 0 && sv.isAccessible(tags) && !tags.contains("invisible")) {
                 String title = esc(seite.getSeite().getTitle().getString(lang));
                 String link = "/p/" + branch + "/" + esc(customer) + "/" + bookFolder + "/" + lang + "/"
                         + esc(seite.getSeite().getId());
