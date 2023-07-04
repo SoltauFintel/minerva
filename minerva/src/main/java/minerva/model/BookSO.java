@@ -16,6 +16,7 @@ import minerva.seite.Breadcrumb;
 import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.Seite;
 import minerva.seite.tag.TagNList;
+import minerva.subscription.SubscriptionService;
 
 public class BookSO {
     private final WorkspaceSO workspace;
@@ -105,6 +106,7 @@ public class BookSO {
     public void activateSorted() {
         book.setSorted(true);
         saveBook();
+        new SubscriptionService().pagesChanged();
     }
     
     private void saveBook() {
