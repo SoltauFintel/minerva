@@ -63,6 +63,7 @@ import minerva.seite.tag.DeleteTagAction;
 import minerva.seite.tag.TagCloudPage;
 import minerva.seite.tag.TagWPage;
 import minerva.seite.tag.TagsPage;
+import minerva.subscription.PushDataAction;
 import minerva.subscription.SubscribeAction;
 import minerva.workspace.AddWorkspacePage;
 import minerva.workspace.CurrentWorkspaceAction;
@@ -95,6 +96,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/b/:branch/add", AddBookPage.class);
         get("/b/:branch/index", IndexWorkspaceAction.class);
         get("/b/:branch/search", SearchPage.class);
+        get("/b/:branch/push-data", PushDataAction.class);
         form("/b/:branch/:book/edit", EditBookPage.class);
         get("/b/:branch/:book/delete", DeleteBookPage.class);
         get("/b/:branch/language", SelectLanguageAction.class);
