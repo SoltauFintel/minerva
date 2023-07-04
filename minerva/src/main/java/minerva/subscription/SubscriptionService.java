@@ -3,6 +3,8 @@ package minerva.subscription;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.List;
 
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.entity.ContentType;
@@ -13,9 +15,12 @@ import github.soltaufintel.amalia.rest.REST;
 import github.soltaufintel.amalia.rest.RestResponse;
 import minerva.MinervaWebapp;
 import minerva.base.FileService;
+import minerva.base.NlsString;
 import minerva.base.StringService;
+import minerva.model.SeiteSO;
 import minerva.model.StateSO;
 import minerva.model.WorkspaceSO;
+import minerva.seite.Seite;
 import minerva.user.User;
 
 public class SubscriptionService {
@@ -88,5 +93,42 @@ public class SubscriptionService {
                 return doRequest(request);
             }
         }.post("").close();
+    }
+
+    public TPage createTPage(SeiteSO seite, NlsString content, List<String> langs) {
+        TPage p = new TPage();
+        Seite s = seite.getSeite();
+        p.setId(s.getId());
+        p.setParentId(s.getParentId());
+        p.getTitle().from(s.getTitle());
+        p.setPosition(s.getPosition());
+        p.setSorted(s.isSorted());
+        p.getTags().addAll(s.getTags());
+        p.getHelpKeys().addAll(s.getHelpKeys());
+        p.setHtml(new HashMap<>());
+        for (String lang : langs) {
+            p.getHtml().put(lang, content.getString(lang));
+        }
+        return p;
+    }
+    
+    public void pageModified(TPage page) {
+        String subscribers = System.getenv("SUBSCRIBERS");
+        if (!StringService.isNullOrEmpty(subscribers)) {
+            String[] w = subscribers.split(",");
+            for (String host : w) {
+                new REST(host + "/book6/page/" + page.getId()).put(page).close();
+            }
+        }
+    }
+    
+    public void pageDeleted(String id) {
+        String subscribers = System.getenv("SUBSCRIBERS");
+        if (!StringService.isNullOrEmpty(subscribers)) {
+            String[] w = subscribers.split(",");
+            for (String host : w) {
+                new REST(host + "/book6/page/" + id).delete().close(); // TODO Amalia: DELETE with body
+            }
+        }
     }
 }

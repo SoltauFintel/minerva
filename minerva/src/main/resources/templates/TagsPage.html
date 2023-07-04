@@ -10,10 +10,10 @@
             {{each tag in tags}}
                 <p>
                     <span class="label label-tag" style="font-size: 10pt;"><a href="/w/{{branch}}/tag/{{tag.tag}}"><i
-                    class="fa fa-tag"></i> {{tag.tag}}</a></span>
+                        class="fa fa-tag"></i> {{tag.tag}}</a></span>
                     <a href="{{tag.deletelink}}" style="font-size: 8pt; color: #900; margin-right: 2em;"
-                    title="Löschen!" onclick="document.getElementById('dt_{{tag.tag}}').classList.add('fa-spin');"><i
-                    class="fa fa-times" id="dt_{{tag.tag}}"></i></a>
+                        title="Löschen!" onclick="document.getElementById('dt_{{tag.tag}}').classList.add('fa-spin');"><i
+                        class="fa fa-times" id="dt_{{tag.tag}}"></i></a>
                 </p>
             {{/each}}
             {{if not hasTags}}- {{N.noTags}} -{{/if}}

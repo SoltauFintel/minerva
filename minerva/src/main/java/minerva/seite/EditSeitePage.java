@@ -7,6 +7,8 @@ import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.persistence.gitlab.UpToDateCheckService;
 import minerva.seite.link.InvalidLinksModel;
+import minerva.subscription.SubscriptionService;
+import minerva.subscription.TPage;
 
 public class EditSeitePage extends ViewSeitePage {
 
@@ -49,6 +51,10 @@ public class EditSeitePage extends ViewSeitePage {
         
         Logger.info(user.getUser().getLogin() + " | " + branch + " | " + title.getString(langs.get(0)) + " -> Page #"
                 + seiteSO.getId() + " saved. " + (System.currentTimeMillis() - start) + "ms");
+        
+        SubscriptionService ss = new SubscriptionService();
+        TPage tpage = ss.createTPage(seiteSO, data.getContent(), langs);
+        ss.pageModified(tpage);
         
         InvalidLinksModel linksModel = new InvalidLinksModel(seiteSO, langs);
         if (linksModel.hasLinks()) {

@@ -31,5 +31,6 @@ public class HelpKeysPage extends SPage {
         }
         Collections.sort(helpKeys);
         seite.saveMeta(new CommitMessage(seite, "help keys"));
+        seite.updateOnlineHelp();
     }
 }

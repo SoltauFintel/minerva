@@ -31,6 +31,8 @@ import minerva.seite.IPageChangeStrategy;
 import minerva.seite.MoveFile;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
+import minerva.subscription.SubscriptionService;
+import minerva.subscription.TPage;
 
 public class SeiteSO implements ISeite {
     public static final String META_SUFFIX = ".meta";
@@ -229,6 +231,7 @@ public class SeiteSO implements ISeite {
                 book.getWorkspace().getSearch().unindex(SeiteSO.this);
                 Logger.debug("Deleted page " + SeiteSO.this.getId() + " has been removed from search index.");
             }).start();
+            new Thread(() -> new SubscriptionService().pageDeleted(seite.getId())).start();
         }
         
         book.getWorkspace().pull(); // Datenstruktur neu aufbauen (auch wenn cantBeDeleted nicht leer ist)
@@ -454,5 +457,18 @@ public class SeiteSO implements ISeite {
      */
     public List<SeiteSO> linksTo(List<String> langs) {
         return book.getSeiten().findLink(getId(), langs);
+    }
+    
+    /**
+     * Page has been modified. Inform online help about it.
+     */
+    public void updateOnlineHelp() {
+        SeiteSO seite = this;
+        NlsString html = getContent();
+        new Thread(() -> {
+            SubscriptionService ss = new SubscriptionService();
+            TPage tpage = ss.createTPage(seite, html, MinervaWebapp.factory().getLanguages());
+            ss.pageModified(tpage);
+        }).start();
     }
 }

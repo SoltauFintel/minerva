@@ -26,6 +26,7 @@ public class TagsSO {
         }
         if (dirty) {
             seiteSO.saveMeta(new CommitMessage(seiteSO, "tag " + tag + " added"));
+            seiteSO.updateOnlineHelp();
         }
     }
 
@@ -62,6 +63,7 @@ public class TagsSO {
             seiteSO.getSeite().getTags().remove(tag);
             seiteSO.saveMeta(new CommitMessage(seiteSO, "tag " + tag + " deleted"));
         }
+        seiteSO.updateOnlineHelp();
     }
 
     public static String cleanTag(String pTag) {
