@@ -308,7 +308,7 @@ public class SeiteSO implements ISeite {
         dao().moveFiles(files, new CommitMessage(this, "moved to book " + targetBookFolder), workspace);
         
         workspace.pull();
-        new SubscriptionService().pagesChanged();
+        // not allowed in customer version -> new SubscriptionService().pagesChanged();
     }
     
     private void changePageTo(int newPosition, List<IMoveFile> files) {
