@@ -44,6 +44,7 @@ public class InvalidLinksModel {
         }
         if (dirty) {
             seite.saveHtml(new CommitMessage(seite, "links replaced"), langs);
+            seite.updateOnlineHelp();
         }
     }
 }

@@ -76,6 +76,7 @@ public class SeitenSO extends MList<SeiteSO> {
     }
 
     /**
+     * Just create new SeiteSO. Does not save object.
      * @param parent -
      * @param book -
      * @return page ID
@@ -107,6 +108,7 @@ public class SeitenSO extends MList<SeiteSO> {
         MinervaWebapp.factory().setNewSeiteTitle(neueSeite.getTitle(), "" + neueSeite.getPosition());
         
         SeiteSO ret = new SeiteSO(book, neueSeite, parent);
+        ret.setNeu(true);
         add(ret);
         return ret;
     }

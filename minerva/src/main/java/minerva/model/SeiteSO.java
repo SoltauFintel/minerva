@@ -49,6 +49,8 @@ public class SeiteSO implements ISeite {
     private NlsString content = null;
     private final NotesSO notes = new NotesSO(this);
     private final TagsSO tags = new TagsSO(this);
+    /** true: it's a new page that has never been saved, false: already existing page */
+    private boolean neu = false;
     
     /**
      * Loaded Seite constructor
@@ -139,7 +141,15 @@ public class SeiteSO implements ISeite {
     public String getSort() {
         return new DecimalFormat("000").format(book.getBook().getPosition()) + getTitle();
     }
-    
+
+    public boolean isNeu() {
+        return neu;
+    }
+
+    public void setNeu(boolean neu) {
+        this.neu = neu;
+    }
+
     public boolean hasNoParent() {
         return ROOT_ID.equals(seite.getParentId());
     }
@@ -206,6 +216,7 @@ public class SeiteSO implements ISeite {
         seite.setSorted(true);
         saveMeta(new CommitMessage(this, "subpages sorted alphabetically"));
         book.getWorkspace().pull(); // ja, ist etwas brutal...
+        new SubscriptionService().pagesChanged();
     }
 
     public TagsSO tags() {
@@ -231,7 +242,7 @@ public class SeiteSO implements ISeite {
                 book.getWorkspace().getSearch().unindex(SeiteSO.this);
                 Logger.debug("Deleted page " + SeiteSO.this.getId() + " has been removed from search index.");
             }).start();
-            new Thread(() -> new SubscriptionService().pageDeleted(seite.getId())).start();
+            new SubscriptionService().pageDeleted(seite.getId());
         }
         
         book.getWorkspace().pull(); // Datenstruktur neu aufbauen (auch wenn cantBeDeleted nicht leer ist)
@@ -280,6 +291,7 @@ public class SeiteSO implements ISeite {
         seite.setParentId(parentId);
         saveMeta(new CommitMessage(this, "page moved"));
         book.getWorkspace().pull();
+        new SubscriptionService().pagesChanged();
     }
 
     public void moveToBook(String targetBookFolder, List<String> langs) {
@@ -296,6 +308,7 @@ public class SeiteSO implements ISeite {
         dao().moveFiles(files, new CommitMessage(this, "moved to book " + targetBookFolder), workspace);
         
         workspace.pull();
+        new SubscriptionService().pagesChanged();
     }
     
     private void changePageTo(int newPosition, List<IMoveFile> files) {
@@ -349,6 +362,15 @@ public class SeiteSO implements ISeite {
         
         dao().saveFiles(files, commitMessage, book.getWorkspace());
         
+        SubscriptionService ss = new SubscriptionService();
+        if (neu) {
+            ss.pagesChanged();
+        } else {
+            TPage tpage = ss.createTPage(this, newContent, langs);
+            new Thread(() -> ss.pageModified(tpage)).start();
+        }
+        
+        neu = false;
         images.clear();
 
         if (hasNoParent()) {
@@ -463,12 +485,17 @@ public class SeiteSO implements ISeite {
      * Page has been modified. Inform online help about it.
      */
     public void updateOnlineHelp() {
-        SeiteSO seite = this;
-        NlsString html = getContent();
-        new Thread(() -> {
-            SubscriptionService ss = new SubscriptionService();
-            TPage tpage = ss.createTPage(seite, html, MinervaWebapp.factory().getLanguages());
-            ss.pageModified(tpage);
-        }).start();
+        SubscriptionService ss = new SubscriptionService();
+        TPage tpage = ss.createTPage(this, getContent(), MinervaWebapp.factory().getLanguages());
+        new Thread(() -> ss.pageModified(tpage)).start();
+    }
+
+    public void updateOnlineHelp_nowVisible() {
+        // It's like a new page, so send all data.
+        new SubscriptionService().pagesChanged(); // threading inside method
+    }
+
+    public void updateOnlineHelp_nowInvisible() {
+        new SubscriptionService().pageDeleted(seite.getId());
     }
 }

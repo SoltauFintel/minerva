@@ -13,25 +13,39 @@ public class TagsSO {
         this.seiteSO = seiteSO;
     }
     
+    /**
+     * Add tags
+     * @param tag one or more tags, comma separated
+     */
     public void addTag(String tag) {
         boolean dirty = false;
+        boolean invisibleTagAdded = false;
         if (tag.contains(",")) {
-            for (String aTag : tag.split(",")) {
-                if (addTag2(aTag)) {
+            for (String i : tag.split(",")) {
+                String oneTag = cleanTag(i);
+                if ("invisible".equals(oneTag)) {
+                    invisibleTagAdded = true;
+                }
+                if (addOneTag(oneTag)) {
                     dirty = true;
                 }
             }
         } else {
-            dirty = addTag2(tag);
+            String oneTag = cleanTag(tag);
+            if ("invisible".equals(oneTag)) {
+                invisibleTagAdded = true;
+            }
+            dirty = addOneTag(oneTag);
         }
         if (dirty) {
             seiteSO.saveMeta(new CommitMessage(seiteSO, "tag " + tag + " added"));
-            seiteSO.updateOnlineHelp();
+            if (invisibleTagAdded) {
+                seiteSO.updateOnlineHelp_nowInvisible();
+            }
         }
     }
 
-    private boolean addTag2(String pTag) {
-        String tag = cleanTag(pTag);
+    private boolean addOneTag(String tag) {
         if (!seiteSO.getSeite().getTags().contains(tag)) {
             seiteSO.getSeite().getTags().add(tag);
             return true;
@@ -56,14 +70,22 @@ public class TagsSO {
     }
 
     public void deleteTag(String tag) {
+        boolean containsInvisibleBefore = seiteSO.getSeite().getTags().contains("invisible");
         if ("$all".equals(tag)) {
             seiteSO.getSeite().getTags().clear();
             seiteSO.saveMeta(new CommitMessage(seiteSO, "all tags deleted"));
+            
+            if (containsInvisibleBefore) {
+                seiteSO.updateOnlineHelp_nowVisible();
+            }
         } else {
             seiteSO.getSeite().getTags().remove(tag);
             seiteSO.saveMeta(new CommitMessage(seiteSO, "tag " + tag + " deleted"));
+            
+            if (containsInvisibleBefore && "invisible".equals(tag)) {
+                seiteSO.updateOnlineHelp_nowVisible();
+            }
         }
-        seiteSO.updateOnlineHelp();
     }
 
     public static String cleanTag(String pTag) {

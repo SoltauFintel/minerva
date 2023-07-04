@@ -11,6 +11,8 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.FileEntity;
 import org.pmw.tinylog.Logger;
 
+import com.google.gson.Gson;
+
 import github.soltaufintel.amalia.rest.REST;
 import github.soltaufintel.amalia.rest.RestResponse;
 import minerva.MinervaWebapp;
@@ -28,7 +30,7 @@ public class SubscriptionService {
 
     public void subscribe(String url) {
         checkIfValid(url);
-        new Thread(() -> pushData(url)).start();
+        pagesChanged(url);
     }
     
     private void checkIfValid(String url) {
@@ -45,16 +47,13 @@ public class SubscriptionService {
         throw new RuntimeException("Unknown subscriber");
     }
     
-    private void pushData(String url) {
+    private File createZipFile() {
         // login
-        if (!MinervaWebapp.factory().isCustomerVersion() || MinervaWebapp.factory().isGitlab()) {
-            throw new RuntimeException("pushData() can only be called for customer version with file-system backend!");
-        }
         String folder = System.getenv("MINERVA_USERFOLDER");
         if (StringService.isNullOrEmpty(folder)) {
             folder = LOGIN;
         }
-        Logger.info("pushData() | folder: " + folder + " | subscriber: " + url);
+        Logger.info("pushData() | folder: " + folder);
         StateSO state = new StateSO(new User(LOGIN, folder));
         
         // get book
@@ -65,14 +64,7 @@ public class SubscriptionService {
         }
         
         // zip it
-        File zipFile = zip(new File(workspace.getFolder()));
-        try {
-            // upload it to url
-            upload(zipFile, url + "/upload");
-            Logger.info("pushData() | Upload of " + zipFile.getAbsolutePath() + " to " + url + "/upload completed.");
-        } finally {
-            zipFile.delete();
-        }
+        return zip(new File(workspace.getFolder()));
     }
     
     private File zip(File folder) {
@@ -93,6 +85,7 @@ public class SubscriptionService {
                 return doRequest(request);
             }
         }.post("").close();
+        Logger.info("Upload of " + zipFile.getAbsolutePath() + " to " + url + " completed.");
     }
 
     public TPage createTPage(SeiteSO seite, NlsString content, List<String> langs) {
@@ -115,20 +108,71 @@ public class SubscriptionService {
     public void pageModified(TPage page) {
         String subscribers = System.getenv("SUBSCRIBERS");
         if (!StringService.isNullOrEmpty(subscribers)) {
+            checkMode();
             String[] w = subscribers.split(",");
             for (String host : w) {
-                new REST(host + "/book6/page/" + page.getId()).put(page).close();
+                String url = host + "/book6/page/" + page.getId();
+                Logger.info("PUT " + url);
+                new REST(url) {
+                    @Override
+                    protected RestResponse request(HttpEntityEnclosingRequestBase request, Object data) {
+                        try {
+                            return request(request, new Gson().toJson(data), "application/json; charset=cp1252");
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }.put(page).close();
             }
         }
     }
     
+    /**
+     * Page has been deleted or made invisible.
+     * @param id page ID
+     */
     public void pageDeleted(String id) {
         String subscribers = System.getenv("SUBSCRIBERS");
         if (!StringService.isNullOrEmpty(subscribers)) {
-            String[] w = subscribers.split(",");
-            for (String host : w) {
-                new REST(host + "/book6/page/" + id).delete().close(); // TODO Amalia: DELETE with body
+            checkMode();
+            new Thread(() -> {
+                for (String host : subscribers.split(",")) {
+                    String url = host + "/book6/page/" + id;
+                    Logger.info("DELETE " + url);
+                    new REST(url).delete().close(); // TODO Amalia: DELETE with body
+                }
+            }).start();
+        }
+    }
+
+    /**
+     * Page moved, pages reordered, sorting activated, page made visible.
+     * Those changes are so massive that all data will be pushed to all subscribers.
+     */
+    public void pagesChanged() {
+        pagesChanged(System.getenv("SUBSCRIBERS"));
+    }
+    
+    private void pagesChanged(String subscribers) {
+        if (StringService.isNullOrEmpty(subscribers)) {
+            return;
+        }
+        checkMode();
+        new Thread(() -> {
+            File zipFile = createZipFile();
+            try {
+                for (String host : subscribers.split(",")) {
+                    upload(zipFile, host + "/upload");
+                }
+            } finally {
+                zipFile.delete();
             }
+        }).start();
+    }
+    
+    private void checkMode() {
+        if (!MinervaWebapp.factory().isCustomerVersion() || MinervaWebapp.factory().isGitlab()) {
+            throw new RuntimeException("Method can only be called for customer version with file-system backend!");
         }
     }
 }

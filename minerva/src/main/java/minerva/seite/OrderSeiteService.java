@@ -15,6 +15,7 @@ import minerva.model.ISeite;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.model.UserSO;
+import minerva.subscription.SubscriptionService;
 import minerva.user.UPage;
 
 /**
@@ -95,6 +96,7 @@ public abstract class OrderSeiteService {
         saveSubpagesAfterReordering(seitenWC);
         user.setOrderPagesModel(null);
         Logger.info(branch + " | " + bookFolder + " | " + id + " | Subpages have been saved after reordering.");
+        new SubscriptionService().pagesChanged();
         
         ctx.redirect(goBackLink);
         return seitenWC;
