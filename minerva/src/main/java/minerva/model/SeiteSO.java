@@ -59,6 +59,9 @@ public class SeiteSO implements ISeite {
      * @param alleSeiten -
      */
     public SeiteSO(BookSO book, Seite seite, List<Seite> alleSeiten) {
+        if (seite == null) {
+            throw new IllegalArgumentException("seite is null");
+        }
         // unterseiten zum Schluss setzen!
         this.book = book;
         this.seite = seite;
@@ -84,6 +87,9 @@ public class SeiteSO implements ISeite {
      * @param parent -
      */
     public SeiteSO(BookSO book, Seite seite, ISeite parent) {
+        if (seite == null) {
+            throw new IllegalArgumentException("seite is null");
+        }
         this.book = book;
         this.seite = seite;
         seiten = new SeitenSO(parent); // leer
@@ -171,6 +177,9 @@ public class SeiteSO implements ISeite {
     public void forceReloadIfCheap() {
         if (!MinervaWebapp.factory().isGitlab()) {
             seite = new MultiPurposeDirAccess(dao()).load(filenameMeta(), Seite.class);
+            if (seite == null) {
+                throw new RuntimeException("seite is null after reload! (forceReloadIfCheap)");
+            }
             content = null;
         }
     }
@@ -187,7 +196,15 @@ public class SeiteSO implements ISeite {
         }
         // naive Implementierung: ich lade kompletten Content einfach neu
         Map<String, String> files = loadFiles(true, langs);
-        seite = new Gson().fromJson(files.get(filenameMeta()), Seite.class);
+        String dn = filenameMeta();
+        String json = files.get(dn);
+        if (json == null) {
+            throw new RuntimeException("There is no content for " + dn + ". Error in freshcheck.");
+        }
+        seite = new Gson().fromJson(json, Seite.class);
+        if (seite == null) {
+            throw new RuntimeException("seite is null after loading .meta file. Error in freshcheck. dn: " + dn);
+        }
         setContent(files, langs);
     }
     
@@ -199,6 +216,7 @@ public class SeiteSO implements ISeite {
         for (String lang : langs) {
             filenames.add(filenameHtml(lang));
         }
+        Logger.info("loadFiles(" + withSeite + ", " + langs + ") filenames: " + filenames); // XXX DEBUG
         return dao().loadFiles(filenames);
     }
 

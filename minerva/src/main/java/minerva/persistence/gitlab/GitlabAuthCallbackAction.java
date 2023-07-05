@@ -1,7 +1,7 @@
 package minerva.persistence.gitlab;
 
 import github.soltaufintel.amalia.web.action.Action;
-import minerva.auth.LoginPage;
+import minerva.auth.MinervaAuth;
 
 /**
  * This action is called by Gitlab after authentication.
@@ -13,7 +13,7 @@ public class GitlabAuthCallbackAction extends Action {
         String code = ctx.queryParam("code");
         String state = ctx.queryParam("state");
 
-        if (!new GitlabAuthService().processCallback(code, state, (login, user) -> LoginPage.login2(ctx, login, user))) {
+        if (!new GitlabAuthService().processCallback(code, state, user -> MinervaAuth.login2(ctx, user))) {
             ctx.redirect("/");
         }
     }

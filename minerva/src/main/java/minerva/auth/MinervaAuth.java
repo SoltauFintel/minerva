@@ -2,14 +2,20 @@ package minerva.auth;
 
 import java.time.LocalDateTime;
 
+import org.pmw.tinylog.Logger;
+
 import github.soltaufintel.amalia.auth.AbstractAuth;
+import github.soltaufintel.amalia.auth.AuthService;
 import github.soltaufintel.amalia.auth.IAuthService;
 import github.soltaufintel.amalia.auth.rememberme.NoOpRememberMe;
 import github.soltaufintel.amalia.auth.webcontext.WebContext;
 import github.soltaufintel.amalia.spark.Context;
+import minerva.MinervaWebapp;
+import minerva.model.GitFactory;
 import minerva.model.StateSO;
 import minerva.model.StatesSO;
 import minerva.model.UserSO;
+import minerva.user.User;
 
 public class MinervaAuth extends AbstractAuth {
     
@@ -33,5 +39,45 @@ public class MinervaAuth extends AbstractAuth {
     @Override
     public IAuthService getService(Context ctx) {
         throw new UnsupportedOperationException();
+    }
+
+    public static WebContext login1(Context ctx, User user) {
+        // An Webanwendung/Session anmelden.
+        WebContext wctx = new WebContext(ctx);
+        wctx.session().setUserId(user.getLogin());
+        wctx.session().setLogin(user.getLogin());
+        wctx.session().setLoggedIn(true);
+    
+        // State anlegen
+        StatesSO.login(ctx, user);
+        return wctx;
+    }
+
+    public static void login2(Context ctx, User user) {
+        WebContext wctx = login1(ctx, user);
+
+        // Ursprünglich angeforderte Seite aufrufen
+        String path = wctx.session().getGoBackPath();
+        wctx.session().setGoBackPath(null);
+        if (path == null || path.isBlank() || path.equals(ctx.path())) {
+            if (MinervaWebapp.factory().isCustomerVersion()) {
+                ctx.redirect("/b/master");
+            } else {
+                ctx.redirect("/");
+            }
+        } else {
+            Logger.info(user.getLogin() + " | Redirect to " + path + " after login");
+            ctx.redirect(path);
+        }
+    }
+    
+    public static void logout(Context ctx) {
+        StateSO stateSO = StatesSO.get(ctx);
+        if (stateSO != null) {
+            boolean revoked = GitFactory.logout(stateSO.getUser().getUser());
+            Logger.info(stateSO.getUser().getUser().getLogin() + " | logout" + (revoked ? " | Gitlab revoke ok" : ""));
+        }
+        AuthService.logout(new WebContext(ctx), new NoOpRememberMe());
+        ctx.req.session().invalidate();
     }
 }

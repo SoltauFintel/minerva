@@ -7,6 +7,8 @@ import github.soltaufintel.amalia.web.builder.LoggingInitializer;
 import github.soltaufintel.amalia.web.builder.WebAppBuilder;
 import github.soltaufintel.amalia.web.config.AppConfig;
 import github.soltaufintel.amalia.web.route.RouteDefinitions;
+import minerva.auth.Book6LoginAction;
+import minerva.auth.Book6StartAction;
 import minerva.auth.Login2Page;
 import minerva.auth.MinervaAuth;
 import minerva.base.MessagePage;
@@ -151,6 +153,7 @@ public class MinervaWebapp extends RouteDefinitions {
         
         // Sonstiges
         get("/message", MessagePage.class);
+        addNotProtected("/message");
         get("/migration/:branch", MigrationPage.class);
         get("/gitlab-auth", GitlabAuthAction.class);
         get("/gitlab-auth-callback", GitlabAuthCallbackAction.class);
@@ -163,6 +166,10 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/rest/info", InfoAction.class); // not protected
         Spark.get("/rest/publish", new PublishAction()); // protected by query params // TODO Ist das mit Amalia Code möglich?
         get("/rest/subscribe", SubscribeAction.class); // protected by known subscribers
+        post("/book6/login", Book6LoginAction.class);
+        addNotProtected("/book6/login");
+        get("/book6/start", Book6StartAction.class);
+        addNotProtected("/book6/start");
     }
 
     public static void main(String[] args) {

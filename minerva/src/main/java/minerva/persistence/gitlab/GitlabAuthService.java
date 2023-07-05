@@ -63,13 +63,13 @@ public class GitlabAuthService {
         user.setAccessToken(answer.getAccess_token());
         user.setRefreshToken(answer.getRefresh_token());
         
-        loginAction.doLogin(login, user);
+        loginAction.doLogin(user);
         
         Logger.info(login + " | Login by OAuth2 access token ok. <" + mail + ">");
     }
     
     public interface DoLogin {
-        void doLogin(String login, GitlabUser user);
+        void doLogin(GitlabUser user);
     }
     
     private boolean isStateValid(String state) {
