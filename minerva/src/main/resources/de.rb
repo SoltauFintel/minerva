@@ -129,3 +129,4 @@ pageLinkToThisPage=Diese Seite verlinkt auf die zu löschende Seite. Es wird emp
 pagesLinkToThisPage=Diese Seiten verlinken auf die zu löschende Seite. Es wird empfohlen erst die Links zu korrigieren, damit keine Broken Links entstehen.
 helpKeys=Hilfe-Keys
 allHelpKeys=Alle Hilfe-Keys
+updateOnlineHelp=Online-Hilfe aktualisieren

@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.pmw.tinylog.Logger;
 
+import minerva.base.StringService;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
 import minerva.persistence.gitlab.GitlabUser;
@@ -31,7 +32,11 @@ public class PublishAction implements Route {
         }
         UserSO userSO = new UserSO(new GitlabUser(login, password));
         WorkspaceSO workspace = userSO.getWorkspace(branch);
-        File targetFolder = new File(System.getenv("MINERVA_PUBLISHFOLDER"));
+        String publishFolder = System.getenv("MINERVA_PUBLISHFOLDER");
+        if (StringService.isNullOrEmpty(publishFolder)) {
+            throw new RuntimeException("Env var MINERVA_PUBLISHFOLDER is not set. Typical value is \"/tmp/publish\".");
+        }
+        File targetFolder = new File(publishFolder);
 
         PublishService ps = new PublishService(targetFolder, langs);
         ps.publish(workspace);

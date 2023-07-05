@@ -70,8 +70,9 @@
                     <a href="/migration/{{branch}}" class="btn btn-danger brr"><i class="fa fa-cloud-download"></i>
                         Confluence Import...</a>
                 {{/if}}
-                <a href="{{publishLink}}" class="btn btn-default brr">Download</a>
-                <a href="/b/{{branch}}/push-data" class="btn btn-default brr">Update online help!</a>
+                {{if updateOnlineHelpAllowed}}
+                    <a href="/b/{{branch}}/push-data" class="btn btn-default brr">{{N.updateOnlineHelp}}!</a>
+                {{/if}}
             {{/if}}
         </p>
         <p>

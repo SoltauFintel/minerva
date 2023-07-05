@@ -7,21 +7,19 @@ import minerva.MinervaWebapp;
 import minerva.user.User;
 
 public class LoginPage extends Page {
-    // TO-DO Es muss später für F1 noch einen POST-basierten Login geben, mit Passwort.
 
     @Override
     protected void execute() {
         LoginService loginService = MinervaWebapp.factory().getLoginService();
         if (isPOST()) {
             String login = ctx.formParam("user[login]"); // gleiche name's wie bei Gitlab
-            String password = loginService.withPassword() ? ctx.formParam("user[password]") : null;
+            String password = ctx.formParam("user[password]");
             Logger.info("LoginPage POST " + login);
 
             // Kann User angemeldet werden?
             User user = loginService.login(login, password);
             if (user == null) { // Nein...
-                String name = getClass().getSimpleName().replace("Page", "").toLowerCase();
-                ctx.redirect("/" + name + "?m=f");
+                ctx.redirect(errorUrl());
                 return;
             }
             
@@ -31,5 +29,9 @@ public class LoginPage extends Page {
             put("loginError", "f".equals(ctx.queryParam("m")));
             put("withPassword", loginService.withPassword());
         }
+    }
+    
+    protected String errorUrl() {
+        return "/login?m=f";
     }
 }

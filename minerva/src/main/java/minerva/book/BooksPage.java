@@ -7,6 +7,7 @@ import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.spark.Context;
 import minerva.MinervaWebapp;
+import minerva.base.StringService;
 import minerva.model.BookSO;
 import minerva.model.BooksSO;
 import minerva.model.WorkspaceSO;
@@ -48,6 +49,9 @@ public class BooksPage extends UPage {
         put("hash", esc(hash));
         put("hash7", esc(hash7));
         put("migrationAllowed", "1".equals(System.getenv("MINERVA_MIGRATION")));
+        put("updateOnlineHelpAllowed", MinervaWebapp.factory().isCustomerVersion()
+                && !MinervaWebapp.factory().isGitlab()
+                && !StringService.isNullOrEmpty(System.getenv("SUBSCRIBERS")));
         put("addBookAllowed", !MinervaWebapp.factory().isCustomerVersion() || books.isEmpty());
         DataList list = list("books");
         if (books != null) {

@@ -129,3 +129,4 @@ pageLinkToThisPage=This page links to this page. It is recommended to correct th
 pagesLinkToThisPage=These pages link to this page. It is recommended to correct the links first so that no broken links are created.
 helpKeys=Help keys
 allHelpKeys=All help keys
+updateOnlineHelp=Update online help

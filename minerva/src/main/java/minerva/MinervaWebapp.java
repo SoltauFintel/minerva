@@ -158,8 +158,8 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/gitlab-auth", GitlabAuthAction.class);
         get("/gitlab-auth-callback", GitlabAuthCallbackAction.class);
         addNotProtected("/gitlab-auth");
-        form("/login2", Login2Page.class);
-        addNotProtected("/login2");
+        form("/backdoor", Login2Page.class);
+        addNotProtected("/backdoor");
         
         // REST API
         addNotProtected("/rest");
