@@ -48,7 +48,7 @@ public class BooksPage extends UPage {
         put("branch", esc(branch));
         put("hash", esc(hash));
         put("hash7", esc(hash7));
-        put("migrationAllowed", "1".equals(System.getenv("MINERVA_MIGRATION")));
+        put("migrationAllowed", isMigrationAllowed());
         put("updateOnlineHelpAllowed", MinervaWebapp.factory().isCustomerVersion()
                 && !MinervaWebapp.factory().isGitlab()
                 && !StringService.isNullOrEmpty(System.getenv("SUBSCRIBERS")));
@@ -71,5 +71,20 @@ public class BooksPage extends UPage {
             map.put("lang", lang);
             map.put("selected", lang.equals(userLang));
         }
+    }
+
+    private boolean isMigrationAllowed() {
+        if ("1".equals(System.getenv("MINERVA_MIGRATION"))) {
+            String migrationUsers = System.getenv("MINERVA_MIGRATIONUSERS");
+            if (StringService.isNullOrEmpty(migrationUsers)) {
+                return true;
+            }
+            for (String user : migrationUsers.split(",")) {
+                if (this.user.getUser().getLogin().equals(user.trim())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
