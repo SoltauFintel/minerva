@@ -16,24 +16,31 @@ public class LinkAnalysisPage extends SPage {
         header(n("linkAnalysis"));
         DataList list = list("links");
         // outgoing links
+        String linkPrefix = "/s/" + branch + "/" + bookFolder + "/";
         for (String lang : langs) {
             List<Link> links = LinkService.extractLinks(seite.getContent().getString(lang), true);
             for (Link link : links) {
                 DataMap map = list.add();
-                map.put("internal", !(link.getHref().startsWith("http://") || link.getHref().startsWith("https://")));
-                map.put("href",
-                        esc(link.getHref().startsWith("http://") || link.getHref().startsWith("https://")
-                                ? link.getHref()
-                                : "/s/" + branch + "/" + bookFolder + "/" + link.getHref()));
+                boolean external = link.getHref().startsWith("http://") || link.getHref().startsWith("https://");
+                map.put("internal", !external);
+                map.put("href", esc(external ? link.getHref() : linkPrefix + link.getHref()));
                 map.put("id", esc(link.getSeiteId()));
-                map.put("title", esc(link.getTitle())); // This is the link title.
-                // TODO page title
+                map.put("linkTitle", esc(link.getTitle())); // This is the link title.
+                map.put("pageTitle", esc(getPageTitle(link, external)));
                 map.put("lang", lang);
                 map.put("outgoing", true);
             }
         }
         // incoming links
         analyze(book.getSeiten(), list);
+    }
+
+    private String getPageTitle(Link link, boolean external) {
+        if (external) {
+            return "";
+        }
+        SeiteSO s = book.getSeiten()._byId(link.getHref());
+        return s == null ? link.getTitle() : s.getTitle();
     }
 
     private void analyze(SeitenSO seiten, DataList list) {
@@ -44,18 +51,16 @@ public class LinkAnalysisPage extends SPage {
                     if (link.getHref().equals(seite.getId())) {
                         DataMap map = list.add();
                         map.put("internal", !(link.getHref().startsWith("http://") || link.getHref().startsWith("https://")));
-                        map.put("href",
-                                esc(link.getHref().startsWith("http://") || link.getHref().startsWith("https://")
-                                        ? link.getHref()
-                                        : "/s/" + branch + "/" + bookFolder + "/" + link.getHref()));
+                        map.put("href", esc("/s/" + branch + "/" + bookFolder + "/" + s.getId()));
                         map.put("id", esc(s.getId()));
-                        // link.title is the link title.
-                        map.put("title", esc(s.getTitle())); // page title
+                        map.put("linkTitle", esc(link.getTitle()));
+                        map.put("pageTitle", esc(s.getTitle()));
                         map.put("lang", lang);
                         map.put("outgoing", false);
                     }
                 }
             }
+            analyze(s.getSeiten(), list); // recursive
         }
     }
 }

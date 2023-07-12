@@ -138,3 +138,6 @@ mapping1=Vorhandene Verknüpfungen
 mapping2=Verknüpfung hinzufügen
 favorite=Favorit
 linkAnalysis=Link-Analyse
+type=Typ
+linkTitle=Link-Titel
+pageTitle=Seitentitel
