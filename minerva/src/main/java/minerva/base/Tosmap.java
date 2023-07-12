@@ -68,7 +68,7 @@ public class Tosmap {
                 String info = "removed from Tosmap by get(): " + key + " / " + (ret.getData() == null ? "null"
                         : ret.getData().getClass().getSimpleName() + " / " + time + ">" + ret.getExpires());
                 map.remove(key);
-                Logger.debug(info);
+                Logger.info(info);
                 return null;
             }
             return ret.getData();

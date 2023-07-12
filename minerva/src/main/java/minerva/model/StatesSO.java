@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import github.soltaufintel.amalia.spark.Context;
+import minerva.auth.MinervaAuth;
 import minerva.base.Tosmap;
+import minerva.base.UserMessage;
 import minerva.user.User;
 
 /**
@@ -16,7 +18,12 @@ public class StatesSO {
     }
     
     public static StateSO get(Context ctx) {
-        return get(key(ctx));
+        StateSO state = get(key(ctx));
+        if (state == null) {
+            MinervaAuth.logout2(ctx);
+            throw new UserMessage("session-expired", (UserSO) null);
+        }
+        return state;
     }
     
     public static StateSO get(String sessionId) {

@@ -130,3 +130,4 @@ pagesLinkToThisPage=Diese Seiten verlinken auf die zu löschende Seite. Es wird 
 helpKeys=Hilfe-Keys
 allHelpKeys=Alle Hilfe-Keys
 updateOnlineHelp=Online-Hilfe aktualisieren
+session-expired=Session ist abgelaufen. Bitte erneut anmelden.

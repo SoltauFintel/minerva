@@ -130,3 +130,4 @@ pagesLinkToThisPage=These pages link to this page. It is recommended to correct 
 helpKeys=Help keys
 allHelpKeys=All help keys
 updateOnlineHelp=Update online help
+session-expired=Session has expired. Please login again.
