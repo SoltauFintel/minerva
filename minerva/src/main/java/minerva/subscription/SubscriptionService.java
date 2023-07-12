@@ -177,7 +177,7 @@ public class SubscriptionService {
     }
     
     public PageTitles loadPageTitles() {
-        /*if (true) { // XXX DEMO Modus
+        /*if (true) { // dev mode
             PageTitles ret = new PageTitles();
             ret.setLang(new HashMap<>());
             List<PageTitle> z = new ArrayList<>();
@@ -206,9 +206,6 @@ public class SubscriptionService {
         // TODO eigentlich müssten alle Subscriber abgefragt werden und ein Set gebildet werden
         String url = subscribers.split(",")[0] + "/rest/page-titles";
         PageTitles ret = new REST(url).get().fromJson(PageTitles.class);
-        if (ret != null && ret.getLang() != null) {
-            Logger.info("PageTitles.lang.keySet: " + ret.getLang().keySet()); // XXX DEBUG
-        }
         return ret;
     }
 }
