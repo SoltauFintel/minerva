@@ -84,7 +84,7 @@ public class ViewSeitePage extends SPage {
         String lastChangeInfo = infotext
             .replace("$d", change.getDate())
             .replace("$u", change.getUser())
-            .replace("$c", change.getComment())
+            .replace("$c", change.getComment().isEmpty() ? "" : (": " + change.getComment()))
             .replace("$p", pageTitle);
         model.put("lastChangeInfo", Escaper.esc(lastChangeInfo));
         model.put("lastChange", Escaper.esc(change.getComment()));
