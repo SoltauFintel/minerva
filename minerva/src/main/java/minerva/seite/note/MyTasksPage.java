@@ -3,6 +3,8 @@ package minerva.seite.note;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pmw.tinylog.Logger;
+
 import minerva.model.BookSO;
 import minerva.user.UPage;
 
@@ -11,6 +13,7 @@ public class MyTasksPage extends UPage {
     @Override
     protected void execute() {
         String branch = ctx.pathParam("branch");
+        Logger.info(user.getUser().getLogin() + " | My tasks");
         header(n("myTasks"));
         AllNotesPage.fill(getNotes(branch), branch, model);
     }

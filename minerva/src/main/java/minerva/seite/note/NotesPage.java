@@ -2,6 +2,8 @@ package minerva.seite.note;
 
 import java.util.List;
 
+import org.pmw.tinylog.Logger;
+
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
@@ -14,6 +16,7 @@ public class NotesPage extends SPage {
     
     @Override
     protected void execute() {
+        Logger.info(user.getUser().getLogin() + " | Notes page for \"" + seite.getTitle() + "\"");
         header(n("notes"));
         put("noteHTML", noteHTML(seite.getSeite().getNotes(), 1));
         put("hasNotes", !seite.getSeite().getNotes().isEmpty());
