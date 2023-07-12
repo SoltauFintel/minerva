@@ -131,3 +131,7 @@ helpKeys=Help keys
 allHelpKeys=All help keys
 updateOnlineHelp=Update online help
 session-expired=Session has expired. Please login again.
+customerMapping=Mapping
+force=force
+mapping1=Existing mappings
+mapping2=Add mapping

@@ -1,0 +1,37 @@
+{{master: master}}
+
+<div class="row"> 
+    <div class="col-lg-12">
+        <h1 class="page-header">{{header}}</h1>
+
+        <h2><a href="{{viewlink}}">{{pageTitle}}</a></h2>
+
+        <!-- existing mappings -->
+        <h3>{{N.mapping1}}:</h3>
+        {{if hasMappings}}
+            <ul>
+                {{each t in linked}}
+                    <li>{{t.title}}
+                        <span style="font-size: 8pt;">[<a class="movelink" href="{{t.link}}">{{delete}}</a>]</span></li>
+                {{/each}}
+            </ul>
+        {{else}}
+            - {{N.none}} -
+        {{/if}}
+        <hr/>
+        
+        <!-- add mapping -->
+        <h3>{{N.mapping2}}:</h3>
+        <ul>
+            {{each t in titles}}
+                <li><a class="movelink" href="{{t.link}}">{{t.title}}</a>
+                    <span style="font-size: 8pt;">[<a class="movelink" href="{{t.forcelink}}">{{N.force}}</a>]</span></li>
+            {{/each}}
+        </ul>
+
+        <p class="mt2">
+            <a href="{{viewlink}}" class="btn btn-default br"><i class="fa fa-arrow-left"></i>
+                {{N.backToPage}} "{{pageTitle}}"</a>
+        </p>
+    </div>
+</div>

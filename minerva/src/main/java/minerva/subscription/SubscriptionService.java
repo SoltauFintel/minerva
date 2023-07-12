@@ -175,4 +175,40 @@ public class SubscriptionService {
             throw new RuntimeException("Method can only be called for customer version with file-system backend!");
         }
     }
+    
+    public PageTitles loadPageTitles() {
+        /*if (true) { // XXX DEMO Modus
+            PageTitles ret = new PageTitles();
+            ret.setLang(new HashMap<>());
+            List<PageTitle> z = new ArrayList<>();
+            PageTitle t;
+            t = new PageTitle();
+            t.setId("10");
+            t.setTitle("Hallo Seite 1");
+            z.add(t);
+            t = new PageTitle();
+            t.setId("12");
+            t.setTitle("Hallo Seite 2");
+            z.add(t);
+            ret.getLang().put("de", z);
+            t = new PageTitle();
+            t.setId("14");
+            t.setTitle("Hallo Seite 4");
+            z.add(t);
+            ret.getLang().put("de", z);
+            return ret;
+        }*/
+        String subscribers = System.getenv("SUBSCRIBERS");
+        if (StringService.isNullOrEmpty(subscribers)) {
+            return new PageTitles();
+        }
+        checkMode();
+        // TODO eigentlich müssten alle Subscriber abgefragt werden und ein Set gebildet werden
+        String url = subscribers.split(",")[0] + "/rest/page-titles";
+        PageTitles ret = new REST(url).get().fromJson(PageTitles.class);
+        if (ret != null && ret.getLang() != null) {
+            Logger.info("PageTitles.lang.keySet: " + ret.getLang().keySet()); // XXX DEBUG
+        }
+        return ret;
+    }
 }

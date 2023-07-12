@@ -131,3 +131,7 @@ helpKeys=Hilfe-Keys
 allHelpKeys=Alle Hilfe-Keys
 updateOnlineHelp=Online-Hilfe aktualisieren
 session-expired=Session ist abgelaufen. Bitte erneut anmelden.
+customerMapping=Mapping
+force=Anzeige erzwingen
+mapping1=Vorhandene Verknüpfungen
+mapping2=Verknüpfung hinzufügen

@@ -110,6 +110,12 @@
             <a href="{{viewlink}}/notes" class="btn btn-default mw"><i class="fa fa-comment"></i>
                 {{N.notes}} ({{notesSize}})</a>
         </p>
+        {{if isCustomerVersion}}
+            <p>
+                <a href="{{viewlink}}/mapping" class="btn btn-default mw"><i class="fa fa-question-circle"></i>
+                    {{N.customerMapping}}</a>
+            </p>
+        {{/if}}
         <p>
             <a href="{{viewlink}}/help-keys" class="btn btn-default mw"><i class="fa fa-question-circle"></i>
                 {{N.helpKeys}} ({{helpKeysSize}})</a>

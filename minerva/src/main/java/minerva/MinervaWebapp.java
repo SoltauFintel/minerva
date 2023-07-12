@@ -65,6 +65,8 @@ import minerva.seite.tag.DeleteTagAction;
 import minerva.seite.tag.TagCloudPage;
 import minerva.seite.tag.TagWPage;
 import minerva.seite.tag.TagsPage;
+import minerva.subscription.AddMappingAction;
+import minerva.subscription.MappingPage;
 import minerva.subscription.PushDataAction;
 import minerva.subscription.SubscribeAction;
 import minerva.workspace.AddWorkspacePage;
@@ -123,6 +125,8 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/s/:branch/:book/:id/move", MoveSeiteAction.class);
         get("/s/:branch/:book/:id/history", SeiteHistoryPage.class);
         form("/s/:branch/:book/:id/help-keys", HelpKeysPage.class);
+        form("/s/:branch/:book/:id/mapping", MappingPage.class);
+        form("/s/:branch/:book/:id/add-mapping", AddMappingAction.class);
         
         // Image
         post("/s-image-upload/:branch/:book/:id", ImageUploadAction.class);
