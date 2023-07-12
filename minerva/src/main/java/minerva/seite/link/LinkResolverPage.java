@@ -97,7 +97,8 @@ public class LinkResolverPage extends SPage {
     }
 
     private String addResult(String link, String title, int nr) {
-        return "<tr><td><a href=\"" + link + "\" onclick=\"document.querySelector('#s" + nr + "').style='';\">"
+        return "<tr><td><a class=\"movelink\" href=\"" + link + "\""
+                + " onclick=\"document.querySelector('#s" + nr + "').style='';\">"
                 + title + " <i id=\"s" + nr
                 + "\" class=\"fa fa-delicious fa-spin\" style=\"display: none;\"></i></a></td></tr>";
     }
