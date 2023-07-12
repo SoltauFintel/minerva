@@ -334,3 +334,8 @@ figure table th {
     padding: 5px;
     background-color: #f0f0f0;
 }
+
+blockquote {
+    font-size: 14px;
+    font-style: italic;
+}
