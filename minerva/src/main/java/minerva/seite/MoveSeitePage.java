@@ -29,7 +29,7 @@ public class MoveSeitePage extends SPage {
     }
     
     private void book(BookSO book, String href, StringBuilder gliederung) {
-        gliederung.append("<li class=\"mt1\"><i class=\"fa fa-book greenbook\"></i> <a href=\"");
+        gliederung.append("<li class=\"mt1\"><i class=\"fa fa-book greenbook\"></i> <a class=\"movelink\" href=\"");
         gliederung.append(href);
         gliederung.append("\">");
         gliederung.append(esc(book.getTitle()));
@@ -61,7 +61,7 @@ public class MoveSeitePage extends SPage {
                 fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, false);
             } else {
                 String link = viewlink + "/move-ack?parentid=" + Escaper.urlEncode(seite.getId(), "");
-                gliederung.append("\t<li><a href=\"");
+                gliederung.append("\t<li><a class=\"movelink\" href=\"");
                 gliederung.append(link);
                 gliederung.append("\">");
                 gliederung.append(esc(seite.getSeite().getTitle().getString(lang)));
