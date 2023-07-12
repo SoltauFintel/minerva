@@ -137,3 +137,4 @@ force=force
 mapping1=Existing mappings
 mapping2=Add mapping
 favorite=Favorite
+linkAnalysis=Link analysis

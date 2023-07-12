@@ -54,6 +54,7 @@ import minerva.seite.SortSeiteAction;
 import minerva.seite.ToggleFavoriteAction;
 import minerva.seite.ViewSeitePage;
 import minerva.seite.link.CheckAllLinksPage;
+import minerva.seite.link.LinkAnalysisPage;
 import minerva.seite.link.LinkResolverPage;
 import minerva.seite.note.AddNotePage;
 import minerva.seite.note.AllNotesPage;
@@ -128,7 +129,8 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/s/:branch/:book/:id/help-keys", HelpKeysPage.class);
         form("/s/:branch/:book/:id/mapping", MappingPage.class);
         form("/s/:branch/:book/:id/add-mapping", AddMappingAction.class);
-        form("/s/:branch/:book/:id/toggle-favorite", ToggleFavoriteAction.class);
+        get("/s/:branch/:book/:id/toggle-favorite", ToggleFavoriteAction.class);
+        get("/s/:branch/:book/:id/links", LinkAnalysisPage.class);
         
         // Image
         post("/s-image-upload/:branch/:book/:id", ImageUploadAction.class);

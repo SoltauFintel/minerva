@@ -15,7 +15,6 @@ public class MappingPage extends SPage {
         PageTitles titles = new SubscriptionService().loadPageTitles();
         
         header(n("customerMapping"));
-        put("pageTitle", esc(seite.getTitle()));
         DataList list = list("titles");
         DataList list2 = list("linked");
         boolean hasMappings = false;
