@@ -22,8 +22,15 @@ public class CommitMessage {
      * @param comment not null, can be empty
      */
     public CommitMessage(SeiteSO seite, String comment) {
-        this(seite.getSeite().getTitle().getString(MinervaWebapp.factory().getLanguages().get(0))
-                + (comment.isEmpty() ? "" : (": " + comment)));
+        this(makeTitle(seite, comment));
+    }
+    
+    private static String makeTitle(SeiteSO seite, String comment) {
+        String title = seite.getSeite().getTitle().getString(MinervaWebapp.factory().getLanguages().get(0));
+        if (title.equals(comment) || comment.isEmpty()) {
+            return title;
+        }
+        return title + ": " + comment;
     }
 
     @Override
