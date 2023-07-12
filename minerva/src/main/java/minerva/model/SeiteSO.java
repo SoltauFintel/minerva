@@ -125,19 +125,11 @@ public class SeiteSO implements ISeite {
     }
     
     public String getSortTitle() {
-        return getTitle().toLowerCase()
-                .replace("ä", "ae")
-                .replace("ö", "oe")
-                .replace("ü", "ue")
-                .replace("ß", "ss");
+        return StringService.umlaute(getTitle());
     }
 
     public String getSortTitle(String lang) {
-        return getSeite().getTitle().getString(lang).toLowerCase()
-                .replace("ä", "ae")
-                .replace("ö", "oe")
-                .replace("ü", "ue")
-                .replace("ß", "ss");
+        return StringService.umlaute(getSeite().getTitle().getString(lang));
     }
 
     public BookSO getBook() {

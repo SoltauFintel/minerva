@@ -42,4 +42,15 @@ public class StringService {
     public static <T> String prettyJSON(T data) {
         return prettyJSON(new Gson().toJson(data));
     }
+    
+    public static String umlaute(String text) {
+        if (text == null) {
+            return "";
+        }
+        return text.toLowerCase()
+            .replace("ä", "ae")
+            .replace("ö", "oe")
+            .replace("ü", "ue")
+            .replace("ß", "ss");
+    }
 }

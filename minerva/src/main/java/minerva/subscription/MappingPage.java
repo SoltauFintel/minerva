@@ -5,6 +5,7 @@ import java.util.List;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import minerva.base.StringService;
 import minerva.seite.SPage;
 
 public class MappingPage extends SPage {
@@ -20,6 +21,8 @@ public class MappingPage extends SPage {
         boolean hasMappings = false;
         if (titles != null && titles.getLang() != null) {
             List<PageTitle> titleList = titles.getLang().get(user.getPageLanguage());
+            titleList.sort((a, b) -> StringService.umlaute(a.getTitle()).compareTo(
+                                     StringService.umlaute(b.getTitle())));
             for (PageTitle t : titleList) {
                 DataMap map = list.add();
                 String url = viewlink + "/add-mapping?ohid=" + u(t.getId());
