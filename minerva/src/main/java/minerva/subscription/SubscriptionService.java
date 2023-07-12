@@ -109,21 +109,23 @@ public class SubscriptionService {
         String subscribers = System.getenv("SUBSCRIBERS");
         if (!StringService.isNullOrEmpty(subscribers)) {
             checkMode();
-            String[] w = subscribers.split(",");
-            for (String host : w) {
-                String url = host + "/book6/page/" + page.getId();
-                Logger.info("PUT " + url);
-                new REST(url) {
-                    @Override
-                    protected RestResponse request(HttpEntityEnclosingRequestBase request, Object data) {
-                        try {
-                            return request(request, new Gson().toJson(data), "application/json; charset=cp1252");
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
+            new Thread(() -> {
+                String[] w = subscribers.split(",");
+                for (String host : w) {
+                    String url = host + "/book6/page/" + page.getId();
+                    Logger.info("PUT " + url);
+                    new REST(url) {
+                        @Override
+                        protected RestResponse request(HttpEntityEnclosingRequestBase request, Object data) {
+                            try {
+                                return request(request, new Gson().toJson(data), "application/json; charset=cp1252");
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
                         }
-                    }
-                }.put(page).close();
-            }
+                    }.put(page).close();
+                }
+            }).start();
         }
     }
     

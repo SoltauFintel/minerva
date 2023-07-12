@@ -376,7 +376,7 @@ public class SeiteSO implements ISeite {
             ss.pagesChanged();
         } else {
             TPage tpage = ss.createTPage(this, newContent, langs);
-            new Thread(() -> ss.pageModified(tpage)).start();
+            ss.pageModified(tpage);
         }
         
         neu = false;
@@ -496,7 +496,7 @@ public class SeiteSO implements ISeite {
     public void updateOnlineHelp() {
         SubscriptionService ss = new SubscriptionService();
         TPage tpage = ss.createTPage(this, getContent(), MinervaWebapp.factory().getLanguages());
-        new Thread(() -> ss.pageModified(tpage)).start();
+        ss.pageModified(tpage);
     }
 
     public void updateOnlineHelp_nowVisible() {
