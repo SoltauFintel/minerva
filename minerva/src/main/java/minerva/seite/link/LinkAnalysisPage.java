@@ -26,7 +26,7 @@ public class LinkAnalysisPage extends SPage {
                 map.put("href", esc(external ? link.getHref() : linkPrefix + link.getHref()));
                 map.put("id", esc(link.getSeiteId()));
                 map.put("linkTitle", esc(link.getTitle())); // This is the link title.
-                map.put("pageTitle", esc(getPageTitle(link, external)));
+                map.put("pageTitle", esc(getPageTitle(link, external, lang)));
                 map.put("lang", lang);
                 map.put("outgoing", true);
             }
@@ -35,12 +35,12 @@ public class LinkAnalysisPage extends SPage {
         analyze(book.getSeiten(), list);
     }
 
-    private String getPageTitle(Link link, boolean external) {
+    private String getPageTitle(Link link, boolean external, String lang) {
         if (external) {
             return "";
         }
         SeiteSO s = book.getSeiten()._byId(link.getHref());
-        return s == null ? link.getTitle() : s.getTitle();
+        return s == null ? link.getTitle() : s.getSeite().getTitle().getString(lang);
     }
 
     private void analyze(SeitenSO seiten, DataList list) {
