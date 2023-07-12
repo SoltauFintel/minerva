@@ -45,7 +45,8 @@ public class ViewSeitePage extends SPage {
             map.put("content", seiteSO.getContent().getString(lang));
             map.put("active", lang.equals(user.getPageLanguage()));
             fillBreadcrumbs(lang, map.list("breadcrumbs"));
-            map.putInt("subpagesSize", fillSubpages(seiteSO.getSeiten(), lang, map.list("subpages"), branch, bookFolder));
+            map.putInt("subpagesSize", fillSubpages(seiteSO.getSeiten(), lang, map.list("subpages"),
+                    branch, bookFolder, false));
         }
         
         fillTags(seite);
@@ -91,11 +92,12 @@ public class ViewSeitePage extends SPage {
         model.put("lastChangeUser", Escaper.esc(change.getUser()));
     }
     
-    static int fillSubpages(SeitenSO seiten, String lang, DataList subpages, String branch, String bookFolder) {
+    static int fillSubpages(SeitenSO seiten, String lang, DataList subpages, String branch, String bookFolder,
+            boolean showAllPages) {
         int n = 0;
         seiten.sort(lang);
         for (SeiteSO sub : seiten) {
-            if (sub.hasContent(lang) > 0) {
+            if (showAllPages || sub.hasContent(lang) > 0) {
                 DataMap map = subpages.add();
                 map.put("id", Escaper.esc(sub.getId()));
                 map.put("titel", Escaper.esc(sub.getSeite().getTitle().getString(lang)));
