@@ -1,5 +1,7 @@
 package minerva.base;
 
+import java.util.List;
+
 import github.soltaufintel.amalia.auth.webcontext.WebContext;
 import github.soltaufintel.amalia.spark.Context;
 import minerva.model.BooksSO;
@@ -12,6 +14,7 @@ public class MinervaPageInitModel {
     private String branch;
     private String userLang;
     private BooksSO books;
+    private List<String> favorites;
     
     public MinervaPageInitModel(Context ctx) {
         WebContext wctx = new WebContext(ctx);
@@ -22,6 +25,7 @@ public class MinervaPageInitModel {
         if (hasUser) {
             UserSO user = StatesSO.get(ctx).getUser();
             userLang = user.getGuiLanguage();
+            favorites = user.getFavorites();
             if (user.getCurrentWorkspace() != null) {
                 branch = user.getCurrentWorkspace().getBranch();
                 if (user.getCurrentWorkspace().getBooks() != null //
@@ -50,5 +54,13 @@ public class MinervaPageInitModel {
 
     public String getBranch() {
         return branch;
+    }
+
+    public List<String> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(List<String> favorites) {
+        this.favorites = favorites;
     }
 }

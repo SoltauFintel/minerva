@@ -32,6 +32,10 @@
     font-size: 8pt;
 }
 
+.fav {
+    color: #fa0;
+}
+
 .app-title {
     color: black;
     font-size: 18pt;

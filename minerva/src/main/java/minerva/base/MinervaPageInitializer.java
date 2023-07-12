@@ -11,6 +11,7 @@ import github.soltaufintel.amalia.web.action.PageInitializer;
 import minerva.MinervaWebapp;
 import minerva.model.BookSO;
 import minerva.model.BooksSO;
+import minerva.model.SeiteSO;
 
 public class MinervaPageInitializer extends PageInitializer {
     
@@ -65,6 +66,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("searchPlaceholder", NLS.get(userLang, "searchPlaceholder"));
         page.put("exclusionsTitle", NLS.get(userLang, "exclusions"));
         page.put("myTasks", NLS.get(userLang, "myTasks"));
+        DataList list = page.list("favorites");
         if (m.getBooks() != null) {
             if (!"master".equals(m.getBranch())) {
                 page.put("branch0", esc(m.getBranch()));
@@ -72,6 +74,17 @@ public class MinervaPageInitializer extends PageInitializer {
             page.put("previewTitle", NLS.get(userLang, "preview"));
             page.put("previewlink", "/p/" + m.getBranch());
             page.put("hasBook", true);
+            String linkPrefix = "/s/" + m.getBranch() + "/";
+            for (String id : m.getFavorites()) {
+                for (BookSO book : m.getBooks()) {
+                    SeiteSO seite = book.getSeiten()._byId(id);
+                    if (seite != null) {
+                        DataMap map = list.add();
+                        map.put("link", esc(linkPrefix + book.getBook().getFolder() + "/" + seite.getId()));
+                        map.put("title", esc(seite.getTitle()));
+                    }
+                }
+            }
         }
     }
 }

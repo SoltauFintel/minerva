@@ -1,11 +1,15 @@
 package minerva.model;
 
+import java.io.File;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import minerva.MinervaWebapp;
 import minerva.access.DirAccess;
+import minerva.base.FileService;
 import minerva.seite.link.InvalidLinksModel;
 import minerva.user.User;
+import minerva.user.UserSettings;
 
 public class UserSO {
     private final User user;
@@ -95,5 +99,37 @@ public class UserSO {
 
     public void setOrderPagesModel(SeitenSO orderPagesModel) {
         this.orderPagesModel = orderPagesModel;
+    }
+
+    public void toggleFavorite(String id) {
+        UserSettings us = loadUserSettings();
+        List<String> favorites = us.getFavorites();
+        if (favorites.contains(id)) {
+            favorites.remove(id);
+        } else {
+            favorites.add(id);
+        }
+        saveUserSettings(us);
+    }
+    
+    public List<String> getFavorites() {
+        return loadUserSettings().getFavorites();
+    }
+    
+    public UserSettings loadUserSettings() {
+        File file = getUserSettingsFile();
+        if (file.isFile()) {
+            return FileService.loadJsonFile(file, UserSettings.class);
+        }
+        return new UserSettings();
+    }
+    
+    public void saveUserSettings(UserSettings us) {
+        FileService.saveJsonFile(getUserSettingsFile(), us);
+    }
+    
+    private File getUserSettingsFile() {
+        return new File(MinervaWebapp.factory().getConfig().getWorkspacesFolder() + "/" + user.getLogin()
+                + "/user-settings.json");
     }
 }
