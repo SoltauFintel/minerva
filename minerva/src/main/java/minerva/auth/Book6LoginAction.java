@@ -15,7 +15,6 @@ public class Book6LoginAction extends Action {
         if (body == null || body.isBlank()) {
             throw new RuntimeException("No access granted.");
         }
-        Logger.info("Book6LoginAction body>>" + body + "<<"); // XXX DEBUG FIXME
 
         String[] w = body.split(";");
         String user = "";

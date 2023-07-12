@@ -216,7 +216,6 @@ public class SeiteSO implements ISeite {
         for (String lang : langs) {
             filenames.add(filenameHtml(lang));
         }
-        Logger.info("loadFiles(" + withSeite + ", " + langs + ") filenames: " + filenames); // XXX DEBUG
         return dao().loadFiles(filenames);
     }
 
