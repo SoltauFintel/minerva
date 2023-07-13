@@ -27,7 +27,7 @@ public class LinkAnalysisPage extends SPage {
                 map.put("id", esc(link.getSeiteId()));
                 map.put("linkTitle", esc(link.getTitle())); // This is the link title.
                 map.put("pageTitle", esc(getPageTitle(link, external, lang)));
-                map.put("lang", lang);
+                map.put("lang", lang.toUpperCase());
                 map.put("outgoing", true);
             }
         }
@@ -55,7 +55,7 @@ public class LinkAnalysisPage extends SPage {
                         map.put("id", esc(s.getId()));
                         map.put("linkTitle", esc(link.getTitle()));
                         map.put("pageTitle", esc(s.getTitle()));
-                        map.put("lang", lang);
+                        map.put("lang", lang.toUpperCase());
                         map.put("outgoing", false);
                     }
                 }
