@@ -6,6 +6,7 @@ public class SortSeiteAction extends SAction {
     protected void execute() {
         user.onlyAdmin();
         seite.activateSorted();
+        seite.log("Sorting activated.");
         ctx.redirect(viewlink);
     }
 }

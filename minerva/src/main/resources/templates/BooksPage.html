@@ -101,6 +101,9 @@
                     <a href="/activate-admin-rights" class="btn btn-default brr">{{N.giveAdminRights}}!</a>
                 {{/if}}
             {{/if}}
+            {{if isAdmin}}
+                <a href="/serverlog" class="btn btn-default brr"><i class="fa fa-file-o"></i> {{N.serverlog}}</a>
+            {{/if}}
         </p>
     </div>
 </div>

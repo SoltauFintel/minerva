@@ -18,6 +18,7 @@ public class ExclusionsEditPage extends UPage {
             String exclusions = ctx.formParam("exclusions");
             ex(branch).set(exclusions);
             Logger.info(user.getUser().getLogin() + " | " + branch + " | Exclusions saved.");
+            user.log("Exclusions saved");
             ctx.redirect("/w/" + esc(branch) + "/exclusions/edit");
         } else {
             UpToDateCheckService.check(user.getWorkspace(branch), () -> {});

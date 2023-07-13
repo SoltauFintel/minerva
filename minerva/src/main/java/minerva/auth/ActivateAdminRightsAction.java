@@ -14,9 +14,11 @@ public class ActivateAdminRightsAction extends UAction {
             if ("0".equals(ctx.queryParam("m"))) {
                 ctx.req.session().attribute("admin", "0");
                 Logger.info(login + " | dropped admin rights");
+                user.log("-- Admin rights dropped.");
             } else {
                 ctx.req.session().attribute("admin", "1");
                 Logger.info(login + " | admin rights activated");
+                user.log("-- Admin rights activated.");
             }
         }
         ctx.redirect("/b/" + esc(user.getCurrentWorkspace().getBranch()));

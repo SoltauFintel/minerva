@@ -17,6 +17,7 @@ import minerva.base.MessagePage;
 import minerva.base.MinervaError404Page;
 import minerva.base.MinervaErrorPage;
 import minerva.base.MinervaPageInitializer;
+import minerva.base.ServerlogPage;
 import minerva.book.AddBookPage;
 import minerva.book.BookPage;
 import minerva.book.BooksPage;
@@ -172,6 +173,7 @@ public class MinervaWebapp extends RouteDefinitions {
         addNotProtected("/backdoor");
         get("/math", MathPage.class);
         get("/activate-admin-rights", ActivateAdminRightsAction.class);
+        get("/serverlog", ServerlogPage.class);
         
         // REST API
         addNotProtected("/rest");

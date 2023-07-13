@@ -1,8 +1,15 @@
 package minerva.model;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import org.pmw.tinylog.Logger;
+
+import com.google.common.base.Strings;
 
 import minerva.MinervaWebapp;
 import minerva.access.DirAccess;
@@ -22,7 +29,7 @@ public class UserSO {
     
     public UserSO(User user) {
         this.user = user;
-        String userFolder = MinervaWebapp.factory().getConfig().getWorkspacesFolder() + "/" + user.getFolder();
+        String userFolder = workspacefolder() + "/" + user.getFolder();
         dao = MinervaWebapp.factory().getDirAccess(this);
         this.workspaces = new WorkspacesSO(this, userFolder);
     }
@@ -129,13 +136,36 @@ public class UserSO {
     }
     
     private File getUserSettingsFile() {
-        return new File(MinervaWebapp.factory().getConfig().getWorkspacesFolder() + "/" + user.getLogin()
-                + "/user-settings.json");
+        return new File(workspacefolder() + "/" + user.getLogin() + "/user-settings.json");
     }
     
     public void onlyAdmin() {
         if (!MinervaWebapp.factory().getAdmins().contains(user.getLogin())) {
             throw new RuntimeException("User " + user.getLogin() + " is not an admin!");
         }
+    }
+    
+    public void log(String msg) {
+        try (FileWriter w = new FileWriter(getServerlogFile(), true)) {
+            w.write(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss ")));
+            w.write(Strings.padEnd(user.getLogin(), 16, ' '));
+            w.write(" ");
+            w.write(msg);
+            w.write("\n");
+        } catch (IOException e) {
+            Logger.error(e);
+        }
+    }
+    
+    public String getServerlog() {
+        return FileService.loadPlainTextFile(getServerlogFile());
+    }
+    
+    private File getServerlogFile() {
+        return new File(workspacefolder() + "/server.log");
+    }
+
+    private String workspacefolder() {
+        return MinervaWebapp.factory().getConfig().getWorkspacesFolder();
     }
 }

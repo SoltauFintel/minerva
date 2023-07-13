@@ -145,3 +145,4 @@ formulaEditor=Formulas
 formula=formula
 giveAdminRights=Admin rights
 dropAdminRights=Drop admin rights
+serverlog=Server log

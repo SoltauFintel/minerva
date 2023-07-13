@@ -507,4 +507,8 @@ public class SeiteSO implements ISeite {
     public void updateOnlineHelp_nowInvisible() {
         new SubscriptionService().pageDeleted(seite.getId());
     }
+    
+    public void log(String msg) {
+        book.getWorkspace().getUser().log("#" + getId() + " \"" + getTitle() + "\" " + msg);
+    }
 }
