@@ -233,22 +233,23 @@
     max-width: 100%;
 }
 
-.seite h2 {
+.seite h2, .ck-content h2 {
     color: #c00;
 }
 
-.seite h3 {
+.seite h3, .ck-content h3 {
     color: #080;
 }
 
-.ck-content h2 {
-    color: #c00;
+.seite h5, .ck-content h5 {
+    font-size: 16px;
+    color: #999;
 }
 
-.ck-content h3 {
-    color: #080;
+.seite h6, .ck-content h6 {
+    font-size: 16px;
+    color: #906;
 }
-
 
 #search-results td {
     border: 0;
