@@ -143,3 +143,5 @@ linkTitle=Link-Titel
 pageTitle=Seitentitel
 formulaEditor=Formeleingabe
 formula=Formel
+giveAdminRights=Admin-Rechte erhalten
+dropAdminRights=Admin-Rechte aufgeben

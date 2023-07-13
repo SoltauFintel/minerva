@@ -7,6 +7,7 @@ import github.soltaufintel.amalia.web.builder.LoggingInitializer;
 import github.soltaufintel.amalia.web.builder.WebAppBuilder;
 import github.soltaufintel.amalia.web.config.AppConfig;
 import github.soltaufintel.amalia.web.route.RouteDefinitions;
+import minerva.auth.ActivateAdminRightsAction;
 import minerva.auth.Book6LoginAction;
 import minerva.auth.Book6StartAction;
 import minerva.auth.Login2Page;
@@ -170,6 +171,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/backdoor", Login2Page.class);
         addNotProtected("/backdoor");
         get("/math", MathPage.class);
+        get("/activate-admin-rights", ActivateAdminRightsAction.class);
         
         // REST API
         addNotProtected("/rest");

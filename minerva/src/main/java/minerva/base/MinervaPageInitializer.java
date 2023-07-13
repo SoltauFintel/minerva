@@ -38,6 +38,9 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("hasBook", false);
         page.put("book0Title", "");
         page.put("myTasks", "");
+        boolean isAdmin = "1".equals(ctx.req.session().attribute("admin"));
+        page.put("isAdmin", isAdmin);
+        page.put("canBeAdmin", m.hasUser() && MinervaWebapp.factory().getAdmins().contains(m.getLogin()));
         hasUserVars(page, m);
     }
 

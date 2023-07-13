@@ -32,6 +32,7 @@ public class MinervaFactory {
     private final GitlabRepositorySO gitlabRepository;
     private final List<String> languages;
     private final List<String> persons;
+    private final List<String> admins;
     private final IPageChangeStrategy pageChangeStrategy;
     
     public MinervaFactory(MinervaConfig config) {
@@ -53,6 +54,7 @@ public class MinervaFactory {
         }
         System.out.println("languages: " + languages + " | backend: " + getPersistenceInfo() + folder);
         persons = config.getPersons();
+        admins = config.getAdmins();
         
         // denkbar wären: A. alle speichern
         //   B. nur 1 speichern
@@ -131,6 +133,10 @@ public class MinervaFactory {
     
     public List<String> getPersons() {
         return persons;
+    }
+
+    public List<String> getAdmins() {
+        return admins;
     }
 
     public IPageChangeStrategy getPageChangeStrategy() {

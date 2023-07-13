@@ -11,6 +11,8 @@ public class AddBookPage extends UPage {
     protected void execute() {
         String branch = ctx.pathParam("branch");
         
+        user.onlyAdmin();
+        
         if (isPOST()) {
             String folder = ctx.queryParam("folder");
             NlsString title = new NlsString();

@@ -132,4 +132,10 @@ public class UserSO {
         return new File(MinervaWebapp.factory().getConfig().getWorkspacesFolder() + "/" + user.getLogin()
                 + "/user-settings.json");
     }
+    
+    public void onlyAdmin() {
+        if (!MinervaWebapp.factory().getAdmins().contains(user.getLogin())) {
+            throw new RuntimeException("User " + user.getLogin() + " is not an admin!");
+        }
+    }
 }

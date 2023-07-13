@@ -8,6 +8,8 @@ public class EditBookPage extends BPage {
 
     @Override
     protected void execute() {
+        user.onlyAdmin();
+        
         if (isPOST()) {
             NlsString title = new NlsString();
             langs.forEach(lang -> title.setString(lang, ctx.queryParam("bookTitle" + lang)));

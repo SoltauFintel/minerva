@@ -11,8 +11,10 @@
             {{/if}}
             <p class="mt2">
                 {{if addBookAllowed}}
-                    <a href="/b/{{branch}}/add" class="btn btn-primary br"><i class="fa fa-book"></i>
-                        {{N.newBook}}</a>
+                    {{if isAdmin}}
+                        <a href="/b/{{branch}}/add" class="btn btn-primary br"><i class="fa fa-book"></i>
+                            {{N.newBook}}</a>
+                    {{/if}}
                 {{/if}}
                 {{each l in langs}}
                     <a href="/b/{{branch}}/language?lang={{l.lang}}"
@@ -34,13 +36,15 @@
                         <td style="text-align: right;">
                             <a href="/b/{{branch}}/{{b.folder}}/notes" class="btn btn-xs btn-default" title="{{N.notes}}"><i
                                 class="fa fa-comments-o"></i></a>
-                            <a href="/b/{{branch}}/{{b.folder}}/cal" class="btn btn-xs btn-default" title="check all links"><i
-                                class="fa fa-chain-broken"></i></a>
-                            <a href="/b/{{branch}}/{{b.folder}}/edit" class="btn btn-xs btn-default" title="{{N.edit}}"><i
-                                class="fa fa-pencil"></i></a>
-                            {{if not isCustomerVersion}}
-                                <a href="/b/{{branch}}/{{b.folder}}/delete" class="btn btn-xs btn-danger" title="{{N.delete}}"><i
-                                    class="fa fa-trash-o"></i></a>
+                            {{if isAdmin}}
+                                <a href="/b/{{branch}}/{{b.folder}}/cal" class="btn btn-xs btn-default" title="check all links"><i
+                                    class="fa fa-chain-broken"></i></a>
+                                <a href="/b/{{branch}}/{{b.folder}}/edit" class="btn btn-xs btn-default" title="{{N.edit}}"><i
+                                    class="fa fa-pencil"></i></a>
+                                {{if not isCustomerVersion}}
+                                    <a href="/b/{{branch}}/{{b.folder}}/delete" class="btn btn-xs btn-danger" title="{{N.delete}}"><i
+                                        class="fa fa-trash-o"></i></a>
+                                {{/if}}
                             {{/if}}
                         </td>
                     </tr>
@@ -59,13 +63,17 @@
             <a href="/w/{{branch}}/help-keys" class="btn btn-default brr"><i class="fa fa-question-circle"></i>
                 {{N.allHelpKeys}}</a>
             {{if gitlab}}
-                <a href="/w/{{branch}}/exclusions/edit" class="btn btn-default brr"><i class="fa fa-bank"></i>
-                    {{N.exclusions}}</a>
+                {{if isAdmin}}
+                    <a href="/w/{{branch}}/exclusions/edit" class="btn btn-default brr"><i class="fa fa-bank"></i>
+                        {{N.exclusions}}</a>
+                {{/if}}
             {{/if}}
             {{if booksOk}}
-                <a href="/b/{{branch}}/index" class="btn btn-default brr"
-                    onclick="document.querySelector('#s3').style='';">{{N.reindex}}!
-                    <i id="s3" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+                {{if isAdmin}}
+                    <a href="/b/{{branch}}/index" class="btn btn-default brr"
+                        onclick="document.querySelector('#s3').style='';">{{N.reindex}}!
+                        <i id="s3" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+                {{/if}}
                 {{if migrationAllowed}}
                     <a href="/migration/{{branch}}" class="btn btn-danger brr"><i class="fa fa-cloud-download"></i>
                         Confluence Import...</a>
@@ -85,6 +93,13 @@
                     {{N.cloneWS}}! <i id="s2" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
                 <a href="/w/{{branch}}/delete" class="btn btn-danger brr"><i
                     class="fa fa-trash-o"></i> {{N.deleteWS}}...</a>
+            {{/if}}
+            {{if canBeAdmin}}
+                {{if isAdmin}}
+                    <a href="/activate-admin-rights?m=0" class="btn btn-danger brr">{{N.dropAdminRights}}!</a>
+                {{else}}
+                    <a href="/activate-admin-rights" class="btn btn-default brr">{{N.giveAdminRights}}!</a>
+                {{/if}}
             {{/if}}
         </p>
     </div>

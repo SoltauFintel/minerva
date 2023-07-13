@@ -87,8 +87,15 @@ public class MinervaConfig {
     }
 
     public List<String> getPersons() {
+        return splitPersons(get("persons"));
+    }
+
+    public List<String> getAdmins() {
+        return splitPersons(get("admins"));
+    }
+
+    private List<String> splitPersons(String persons) {
         List<String> ret = new ArrayList<>();
-        String persons = get("persons");
         if (persons != null) {
             for (String name : persons.split(",")) {
                 if (!name.isBlank()) {
@@ -99,7 +106,7 @@ public class MinervaConfig {
         }
         return ret;
     }
-    
+
     public String getGitlabAppId() {
         return config.get("gitlab.appid");
     }

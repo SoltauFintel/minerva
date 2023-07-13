@@ -11,6 +11,8 @@ public class CheckAllLinksPage extends BPage {
 
     @Override
     protected void execute() {
+        user.onlyAdmin();
+        
         List<CALBrokenLink> links = new CheckAllLinksService(book, langs).getBrokenLinks();
         DataList list = list("links");
         for (CALBrokenLink link : links) {

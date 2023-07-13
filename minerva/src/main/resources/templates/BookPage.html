@@ -53,9 +53,11 @@
         <p style="margin-top: 7em;">
             <a href="{{positionlink}}" class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"><i
                 class="fa fa-sort"></i> {{N.reorder}}</a>
-            <a href="{{sortlink}}" class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"
-                onclick="return sort();"><i class="fa fa-sort-alpha-asc"></i> {{N.sort}}!
-                <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+            {{if isAdmin}}
+                <a href="{{sortlink}}" class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"
+                    onclick="return sort();"><i class="fa fa-sort-alpha-asc"></i> {{N.sort}}!
+                    <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+            {{/if}}
         </p>
         <p style="font-size: 8pt; color: #888;">
             {{Sortierung}}

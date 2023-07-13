@@ -12,6 +12,8 @@ public class ExclusionsEditPage extends UPage {
     protected void execute() {
         String branch = ctx.pathParam("branch");
         
+        user.onlyAdmin();
+        
         if (isPOST()) {
             String exclusions = ctx.formParam("exclusions");
             ex(branch).set(exclusions);

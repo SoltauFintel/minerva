@@ -143,3 +143,5 @@ linkTitle=Link title
 pageTitle=Page title
 formulaEditor=Formulas
 formula=formula
+giveAdminRights=Admin rights
+dropAdminRights=Drop admin rights
