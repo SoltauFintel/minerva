@@ -1,5 +1,11 @@
 {{master: master_jqueryoben}}
 
+<style>
+.mw {
+    min-width: 200px;
+}
+</style>
+
 <div class="row"> 
     <div class="col-lg-9">
         <div class="mt1" style="margin-bottom: 10px; padding-left: 0;">
@@ -63,7 +69,11 @@
             {{Sortierung}}
         </p>
         <p class="mt2">
-            <a href="{{booklink}}?m=all" class="btn btn-default">{{N.allPages}}</a>
+            <a href="/b/{{branch}}/{{bookFolder}}/notes" class="btn btn-default mw" title=""><i
+                class="fa fa-comments-o"></i> {{N.notes}}</a>
+        </p>
+        <p>
+            <a href="{{booklink}}?m=all" class="btn btn-default mw">{{N.allPages}}</a>
         </p>
     </div>
 </div>
