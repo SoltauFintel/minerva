@@ -11,6 +11,7 @@ import minerva.auth.Book6LoginAction;
 import minerva.auth.Book6StartAction;
 import minerva.auth.Login2Page;
 import minerva.auth.MinervaAuth;
+import minerva.base.MathPage;
 import minerva.base.MessagePage;
 import minerva.base.MinervaError404Page;
 import minerva.base.MinervaErrorPage;
@@ -168,6 +169,7 @@ public class MinervaWebapp extends RouteDefinitions {
         addNotProtected("/gitlab-auth");
         form("/backdoor", Login2Page.class);
         addNotProtected("/backdoor");
+        get("/math", MathPage.class);
         
         // REST API
         addNotProtected("/rest");

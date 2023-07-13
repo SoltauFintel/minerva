@@ -141,3 +141,5 @@ linkAnalysis=Link analysis
 type=Type
 linkTitle=Link title
 pageTitle=Page title
+formulaEditor=Formulas
+formula=formula

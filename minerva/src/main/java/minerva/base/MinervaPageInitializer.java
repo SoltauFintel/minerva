@@ -66,6 +66,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("searchPlaceholder", NLS.get(userLang, "searchPlaceholder"));
         page.put("exclusionsTitle", NLS.get(userLang, "exclusions"));
         page.put("myTasks", NLS.get(userLang, "myTasks"));
+        page.put("formulaEditor", NLS.get(userLang, "formulaEditor"));
         DataList list = page.list("favorites");
         if (m.getBooks() != null) {
             if (!"master".equals(m.getBranch())) {
