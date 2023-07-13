@@ -108,4 +108,8 @@ public class WorkspaceSO {
     public ExclusionsSO getExclusions() {
         return new ExclusionsSO(this);
     }
+    
+    public void createBranch(String newBranch, String commit) {
+        dao().createBranch(this, newBranch, commit);
+    }
 }

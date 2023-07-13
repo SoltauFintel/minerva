@@ -49,4 +49,12 @@ public interface DirAccess {
     void deleteFiles(Set<String> filenames, CommitMessage commitMessage, WorkspaceSO workspace, List<String> cantBeDeleted);
 
     void moveFiles(List<IMoveFile> files, CommitMessage commitMessage, WorkspaceSO workspace);
+
+    /**
+     * Create and push new branch. Does not switch to the branch.
+     * @param workspace workspace of old branch
+     * @param newBranch name of new branch
+     * @param commit place where to branch, commit hash or tag in old branch, can be null
+     */
+    void createBranch(WorkspaceSO workspace, String newBranch, String commit);
 }

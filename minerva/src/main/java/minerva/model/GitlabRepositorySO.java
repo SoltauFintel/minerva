@@ -113,6 +113,12 @@ public class GitlabRepositorySO {
     public List<HCommit> getSeiteMetaHistory(SeiteSO seite) {
         return git(seite.getBook().getWorkspace()).getHistory(seite.gitFilenameMeta());
     }
+    
+    public void createBranch(WorkspaceSO workspace, String newBranch, String commit, GitlabUser user) {
+        GitService git = git(workspace);
+        git.fetch(user);
+        git.branch(newBranch, commit, user);
+    }
 
     private GitService git(WorkspaceSO workspace) {
         return new GitService(new File(workspace.getFolder()));

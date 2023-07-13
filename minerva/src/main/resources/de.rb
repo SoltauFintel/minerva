@@ -146,3 +146,7 @@ formula=Formel
 giveAdminRights=Admin-Rechte erhalten
 dropAdminRights=Admin-Rechte aufgeben
 serverlog=Serverlog
+createBranch=Branch erstellen
+branchName=Branch-Name
+validBranchName=Bitte geben Sie einen gültigen Branchnamen ein!
+createBranchM=Hiermit erstellen Sie einen neuen Branch und Workspace auf Basis des letzten Commits von Branch $m.

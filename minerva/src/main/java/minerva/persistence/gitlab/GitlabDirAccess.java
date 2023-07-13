@@ -51,4 +51,9 @@ public class GitlabDirAccess extends AbstractDirAccess {
     private HashSet<String> emptySet() {
         return new HashSet<>();
     }
+
+    @Override
+    public void createBranch(WorkspaceSO workspace, String newBranch, String commit) {
+        repo.createBranch(workspace, newBranch, commit, (GitlabUser) workspace.getUser().getUser());
+    }
 }

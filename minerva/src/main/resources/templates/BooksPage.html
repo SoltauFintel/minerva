@@ -74,6 +74,10 @@
                         onclick="document.querySelector('#s3').style='';">{{N.reindex}}!
                         <i id="s3" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
                 {{/if}}
+                {{if gitlab}}
+                    <a href="/branch/{{branch}}" class="btn btn-default brr"><i class="fa fa-code-fork"></i>
+                        {{N.createBranch}}</a>
+                {{/if}}
                 {{if migrationAllowed}}
                     <a href="/migration/{{branch}}" class="btn btn-danger brr"><i class="fa fa-cloud-download"></i>
                         Confluence Import...</a>

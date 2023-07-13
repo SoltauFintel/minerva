@@ -75,6 +75,7 @@ import minerva.subscription.MappingPage;
 import minerva.subscription.PushDataAction;
 import minerva.subscription.SubscribeAction;
 import minerva.workspace.AddWorkspacePage;
+import minerva.workspace.CreateBranchPage;
 import minerva.workspace.CurrentWorkspaceAction;
 import minerva.workspace.DeleteWorkspacePage;
 import minerva.workspace.PullWorkspace;
@@ -174,6 +175,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/math", MathPage.class);
         get("/activate-admin-rights", ActivateAdminRightsAction.class);
         get("/serverlog", ServerlogPage.class);
+        form("/branch/:branch", CreateBranchPage.class);
         
         // REST API
         addNotProtected("/rest");

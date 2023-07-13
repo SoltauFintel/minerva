@@ -146,3 +146,7 @@ formula=formula
 giveAdminRights=Admin rights
 dropAdminRights=Drop admin rights
 serverlog=Server log
+createBranch=Create branch
+branchName=Branch name
+validBranchName=Please enter valid branch name!
+createBranchM=Create new branch on branch $m.
