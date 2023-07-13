@@ -17,6 +17,10 @@ public class MinervaConfig {
         WebContext.setCookieName(this.config);
     }
     
+    public boolean isDevelopment() {
+        return config.isDevelopment();
+    }
+    
     public List<String> getLanguages() {
         List<String> languages = new ArrayList<>();
         for (String lang : config.get("languages", "de,en").split(",")) {

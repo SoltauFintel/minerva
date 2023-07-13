@@ -9,6 +9,7 @@ import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.web.action.Page;
 import github.soltaufintel.amalia.web.action.PageInitializer;
 import minerva.MinervaWebapp;
+import minerva.config.MinervaConfig;
 import minerva.model.BookSO;
 import minerva.model.BooksSO;
 import minerva.model.SeiteSO;
@@ -18,12 +19,14 @@ public class MinervaPageInitializer extends PageInitializer {
     @Override
     public void initPage(Context ctx, Page page) {
         MinervaPageInitModel m = new MinervaPageInitModel(ctx);
+        MinervaConfig config = MinervaWebapp.factory().getConfig();
         page.put("title", "Minerva");
         page.put("abmelden", "Abmelden");
+        page.put("development", config.isDevelopment());
         page.put("hasUser", m.hasUser());
         page.put("VERSION", MinervaWebapp.VERSION);
         page.put("user", esc(m.getLogin()));
-        page.put("gitlab", MinervaWebapp.factory().getConfig().isGitlab());
+        page.put("gitlab", config.isGitlab());
         page.put("booksLabel", "Bücher");
         page.put("searchPlaceholder", "");
         page.put("searchFocus", false);
