@@ -16,7 +16,6 @@ public class CreateBranchPage extends UPage {
             throw new RuntimeException("Page only for Gitlab mode");
         }
         String branch = ctx.pathParam("branch");
-        header(n("createBranch"));
         if (isPOST()) {
             String newBranch = ctx.formParam("newBranch");
             if (StringService.isNullOrEmpty(newBranch)
@@ -25,11 +24,14 @@ public class CreateBranchPage extends UPage {
                 throw new UserMessage("validBranchName", user);
             }
             Logger.info(user.getUser().getLogin() + " | " + branch + " | create branch: " + newBranch);
+            user.log(branch + " | create branch: " + newBranch);
+            
             user.getWorkspace(branch).createBranch(newBranch, null);
             user.getWorkspaces().addWorkspace(newBranch, user);
-            user.log(branch + " | create branch: " + newBranch);
-            ctx.redirect("/b/" + esc(newBranch));
+            
+            ctx.redirect("/b/" + esc(newBranch)); // show new branch
         } else {
+            header(n("createBranch"));
             put("branch", esc(branch));
             put("createBranchM", esc(n("createBranchM")).replace("$m", "<b>" + esc(branch) + "</b>"));
         }

@@ -11,14 +11,25 @@ import minerva.model.GitFactory;
 
 public class MergeRequestService {
 
-    public void createAndSquashMergeRequest(String title, String branch, String targetBranch, String gitlabUrl, String project, GitlabUser user) throws GitLabApiException {
+    public void createAndSquash(String title, String branch, String targetBranch, String gitlabUrl,
+            String project, GitlabUser user) throws GitLabApiException {
+        work(title, branch, targetBranch, gitlabUrl, project, user, Boolean.TRUE);
+    }
+
+    public void createAndMerge(String title, String branch, String targetBranch, String gitlabUrl,
+            String project, GitlabUser user) throws GitLabApiException {
+        work(title, branch, targetBranch, gitlabUrl, project, user, Boolean.TRUE);
+    }
+
+    private void work(String title, String branch, String targetBranch, String gitlabUrl,
+            String project, GitlabUser user, Boolean squash) throws GitLabApiException {
         try (GitLabApi gitLabApi = GitFactory.getGitLabApi(user)) {
             MergeRequestParams params = new MergeRequestParams()
                     .withSourceBranch(branch)
                     .withTargetBranch(targetBranch)
                     .withTitle(StringService.isNullOrEmpty(title) ? ("Merge Request " + branch + " -> " + targetBranch) : title)
                     .withRemoveSourceBranch(Boolean.TRUE)
-                    .withSquash(Boolean.TRUE);
+                    .withSquash(squash);
             
             MergeRequestApi api = gitLabApi.getMergeRequestApi();
             MergeRequest mr = api.createMergeRequest(project, params);

@@ -75,7 +75,7 @@ public class GitlabPushTransaction {
 
     public void doMergeRequest() {
         try {
-            new MergeRequestService().createAndSquashMergeRequest(commitMessage.toString(),
+            new MergeRequestService().createAndSquash(commitMessage.toString(),
                     workBranch,
                     workspace.getBranch(),
                     repo.getGitlabSystemUrl(), repo.getProject(),

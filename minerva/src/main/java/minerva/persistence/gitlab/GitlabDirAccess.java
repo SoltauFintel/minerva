@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.gitlab4j.api.GitLabApiException;
+
 import minerva.MinervaWebapp;
 import minerva.access.AbstractDirAccess;
 import minerva.git.CommitMessage;
@@ -12,6 +14,7 @@ import minerva.model.GitlabRepositorySO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.IMoveFile;
 import minerva.seite.MoveFile;
+import minerva.user.User;
 
 public class GitlabDirAccess extends AbstractDirAccess {
     private final GitlabRepositorySO repo = MinervaWebapp.factory().getGitlabRepository();
@@ -55,5 +58,24 @@ public class GitlabDirAccess extends AbstractDirAccess {
     @Override
     public void createBranch(WorkspaceSO workspace, String newBranch, String commit) {
         repo.createBranch(workspace, newBranch, commit, (GitlabUser) workspace.getUser().getUser());
+    }
+    
+    @Override
+    public List<String> getBranchNames(WorkspaceSO workspace) {
+        return repo.getBranches(workspace);
+    }
+
+    @Override
+    public void mergeBranch(String sourceBranch, String targetBranch, User user) {
+        try {
+            new MergeRequestService().createAndMerge(
+                    new CommitMessage("Merge " + sourceBranch + " into " + targetBranch).toString(),
+                    sourceBranch,
+                    targetBranch,
+                    repo.getGitlabSystemUrl(), repo.getProject(),
+                    (GitlabUser) user);
+        } catch (GitLabApiException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

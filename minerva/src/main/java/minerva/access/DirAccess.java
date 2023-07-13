@@ -7,6 +7,7 @@ import java.util.Set;
 import minerva.git.CommitMessage;
 import minerva.model.WorkspaceSO;
 import minerva.seite.IMoveFile;
+import minerva.user.User;
 
 /**
  * That's an generic DAO.
@@ -57,4 +58,8 @@ public interface DirAccess {
      * @param commit place where to branch, commit hash or tag in old branch, can be null
      */
     void createBranch(WorkspaceSO workspace, String newBranch, String commit);
+    
+    List<String> getBranchNames(WorkspaceSO workspace);
+
+    void mergeBranch(String sourceBranch, String targetBranch, User user);
 }

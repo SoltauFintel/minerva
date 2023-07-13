@@ -77,6 +77,8 @@
                 {{if gitlab}}
                     <a href="/branch/{{branch}}" class="btn btn-default brr"><i class="fa fa-code-fork"></i>
                         {{N.createBranch}}</a>
+                    <a href="/merge/{{branch}}" class="btn btn-default brr"><i class="fa fa-code-fork"></i>
+                        {{N.mergeBranch}}</a>
                 {{/if}}
                 {{if migrationAllowed}}
                     <a href="/migration/{{branch}}" class="btn btn-danger brr"><i class="fa fa-cloud-download"></i>

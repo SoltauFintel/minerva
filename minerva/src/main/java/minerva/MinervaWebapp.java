@@ -78,6 +78,7 @@ import minerva.workspace.AddWorkspacePage;
 import minerva.workspace.CreateBranchPage;
 import minerva.workspace.CurrentWorkspaceAction;
 import minerva.workspace.DeleteWorkspacePage;
+import minerva.workspace.MergeBranchPage;
 import minerva.workspace.PullWorkspace;
 import minerva.workspace.WorkspacesPage;
 import spark.Spark;
@@ -176,6 +177,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/activate-admin-rights", ActivateAdminRightsAction.class);
         get("/serverlog", ServerlogPage.class);
         form("/branch/:branch", CreateBranchPage.class);
+        form("/merge/:branch", MergeBranchPage.class);
         
         // REST API
         addNotProtected("/rest");
