@@ -30,6 +30,9 @@ import minerva.config.InfoAction;
 import minerva.config.MinervaConfig;
 import minerva.config.MinervaFactory;
 import minerva.exclusions.ExclusionsEditPage;
+import minerva.export.ExportBookAction;
+import minerva.export.ExportSeiteAction;
+import minerva.export.ExportWorkspaceAction;
 import minerva.image.ImageDownloadAction;
 import minerva.image.ImageUploadAction;
 import minerva.migration.MigrationPage;
@@ -101,6 +104,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/my-tasks", MyTasksPage.class);
         form("/create-workspace", AddWorkspacePage.class);
         get("/w/:branch/help-keys", AllHelpKeysPage.class);
+        get("/w/:branch/export", ExportWorkspaceAction.class);
         
         // Book
         get("/b/:branch", BooksPage.class);
@@ -116,6 +120,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/b/:branch/:book/sort", SortTopLevelSeiteAction.class);
         get("/b/:branch/:book/notes", AllNotesPage.class);
         get("/b/:branch/:book/cal", CheckAllLinksPage.class);
+        get("/b/:branch/:book/export", ExportBookAction.class);
         get("/b/", CurrentWorkspaceAction.class); // falls man sich dahin verirren sollte
         
         // Seite
@@ -136,6 +141,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/s/:branch/:book/:id/add-mapping", AddMappingAction.class);
         get("/s/:branch/:book/:id/toggle-favorite", ToggleFavoriteAction.class);
         get("/s/:branch/:book/:id/links", LinkAnalysisPage.class);
+        get("/s/:branch/:book/:id/export", ExportSeiteAction.class);
         
         // Image
         post("/s-image-upload/:branch/:book/:id", ImageUploadAction.class);

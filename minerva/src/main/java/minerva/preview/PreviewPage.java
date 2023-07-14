@@ -7,10 +7,10 @@ import org.pmw.tinylog.Logger;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
-import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
+import minerva.model.SeiteVisible;
 import minerva.seite.Breadcrumb;
 import minerva.seite.NavigateService;
 import minerva.seite.SPage;
@@ -24,16 +24,13 @@ public class PreviewPage extends SPage {
         Logger.info("preview: " + user.getUser().getLogin() + " | " + branch + " | " + customer + " | "
                 + lang + " | " + seite.getTitle());
 
-        if (seite.hasContent(lang) == 0) {
+        SeiteVisible v = seite.isVisible(customer, lang);
+        if (v.isEmpty()) {
             throw new RuntimeException("Empty page is not part of preview");
-        }
-        ExclusionsService sv = new ExclusionsService();
-        sv.setExclusions(new Exclusions(book.getWorkspace().getExclusions().get()));
-        sv.setCustomer(customer);
-        sv.setSeite(seite);
-        if (!sv.isAccessible() || seite.getSeite().getTags().contains("invisible")) {
+        } else if (v.isInvisible()) {
             throw new RuntimeException("Page is not accessible in preview for customer " + esc(customer));
         }
+        ExclusionsService sv = v.getExclusionsService();
         
         put("title", esc(seite.getSeite().getTitle().getString(lang)) + " - " + n("preview") + " " + lang.toUpperCase()
                 + TITLE_POSTFIX);

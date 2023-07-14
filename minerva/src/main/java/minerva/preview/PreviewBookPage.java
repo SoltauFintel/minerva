@@ -1,7 +1,5 @@
 package minerva.preview;
 
-import java.util.Set;
-
 import org.pmw.tinylog.Logger;
 
 import com.github.template72.data.DataList;
@@ -12,6 +10,7 @@ import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
+import minerva.model.SeiteVisible;
 import minerva.model.SeitenSO;
 
 public class PreviewBookPage extends BPage {
@@ -54,13 +53,12 @@ public class PreviewBookPage extends BPage {
         // Wegen der Rekursion ist eine Template-Datei nicht sinnvoll.
         gliederung.append("<ul>\n");
         for (SeiteSO seite : seiten) {
-            int hasContent = seite.hasContent(lang);
-            Set<String> tags = seite.getSeite().getTags();
-            if (hasContent > 0 && sv.isAccessible(tags) && !tags.contains("invisible")) {
+            SeiteVisible v = seite.isVisible(sv, lang);
+            if (v.isVisible()) {
                 String title = esc(seite.getSeite().getTitle().getString(lang));
                 String link = "/p/" + branch + "/" + esc(customer) + "/" + bookFolder + "/" + lang + "/"
                         + esc(seite.getSeite().getId());
-                String nc = hasContent == 2 ? " class=\"noContent\"" : "";
+                String nc = v.hasSubpages() ? " class=\"noContent\"" : "";
                 gliederung.append("\t<li id=\"");
                 gliederung.append(seite.getId());
                 gliederung.append("\"><a href=\"");

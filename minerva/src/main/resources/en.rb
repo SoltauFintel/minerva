@@ -157,3 +157,4 @@ mergeInfo=Merge which branch into branch $m?
 Branch=Branch
 mergen=Merge
 noLinks=no links
+export=Export

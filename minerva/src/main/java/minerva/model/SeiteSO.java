@@ -24,6 +24,8 @@ import minerva.access.MultiPurposeDirAccess;
 import minerva.base.NlsString;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
+import minerva.exclusions.Exclusions;
+import minerva.exclusions.ExclusionsService;
 import minerva.git.CommitMessage;
 import minerva.seite.ChangeFile;
 import minerva.seite.IMoveFile;
@@ -449,33 +451,6 @@ public class SeiteSO implements ISeite {
     private DirAccess dao() {
         return book.dao();
     }
-
-    /**
-     * @return 1: page is not empty, 2: page is empty, but at least one subpage is not empty,
-     * 0: page and subpages are empty, 3: error (which should be interpreted as "page is not empty"
-     * to be on the safe side)
-     */
-    public int hasContent(String lang) {
-        // In theory, this approach is a bit expensive since all content must be loaded and must be parsed.
-        // However in practice it takes less than 0.4 seconds on the first call.
-        try {
-            String html = getContent().getString(lang);
-            Document doc = Jsoup.parse(html);
-            Elements body = doc.select("body");
-            if (body != null && !body.isEmpty() && body.get(0).childrenSize() > 0) {
-                return 1;
-            }
-            for (SeiteSO sub : seiten) {
-                if (sub.hasContent(lang) > 0) {
-                    return 2;
-                }
-            }
-            return 0;
-        } catch (Exception e) {
-            Logger.error(e);
-            return 3;
-        }
-    }
     
     public PageChange getLastChange() {
         List<PageChange> changes = seite.getChanges();
@@ -510,5 +485,61 @@ public class SeiteSO implements ISeite {
     
     public void log(String msg) {
         book.getWorkspace().getUser().log("#" + getId() + " \"" + getTitle() + "\" " + msg);
+    }
+    
+    public SeiteVisible isVisible(String customer, String lang) {
+        ExclusionsService sv = new ExclusionsService();
+        sv.setCustomer(customer);
+        sv.setExclusions(new Exclusions(book.getWorkspace().getExclusions().get()));
+        return isVisible(sv, lang);
+    }
+    
+    public SeiteVisible isVisible(ExclusionsService sv, String lang) {
+        return new SeiteVisible(isSeiteVisible(sv, lang), sv);
+    }
+    
+    /**
+     * Don't show page if return value is below 1.
+     * @param seite page
+     * @return 0: has no content, -1: not accessible, -2: not visible, 1, 2 or 3: show page (see SeiteSO.hasContent)
+     */
+    private int isSeiteVisible(ExclusionsService exclusionsService, String lang) {
+        int c = hasContent(lang);
+        if (c > 0) {
+            exclusionsService.setSeite(this);
+            if (!exclusionsService.isAccessible()) {
+                return -1;
+            } else if (seite.getTags().contains("invisible")) {
+                return -2;
+            }
+        }
+        return c;
+    }
+
+    /**
+     * @return 1: page is not empty, 2: page is empty, but at least one subpage is not empty,
+     * 0: page and subpages are empty, 3: error (which should be interpreted as "page is not empty"
+     * to be on the safe side)
+     */
+    public int hasContent(String lang) {
+        // In theory, this approach is a bit expensive since all content must be loaded and must be parsed.
+        // However in practice it takes less than 0.4 seconds on the first call.
+        try {
+            String html = getContent().getString(lang);
+            Document doc = Jsoup.parse(html);
+            Elements body = doc.select("body");
+            if (body != null && !body.isEmpty() && body.get(0).childrenSize() > 0) {
+                return 1;
+            }
+            for (SeiteSO sub : seiten) {
+                if (sub.hasContent(lang) > 0) {
+                    return 2;
+                }
+            }
+            return 0;
+        } catch (Exception e) {
+            Logger.error(e);
+            return 3;
+        }
     }
 }
