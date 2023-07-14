@@ -31,6 +31,7 @@ import minerva.config.MinervaConfig;
 import minerva.config.MinervaFactory;
 import minerva.exclusions.ExclusionsEditPage;
 import minerva.export.ExportBookAction;
+import minerva.export.ExportPage;
 import minerva.export.ExportSeiteAction;
 import minerva.export.ExportWorkspaceAction;
 import minerva.image.ImageDownloadAction;
@@ -104,6 +105,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/create-workspace", AddWorkspacePage.class);
         get("/w/:branch/help-keys", AllHelpKeysPage.class);
         get("/w/:branch/export", ExportWorkspaceAction.class);
+        form("/w/:branch/export-what", ExportPage.class);
         
         // Book
         get("/b/:branch", BooksPage.class);

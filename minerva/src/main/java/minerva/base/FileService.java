@@ -86,6 +86,37 @@ public class FileService {
                 && !filename.contains("|");
     }
     
+    public static String getSafeName(final String name) {
+        if (name == null) {
+            throw new IllegalArgumentException("name must not be null");
+        }
+        String ret = "";
+        for (int i = 0; i < name.length(); i++) {
+            char c = name.charAt(i);
+            switch (c) {
+            case '\\':
+            case '/':
+            case ':':
+            case '*':
+            case '?':
+            case '"':
+            case '<':
+            case '>':
+            case '|':
+                break;
+            case ' ':
+                ret += '-';
+                break;
+            default:
+                ret += c;
+            }
+        }
+        if (ret.isEmpty()) {
+            throw new RuntimeException("Safe name is empty");
+        }
+        return ret;
+    }
+
     public static void deleteFolder(File folder) {
         try {
             FileUtils.deleteDirectory(folder);
@@ -127,6 +158,7 @@ public class FileService {
                 }
             });
         } catch (Exception e) {
+e.printStackTrace(); // XXX            
             throw new RuntimeException(e);
         }
     }

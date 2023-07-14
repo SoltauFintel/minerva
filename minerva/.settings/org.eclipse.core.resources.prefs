@@ -35,6 +35,7 @@ encoding//src/main/resources/templates/TagsPage.html=UTF-8
 encoding//src/main/resources/templates/ViewSeitePage.html=UTF-8
 encoding//src/main/resources/templates/formular/AddBookPage.html=UTF-8
 encoding//src/main/resources/templates/formular/AddWorkspacePage.html=UTF-8
+encoding//src/main/resources/templates/formular/ExportPage.html=UTF-8
 encoding//src/main/resources/templates/formular/MergeBranchPage.html=UTF-8
 encoding//src/main/resources/templates/master.html=UTF-8
 encoding//src/main/resources/templates/master_ck.html=UTF-8

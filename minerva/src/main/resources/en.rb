@@ -158,3 +158,7 @@ Branch=Branch
 mergen=Merge
 noLinks=no links
 export=Export
+exportWhat=Export what
+customer=Customer
+allBooks=all books
+exportInfo=Books or pages are exported as multi-page HTML files and downloaded as a zip file.

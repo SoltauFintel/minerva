@@ -71,5 +71,8 @@ public class PublishAction extends Action {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        zipFile.delete();
+        FileService.deleteFolder(sourceFolder);
     }
 }

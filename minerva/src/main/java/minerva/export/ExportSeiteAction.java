@@ -4,9 +4,11 @@ import java.io.File;
 
 import org.pmw.tinylog.Logger;
 
-import minerva.base.FileService;
+import minerva.publish.PublishAction;
 import minerva.seite.SAction;
 
+// TODO Eine Seite kann auf eine Seite verweisen, die es im Export nicht gibt! Eigentlich kann man nur ein Buch
+//      (oder mehrere) exportieren!
 public class ExportSeiteAction extends SAction {
 
     @Override
@@ -17,13 +19,11 @@ public class ExportSeiteAction extends SAction {
         Logger.info(user.getUser().getLogin() + " | " + branch + " | " + bookFolder
                 + " | export page \"" + seite.getSeite().getTitle().getString(lang)
                 + "\" for customer " + customer + " and language " + lang);
+        user.log("export page #" + seite.getId() + " \"" + seite.getSeite().getTitle().getString(lang)
+                + "\", " + customer + ", " + lang);
+
+        File outputFolder = new ExportService(book.getWorkspace(), customer, lang).saveSeite(seite);
         
-        File tf = new File("export/seite");
-        FileService.deleteFolder(tf);
-        ExportService x = new ExportService(lang);
-        x.initExclusionsService(book.getWorkspace(), customer);
-        x.save(seite, tf);
-        
-        // TODO Download as zip
+        PublishAction.downloadFolderAsZip(outputFolder, ctx);
     }
 }

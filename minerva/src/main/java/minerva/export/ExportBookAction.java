@@ -4,8 +4,8 @@ import java.io.File;
 
 import org.pmw.tinylog.Logger;
 
-import minerva.base.FileService;
 import minerva.book.BAction;
+import minerva.publish.PublishAction;
 
 public class ExportBookAction extends BAction {
 
@@ -16,13 +16,10 @@ public class ExportBookAction extends BAction {
 
         Logger.info(user.getUser().getLogin() + " | " + branch + " | " + bookFolder
                 + " | export book for customer " + customer + " and language " + lang);
-        
-        File tf = new File("export/book");
-        FileService.deleteFolder(tf);
-        ExportService x = new ExportService(lang);
-        x.initExclusionsService(book.getWorkspace(), customer);
-        x.save(book, tf);
+        user.log("export book " + bookFolder + ", " + customer + ", " + lang);
 
-        // TODO Download as zip
+        File outputFolder = new ExportService(book.getWorkspace(), customer, lang).saveBook(book);
+        
+        PublishAction.downloadFolderAsZip(outputFolder, ctx);
     }
 }

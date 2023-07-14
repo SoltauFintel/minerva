@@ -142,4 +142,9 @@ public class MinervaFactory {
     public IPageChangeStrategy getPageChangeStrategy() {
         return pageChangeStrategy;
     }
+    
+    public File getWorkFolder(String name) {
+        // TODO Ich muss mal generell ein Arbeitsverzeichnis festlegen. Vgl. auch PublishService.
+        return new File(name);
+    }
 }
