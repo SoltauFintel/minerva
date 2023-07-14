@@ -1,7 +1,6 @@
 package minerva.publish;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +17,7 @@ public class PublishService {
     private final File targetFolder;
     private final List<String> langs;
     
+    // TODO Wird hier sichergestellt, dass der TargetFolder frisch ist?
     public PublishService(File targetFolder, List<String> langs) {
         this.targetFolder = targetFolder;
         this.langs = langs;
@@ -91,12 +91,5 @@ public class PublishService {
 
             copyHtmlAndImg(seite.getSeiten(), pages); // recursive
         }
-    }
-    
-    public Path zip() {
-        File zipFile = new File(targetFolder, "publish.zip");
-        File sourceFolder = new File(targetFolder, "publish");
-        FileService.zip(sourceFolder, zipFile);
-        return zipFile.toPath();
     }
 }

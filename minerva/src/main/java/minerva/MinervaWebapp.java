@@ -84,7 +84,6 @@ import minerva.workspace.DeleteWorkspacePage;
 import minerva.workspace.MergeBranchPage;
 import minerva.workspace.PullWorkspace;
 import minerva.workspace.WorkspacesPage;
-import spark.Spark;
 
 public class MinervaWebapp extends RouteDefinitions {
     public static final String VERSION = "0.2.0";
@@ -188,7 +187,7 @@ public class MinervaWebapp extends RouteDefinitions {
         // REST API
         addNotProtected("/rest");
         get("/rest/info", InfoAction.class); // not protected
-        Spark.get("/rest/publish", new PublishAction()); // protected by query params // TODO Ist das mit Amalia Code möglich?
+        get("/rest/publish", PublishAction.class); // protected by query params
         get("/rest/subscribe", SubscribeAction.class); // protected by known subscribers
         post("/book6/login", Book6LoginAction.class);
         addNotProtected("/book6/login");
