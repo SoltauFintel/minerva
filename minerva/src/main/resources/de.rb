@@ -156,3 +156,4 @@ sourceBranch=Quell-Branch
 mergeInfo=Welchen Branch in den Branch $t mergen?
 Branch=Branch
 mergen=Mergen
+noLinks=keine Links

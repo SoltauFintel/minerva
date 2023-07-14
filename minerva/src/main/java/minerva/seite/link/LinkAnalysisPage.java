@@ -33,6 +33,7 @@ public class LinkAnalysisPage extends SPage {
         }
         // incoming links
         analyze(book.getSeiten(), list);
+        put("hasLinks", !list.isEmpty());
     }
 
     private String getPageTitle(Link link, boolean external, String lang) {

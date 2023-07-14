@@ -6,22 +6,26 @@
         
         <h2><a href="{{viewlink}}">{{pageTitle}}</a></h2>
         
-        <table class="table table-striped table-hover mt2" style="width: auto;">
-            <tr>
-                <th>{{N.language}}</th>
-                <th>{{N.type}}</th>
-                <th>{{N.linkTitle}}</th>
-                <th>{{N.pageTitle}}</th>
-            </tr>
-            {{each h in links}}
+        {{if hasLinks}}
+            <table class="table table-striped table-hover mt2" style="width: auto;">
                 <tr>
-                <td>{{h.lang}} </td> <td> {{if h.outgoing}}<span style="color: #0a0;">outgoing</span>{{else}}<span
-                    style="color: blue;">incoming</span>{{/if}} {{if h.internal}}internal{{else}}<span
-                    style="color: red;">external</span>{{/if}}
-                    </td><td> <a href="{{h.href}}">{{h.linkTitle}}</a></td>
-                    <td>{{h.pageTitle}}</td></tr>
-            {{/each}}
-        </table>
+                    <th>{{N.language}}</th>
+                    <th>{{N.type}}</th>
+                    <th>{{N.linkTitle}}</th>
+                    <th>{{N.pageTitle}}</th>
+                </tr>
+                {{each h in links}}
+                    <tr>
+                    <td>{{h.lang}} </td> <td> {{if h.outgoing}}<span style="color: #0a0;">outgoing</span>{{else}}<span
+                        style="color: blue;">incoming</span>{{/if}} {{if h.internal}}internal{{else}}<span
+                        style="color: red;">external</span>{{/if}}
+                        </td><td> <a href="{{h.href}}">{{h.linkTitle}}</a></td>
+                        <td>{{h.pageTitle}}</td></tr>
+                {{/each}}
+            </table>
+        {{else}}
+            <p class="mt2">- {{N.noLinks}} -</p>
+        {{/if}}
 
         <p class="mt2">
             <a href="{{viewlink}}" class="btn btn-default br"><i class="fa fa-arrow-left"></i>
