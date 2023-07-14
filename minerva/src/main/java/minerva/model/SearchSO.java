@@ -81,9 +81,11 @@ public class SearchSO {
     }
 
     public void unindex(SeiteSO seite) {
-        for (String lang : langs) {
-            String url = "/indexing/" + getSiteName(lang) + "/page?path=" + Escaper.urlEncode(getPath(seite), "");
-            new REST(host + url).delete().close();
+        if (host != null) {
+            for (String lang : langs) {
+                String url = "/indexing/" + getSiteName(lang) + "/page?path=" + Escaper.urlEncode(getPath(seite), "");
+                new REST(host + url).delete().close();
+            }
         }
     }
 
