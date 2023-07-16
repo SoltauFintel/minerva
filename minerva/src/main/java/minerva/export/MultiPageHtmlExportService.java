@@ -111,6 +111,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
 
     @Override
     public File saveSeite(SeiteSO seite) {
+        currentBook = null;
         File outputFolder = super.saveSeite(seite);
 
         // copy main file as index.html as entry point
@@ -125,29 +126,24 @@ public class MultiPageHtmlExportService extends GenericExportService {
     }
     
     @Override
-    protected void saveSeiteTo(SeiteSO seite, File outputFolder) {
+    protected void saveSeiteTo(SeiteSO seite, SeiteSO parent, File outputFolder) {
         String html = seite.getContent().getString(lang);
 
-        // page title
         String title = seite.getSeite().getTitle().getString(lang);
         int o = html.indexOf("<body>");
         int oo = html.indexOf("</body>");
         String body = html.substring(o + "<body>".length(), oo);
-        
         DataMap model = new DataMap();
         model.put("title", esc(title));
         model.put("content", body); // no esc!
+// XXX temporär >>        
+model.put("hasPrevLink",false);
+model.put("hasNextLink",false);
+model.put("hasParentLink",false);
+model.put("hasBookLink",false); // XXX temporär <<
+        navigation(seite, parent, model);
         html = render(loadTemplate("page.html"), model);
-        
-        // TODO previous page, parent page, next page, breadcrumbs, to book page 
-        
-        List<Link> links = LinkService.extractLinks(html, false);
-        for (Link link : links) {
-            if (!(link.getHref().startsWith("http://") || link.getHref().startsWith("https://"))) {
-                html = html.replace("<a href=\"" + link.getHref() + "\">", "<a href=\"" + link.getHref() + ".html\">");
-            }
-        }
-        
+        html = addDotHtml(html);
         // TODO formulas to images   \(...\)    \[...\]
         
         // HTML file
@@ -157,9 +153,44 @@ public class MultiPageHtmlExportService extends GenericExportService {
         FileService.copyFiles(
                 new File(seite.getBook().getFolder() + "/img/" + seite.getId()),
                 new File(outputFolder, "img/" + seite.getId()));
+    }
 
-        // subpages
-        saveSeitenTo(seite.getSeiten(), outputFolder); // recursive
+    private String addDotHtml(String html) {
+        List<Link> links = LinkService.extractLinks(html, false);
+        for (Link link : links) {
+            if (!(link.getHref().startsWith("http://") || link.getHref().startsWith("https://"))) {
+                html = html.replace("<a href=\"" + link.getHref() + "\">", "<a href=\"" + link.getHref() + ".html\">");
+            }
+        }
+        return html;
+    }
+
+    private void navigation(SeiteSO seite, SeiteSO parent, DataMap model) {
+// TODO NavigateService darf nicht sortieren, da ich mich hier in einer Seiten Loop befinde!
+//        NavigateService nav = new NavigateService(true, lang, exclusionsService);
+//        SeiteSO bb = nav.previousPage(seite);
+//        boolean b = bb != null;
+//        model.put("hasPrevLink", b);
+//        if (b) {
+//            model.put("prevLink", bb.getId() + ".html");
+//        }
+//        
+//        bb = nav.nextPage(seite);
+//        b = bb != null;
+//        model.put("hasNextLink", b);
+//        if (b) {
+//            model.put("nextLink", bb.getId() + ".html");
+//        }
+
+        model.put("hasParentLink", parent != null);
+        if (parent != null) {
+            model.put("parentLink", parent.getId() + ".html");
+            // TODO parentTitle
+        }
+        
+        model.put("hasBookLink", currentBook != null);
+        model.put("bookLink", "index.html");
+        model.put("bookTitle", esc(currentBook.getBook().getTitle().getString(lang)));
     }
     
     private void saveIndex(File outputFolder, String dn, DataMap model) {

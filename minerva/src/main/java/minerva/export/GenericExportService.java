@@ -21,6 +21,7 @@ public abstract class GenericExportService {
     /** language, e.g. "en" */
     protected final String lang;
     protected ExclusionsService exclusionsService;
+    protected BookSO currentBook = null;
 
     public GenericExportService(WorkspaceSO workspace, String customer, String language) {
         lang = language;
@@ -49,35 +50,36 @@ public abstract class GenericExportService {
     }
     
     protected void saveBookTo(BookSO book, File outputFolder) {
+        currentBook = book;
         init(outputFolder);
-        saveSeitenTo(book.getSeiten(lang), outputFolder);
+        saveSeitenTo(book.getSeiten(lang), null, outputFolder);
     }
     
-    public void saveSeitenTo(SeitenSO seiten, File outputFolder) {
+    public void saveSeitenTo(SeitenSO seiten, SeiteSO parent, File outputFolder) {
         for (SeiteSO seite : seiten) {
-            _saveSeiteTo(seite, outputFolder);
+            _saveSeiteTo(seite, parent, outputFolder);
         }
     }
     
     public File saveSeite(SeiteSO seite) {
         File outputFolder = getFolder(seite.getSeite().getTitle().getString(lang));
         init(outputFolder);
-        if (!_saveSeiteTo(seite, outputFolder)) {
+        if (!_saveSeiteTo(seite, null, outputFolder)) {
             throw new RuntimeException("Page #" + seite.getId() + " \"" + seite.getTitle() + "\" is not visible!");
         }
         return outputFolder;
     }
     
-    private boolean _saveSeiteTo(SeiteSO seite, File outputFolder) {
+    private boolean _saveSeiteTo(SeiteSO seite, SeiteSO parent, File outputFolder) {
         if (seite.isVisible(exclusionsService, lang).isVisible()) {
-            saveSeiteTo(seite, outputFolder);
-            saveSeitenTo(seite.getSeiten(), outputFolder);
+            saveSeiteTo(seite, parent, outputFolder);
+            saveSeitenTo(seite.getSeiten(), seite, outputFolder);
             return true;
         }
         return false;
     }
     
-    protected abstract void saveSeiteTo(SeiteSO seite, File outputFolder);
+    protected abstract void saveSeiteTo(SeiteSO seite, SeiteSO parent, File outputFolder);
     
     private File getFolder(String name) {
         File folder = new File(MinervaWebapp.factory().getWorkFolder("export"), FileService.getSafeName(name));
