@@ -18,7 +18,7 @@ public class ExportBookAction extends BAction {
                 + " | export book for customer " + customer + " and language " + lang);
         user.log("export book " + bookFolder + ", " + customer + ", " + lang);
 
-        File outputFolder = new ExportService(book.getWorkspace(), customer, lang).saveBook(book);
+        File outputFolder = new MultiPageHtmlExportService(book.getWorkspace(), customer, lang).saveBook(book);
         
         PublishAction.downloadFolderAsZip(outputFolder, ctx);
     }

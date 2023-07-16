@@ -22,7 +22,7 @@ public class ExportSeiteAction extends SAction {
         user.log("export page #" + seite.getId() + " \"" + seite.getSeite().getTitle().getString(lang)
                 + "\", " + customer + ", " + lang);
 
-        File outputFolder = new ExportService(book.getWorkspace(), customer, lang).saveSeite(seite);
+        File outputFolder = new MultiPageHtmlExportService(book.getWorkspace(), customer, lang).saveSeite(seite);
         
         PublishAction.downloadFolderAsZip(outputFolder, ctx);
     }

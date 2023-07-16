@@ -27,10 +27,10 @@ import minerva.seite.link.LinkService;
 /**
  * Multi-page HTML export
  */
-public class ExportService extends GenericExportService {
+public class MultiPageHtmlExportService extends GenericExportService {
     private final WorkspaceSO workspace;
     
-    public ExportService(WorkspaceSO workspace, String customer, String language) {
+    public MultiPageHtmlExportService(WorkspaceSO workspace, String customer, String language) {
         super(workspace, customer, language);
         this.workspace = workspace;
         workspace.getUser().onlyAdmin();
