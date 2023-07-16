@@ -70,21 +70,21 @@ public class MultiPageHtmlExportService extends GenericExportService {
     @Override
     protected void saveBookTo(BookSO book, File outputFolder) {
         // Gliederung
-        saveIndex(outputFolder, "gliederung.html", getGliederungModel(book));
+        saveIndex(outputFolder, "outline.html", getOutlineModel(book));
 
         super.saveBookTo(book, outputFolder);
     }
 
-    private DataMap getGliederungModel(BookSO book) {
+    private DataMap getOutlineModel(BookSO book) {
         DataMap model = new DataMap();
         String title = book.getBook().getTitle().getString(lang);
         model.put("title", esc(title));
         model.put("customer", esc(getCustomer()));
         model.put("LANG", esc(lang.toUpperCase()));
         model.put("lang", esc(lang));
-        StringBuilder gliederung = new StringBuilder();
-        addSeiten(book.getSeiten(), gliederung);
-        model.put("gliederung", gliederung.toString());
+        StringBuilder outline = new StringBuilder();
+        addSeiten(book.getSeiten(), outline);
+        model.put("outline", outline.toString());
         return model;
     }
     
