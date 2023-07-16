@@ -1,0 +1,15 @@
+/* export-template.css */
+
+
+* {
+    font-family: Arial;
+}
+
+/* just for test */
+h1 {
+    color: #00c;
+}
+
+.noContent {
+    color: #909;
+}

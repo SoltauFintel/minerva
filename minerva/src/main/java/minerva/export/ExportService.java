@@ -5,8 +5,14 @@ import static github.soltaufintel.amalia.web.action.Escaper.esc;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.List;
 
 import org.pmw.tinylog.Logger;
+
+import com.github.template72.Template;
+import com.github.template72.data.DataList;
+import com.github.template72.data.DataMap;
+import com.github.template72.loader.ResourceTemplateLoader;
 
 import minerva.base.FileService;
 import minerva.base.NLS;
@@ -15,46 +21,71 @@ import minerva.model.SeiteSO;
 import minerva.model.SeiteVisible;
 import minerva.model.SeitenSO;
 import minerva.model.WorkspaceSO;
+import minerva.seite.link.Link;
+import minerva.seite.link.LinkService;
 
 /**
  * Multi-page HTML export
  */
 public class ExportService extends GenericExportService {
-
+    private final WorkspaceSO workspace;
+    
     public ExportService(WorkspaceSO workspace, String customer, String language) {
         super(workspace, customer, language);
+        this.workspace = workspace;
         workspace.getUser().onlyAdmin();
     }
-
+    
+    @Override
+    protected void init(File outputFolder) {
+        String css = loadTemplate("template.css");
+        FileService.savePlainTextFile(new File(outputFolder, "online-help.css"), css);
+    }
+    
     @Override
     public File saveWorkspace(WorkspaceSO workspace) {
         File outputFolder = super.saveWorkspace(workspace);
 
         // books overview
-        // TODO template
-        String title = n("books");
-        String html = "<h1>" + esc(title) + "</h1><h2>" + esc(getCustomer()) + " / " + esc(lang) + "</h2><ul>";
-        for (BookSO book : workspace.getBooks()) {
-            html += "\n<li><a href=\"" + esc(book.getBook().getFolder()) + "/index.html\">"
-                    + esc(book.getBook().getTitle().getString(lang)) + "</a></li>";
-        }
-        html += "</ul>";
-        index(outputFolder, title, html);
+        saveIndex(outputFolder, "books.html", getBooksModel(workspace));
         
         return outputFolder;
+    }
+
+    private DataMap getBooksModel(WorkspaceSO workspace) {
+        DataMap model = new DataMap();
+        model.put("title", esc(n("books")));
+        model.put("customer", esc(getCustomer()));
+        model.put("LANG", esc(lang.toUpperCase()));
+        model.put("lang", esc(lang));
+        DataList list = model.list("books");
+        for (BookSO book : workspace.getBooks()) {
+            DataMap map = list.add();
+            map.put("link", esc(book.getBook().getFolder()) + "/index.html");
+            map.put("title", esc(book.getBook().getTitle().getString(lang)));
+        }
+        return model;
     }
     
     @Override
     protected void saveBookTo(BookSO book, File outputFolder) {
         // Gliederung
-        // TODO template
-        String title = esc(book.getBook().getTitle().getString(lang));
-        StringBuilder html = new StringBuilder();
-        html.append("<h1>" + esc(title) + "</h1><h2>" + esc(getCustomer()) + " / " + esc(lang) + "</h2>");
-        addSeiten(book.getSeiten(), html);
-        index(outputFolder, title, html.toString());
+        saveIndex(outputFolder, "gliederung.html", getGliederungModel(book));
 
         super.saveBookTo(book, outputFolder);
+    }
+
+    private DataMap getGliederungModel(BookSO book) {
+        DataMap model = new DataMap();
+        String title = book.getBook().getTitle().getString(lang);
+        model.put("title", esc(title));
+        model.put("customer", esc(getCustomer()));
+        model.put("LANG", esc(lang.toUpperCase()));
+        model.put("lang", esc(lang));
+        StringBuilder gliederung = new StringBuilder();
+        addSeiten(book.getSeiten(), gliederung);
+        model.put("gliederung", gliederung.toString());
+        return model;
     }
     
     private void addSeiten(SeitenSO seiten, StringBuilder html) {
@@ -99,11 +130,24 @@ public class ExportService extends GenericExportService {
 
         // page title
         String title = seite.getSeite().getTitle().getString(lang);
-        html = html.replace("<head></head>", "<head><title>" + esc(title) + "</title></head>")
-                .replace("<body>", "<body><h1>" + esc(title) + "</h1>");
+        int o = html.indexOf("<body>");
+        int oo = html.indexOf("</body>");
+        String body = html.substring(o + "<body>".length(), oo);
         
-        // TODO paging (Luxus)
-        // TODO Links: append ".html"
+        DataMap model = new DataMap();
+        model.put("title", esc(title));
+        model.put("content", body); // no esc!
+        html = render(loadTemplate("page.html"), model);
+        
+        // TODO previous page, parent page, next page, breadcrumbs, to book page 
+        
+        List<Link> links = LinkService.extractLinks(html, false);
+        for (Link link : links) {
+            if (!(link.getHref().startsWith("http://") || link.getHref().startsWith("https://"))) {
+                html = html.replace("<a href=\"" + link.getHref() + "\">", "<a href=\"" + link.getHref() + ".html\">");
+            }
+        }
+        
         // TODO formulas to images   \(...\)    \[...\]
         
         // HTML file
@@ -118,14 +162,33 @@ public class ExportService extends GenericExportService {
         saveSeitenTo(seite.getSeiten(), outputFolder); // recursive
     }
     
-    private String n(String key) {
-        return NLS.get(lang, key);
+    private void saveIndex(File outputFolder, String dn, DataMap model) {
+        FileService.savePlainTextFile(new File(outputFolder, "index.html"),
+                render(loadTemplate(dn), model));
     }
     
-    private void index(File outputFolder, String title, String content) {
-        FileService.savePlainTextFile(new File(outputFolder, "index.html"),
-                "<html><head><title>" + esc(title)
-                        + "</title><link rel=\"stylesheet\" type=\"text/css\" href=\"online-help.css\"></head><body>\n"
-                        + content + "\n</body></html>\n");
+    private String render(String template, DataMap model) {
+        DataMap model2 = new DataMap();
+        model2.put("title", model.get("title").toString());
+        model2.put("tcontent", Template.createFromString(template).withData(model).render());
+        return Template.createFromString(loadTemplate("template.html")).withData(model2).render();
+    }
+
+    private String loadTemplate(String dn) {
+        File file = new File(workspace.getFolder(), dn);
+        if (file.isFile()) {
+            Logger.debug("export: using template " + dn + " from workspace " + workspace.getBranch());
+            return FileService.loadPlainTextFile(file);
+        }
+        Logger.debug("export: using built-in template " + dn);
+        return loadBuiltInTemplate(dn); // fallback
+    }
+    
+    private String loadBuiltInTemplate(String dn) {
+        return ResourceTemplateLoader.loadResource(getClass(), "/templates/export/" + dn, "UTF-8");
+    }
+    
+    private String n(String key) {
+        return NLS.get(lang, key);
     }
 }

@@ -34,11 +34,12 @@ public abstract class GenericExportService {
     }
 
     public File saveWorkspace(WorkspaceSO workspace) {
-        File ret = getFolder(NLS.get(lang, "allBooks"));
+        File outputFolder = getFolder(NLS.get(lang, "allBooks"));
+        init(outputFolder);
         for (BookSO book : workspace.getBooks()) {
-            saveBookTo(book, new File(ret, FileService.getSafeName(book.getBook().getFolder())));
+            saveBookTo(book, new File(outputFolder, FileService.getSafeName(book.getBook().getFolder())));
         }
-        return ret;
+        return outputFolder;
     }
 
     public File saveBook(BookSO book) {
@@ -48,6 +49,7 @@ public abstract class GenericExportService {
     }
     
     protected void saveBookTo(BookSO book, File outputFolder) {
+        init(outputFolder);
         saveSeitenTo(book.getSeiten(lang), outputFolder);
     }
     
@@ -59,6 +61,7 @@ public abstract class GenericExportService {
     
     public File saveSeite(SeiteSO seite) {
         File outputFolder = getFolder(seite.getSeite().getTitle().getString(lang));
+        init(outputFolder);
         if (!_saveSeiteTo(seite, outputFolder)) {
             throw new RuntimeException("Page #" + seite.getId() + " \"" + seite.getTitle() + "\" is not visible!");
         }
@@ -81,4 +84,6 @@ public abstract class GenericExportService {
         FileService.deleteFolder(folder);
         return folder;
     }
+
+    protected abstract void init(File outputFolder);
 }
