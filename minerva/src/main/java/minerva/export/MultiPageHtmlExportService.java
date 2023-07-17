@@ -63,6 +63,9 @@ public class MultiPageHtmlExportService extends GenericExportService {
             map.put("link", esc(book.getBook().getFolder()) + "/index.html");
             map.put("title", esc(book.getBook().getTitle().getString(lang)));
         }
+        model.put("cssFolder", esc(FileService.getSafeName(
+                workspace.getBooks().get(0).getBook().getFolder())
+                + "/html/"));
         return model;
     }
     
@@ -77,10 +80,11 @@ public class MultiPageHtmlExportService extends GenericExportService {
     private DataMap getBookModel(BookSO book) {
         DataMap model = new DataMap();
         std(book.getBook().getTitle().getString(lang), model);
-        navigationBooksMode(model, ".html");
+        navigationBooksMode(model, ".html", "");
         StringBuilder outline = new StringBuilder();
         addSeiten(book.getSeiten(), outline);
         model.put("outline", outline.toString());
+        model.put("cssFolder", "html/");
         return model;
     }
     
@@ -91,6 +95,8 @@ public class MultiPageHtmlExportService extends GenericExportService {
         model.put("hasCustomer", !"-".equals(customer));
         model.put("LANG", esc(lang.toUpperCase()));
         model.put("lang", esc(lang.toLowerCase()));
+        model.put("back", n("back"));
+        model.put("forward", n("forward"));
     }
     
     private void addSeiten(SeitenSO seiten, StringBuilder html) {
@@ -102,7 +108,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
                     html.append("<ul>");
                     first = false;
                 }
-                html.append("\n<li><a href=\"" + esc(seite.getId()) + ".html\""
+                html.append("\n<li><a href=\"html/" + esc(seite.getId()) + ".html\""
                         + (v.hasSubpages() ? " class=\"noContent\"" : "") + ">"
                         + esc(seite.getSeite().getTitle().getString(lang)) + "</a>");
                 addSeiten(seite.getSeiten(), html);
@@ -137,6 +143,9 @@ public class MultiPageHtmlExportService extends GenericExportService {
         DataMap model = new DataMap();
         model.put("title", esc(title));
         model.put("content", getBody(html, title)); // no esc!
+        model.put("cssFolder", "");
+        model.put("back", n("back"));
+        model.put("forward", n("forward"));
         navigation(seite, parent, model);
         html = render(loadTemplate("page.html"), model);
         html = addDotHtml(html);
@@ -210,17 +219,17 @@ public class MultiPageHtmlExportService extends GenericExportService {
         
         model.put("hasBookLink", currentBook != null);
         if (currentBook != null) {
-            model.put("bookLink", "index");
+            model.put("bookLink", "../index");
             model.put("bookTitle", esc(currentBook.getBook().getTitle().getString(lang)));
         }
         
-        navigationBooksMode(model, "");
+        navigationBooksMode(model, "", "../");
     }
 
-    private void navigationBooksMode(DataMap model, String postfix) {
+    private void navigationBooksMode(DataMap model, String postfix, String path) {
         model.put("booksMode", booksMode);
         if (booksMode) {
-            model.put("booksModeLink", "../index" + postfix);
+            model.put("booksModeLink", path + "../index" + postfix);
             model.put("booksModeTitle", n("booksModeTitle"));
         }
     }
@@ -234,6 +243,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
         DataMap model2 = new DataMap();
         model2.put("title", model.get("title").toString());
         model2.put("tcontent", Template.createFromString(template).withData(model).render());
+        model2.put("cssFolder", model.get("cssFolder").toString());
         return Template.createFromString(loadTemplate("template.html")).withData(model2).render();
     }
 

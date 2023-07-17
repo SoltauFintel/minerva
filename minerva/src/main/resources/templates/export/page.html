@@ -1,6 +1,6 @@
 <p style="font-size: 8pt;">
-    {{if hasPrevLink}}<a href="{{prevLink}}">zurück</a>{{/if}}
-    {{if hasNextLink}} | <a href="{{nextLink}}">weiter &gt;&gt;</a>{{/if}}
+    {{if hasPrevLink}}<a href="{{prevLink}}">{{back}}</a>{{else}}{{back}}{{/if}}
+    | {{if hasNextLink}}<a href="{{nextLink}}">{{forward}} &gt;&gt;</a>{{else}}{{forward}} &gt;&gt;{{/if}}
     {{if booksMode}} | <a href="{{booksModeLink}}">{{booksModeTitle}}</a>{{/if}}
     {{if hasBookLink}} | <a href="{{bookLink}}">{{bookTitle}}</a>{{/if}}
     {{if hasParentLink}} | <a href="{{parentLink}}">{{parentTitle}}</a>{{/if}}
@@ -9,3 +9,11 @@
 <h1>{{title}}</h1>
 
 {{content}}
+
+<p style="font-size: 8pt;">
+    {{if hasPrevLink}}<a href="{{prevLink}}">{{back}}</a>{{else}}{{back}}{{/if}}
+    | {{if hasNextLink}}<a href="{{nextLink}}">{{forward}} &gt;&gt;</a>{{else}}{{forward}} &gt;&gt;{{/if}}
+    {{if booksMode}} | <a href="{{booksModeLink}}">{{booksModeTitle}}</a>{{/if}}
+    {{if hasBookLink}} | <a href="{{bookLink}}">{{bookTitle}}</a>{{/if}}
+    {{if hasParentLink}} | <a href="{{parentLink}}">{{parentTitle}}</a>{{/if}}
+</p>

@@ -163,3 +163,5 @@ customer=Customer
 allBooks=all books
 exportInfo=Books or pages are exported as multi-page HTML files and downloaded as a zip file.
 booksModeTitle=Books overview
+back=back
+forward=forward

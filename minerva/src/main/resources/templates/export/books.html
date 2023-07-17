@@ -1,9 +1,9 @@
 <h1>{{title}}</h1>
 
-<h2>{{if hasCustomer}}{{customer}} / {{/if}}{{LANG}}</h2>
-
 <ul class="books">
     {{each b in books}}
         <li class="book"><a href="{{b.link}}">{{b.title}}</a></li>
     {{/each}}
 </ul>
+
+{{if hasCustomer}}<p style="font-size: 8pt; color: #999;">{{customer}}</p>{{/if}}

@@ -163,3 +163,5 @@ customer=Kunde
 allBooks=alle Bücher
 exportInfo=Bücher bzw. Seiten werden als mehrseitige HTML-Dateien exportiert und als Zip-Datei heruntergeladen.
 booksModeTitle=Bücherübersicht
+back=zurück
+forward=weiter

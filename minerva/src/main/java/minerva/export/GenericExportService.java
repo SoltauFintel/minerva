@@ -35,19 +35,23 @@ public abstract class GenericExportService {
         return exclusionsService.getCustomer().toUpperCase();
     }
 
+    /**
+     * @param workspace with at least 1 book
+     * @return output folder
+     */
     public File saveWorkspace(WorkspaceSO workspace) {
         booksMode = true;
         File outputFolder = getFolder(NLS.get(lang, "allBooks"));
-        init(outputFolder);
         for (BookSO book : workspace.getBooks()) {
-            saveBookTo(book, new File(outputFolder, FileService.getSafeName(book.getBook().getFolder())));
+            String bookFolder = FileService.getSafeName(book.getBook().getFolder());
+            saveBookTo(book, new File(outputFolder, bookFolder));
         }
         return outputFolder;
     }
 
     public File saveBook(BookSO book) {
+        sort(book.getSeiten()); // sort once at begin, because later it's not possible
         File outputFolder = getFolder(book.getBook().getFolder());
-        sort(book.getSeiten());
         saveBookTo(book, outputFolder);
         return outputFolder;
     }
@@ -61,6 +65,7 @@ public abstract class GenericExportService {
     
     protected void saveBookTo(BookSO book, File outputFolder) {
         currentBook = book;
+        outputFolder = new File(outputFolder, "html");
         init(outputFolder);
         saveSeitenTo(book.getSeiten(lang), null, outputFolder);
     }

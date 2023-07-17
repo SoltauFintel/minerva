@@ -2,8 +2,8 @@
 
 <h1>{{title}}</h1>
 
-<h2>{{if hasCustomer}}{{customer}} / {{/if}}{{LANG}}</h2>
-
 <div class="outline">
     {{outline}}
 </div>
+
+{{if hasCustomer}}<p style="font-size: 8pt; color: #999;">{{customer}}</p>{{/if}}
