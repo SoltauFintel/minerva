@@ -20,6 +20,7 @@ public class TagsSO {
     public void addTag(String tag) {
         boolean dirty = false;
         boolean invisibleTagAdded = false;
+        int n = 0;
         if (tag.contains(",")) {
             for (String i : tag.split(",")) {
                 String oneTag = cleanTag(i);
@@ -28,6 +29,7 @@ public class TagsSO {
                 }
                 if (addOneTag(oneTag)) {
                     dirty = true;
+                    n++;
                 }
             }
         } else {
@@ -38,7 +40,7 @@ public class TagsSO {
             dirty = addOneTag(oneTag);
         }
         if (dirty) {
-            seiteSO.saveMeta(new CommitMessage(seiteSO, "tag " + tag + " added"));
+            seiteSO.saveMeta(new CommitMessage(seiteSO, "tag" + (n > 1 ? "s" : "") + " " + tag + " added"));
             if (invisibleTagAdded) {
                 seiteSO.updateOnlineHelp_nowInvisible();
             }
