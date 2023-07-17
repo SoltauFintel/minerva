@@ -144,7 +144,13 @@ public class UserSO {
             throw new RuntimeException("User " + user.getLogin() + " is not an admin!");
         }
     }
-    
+
+    public void onlyWithExportRight() {
+        if (!MinervaWebapp.factory().getPersonsWithExportRight().contains(user.getLogin())) {
+            throw new RuntimeException("User " + user.getLogin() + " has no export right!");
+        }
+    }
+
     public void log(String msg) {
         try (FileWriter w = new FileWriter(getServerlogFile(), true)) {
             w.write(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss ")));

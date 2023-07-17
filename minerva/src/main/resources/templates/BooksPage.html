@@ -96,7 +96,7 @@
                     <a href="/migration/{{branch}}" class="btn btn-danger brr"><i class="fa fa-cloud-download"></i>
                         Confluence Import...</a>
                 {{/if}}
-                {{if isAdmin}}
+                {{if hasExportRight}}
                     <a href="/w/{{branch}}/export-what" class="btn btn-default brr"><i class="fa fa-download"></i>
                         {{N.export}}...</a>
                 {{/if}}

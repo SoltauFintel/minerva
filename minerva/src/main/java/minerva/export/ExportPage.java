@@ -24,7 +24,7 @@ public class ExportPage extends WPage {
     
     @Override
     protected void execute() {
-        user.onlyAdmin();
+        user.onlyWithExportRight();
         if (workspace.getBooks().isEmpty()) {
             throw new RuntimeException("There are no books!");
         }

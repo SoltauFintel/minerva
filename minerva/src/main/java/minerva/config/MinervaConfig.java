@@ -95,6 +95,10 @@ public class MinervaConfig {
         return splitPersons(get("persons"));
     }
 
+    public List<String> getPersonsWithExportRight() {
+        return splitPersons(get("persons-with-export-right"));
+    }
+
     public List<String> getAdmins() {
         return splitPersons(get("admins"));
     }

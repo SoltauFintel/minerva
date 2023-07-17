@@ -44,6 +44,7 @@ public class MinervaPageInitializer extends PageInitializer {
         boolean isAdmin = "1".equals(ctx.req.session().attribute("admin"));
         page.put("isAdmin", isAdmin);
         page.put("canBeAdmin", m.hasUser() && MinervaWebapp.factory().getAdmins().contains(m.getLogin()));
+        page.put("hasExportRight", m.hasUser() && MinervaWebapp.factory().getPersonsWithExportRight().contains(m.getLogin()));
         hasUserVars(page, m);
     }
 
