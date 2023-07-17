@@ -30,6 +30,7 @@ import minerva.seite.link.LinkService;
  */
 public class MultiPageHtmlExportService extends GenericExportService {
     private final WorkspaceSO workspace;
+    private int counter = 0;
     
     public MultiPageHtmlExportService(WorkspaceSO workspace, String customer, String language) {
         super(workspace, customer, language);
@@ -139,7 +140,14 @@ public class MultiPageHtmlExportService extends GenericExportService {
         navigation(seite, parent, model);
         html = render(loadTemplate("page.html"), model);
         html = addDotHtml(html);
-        // TODO formulas to images   \(...\)    \[...\]
+        
+        // formulas to images
+        Formula2Image c = new Formula2Image();
+        c.setCounter(counter);
+        c.setPath("img/" + seite.getId() + "/");
+        html = c.processHTML(html, "\\[", "\\]", outputFolder, seite, "<p class=\"math\">", "</p>", title);
+        html = c.processHTML(html, "\\(", "\\)", outputFolder, seite, "", "", title);
+        counter = c.getCounter();
         
         // HTML file
         FileService.savePlainTextFile(new File(outputFolder, seite.getId() + ".html"), html);
@@ -176,19 +184,19 @@ public class MultiPageHtmlExportService extends GenericExportService {
         }
         return html;
     }
-
+    
     private void navigation(SeiteSO seite, SeiteSO parent, DataMap model) {
         NavigateService nav = new NavigateService(true, lang, exclusionsService);
         nav.setSortAllowed(false);
         SeiteSO bb = nav.previousPage(seite);
-        boolean b = bb != null;
+        boolean b = bb != null && bb != seite;
         model.put("hasPrevLink", b);
         if (b) {
             model.put("prevLink", bb.getId());
         }
         
         bb = nav.nextPage(seite);
-        b = bb != null;
+        b = bb != null && bb != seite;
         model.put("hasNextLink", b);
         if (b) {
             model.put("nextLink", bb.getId());

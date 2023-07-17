@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import github.soltaufintel.amalia.auth.webcontext.WebContext;
+import github.soltaufintel.amalia.web.action.Escaper;
 import github.soltaufintel.amalia.web.config.AppConfig;
 import minerva.base.StringService;
 
@@ -133,5 +134,15 @@ public class MinervaConfig {
     
     public String getSearchSitePrefix() {
         return config.get("search.site-prefix", "minerva-");
+    }
+
+    public String getMathJaxConverterURL(String expression) {
+        // https://groups.google.com/g/mathjax-users/c/Tc4xbm61CqQ?pli=1
+        // https://latex.codecogs.com/
+        // https://math.vercel.app/home
+        
+        String url = config.get("mathjax-converter-url", "https://latex.codecogs.com/png.image?$p");
+        String p = Escaper.urlEncode(expression, "0").replace("+", "%20");
+        return url.replace("$p", p);
     }
 }

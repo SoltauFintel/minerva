@@ -158,7 +158,6 @@ public class FileService {
                 }
             });
         } catch (Exception e) {
-e.printStackTrace(); // XXX            
             throw new RuntimeException(e);
         }
     }
