@@ -17,3 +17,5 @@ search.url=http://server:port
 search.site-prefix=minerva-
 
 persons=user1,user2
+persons-with-export-right=
+admins=
