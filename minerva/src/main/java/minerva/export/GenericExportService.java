@@ -22,6 +22,7 @@ public abstract class GenericExportService {
     protected final String lang;
     protected ExclusionsService exclusionsService;
     protected BookSO currentBook = null;
+    protected boolean booksMode = false;
 
     public GenericExportService(WorkspaceSO workspace, String customer, String language) {
         lang = language;
@@ -35,6 +36,7 @@ public abstract class GenericExportService {
     }
 
     public File saveWorkspace(WorkspaceSO workspace) {
+        booksMode = true;
         File outputFolder = getFolder(NLS.get(lang, "allBooks"));
         init(outputFolder);
         for (BookSO book : workspace.getBooks()) {
@@ -45,8 +47,16 @@ public abstract class GenericExportService {
 
     public File saveBook(BookSO book) {
         File outputFolder = getFolder(book.getBook().getFolder());
+        sort(book.getSeiten());
         saveBookTo(book, outputFolder);
         return outputFolder;
+    }
+    
+    private void sort(SeitenSO seiten) {
+        seiten.sort(lang);
+        for (SeiteSO seite : seiten) {
+            sort(seite.getSeiten()); // recursive
+        }
     }
     
     protected void saveBookTo(BookSO book, File outputFolder) {

@@ -1,5 +1,7 @@
 <h1>{{title}}</h1>
-<h2>{{customer}} / {{LANG}}</h2>
+
+<h2>{{if hasCustomer}}{{customer}} / {{/if}}{{LANG}}</h2>
+
 <ul class="books">
     {{each b in books}}
         <li><a href="{{b.link}}">{{b.title}}</a></li>

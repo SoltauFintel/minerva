@@ -1,8 +1,8 @@
+{{if booksMode}}<p style="font-size: 8pt;"><a href="{{booksModeLink}}">{{booksModeTitle}}</a></p>{{/if}}
+
 <h1>{{title}}</h1>
 
-<h2>{{customer}} / {{LANG}}</h2>
-
-{{if booksMode}}<p><a href="{{booksModeLink}}">{{booksModeTitle}}</a></p>{{/if}}
+<h2>{{if hasCustomer}}{{customer}} / {{/if}}{{LANG}}</h2>
 
 <div class="outline">
     {{outline}}

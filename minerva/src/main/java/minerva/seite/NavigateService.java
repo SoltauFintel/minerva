@@ -2,6 +2,7 @@ package minerva.seite;
 
 import minerva.MinervaWebapp;
 import minerva.exclusions.ExclusionsService;
+import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 
@@ -10,6 +11,7 @@ public class NavigateService {
     private final String lang;
     private final ExclusionsService exclusions;
     private SeiteSO parent;
+    private boolean sortAllowed = true;
 
     /**
      * @param omitEmptyPages true: omit empty pages, false: include all pages
@@ -23,6 +25,14 @@ public class NavigateService {
         this.omitEmptyPages = omitEmptyPages;
         this.lang = lang;
         this.exclusions = exclusions;
+    }
+
+    public boolean isSortAllowed() {
+        return sortAllowed;
+    }
+
+    public void setSortAllowed(boolean sortAllowed) {
+        this.sortAllowed = sortAllowed;
     }
 
     public SeiteSO nextPage(final SeiteSO current) {
@@ -46,7 +56,7 @@ public class NavigateService {
     }
     
     private SeiteSO getFirstSubpage(SeiteSO parent) {
-        for (SeiteSO seite : parent.getSeiten(lang)) {
+        for (SeiteSO seite : seiten(parent)) {
             if (valid(seite)) {
                 return seite;
             }
@@ -66,7 +76,7 @@ public class NavigateService {
     }
     
     private SeiteSO lastPage(final SeiteSO page) {
-        SeitenSO seiten = page.getSeiten(lang);
+        SeitenSO seiten = seiten(page);
         for (int i = seiten.size() - 1; i >= 0; i--) {
             SeiteSO s = seiten.get(i);
             if (valid(s)) {
@@ -77,11 +87,11 @@ public class NavigateService {
     }
     
     private SeiteSO nextPageOnSameLevel(SeiteSO seite) {
-        SeitenSO seiten = seite.getBook().getSeiten(lang);
+        SeitenSO seiten = seiten(seite.getBook());
         parent = null;
         if (!seite.hasNoParent()) {
             parent = seiten.byId(seite.getSeite().getParentId());
-            seiten = parent.getSeiten(lang);
+            seiten = seiten(parent);
         }
         boolean pick = false;
         for (SeiteSO s : seiten) {
@@ -96,11 +106,11 @@ public class NavigateService {
     }
 
     private SeiteSO previousPageOnSameLevel(SeiteSO seite) {
-        SeitenSO seiten = seite.getBook().getSeiten(lang);
+        SeitenSO seiten = seiten(seite.getBook());
         parent = null;
         if (!seite.hasNoParent()) {
             parent = seiten.byId(seite.getSeite().getParentId());
-            seiten = parent.getSeiten(lang);
+            seiten = seiten(parent);
         }
         SeiteSO ret = null;
         for (SeiteSO s : seiten) {
@@ -125,5 +135,13 @@ public class NavigateService {
             }
         }
         return true;
+    }
+    
+    private SeitenSO seiten(SeiteSO parentSeite) {
+        return sortAllowed ? parentSeite.getSeiten(lang) : parentSeite.getSeiten();
+    }
+    
+    private SeitenSO seiten(BookSO book) {
+        return sortAllowed ? book.getSeiten(lang) : book.getSeiten();
     }
 }

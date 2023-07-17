@@ -55,10 +55,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
 
     private DataMap getBooksModel(WorkspaceSO workspace) {
         DataMap model = new DataMap();
-        model.put("title", esc(n("books")));
-        model.put("customer", esc(getCustomer()));
-        model.put("LANG", esc(lang.toUpperCase()));
-        model.put("lang", esc(lang));
+        std(n("books"), model);
         DataList list = model.list("books");
         for (BookSO book : workspace.getBooks()) {
             DataMap map = list.add();
@@ -71,22 +68,28 @@ public class MultiPageHtmlExportService extends GenericExportService {
     @Override
     protected void saveBookTo(BookSO book, File outputFolder) {
         // Gliederung
-        saveIndex(outputFolder, "outline.html", getOutlineModel(book));
+        saveIndex(outputFolder, "book.html", getBookModel(book));
 
         super.saveBookTo(book, outputFolder);
     }
 
-    private DataMap getOutlineModel(BookSO book) {
+    private DataMap getBookModel(BookSO book) {
         DataMap model = new DataMap();
-        String title = book.getBook().getTitle().getString(lang);
-        model.put("title", esc(title));
-        model.put("customer", esc(getCustomer()));
-        model.put("LANG", esc(lang.toUpperCase()));
-        model.put("lang", esc(lang));
+        std(book.getBook().getTitle().getString(lang), model);
+        navigationBooksMode(model, ".html");
         StringBuilder outline = new StringBuilder();
         addSeiten(book.getSeiten(), outline);
         model.put("outline", outline.toString());
         return model;
+    }
+    
+    private void std(String title, DataMap model) {
+        model.put("title", esc(title));
+        String customer = getCustomer();
+        model.put("customer", esc(customer));
+        model.put("hasCustomer", !"-".equals(customer));
+        model.put("LANG", esc(lang.toUpperCase()));
+        model.put("lang", esc(lang.toLowerCase()));
     }
     
     private void addSeiten(SeitenSO seiten, StringBuilder html) {
@@ -129,14 +132,10 @@ public class MultiPageHtmlExportService extends GenericExportService {
     @Override
     protected void saveSeiteTo(SeiteSO seite, SeiteSO parent, File outputFolder) {
         String html = seite.getContent().getString(lang);
-
         String title = seite.getSeite().getTitle().getString(lang);
-        int o = html.indexOf("<body>");
-        int oo = html.indexOf("</body>");
-        String body = html.substring(o + "<body>".length(), oo);
         DataMap model = new DataMap();
         model.put("title", esc(title));
-        model.put("content", body); // no esc!
+        model.put("content", getBody(html, title)); // no esc!
         navigation(seite, parent, model);
         html = render(loadTemplate("page.html"), model);
         html = addDotHtml(html);
@@ -151,6 +150,23 @@ public class MultiPageHtmlExportService extends GenericExportService {
                 new File(outputFolder, "img/" + seite.getId()));
     }
 
+    private String getBody(String html, String title) {
+        String body;
+        int o = html.indexOf("<body>");
+        if (o >= 0) {
+            o += "<body>".length();
+            int oo = html.indexOf("</body>");
+            if (oo < 0) {
+                throw new RuntimeException("</body> not found for page " + title);
+            }
+            body = html.substring(o, oo);
+        } else {
+            Logger.warn("Page \"" + title + "\" (" + lang + ") has no <body>! Use whole content.");
+            body = html;
+        }
+        return body;
+    }
+
     private String addDotHtml(String html) {
         List<Link> links = LinkService.extractLinks(html, false);
         for (Link link : links) {
@@ -163,29 +179,42 @@ public class MultiPageHtmlExportService extends GenericExportService {
 
     private void navigation(SeiteSO seite, SeiteSO parent, DataMap model) {
         NavigateService nav = new NavigateService(true, lang, exclusionsService);
+        nav.setSortAllowed(false);
         SeiteSO bb = nav.previousPage(seite);
         boolean b = bb != null;
         model.put("hasPrevLink", b);
         if (b) {
-            model.put("prevLink", bb.getId() + ".html");
+            model.put("prevLink", bb.getId());
         }
         
         bb = nav.nextPage(seite);
         b = bb != null;
         model.put("hasNextLink", b);
         if (b) {
-            model.put("nextLink", bb.getId() + ".html");
+            model.put("nextLink", bb.getId());
         }
 
         model.put("hasParentLink", parent != null);
         if (parent != null) {
-            model.put("parentLink", parent.getId() + ".html");
+            model.put("parentLink", parent.getId());
             model.put("parentTitle", esc(parent.getSeite().getTitle().getString(lang)));
         }
         
         model.put("hasBookLink", currentBook != null);
-        model.put("bookLink", "index.html");
-        model.put("bookTitle", esc(currentBook.getBook().getTitle().getString(lang)));
+        if (currentBook != null) {
+            model.put("bookLink", "index");
+            model.put("bookTitle", esc(currentBook.getBook().getTitle().getString(lang)));
+        }
+        
+        navigationBooksMode(model, "");
+    }
+
+    private void navigationBooksMode(DataMap model, String postfix) {
+        model.put("booksMode", booksMode);
+        if (booksMode) {
+            model.put("booksModeLink", "../index" + postfix);
+            model.put("booksModeTitle", n("booksModeTitle"));
+        }
     }
     
     private void saveIndex(File outputFolder, String dn, DataMap model) {

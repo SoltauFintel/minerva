@@ -16,6 +16,7 @@ import minerva.model.WorkspaceSO;
 import minerva.workspace.WPage;
 
 public class ExportPage extends WPage {
+    // TODO Die letzte Einstellung merken.
     private static final String W = "###";
     private static final String B = "##";
     private static final String S = "#";
