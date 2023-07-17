@@ -165,3 +165,6 @@ exportInfo=Bücher bzw. Seiten werden als mehrseitige HTML-Dateien exportiert un
 booksModeTitle=Bücherübersicht
 back=zurück
 forward=weiter
+exportTemplates=Exportvorlagen
+booksOverview=Bücher Übersicht
+template=Template

@@ -165,3 +165,6 @@ exportInfo=Books or pages are exported as multi-page HTML files and downloaded a
 booksModeTitle=Books overview
 back=back
 forward=forward
+exportTemplates=Export templates
+booksOverview=Books overview
+template=Template

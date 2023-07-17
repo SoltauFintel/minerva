@@ -33,6 +33,7 @@ import minerva.exclusions.ExclusionsEditPage;
 import minerva.export.ExportBookAction;
 import minerva.export.ExportPage;
 import minerva.export.ExportSeiteAction;
+import minerva.export.ExportTemplatesPage;
 import minerva.export.ExportWorkspaceAction;
 import minerva.image.ImageDownloadAction;
 import minerva.image.ImageUploadAction;
@@ -106,6 +107,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/help-keys", AllHelpKeysPage.class);
         get("/w/:branch/export", ExportWorkspaceAction.class);
         form("/w/:branch/export-what", ExportPage.class);
+        form("/w/:branch/export-templates", ExportTemplatesPage.class);
         
         // Book
         get("/b/:branch", BooksPage.class);

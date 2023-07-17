@@ -12,7 +12,6 @@ import org.pmw.tinylog.Logger;
 import com.github.template72.Template;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
-import com.github.template72.loader.ResourceTemplateLoader;
 
 import minerva.base.FileService;
 import minerva.base.NLS;
@@ -40,7 +39,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
     
     @Override
     protected void init(File outputFolder) {
-        String css = loadTemplate("template.css");
+        String css = new ExportTemplatesService(workspace).loadTemplate(ExportTemplatesService.TEMPLATE_CSS);
         FileService.savePlainTextFile(new File(outputFolder, "online-help.css"), css);
     }
     
@@ -49,7 +48,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
         File outputFolder = super.saveWorkspace(workspace);
 
         // books overview
-        saveIndex(outputFolder, "books.html", getBooksModel(workspace));
+        saveIndex(outputFolder, ExportTemplatesService.BOOKS, getBooksModel(workspace));
         
         return outputFolder;
     }
@@ -72,7 +71,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
     @Override
     protected void saveBookTo(BookSO book, File outputFolder) {
         // Gliederung
-        saveIndex(outputFolder, "book.html", getBookModel(book));
+        saveIndex(outputFolder, ExportTemplatesService.BOOK, getBookModel(book));
 
         super.saveBookTo(book, outputFolder);
     }
@@ -147,7 +146,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
         model.put("back", n("back"));
         model.put("forward", n("forward"));
         navigation(seite, parent, model);
-        html = render(loadTemplate("page.html"), model);
+        html = render(new ExportTemplatesService(workspace).loadTemplate(ExportTemplatesService.PAGE), model);
         html = addDotHtml(html);
         
         // formulas to images
@@ -236,7 +235,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
     
     private void saveIndex(File outputFolder, String dn, DataMap model) {
         FileService.savePlainTextFile(new File(outputFolder, "index.html"),
-                render(loadTemplate(dn), model));
+                render(new ExportTemplatesService(workspace).loadTemplate(dn), model));
     }
     
     private String render(String template, DataMap model) {
@@ -244,23 +243,10 @@ public class MultiPageHtmlExportService extends GenericExportService {
         model2.put("title", model.get("title").toString());
         model2.put("tcontent", Template.createFromString(template).withData(model).render());
         model2.put("cssFolder", model.get("cssFolder").toString());
-        return Template.createFromString(loadTemplate("template.html")).withData(model2).render();
+        return Template.createFromString(new ExportTemplatesService(workspace)
+                .loadTemplate(ExportTemplatesService.TEMPLATE)).withData(model2).render();
     }
 
-    private String loadTemplate(String dn) {
-        File file = new File(workspace.getFolder(), dn);
-        if (file.isFile()) {
-            Logger.debug("export: using template " + dn + " from workspace " + workspace.getBranch());
-            return FileService.loadPlainTextFile(file);
-        }
-        Logger.debug("export: using built-in template " + dn);
-        return loadBuiltInTemplate(dn); // fallback
-    }
-    
-    private String loadBuiltInTemplate(String dn) {
-        return ResourceTemplateLoader.loadResource(getClass(), "/templates/export/" + dn, "UTF-8");
-    }
-    
     private String n(String key) {
         return NLS.get(lang, key);
     }
