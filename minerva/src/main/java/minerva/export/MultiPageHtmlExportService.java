@@ -21,6 +21,7 @@ import minerva.model.SeiteSO;
 import minerva.model.SeiteVisible;
 import minerva.model.SeitenSO;
 import minerva.model.WorkspaceSO;
+import minerva.seite.NavigateService;
 import minerva.seite.link.Link;
 import minerva.seite.link.LinkService;
 
@@ -136,11 +137,6 @@ public class MultiPageHtmlExportService extends GenericExportService {
         DataMap model = new DataMap();
         model.put("title", esc(title));
         model.put("content", body); // no esc!
-// XXX temporär >>        
-model.put("hasPrevLink",false);
-model.put("hasNextLink",false);
-model.put("hasParentLink",false);
-model.put("hasBookLink",false); // XXX temporär <<
         navigation(seite, parent, model);
         html = render(loadTemplate("page.html"), model);
         html = addDotHtml(html);
@@ -166,26 +162,25 @@ model.put("hasBookLink",false); // XXX temporär <<
     }
 
     private void navigation(SeiteSO seite, SeiteSO parent, DataMap model) {
-// TODO NavigateService darf nicht sortieren, da ich mich hier in einer Seiten Loop befinde!
-//        NavigateService nav = new NavigateService(true, lang, exclusionsService);
-//        SeiteSO bb = nav.previousPage(seite);
-//        boolean b = bb != null;
-//        model.put("hasPrevLink", b);
-//        if (b) {
-//            model.put("prevLink", bb.getId() + ".html");
-//        }
-//        
-//        bb = nav.nextPage(seite);
-//        b = bb != null;
-//        model.put("hasNextLink", b);
-//        if (b) {
-//            model.put("nextLink", bb.getId() + ".html");
-//        }
+        NavigateService nav = new NavigateService(true, lang, exclusionsService);
+        SeiteSO bb = nav.previousPage(seite);
+        boolean b = bb != null;
+        model.put("hasPrevLink", b);
+        if (b) {
+            model.put("prevLink", bb.getId() + ".html");
+        }
+        
+        bb = nav.nextPage(seite);
+        b = bb != null;
+        model.put("hasNextLink", b);
+        if (b) {
+            model.put("nextLink", bb.getId() + ".html");
+        }
 
         model.put("hasParentLink", parent != null);
         if (parent != null) {
             model.put("parentLink", parent.getId() + ".html");
-            // TODO parentTitle
+            model.put("parentTitle", esc(parent.getSeite().getTitle().getString(lang)));
         }
         
         model.put("hasBookLink", currentBook != null);
