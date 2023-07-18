@@ -43,8 +43,10 @@ public abstract class GenericExportService {
         booksMode = true;
         File outputFolder = getFolder(NLS.get(lang, "allBooks"));
         for (BookSO book : workspace.getBooks()) {
-            String bookFolder = FileService.getSafeName(book.getBook().getFolder());
-            saveBookTo(book, new File(outputFolder, bookFolder));
+            if (book.hasContent(lang, exclusionsService)) {
+                String bookFolder = FileService.getSafeName(book.getBook().getFolder());
+                saveBookTo(book, new File(outputFolder, bookFolder));
+            }
         }
         return outputFolder;
     }

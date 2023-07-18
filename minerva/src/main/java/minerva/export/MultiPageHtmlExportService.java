@@ -58,9 +58,11 @@ public class MultiPageHtmlExportService extends GenericExportService {
         std(n("books"), model);
         DataList list = model.list("books");
         for (BookSO book : workspace.getBooks()) {
-            DataMap map = list.add();
-            map.put("link", esc(book.getBook().getFolder()) + "/index.html");
-            map.put("title", esc(book.getBook().getTitle().getString(lang)));
+            if (book.hasContent(lang, exclusionsService)) {
+                DataMap map = list.add();
+                map.put("link", esc(book.getBook().getFolder()) + "/index.html");
+                map.put("title", esc(book.getBook().getTitle().getString(lang)));
+            }
         }
         model.put("cssFolder", esc(FileService.getSafeName(
                 workspace.getBooks().get(0).getBook().getFolder())
