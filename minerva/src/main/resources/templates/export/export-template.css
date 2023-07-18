@@ -23,3 +23,11 @@ a:hover {
 li.book {
     margin-bottom: 1em;
 }
+
+@media print
+{    
+    .hidden-print, .hidden-print *
+    {
+        display: none !important;
+    }
+}

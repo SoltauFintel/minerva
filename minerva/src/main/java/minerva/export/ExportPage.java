@@ -1,6 +1,7 @@
 package minerva.export;
 
 import static minerva.base.StringService.umlaute;
+import static minerva.base.StringService.upper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,12 +45,12 @@ public class ExportPage extends WPage {
                us = new ExportUserSettings();
                us.setItem(items.get(1));
                us.setCustomer("-");
-               us.setLang(langs.get(0));
+               us.setLang(langs.get(0).toUpperCase());
             }
             
             combobox("items", items, us.getItem(), false, model);
-            combobox("customers", customers, us.getCustomer(), false, model);  // TODO uppercase
-            combobox("langs", langs, us.getLang(), false, model); // TODO uppercase
+            combobox("customers", upper(customers), us.getCustomer(), false, model);
+            combobox("langs", upper(langs), us.getLang(), false, model);
             // Denkbar wäre hier noch die Wahl eines Template-Sets und/oder einer CSS-Datei.
             
             ColumnFormularGenerator gen = new ColumnFormularGenerator(2, 1);
@@ -89,8 +90,8 @@ public class ExportPage extends WPage {
 
     private void callExportDownload() {
         String item = ctx.queryParam("items");
-        String customer = ctx.queryParam("customers");
-        String lang = ctx.queryParam("langs");
+        String customer = ctx.queryParam("customers").toLowerCase();
+        String lang = ctx.queryParam("langs").toLowerCase();
         saveSettings(item, customer, lang);
         String q = "/export?lang=" + u(lang) + "&customer=" + u(customer);
 

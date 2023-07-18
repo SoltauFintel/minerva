@@ -1,5 +1,8 @@
 package minerva.base;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.jsoup.Jsoup;
 import org.pmw.tinylog.Logger;
 
@@ -52,5 +55,9 @@ public class StringService {
             .replace("ö", "oe")
             .replace("ü", "ue")
             .replace("ß", "ss");
+    }
+
+    public static List<String> upper(List<String> list) {
+        return list.stream().map(i -> i.toUpperCase()).collect(Collectors.toList());
     }
 }
