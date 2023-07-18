@@ -145,6 +145,9 @@ public class MultiPageHtmlExportService extends GenericExportService {
         model.put("cssFolder", "");
         model.put("back", n("back"));
         model.put("forward", n("forward"));
+        String subpages = subpages(seite);
+        model.put("subpages", subpages);
+        model.put("hasSubpages", !subpages.isEmpty());
         navigation(seite, parent, model);
         html = render(new ExportTemplatesService(workspace).loadTemplate(ExportTemplatesService.PAGE), model);
         html = addDotHtml(html);
@@ -181,6 +184,17 @@ public class MultiPageHtmlExportService extends GenericExportService {
             body = html;
         }
         return body;
+    }
+
+    private String subpages(SeiteSO seite) {
+        String ret = "";
+        for (SeiteSO sub : seite.getSeiten()) {
+            if (sub.isVisible(exclusionsService, lang).isVisible()) {
+                ret += "<li><a href=\"" + sub.getId() + "\">" + esc(sub.getSeite().getTitle().getString(lang))
+                        + "</a></li>";
+            }
+        }
+        return ret.isEmpty() ? ret : "<div class=\"subpages\"><ul>" + ret + "</ul></div>";
     }
 
     private String addDotHtml(String html) {
