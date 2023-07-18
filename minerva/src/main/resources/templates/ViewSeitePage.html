@@ -129,13 +129,15 @@
         <p><ul class="nav navbar-nav"><li>
             <button type="button" class="btn btn-default mw dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                 aria-expanded="false"><i class="fa fa-arrow-down fa-fw"></i> {{N.Menu}}</button>
-            <ul class="dropdown-menu in">
+            <ul class="dropdown-menu in mw">
                 {{if isCustomerVersion}}
                     <li><a href="{{viewlink}}/help-keys" class="btn btn-default mw"><i class="fa fa-question-circle"></i>
                         {{N.helpKeys}} ({{helpKeysSize}})</a></li>
                 {{/if}}
-                <li><a href="{{viewlink}}/toggle-favorite"><i class="fa fa-star fav"></i> {{N.favorite}}</a></li>
-                <li><a href="{{viewlink}}/toggle-watch"><i class="fa fa-camera-retro"></i> {{N.watchPage}}</a></li>
+                <li><a href="{{viewlink}}/toggle-favorite"><i class="fa fa-star{{if not isFavorite}}-o{{/if}} fav"></i>
+                    {{N.favorite}}</a></li>
+                <li><a href="{{viewlink}}/toggle-watch"><i class="fa fa-camera-retro"></i> {{N.watchPage}}
+                    {{if watched}}<i class="fa fa-check greenbook"></i>{{/if}}</a></li>
                 <li><a href="{{viewlink}}/links"><i class="fa fa-arrows-alt"></i> {{N.linkAnalysis}}</a></li>
                 {{if gitlab}}
                     <li><a href="{{viewlink}}/history"><i class="fa fa-clock-o"></i> {{N.history}}</a></li>

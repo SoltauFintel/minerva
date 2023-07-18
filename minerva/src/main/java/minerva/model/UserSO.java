@@ -118,7 +118,18 @@ public class UserSO {
         }
         saveUserSettings(us);
     }
-    
+
+    public void toggleWatch(String id) {
+        UserSettings us = loadUserSettings();
+        List<String> watchlist = us.getWatchlist();
+        if (watchlist.contains(id)) {
+            watchlist.remove(id);
+        } else {
+            watchlist.add(id);
+        }
+        saveUserSettings(us);
+    }
+
     public List<String> getFavorites() {
         return loadUserSettings().getFavorites();
     }
