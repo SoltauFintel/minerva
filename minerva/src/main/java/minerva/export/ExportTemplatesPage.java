@@ -1,5 +1,7 @@
 package minerva.export;
 
+import org.pmw.tinylog.Logger;
+
 import github.soltaufintel.amalia.web.templating.ColumnFormularGenerator;
 import github.soltaufintel.amalia.web.templating.TemplatesInitializer;
 import minerva.workspace.WPage;
@@ -13,6 +15,8 @@ public class ExportTemplatesPage extends WPage {
     protected void execute() {
         ExportTemplatesService x = new ExportTemplatesService(workspace);
         if (isPOST()) {
+            Logger.info(user.getUser().getLogin() + " | saved export templates");
+            user.log("saved export templates");
             x.saveTemplate(ExportTemplatesService.BOOKS, ctx.formParam("books"));
             x.saveTemplate(ExportTemplatesService.BOOK, ctx.formParam("book"));
             x.saveTemplate(ExportTemplatesService.PAGE, ctx.formParam("page"));
