@@ -1,27 +1,35 @@
 package minerva.export;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.templating.ColumnFormularGenerator;
 import github.soltaufintel.amalia.web.templating.TemplatesInitializer;
+import minerva.git.CommitMessage;
 import minerva.workspace.WPage;
 
 /**
  * Edit export HTML and CSS templates
  */
 public class ExportTemplatesPage extends WPage {
-
+    private ExportTemplatesService x;
+    private Map<String, String> files;
+    
     @Override
     protected void execute() {
-        ExportTemplatesService x = new ExportTemplatesService(workspace);
+        x = new ExportTemplatesService(workspace);
         if (isPOST()) {
             Logger.info(user.getUser().getLogin() + " | saved export templates");
             user.log("saved export templates");
-            x.saveTemplate(ExportTemplatesService.BOOKS, ctx.formParam("books"));
-            x.saveTemplate(ExportTemplatesService.BOOK, ctx.formParam("book"));
-            x.saveTemplate(ExportTemplatesService.PAGE, ctx.formParam("page"));
-            x.saveTemplate(ExportTemplatesService.TEMPLATE, ctx.formParam("template"));
-            x.saveTemplate(ExportTemplatesService.TEMPLATE_CSS, ctx.formParam("templateCss"));
+            files = new HashMap<>();
+            save(ExportTemplatesService.BOOKS, ctx.formParam("books"));
+            save(ExportTemplatesService.BOOK, ctx.formParam("book"));
+            save(ExportTemplatesService.PAGE, ctx.formParam("page"));
+            save(ExportTemplatesService.TEMPLATE, ctx.formParam("template"));
+            save(ExportTemplatesService.TEMPLATE_CSS, ctx.formParam("templateCss"));
+            user.dao().saveFiles(files, new CommitMessage("Export templates"), workspace);
             ctx.redirect("/b/" + branch);
         } else {
             header(n("exportTemplates"));
@@ -43,6 +51,11 @@ public class ExportTemplatesPage extends WPage {
         }
     }
     
+    private void save(String dn, String content) {
+        x.saveTemplate(dn, content);
+        files.put(workspace.getFolder() + "/" + dn, content);
+    }
+
     @Override
     protected String getPage() {
         return "formular/" + super.getPage();
