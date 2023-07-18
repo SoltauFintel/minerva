@@ -6,6 +6,11 @@ import java.util.List;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.mail.Mail;
+import github.soltaufintel.amalia.web.action.Escaper;
+import minerva.MinervaWebapp;
+import minerva.base.StringService;
+import minerva.config.MinervaConfig;
 import minerva.git.CommitMessage;
 import minerva.seite.Note;
 
@@ -16,7 +21,33 @@ public class NotesSO {
         this.seiteSO = seiteSO;
     }
     
-    public void addNote(String text, List<String> persons, Note parent) {
+    public void addNote(String text, List<String> persons, int parentNumber) {
+        int number = addNote(text, persons, parentNumber == 0 ? null : noteByNumber(parentNumber));
+
+        // Send notifications
+        MinervaConfig c = MinervaWebapp.factory().getConfig();
+        if (!persons.isEmpty() && c.readyForNoteNotifications()) {
+            Mail mail = new Mail();
+            mail.setSubject(c.getNoteSubject());
+            mail.setBody(c.getNoteBody()
+                    .replace("{number}", "" + number)
+                    .replace("{pageId}", seiteSO.getId())
+                    .replace("{pageTitle}", Escaper.esc(seiteSO.getTitle()))
+                    .replace("{bookFolder}", Escaper.esc(seiteSO.getBook().getBook().getFolder()))
+                    .replace("{branch}", Escaper.esc(seiteSO.getBook().getWorkspace().getBranch())));
+            for (String person : persons) {
+                mail.setToEmailaddress(c.getMailAddress(person));
+                if (!StringService.isNullOrEmpty(mail.getToEmailaddress())) {
+                    Logger.info("Note notification for " + person + ". Sending mail to: " + mail.getToEmailaddress());
+                    c.sendMail(mail);
+                }
+else Logger.info("Note notifications. Don't send mail to " + person + " because no mail address is configured."); // XXX DEBUG
+            }
+        }
+else Logger.info("Note notifications. Not configured."); // XXX DEBUG        
+    }
+    
+    private int addNote(String text, List<String> persons, Note parent) {
         Note note = new Note();
         int next = seiteSO.getSeite().getNextNoteNumber();
         note.setNumber(next);
@@ -32,6 +63,7 @@ public class NotesSO {
             parent.getNotes().add(note);
         }
         seiteSO.saveMeta(new CommitMessage(seiteSO, "note #" + note.getNumber() + " added"));
+        return note.getNumber();
     }
 
     public Note noteByNumber(int number) {

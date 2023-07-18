@@ -5,7 +5,6 @@ import java.util.List;
 
 import github.soltaufintel.amalia.spark.Context;
 import minerva.MinervaWebapp;
-import minerva.seite.Note;
 import minerva.seite.SPage;
 
 public class AddNotePage extends SPage {
@@ -16,12 +15,7 @@ public class AddNotePage extends SPage {
         if (isPOST()) {
             String text = ctx.formParam("text1");
             List<String> persons = toPersons(ctx);
-            if (parentNumber == 0) {
-                seite.notes().addNote(text, persons, null);
-            } else {
-                Note parentNote = seite.notes().noteByNumber(parentNumber);
-                seite.notes().addNote(text, persons, parentNote);
-            }
+            seite.notes().addNote(text, persons, parentNumber);
             ctx.redirect(viewlink + "/notes");
         } else {
             if (parentNumber == 0) {
