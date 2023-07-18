@@ -26,6 +26,7 @@ public class EditNotePage extends SPage {
             
             if (!note.getText().equals(text) || !note.getPersons().equals(persons)) {
                 note.setText(text);
+                seite.notes().sendNotifications(note, persons);
                 note.getPersons().clear();
                 note.getPersons().addAll(persons);
                 note.setChanged(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));

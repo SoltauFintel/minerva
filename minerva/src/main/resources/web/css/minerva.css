@@ -350,3 +350,7 @@ blockquote {
     font-size: 14px;
     font-style: italic;
 }
+
+.dropdown-menu li a {
+    font-size: 10pt;
+}

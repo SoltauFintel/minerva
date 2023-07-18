@@ -117,31 +117,33 @@
                 <a href="{{viewlink}}/mapping" class="btn btn-default mw"><i class="fa fa-question-circle"></i>
                     {{N.customerMapping}}</a>
             </p>
-        {{/if}}
-        <p>
-            <a href="{{viewlink}}/help-keys" class="btn btn-default mw"><i class="fa fa-question-circle"></i>
-                {{N.helpKeys}} ({{helpKeysSize}})</a>
-            {{if hasOneHelpKey}}<br/><span
-                style="font-family: 'Courier New'; font-size: 9pt;">{{oneHelpKey}}</span>{{/if}}
-        </p>
-        <p>
-            <a href="{{viewlink}}/toggle-favorite" class="btn btn-default mw"><i class="fa fa-star fav"></i>
-                {{N.favorite}}</a>
-        </p>
-        <p>
-            <a href="{{viewlink}}/links" class="btn btn-default mw"><i class="fa fa-arrows-alt"></i> {{N.linkAnalysis}}</a>
-        </p>
-        {{if gitlab}}
+        {{else}}
             <p>
-                <a href="{{viewlink}}/history" class="btn btn-default mw"><i class="fa fa-clock-o"></i> {{N.history}}</a>
+                <a href="{{viewlink}}/help-keys" class="btn btn-default mw"><i class="fa fa-question-circle"></i>
+                    {{N.helpKeys}} ({{helpKeysSize}})</a>
+                {{if hasOneHelpKey}}<br/><span
+                    style="font-family: 'Courier New'; font-size: 9pt;">{{oneHelpKey}}</span>{{/if}}
             </p>
         {{/if}}
-        <p>
-            <a href="{{movelink}}" class="btn btn-default mw"><i class="fa fa-arrow-right"></i> {{N.movePage}}</a>
-        </p>
-        <p>
-            <a href="{{deletelink}}" class="btn btn-danger mw"><i class="fa fa-trash"></i> {{N.deletePage}}...</a>
-        </p>
+        
+        <p><ul class="nav navbar-nav"><li>
+            <button type="button" class="btn btn-default mw dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false"><i class="fa fa-arrow-down fa-fw"></i> {{N.Menu}}</button>
+            <ul class="dropdown-menu in">
+                {{if isCustomerVersion}}
+                    <li><a href="{{viewlink}}/help-keys" class="btn btn-default mw"><i class="fa fa-question-circle"></i>
+                        {{N.helpKeys}} ({{helpKeysSize}})</a></li>
+                {{/if}}
+                <li><a href="{{viewlink}}/toggle-favorite"><i class="fa fa-star fav"></i> {{N.favorite}}</a></li>
+                <li><a href="{{viewlink}}/toggle-watch"><i class="fa fa-camera-retro"></i> {{N.watchPage}}</a></li>
+                <li><a href="{{viewlink}}/links"><i class="fa fa-arrows-alt"></i> {{N.linkAnalysis}}</a></li>
+                {{if gitlab}}
+                    <li><a href="{{viewlink}}/history"><i class="fa fa-clock-o"></i> {{N.history}}</a></li>
+                {{/if}}
+                <li><a href="{{movelink}}"><i class="fa fa-arrow-right"></i> {{N.movePage}}</a></li>
+                <li><a href="{{deletelink}}" style="color: #900;"><i class="fa fa-trash"></i> {{N.deletePage}}...</a></li>
+            </ul>
+        </li></ul></p>
     </div>
 </div>
 

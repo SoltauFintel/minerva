@@ -168,3 +168,5 @@ forward=forward
 exportTemplates=Export templates
 booksOverview=Books overview
 template=Template
+Menu=Menu
+watchPage=Watch page

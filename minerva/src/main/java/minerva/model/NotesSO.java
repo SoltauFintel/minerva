@@ -2,6 +2,7 @@ package minerva.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.pmw.tinylog.Logger;
@@ -23,28 +24,7 @@ public class NotesSO {
     
     public void addNote(String text, List<String> persons, int parentNumber) {
         int number = addNote(text, persons, parentNumber == 0 ? null : noteByNumber(parentNumber));
-
-        // Send notifications
-        MinervaConfig c = MinervaWebapp.factory().getConfig();
-        if (!persons.isEmpty() && c.readyForNoteNotifications()) {
-            Mail mail = new Mail();
-            mail.setSubject(c.getNoteSubject());
-            mail.setBody(c.getNoteBody()
-                    .replace("{number}", "" + number)
-                    .replace("{pageId}", seiteSO.getId())
-                    .replace("{pageTitle}", Escaper.esc(seiteSO.getTitle()))
-                    .replace("{bookFolder}", Escaper.esc(seiteSO.getBook().getBook().getFolder()))
-                    .replace("{branch}", Escaper.esc(seiteSO.getBook().getWorkspace().getBranch())));
-            for (String person : persons) {
-                mail.setToEmailaddress(c.getMailAddress(person));
-                if (!StringService.isNullOrEmpty(mail.getToEmailaddress())) {
-                    Logger.info("Note notification for " + person + ". Sending mail to: " + mail.getToEmailaddress());
-                    c.sendMail(mail);
-                }
-else Logger.info("Note notifications. Don't send mail to " + person + " because no mail address is configured."); // XXX DEBUG
-            }
-        }
-else Logger.info("Note notifications. Not configured."); // XXX DEBUG        
+        sendNotifications(number, persons);
     }
     
     private int addNote(String text, List<String> persons, Note parent) {
@@ -143,5 +123,40 @@ else Logger.info("Note notifications. Not configured."); // XXX DEBUG
             ret += _getNotesSize(note.getNotes()); // recursive
         }
         return ret;
+    }
+
+    private void sendNotifications(int number, List<String> persons) {
+        MinervaConfig c = MinervaWebapp.factory().getConfig();
+        if (!persons.isEmpty() && c.readyForNoteNotifications()) {
+            Mail mail = new Mail();
+            mail.setSubject(c.getNoteSubject());
+            mail.setBody(c.getNoteBody()
+                    .replace("{number}", "" + number)
+                    .replace("{pageId}", seiteSO.getId())
+                    .replace("{pageTitle}", Escaper.esc(seiteSO.getTitle()))
+                    .replace("{bookFolder}", Escaper.esc(seiteSO.getBook().getBook().getFolder()))
+                    .replace("{branch}", Escaper.esc(seiteSO.getBook().getWorkspace().getBranch())));
+            for (String person : persons) {
+                mail.setToEmailaddress(c.getMailAddress(person));
+                if (!StringService.isNullOrEmpty(mail.getToEmailaddress())) {
+                    c.sendMail(mail);
+                }
+            }
+        }
+    }
+
+    /**
+     * Note has been updated. Notify persons who did not received a notification.
+     * @param note contain persons before
+     * @param persons after
+     */
+    public void sendNotifications(Note note, List<String> persons) {
+        List<String> newPersons = new ArrayList<>();
+        for (String person : persons) {
+            if (!note.getPersons().contains(person)) {
+                newPersons.add(person);
+            }
+        }
+        sendNotifications(note.getNumber(), newPersons);
     }
 }
