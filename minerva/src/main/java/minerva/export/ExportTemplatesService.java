@@ -30,8 +30,4 @@ public class ExportTemplatesService {
     private String loadBuiltInTemplate(String dn) {
         return ResourceTemplateLoader.loadResource(getClass(), "/templates/export/" + dn, "UTF-8");
     }
-    
-    public void saveTemplate(String dn, String template) {
-        FileService.savePlainTextFile(new File(workspace.getFolder(), dn), template);
-    }
 }

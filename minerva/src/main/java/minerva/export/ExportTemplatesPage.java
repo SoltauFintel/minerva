@@ -52,7 +52,6 @@ public class ExportTemplatesPage extends WPage {
     }
     
     private void save(String dn, String content) {
-        x.saveTemplate(dn, content);
         files.put(workspace.getFolder() + "/" + dn, content);
     }
 

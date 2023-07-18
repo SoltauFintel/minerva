@@ -13,6 +13,7 @@ import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.model.WorkspaceSO;
+import minerva.user.UserSettings;
 import minerva.workspace.WPage;
 
 public class ExportPage extends WPage {
@@ -38,9 +39,17 @@ public class ExportPage extends WPage {
             List<String> customers = new ArrayList<>(workspace.getExclusions().getCustomers());
             customers.add(0, "-");
             
-            combobox("items", items, items.get(1), false, model);
-            combobox("customers", customers, "-", false, model);  // TODO uppercase
-            combobox("langs", langs, langs.get(0), false, model); // TODO uppercase
+            ExportUserSettings us = user.loadUserSettings().getExport();
+            if (us == null) {
+               us = new ExportUserSettings();
+               us.setItem(items.get(1));
+               us.setCustomer("-");
+               us.setLang(langs.get(0));
+            }
+            
+            combobox("items", items, us.getItem(), false, model);
+            combobox("customers", customers, us.getCustomer(), false, model);  // TODO uppercase
+            combobox("langs", langs, us.getLang(), false, model); // TODO uppercase
             // Denkbar wäre hier noch die Wahl eines Template-Sets und/oder einer CSS-Datei.
             
             ColumnFormularGenerator gen = new ColumnFormularGenerator(2, 1);
@@ -80,8 +89,9 @@ public class ExportPage extends WPage {
 
     private void callExportDownload() {
         String item = ctx.queryParam("items");
-        String lang = ctx.queryParam("langs");
         String customer = ctx.queryParam("customers");
+        String lang = ctx.queryParam("langs");
+        saveSettings(item, customer, lang);
         String q = "/export?lang=" + u(lang) + "&customer=" + u(customer);
 
         if (item.contains(W)) { // all books
@@ -106,6 +116,17 @@ public class ExportPage extends WPage {
             Logger.error("Unknown export item: " + item);
             throw new RuntimeException("Unknown item");
         }
+    }
+
+    private void saveSettings(String item, String customer, String lang) {
+        UserSettings us = user.loadUserSettings();
+        if (us.getExport() == null) {
+            us.setExport(new ExportUserSettings());
+        }
+        us.getExport().setItem(item);
+        us.getExport().setCustomer(customer);
+        us.getExport().setLang(lang);
+        user.saveUserSettings(us);
     }
     
     private SeiteSO getSeite(String seiteId) {
