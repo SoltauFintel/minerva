@@ -17,9 +17,6 @@ public class SelectLanguageAction extends UAction {
 
         if ("page".equals(m)) { // page language
             user.getUser().setPageLanguage(lang);
-//alt          for (BookSO book : user.getWorkspace(branch).getBooks()) {
-//              book.getSeiten().sortAll();
-//          }
         } else { // GUI language, but also change page language
             user.getUser().setGuiLanguage(lang);
             user.getUser().setPageLanguage(lang);
