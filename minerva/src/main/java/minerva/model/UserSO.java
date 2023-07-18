@@ -29,7 +29,7 @@ public class UserSO {
     
     public UserSO(User user) {
         this.user = user;
-        String userFolder = workspacefolder() + "/" + user.getFolder();
+        String userFolder = getWorkspacesFolder() + "/" + user.getFolder();
         dao = MinervaWebapp.factory().getDirAccess(this);
         this.workspaces = new WorkspacesSO(this, userFolder);
     }
@@ -136,7 +136,8 @@ public class UserSO {
     }
     
     private File getUserSettingsFile() {
-        return new File(workspacefolder() + "/" + user.getLogin() + "/user-settings.json");
+        // In the future, the settings may have to be saved in the workspace.
+        return new File(getWorkspacesFolder() + "/" + user.getLogin() + "/user-settings.json");
     }
     
     public void onlyAdmin() {
@@ -168,10 +169,10 @@ public class UserSO {
     }
     
     private File getServerlogFile() {
-        return new File(workspacefolder() + "/server.log");
+        return new File(getWorkspacesFolder() + "/server.log");
     }
 
-    private String workspacefolder() {
+    private String getWorkspacesFolder() {
         return MinervaWebapp.factory().getConfig().getWorkspacesFolder();
     }
 }

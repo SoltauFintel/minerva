@@ -4,6 +4,7 @@ import minerva.MinervaWebapp;
 
 public class User {
     private final String login;
+    /** relative user folder, e.g. "user2" */
     private final String folder;
     /** The user has a preferred language. That will be used for the GUI. */
     private String guiLanguage = MinervaWebapp.factory().getLanguages().get(0);
