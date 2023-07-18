@@ -257,7 +257,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
     private String render(String template, DataMap model) {
         DataMap model2 = new DataMap();
         model2.put("title", model.get("title").toString());
-        model2.put("tcontent", Template.createFromString(template).withData(model).render());
+        model2.put("content", Template.createFromString(template).withData(model).render());
         model2.put("cssFolder", model.get("cssFolder").toString());
         return Template.createFromString(new ExportTemplatesService(workspace)
                 .loadTemplate(ExportTemplatesService.TEMPLATE)).withData(model2).render();
