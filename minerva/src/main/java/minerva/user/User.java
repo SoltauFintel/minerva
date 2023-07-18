@@ -35,8 +35,8 @@ public class User {
         return pageLanguage;
     }
 
-    public void setPageLanguage(String pageLanguage) {
-        this.pageLanguage = pageLanguage;
+    public void setPageLanguage(String language) {
+        this.pageLanguage = language;
     }
 
     // TODO bei GitlabUser könnte man hier den richtigen Namen setzen

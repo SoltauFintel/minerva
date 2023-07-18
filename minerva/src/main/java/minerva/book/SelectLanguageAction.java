@@ -2,6 +2,7 @@ package minerva.book;
 
 import minerva.MinervaWebapp;
 import minerva.user.UAction;
+import minerva.user.UserSettings;
 
 public class SelectLanguageAction extends UAction {
 
@@ -15,7 +16,16 @@ public class SelectLanguageAction extends UAction {
             throw new RuntimeException("Illegal language value!");
         }
 
-        if ("page".equals(m)) { // page language
+        boolean isPage = "page".equals(m);
+
+        UserSettings us = user.loadUserSettings();
+        us.setPageLanguage(lang);
+        if (!isPage) {
+            us.setGuiLanguage(lang);
+        }
+        user.saveUserSettings(us);
+
+        if (isPage) { // page language
             user.getUser().setPageLanguage(lang);
         } else { // GUI language, but also change page language
             user.getUser().setGuiLanguage(lang);

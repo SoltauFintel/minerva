@@ -8,6 +8,7 @@ import minerva.auth.MinervaAuth;
 import minerva.base.Tosmap;
 import minerva.base.UserMessage;
 import minerva.user.User;
+import minerva.user.UserSettings;
 
 /**
  * Main entry class for the whole model
@@ -32,6 +33,15 @@ public class StatesSO {
     
     public static void login(Context ctx, User user) {
         StateSO state = new StateSO(user);
+        
+        UserSettings us = state.getUser().loadUserSettings();
+        if (us.getGuiLanguage() != null) {
+            state.getUser().getUser().setGuiLanguage(us.getGuiLanguage());
+        }
+        if (us.getPageLanguage() != null) {
+            state.getUser().getUser().setPageLanguage(us.getPageLanguage());
+        }
+        
         int sessionTimeout = 1000 * 60 * 60 * 24 * 7; // I'm not sure what value and if needs to be configurable.
         Tosmap.add(key(ctx), System.currentTimeMillis() + sessionTimeout, state);
         
