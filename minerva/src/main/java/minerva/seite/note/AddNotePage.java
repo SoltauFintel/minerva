@@ -11,7 +11,8 @@ public class AddNotePage extends SPage {
     
     @Override
     protected void execute() {
-        int parentNumber = Integer.parseInt(ctx.queryParam("parent"));
+        String parent = ctx.queryParam("parent");
+        int parentNumber = parent == null ? 0 : Integer.parseInt(parent);
         if (isPOST()) {
             String text = ctx.formParam("text1");
             List<String> persons = toPersons(ctx);

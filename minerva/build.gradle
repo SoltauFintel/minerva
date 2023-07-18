@@ -21,7 +21,6 @@ dependencies {
     implementation 'org.eclipse.jgit:org.eclipse.jgit:6.5.0.202303070854-r'
     implementation 'org.gitlab4j:gitlab4j-api:5.0.1' // keep this version
     implementation 'org.jsoup:jsoup:1.16.1' // pretty HTML
-    implementation 'com.github.bbottema:simple-java-mail:5.0.1'
 }
 
 repositories {
