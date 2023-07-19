@@ -31,6 +31,7 @@ import minerva.seite.ChangeFile;
 import minerva.seite.IMoveFile;
 import minerva.seite.IPageChangeStrategy;
 import minerva.seite.MoveFile;
+import minerva.seite.NotifyWatchers;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
 import minerva.subscription.SubscriptionService;
@@ -345,16 +346,8 @@ public class SeiteSO implements ISeite {
         }
     }
 
-    public void saveAll(NlsString newTitle, NlsString newContent, int version, String comment, List<String> langs) {
-        if (getSeite().getVersion() != version) {
-            throw new UserMessage("error.simultaneousEditing", book.getWorkspace());
-        }
-        for (String lang : langs) {
-            if (StringService.isNullOrEmpty(newTitle.getString(lang))) {
-                throw new UserMessage("error.enterTitle", book.getWorkspace());
-            }
-        }
-        
+    public void saveAll(NlsString newTitle, NlsString newContent, int version, String comment, List<String> langs, long start) {
+        validate(newTitle, version, langs);
         if (content == null) {
             content = new NlsString();
         }
@@ -373,13 +366,7 @@ public class SeiteSO implements ISeite {
         
         dao().saveFiles(files, commitMessage, book.getWorkspace());
         
-        SubscriptionService ss = new SubscriptionService();
-        if (neu) {
-            ss.pagesChanged();
-        } else {
-            TPage tpage = ss.createTPage(this, newContent, langs);
-            ss.pageModified(tpage);
-        }
+        informSubscriptionService(newContent, langs);
         
         neu = false;
         images.clear();
@@ -388,11 +375,43 @@ public class SeiteSO implements ISeite {
             // Wenn book.sorted=true ist und ein Seitentitel geändert worden ist, muss neu sortiert werden.
             book.getSeiten().sort();
         }
+
+        reindex();
         
+        new Thread(() -> new NotifyWatchers(this).notifyWatchers()).start();
+
+        Logger.info(book.getWorkspace().getUser().getLogin() + " | " + book.getWorkspace().getBranch() + " | "
+                + newTitle.getString(langs.get(0))
+                + " -> Page #" + getId() + " saved. " + (System.currentTimeMillis() - start) + "ms");
+    }
+
+    private void validate(NlsString newTitle, int version, List<String> langs) {
+        if (getSeite().getVersion() != version) {
+            throw new UserMessage("error.simultaneousEditing", book.getWorkspace());
+        }
+        for (String lang : langs) {
+            if (StringService.isNullOrEmpty(newTitle.getString(lang))) {
+                throw new UserMessage("error.enterTitle", book.getWorkspace());
+            }
+        }
+    }
+    
+    private void informSubscriptionService(NlsString newContent, List<String> langs) {
+        SubscriptionService ss = new SubscriptionService();
+        if (neu) {
+            ss.pagesChanged();
+        } else {
+            TPage tpage = ss.createTPage(this, newContent, langs);
+            ss.pageModified(tpage);
+        }
+    }
+    
+    private void reindex() {
         new Thread(() -> {  // Access index in background so user does not have to wait for completion.
+            Logger.debug("Reindexing page #" + SeiteSO.this.getId() + "...");
             book.getWorkspace().getSearch().index(SeiteSO.this);
-            Logger.debug("Page " + SeiteSO.this.getId() + " has been reindexed.");
-        }).run();
+            Logger.debug("Page #" + SeiteSO.this.getId() + " has been reindexed.");
+        }).start();
     }
 
     public void saveMeta(CommitMessage commitMessage) {

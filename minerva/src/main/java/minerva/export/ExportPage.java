@@ -13,8 +13,8 @@ import github.soltaufintel.amalia.web.templating.TemplatesInitializer;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
+import minerva.model.UserSettingsSO;
 import minerva.model.WorkspaceSO;
-import minerva.user.UserSettings;
 import minerva.workspace.WPage;
 
 public class ExportPage extends WPage {
@@ -40,7 +40,7 @@ public class ExportPage extends WPage {
             List<String> customers = new ArrayList<>(workspace.getExclusions().getCustomers());
             customers.add(0, "-");
             
-            ExportUserSettings us = user.loadUserSettings().getExport();
+            ExportUserSettings us = user.getUserSettings().getExport();
             if (us == null) {
                us = new ExportUserSettings();
                us.setItem(items.get(1));
@@ -120,14 +120,14 @@ public class ExportPage extends WPage {
     }
 
     private void saveSettings(String item, String customer, String lang) {
-        UserSettings us = user.loadUserSettings();
+        UserSettingsSO us = user.getUserSettings();
         if (us.getExport() == null) {
             us.setExport(new ExportUserSettings());
         }
         us.getExport().setItem(item);
         us.getExport().setCustomer(customer);
         us.getExport().setLang(lang);
-        user.saveUserSettings(us);
+        us.save();
     }
     
     private SeiteSO getSeite(String seiteId) {

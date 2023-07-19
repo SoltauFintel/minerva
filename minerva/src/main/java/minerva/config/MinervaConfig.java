@@ -13,6 +13,7 @@ import github.soltaufintel.amalia.web.config.AppConfig;
 import minerva.base.StringService;
 
 public class MinervaConfig {
+    private static final String SMTP = "mail.smtp-server"; // TODO Amalia constant
     private final AppConfig config;
 
     public MinervaConfig(AppConfig config) {
@@ -189,8 +190,22 @@ public class MinervaConfig {
     }
     
     public boolean readyForNoteNotifications() {
-        return !config.get("mail.smtp-server", "").isEmpty() // TODO Amalia constant
+        return !config.get(SMTP, "").isEmpty()
                 && !getNoteSubject().isEmpty()
                 && !getNoteBody().isEmpty();
+    }
+    
+    public String getWatchSubject() {
+        return config.get("mail.watch.subject", "watched page modified");
+    }
+    
+    public String getWatchBody() {
+        return config.get("mail.watch.body", "").replace("\\n", "\n");
+    }
+
+    public boolean readyForWatchNotifications() {
+        return !config.get(SMTP, "").isEmpty()
+                && !getWatchSubject().isEmpty()
+                && !getWatchBody().isEmpty();
     }
 }

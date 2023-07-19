@@ -45,11 +45,8 @@ public class EditSeitePage extends ViewSeitePage {
         
         PostContentsData data = waitForContent(branch, bookFolder, id, version);
         
-        seiteSO.saveAll(title, data.getContent(), version, comment, langs);
+        seiteSO.saveAll(title, data.getContent(), version, comment, langs, start);
         data.setDone(true);
-        
-        Logger.info(user.getUser().getLogin() + " | " + branch + " | " + title.getString(langs.get(0)) + " -> Page #"
-                + seiteSO.getId() + " saved. " + (System.currentTimeMillis() - start) + "ms");
 
         InvalidLinksModel linksModel = new InvalidLinksModel(seiteSO, langs);
         if (linksModel.hasLinks()) {

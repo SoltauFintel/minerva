@@ -16,7 +16,6 @@ import minerva.access.DirAccess;
 import minerva.base.FileService;
 import minerva.seite.link.InvalidLinksModel;
 import minerva.user.User;
-import minerva.user.UserSettings;
 
 public class UserSO {
     private final User user;
@@ -36,6 +35,10 @@ public class UserSO {
 
     public User getUser() {
         return user;
+    }
+    
+    public String getLogin() {
+        return user.getLogin();
     }
 
     public WorkspacesSO getWorkspaces() {
@@ -109,46 +112,33 @@ public class UserSO {
     }
 
     public void toggleFavorite(String id) {
-        UserSettings us = loadUserSettings();
+        UserSettingsSO us = getUserSettings();
         List<String> favorites = us.getFavorites();
         if (favorites.contains(id)) {
             favorites.remove(id);
         } else {
             favorites.add(id);
         }
-        saveUserSettings(us);
+        us.save();
     }
 
     public void toggleWatch(String id) {
-        UserSettings us = loadUserSettings();
+        UserSettingsSO us = getUserSettings();
         List<String> watchlist = us.getWatchlist();
         if (watchlist.contains(id)) {
             watchlist.remove(id);
         } else {
             watchlist.add(id);
         }
-        saveUserSettings(us);
+        us.save();
     }
 
     public List<String> getFavorites() {
-        return loadUserSettings().getFavorites();
+        return getUserSettings().getFavorites();
     }
     
-    public UserSettings loadUserSettings() {
-        File file = getUserSettingsFile();
-        if (file.isFile()) {
-            return FileService.loadJsonFile(file, UserSettings.class);
-        }
-        return new UserSettings();
-    }
-    
-    public void saveUserSettings(UserSettings us) {
-        FileService.saveJsonFile(getUserSettingsFile(), us);
-    }
-    
-    private File getUserSettingsFile() {
-        // In the future, the settings may have to be saved in the workspace.
-        return new File(getWorkspacesFolder() + "/" + user.getLogin() + "/user-settings.json");
+    public UserSettingsSO getUserSettings() {
+        return UserSettingsSO.load(user.getLogin());
     }
     
     public void onlyAdmin() {

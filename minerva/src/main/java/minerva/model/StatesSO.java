@@ -8,7 +8,6 @@ import minerva.auth.MinervaAuth;
 import minerva.base.Tosmap;
 import minerva.base.UserMessage;
 import minerva.user.User;
-import minerva.user.UserSettings;
 
 /**
  * Main entry class for the whole model
@@ -34,7 +33,7 @@ public class StatesSO {
     public static void login(Context ctx, User user) {
         StateSO state = new StateSO(user);
         
-        UserSettings us = state.getUser().loadUserSettings();
+        UserSettingsSO us = state.getUser().getUserSettings();
         if (us.getGuiLanguage() != null) {
             state.getUser().getUser().setGuiLanguage(us.getGuiLanguage());
         }

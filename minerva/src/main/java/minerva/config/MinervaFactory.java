@@ -3,6 +3,7 @@ package minerva.config;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import minerva.access.DirAccess;
@@ -153,5 +154,19 @@ public class MinervaFactory {
     public File getWorkFolder(String name) {
         // TODO Ich muss mal generell ein Arbeitsverzeichnis festlegen. Vgl. auch PublishService.
         return new File(name);
+    }
+    
+    public List<String> getLogins() {
+        List<String> ret = new ArrayList<>();
+        File workspaces = new File(config.getWorkspacesFolder());
+        File[] dirs = workspaces.listFiles();
+        if (dirs != null) {
+            for (File dir : dirs) {
+                if (dir.isDirectory()) {
+                    ret.add(dir.getName());
+                }
+            }
+        }
+        return ret;
     }
 }

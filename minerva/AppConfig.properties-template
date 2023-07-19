@@ -16,6 +16,20 @@ gitlab.secret=hex-string
 search.url=http://server:port
 search.site-prefix=minerva-
 
-persons=user1,user2
-persons-with-export-right=
-admins=
+mail.smtp-server=
+mail.login=
+mail.password=
+mail.from.mail-address=
+
+# mail address for every login
+mail.address.<login>=
+
+# use \n for linebreak in body
+mail.note.subject=
+mail.note.body=
+mail.watch.subject=
+mail.watch.body=
+
+persons=user1,user2,user3
+persons-with-export-right=user3
+admins=user2

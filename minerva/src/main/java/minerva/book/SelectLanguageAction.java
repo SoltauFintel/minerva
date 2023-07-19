@@ -1,8 +1,8 @@
 package minerva.book;
 
 import minerva.MinervaWebapp;
+import minerva.model.UserSettingsSO;
 import minerva.user.UAction;
-import minerva.user.UserSettings;
 
 public class SelectLanguageAction extends UAction {
 
@@ -18,12 +18,12 @@ public class SelectLanguageAction extends UAction {
 
         boolean isPage = "page".equals(m);
 
-        UserSettings us = user.loadUserSettings();
+        UserSettingsSO us = user.getUserSettings();
         us.setPageLanguage(lang);
         if (!isPage) {
             us.setGuiLanguage(lang);
         }
-        user.saveUserSettings(us);
+        us.save();
 
         if (isPage) { // page language
             user.getUser().setPageLanguage(lang);

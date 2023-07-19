@@ -10,7 +10,7 @@ import com.github.template72.data.DataMap;
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
-import minerva.user.UserSettings;
+import minerva.model.UserSettingsSO;
 
 public class ViewSeitePage extends SPage {
     private boolean returnEmpty = false;
@@ -74,7 +74,7 @@ public class ViewSeitePage extends SPage {
         String oneHelpKey = getOneHelpKey(seite.getHelpKeys());
         put("oneHelpKey", esc(oneHelpKey));
         put("hasOneHelpKey", !oneHelpKey.isEmpty());
-        UserSettings us = user.loadUserSettings();
+        UserSettingsSO us = user.getUserSettings();
         put("isFavorite", us.getFavorites().contains(id));
         put("watched", us.getWatchlist().contains(id));
         header(modifyHeader(seiteSO.getTitle()));
