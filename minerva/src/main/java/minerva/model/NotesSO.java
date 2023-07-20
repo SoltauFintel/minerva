@@ -12,6 +12,7 @@ import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.config.MinervaConfig;
 import minerva.git.CommitMessage;
+import minerva.persistence.gitlab.MergeRequestException;
 import minerva.seite.Note;
 
 public class NotesSO {
@@ -41,7 +42,29 @@ public class NotesSO {
         } else {
             parent.getNotes().add(note);
         }
-        seiteSO.saveMeta(new CommitMessage(seiteSO, "note #" + note.getNumber() + " added"));
+        try {
+            seiteSO.saveMeta(new CommitMessage(seiteSO, "note #" + note.getNumber() + " added"));
+        } catch (MergeRequestException e) {
+            Logger.error(e);
+            seiteSO.getBook().getWorkspace().pull();
+            Logger.info("Pulled. Retry to save note...");
+            // getting new object instance
+            String branch = seiteSO.getBook().getWorkspace().getBranch();
+            String bookFolder = seiteSO.getBook().getBook().getFolder();
+            SeiteSO s = seiteSO.getBook().getWorkspace().getUser().getWorkspace(branch).getBooks().byFolder(bookFolder)
+                    .getSeiten().byId(seiteSO.getId());
+            // save
+            next = s.getSeite().getNextNoteNumber();
+            Logger.info("next note number: " + next);
+            note.setNumber(next);
+            s.getSeite().setNextNoteNumber(next + 1);
+            if (parent == null) {
+                s.getSeite().getNotes().add(note);
+            } else {
+                s.notes().noteByNumber(parent.getNumber()).getNotes().add(note);
+            }
+            s.saveMeta(new CommitMessage(s, "note #" + note.getNumber() + " added"));
+        }
         return note.getNumber();
     }
 
