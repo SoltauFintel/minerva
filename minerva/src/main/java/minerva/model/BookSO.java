@@ -167,4 +167,12 @@ public class BookSO {
     public SeiteSO getLastChange() {
         return getSeiten().getLastChange();
     }
+    
+    /**
+     * Books instance have been changed after pull.
+     * @return same book but as fresh instance from fresh books instance
+     */
+    public BookSO getMeAsFreshInstance() {
+        return workspace.getBooks().byFolder(book.getFolder());
+    }
 }

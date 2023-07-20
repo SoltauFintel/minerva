@@ -12,64 +12,40 @@ import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.config.MinervaConfig;
 import minerva.git.CommitMessage;
-import minerva.persistence.gitlab.MergeRequestException;
+import minerva.persistence.gitlab.UpToDateCheckService;
 import minerva.seite.Note;
 
 public class NotesSO {
-    private final SeiteSO seiteSO;
+    private SeiteSO seite;
     
-    NotesSO(SeiteSO seiteSO) {
-        this.seiteSO = seiteSO;
+    NotesSO(SeiteSO seite) {
+        this.seite = seite;
     }
     
     public void addNote(String text, List<String> persons, int parentNumber) {
-        int number = addNote(text, persons, parentNumber == 0 ? null : noteByNumber(parentNumber));
-        sendNotifications(number, persons);
-    }
-    
-    private int addNote(String text, List<String> persons, Note parent) {
+        UpToDateCheckService.check(seite, () -> seite = seite.getMeAsFreshInstance());
+
         Note note = new Note();
-        int next = seiteSO.getSeite().getNextNoteNumber();
-        note.setNumber(next);
-        seiteSO.getSeite().setNextNoteNumber(next + 1);
-        note.setUser(seiteSO.getBook().getUser().getUser().getLogin());
+        int number = seite.getSeite().getNextNoteNumber();
+        note.setNumber(number);
+        seite.getSeite().setNextNoteNumber(number + 1);
+        note.setUser(seite.getBook().getUser().getUser().getLogin());
         note.setCreated(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         note.setChanged("");
         note.setText(text);
         note.getPersons().addAll(persons);
-        if (parent == null) {
-            seiteSO.getSeite().getNotes().add(note);
+        if (parentNumber == 0) {
+            seite.getSeite().getNotes().add(note);
         } else {
-            parent.getNotes().add(note);
+            noteByNumber(parentNumber).getNotes().add(note);
         }
-        try {
-            seiteSO.saveMeta(new CommitMessage(seiteSO, "note #" + note.getNumber() + " added"));
-        } catch (MergeRequestException e) {
-            Logger.error(e);
-            seiteSO.getBook().getWorkspace().pull();
-            Logger.info("Pulled. Retry to save note...");
-            // getting new object instance
-            String branch = seiteSO.getBook().getWorkspace().getBranch();
-            String bookFolder = seiteSO.getBook().getBook().getFolder();
-            SeiteSO s = seiteSO.getBook().getWorkspace().getUser().getWorkspace(branch).getBooks().byFolder(bookFolder)
-                    .getSeiten().byId(seiteSO.getId());
-            // save
-            next = s.getSeite().getNextNoteNumber();
-            Logger.info("next note number: " + next);
-            note.setNumber(next);
-            s.getSeite().setNextNoteNumber(next + 1);
-            if (parent == null) {
-                s.getSeite().getNotes().add(note);
-            } else {
-                s.notes().noteByNumber(parent.getNumber()).getNotes().add(note);
-            }
-            s.saveMeta(new CommitMessage(s, "note #" + note.getNumber() + " added"));
-        }
-        return note.getNumber();
+        seite.saveMeta(new CommitMessage(seite, "note #" + note.getNumber() + " added"));
+        
+        sendNotifications(number, persons);
     }
-
+    
     public Note noteByNumber(int number) {
-        Note note = _noteByNumber(seiteSO.getSeite().getNotes(), number);
+        Note note = _noteByNumber(seite.getSeite().getNotes(), number);
         if (note == null) {
             throw new RuntimeException("Note not found");
         }
@@ -90,8 +66,8 @@ public class NotesSO {
     }
     
     public void deleteNote(int number) {
-        if (_deleteNote(seiteSO.getSeite().getNotes(), number)) {
-            seiteSO.saveMeta(new CommitMessage(seiteSO, "note #" + number + " deleted"));
+        if (_deleteNote(seite.getSeite().getNotes(), number)) {
+            seite.saveMeta(new CommitMessage(seite, "note #" + number + " deleted"));
         }
     }
     
@@ -110,15 +86,15 @@ public class NotesSO {
     }
     
     public void doneNote(int number, boolean done) {
-        Note note = _doneNote(seiteSO.getSeite().getNotes(), number);
+        Note note = _doneNote(seite.getSeite().getNotes(), number);
         if (note == null) {
-            Logger.error("Note #" + note + " not found for page ID " + seiteSO.getId());
+            Logger.error("Note #" + note + " not found for page ID " + seite.getId());
             throw new RuntimeException("Note not found!");
         } else {
             note.setDone(done);
-            note.setDoneBy(done ? seiteSO.getLogin() : null);
+            note.setDoneBy(done ? seite.getLogin() : null);
             note.setDoneDate(done ? LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) : null);
-            seiteSO.saveMeta(new CommitMessage(seiteSO, "note #" + number + (done ? " done" : " undone")));
+            seite.saveMeta(new CommitMessage(seite, "note #" + number + (done ? " done" : " undone")));
         }
     }
 
@@ -136,7 +112,7 @@ public class NotesSO {
     }
 
     public int getNotesSize() {
-        return _getNotesSize(seiteSO.getSeite().getNotes());
+        return _getNotesSize(seite.getSeite().getNotes());
     }
 
     private int _getNotesSize(List<Note> notes) {
@@ -154,10 +130,10 @@ public class NotesSO {
             mail.setSubject(c.getNoteSubject());
             mail.setBody(c.getNoteBody()
                     .replace("{number}", "" + number)
-                    .replace("{pageId}", seiteSO.getId())
-                    .replace("{pageTitle}", seiteSO.getTitle()) // no esc!
-                    .replace("{bookFolder}", seiteSO.getBook().getBook().getFolder())
-                    .replace("{branch}", seiteSO.getBook().getWorkspace().getBranch()));
+                    .replace("{pageId}", seite.getId())
+                    .replace("{pageTitle}", seite.getTitle()) // no esc!
+                    .replace("{bookFolder}", seite.getBook().getBook().getFolder())
+                    .replace("{branch}", seite.getBook().getWorkspace().getBranch()));
             for (String person : persons) {
                 mail.setToEmailaddress(c.getMailAddress(person));
                 if (!StringService.isNullOrEmpty(mail.getToEmailaddress())) {

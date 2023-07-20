@@ -8,6 +8,7 @@ import org.pmw.tinylog.Logger;
 
 import minerva.MinervaWebapp;
 import minerva.model.GitFactory;
+import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 
 public class UpToDateCheckService {
@@ -37,6 +38,10 @@ public class UpToDateCheckService {
             workspace.pull();
             updateAction.update();
         }
+    }
+
+    public static void check(SeiteSO seite, UpdateAction updateAction) {
+        check(seite.getBook().getWorkspace(), updateAction);
     }
     
     public interface UpdateAction {

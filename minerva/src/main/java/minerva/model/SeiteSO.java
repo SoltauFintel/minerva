@@ -569,4 +569,12 @@ public class SeiteSO implements ISeite {
             return 3;
         }
     }
+    
+    /**
+     * Books instance have been changed after pull.
+     * @return same page but as fresh instance from fresh book instance
+     */
+    public SeiteSO getMeAsFreshInstance() {
+        return book.getMeAsFreshInstance().getSeiten().byId(getId());
+    }
 }
