@@ -151,12 +151,12 @@ public class SeiteSO implements ISeite {
         this.neu = neu;
     }
 
-    public boolean hasNoParent() {
-        return ROOT_ID.equals(seite.getParentId());
+    public boolean hasParent() {
+        return !ROOT_ID.equals(seite.getParentId());
     }
     
     /**
-     * Use hasNoParent() before!
+     * Use hasParent() before!
      * @return parent page
      */
     public SeiteSO getParent() {
@@ -379,7 +379,7 @@ public class SeiteSO implements ISeite {
         neu = false;
         images.clear();
 
-        if (hasNoParent()) {
+        if (!hasParent()) {
             // Wenn book.sorted=true ist und ein Seitentitel geändert worden ist, muss neu sortiert werden.
             book.getSeiten().sort();
         }

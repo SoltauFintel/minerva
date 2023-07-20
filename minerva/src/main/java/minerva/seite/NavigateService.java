@@ -89,7 +89,7 @@ public class NavigateService {
     private SeiteSO nextPageOnSameLevel(SeiteSO seite) {
         SeitenSO seiten = seiten(seite.getBook());
         parent = null;
-        if (!seite.hasNoParent()) {
+        if (seite.hasParent()) {
             parent = seiten.byId(seite.getSeite().getParentId());
             seiten = seiten(parent);
         }
@@ -108,7 +108,7 @@ public class NavigateService {
     private SeiteSO previousPageOnSameLevel(SeiteSO seite) {
         SeitenSO seiten = seiten(seite.getBook());
         parent = null;
-        if (!seite.hasNoParent()) {
+        if (seite.hasParent()) {
             parent = seiten.byId(seite.getSeite().getParentId());
             seiten = seiten(parent);
         }

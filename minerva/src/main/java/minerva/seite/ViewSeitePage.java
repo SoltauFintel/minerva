@@ -134,7 +134,7 @@ public class ViewSeitePage extends SPage {
         // Navigation
         String booklink = "/b/" + branch + "/" + bookFolder;
         put("booklink", booklink);
-        put("parentlink", seiteSO.hasNoParent() ? booklink : onlyBookFolder + seite.getParentId());
+        put("parentlink", seiteSO.hasParent() ? (onlyBookFolder + seite.getParentId()) : booklink);
         NavigateService nav = new NavigateService(true, user.getPageLanguage(), null);
         navlink("prevlink", nav.previousPage(seiteSO), id, onlyBookFolder);
         navlink("nextlink", nav.nextPage(seiteSO), id, onlyBookFolder);

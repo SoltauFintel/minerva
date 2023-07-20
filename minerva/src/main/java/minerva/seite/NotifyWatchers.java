@@ -83,7 +83,7 @@ public class NotifyWatchers {
                 user.setNotifiedBecauseOfPage(seite);
             }
         }
-        if (!seite.hasNoParent()) {
+        if (seite.hasParent()) {
             findWatchers(seite.getParent(), nu, true); // recursive
         }
     }
