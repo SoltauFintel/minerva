@@ -469,9 +469,14 @@ public class GitService {
         throw new RuntimeException("There is no master branch!");
     }
     
-    public List<HCommit> getHistory(String file) {
+    public List<HCommit> getHistory(String file, boolean followRenames) {
         try (Git git = Git.open(workspace)) {
-            Iterable<RevCommit> commits = git.log().addPath(file).call();
+            Iterable<RevCommit> commits;
+            if (followRenames) {
+                commits = new LogFollowCommand(git.getRepository(), file).call(); // expensive
+            } else {
+                commits = git.log().addPath(file).call();
+            }
             List<HCommit> ret = new ArrayList<>();
             for (RevCommit commit : commits) {
                 ret.add(new HCommit(commit));

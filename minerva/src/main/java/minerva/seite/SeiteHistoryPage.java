@@ -19,10 +19,11 @@ public class SeiteHistoryPage extends SPage {
         if (!MinervaWebapp.factory().isGitlab()) {
             throw new RuntimeException("Page only for Gitlab mode");
         }
+        boolean followRenames = "fr".equals(ctx.queryParam("m"));
 
         GitlabRepositorySO repo = MinervaWebapp.factory().getGitlabRepository();
         String url = repo.getProjectUrl() + MinervaWebapp.factory().getConfig().getGitlabCommitPath(); // http://host:port/user/repo/-/commit/
-        List<HCommit> commits = repo.getSeiteMetaHistory(seite);
+        List<HCommit> commits = repo.getSeiteMetaHistory(seite, followRenames);
         Set<String> authors = new TreeSet<>();
 
         header(seite.getTitle() + " - " + n("history"));
@@ -40,5 +41,6 @@ public class SeiteHistoryPage extends SPage {
         put("authors", esc(authors.stream().collect(Collectors.joining(", "))));
         putInt("n", commits.size());
         put("filename", esc(seite.gitFilenameMeta()));
+        put("followRenames", followRenames);
     }
 }
