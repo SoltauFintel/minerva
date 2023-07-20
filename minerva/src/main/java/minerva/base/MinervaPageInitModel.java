@@ -2,6 +2,8 @@ package minerva.base;
 
 import java.util.List;
 
+import org.pmw.tinylog.Logger;
+
 import github.soltaufintel.amalia.auth.webcontext.WebContext;
 import github.soltaufintel.amalia.spark.Context;
 import minerva.model.BooksSO;
@@ -28,9 +30,14 @@ public class MinervaPageInitModel {
             favorites = user.getFavorites();
             if (user.getCurrentWorkspace() != null) {
                 branch = user.getCurrentWorkspace().getBranch();
-                if (user.getCurrentWorkspace().getBooks() != null //
-                        && !user.getCurrentWorkspace().getBooks().isEmpty()) {
-                    books = user.getCurrentWorkspace().getBooks();
+                try {
+                    if (user.getCurrentWorkspace().getBooks() != null //
+                            && !user.getCurrentWorkspace().getBooks().isEmpty()) {
+                        books = user.getCurrentWorkspace().getBooks();
+                    }
+                } catch (Exception e) {
+                    Logger.error(e, "Error while accessing books in MinervaPageInitModel");
+                    books = null;
                 }
             }
         }

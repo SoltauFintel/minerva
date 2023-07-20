@@ -40,7 +40,7 @@ public class MinervaErrorPage extends Page implements ErrorPage {
         put("msg", esc(msg)); // for subclasses
         put("p", "");
         put("title", "Minerva error");
-        put("header", exception instanceof UserMessage ? "Message" : "Sorry, that should not happen!");
+        put("header", exception instanceof UserMessage ? "Message" : "Sorry, this should not happen!");
     }
     
     @Override

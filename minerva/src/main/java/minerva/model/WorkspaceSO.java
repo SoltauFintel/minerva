@@ -18,6 +18,7 @@ public class WorkspaceSO {
     private final String branch;
     private BooksSO books;
     private Boolean ok = null;
+    private String userMessage;
     
     public WorkspaceSO(UserSO user, String parentFolder, String branch) {
         this.user = user;
@@ -44,12 +45,14 @@ public class WorkspaceSO {
     public BooksSO getBooks() {
         if (books == null) {
             // Late access on books. This is the first access onto the workspace. Pull Git repo!
+            userMessage = null;
             try {
                 dao().initWorkspace(this, false);
                 ok = Boolean.TRUE;
                 books = new BooksSO(this);
                 info("$l | $b | User accesses workspace for the first time. Books: $n");
             } catch (Exception e) {
+                userMessage = e.getMessage();
                 if (Boolean.FALSE.equals(ok)) {
                     Logger.error("Can't init workspace");
                 } else {
@@ -59,6 +62,10 @@ public class WorkspaceSO {
             }
         }
         return books;
+    }
+
+    public String getUserMessage() {
+        return userMessage;
     }
 
     public void pull() {

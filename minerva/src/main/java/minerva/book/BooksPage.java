@@ -62,6 +62,8 @@ public class BooksPage extends UPage {
             }
         }
         put("booksOk", books != null);
+        put("workspaceNotOk", n("workspaceNotOk").replace("$b", esc(branch)));
+        put("userMessage", esc(workspace.getUserMessage()));
         put("publishLink", "/rest/publish?branch=" + u(branch) + "&login=" + u(System.getenv("MP_USER")) + "&password="
                 + u(System.getenv("MP_PASS")) + "&lang=" + u("de,en"));
         

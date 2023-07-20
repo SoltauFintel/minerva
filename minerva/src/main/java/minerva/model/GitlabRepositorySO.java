@@ -4,11 +4,13 @@ import java.io.File;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jgit.api.errors.RefNotAdvertisedException;
 import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.pmw.tinylog.Logger;
 
 import minerva.base.FileService;
+import minerva.base.UserMessage;
 import minerva.git.CommitMessage;
 import minerva.git.GitService;
 import minerva.git.HCommit;
@@ -50,6 +52,8 @@ public class GitlabRepositorySO {
                     Logger.error(e);
                     if (e.getCause() instanceof RepositoryNotFoundException) {
                         pull(workspace, true);
+                    } else if (e.getCause() instanceof RefNotAdvertisedException) {
+                        throw new UserMessage("notExistingBranch", workspace);
                     } else if (trial == 1 && e.getCause() instanceof TransportException) {
                         // TODO Dieser Fehler kann auch bei anderen Git Aktionen auftreten und müsste dort
                         //      ebenso behandelt werden!                        
