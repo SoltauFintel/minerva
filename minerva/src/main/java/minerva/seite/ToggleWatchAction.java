@@ -4,7 +4,11 @@ public class ToggleWatchAction extends SAction {
 
     @Override
     protected void execute() {
-        user.toggleWatch(id);
+        if ("s".equals(ctx.queryParam("m"))) {
+            user.toggleWatch(id + "+");
+        } else {
+            user.toggleWatch(id);
+        }
         
         ctx.redirect(viewlink);
     }

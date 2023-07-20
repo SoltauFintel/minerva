@@ -76,7 +76,8 @@ public class ViewSeitePage extends SPage {
         put("hasOneHelpKey", !oneHelpKey.isEmpty());
         UserSettingsSO us = user.getUserSettings();
         put("isFavorite", us.getFavorites().contains(id));
-        put("watched", us.getWatchlist().contains(id));
+        put("pageWatched", us.getWatchlist().contains(id));
+        put("subpagesWatched", us.getWatchlist().contains(id + "+"));
         header(modifyHeader(seiteSO.getTitle()));
 
         fillLinks(branch, bookFolder, id, seiteSO, seite);

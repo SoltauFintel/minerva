@@ -153,7 +153,7 @@ public class SeitenSO extends MList<SeiteSO> {
             if (seite.getId().equals(seiteId)) {
                 return true; // gefunden, Ende der Suche
             }
-            if (seite.getSeiten().getBreadcrumbs(seiteId, builder, breadcrumbs)) {
+            if (seite.getSeiten().getBreadcrumbs(seiteId, builder, breadcrumbs)) { // recursive
                 Breadcrumb b = new Breadcrumb();
                 b.setTitle(seite.getSeite().getTitle());
                 b.setLink(builder.build(seite.getBook().getWorkspace().getBranch(),

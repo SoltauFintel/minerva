@@ -8,7 +8,6 @@ import java.util.List;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.mail.Mail;
-import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.config.MinervaConfig;
@@ -133,9 +132,9 @@ public class NotesSO {
             mail.setBody(c.getNoteBody()
                     .replace("{number}", "" + number)
                     .replace("{pageId}", seiteSO.getId())
-                    .replace("{pageTitle}", Escaper.esc(seiteSO.getTitle()))
-                    .replace("{bookFolder}", Escaper.esc(seiteSO.getBook().getBook().getFolder()))
-                    .replace("{branch}", Escaper.esc(seiteSO.getBook().getWorkspace().getBranch())));
+                    .replace("{pageTitle}", seiteSO.getTitle()) // no esc!
+                    .replace("{bookFolder}", seiteSO.getBook().getBook().getFolder())
+                    .replace("{branch}", seiteSO.getBook().getWorkspace().getBranch()));
             for (String person : persons) {
                 mail.setToEmailaddress(c.getMailAddress(person));
                 if (!StringService.isNullOrEmpty(mail.getToEmailaddress())) {

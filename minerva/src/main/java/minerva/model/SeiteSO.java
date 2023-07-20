@@ -154,6 +154,14 @@ public class SeiteSO implements ISeite {
     public boolean hasNoParent() {
         return ROOT_ID.equals(seite.getParentId());
     }
+    
+    /**
+     * Use hasNoParent() before!
+     * @return parent page
+     */
+    public SeiteSO getParent() {
+        return book.getSeiten().byId(seite.getParentId());
+    }
 
     public String getLogin() {
         return book.getUser().getUser().getLogin();

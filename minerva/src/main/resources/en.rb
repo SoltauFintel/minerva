@@ -170,3 +170,4 @@ booksOverview=Books overview
 template=Template
 Menu=Menu
 watchPage=Watch page
+watchSubpages=Watch subpages

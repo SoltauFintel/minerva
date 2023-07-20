@@ -136,12 +136,16 @@
                 {{/if}}
                 <li><a href="{{viewlink}}/toggle-favorite"><i class="fa fa-star{{if not isFavorite}}-o{{/if}} fav"></i>
                     {{N.favorite}}</a></li>
+                
                 <li><a href="{{viewlink}}/toggle-watch"><i class="fa fa-camera-retro"></i> {{N.watchPage}}
-                    {{if watched}}<i class="fa fa-check greenbook"></i>{{/if}}</a></li>
-                <li><a href="{{viewlink}}/links"><i class="fa fa-arrows-alt"></i> {{N.linkAnalysis}}</a></li>
+                    {{if pageWatched}}<i class="fa fa-check greenbook"></i>{{/if}}</a></li>
+                <li><a href="{{viewlink}}/toggle-watch?m=s"><i class="fa fa-sitemap"></i> {{N.watchSubpages}}
+                    {{if subpagesWatched}}<i class="fa fa-check greenbook"></i>{{/if}}</a></li>
+                
                 {{if gitlab}}
                     <li><a href="{{viewlink}}/history"><i class="fa fa-clock-o"></i> {{N.history}}</a></li>
                 {{/if}}
+                <li><a href="{{viewlink}}/links"><i class="fa fa-arrows-alt"></i> {{N.linkAnalysis}}</a></li>
                 <li><a href="{{movelink}}"><i class="fa fa-arrow-right"></i> {{N.movePage}}</a></li>
                 <li><a href="{{deletelink}}" style="color: #900;"><i class="fa fa-trash"></i> {{N.deletePage}}...</a></li>
             </ul>
