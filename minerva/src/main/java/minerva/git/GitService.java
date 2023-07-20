@@ -469,7 +469,7 @@ public class GitService {
         throw new RuntimeException("There is no master branch!");
     }
     
-    public List<HCommit> getHistory(String file, boolean followRenames) {
+    public List<HCommit> getFileHistory(String file, boolean followRenames) {
         try (Git git = Git.open(workspace)) {
             Iterable<RevCommit> commits;
             if (followRenames) {
@@ -479,7 +479,30 @@ public class GitService {
             }
             List<HCommit> ret = new ArrayList<>();
             for (RevCommit commit : commits) {
-                ret.add(new HCommit(commit));
+                if (commit.getParentCount() == 1) {
+                    ret.add(new HCommit(commit));
+                }
+            }
+            return ret;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<HCommit> getHtmlChangesHistory(int start, int size) {
+        try (Git git = Git.open(workspace)) {
+            Iterable<RevCommit> commits = git.log().setSkip(start).setMaxCount(size).call();
+            List<HCommit> ret = new ArrayList<>();
+            for (RevCommit commit : commits) {
+                if (commit.getParentCount() == 1) {
+                    HCommit hc = new HCommit(commit);
+                    hc.setFiles(hc.loadFiles(git).stream()
+                            .map(diff -> "/dev/null".equals(diff.getNewPath()) ? diff.getOldPath()
+                                    : diff.getNewPath())
+                            .filter(dn -> dn.endsWith(".html"))
+                            .collect(Collectors.toList()));
+                    ret.add(hc);
+                }
             }
             return ret;
         } catch (Exception e) {

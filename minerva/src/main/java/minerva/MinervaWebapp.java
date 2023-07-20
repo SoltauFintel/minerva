@@ -81,6 +81,7 @@ import minerva.subscription.MappingPage;
 import minerva.subscription.PushDataAction;
 import minerva.subscription.SubscribeAction;
 import minerva.workspace.AddWorkspacePage;
+import minerva.workspace.WorkspaceHistoryPage;
 import minerva.workspace.CreateBranchPage;
 import minerva.workspace.CurrentWorkspaceAction;
 import minerva.workspace.DeleteWorkspacePage;
@@ -109,6 +110,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/export", ExportWorkspaceAction.class);
         form("/w/:branch/export-what", ExportPage.class);
         form("/w/:branch/export-templates", ExportTemplatesPage.class);
+        get("/w/:branch/history", WorkspaceHistoryPage.class);
         
         // Book
         get("/b/:branch", BooksPage.class);

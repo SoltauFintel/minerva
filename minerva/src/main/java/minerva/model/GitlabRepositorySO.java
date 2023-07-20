@@ -115,7 +115,11 @@ public class GitlabRepositorySO {
     }
     
     public List<HCommit> getSeiteMetaHistory(SeiteSO seite, boolean followRenames) {
-        return git(seite.getBook().getWorkspace()).getHistory(seite.gitFilenameMeta(), followRenames);
+        return git(seite.getBook().getWorkspace()).getFileHistory(seite.gitFilenameMeta(), followRenames);
+    }
+
+    public List<HCommit> getHtmlChangesHistory(WorkspaceSO workspace, int start, int size) {
+        return git(workspace).getHtmlChangesHistory(start, size);
     }
     
     public void createBranch(WorkspaceSO workspace, String newBranch, String commit, GitlabUser user) {

@@ -1,0 +1,38 @@
+{{master: master}}
+
+<style>
+.small {
+    font-size: 8pt;
+    color: #999; 
+}
+
+a.small {
+    text-decoration: underline;
+}
+
+a.small:hover {
+    color: blue;
+}
+</style>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">{{header}}</h1>
+
+        {{each c in changes}}
+            <p><b style="font-size: 13pt;">{{c.user}}</b>
+                {{each p in c.pages}}
+                    <br/><i class="fa fa-file-text" style="color: rgb(0,101,255); margin-left: 1em;"></i> <a href="{{p.link}}">{{p.pageTitle}}</a>
+                    <br/><span class="small" style="margin-left: 3em;">{{p.date}}</span>
+                    <a href="{{p.commitlink}}" target="_blank" class="small" style="">commit</a>
+                {{/each}}
+            </p>
+        {{/each}}
+        
+        {{if empty}}
+            - {{N.noMoreCommits}} -
+        {{else}}
+            <p class="mt3"><a href="?start={{nextStart}}" class="btn btn-default">{{N.forward}} &gt;&gt;</a></p>
+        {{/if}}
+    </div>
+</div>

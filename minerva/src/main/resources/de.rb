@@ -174,3 +174,5 @@ watchSubpages=Unterseiten beobachten
 notExistingBranch=Der Branch existiert nicht mehr im Gitlab Repository. Bitte lösche den Workspace.
 workspaceNotOk=Workspace "$b" ist nicht in Ordnung!
 ctrlS=Strg+S
+workspaceHistory=Alle Änderungen
+noMoreCommits=keine weiteren Commits

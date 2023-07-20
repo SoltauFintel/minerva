@@ -109,6 +109,8 @@
         </p>
         <p>
             {{if gitlab}}
+                <a href="/w/{{branch}}/history" class="btn btn-default brr"><i class="fa fa-clock-o"></i>
+                    {{N.workspaceHistory}}</a>
                 <a href="/w/{{branch}}/pull" class="btn btn-default brr" title="pull"
                     onclick="document.querySelector('#s1').style='';"><i class="fa fa-refresh"></i>
                     {{N.pullWS}}! <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
