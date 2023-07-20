@@ -2,24 +2,25 @@ package minerva.book;
 
 import github.soltaufintel.amalia.spark.Context;
 import minerva.model.BookSO;
-import minerva.user.UAction;
+import minerva.model.BooksSO;
+import minerva.workspace.WAction;
 
 /**
  * Base class for book actions
  */
-public abstract class BAction extends UAction {
-    protected String branch;
+public abstract class BAction extends WAction {
     protected String bookFolder;
     protected String booklink;
+    protected BooksSO books;
     protected BookSO book;
 
     @Override
     public void init(Context ctx) {
         super.init(ctx);
-        branch = ctx.pathParam("branch");
         bookFolder = ctx.pathParam("book");
         booklink = "/b/" + branch + "/" + bookFolder;
 
-        book = user.getWorkspace(branch).getBooks().byFolder(bookFolder);
+        books = workspace.getBooks();
+        book = books.byFolder(bookFolder);
     }
 }

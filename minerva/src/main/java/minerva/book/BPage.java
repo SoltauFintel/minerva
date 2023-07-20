@@ -3,13 +3,12 @@ package minerva.book;
 import github.soltaufintel.amalia.spark.Context;
 import minerva.model.BookSO;
 import minerva.model.BooksSO;
-import minerva.user.UPage;
+import minerva.workspace.WPage;
 
 /**
  * Base class for book pages
  */
-public abstract class BPage extends UPage {
-    protected String branch;
+public abstract class BPage extends WPage {
     protected String bookFolder;
     protected String booklink;
     protected BooksSO books;
@@ -18,14 +17,12 @@ public abstract class BPage extends UPage {
     @Override
     public void init(Context ctx) {
         super.init(ctx);
-        branch = ctx.pathParam("branch");
         bookFolder = ctx.pathParam("book");
         booklink = "/b/" + branch + "/" + bookFolder;
 
-        books = user.getWorkspace(branch).getBooks();
+        books = workspace.getBooks();
         book = books.byFolder(bookFolder);
 
-        put("branch", branch);
         put("bookFolder", bookFolder);
         put("booklink", booklink);
     }
