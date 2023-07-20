@@ -78,6 +78,7 @@ public class ViewSeitePage extends SPage {
         put("isFavorite", us.getFavorites().contains(id));
         put("pageWatched", us.getWatchlist().contains(id));
         put("subpagesWatched", us.getWatchlist().contains(id + "+"));
+        put("ctrlS", n("ctrlS"));
         header(modifyHeader(seiteSO.getTitle()));
 
         fillLinks(branch, bookFolder, id, seiteSO, seite);
