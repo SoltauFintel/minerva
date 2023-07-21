@@ -1,5 +1,6 @@
 package minerva.base;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -72,6 +73,26 @@ public class Tosmap {
                 return null;
             }
             return ret.getData();
+        }
+    }
+    
+    /**
+     * Search for keys using begin of key.
+     * @param keyBegin begin of key
+     * @return keys, can be outdated
+     */
+    public static List<String> search(String keyBegin) {
+        if (StringService.isNullOrEmpty(keyBegin)) {
+            throw new IllegalArgumentException("keyBegin must not be empty");
+        }
+        synchronized (HANDLE) {
+            List<String> ret = new ArrayList<>();
+            for (String key : map.keySet()) {
+                if (key.startsWith(keyBegin)) {
+                    ret.add(key);
+                }
+            }
+            return ret;
         }
     }
 

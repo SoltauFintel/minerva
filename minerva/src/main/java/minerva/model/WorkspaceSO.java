@@ -123,4 +123,8 @@ public class WorkspaceSO {
     public void onPush() {
         StatesSO.onPush(user.getLogin(), branch);
     }
+    
+    public void onEditing(SeiteSO seite, boolean finished) {
+        StatesSO.onEditing(user.getLogin(), branch, seite.getId(), finished);
+    }
 }

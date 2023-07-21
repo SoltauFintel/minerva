@@ -4,7 +4,7 @@ import org.pmw.tinylog.Logger;
 
 import minerva.base.NlsString;
 import minerva.model.SeiteSO;
-import minerva.model.WorkspaceSO;
+import minerva.model.UserSO.LoginAndEndTime;
 import minerva.persistence.gitlab.UpToDateCheckService;
 import minerva.seite.link.InvalidLinksModel;
 
@@ -15,9 +15,18 @@ public class EditSeitePage extends ViewSeitePage {
         if (isPOST()) {
             Logger.info(user.getUser().getLogin() + " | " + branch + " | saving page #" + id + " ...");
             save(branch, bookFolder, id, seiteSO);
+            workspace.onEditing(seite, true); // editing finished
         } else { // edit
-            WorkspaceSO workspace = seiteSO.getBook().getWorkspace();
+            if (!"cl".equals(ctx.queryParam("m"))) {
+                LoginAndEndTime lockedBy = user.hasEditingStarted(workspace.getBranch(), id);
+                if (lockedBy != null) {
+                    render = false;
+                    ctx.redirect(viewlink + "/locked");
+                    return;
+                }
+            }
             UpToDateCheckService.check(workspace, () -> seiteSO.freshcheck(langs));
+            workspace.onEditing(seite, false); // editing started
             
             super.execute2(branch, bookFolder, id, seiteSO);
         }

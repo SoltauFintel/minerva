@@ -69,9 +69,16 @@ public class StatesSO {
     }
 
     public static void onPush(String login, String branch) {
-        // Alle anderen aktiven User über Push informieren.
+        // Inform all other active users about the push.
         getStates().stream()
             .filter(state -> !state.getUser().getLogin().equals(login))
             .forEach(state -> state.getUser().addHasToPull(branch));
+    }
+    
+    public static void onEditing(String login, String branch, String seiteId, boolean finished) {
+        // Inform all other active users about the start/end of editing the page.
+        getStates().stream()
+            .filter(state -> !state.getUser().getLogin().equals(login))
+            .forEach(state -> state.getUser().onEditing(login, branch, seiteId, finished));
     }
 }

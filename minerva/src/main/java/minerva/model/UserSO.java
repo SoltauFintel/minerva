@@ -3,7 +3,9 @@ package minerva.model;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.List;
@@ -16,6 +18,7 @@ import com.google.common.base.Strings;
 import minerva.MinervaWebapp;
 import minerva.access.DirAccess;
 import minerva.base.FileService;
+import minerva.base.Tosmap;
 import minerva.seite.link.InvalidLinksModel;
 import minerva.user.User;
 
@@ -191,5 +194,55 @@ public class UserSO {
 
     public void addHasToPull(String branch) {
         hasToPull.add(branch);
+    }
+    
+    public void onEditing(String otherUser, String branch, String seiteId, boolean finished) {
+        String key = "editing:" + branch + "/" + seiteId + "/" + otherUser;
+        if (finished) {
+            Tosmap.remove(key); // remove soft page lock
+        } else {
+            long endtime = System.currentTimeMillis() + 1000 * 60 * 60;
+            LocalDateTime enddate = Instant.ofEpochMilli(endtime).atZone(ZoneId.systemDefault()).toLocalDateTime();
+            Tosmap.add(key, endtime, enddate.format(DateTimeFormatter.ofPattern("HH:mm"))); // soft page lock for 60 minutes
+        }
+    }
+
+    /**
+     * @param branch -
+     * @param seiteId -
+     * @return LoginAndEndTime - or null if nobody is editing the page
+     */
+    public LoginAndEndTime hasEditingStarted(String branch, String seiteId) {
+        String keyBegin = "editing:" + branch + "/" + seiteId + "/";
+        List<String> keys = Tosmap.search(keyBegin);
+        for (String key : keys) {
+            if (!key.endsWith("/" + user.getLogin())) { // it's not me
+                String endTime = (String) Tosmap.get(key);
+                if (endTime != null) {
+                    return new LoginAndEndTime(key.substring(key.lastIndexOf("/") + 1), endTime);
+                }
+            }
+        }
+        return null;
+    }
+    
+    public static class LoginAndEndTime {
+        /** locked by user */
+        private final String login;
+        /** locked until */
+        private final String endTime;
+
+        public LoginAndEndTime(String login, String endTime) {
+            this.login = login;
+            this.endTime = endTime;
+        }
+
+        public String getLogin() {
+            return login;
+        }
+
+        public String getEndTime() {
+            return endTime;
+        }
     }
 }

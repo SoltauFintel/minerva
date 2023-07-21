@@ -14,7 +14,7 @@ import minerva.model.SeitenSO;
 import minerva.model.UserSettingsSO;
 
 public class ViewSeitePage extends SPage implements Uptodatecheck {
-    private boolean returnEmpty = false;
+    protected boolean render = true;
     
     @Override
     protected SeiteSO getSeite() {
@@ -28,7 +28,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         }
         if (seite == null) {
             Logger.error("Page not found: " + id);
-            returnEmpty = true;
+            render = false;
             ctx.redirect("/message?m=1");
             return;
         }
@@ -226,10 +226,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     
     @Override
     protected String render() {
-        if (returnEmpty) {
-            return "";
-        }
-        return super.render();
+        return render ? super.render() : "";
     }
     
     private String getOneHelpKey(List<String> helpKeys) {

@@ -48,9 +48,11 @@ import minerva.search.IndexWorkspaceAction;
 import minerva.search.SearchPage;
 import minerva.seite.AddSeiteAction;
 import minerva.seite.AllHelpKeysPage;
+import minerva.seite.CancelEditingAction;
 import minerva.seite.DeleteSeitePage;
 import minerva.seite.EditSeitePage;
 import minerva.seite.HelpKeysPage;
+import minerva.seite.LockedByPage;
 import minerva.seite.MoveSeiteAckPage;
 import minerva.seite.MoveSeiteAction;
 import minerva.seite.MoveSeitePage;
@@ -81,12 +83,12 @@ import minerva.subscription.MappingPage;
 import minerva.subscription.PushDataAction;
 import minerva.subscription.SubscribeAction;
 import minerva.workspace.AddWorkspacePage;
-import minerva.workspace.WorkspaceHistoryPage;
 import minerva.workspace.CreateBranchPage;
 import minerva.workspace.CurrentWorkspaceAction;
 import minerva.workspace.DeleteWorkspacePage;
 import minerva.workspace.MergeBranchPage;
 import minerva.workspace.PullWorkspace;
+import minerva.workspace.WorkspaceHistoryPage;
 import minerva.workspace.WorkspacesPage;
 
 public class MinervaWebapp extends RouteDefinitions {
@@ -133,6 +135,8 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/s/:branch/:book/:id", ViewSeitePage.class);
         form("/s-edit/:branch/:book/:id", EditSeitePage.class); // Wegen den Images hänge ich hier nicht "/edit" hinten dran, sondern ändere den 1. Pfadteil auf "s-edit".
         post("/s/:branch/:book/:id/post-contents", PostContentsAction.class);
+        get("/s/:branch/:book/:id/cancel", CancelEditingAction.class);
+        get("/s/:branch/:book/:id/locked", LockedByPage.class);
         get("/s/:branch/:book/:id/pull", PullSeiteAction.class);
         get("/s/:branch/:book/:id/delete", DeleteSeitePage.class);
         get("/s/:branch/:book/:parentid/add", AddSeiteAction.class);
