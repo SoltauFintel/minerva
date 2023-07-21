@@ -115,7 +115,7 @@
         {{if isCustomerVersion}}
             <p>
                 <a href="{{viewlink}}/mapping" class="btn btn-default mw"><i class="fa fa-question-circle"></i>
-                    {{N.customerMapping}}</a>
+                    {{N.customerMapping}}{{if hasOneHelpKey}} <i class="fa fa-check greenbook"></i>{{/if}}</a>
             </p>
         {{else}}
             <p>
@@ -131,7 +131,7 @@
                 aria-expanded="false"><i class="fa fa-arrow-down fa-fw"></i> {{N.Menu}}</button>
             <ul class="dropdown-menu in mw">
                 {{if isCustomerVersion}}
-                    <li><a href="{{viewlink}}/help-keys" class="btn btn-default mw"><i class="fa fa-question-circle"></i>
+                    <li><a href="{{viewlink}}/help-keys"><i class="fa fa-question-circle"></i>
                         {{N.helpKeys}} ({{helpKeysSize}})</a></li>
                 {{/if}}
                 <li><a href="{{viewlink}}/toggle-favorite"><i class="fa fa-star{{if not isFavorite}}-o{{/if}} fav"></i>
