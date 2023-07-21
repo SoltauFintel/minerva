@@ -28,12 +28,14 @@
                         {{if pageWatched}}<i class="fa fa-check greenbook"></i>{{/if}}</a></li>
                     <li><a href="{{viewlink}}/toggle-watch?m=s"><i class="fa fa-sitemap"></i> {{N.watchSubpages}}
                         {{if subpagesWatched}}<i class="fa fa-check greenbook"></i>{{/if}}</a></li>
+                    <hr style="margin: 0;"/>
                     
                     {{if gitlab}}
                         <li><a href="{{viewlink}}/history"><i class="fa fa-clock-o"></i> {{N.history}}</a></li>
                     {{/if}}
                     <li><a href="{{viewlink}}/links"><i class="fa fa-link"></i> {{N.linkAnalysis}}</a></li>
-                    <li><a href="{{movelink}}"><i class="fa fa-arrow-right" style="color: #00f;"></i> {{N.movePage}}</a></li>
+                    <hr style="margin: 0;"/>
+                    <li><a href="{{movelink}}"><i class="fa fa-arrow-circle-right"></i> {{N.movePage}}</a></li>
                     <li><a href="{{deletelink}}" style="color: #900;"><i class="fa fa-trash"></i> {{N.deletePage}}...</a></li>
                 </ul>
             </li></ul>
