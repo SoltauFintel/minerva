@@ -7,8 +7,8 @@ import org.pmw.tinylog.Logger;
 import minerva.publish.PublishAction;
 import minerva.seite.SAction;
 
-// TODO Eine Seite kann auf eine Seite verweisen, die es im Export nicht gibt! Eigentlich kann man nur ein Buch
-//      (oder mehrere) exportieren!
+// Eine Seite kann auf eine Seite verweisen, die es im Export nicht gibt! Eigentlich kann man nur ein Buch
+// (oder mehrere) exportieren! -> Ich mach da nichts dran. Da muss der Anwender mit leben.
 public class ExportSeiteAction extends SAction {
 
     @Override

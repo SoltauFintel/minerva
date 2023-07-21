@@ -47,7 +47,6 @@ public class SeiteSO implements ISeite {
     /** images for upload by DirAccess */
     private final List<String> images = new ArrayList<>();
 
-    // TODO wenn ich in Buch 1 bin, dann sollte ich nicht die contents für die anderen Bücher im Speicher haben. Ich kann die ja immer schnell von der Platte laden.
     /** null: nicht geladen */
     private NlsString content = null;
     private final NotesSO notes = new NotesSO(this);

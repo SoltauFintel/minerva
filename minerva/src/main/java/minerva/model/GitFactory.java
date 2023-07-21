@@ -102,7 +102,6 @@ public class GitFactory {
      */
     public static String handleUrl(String url, GitlabUser user) {
         if (user.getAccessToken() != null) {
-            // TODO auch "https://" unterstützen
             return "http://gitlab-ci-token:" + Escaper.urlEncode(user.getAccessToken(), "") + "@"
                     + url.substring("http://".length());
         }

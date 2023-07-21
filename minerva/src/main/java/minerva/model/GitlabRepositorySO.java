@@ -55,10 +55,11 @@ public class GitlabRepositorySO {
                     } else if (e.getCause() instanceof RefNotAdvertisedException) {
                         throw new UserMessage("notExistingBranch", workspace);
                     } else if (trial == 1 && e.getCause() instanceof TransportException) {
-                        // TODO Dieser Fehler kann auch bei anderen Git Aktionen auftreten und müsste dort
-                        //      ebenso behandelt werden!                        
-                        // TODO Fehlertext vom e.cause noch genauer untersuchen! Muss wohl irgendwas mit
-                        //      "not authenticated" sein.
+                        // Dieser Fehler kann auch bei anderen Git Aktionen auftreten und müsste dort
+                        // ebenso behandelt werden!
+                        // Ich hab hier das Problem, dass ich das nicht reproduzieren kann.
+                        // Fehlertext vom e.cause noch genauer untersuchen! Muss wohl irgendwas mit
+                        // "not authenticated" sein.
                         new GitlabAuthService().refreshToken(user);
                         continue;
                     }
