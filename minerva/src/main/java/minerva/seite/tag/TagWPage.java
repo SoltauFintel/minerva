@@ -7,19 +7,18 @@ import com.github.template72.data.DataMap;
 
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
-import minerva.user.UPage;
+import minerva.workspace.WPage;
 
 /**
  * Listet alle Seiten aller Bücher zu einem tag
  */
-public class TagWPage extends UPage {
+public class TagWPage extends WPage {
 
     @Override
     protected void execute() {
-        String branch = ctx.pathParam("branch");
         String tag = ctx.pathParam("tag");
 
-        List<SeiteSO> seiten = user.getWorkspace(branch).findTag(tag);
+        List<SeiteSO> seiten = workspace.findTag(tag);
 
         DataList list = list("seiten");
         for (SeiteSO seite : seiten) {
@@ -40,6 +39,6 @@ public class TagWPage extends UPage {
             });
         }
         putInt("anzahl", seiten.size());
-        header(tag);
+        header(tag + " (tag)");
     }
 }
