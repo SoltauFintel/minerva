@@ -119,4 +119,8 @@ public class WorkspaceSO {
     public void createBranch(String newBranch, String commit) {
         dao().createBranch(this, newBranch, commit);
     }
+
+    public void onPush() {
+        StatesSO.onPush(user.getLogin(), branch);
+    }
 }

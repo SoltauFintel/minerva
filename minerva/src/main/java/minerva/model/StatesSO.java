@@ -67,4 +67,11 @@ public class StatesSO {
                 .map(i -> (StateSO) i)
                 .collect(Collectors.toList());
     }
+
+    public static void onPush(String login, String branch) {
+        // Alle anderen aktiven User über Push informieren.
+        getStates().stream()
+            .filter(state -> !state.getUser().getLogin().equals(login))
+            .forEach(state -> state.getUser().addHasToPull(branch));
+    }
 }

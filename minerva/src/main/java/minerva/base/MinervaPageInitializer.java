@@ -20,13 +20,22 @@ public class MinervaPageInitializer extends PageInitializer {
     public void initPage(Context ctx, Page page) {
         MinervaPageInitModel m = new MinervaPageInitModel(ctx);
         MinervaConfig config = MinervaWebapp.factory().getConfig();
+        boolean gitlab = config.isGitlab();
+        boolean hasUser = m.hasUser();
+        if (page instanceof Uptodatecheck
+                && gitlab
+                && m.getUser() != null && m.getBranch() != null
+                && m.getUser().popHasToPull(m.getBranch())) {
+            m.getUser().getWorkspace(m.getBranch()).pull();
+            page.init(ctx);
+        }
+        page.put("gitlab", gitlab);
+        page.put("hasUser", hasUser);
         page.put("title", "Minerva");
         page.put("abmelden", "Abmelden");
         page.put("development", config.isDevelopment());
-        page.put("hasUser", m.hasUser());
         page.put("VERSION", MinervaWebapp.VERSION);
         page.put("user", esc(m.getLogin()));
-        page.put("gitlab", config.isGitlab());
         page.put("booksLabel", "Bücher");
         page.put("searchPlaceholder", "");
         page.put("searchFocus", false);
@@ -34,7 +43,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("previewTitle", "Preview");
         page.put("previewlink", "/p/master");
         page.put("q", "");
-        booksForMenu(m.hasUser(), m.getUserLang(), m.getBooks(), page);
+        booksForMenu(hasUser, m.getUserLang(), m.getBooks(), page);
         page.put("isCustomerVersion", MinervaWebapp.factory().isCustomerVersion());
         page.put("branch", esc(m.getBranch()));
         page.put("exclusionsTitle", "Exclusions");
@@ -43,8 +52,8 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("myTasks", "");
         boolean isAdmin = "1".equals(ctx.req.session().attribute("admin"));
         page.put("isAdmin", isAdmin);
-        page.put("canBeAdmin", m.hasUser() && MinervaWebapp.factory().getAdmins().contains(m.getLogin()));
-        page.put("hasExportRight", m.hasUser() && MinervaWebapp.factory().getPersonsWithExportRight().contains(m.getLogin()));
+        page.put("canBeAdmin", hasUser && MinervaWebapp.factory().getAdmins().contains(m.getLogin()));
+        page.put("hasExportRight", hasUser && MinervaWebapp.factory().getPersonsWithExportRight().contains(m.getLogin()));
         hasUserVars(page, m);
     }
 

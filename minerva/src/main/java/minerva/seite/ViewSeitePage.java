@@ -8,11 +8,12 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Escaper;
+import minerva.base.Uptodatecheck;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.model.UserSettingsSO;
 
-public class ViewSeitePage extends SPage {
+public class ViewSeitePage extends SPage implements Uptodatecheck {
     private boolean returnEmpty = false;
     
     @Override

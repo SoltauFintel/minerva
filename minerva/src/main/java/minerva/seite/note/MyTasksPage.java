@@ -5,10 +5,11 @@ import java.util.List;
 
 import org.pmw.tinylog.Logger;
 
+import minerva.base.Uptodatecheck;
 import minerva.model.BookSO;
 import minerva.user.UPage;
 
-public class MyTasksPage extends UPage {
+public class MyTasksPage extends UPage implements Uptodatecheck {
 
     @Override
     protected void execute() {

@@ -5,7 +5,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.pmw.tinylog.Logger;
 
@@ -25,6 +27,8 @@ public class UserSO {
     private LocalDateTime lastAction;
     private InvalidLinksModel linksModel;
     private SeitenSO orderPagesModel; // SeitenSO working copy
+    /** branch list */
+    private final Set<String> hasToPull = new HashSet<>();
     
     public UserSO(User user) {
         this.user = user;
@@ -175,5 +179,17 @@ public class UserSO {
 
     private String getWorkspacesFolder() {
         return MinervaWebapp.factory().getConfig().getWorkspacesFolder();
+    }
+
+    public boolean popHasToPull(String branch) {
+        if (hasToPull.contains(branch)) {
+            hasToPull.remove(branch);
+            return true;
+        }
+        return false;
+    }
+
+    public void addHasToPull(String branch) {
+        hasToPull.add(branch);
     }
 }

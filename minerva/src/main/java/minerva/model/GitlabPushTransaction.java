@@ -63,6 +63,7 @@ public class GitlabPushTransaction {
             Set<String> filesToRemove = removeFilenames.stream().map(dn -> dn.replace(x, "")).collect(Collectors.toSet());
             git.commit(commitMessage, user.getRealName(), user.getMail(), user, filesToAdd,
                     filesToRemove);
+            workspace.onPush();
         } catch (MinervaEmptyCommitException ex) {
             Logger.info("no changes -> no commit and no merge request needed\nadd: "
                     + addFilenames + "\nremove: " + removeFilenames);

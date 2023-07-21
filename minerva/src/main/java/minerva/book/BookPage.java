@@ -3,11 +3,12 @@ package minerva.book;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import minerva.base.Uptodatecheck;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.seite.ViewSeitePage;
 
-public class BookPage extends BPage {
+public class BookPage extends BPage implements Uptodatecheck {
 
     @Override
     protected void execute() {

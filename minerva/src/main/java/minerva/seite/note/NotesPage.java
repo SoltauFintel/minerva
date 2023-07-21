@@ -9,10 +9,11 @@ import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Page;
 import minerva.base.NLS;
+import minerva.base.Uptodatecheck;
 import minerva.seite.Note;
 import minerva.seite.SPage;
 
-public class NotesPage extends SPage {
+public class NotesPage extends SPage implements Uptodatecheck {
     
     @Override
     protected void execute() {

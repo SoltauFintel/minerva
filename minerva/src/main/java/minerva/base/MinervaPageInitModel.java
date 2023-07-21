@@ -14,6 +14,7 @@ public class MinervaPageInitModel {
     private final String login;
     private final boolean hasUser;
     private String branch;
+    private UserSO user;
     private String userLang;
     private BooksSO books;
     private List<String> favorites;
@@ -25,7 +26,7 @@ public class MinervaPageInitModel {
         branch = "";
         userLang = "de";
         if (hasUser) {
-            UserSO user = StatesSO.get(ctx).getUser();
+            user = StatesSO.get(ctx).getUser();
             userLang = user.getGuiLanguage();
             favorites = user.getFavorites();
             if (user.getCurrentWorkspace() != null) {
@@ -49,6 +50,10 @@ public class MinervaPageInitModel {
 
     public boolean hasUser() {
         return hasUser;
+    }
+
+    public UserSO getUser() {
+        return user;
     }
 
     public String getUserLang() {

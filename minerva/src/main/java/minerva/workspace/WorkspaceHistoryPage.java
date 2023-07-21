@@ -7,13 +7,14 @@ import com.github.template72.data.DataMap;
 import com.github.template72.data.IDataMap;
 
 import minerva.MinervaWebapp;
+import minerva.base.Uptodatecheck;
 import minerva.git.HCommit;
 import minerva.model.BookSO;
 import minerva.model.GitlabRepositorySO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 
-public class WorkspaceHistoryPage extends WPage {
+public class WorkspaceHistoryPage extends WPage implements Uptodatecheck {
 
     @Override
     protected void execute() {
