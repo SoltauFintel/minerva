@@ -31,6 +31,7 @@ public class StatesSO {
     
     public static void login(Context ctx, User user) {
         StateSO state = new StateSO(user);
+        state.getUser().finishMyEditings();
         
         UserSettingsSO us = state.getUser().getUserSettings();
         if (us.getGuiLanguage() != null) {
@@ -52,7 +53,7 @@ public class StatesSO {
         } catch (Exception ignore) {
         }
     }
-    
+
     public static void logout(Context ctx) {
         Tosmap.remove(key(ctx));
     }

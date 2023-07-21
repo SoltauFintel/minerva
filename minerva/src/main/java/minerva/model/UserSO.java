@@ -206,6 +206,14 @@ public class UserSO {
             Tosmap.add(key, endtime, enddate.format(DateTimeFormatter.ofPattern("HH:mm"))); // soft page lock for 60 minutes
         }
     }
+    
+    public void finishMyEditings() {
+        for (String key : Tosmap.search("editing:")) {
+            if (key.endsWith("/" + getLogin())) {
+                Tosmap.remove(key);
+            }
+        }
+    }
 
     /**
      * @param branch -
