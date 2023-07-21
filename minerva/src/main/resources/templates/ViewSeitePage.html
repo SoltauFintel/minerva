@@ -17,10 +17,6 @@
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false" title="{{N.Menu}}"><i class="fa fa-navicon"></i></button>
                 <ul class="dropdown-menu in mw">
-                    {{if isCustomerVersion}}
-                        <li><a href="{{viewlink}}/help-keys"><i class="fa fa-question-circle"></i>
-                            {{N.helpKeys}} ({{helpKeysSize}})</a></li>
-                    {{/if}}
                     <li><a href="{{viewlink}}/toggle-favorite"><i class="fa fa-star{{if not isFavorite}}-o{{/if}} fav"></i>
                         {{N.favorite}}</a></li>
                     
@@ -32,6 +28,10 @@
                     
                     {{if gitlab}}
                         <li><a href="{{viewlink}}/history"><i class="fa fa-clock-o"></i> {{N.history}}</a></li>
+                    {{/if}}
+                    {{if isCustomerVersion}}
+                        <li><a href="{{viewlink}}/help-keys"><i class="fa fa-question-circle"></i>
+                            {{N.helpKeys}} ({{helpKeysSize}})</a></li>
                     {{/if}}
                     <li><a href="{{viewlink}}/links"><i class="fa fa-link"></i> {{N.linkAnalysis}}</a></li>
                     <hr style="margin: 0;"/>
