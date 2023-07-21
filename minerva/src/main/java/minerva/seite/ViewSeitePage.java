@@ -36,7 +36,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     }
     
     protected void execute2(String branch, String bookFolder, String id, SeiteSO seiteSO) {
-// TODO Baustelle       seiteSO.forceReloadIfCheap();
+        seiteSO.forceReloadIfCheap();
         Seite seite = seiteSO.getSeite();
         DataList list = list("languages");
         for (String lang : langs) {

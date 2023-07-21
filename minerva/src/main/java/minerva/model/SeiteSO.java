@@ -178,13 +178,15 @@ public class SeiteSO implements ISeite {
     }
 
     public void forceReloadIfCheap() {
-        if (!MinervaWebapp.factory().isGitlab()) {
-            seite = new MultiPurposeDirAccess(dao()).load(filenameMeta(), Seite.class);
-            if (seite == null) {
-                throw new RuntimeException("seite is null after reload! (forceReloadIfCheap)");
-            }
-            content = null;
+        if (MinervaWebapp.factory().isGitlab()) {
+            return;
         }
+        Seite s = new MultiPurposeDirAccess(dao()).load(filenameMeta(), Seite.class);
+        if (s == null) { // any problem, then just cancel
+            return;
+        }
+        seite = s;
+        content = null; // force reload
     }
 
     /**
