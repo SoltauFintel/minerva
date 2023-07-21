@@ -20,10 +20,10 @@ public class CreateBranchPage extends UPage {
             String newBranch = ctx.formParam("newBranch");
             if (StringService.isNullOrEmpty(newBranch)
                     || newBranch.toLowerCase().startsWith(WorkspacesSO.MINERVA_BRANCH + "-")) {
-                Logger.error(user.getUser().getLogin() + " | Invalid branch name: \"" + newBranch + "\"");
+                Logger.error(user.getLogin() + " | Invalid branch name: \"" + newBranch + "\"");
                 throw new UserMessage("validBranchName", user);
             }
-            Logger.info(user.getUser().getLogin() + " | " + branch + " | create branch: " + newBranch);
+            Logger.info(user.getLogin() + " | " + branch + " | create branch: " + newBranch);
             user.log(branch + " | create branch: " + newBranch);
             
             user.getWorkspace(branch).createBranch(newBranch, null);

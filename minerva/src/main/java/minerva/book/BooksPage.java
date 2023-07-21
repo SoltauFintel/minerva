@@ -82,7 +82,7 @@ public class BooksPage extends UPage {
                 return true;
             }
             for (String user : migrationUsers.split(",")) {
-                if (this.user.getUser().getLogin().equals(user.trim())) {
+                if (this.user.getLogin().equals(user.trim())) {
                     return true;
                 }
             }

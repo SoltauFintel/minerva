@@ -29,7 +29,7 @@ public class NotesSO {
         int number = seite.getSeite().getNextNoteNumber();
         note.setNumber(number);
         seite.getSeite().setNextNoteNumber(number + 1);
-        note.setUser(seite.getBook().getUser().getUser().getLogin());
+        note.setUser(seite.getBook().getUser().getLogin());
         note.setCreated(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         note.setChanged("");
         note.setText(text);

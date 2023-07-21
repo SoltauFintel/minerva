@@ -16,7 +16,7 @@ public class ExportSeiteAction extends SAction {
         String lang = ctx.queryParam("lang");
         String customer = ctx.queryParam("customer");
 
-        Logger.info(user.getUser().getLogin() + " | " + branch + " | " + bookFolder
+        Logger.info(user.getLogin() + " | " + branch + " | " + bookFolder
                 + " | export page \"" + seite.getSeite().getTitle().getString(lang)
                 + "\" for customer " + customer + " and language " + lang);
         user.log("export page #" + seite.getId() + " \"" + seite.getSeite().getTitle().getString(lang)

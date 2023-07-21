@@ -21,7 +21,7 @@ public class ExportTemplatesPage extends WPage {
     protected void execute() {
         x = new ExportTemplatesService(workspace);
         if (isPOST()) {
-            Logger.info(user.getUser().getLogin() + " | saved export templates");
+            Logger.info(user.getLogin() + " | saved export templates");
             user.log("saved export templates");
             files = new HashMap<>();
             save(ExportTemplatesService.BOOKS, ctx.formParam("books"));

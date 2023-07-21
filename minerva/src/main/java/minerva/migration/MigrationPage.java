@@ -13,7 +13,7 @@ public class MigrationPage extends UPage {
     @Override
     protected void execute() {
         String branch = ctx.pathParam("branch");
-        Logger.info("Migrations started by " + user.getUser().getLogin() + " | branch: " + branch);
+        Logger.info("Migrations started by " + user.getLogin() + " | branch: " + branch);
         if ("master".equals(branch)) {
             throw new RuntimeException("Migration nicht für master erlaubt! (Schutz)");
         }

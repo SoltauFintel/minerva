@@ -9,7 +9,7 @@ public class ActivateAdminRightsAction extends UAction {
 
     @Override
     protected void execute() {
-        String login = user.getUser().getLogin();
+        String login = user.getLogin();
         if (MinervaWebapp.factory().getAdmins().contains(login)) {
             if ("0".equals(ctx.queryParam("m"))) {
                 ctx.req.session().attribute("admin", "0");

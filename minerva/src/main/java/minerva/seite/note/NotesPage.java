@@ -17,7 +17,7 @@ public class NotesPage extends SPage implements Uptodatecheck {
     
     @Override
     protected void execute() {
-        Logger.info(user.getUser().getLogin() + " | Notes page for \"" + seite.getTitle() + "\"");
+        Logger.info(user.getLogin() + " | Notes page for \"" + seite.getTitle() + "\"");
         header(n("notes"));
         put("noteHTML", noteHTML(seite.getSeite().getNotes(), 1));
         put("hasNotes", !seite.getSeite().getNotes().isEmpty());
@@ -50,7 +50,7 @@ public class NotesPage extends SPage implements Uptodatecheck {
 
     private void fillPersons(Note note, DataMap m) {
         DataList list = m.list("persons");
-        String login = user.getUser().getLogin();
+        String login = user.getLogin();
         int max = note.getPersons().size() - 1;
         for (int i = 0; i <= max; i++) {
             String name = note.getPersons().get(i);

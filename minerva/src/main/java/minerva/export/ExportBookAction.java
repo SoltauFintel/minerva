@@ -14,7 +14,7 @@ public class ExportBookAction extends BAction {
         String lang = ctx.queryParam("lang");
         String customer = ctx.queryParam("customer");
 
-        Logger.info(user.getUser().getLogin() + " | " + branch + " | " + bookFolder
+        Logger.info(user.getLogin() + " | " + branch + " | " + bookFolder
                 + " | export book for customer " + customer + " and language " + lang);
         user.log("export book " + bookFolder + ", " + customer + ", " + lang);
 

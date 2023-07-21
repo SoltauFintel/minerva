@@ -164,7 +164,7 @@ public class SeiteSO implements ISeite {
     }
 
     public String getLogin() {
-        return book.getUser().getUser().getLogin();
+        return book.getUser().getLogin();
     }
 
     public NlsString getContent() {

@@ -24,7 +24,7 @@ public class WorkspacesPage extends UPage {
         DataList list2 = list("users");
         for (StateSO state : StatesSO.getStates()) {
             DataMap map2 = list2.add();
-            map2.put("login", esc(state.getUser().getUser().getLogin()));
+            map2.put("login", esc(state.getUser().getLogin()));
             map2.put("lastAction", state.getUser().getLastAction().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         }
         list2.sort((a,b) -> b.get("lastAction").toString().compareTo(a.get("lastAction").toString()));

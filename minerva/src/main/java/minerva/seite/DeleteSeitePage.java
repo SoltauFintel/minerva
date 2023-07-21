@@ -21,7 +21,7 @@ public class DeleteSeitePage extends SPage {
             seite.remove();
             seite.log("page deleted");
 
-            Logger.info("Page (incl. all subpages) deleted by " + user.getUser().getLogin() + ": " + branch + "/"
+            Logger.info("Page (incl. all subpages) deleted by " + user.getLogin() + ": " + branch + "/"
                     + bookFolder + "/" + id + " \"" + title + "\"");
 
             if (parentId.equals(SeiteSO.ROOT_ID)) {

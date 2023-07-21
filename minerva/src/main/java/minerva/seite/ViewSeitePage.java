@@ -83,7 +83,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         header(modifyHeader(seiteSO.getTitle()));
 
         fillLinks(branch, bookFolder, id, seiteSO, seite);
-        Logger.info(user.getUser().getLogin() + " | " + seiteSO.getBook().getWorkspace().getBranch() + " | "
+        Logger.info(user.getLogin() + " | " + seiteSO.getBook().getWorkspace().getBranch() + " | "
                 + seiteSO.getTitle() + " | " + user.getPageLanguage());
     }
     

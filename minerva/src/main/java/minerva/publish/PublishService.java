@@ -24,7 +24,7 @@ public class PublishService {
     }
 
     public void publish(WorkspaceSO workspace) {
-        String login = workspace.getUser().getUser().getLogin();
+        String login = workspace.getUser().getLogin();
         Logger.info(login + " | " + workspace.getBranch() + " | Publishing to " + targetFolder + " ...");
         // root level
         TocEntry root = new TocEntry();

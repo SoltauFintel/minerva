@@ -41,7 +41,7 @@ public class GitlabPushTransaction {
     public void createWorkBranch() {
         workBranch = WorkspacesSO.MINERVA_BRANCH
                 + LocalDateTime.now().format(DateTimeFormatter.ofPattern("-yyyy-MM-dd-HHmmss-"))
-                + workspace.getUser().getUser().getLogin();
+                + workspace.getUser().getLogin();
         git = new GitService(new File(workspace.getFolder()));
         git.branch(workBranch);
     }

@@ -32,7 +32,7 @@ public class SearchPage extends UPage {
                     results.put(lang, result);
                 }
             }
-            Logger.info(user.getUser().getLogin() + " | " + branch
+            Logger.info(user.getLogin() + " | " + branch
                     + " | Search for \"" + q + "\": " + n + " page" + (n == 1 ? "" : "s"));
 
             put("branch", esc(branch));

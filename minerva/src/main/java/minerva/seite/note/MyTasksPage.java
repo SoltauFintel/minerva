@@ -14,13 +14,13 @@ public class MyTasksPage extends UPage implements Uptodatecheck {
     @Override
     protected void execute() {
         String branch = ctx.pathParam("branch");
-        Logger.info(user.getUser().getLogin() + " | My tasks");
+        Logger.info(user.getLogin() + " | My tasks");
         header(n("myTasks"));
         AllNotesPage.fill(getNotes(branch), branch, model);
     }
 
     private List<NoteWithSeite> getNotes(String branch) {
-        String login = user.getUser().getLogin();
+        String login = user.getLogin();
         List<NoteWithSeite> notes = new ArrayList<>();
         for (BookSO book : user.getWorkspace(branch).getBooks()) {
             for (NoteWithSeite n : book.getSeiten().getAllNotes()) {

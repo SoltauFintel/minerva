@@ -16,7 +16,7 @@ public class ExportWorkspaceAction extends UAction {
         String lang = ctx.queryParam("lang");
         String customer = ctx.queryParam("customer");
 
-        Logger.info(user.getUser().getLogin() + " | " + branch
+        Logger.info(user.getLogin() + " | " + branch
                 + " | export books for customer " + customer + " and language " + lang);
         user.log("export all books, " + customer + ", " + lang);
 

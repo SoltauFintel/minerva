@@ -19,7 +19,7 @@ public class PreviewBookPage extends BPage {
     protected void execute() {
         String customer = ctx.pathParam("customer");
         String lang = ctx.pathParam("lang");
-        Logger.info(user.getUser().getLogin() + " | " + branch + " | " + customer + " | "
+        Logger.info(user.getLogin() + " | " + branch + " | " + customer + " | "
                 + lang + " | book: " + book.getBook().getFolder());
 
         ExclusionsService sv = new ExclusionsService();

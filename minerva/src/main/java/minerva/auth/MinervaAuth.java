@@ -76,7 +76,7 @@ public class MinervaAuth extends AbstractAuth {
         if (stateSO != null) {
             stateSO.getUser().finishMyEditings();
             boolean revoked = GitFactory.logout(stateSO.getUser().getUser());
-            Logger.info(stateSO.getUser().getUser().getLogin() + " | logout" + (revoked ? " | Gitlab revoke ok" : ""));
+            Logger.info(stateSO.getUser().getLogin() + " | logout" + (revoked ? " | Gitlab revoke ok" : ""));
         }
         logout2(ctx);
     }

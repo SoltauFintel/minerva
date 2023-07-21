@@ -13,7 +13,7 @@ public class EditSeitePage extends ViewSeitePage {
     @Override
     protected void execute2(String branch, String bookFolder, String id, SeiteSO seiteSO) {
         if (isPOST()) {
-            Logger.info(user.getUser().getLogin() + " | " + branch + " | saving page #" + id + " ...");
+            Logger.info(user.getLogin() + " | " + branch + " | saving page #" + id + " ...");
             save(branch, bookFolder, id, seiteSO);
             workspace.onEditing(seite, true); // editing finished
         } else { // edit
