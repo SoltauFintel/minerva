@@ -207,6 +207,7 @@ public class SubscriptionService {
         checkMode();
         // TODO eigentlich müssten alle Subscriber abgefragt werden und ein Set gebildet werden
         String url = subscribers.split(",")[0] + "/rest/page-titles";
+        Logger.info(url);
         PageTitles ret = new REST(url).get().fromJson(PageTitles.class);
         return ret;
     }
