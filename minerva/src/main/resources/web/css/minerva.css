@@ -354,3 +354,33 @@ blockquote {
 .dropdown-menu li a {
     font-size: 10pt;
 }
+
+.seite figure.image {
+    text-align: center;
+}
+
+.seite figcaption {
+    font-size: 8pt;
+}
+
+.seite figure.image-style-block-align-left {
+    text-align: left;
+}
+
+.seite figure.image-style-block-align-right {
+    text-align: right;
+}
+
+.seite img {
+    vertical-align: bottom;
+}
+
+.seite figure.image-style-align-left {
+    float: left;
+    padding-right: 1em;
+}
+
+.seite figure.image-style-align-right {
+    float: right;
+    padding-left: 1em;
+}
