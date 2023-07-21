@@ -24,6 +24,7 @@
             </fieldset>
         </form>
         
+        <p><a href="{{serviceUrl}}{{formula2}}" id="png" target="_blank" style="font-size: 9pt; float: right;" download>PNG Download</a></p>
     </div>
 </div>
 
@@ -33,6 +34,8 @@ function typing() {
     document.getElementById('o1')
     .innerText = v
     MathJax.typesetPromise();
+    document.getElementById('png').href = '{{serviceUrl}}' + v
+        .replace('\\(', '').replace('\\)', '').replace('\\[', '').replace('\\]', '');
 }
 
 function copy() {
