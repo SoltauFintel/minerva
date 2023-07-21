@@ -5,12 +5,12 @@
         </li>
     {{/if}}
     <li>
-        <a href="/b/{{branch}}"><i class="fa fa-book"></i> {{booksLabel}}</a>
+        <a href="/w/{{branch}}"><i class="fa fa-book"></i> {{booksLabel}}</a>
     </li>
     {{if hasUser}}
         {{if hasBook}}
             <li class="sidebar-search">
-                <form action="/b/{{branch}}/search">
+                <form action="/w/{{branch}}/search">
                     <div class="input-group custom-search-form">
                         <input class="form-control" placeholder="{{searchPlaceholder}}" type="text" id="q" name="q"
                             value="{{q}}"{{if searchFocus}} autofocus{{/if}}>

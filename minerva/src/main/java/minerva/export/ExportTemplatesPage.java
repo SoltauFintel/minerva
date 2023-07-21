@@ -30,7 +30,7 @@ public class ExportTemplatesPage extends WPage {
             save(ExportTemplatesService.TEMPLATE, ctx.formParam("template"));
             save(ExportTemplatesService.TEMPLATE_CSS, ctx.formParam("templateCss"));
             user.dao().saveFiles(files, new CommitMessage("Export templates"), workspace);
-            ctx.redirect("/b/" + branch);
+            ctx.redirect("/w/" + branch);
         } else {
             header(n("exportTemplates"));
             put("books", esc(x.loadTemplate(ExportTemplatesService.BOOKS)));
@@ -47,7 +47,7 @@ public class ExportTemplatesPage extends WPage {
                     .textarea("page", n("page"), 10, 10, false, true)
                     .textarea("template", n("template"), 10, 10, false, true)
                     .textarea("templateCss", "CSS", 10, 10, false, true)
-                    .getHTML("/w/" + branch + "/export-templates", "/b/" + branch));
+                    .getHTML("/w/" + branch + "/export-templates", "/w/" + branch));
         }
     }
     

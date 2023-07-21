@@ -143,6 +143,6 @@ $('#langTabs a').click(function (e) {
         document.querySelector('.titelfeldDE').focus()
     }
     
-    $.get("/b/{{branch}}/language?m=page&lang=" + e.target.hash.substring(1));
+    $.get("/w/{{branch}}/language?m=page&lang=" + e.target.hash.substring(1));
 })
 </script>

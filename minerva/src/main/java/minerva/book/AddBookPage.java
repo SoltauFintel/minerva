@@ -21,7 +21,7 @@ public class AddBookPage extends UPage {
             
             user.getCurrentWorkspace().getBooks().createBook(folder, title, langs, position);
 
-            ctx.redirect("/b/" + branch);
+            ctx.redirect("/w/" + branch);
         } else {
             header(n("addBook"));
             ColumnFormularGenerator gen = new ColumnFormularGenerator(2, 1);
@@ -35,7 +35,7 @@ public class AddBookPage extends UPage {
             TemplatesInitializer.fp.setContent(gen
                     .textfield("folder", n("ordner"), 3, false, false)
                     .textfield("position", "Position", 1, false, true)
-                    .getHTML("/b/" + branch + "/add", "/b/" + branch));
+                    .getHTML("/b/" + branch + "/add", "/w/" + branch));
         }
     }
     

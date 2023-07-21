@@ -14,7 +14,7 @@ public class PullWorkspace extends UAction {
         user.getWorkspace(branch).pull(force);
 
         if (StringService.isNullOrEmpty(book)) {
-            ctx.redirect("/b/" + branch);
+            ctx.redirect("/w/" + branch);
         } else {
             ctx.redirect("/b/" + branch + "/" + book);
         }

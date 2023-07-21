@@ -97,15 +97,13 @@ public class MinervaWebapp extends RouteDefinitions {
     
     @Override
     public void routes() {
-        // TODO /w (=Workspace(s)) und /b (=Book(s)) sind nicht klar getrennt, wobei
-        //      Workspace=Books was ja auch keine klare Trennung ist. Vielleicht /b nur bei (1) book verwenden?!
-        
-        // Workspace
+        // Workspaces, 1 workspace == n books
         get("/", WorkspacesPage.class);
         get("/w", CurrentWorkspaceAction.class);
+        get("/w/:branch", BooksPage.class);
         get("/w/:branch/pull", PullWorkspace.class);
-        get("/w/:branch/delete", DeleteWorkspacePage.class);
         form("/w/:branch/exclusions/edit", ExclusionsEditPage.class);
+        get("/w/:branch/delete", DeleteWorkspacePage.class);
         get("/w/:branch/my-tasks", MyTasksPage.class);
         form("/create-workspace", AddWorkspacePage.class);
         get("/w/:branch/help-keys", AllHelpKeysPage.class);
@@ -113,16 +111,15 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/w/:branch/export-what", ExportPage.class);
         form("/w/:branch/export-templates", ExportTemplatesPage.class);
         get("/w/:branch/history", WorkspaceHistoryPage.class);
+        get("/w/:branch/index", IndexWorkspaceAction.class);
+        get("/w/:branch/search", SearchPage.class);
+        get("/w/:branch/push-data", PushDataAction.class);
+        get("/w/:branch/language", SelectLanguageAction.class);
         
-        // Book
-        get("/b/:branch", BooksPage.class);
+        // Book (1)
         form("/b/:branch/add", AddBookPage.class);
-        get("/b/:branch/index", IndexWorkspaceAction.class);
-        get("/b/:branch/search", SearchPage.class);
-        get("/b/:branch/push-data", PushDataAction.class);
         form("/b/:branch/:book/edit", EditBookPage.class);
         get("/b/:branch/:book/delete", DeleteBookPage.class);
-        get("/b/:branch/language", SelectLanguageAction.class);
         get("/b/:branch/:book", BookPage.class);
         form("/b/:branch/:book/order", OrderTopLevelSeitePage.class);
         get("/b/:branch/:book/sort", SortTopLevelSeiteAction.class);

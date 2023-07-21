@@ -20,7 +20,7 @@ public class SearchPage extends UPage {
         String q = ctx.queryParam("q");
 
         if (isPOST()) {
-            ctx.redirect("/b/" + esc(branch) + "/search?q=" + u(q));
+            ctx.redirect("/w/" + esc(branch) + "/search?q=" + u(q));
         } else {
             Map<String, List<SearchResult>> results = new HashMap<>();
             int n = 0;

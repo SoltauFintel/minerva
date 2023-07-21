@@ -9,7 +9,7 @@ public class CurrentWorkspaceAction extends UAction {
         if (user.getCurrentWorkspace() == null) {
             ctx.redirect("/");
         } else {
-            ctx.redirect("/b/" + user.getCurrentWorkspace().getBranch());
+            ctx.redirect("/w/" + user.getCurrentWorkspace().getBranch());
         }
     }
 }

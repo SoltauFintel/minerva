@@ -28,7 +28,7 @@ public class MergeBranchPage extends UPage {
             user.dao().mergeBranch(sourceBranch, branch, (GitlabUser) user.getUser());
             user.getWorkspace(branch).pull();
             
-            ctx.redirect("/b/" + branch);
+            ctx.redirect("/w/" + branch);
         } else {
             List<String> branches = user.dao().getBranchNames(user.getWorkspace(branch));
             branches.remove(branch);
@@ -45,7 +45,7 @@ public class MergeBranchPage extends UPage {
             TemplatesInitializer.fp.setContent(gen
                     .combobox("sourceBranch", n("Branch"), 4, "branches")
                     .save(n("mergen"))
-                    .getHTML("/merge/" + branch, "/b/" + branch));
+                    .getHTML("/merge/" + branch, "/w/" + branch));
         }
     }
     

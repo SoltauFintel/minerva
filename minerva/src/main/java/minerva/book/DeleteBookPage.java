@@ -16,7 +16,7 @@ public class DeleteBookPage extends BPage {
         
         if ("d".equals(ctx.queryParam("m"))) {
             user.getWorkspace(branch).getBooks().remove(bookFolder);
-            ctx.redirect("/b/" + branch);
+            ctx.redirect("/w/" + branch);
         }
     }
 }

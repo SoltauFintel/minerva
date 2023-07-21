@@ -21,6 +21,6 @@ public class ActivateAdminRightsAction extends UAction {
                 user.log("-- Admin rights activated.");
             }
         }
-        ctx.redirect("/b/" + esc(user.getCurrentWorkspace().getBranch()));
+        ctx.redirect("/w/" + esc(user.getCurrentWorkspace().getBranch()));
     }
 }

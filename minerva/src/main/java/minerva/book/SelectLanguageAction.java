@@ -30,7 +30,7 @@ public class SelectLanguageAction extends UAction {
         } else { // GUI language, but also change page language
             user.getUser().setGuiLanguage(lang);
             user.getUser().setPageLanguage(lang);
-            ctx.redirect("/b/" + branch);
+            ctx.redirect("/w/" + branch);
         }
     }
 }

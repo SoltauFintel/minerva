@@ -160,7 +160,7 @@
         e.preventDefault()
         $(this).tab('show')
         lang = e.target.hash.substring(1)
-        $.get("/b/{{branch}}/language?m=page&lang=" + lang);
+        $.get("/w/{{branch}}/language?m=page&lang=" + lang);
         {{tabcode}}
     })
     

@@ -20,7 +20,7 @@ public class EditBookPage extends BPage {
             books.save(book.cm("edit book"));
             user.log("Book saved. " + book.getBook().getFolder());
 
-            ctx.redirect("/b/" + branch);
+            ctx.redirect("/w/" + branch);
         } else {
             header(n("editBook"));
             langs.forEach(lang -> put("bookTitle" + lang, book.getBook().getTitle().getString(lang)));
@@ -34,7 +34,7 @@ public class EditBookPage extends BPage {
             putInt("position", book.getBook().getPosition());
             TemplatesInitializer.fp.setContent(gen
                     .textfield("position", "Position", 1, false, true)
-                    .getHTML("/b/" + branch + "/" + bookFolder + "/edit", "/b/" + branch));
+                    .getHTML(booklink + "/edit", "/w/" + branch));
         }
     }
     

@@ -16,7 +16,7 @@
                     {{/if}}
                 {{/if}}
                 {{each l in langs}}
-                    <a href="/b/{{branch}}/language?lang={{l.lang}}"
+                    <a href="/w/{{branch}}/language?lang={{l.lang}}"
                         class="btn btn-{{if l.selected}}success{{else}}default{{/if}}"><i
                         class="fa fa-flag"></i> {{l.lang}}</a>
                 {{/each}}
@@ -89,7 +89,7 @@
             {{/if}}
             {{if booksOk}}
                 {{if isAdmin}}
-                    <a href="/b/{{branch}}/index" class="btn btn-default brr"
+                    <a href="/w/{{branch}}/index" class="btn btn-default brr"
                         onclick="document.querySelector('#s3').style='';">{{N.reindex}}!
                         <i id="s3" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
                 {{/if}}
@@ -103,7 +103,7 @@
                     <a href="/w/{{branch}}/export-templates" class="btn btn-default brr">{{N.exportTemplates}}</a>
                 {{/if}}
                 {{if updateOnlineHelpAllowed}}
-                    <a href="/b/{{branch}}/push-data" class="btn btn-default brr">{{N.updateOnlineHelp}}!</a>
+                    <a href="/w/{{branch}}/push-data" class="btn btn-default brr">{{N.updateOnlineHelp}}!</a>
                 {{/if}}
             {{/if}}
         </p>
