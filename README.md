@@ -40,3 +40,5 @@ Start the Docker container with this command:
 # Login
 
 In file-system mode you can use any login. In Gitlab mode you must use your Gitlab credentials.
+
+::
