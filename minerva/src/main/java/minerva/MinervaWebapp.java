@@ -79,6 +79,7 @@ import minerva.seite.tag.TagCloudPage;
 import minerva.seite.tag.TagWPage;
 import minerva.seite.tag.TagsPage;
 import minerva.subscription.AddMappingAction;
+import minerva.subscription.BrokenMappingsPage;
 import minerva.subscription.MappingPage;
 import minerva.subscription.PushDataAction;
 import minerva.subscription.SubscribeAction;
@@ -115,6 +116,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/search", SearchPage.class);
         get("/w/:branch/push-data", PushDataAction.class);
         get("/w/:branch/language", SelectLanguageAction.class);
+        get("/w/:branch/broken-mappings", BrokenMappingsPage.class);
         
         // Book (1)
         form("/b/:branch/add", AddBookPage.class);

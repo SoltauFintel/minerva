@@ -181,3 +181,4 @@ locked.info=Die Seite "$t" wird derzeit von $u bearbeitet.
 locked.time=Sperre bis $o Uhr
 locked.edit=Seite trotzdem bearbeiten
 locked.no-edit=OK, nicht bearbeiten
+brokenMappingsInfo=Es gibt keine Broken Mappings.

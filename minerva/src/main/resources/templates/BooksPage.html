@@ -85,6 +85,10 @@
             {{/if}}
             <a href="/w/{{branch}}/help-keys" class="btn btn-default brr"><i class="fa fa-question-circle"></i>
                 {{N.allHelpKeys}}</a>
+            {{if isCustomerVersion}}
+                <a href="/w/{{branch}}/broken-mappings" class="btn btn-default brr"><i
+                    class="fa fa-chain-broken"></i> Broken Mappings</a>
+            {{/if}}
             {{if gitlab}}
                 {{if isAdmin}}
                     <a href="/w/{{branch}}/exclusions/edit" class="btn btn-default brr"><i class="fa fa-bank"></i>

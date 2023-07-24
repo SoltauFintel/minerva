@@ -19,6 +19,7 @@ public class Seite {
     private boolean sorted = true;
     private final Set<String> tags = new TreeSet<>();
     private int version = 1;
+    // TODO Leerzeilen? Kommentare erlaubt? trim?
     private final List<String> helpKeys = new ArrayList<>();
     private List<Note> notes = new ArrayList<>();
     private int nextNoteNumber = 1;

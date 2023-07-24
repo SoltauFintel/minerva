@@ -181,3 +181,4 @@ locked.info=The page "$t" is currently being edited by $u.
 locked.time=Locked until $o o'clock
 locked.edit=Edit page anyway
 locked.no-edit=OK, don't edit
+brokenMappingsInfo=There are no broken mappings.
