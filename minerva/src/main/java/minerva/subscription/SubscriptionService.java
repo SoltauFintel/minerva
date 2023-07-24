@@ -52,7 +52,7 @@ public class SubscriptionService {
         if (folder.isEmpty()) {
             folder = LOGIN;
         }
-        Logger.info("pushData() | folder: " + folder);
+        Logger.info("SubscriptionService | folder: " + folder);
         StateSO state = new StateSO(new User(LOGIN, folder));
         
         // get book
@@ -140,7 +140,7 @@ public class SubscriptionService {
                 for (String host : subscribers.split(",")) {
                     String url = host + "/book6/page/" + id;
                     Logger.info("DELETE " + url);
-                    new REST(url).delete().close(); // TODO Amalia: DELETE with body
+                    new REST(url).delete().close();
                 }
             }).start();
         }
