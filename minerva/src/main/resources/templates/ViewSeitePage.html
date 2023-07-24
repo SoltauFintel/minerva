@@ -17,8 +17,8 @@
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                     aria-expanded="false" title="{{N.Menu}}"><i class="fa fa-navicon"></i></button>
                 <ul class="dropdown-menu in mw">
-                    <li><a href="{{viewlink}}/toggle-favorite"><i class="fa fa-star{{if isFavorite}}-o{{/if}} fav"></i>
-                        {{N.favorite}}{{if not isFavorite}} <i class="fa fa-check greenbook"></i>{{/if}}</a></li>
+                    <li><a href="{{viewlink}}/toggle-favorite"><i class="fa fa-star{{if not isFavorite}}-o{{/if}} fav"></i>
+                        {{N.favorite}}{{if isFavorite}} <i class="fa fa-check greenbook"></i>{{/if}}</a></li>
                     
                     <li><a href="{{viewlink}}/toggle-watch"><i class="fa fa-bell{{if not pageWatched}}-o{{/if}}"></i> {{N.watchPage}}
                         {{if pageWatched}}<i class="fa fa-check greenbook"></i>{{/if}}</a></li>
