@@ -59,7 +59,7 @@ public class SubscriptionService {
         WorkspaceSO workspace = state.getUser().getWorkspaces().master();
         int n = workspace.getBooks().size();
         if (n != 1) {
-            throw new RuntimeException("1 book is expected but there are " + n + " book(s).");
+            throw new RuntimeException("1 book is expected but there are " + n + " books.");
         }
         
         // zip it
