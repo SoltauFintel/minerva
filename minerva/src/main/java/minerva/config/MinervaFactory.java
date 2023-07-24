@@ -9,7 +9,6 @@ import java.util.List;
 import minerva.access.DirAccess;
 import minerva.auth.LoginService;
 import minerva.base.NlsString;
-import minerva.base.StringService;
 import minerva.git.CommitMessage;
 import minerva.model.GitlabRepositorySO;
 import minerva.model.GitlabSystemSO;
@@ -48,13 +47,12 @@ public class MinervaFactory {
             gitlabSystem = null;
             gitlabRepository = null;
         }
-        String folder = System.getenv("MINERVA_USERFOLDER");
-        if (!StringService.isNullOrEmpty(folder)) {
-            folder = " | static user folder: " + folder;
-        } else {
-            folder = "";
+        final String folder = config.getUserFolder();
+        String folderInfo = "";
+        if (!folder.isEmpty()) {
+            folderInfo = " | static user folder: " + folder;
         }
-        System.out.println("languages: " + languages + " | backend: " + getPersistenceInfo() + folder);
+        System.out.println("languages: " + languages + " | backend: " + getPersistenceInfo() + folderInfo);
         persons = config.getPersons();
         admins = config.getAdmins();
         personsWithExportRight = config.getPersonsWithExportRight();
@@ -105,7 +103,7 @@ public class MinervaFactory {
     }
     
     public boolean isCustomerVersion() {
-        return "1".equals(System.getenv("MINERVA_KUNDE"));
+        return "1".equals(config.getKunde());
     }
 
     public GitlabSystemSO getGitlabSystem() {
@@ -152,8 +150,12 @@ public class MinervaFactory {
     }
     
     public File getWorkFolder(String name) {
-        // TODO Ich muss mal generell ein Arbeitsverzeichnis festlegen. Vgl. auch PublishService.
-        return new File(name);
+        String workFolder = config.getWorkFolder();
+        if (workFolder.isEmpty()) {
+            return new File(name);
+        } else {
+            return new File(workFolder, name);
+        }
     }
     
     public List<String> getLogins() {

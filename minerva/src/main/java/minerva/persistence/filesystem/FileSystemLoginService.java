@@ -2,7 +2,7 @@ package minerva.persistence.filesystem;
 
 import org.pmw.tinylog.Logger;
 
-import minerva.auth.Book6LoginAction;
+import minerva.MinervaWebapp;
 import minerva.auth.LoginService;
 import minerva.base.StringService;
 import minerva.user.User;
@@ -19,12 +19,12 @@ public class FileSystemLoginService implements LoginService {
         if (StringService.isNullOrEmpty(login)) {
             return null;
         }
-        if (!Book6LoginAction.PASSWORD.equals(password)) {
+        if (!MinervaWebapp.factory().getConfig().getEditorPassword().equals(password)) {
             return null;
         }
         // ~duplicate code>>
-        String folder = System.getenv("MINERVA_USERFOLDER");
-        if (StringService.isNullOrEmpty(folder)) {
+        String folder = MinervaWebapp.factory().getConfig().getUserFolder();
+        if (folder.isEmpty()) {
             folder = login;
         }
         Logger.debug(login + " | folder: " + folder);

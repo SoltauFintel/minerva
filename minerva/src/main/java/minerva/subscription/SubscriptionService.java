@@ -18,7 +18,6 @@ import github.soltaufintel.amalia.rest.RestResponse;
 import minerva.MinervaWebapp;
 import minerva.base.FileService;
 import minerva.base.NlsString;
-import minerva.base.StringService;
 import minerva.model.SeiteSO;
 import minerva.model.StateSO;
 import minerva.model.WorkspaceSO;
@@ -34,8 +33,8 @@ public class SubscriptionService {
     }
     
     private void checkIfValid(String url) {
-        String valid = System.getenv("SUBSCRIBERS");
-        if (!StringService.isNullOrEmpty(valid)) {
+        String valid = getSubscribers();
+        if (!valid.isEmpty()) {
             String[] w = valid.split(",");
             for (String i : w) {
                 if (i.trim().equals(url)) {
@@ -43,14 +42,14 @@ public class SubscriptionService {
                 }
             }
         }
-        Logger.error("Unknown subscriber: " + url + "\nSUBSCRIBERS: " + valid);
+        Logger.error("Unknown subscriber: " + url + "\nMINERVA_SUBSCRIBERS=" + valid);
         throw new RuntimeException("Unknown subscriber");
     }
     
     private File createZipFile() {
         // login
-        String folder = System.getenv("MINERVA_USERFOLDER");
-        if (StringService.isNullOrEmpty(folder)) {
+        String folder = MinervaWebapp.factory().getConfig().getUserFolder();
+        if (folder.isEmpty()) {
             folder = LOGIN;
         }
         Logger.info("pushData() | folder: " + folder);
@@ -106,8 +105,8 @@ public class SubscriptionService {
     }
     
     public void pageModified(TPage page) {
-        String subscribers = System.getenv("SUBSCRIBERS");
-        if (!StringService.isNullOrEmpty(subscribers)) {
+        String subscribers = getSubscribers();
+        if (!subscribers.isEmpty()) {
             checkMode();
             new Thread(() -> {
                 String[] w = subscribers.split(",");
@@ -134,8 +133,8 @@ public class SubscriptionService {
      * @param id page ID
      */
     public void pageDeleted(String id) {
-        String subscribers = System.getenv("SUBSCRIBERS");
-        if (!StringService.isNullOrEmpty(subscribers)) {
+        String subscribers = getSubscribers();
+        if (!subscribers.isEmpty()) {
             checkMode();
             new Thread(() -> {
                 for (String host : subscribers.split(",")) {
@@ -152,11 +151,11 @@ public class SubscriptionService {
      * Those changes are so massive that all data will be pushed to all subscribers.
      */
     public void pagesChanged() {
-        pagesChanged(System.getenv("SUBSCRIBERS"));
+        pagesChanged(getSubscribers());
     }
-    
+
     private void pagesChanged(String subscribers) {
-        if (StringService.isNullOrEmpty(subscribers)) {
+        if (subscribers.isEmpty()) {
             return;
         }
         checkMode();
@@ -200,8 +199,8 @@ public class SubscriptionService {
             ret.getLang().put("de", z);
             return ret;
         }*/
-        String subscribers = System.getenv("SUBSCRIBERS");
-        if (StringService.isNullOrEmpty(subscribers)) {
+        String subscribers = getSubscribers();
+        if (subscribers.isEmpty()) {
             return new PageTitles();
         }
         checkMode();
@@ -210,5 +209,9 @@ public class SubscriptionService {
         Logger.info(url);
         PageTitles ret = new REST(url).get().fromJson(PageTitles.class);
         return ret;
+    }
+
+    private String getSubscribers() {
+        return MinervaWebapp.factory().getConfig().getSubscribers();
     }
 }

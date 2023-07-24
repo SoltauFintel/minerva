@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.pmw.tinylog.Logger;
 
+import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.model.WorkspaceSO;
 import minerva.user.UPage;
@@ -18,13 +19,13 @@ public class MigrationPage extends UPage {
             throw new RuntimeException("Migration nicht für master erlaubt! (Schutz)");
         }
 
-        String sourceFolder = System.getenv("MINERVA_MIGRATIONSOURCEFOLDER");
+        String sourceFolder = MinervaWebapp.factory().getConfig().getMigrationSourceFolder();
         if (StringService.isNullOrEmpty(sourceFolder)) {
             sourceFolder = "/";
         }
         Logger.info("source folder   : " + sourceFolder);
         
-        String helpKeysFolder = System.getenv("MINERVA_MIGRATIONHELPKEYSFOLDER");
+        String helpKeysFolder = MinervaWebapp.factory().getConfig().getMigrationHelpKeysFolder();
         if (StringService.isNullOrEmpty(helpKeysFolder)) {
             helpKeysFolder = "/html/mappings2";
         }

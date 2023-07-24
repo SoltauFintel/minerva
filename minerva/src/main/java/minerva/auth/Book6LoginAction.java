@@ -2,12 +2,14 @@ package minerva.auth;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.IdGenerator;
 import github.soltaufintel.amalia.web.action.Action;
+import minerva.MinervaWebapp;
 import minerva.base.StringService;
+import minerva.base.Tosmap;
 
 public class Book6LoginAction extends Action {
-    public static final String PASSWORD = "1234"; // TODO FIXME just for development; password will be changed later
-    public static String _user;
+    private String id;
     
     @Override
     protected void execute() {
@@ -30,16 +32,17 @@ public class Book6LoginAction extends Action {
         if (StringService.isNullOrEmpty(user)) {
             throw new RuntimeException("user must not be empty");
         }
-        if (!PASSWORD.equals(password)) {
+        if (!MinervaWebapp.factory().getConfig().getEditorPassword().equals(password)) {
             Logger.error("Wrong password");
             throw new RuntimeException("No access granted.");
         }
         Logger.info("user: " + user + ", password: " + password);
-        _user = user;
+        id = "b6L-" + IdGenerator.genId();
+        Tosmap.add(id, System.currentTimeMillis() + 1000 * 60, user);
     }
 
     @Override
     protected String render() {
-        return "abc"; // TODO key generieren und user merken
+        return id;
     }
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.pmw.tinylog.Logger;
 
+import minerva.MinervaWebapp;
 import minerva.base.FileService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
@@ -14,18 +15,17 @@ import minerva.model.SeitenSO;
 import minerva.model.WorkspaceSO;
 
 public class PublishService {
-    private final File targetFolder;
     private final List<String> langs;
     
     // TODO Wird hier sichergestellt, dass der TargetFolder frisch ist?
-    public PublishService(File targetFolder, List<String> langs) {
-        this.targetFolder = targetFolder;
+    public PublishService(List<String> langs) {
         this.langs = langs;
     }
 
-    public void publish(WorkspaceSO workspace) {
+    public File publish(WorkspaceSO workspace) {
+        File targetFolder = MinervaWebapp.factory().getWorkFolder("publish");
         String login = workspace.getUser().getLogin();
-        Logger.info(login + " | " + workspace.getBranch() + " | Publishing to " + targetFolder + " ...");
+        Logger.info(login + " | " + workspace.getBranch() + " | Publishing to " + targetFolder.getAbsolutePath() + " ...");
         // root level
         TocEntry root = new TocEntry();
         root.setTitle("root");
@@ -50,21 +50,22 @@ public class PublishService {
                 bookPages.put(lang, bookPage);
             }
             // page level
-            copyHtmlAndImg(book.getSeiten(), bookPages);
+            copyHtmlAndImg(book.getSeiten(), bookPages, targetFolder);
         }
         // save table of contents file
-        File tocJson = new File(targetFolder, "publish/toc.json");
+        File tocJson = new File(targetFolder, "toc.json");
         FileService.saveJsonFile(tocJson, root);
         Logger.info("saved to " + tocJson.getAbsolutePath());
-        FileService.savePlainTextFile(new File(targetFolder, "publish/exclusions.txt"), workspace.getExclusions().get());
+        FileService.savePlainTextFile(new File(targetFolder, "exclusions.txt"), workspace.getExclusions().get());
+        return targetFolder;
     }
     
-    private void copyHtmlAndImg(SeitenSO seiten, Map<String, TocEntry> parent) {
+    private void copyHtmlAndImg(SeitenSO seiten, Map<String, TocEntry> parent, File targetFolder) {
         if (seiten.isEmpty()) {
             return;
         }
         File sourceImgFolder = new File(seiten.get(0).getBook().getFolder(), "img");
-        File targetImgFolder = new File(targetFolder, "publish/img");
+        File targetImgFolder = new File(targetFolder, "img");
         Map<String, TocEntry> pages = new HashMap<>();
         for (SeiteSO seite : seiten) {
             // collect page data
@@ -80,7 +81,7 @@ public class PublishService {
                 // copy .html files
                 File src = new File(seite.filenameHtml(lang));
                 if (src.isFile()) {
-                    FileService.copyFile(src, new File(targetFolder, "publish/" + lang));
+                    FileService.copyFile(src, new File(targetFolder, lang));
                 }
             }
             // copy images
@@ -89,7 +90,7 @@ public class PublishService {
                 FileService.copyFiles(src, new File(targetImgFolder, seite.getId()));
             }
 
-            copyHtmlAndImg(seite.getSeiten(), pages); // recursive
+            copyHtmlAndImg(seite.getSeiten(), pages, targetFolder); // recursive
         }
     }
 }

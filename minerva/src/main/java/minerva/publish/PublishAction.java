@@ -13,7 +13,6 @@ import org.pmw.tinylog.Logger;
 import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.web.action.Action;
 import minerva.base.FileService;
-import minerva.base.StringService;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
 import minerva.persistence.gitlab.GitlabUser;
@@ -41,16 +40,9 @@ public class PublishAction extends Action {
         synchronized (handle) {
             UserSO userSO = new UserSO(new GitlabUser(login, password));
             WorkspaceSO workspace = userSO.getWorkspace(branch);
-            String publishFolder = System.getenv("MINERVA_PUBLISHFOLDER");
-            if (StringService.isNullOrEmpty(publishFolder)) {
-                throw new RuntimeException("Env var MINERVA_PUBLISHFOLDER is not set. Typical value is \"/tmp/publish\".");
-            }
-            File targetFolder = new File(publishFolder);
     
-            // TODO Name "publish" kommt in PublishService und hier öfter vor.
-            PublishService ps = new PublishService(targetFolder, langs);
-            ps.publish(workspace);
-            downloadFolderAsZip(new File(targetFolder, "publish"), ctx);
+            File targetFolder = new PublishService(langs).publish(workspace);
+            downloadFolderAsZip(targetFolder, ctx);
     
             Logger.info("PublishAction finished");
         }

@@ -33,3 +33,5 @@ mail.watch.body=
 persons=user1,user2,user3
 persons-with-export-right=user3
 admins=user2
+
+work-folder=

@@ -45,7 +45,7 @@ public class MinervaConfig {
      * true: persistence with local file system and remote Gitlab
      */
     public boolean isGitlab() {
-        String backend = System.getenv("BACKEND"); // for setting backend to file-system in IDE mode
+        String backend = env("BACKEND"); // for setting backend to file-system in IDE mode
         if (StringService.isNullOrEmpty(backend)) {
             backend = config.get("backend");
         }
@@ -207,5 +207,49 @@ public class MinervaConfig {
         return !config.get(SMTP, "").isEmpty()
                 && !getWatchSubject().isEmpty()
                 && !getWatchBody().isEmpty();
+    }
+    
+    public String getWorkFolder() {
+        return config.get("work-folder", "");
+    }
+    
+    /**
+     * @return book 6 editor password, not null
+     */
+    public String getEditorPassword() {
+        return env("EDITORPASSWORD");
+    }
+    
+    public String getUserFolder() {
+        return env("USERFOLDER");
+    }
+    
+    public String getSubscribers() {
+        return env("SUBSCRIBERS");
+    }
+    
+    public String getKunde() {
+        return env("KUNDE");
+    }
+    
+    public String getMigration() {
+        return env("MIGRATION");
+    }
+    
+    public String getMigrationUsers() {
+        return env("MIGRATIONUSERS");
+    }
+    
+    public String getMigrationSourceFolder() {
+        return env("MIGRATIONSOURCEFOLDER");
+    }
+    
+    public String getMigrationHelpKeysFolder() {
+        return env("MIGRATIONHELPKEYSFOLDER");
+    }
+    
+    private String env(String name) {
+        String ret = System.getenv("MINERVA_" + name);
+        return ret == null ? "" : ret;
     }
 }

@@ -7,7 +7,6 @@ import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.spark.Context;
 import minerva.MinervaWebapp;
-import minerva.base.StringService;
 import minerva.model.BookSO;
 import minerva.model.BooksSO;
 import minerva.model.WorkspaceSO;
@@ -49,9 +48,10 @@ public class BooksPage extends UPage {
         put("hash", esc(hash));
         put("hash7", esc(hash7));
         put("migrationAllowed", isMigrationAllowed());
-        put("updateOnlineHelpAllowed", MinervaWebapp.factory().isCustomerVersion()
+        put("updateOnlineHelpAllowed",
+                    MinervaWebapp.factory().isCustomerVersion()
                 && !MinervaWebapp.factory().isGitlab()
-                && !StringService.isNullOrEmpty(System.getenv("SUBSCRIBERS")));
+                && !MinervaWebapp.factory().getConfig().getSubscribers().isEmpty());
         put("addBookAllowed", !MinervaWebapp.factory().isCustomerVersion() || books.isEmpty());
         DataList list = list("books");
         if (books != null) {
@@ -64,8 +64,6 @@ public class BooksPage extends UPage {
         put("booksOk", books != null);
         put("workspaceNotOk", n("workspaceNotOk").replace("$b", esc(branch)));
         put("userMessage", esc(workspace.getUserMessage()));
-        put("publishLink", "/rest/publish?branch=" + u(branch) + "&login=" + u(System.getenv("MP_USER")) + "&password="
-                + u(System.getenv("MP_PASS")) + "&lang=" + u("de,en"));
         
         DataList list2 = list("langs");
         for (String lang : langs) {
@@ -76,9 +74,9 @@ public class BooksPage extends UPage {
     }
 
     private boolean isMigrationAllowed() {
-        if ("1".equals(System.getenv("MINERVA_MIGRATION"))) {
-            String migrationUsers = System.getenv("MINERVA_MIGRATIONUSERS");
-            if (StringService.isNullOrEmpty(migrationUsers)) {
+        if ("1".equals(MinervaWebapp.factory().getConfig().getMigration())) {
+            String migrationUsers = MinervaWebapp.factory().getConfig().getMigrationUsers();
+            if (migrationUsers.isEmpty()) {
                 return true;
             }
             for (String user : migrationUsers.split(",")) {
