@@ -29,7 +29,7 @@ public class CreateBranchPage extends UPage {
             user.getWorkspace(branch).createBranch(newBranch, null);
             user.getWorkspaces().addWorkspace(newBranch, user);
             
-            ctx.redirect("/b/" + esc(newBranch)); // show new branch
+            ctx.redirect("/w/" + esc(newBranch)); // show new branch
         } else {
             header(n("createBranch"));
             put("branch", esc(branch));
