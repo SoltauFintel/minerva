@@ -2,7 +2,6 @@ package minerva.access;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -28,16 +27,7 @@ public abstract class AbstractDirAccess implements DirAccess {
     // alle Workspaces ermitteln
     @Override
     public List<String> getAllFolders(String folder) {
-        List<String> ret = new ArrayList<>();
-        File[] files = new File(folder).listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isDirectory() && !file.getName().startsWith(".")) {
-                    ret.add(file.getName());
-                }
-            }
-        }
-        return ret;
+        return FileService.listFolders(new File(folder));
     }
 
     @Override

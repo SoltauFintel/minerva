@@ -3,11 +3,11 @@ package minerva.config;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 import minerva.access.DirAccess;
 import minerva.auth.LoginService;
+import minerva.base.FileService;
 import minerva.base.NlsString;
 import minerva.git.CommitMessage;
 import minerva.model.GitlabRepositorySO;
@@ -159,16 +159,6 @@ public class MinervaFactory {
     }
     
     public List<String> getLogins() {
-        List<String> ret = new ArrayList<>();
-        File workspaces = new File(config.getWorkspacesFolder());
-        File[] dirs = workspaces.listFiles();
-        if (dirs != null) {
-            for (File dir : dirs) {
-                if (dir.isDirectory()) {
-                    ret.add(dir.getName());
-                }
-            }
-        }
-        return ret;
+        return FileService.listFolders(new File(config.getWorkspacesFolder()));
     }
 }
