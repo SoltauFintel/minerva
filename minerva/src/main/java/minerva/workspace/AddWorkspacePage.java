@@ -8,10 +8,10 @@ import minerva.MinervaWebapp;
 import minerva.user.UPage;
 
 public class AddWorkspacePage extends UPage {
-    private boolean render = false;
     
     @Override
     protected void execute() {
+        render = false;
         if (!MinervaWebapp.factory().isGitlab()) {
             throw new RuntimeException("Page only for Gitlab mode");
         }
@@ -40,7 +40,7 @@ public class AddWorkspacePage extends UPage {
     }
     
     @Override
-    protected String render() {
-        return render ? templates.render("formular/" + super.getPage(), model) : "";
+    protected String getPage() {
+        return "formular/" + super.getPage();
     }
 }

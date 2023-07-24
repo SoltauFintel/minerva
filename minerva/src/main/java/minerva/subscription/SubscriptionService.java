@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.apache.http.entity.ContentType;
-import org.apache.http.entity.FileEntity;
 import org.pmw.tinylog.Logger;
 
 import com.google.gson.Gson;
@@ -77,13 +75,7 @@ public class SubscriptionService {
     }
 
     private void upload(File zipFile, String url) {
-        new REST(url) {
-            @Override
-            protected RestResponse request(HttpEntityEnclosingRequestBase request, String str, String contentType) {
-                request.setEntity(new FileEntity(zipFile, ContentType.APPLICATION_OCTET_STREAM)); // TODO Amalia
-                return doRequest(request);
-            }
-        }.post("").close();
+        new REST(url).uploadZip(zipFile);
         Logger.info("Upload of " + zipFile.getAbsolutePath() + " to " + url + " completed.");
     }
 

@@ -14,7 +14,6 @@ import minerva.model.SeitenSO;
 import minerva.model.UserSettingsSO;
 
 public class ViewSeitePage extends SPage implements Uptodatecheck {
-    protected boolean render = true;
     
     @Override
     protected SeiteSO getSeite() {
@@ -222,11 +221,6 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             map.put("first", i == breadcrumbs.size() - 1);
             map.put("last", i == 0);
         }
-    }
-    
-    @Override
-    protected String render() {
-        return render ? super.render() : "";
     }
     
     private String getOneHelpKey(List<String> helpKeys) {

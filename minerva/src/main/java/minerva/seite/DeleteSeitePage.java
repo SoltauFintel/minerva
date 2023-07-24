@@ -8,10 +8,10 @@ import com.github.template72.data.DataMap;
 import minerva.model.SeiteSO;
 
 public class DeleteSeitePage extends SPage {
-    private boolean render = false;
     
     @Override
     protected void execute() {
+        render = false;
         String title = seite.getTitle();
         String parentId = seite.getSeite().getParentId();
 
@@ -40,10 +40,5 @@ public class DeleteSeitePage extends SPage {
             put("pagesLinkToThisPage", list.size() == 1 ? n("pageLinkToThisPage") : n("pagesLinkToThisPage"));
             render = true;
         }
-    }
-    
-    @Override
-    protected String render() {
-        return render ? super.render() : "";
     }
 }

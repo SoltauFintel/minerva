@@ -6,7 +6,6 @@ import minerva.model.UserSO.LoginAndEndTime;
  * Page editing is softly locked. The user can override this.
  */
 public class LockedByPage extends SPage {
-    private boolean render = true; // TODO Amalia
     
     @Override
     protected void execute() {
@@ -25,10 +24,5 @@ public class LockedByPage extends SPage {
         put("editlink", editlink + "?m=cl");
         put("edit", n("locked.edit"));
         put("cancel", n("locked.no-edit"));
-    }
-    
-    @Override
-    protected String render() {
-        return render ? super.render() : "";
     }
 }
