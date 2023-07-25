@@ -52,7 +52,11 @@ public class WorkspacesSO extends MList<WorkspaceSO> {
     @Override
     public boolean remove(WorkspaceSO workspace) {
         FileService.deleteFolder(new File(workspace.getFolder()));
-        return super.remove(workspace);
+        boolean ret = super.remove(workspace);
+        if (workspace.getUser().getCurrentWorkspace() == workspace) {
+            workspace.getUser().setCurrentWorkspace(workspace.getUser().getWorkspaces().master());
+        }
+        return ret;
     }
 
     public List<String> getAddableBranches(WorkspaceSO ref) {

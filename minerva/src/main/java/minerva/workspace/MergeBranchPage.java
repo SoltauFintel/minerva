@@ -22,10 +22,16 @@ public class MergeBranchPage extends UPage {
         String branch = ctx.pathParam("branch");
         if (isPOST()) {
             String sourceBranch = ctx.formParam("sourceBranch");
-            Logger.info("Merge branch " + sourceBranch + " into branch " + branch);
-            user.log("Merge branch " + sourceBranch + " into branch " + branch);
+            boolean deleteWorkspace = "on".equals(ctx.formParam("deleteWorkspace"));
+            String info = "Merge branch " + sourceBranch + " into branch " + branch
+                    + (deleteWorkspace ? " and delete workspace " + sourceBranch : "");
+            Logger.info(info);
+            user.log(info);
        
             user.dao().mergeBranch(sourceBranch, branch, (GitlabUser) user.getUser());
+            if (deleteWorkspace) {
+                user.getWorkspaces().remove(user.getWorkspace(sourceBranch));
+            }
             user.getWorkspace(branch).pull();
             
             ctx.redirect("/w/" + branch);
@@ -44,6 +50,7 @@ public class MergeBranchPage extends UPage {
             initColumnFormularGenerator(gen);
             TemplatesInitializer.fp.setContent(gen
                     .combobox("sourceBranch", n("Branch"), 4, "branches")
+                    .checkbox("deleteWorkspace", n("deleteWS"), 2, false, true)
                     .save(n("mergen"))
                     .getHTML("/merge/" + branch, "/w/" + branch));
         }
