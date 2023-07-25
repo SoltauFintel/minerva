@@ -3,112 +3,92 @@ package minerva.model;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.pmw.tinylog.Logger;
 
+import com.google.gson.Gson;
+
+import github.soltaufintel.amalia.base.IdGenerator;
 import github.soltaufintel.amalia.mail.Mail;
 import minerva.MinervaWebapp;
+import minerva.access.MultiPurposeDirAccess;
 import minerva.base.StringService;
 import minerva.config.MinervaConfig;
 import minerva.git.CommitMessage;
-import minerva.persistence.gitlab.UpToDateCheckService;
 import minerva.seite.Note;
 
 public class NotesSO {
+    private static final String NOTES_FOLDER = "notes";
     private SeiteSO seite;
     
     NotesSO(SeiteSO seite) {
         this.seite = seite;
     }
-    
-    public void addNote(String text, List<String> persons, int parentNumber) {
-        UpToDateCheckService.check(seite, () -> seite = seite.getMeAsFreshInstance());
+   
+    public void addNote(String text, List<String> persons, String parentId) {
+// TODO ich muss dann eher die notes neu laden       UpToDateCheckService.check(seite, () -> seite = seite.getMeAsFreshInstance());
 
         Note note = new Note();
-        int number = seite.getSeite().getNextNoteNumber();
-        note.setNumber(number);
-        seite.getSeite().setNextNoteNumber(number + 1);
+        note.setId(IdGenerator.createId6());
+        note.setParentId(parentId == null ? "" : parentId);
         note.setUser(seite.getBook().getUser().getLogin());
         note.setCreated(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
         note.setChanged("");
         note.setText(text);
         note.getPersons().addAll(persons);
-        if (parentNumber == 0) {
+        if (StringService.isNullOrEmpty(parentId)) {
             seite.getSeite().getNotes().add(note);
         } else {
-            noteByNumber(parentNumber).getNotes().add(note);
+            find(parentId).getNotes().add(note);
         }
-        seite.saveMeta(new CommitMessage(seite, "note #" + note.getNumber() + " added"));
+        saveNote(note, new CommitMessage(seite, "note added"));
         
-        sendNotifications(number, persons);
+        sendNotifications(note.getId(), persons);
     }
     
-    public Note noteByNumber(int number) {
-        Note note = _noteByNumber(seite.getSeite().getNotes(), number);
-        if (note == null) {
-            throw new RuntimeException("Note not found");
+    public void deleteNote(String id) {
+        Note note = find(id);
+        if (note != null) {
+            Set<String> filenames = new HashSet<>();
+            collectFilenames(note, filenames);
+            findParentCollection(id).remove(note);
+            _deleteNotes(filenames);
         }
-        return note;
+    }
+    
+    private void collectFilenames(Note note, Set<String> filenames) {
+        filenames.add(filename(note));
+        for (Note sub : note.getNotes()) {
+            collectFilenames(sub, filenames); // recursive
+        }
     }
 
-    private Note _noteByNumber(List<Note> notes, int number) {
-        for (Note note : notes) {
-            if (note.getNumber() == number) {
-                return note;
-            }
-            Note note2 = _noteByNumber(note.getNotes(), number); // recursive
-            if (note2 != null) {
-                return note2;
-            }
-        }
-        return null;
-    }
-    
-    public void deleteNote(int number) {
-        if (_deleteNote(seite.getSeite().getNotes(), number)) {
-            seite.saveMeta(new CommitMessage(seite, "note #" + number + " deleted"));
+    private void _deleteNotes(Set<String> filenames) {
+        BookSO book = seite.getBook();
+        List<String> cantBeDeleted = new ArrayList<>();
+        book.dao().deleteFiles(filenames, new CommitMessage("note deleted"), book.getWorkspace(), cantBeDeleted);
+        if (!cantBeDeleted.isEmpty()) {
+            throw new RuntimeException("These note files can't be deleted: " + filenames);
         }
     }
     
-    private boolean _deleteNote(List<Note> notes, int number) {
-        for (Note note : notes) {
-            if (note.getNumber() == number) {
-                notes.remove(note);
-                return true;
-            }
-            boolean ret = _deleteNote(note.getNotes(), number); // recursive
-            if (ret) {
-                return ret;
-            }
-        }
-        return false;
-    }
-    
-    public void doneNote(int number, boolean done) {
-        Note note = _doneNote(seite.getSeite().getNotes(), number);
+    public void doneNote(String id, boolean done) {
+        Note note = find(id);
         if (note == null) {
-            Logger.error("Note #" + note + " not found for page ID " + seite.getId());
+            Logger.error("Note #" + id + " not found for page ID " + seite.getId());
             throw new RuntimeException("Note not found!");
         } else {
             note.setDone(done);
             note.setDoneBy(done ? seite.getLogin() : null);
             note.setDoneDate(done ? LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) : null);
-            seite.saveMeta(new CommitMessage(seite, "note #" + number + (done ? " done" : " undone")));
+            saveNote(note, new CommitMessage(seite, "note " + (done ? "done" : "undone")));
         }
-    }
-
-    private Note _doneNote(List<Note> notes, int number) {
-        for (Note note : notes) {
-            if (note.getNumber() == number) {
-                return note;
-            }
-            Note n = _doneNote(note.getNotes(), number); // recursive
-            if (n != null) {
-                return n;
-            }
-        }
-        return null;
     }
 
     public int getNotesSize() {
@@ -123,13 +103,13 @@ public class NotesSO {
         return ret;
     }
 
-    private void sendNotifications(int number, List<String> persons) {
+    private void sendNotifications(String noteId, List<String> persons) {
         MinervaConfig c = MinervaWebapp.factory().getConfig();
         if (!persons.isEmpty() && c.readyForNoteNotifications()) {
             Mail mail = new Mail();
             mail.setSubject(c.getNoteSubject());
             mail.setBody(c.getNoteBody()
-                    .replace("{number}", "" + number)
+                    .replace("{noteId}", noteId)
                     .replace("{pageId}", seite.getId())
                     .replace("{pageTitle}", seite.getTitle()) // no esc!
                     .replace("{bookFolder}", seite.getBook().getBook().getFolder())
@@ -155,6 +135,95 @@ public class NotesSO {
                 newPersons.add(person);
             }
         }
-        sendNotifications(note.getNumber(), newPersons);
+        sendNotifications(note.getId(), newPersons);
+    }
+    
+    public Note find(String id) {
+        return find(seite.getSeite().getNotes(), id);
+    }
+
+    private Note find(List<Note> notes, String id) {
+        for (Note note : notes) {
+            if (note.getId().equals(id)) {
+                return note;
+            }
+            Note x = find(note.getNotes(), id); // recursive
+            if (x != null) {
+                return x;
+            }
+        }
+        return null;
+    }
+
+    private List<Note> findParentCollection(String id) {
+        return findParentCollection(seite.getSeite().getNotes(), id);
+    }
+
+    private List<Note> findParentCollection(List<Note> notes, String id) {
+        for (Note note : notes) {
+            if (note.getId().equals(id)) {
+                return notes;
+            }
+            List<Note> x = findParentCollection(note.getNotes(), id); // recursive
+            if (x != null) {
+                return x;
+            }
+        }
+        return null;
+    }
+    
+    private String filename(Note note) {
+        return folder() + "/" + note.getId() + ".json";
+    }
+    
+    private String folder() {
+        return seite.getBook().getFolder() + "/" + NOTES_FOLDER + "/" + seite.getId();
+    }
+
+    public void load() {
+        Map<String, String> files = seite.getBook().dao().loadAllFiles(folder());
+        
+        List<Note> allNotes = new ArrayList<>();
+        for (Entry<String, String> e : files.entrySet()) {
+            allNotes.add(new Gson().fromJson(e.getValue(), Note.class));
+        }
+        
+        seite.getSeite().getNotes().clear();
+        addLoadedNote("", seite.getSeite().getNotes(), allNotes);
+        for (Note note : allNotes) { // add not assigned notes as top level notes
+            if (!note.isAdded()) {
+                seite.getSeite().getNotes().add(note);
+            }
+        }
+    }
+    
+    private void addLoadedNote(String parentId, List<Note> notes, List<Note> allNotes) {
+        Iterator<Note> iter = allNotes.iterator();
+        while (iter.hasNext()) {
+            Note note = iter.next();
+            if (note.getParentId().equals(parentId)) {
+                notes.add(note);
+                note.setAdded(true);
+                addLoadedNote(note.getId(), note.getNotes(), allNotes); // recursive
+                notes.sort((a, b) -> a.getCreated().compareTo(b.getCreated()));
+            }
+        }
+    }
+
+    public void saveEditedNote(String text, List<String> persons, Note note) {
+        if (!note.getText().equals(text) || !note.getPersons().equals(persons)) {
+            note.setText(text);
+            seite.notes().sendNotifications(note, persons);
+            note.getPersons().clear();
+            note.getPersons().addAll(persons);
+            note.setChanged(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            saveNote(note, new CommitMessage(seite, "note modified"));
+        }
+    }
+
+    private void saveNote(Note note, CommitMessage cm) {
+        BookSO book = seite.getBook();
+        MultiPurposeDirAccess dao = new MultiPurposeDirAccess(book.dao());
+        dao.save(filename(note), note, cm, book.getWorkspace());
     }
 }

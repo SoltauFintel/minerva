@@ -5,29 +5,29 @@ import java.util.List;
 
 import github.soltaufintel.amalia.spark.Context;
 import minerva.MinervaWebapp;
+import minerva.base.StringService;
 import minerva.seite.SPage;
 
 public class AddNotePage extends SPage {
     
     @Override
     protected void execute() {
-        String parent = ctx.queryParam("parent");
-        int parentNumber = parent == null ? 0 : Integer.parseInt(parent);
+        String parentId = ctx.queryParam("parent");
         if (isPOST()) {
             String text = ctx.formParam("text1");
             List<String> persons = toPersons(ctx);
-            seite.notes().addNote(text, persons, parentNumber);
+            seite.notes().addNote(text, persons, parentId);
             ctx.redirect(viewlink + "/notes");
         } else {
-            if (parentNumber == 0) {
+            if (StringService.isNullOrEmpty(parentId)) {
                 put("parentText", "");
                 put("hasParent", false);
             } else {
-                put("parentText", esc(seite.notes().noteByNumber(parentNumber).getText()));
+                put("parentText", esc(seite.notes().find(parentId).getText()));
                 put("hasParent", true);
             }
             header(n("addNote"));
-            putInt("parentNumber", parentNumber);
+            put("parentId", parentId);
             combobox("persons", MinervaWebapp.factory().getPersons(), "", true, model);
         }
     }

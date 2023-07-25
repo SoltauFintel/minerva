@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Note {
-    private int number;
+    private String id;
     /** same as User.login */
     private String user;
     /** format "yyyy-MM-dd HH:mm" */
@@ -12,20 +12,23 @@ public class Note {
     /** format "yyyy-MM-dd HH:mm", can be null or empty */
     private String changed;
     private String text;
-    private final List<Note> notes = new ArrayList<>();
+    private final transient List<Note> notes = new ArrayList<>();
     private final List<String> persons = new ArrayList<>();
     private boolean done = false;
     /** same as User.login, can be null */
     private String doneBy;
     /** format "yyyy-MM-dd HH:mm", can be null or empty */
     private String doneDate;
+    /** null or empty for top level notes, if parent note is missing this note is displayed as a top level note */
+    private String parentId;
+    private transient boolean added = false;
     
-    public int getNumber() {
-        return number;
+    public String getId() {
+        return id;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getUser() {
@@ -90,5 +93,21 @@ public class Note {
 
     public void setDoneDate(String doneDate) {
         this.doneDate = doneDate;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public boolean isAdded() {
+        return added;
+    }
+
+    public void setAdded(boolean added) {
+        this.added = added;
     }
 }

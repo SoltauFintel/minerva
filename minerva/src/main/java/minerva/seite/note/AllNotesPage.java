@@ -26,8 +26,8 @@ public class AllNotesPage extends BPage {
         for (NoteWithSeite n : notes) {
             DataMap map = list.add();
             Note note = n.getNote();
-            map.putInt("number", note.getNumber());
-            map.put("id", n.getSeite().getId() + "-" + note.getNumber());
+            map.put("noteId", note.getId());
+            map.put("id", n.getSeite().getId() + "-" + note.getId());
             map.put("user", mesc(note.getUser()));
             map.put("created", mesc(note.getCreated()));
             String text = note.getText();

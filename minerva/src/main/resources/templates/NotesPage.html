@@ -1,6 +1,6 @@
 {{master: master}}
 
-<div class="row"> 
+<div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">{{header}}</h1>
         
@@ -8,7 +8,7 @@
 
         {{if showTopCreateButton}}
             <p class="mb2">
-                <a href="{{viewlink}}/add-note?parent=0" class="btn btn-primary br"><i class="fa fa-comment"></i>
+                <a href="{{viewlink}}/add-note?parent=" class="btn btn-primary br"><i class="fa fa-comment"></i>
                     {{N.addNote}}</a>
             </p>
         {{/if}}
@@ -17,7 +17,7 @@
         {{if not hasNotes}}- {{N.noNotes}} -{{/if}}
 
         <p class="mt2">
-            <a href="{{viewlink}}/add-note?parent=0" class="btn btn-primary br"><i class="fa fa-comment"></i>
+            <a href="{{viewlink}}/add-note?parent=" class="btn btn-primary br"><i class="fa fa-comment"></i>
                 {{N.addNote}}</a>
 
             <a href="{{viewlink}}" class="btn btn-default br"><i class="fa fa-arrow-left"></i>

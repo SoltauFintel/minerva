@@ -1,7 +1,6 @@
 <div class="note">
     <p class="noteInfo">
         <i class="fa fa-stop note{{color}}"></i>
-        <span class="noteNumber">#{{number}}</span> -
         <span class="noteUser">{{user}}</span> -
         <span class="noteCreated" title="created">{{created}}</span>{{if hasChanged}} -
         <span class="noteChanged" title="changed">{{changed}}</span>{{/if}}
@@ -20,25 +19,25 @@
     <pre class="noteText">{{text}}</pre>
     <p>
         {{if addAllowed}}
-            <a href="{{viewlink}}/add-note?parent={{number}}" class="btn btn-default btn-xs br"><i
+            <a href="{{viewlink}}/add-note?parent={{noteId}}" class="btn btn-default btn-xs br"><i
                 class="fa fa-comments"></i> {{N.reply}}</a>
         {{/if}}
         {{if done}}
-            <a href="{{viewlink}}/note-done?number={{number}}&m=u" title="{{N.undoneNote}}"
-                onclick="document.querySelector('#nd_{{number}}').style='';"
-                class="btn btn-default btn-xs"><i class="fa fa-undo"></i> <i id="nd_{{number}}"
+            <a href="{{viewlink}}/note-done?id={{noteId}}&m=u" title="{{N.undoneNote}}"
+                onclick="document.querySelector('#nd_{{noteId}}').style='';"
+                class="btn btn-default btn-xs"><i class="fa fa-undo"></i> <i id="nd_{{noteId}}"
                 class="fa fa-delicious fa-spin" style="display: none;"></i></a>
         {{else}}
-            <a href="{{viewlink}}/note-done?number={{number}}" title="{{N.doneNote}}"
-                onclick="document.querySelector('#nd_{{number}}').style='';"
-                class="btn btn-default btn-xs br"><i class="fa fa-check"></i> {{N.done}}! <i id="nd_{{number}}"
+            <a href="{{viewlink}}/note-done?id={{noteId}}" title="{{N.doneNote}}"
+                onclick="document.querySelector('#nd_{{noteId}}').style='';"
+                class="btn btn-default btn-xs br"><i class="fa fa-check"></i> {{N.done}}! <i id="nd_{{noteId}}"
                 class="fa fa-delicious fa-spin" style="display: none;"></i></a>
         {{/if}}
         {{if editAllowed}}
-            <a href="{{viewlink}}/edit-note?number={{number}}" title="{{N.edit}}"
+            <a href="{{viewlink}}/edit-note?id={{noteId}}" title="{{N.edit}}"
                 class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
-            <a href="{{viewlink}}/delete-note?number={{number}}" title="{{N.delete}}" class="btn btn-danger btn-xs"
-                onclick="return loeschen{{number}}();"><i class="fa fa-trash"></i> <i id="n_{{number}}"
+            <a href="{{viewlink}}/delete-note?id={{noteId}}" title="{{N.delete}}" class="btn btn-danger btn-xs"
+                onclick="return loeschen{{noteId}}();"><i class="fa fa-trash"></i> <i id="n_{{noteId}}"
                 class="fa fa-delicious fa-spin" style="display: none;"></i></a>
         {{/if}}
     </p>
@@ -48,10 +47,10 @@
 </div>
 
 <script>
-function loeschen{{number}}() {
+function loeschen{{noteId}}() {
     ret = confirm('{{N.deleteQ}}');
     if (ret) {
-        document.querySelector('#n_{{number}}').style='';
+        document.querySelector('#n_{{noteId}}').style='';
     }
     return ret;
 }

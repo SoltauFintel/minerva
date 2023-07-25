@@ -45,7 +45,6 @@ public interface DirAccess {
      * @param commitMessage -
      * @param workspace -
      * @param cantBeDeleted not null, nach dem Aufruf sind dadrin die Dateien, die nicht gelöscht werden konnten
-     * @return Liste der Dateien, die nicht gelöscht werden konnten
      */
     void deleteFiles(Set<String> filenames, CommitMessage commitMessage, WorkspaceSO workspace, List<String> cantBeDeleted);
 

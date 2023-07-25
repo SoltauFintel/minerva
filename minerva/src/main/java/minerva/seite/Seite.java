@@ -21,8 +21,7 @@ public class Seite {
     private int version = 1;
     // TODO Leerzeilen? Kommentare erlaubt? trim?
     private final List<String> helpKeys = new ArrayList<>();
-    private List<Note> notes = new ArrayList<>();
-    private int nextNoteNumber = 1;
+    private final transient List<Note> notes = new ArrayList<>();
     private final List<PageChange> changes = new ArrayList<>();
 
     public Seite() {
@@ -40,6 +39,9 @@ public class Seite {
         this.sorted = c.sorted;
         this.tags.addAll(c.tags);
         this.version = c.version;
+        this.helpKeys.addAll(c.helpKeys);
+        this.notes.addAll(c.notes);
+        this.changes.addAll(c.changes);
     }
 
     public String getId() {
@@ -92,18 +94,6 @@ public class Seite {
 
     public List<Note> getNotes() {
         return notes;
-    }
-
-    public void setNotes(List<Note> notes) {
-        this.notes = notes;
-    }
-
-    public int getNextNoteNumber() {
-        return nextNoteNumber;
-    }
-
-    public void setNextNoteNumber(int nextNoteNumber) {
-        this.nextNoteNumber = nextNoteNumber;
     }
 
     public List<PageChange> getChanges() {

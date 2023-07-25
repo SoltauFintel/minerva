@@ -6,9 +6,9 @@ public class DeleteNoteAction extends SAction {
 
     @Override
     protected void execute() {
-        int number = Integer.parseInt(ctx.queryParam("number"));
+        String id = ctx.queryParam("id");
 
-        seite.notes().deleteNote(number);
+        seite.notes().deleteNote(id);
 
         ctx.redirect(viewlink + "/notes");
     }

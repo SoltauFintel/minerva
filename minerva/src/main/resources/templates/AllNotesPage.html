@@ -8,7 +8,6 @@
         <p>Branch: {{branch}}, Buch: <a href="/b/{{branch}}/{{bookFolder}}">{{bookTitle}}</a></p>
         <table class="table mt2">
             <tr style="background-color: #f5f5f5;">
-                <th>{{N.nodot}}</th>
                 <th style="min-width: 300px; max-width: 800px;">{{N.note}}</th>
                 <th>{{N.author}}<br/><br/>Zuständig</th>
                 <th style="min-width: 200px;">{{N.page}}</th>
@@ -16,7 +15,6 @@
             </tr>
             {{each n in notes}}
                 <tr>
-                    <td><a href="{{n.link}}">#{{n.number}}</a></td>
                     <td><pre id="na{{n.id}}" class="noteText">{{n.text1}}{{if n.hasMoreText}}<a
                         onclick="moreText('{{n.id}}');" class="noteMehr">mehr...</a>{{/if}}</pre><pre
                         id="nb{{n.id}}" class="noteText" hidden>{{n.completeText}}</pre></td>

@@ -71,7 +71,7 @@ keepWS=Keep workspace
 
 note=Comment
 addNote=Add comment
-editNote=Edit comment #$no
+editNote=Edit comment
 viewNote=View comment
 notes=Comments
 backToPage=Back to page
@@ -93,7 +93,6 @@ book=Book
 allNotes=All comments
 author=Author
 authors=Authors
-nodot=No.
 createdAt=Created
 preview=Preview
 otherBook=other book

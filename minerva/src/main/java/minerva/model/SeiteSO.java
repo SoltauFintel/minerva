@@ -68,6 +68,7 @@ public class SeiteSO implements ISeite {
         this.book = book;
         this.seite = seite;
         seiten = SeitenSO.findeUnterseiten(this, alleSeiten, book);
+        notes.load();
     }
     
     /**
@@ -186,6 +187,7 @@ public class SeiteSO implements ISeite {
         }
         seite = s;
         content = null; // force reload
+        notes.load();
     }
 
     /**
@@ -210,6 +212,7 @@ public class SeiteSO implements ISeite {
             throw new RuntimeException("seite is null after loading .meta file. Error in freshcheck. dn: " + dn);
         }
         setContent(files, langs);
+        notes.load();
     }
     
     private Map<String, String> loadFiles(boolean withSeite, List<String> langs) {

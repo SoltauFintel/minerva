@@ -175,4 +175,18 @@ public class BookSO {
     public BookSO getMeAsFreshInstance() {
         return workspace.getBooks().byFolder(book.getFolder());
     }
+
+    // TODO Es gibt Stellen, wo ich rekursiv durch die Seiten gehe. Diese wenn sinnvoll auf getAllSeiten() umstellen, um den Code zu vereinfachen.
+    public List<SeiteSO> getAllSeiten() {
+        List<SeiteSO> ret = new ArrayList<>();
+        addSeiten(seiten, ret);
+        return ret;
+    }
+
+    private void addSeiten(SeitenSO seiten, List<SeiteSO> result) {
+        for (SeiteSO seite : seiten) {
+            result.add(seite);
+            addSeiten(seite.getSeiten(), result); // recursive
+        }
+    }
 }

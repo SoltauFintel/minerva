@@ -29,7 +29,7 @@ public class NotesPage extends SPage implements Uptodatecheck {
         for (Note note : notes) {
             DataMap m = new DataMap();
             m.put("color", ebene >= 1 && ebene <= 7 ? "E" + ebene : "E");
-            m.putInt("number", note.getNumber());
+            m.put("noteId", note.getId());
             m.put("user", esc(note.getUser()));
             m.put("created", esc(note.getCreated()));
             m.put("changed", esc(note.getChanged()));
@@ -41,7 +41,7 @@ public class NotesPage extends SPage implements Uptodatecheck {
             m.put("notes", noteHTML(note.getNotes(), ebene + 1)); // recursive
             m.put("viewlink", viewlink);
             m.put("addAllowed", ebene < 7);
-            m.put("editAllowed", note.getUser().equals(seite.getLogin()));
+            m.put("editAllowed", note.getUser().equals(seite.getLogin())); // TODO oder Admin-Rechte wurden aktiviert
             m.put("N", "en".equals(user.getGuiLanguage()) ? NLS.dataMap_en : NLS.dataMap_de); // RB texts
             sb.append(Page.templates.render("NotePiece", m));
         }

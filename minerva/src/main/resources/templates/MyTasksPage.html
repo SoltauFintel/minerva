@@ -8,8 +8,8 @@
 
         {{each n in notes}}
             <p class="mt2">
-                <b>{{n.pageTitle}}</b>
-                <pre id="na{{n.id}}" class="noteText" style="margin-bottom: 0;">#{{n.number}}<br/>{{n.text1}}{{if n.hasMoreText}}<a
+                <a href="{{n.pagelink}}"><i class="fa fa-file-text" style="color: rgb(0,101,255);"></i></a> <b>{{n.pageTitle}}</b>
+                <pre id="na{{n.id}}" class="noteText" style="margin-bottom: 0;">{{n.text1}}{{if n.hasMoreText}}<a
                     onclick="moreText('{{n.id}}');" class="noteMehr">mehr...</a>{{/if}}<br><a
                     href="{{n.link}}" class="btn btn-primary btn-sm">{{N.viewNote}}</a></pre>
                 
