@@ -62,7 +62,7 @@ public class MinervaFactory {
         //   B. nur 1 speichern
         //   C. alle speichern, aber nur letzten anzeigen
         //   D. Git Historie
-        pageChangeStrategy = new IPageChangeStrategy() { // strategy B
+        pageChangeStrategy = new IPageChangeStrategy() { // strategy C (merge friendlier)
             @Override
             public void set(String comment, SeiteSO seite) {
                 PageChange change = new PageChange();
@@ -70,7 +70,6 @@ public class MinervaFactory {
                 change.setUser(seite.getLogin());
                 change.setDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
                 List<PageChange> changes = seite.getSeite().getChanges();
-                changes.clear();
                 changes.add(change);
             }
             
