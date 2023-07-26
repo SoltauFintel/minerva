@@ -79,6 +79,13 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("pageWatched", us.getWatchlist().contains(id));
         put("subpagesWatched", us.getWatchlist().contains(id + "+"));
         put("ctrlS", n("ctrlS"));
+        DataList list2 = list("levellist");
+        for (int i = 0; i <= 5; i++) {
+            DataMap map = list2.add();
+            map.put("text", i == 5 ? "5 (" + n("standard") + ")" : (i == 0 ? "0 (" + n("off") + ")" : "" + i));
+            map.put("selected", i == seite.getTocLevels());
+        }
+        put("tocWithSubpages", seite.isTocWithSubpages());
         header(modifyHeader(seiteSO.getTitle()));
 
         fillLinks(branch, bookFolder, id, seiteSO, seite);

@@ -58,6 +58,7 @@ import minerva.seite.PostContentsAction;
 import minerva.seite.PullSeiteAction;
 import minerva.seite.SeiteHistoryPage;
 import minerva.seite.SortSeiteAction;
+import minerva.seite.TocAction;
 import minerva.seite.ToggleFavoriteAction;
 import minerva.seite.ToggleWatchAction;
 import minerva.seite.ViewSeitePage;
@@ -152,6 +153,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/s/:branch/:book/:id/toggle-watch", ToggleWatchAction.class);
         get("/s/:branch/:book/:id/links", LinkAnalysisPage.class);
         get("/s/:branch/:book/:id/export", ExportSeiteAction.class);
+        post("/s/:branch/:book/:id/toc", TocAction.class);
         
         // Image
         post("/s-image-upload/:branch/:book/:id", ImageUploadAction.class);

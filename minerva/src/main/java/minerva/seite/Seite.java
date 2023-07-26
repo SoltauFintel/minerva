@@ -23,6 +23,8 @@ public class Seite {
     private final List<String> helpKeys = new ArrayList<>();
     private final transient List<Note> notes = new ArrayList<>();
     private final List<PageChange> changes = new ArrayList<>();
+    private int tocLevels = 0;
+    private boolean tocWithSubpages = false;
 
     public Seite() {
     }
@@ -102,5 +104,21 @@ public class Seite {
 
     public List<String> getHelpKeys() {
         return helpKeys;
+    }
+
+    public int getTocLevels() {
+        return tocLevels;
+    }
+
+    public void setTocLevels(int tocLevels) {
+        this.tocLevels = tocLevels;
+    }
+
+    public boolean isTocWithSubpages() {
+        return tocWithSubpages;
+    }
+
+    public void setTocWithSubpages(boolean tocWithSubpages) {
+        this.tocWithSubpages = tocWithSubpages;
     }
 }
