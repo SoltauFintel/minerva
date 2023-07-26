@@ -65,6 +65,7 @@
                         </div>
                         <h1 style="margin-top: 10px;">{{L.titel}}</h1>
                         <div class="seite">
+                            {{L.toc}}
                             {{L.content}}
                         </div>
                     </div>
@@ -171,9 +172,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="tocLevels" class="col-sm-2 control-label">{{N.tocLevels}}</label>
+                        <label for="tocHeadingsLevels" class="col-sm-5 control-label">{{N.tocHeadingsLevels}}</label>
                         <div class="col-sm-4">
-                            <select class="form-control" id="tocLevels" name="tocLevels">
+                            <select class="form-control" id="tocHeadingsLevels" name="tocHeadingsLevels">
                                 {{each e in levellist}}
                                     <option{{if e.selected}} selected{{/if}}>{{e.text}}</option>
                                 {{/each}}
@@ -181,10 +182,13 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-sm-4 col-sm-offset-2">
-                            <label>
-                                <input type="checkbox" name="tocWithSubpages"{{if tocWithSubpages}} checked{{/if}}> {{N.withSubpages}}
-                            </label>
+                        <label for="tocSubpagesLevels" class="col-sm-5 control-label">{{N.tocSubpagesLevels}}</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="tocSubpagesLevels" name="tocSubpagesLevels">
+                                {{each e in levellist2}}
+                                    <option{{if e.selected}} selected{{/if}}>{{e.text}}</option>
+                                {{/each}}
+                            </select>
                         </div>
                     </div>
                 </div>

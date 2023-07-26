@@ -6,13 +6,13 @@ public class TocAction extends SAction {
 
     @Override
     protected void execute() {
-        int tocLevels = Integer.valueOf(ctx.queryParam("tocLevels").substring(0, 1));
-        boolean tocWithSubpages = "on".equals(ctx.queryParam("tocWithSubpages"));        
+        int tocHeadingsLevels = Integer.valueOf(ctx.queryParam("tocHeadingsLevels").substring(0, 1));
+        int tocSubpagesLevels = Integer.valueOf(ctx.queryParam("tocSubpagesLevels").substring(0, 1));
 
         Seite s = seite.getSeite();
-        if (s.getTocLevels() != tocLevels || s.isTocWithSubpages() != tocWithSubpages) { // is dirty?
-            s.setTocLevels(tocLevels);
-            s.setTocWithSubpages(tocWithSubpages);
+        if (s.getTocHeadingsLevels() != tocHeadingsLevels || s.getTocSubpagesLevels() != tocSubpagesLevels) { // is dirty?
+            s.setTocHeadingsLevels(tocHeadingsLevels);
+            s.setTocSubpagesLevels(tocSubpagesLevels);
             seite.saveMeta(new CommitMessage(seite, "TOC"));
         }
         

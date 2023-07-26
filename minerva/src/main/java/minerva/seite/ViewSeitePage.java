@@ -43,7 +43,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             map.put("LANG", lang.toUpperCase());
             map.put("lang", lang);
             map.put("titel", esc(seite.getTitle().getString(lang)));
-            map.put("content", seiteSO.getContent().getString(lang));
+            TocMacro macro = new TocMacro(seiteSO, lang, "-");
+            map.put("content", macro.transform(seiteSO.getContent().getString(lang)));
+            map.put("toc", macro.getTOC()); // no esc, after transform()
             map.put("active", lang.equals(user.getPageLanguage()));
             fillBreadcrumbs(lang, map.list("breadcrumbs"));
             map.putInt("subpagesSize", fillSubpages(seiteSO.getSeiten(), lang, map.list("subpages"),
@@ -79,13 +81,8 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("pageWatched", us.getWatchlist().contains(id));
         put("subpagesWatched", us.getWatchlist().contains(id + "+"));
         put("ctrlS", n("ctrlS"));
-        DataList list2 = list("levellist");
-        for (int i = 0; i <= 5; i++) {
-            DataMap map = list2.add();
-            map.put("text", i == 5 ? "5 (" + n("standard") + ")" : (i == 0 ? "0 (" + n("off") + ")" : "" + i));
-            map.put("selected", i == seite.getTocLevels());
-        }
-        put("tocWithSubpages", seite.isTocWithSubpages());
+        levellist("levellist", seite.getTocHeadingsLevels());
+        levellist("levellist2", seite.getTocSubpagesLevels());
         header(modifyHeader(seiteSO.getTitle()));
 
         fillLinks(branch, bookFolder, id, seiteSO, seite);
@@ -93,6 +90,15 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
                 + seiteSO.getTitle() + " | " + user.getPageLanguage());
     }
     
+    private void levellist(String listId, int levels) {
+        DataList list2 = list(listId);
+        for (int i = 0; i <= 5; i++) {
+            DataMap map = list2.add();
+            map.put("text", i == 5 ? "5 (" + n("standard") + ")" : (i == 0 ? "0 (" + n("off") + ")" : "" + i));
+            map.put("selected", i == levels);
+        }
+    }
+
     public static void fillLastChange(PageChange change, String pageTitle, String infotext, DataMap model) {
         String lastChangeInfo = infotext
             .replace("$d", change.getDate())

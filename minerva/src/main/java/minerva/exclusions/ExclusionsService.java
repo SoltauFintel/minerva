@@ -21,6 +21,9 @@ public class ExclusionsService {
         this.exclusions = exclusions;
     }
 
+    /**
+     * @param customer "-" for no specific customer
+     */
     public void setCustomer(String customer) {
         this.customer = customer;
     }

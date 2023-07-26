@@ -185,5 +185,6 @@ close=Schließen
 TOC=TOC
 standard=Standard
 withSubpages=mit Unterseiten
-tocLevels=Ebenen
 off=aus
+tocHeadingsLevels=Überschriften-Ebenen
+tocSubpagesLevels=Unterseiten-Ebenen
