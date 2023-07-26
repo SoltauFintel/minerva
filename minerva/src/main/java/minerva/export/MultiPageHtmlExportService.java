@@ -21,6 +21,7 @@ import minerva.model.SeiteVisible;
 import minerva.model.SeitenSO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.NavigateService;
+import minerva.seite.TocMacro;
 import minerva.seite.link.Link;
 import minerva.seite.link.LinkService;
 
@@ -143,7 +144,8 @@ public class MultiPageHtmlExportService extends GenericExportService {
         String title = seite.getSeite().getTitle().getString(lang);
         DataMap model = new DataMap();
         model.put("title", esc(title));
-        model.put("content", getBody(html, title)); // no esc!
+        String body = getBody(html, title);
+        model.put("content", tocMacro(body, seite, exclusionsService.getCustomer())); // no esc!
         model.put("cssFolder", "");
         model.put("back", n("back"));
         model.put("forward", n("forward"));
@@ -169,6 +171,18 @@ public class MultiPageHtmlExportService extends GenericExportService {
         FileService.copyFiles(
                 new File(seite.getBook().getFolder() + "/img/" + seite.getId()),
                 new File(outputFolder, "img/" + seite.getId()));
+    }
+
+    private String tocMacro(String html, SeiteSO seite, String customer) {
+        TocMacro toc = new TocMacro(seite, lang, customer) {
+            @Override
+            protected int getTocSubpagesLevels() {
+                return 0; // Export has subpages TOC at page end, so turn it off here.
+                // However, I'm not sure about this here because tocSubpagesLevels is an explicit setting.
+            }
+        };
+        html = toc.transform(html);
+        return toc.getTOC() + html;
     }
 
     private String getBody(String html, String title) {

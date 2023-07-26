@@ -31,3 +31,16 @@ li.book {
         display: none !important;
     }
 }
+
+ul.toc {
+    font-size: 9pt;
+    padding-left: 1.3em;
+}
+
+div.toc {
+    padding-left: 2em;
+}
+
+li.subpage {
+    margin-top: .5em;
+}

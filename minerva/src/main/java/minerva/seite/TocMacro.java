@@ -13,7 +13,7 @@ import minerva.model.SeitenSO;
 import minerva.publish.TocEntry;
 
 public class TocMacro {
-    private final SeiteSO seite;
+    protected final SeiteSO seite;
     private final String lang;
     private final String customer;
     private String toc = null;
@@ -27,7 +27,7 @@ public class TocMacro {
     public String transform(String html) {
         toc = "";
         int headingslevels = seite.getSeite().getTocHeadingsLevels();
-        int subpagesLevels = seite.getSeite().getTocSubpagesLevels();
+        int subpagesLevels = getTocSubpagesLevels();
         if (headingslevels == 0 && subpagesLevels == 0) {
             return html; // nothing to do
         }
@@ -46,6 +46,10 @@ public class TocMacro {
             toc = "<div class=\"toc\">" + makeTocHtml(entries, nHeadings) + "</div>";
         }
         return doc.html();
+    }
+
+    protected int getTocSubpagesLevels() {
+        return seite.getSeite().getTocSubpagesLevels();
     }
 
     private void collectTocEntries(int headingslevels, Elements headings, List<TocEntry> entries) {
