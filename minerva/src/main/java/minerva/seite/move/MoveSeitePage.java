@@ -1,9 +1,10 @@
-package minerva.seite;
+package minerva.seite.move;
 
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
+import minerva.seite.SPage;
 
 public class MoveSeitePage extends SPage {
     

@@ -1,7 +1,8 @@
-package minerva.seite;
+package minerva.seite.move;
 
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
+import minerva.seite.SPage;
 
 /**
  * Bestätigungsseite für Seitenverschiebung

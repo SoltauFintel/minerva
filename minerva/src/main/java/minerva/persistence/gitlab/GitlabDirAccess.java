@@ -12,8 +12,8 @@ import minerva.access.AbstractDirAccess;
 import minerva.git.CommitMessage;
 import minerva.model.GitlabRepositorySO;
 import minerva.model.WorkspaceSO;
-import minerva.seite.IMoveFile;
-import minerva.seite.MoveFile;
+import minerva.seite.move.IMoveFile;
+import minerva.seite.move.MoveFile;
 import minerva.user.User;
 
 public class GitlabDirAccess extends AbstractDirAccess {

@@ -6,7 +6,7 @@ import java.util.Set;
 
 import minerva.git.CommitMessage;
 import minerva.model.WorkspaceSO;
-import minerva.seite.IMoveFile;
+import minerva.seite.move.IMoveFile;
 import minerva.user.User;
 
 /**

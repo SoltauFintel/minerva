@@ -1,4 +1,4 @@
-package minerva.seite;
+package minerva.seite.move;
 
 public class ChangeFile implements IMoveFile {
     private final String filename;

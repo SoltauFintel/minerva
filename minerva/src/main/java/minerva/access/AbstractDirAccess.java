@@ -15,9 +15,9 @@ import org.pmw.tinylog.Logger;
 import minerva.base.FileService;
 import minerva.git.CommitMessage;
 import minerva.model.WorkspaceSO;
-import minerva.seite.ChangeFile;
-import minerva.seite.IMoveFile;
-import minerva.seite.MoveFile;
+import minerva.seite.move.ChangeFile;
+import minerva.seite.move.IMoveFile;
+import minerva.seite.move.MoveFile;
 
 /**
  * File based directory access

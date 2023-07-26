@@ -1,4 +1,4 @@
-package minerva.seite;
+package minerva.seite.move;
 
 /**
  * Move file (without changing its content) or move whole folder

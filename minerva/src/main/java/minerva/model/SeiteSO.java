@@ -27,13 +27,13 @@ import minerva.base.UserMessage;
 import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
 import minerva.git.CommitMessage;
-import minerva.seite.ChangeFile;
-import minerva.seite.IMoveFile;
 import minerva.seite.IPageChangeStrategy;
-import minerva.seite.MoveFile;
 import minerva.seite.NotifyWatchers;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
+import minerva.seite.move.ChangeFile;
+import minerva.seite.move.IMoveFile;
+import minerva.seite.move.MoveFile;
 import minerva.subscription.SubscriptionService;
 import minerva.subscription.TPage;
 

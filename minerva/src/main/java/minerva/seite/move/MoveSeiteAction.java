@@ -1,6 +1,7 @@
-package minerva.seite;
+package minerva.seite.move;
 
 import minerva.base.StringService;
+import minerva.seite.SAction;
 
 public class MoveSeiteAction extends SAction {
 
