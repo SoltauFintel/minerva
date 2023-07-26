@@ -19,7 +19,6 @@ import minerva.model.WorkspaceSO;
 public class PublishService {
     private final List<String> langs;
     
-    // TODO Wird hier sichergestellt, dass der TargetFolder frisch ist?
     public PublishService(List<String> langs) {
         this.langs = langs;
     }
@@ -41,6 +40,8 @@ public class PublishService {
 
     public File publish(WorkspaceSO workspace) {
         File targetFolder = MinervaWebapp.factory().getWorkFolder("publish");
+        FileService.deleteFolder(targetFolder);
+        targetFolder.mkdirs();
         String login = workspace.getUser().getLogin();
         Logger.info(login + " | " + workspace.getBranch() + " | Publishing to " + targetFolder.getAbsolutePath() + " ...");
         // root level
