@@ -14,11 +14,13 @@ import org.eclipse.jgit.api.ListBranchCommand.ListMode;
 import org.eclipse.jgit.api.RmCommand;
 import org.eclipse.jgit.api.errors.EmptyCommitException;
 import org.eclipse.jgit.api.errors.GitAPIException;
+import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
 import org.eclipse.jgit.api.errors.RefNotFoundException;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.transport.RefSpec;
 import org.pmw.tinylog.Logger;
 
+import minerva.base.StringService;
 import minerva.model.GitFactory;
 import minerva.persistence.gitlab.GitlabUser;
 
@@ -290,6 +292,16 @@ public class GitService {
      * @param user user to log into remote Git repository, null: don't push
      */
     public void branch(String name, String commit, GitlabUser user) {
+        if (StringService.isNullOrEmpty(name)) {
+            throw new RuntimeException("Branch name is not valid!");
+        }
+        for (int i = 0; i < name.length(); i++) {
+            char c = name.charAt(i);
+            if (!(c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9' || c == '.' || c == '_'
+                    || c == '-')) {
+                throw new RuntimeException("Branch name is not valid!");
+            }
+        }
         // TO.DO Maybe there's an better implementation for this! branchCreate().setStartPoint?
         String m = null;
         if (commit != null) {
@@ -333,6 +345,9 @@ public class GitService {
                     throw up;
                 }
             }
+        } catch (RefAlreadyExistsException e) {
+            Logger.error(e);
+            throw new RuntimeException("Branch name already exists. Please choose another name.");
         } catch (Exception e) {
             throw new RuntimeException("Error " + action + " a branch!", e);
         }
