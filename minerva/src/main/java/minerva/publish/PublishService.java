@@ -110,6 +110,14 @@ public class PublishService {
         p.setId(seite.getId());
         p.setTitle(seite.getSeite().getTitle().getString(lang));
         p.getLabels().addAll(seite.getSeite().getTags());
+        int levels = seite.getSeite().getTocHeadingsLevels();
+        if (levels > 0) {
+            p.getLabels().add("toc-h-" + levels);
+        }
+        levels = seite.getSeite().getTocSubpagesLevels();
+        if (levels > 0) {
+            p.getLabels().add("toc-s-" + levels);
+        }
         p.getHelpKeys().addAll(seite.getSeite().getHelpKeys());
         return p;
     }
