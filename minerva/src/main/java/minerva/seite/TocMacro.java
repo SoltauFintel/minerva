@@ -26,7 +26,7 @@ public class TocMacro {
 
     public String transform(String html) {
         toc = "";
-        int headingslevels = seite.getSeite().getTocHeadingsLevels();
+        int headingslevels = getTocHeadingsLevels();
         int subpagesLevels = getTocSubpagesLevels();
         if (headingslevels == 0 && subpagesLevels == 0) {
             return html; // nothing to do
@@ -46,6 +46,10 @@ public class TocMacro {
             toc = "<div class=\"toc\">" + makeTocHtml(entries, nHeadings) + "</div>";
         }
         return doc.html();
+    }
+
+    protected int getTocHeadingsLevels() {
+    	return seite.getSeite().getTocHeadingsLevels();
     }
 
     protected int getTocSubpagesLevels() {
@@ -110,13 +114,13 @@ public class TocMacro {
         for (int i = 0; i < n; i++) {
             TocEntry entry = entries.get(i);
             String cls = "";
-            if (nHeadings >= 0 && i >= nHeadings) {
+            if (i >= nHeadings) {
                 cls = " class=\"subpage\"";
-                nHeadings = -1;
+                nHeadings = Integer.MAX_VALUE;
             }
             ret += "<li" + cls + " style=\"list-style-type: square;\">" //
                     + "<a href=\"" + entry.getId() + "\">" + entry.getTitle() + "</a>" //
-                    + makeTocHtml(entry.getSubpages(), -1) // recursive 
+                    + makeTocHtml(entry.getSubpages(), Integer.MAX_VALUE) // recursive 
                     + "</li>";
         }
         if (n > 0) {
