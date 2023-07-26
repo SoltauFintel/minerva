@@ -14,6 +14,7 @@ import minerva.model.SeiteVisible;
 import minerva.seite.Breadcrumb;
 import minerva.seite.NavigateService;
 import minerva.seite.SPage;
+import minerva.seite.TocMacro;
 
 public class PreviewPage extends SPage {
     
@@ -35,7 +36,10 @@ public class PreviewPage extends SPage {
         put("title", esc(seite.getSeite().getTitle().getString(lang)) + " - " + n("preview") + " " + lang.toUpperCase()
                 + TITLE_POSTFIX);
         put("titel", esc(seite.getSeite().getTitle().getString(lang)));
-        put("content", seite.getContent().getString(lang));
+        String html = seite.getContent().getString(lang);
+        TocMacro toc = new TocMacro(seite, lang, customer);
+        put("content", toc.transform(html)); // transform before getTOC
+        put("toc", toc.getTOC());
 
         fillBreadcrumbs(customer, lang, list("breadcrumbs"));
         

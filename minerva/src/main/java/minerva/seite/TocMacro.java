@@ -16,7 +16,7 @@ public class TocMacro {
     private final SeiteSO seite;
     private final String lang;
     private final String customer;
-    private String toc = "";
+    private String toc = null;
     
     public TocMacro(SeiteSO seite, String lang, String customer) {
         this.seite = seite;
@@ -25,6 +25,7 @@ public class TocMacro {
     }
 
     public String transform(String html) {
+        toc = "";
         int headingslevels = seite.getSeite().getTocHeadingsLevels();
         int subpagesLevels = seite.getSeite().getTocSubpagesLevels();
         if (headingslevels == 0 && subpagesLevels == 0) {
@@ -120,7 +121,14 @@ public class TocMacro {
         return ret;
     }
 
+    /**
+     * Must be called after transform().
+     * @return TOC HTML
+     */
     public String getTOC() {
+        if (toc == null) {
+            throw new RuntimeException("Call transform() before getTOC()!");
+        }
         return toc;
     }
 }
