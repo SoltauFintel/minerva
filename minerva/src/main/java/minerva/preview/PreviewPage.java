@@ -39,10 +39,11 @@ public class PreviewPage extends SPage {
 
         fillBreadcrumbs(customer, lang, list("breadcrumbs"));
         
-        String onlyBookFolder = "/p/" + branch + "/" + esc(customer) + "/" + bookFolder + "/" + lang + "/";
+        String onlyBookFolder0 = "/p/" + branch + "/" + esc(customer) + "/" + bookFolder + "/" + lang;
+        String onlyBookFolder = onlyBookFolder0 + "/";
         NavigateService nav = new NavigateService(true, lang, sv);
-        navlink("prevlink", nav.previousPage(seite), id, onlyBookFolder);
-        navlink("nextlink", nav.nextPage(seite), id, onlyBookFolder);
+        navlink("prevlink", nav.previousPage(seite), id, onlyBookFolder, onlyBookFolder0);
+        navlink("nextlink", nav.nextPage(seite), id, onlyBookFolder, null);
         
         DataList list = list("books");
         for (BookSO b : books) {
@@ -55,11 +56,17 @@ public class PreviewPage extends SPage {
     }
     
     // from ViewSeitePage
-    private void navlink(String name, SeiteSO nav, String seiteId, String onlyBookFolder) {
+    private void navlink(String name, SeiteSO nav, String seiteId, String onlyBookFolder, String booklink) {
         String nav_id = nav.getId();
-        String has = "has" + name.substring(0, 1).toUpperCase() + name.substring(1);
-        put(has, !nav_id.equals(seiteId));
-        put(name, onlyBookFolder + nav_id);
+        String hasName = "has" + name.substring(0, 1).toUpperCase() + name.substring(1);
+        boolean has = !nav_id.equals(seiteId);
+        String link = onlyBookFolder + nav_id;
+        if (!has && booklink != null) {
+            has = true;
+            link = booklink;
+        }
+        put(hasName, has);
+        put(name, link);
     }
 
     private void fillBreadcrumbs(String customer, String lang, DataList list) {

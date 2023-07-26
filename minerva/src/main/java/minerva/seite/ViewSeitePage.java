@@ -137,8 +137,8 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("booklink", booklink);
         put("parentlink", seiteSO.hasParent() ? (onlyBookFolder + seite.getParentId()) : booklink);
         NavigateService nav = new NavigateService(true, user.getPageLanguage(), null);
-        navlink("prevlink", nav.previousPage(seiteSO), id, onlyBookFolder);
-        navlink("nextlink", nav.nextPage(seiteSO), id, onlyBookFolder);
+        navlink("prevlink", nav.previousPage(seiteSO), id, onlyBookFolder, "/b/" + branch + "/" + book.getBook().getFolder());
+        navlink("nextlink", nav.nextPage(seiteSO), id, onlyBookFolder, null);
         put("tabcode", getTabCode(nav, seiteSO, id, onlyBookFolder));
         
         // Standard
@@ -160,11 +160,17 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("hasPositionlink", seiteSO.getSeiten().size() > 1);
     }
     
-    private void navlink(String name, SeiteSO nav, String seiteId, String onlyBookFolder) {
+    private void navlink(String name, SeiteSO nav, String seiteId, String onlyBookFolder, String booklink) {
         String nav_id = nav.getId();
-        String has = "has" + name.substring(0, 1).toUpperCase() + name.substring(1);
-        put(has, !nav_id.equals(seiteId));
-        put(name, onlyBookFolder + nav_id);
+        String hasName = "has" + name.substring(0, 1).toUpperCase() + name.substring(1);
+        boolean has = !nav_id.equals(seiteId);
+        String link = onlyBookFolder + nav_id;
+        if (!has && booklink != null) {
+            has = true;
+            link = booklink;
+        }
+        put(hasName, has);
+        put(name, link);
     }
     
     private String getTabCode(NavigateService nav0, SeiteSO seiteSO, String seiteId, String onlyBookFolder) {

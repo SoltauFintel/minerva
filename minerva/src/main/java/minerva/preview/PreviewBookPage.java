@@ -30,14 +30,20 @@ public class PreviewBookPage extends BPage {
                 + " - " + n("preview") + " " + lang.toUpperCase() + TITLE_POSTFIX);
         put("titel", esc(book.getBook().getTitle().getString(lang)));
         put("hasPrevlink", false);
-        put("hasNextlink", false);
+        boolean hasSeiten = !book.getSeiten().isEmpty();
+        put("hasNextlink", hasSeiten);
+        String linkPrefix = "/p/" + branch + "/" + esc(customer) + "/";
+        if (hasSeiten) {
+            String id = book.getSeiten().get(0).getId();
+            put("nextlink", linkPrefix + book.getBook().getFolder() + "/" + lang + "/" + id);
+        }
         
         DataList list = list("books");
         for (BookSO b : books) {
             if (b.hasContent(lang, sv)) {
                 DataMap map = list.add();
                 map.put("title", esc(b.getBook().getTitle().getString(lang)));
-                map.put("link", "/p/" + branch + "/" + esc(customer) + "/" + b.getBook().getFolder() + "/" + lang);
+                map.put("link", linkPrefix + b.getBook().getFolder() + "/" + lang);
             }
         }
         
