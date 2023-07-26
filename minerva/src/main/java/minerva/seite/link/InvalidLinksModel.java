@@ -3,9 +3,9 @@ package minerva.seite.link;
 import java.util.ArrayList;
 import java.util.List;
 
+import minerva.access.CommitMessage;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
-import minerva.persistence.gitlab.git.CommitMessage;
 
 /**
  * Invalid links for LinksResolverPage

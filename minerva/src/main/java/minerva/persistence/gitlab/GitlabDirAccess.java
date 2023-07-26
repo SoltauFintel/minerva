@@ -9,9 +9,9 @@ import org.gitlab4j.api.GitLabApiException;
 
 import minerva.MinervaWebapp;
 import minerva.access.AbstractDirAccess;
+import minerva.access.CommitMessage;
 import minerva.model.GitlabRepositorySO;
 import minerva.model.WorkspaceSO;
-import minerva.persistence.gitlab.git.CommitMessage;
 import minerva.seite.move.IMoveFile;
 import minerva.seite.move.MoveFile;
 import minerva.user.User;

@@ -17,10 +17,10 @@ import com.google.gson.Gson;
 import github.soltaufintel.amalia.base.IdGenerator;
 import github.soltaufintel.amalia.mail.Mail;
 import minerva.MinervaWebapp;
+import minerva.access.CommitMessage;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.base.StringService;
 import minerva.config.MinervaConfig;
-import minerva.persistence.gitlab.git.CommitMessage;
 import minerva.seite.Note;
 
 public class NotesSO {

@@ -3,10 +3,10 @@ package minerva.model;
 import java.util.Set;
 import java.util.TreeSet;
 
+import minerva.access.CommitMessage;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
-import minerva.persistence.gitlab.git.CommitMessage;
 
 public class ExclusionsSO {
     public static final String DN = "exclusions.txt";

@@ -19,6 +19,7 @@ import org.pmw.tinylog.Logger;
 import com.google.gson.Gson;
 
 import minerva.MinervaWebapp;
+import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.base.NlsString;
@@ -26,7 +27,6 @@ import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
-import minerva.persistence.gitlab.git.CommitMessage;
 import minerva.seite.IPageChangeStrategy;
 import minerva.seite.NotifyWatchers;
 import minerva.seite.PageChange;

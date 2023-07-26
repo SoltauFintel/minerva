@@ -3,7 +3,7 @@ package minerva.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import minerva.persistence.gitlab.git.CommitMessage;
+import minerva.access.CommitMessage;
 import minerva.seite.tag.TagNList;
 
 public class TagsSO {

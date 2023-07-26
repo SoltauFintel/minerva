@@ -18,6 +18,7 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.transport.RefSpec;
 import org.pmw.tinylog.Logger;
 
+import minerva.access.CommitMessage;
 import minerva.base.StringService;
 import minerva.model.GitFactory;
 import minerva.persistence.gitlab.GitlabUser;

@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Set;
 
 import minerva.model.WorkspaceSO;
-import minerva.persistence.gitlab.git.CommitMessage;
 import minerva.seite.move.IMoveFile;
 import minerva.user.User;
 

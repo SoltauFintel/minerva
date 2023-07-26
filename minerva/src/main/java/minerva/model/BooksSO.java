@@ -6,6 +6,7 @@ import java.util.Map;
 
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
+import minerva.access.CommitMessage;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.base.FileService;
 import minerva.base.MList;
@@ -14,7 +15,6 @@ import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.book.Book;
 import minerva.book.Books;
-import minerva.persistence.gitlab.git.CommitMessage;
 
 public class BooksSO extends MList<BookSO> {
     private static final String DN = "books.json";

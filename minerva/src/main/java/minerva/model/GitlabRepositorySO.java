@@ -9,11 +9,11 @@ import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.pmw.tinylog.Logger;
 
+import minerva.access.CommitMessage;
 import minerva.base.FileService;
 import minerva.base.UserMessage;
 import minerva.persistence.gitlab.GitlabAuthService;
 import minerva.persistence.gitlab.GitlabUser;
-import minerva.persistence.gitlab.git.CommitMessage;
 import minerva.persistence.gitlab.git.GitService;
 import minerva.persistence.gitlab.git.HCommit;
 

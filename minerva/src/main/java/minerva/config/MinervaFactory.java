@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.auth.LoginService;
 import minerva.base.FileService;
@@ -17,7 +18,6 @@ import minerva.persistence.filesystem.FileSystemDirAccess;
 import minerva.persistence.filesystem.FileSystemLoginService;
 import minerva.persistence.gitlab.GitlabDirAccess;
 import minerva.persistence.gitlab.GitlabLoginService;
-import minerva.persistence.gitlab.git.CommitMessage;
 import minerva.seite.IPageChangeStrategy;
 import minerva.seite.PageChange;
 

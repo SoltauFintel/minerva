@@ -11,7 +11,6 @@ import com.google.gson.Gson;
 
 import minerva.base.StringService;
 import minerva.model.WorkspaceSO;
-import minerva.persistence.gitlab.git.CommitMessage;
 
 /**
  * Adds more generic functions to less-methods DirAccess interface

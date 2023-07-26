@@ -2,8 +2,8 @@ package minerva.subscription;
 
 import java.util.List;
 
+import minerva.access.CommitMessage;
 import minerva.base.StringService;
-import minerva.persistence.gitlab.git.CommitMessage;
 import minerva.seite.SAction;
 
 public class AddMappingAction extends SAction {

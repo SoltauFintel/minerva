@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 
+import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.book.Book;
 import minerva.exclusions.ExclusionsService;
-import minerva.persistence.gitlab.git.CommitMessage;
 import minerva.seite.Breadcrumb;
 import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.Seite;
