@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -13,7 +12,6 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand.ListMode;
 import org.eclipse.jgit.api.RmCommand;
 import org.eclipse.jgit.api.errors.EmptyCommitException;
-import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
 import org.eclipse.jgit.api.errors.RefNotFoundException;
 import org.eclipse.jgit.revwalk.RevCommit;
@@ -48,17 +46,6 @@ public class GitService {
     public GitService(File workspace, boolean onlyRemoteBranches) {
         this.workspace = workspace;
         this.onlyRemoteBranches = onlyRemoteBranches;
-    }
-    
-    /**
-     * Git init action creates a new local Git repository.
-     */
-    public void init() {
-        try {
-            Git.init().setDirectory(workspace).call();
-        } catch (Exception e) {
-            throw new RuntimeException("Error creating new Git repository!", e);
-        }
     }
 
     /**
@@ -131,147 +118,21 @@ public class GitService {
     }
 
     /**
-     * @return list of tags. A Tag contains the tag name and its HEAD commit.
-     */
-    public List<Tag> getTags() {
-        try (Git git = Git.open(workspace)) {
-            return git.tagList()
-                    .call()
-                    .stream()
-                    .map(ref -> new Tag(ref, git))
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            throw new RuntimeException("Error loading tags!", e);
-        }
-    }
-    
-    /**
-     * @return list of tag names
-     */
-    public List<String> getTagNames() {
-        return getTags().stream().map(Tag::getName).collect(Collectors.toList());
-    }
-    
-    /**
      * onlyRemoteBranches setting is used.
-     * @return branch list
+     * @return branch name list
      */
-    public List<Branch> getBranches() {
+    public List<String> getBranchNames() {
         try (Git git = Git.open(workspace)) {
             return git.branchList()
                     .setListMode(onlyRemoteBranches ? ListMode.REMOTE : ListMode.ALL)
                     .call()
                     .stream()
                     .filter(ref -> !"HEAD".equals(ref.getName()))
-                    .map(ref -> new Branch(ref, git))
+                    .map(ref -> ref.getName())
                     .collect(Collectors.toList());
         } catch (Exception e) {
             throw new RuntimeException("Error loading branches!", e);
         }
-    }
-    
-    /**
-     * onlyRemoteBranches setting is used.
-     * @return branch name list
-     */
-    public List<String> getBranchNames() {
-        return getBranches().stream()
-                .map(b -> b.getName())
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Creates tag on current commit.
-     * See other tag() method if you also want to push the commit.
-     * @param tagName e.g. "3.18.4"
-     */
-    public void tag(String tagName) {
-        tag(tagName, null, null);
-    }
-    
-    /**
-     * Creates tag on given commit and pushs it.
-     * @param tagName e.g. "3.18.4"
-     * @param commit null: current commit, otherwise commit hash or tag name
-     * @param user user to log into remote Git repository, null: don't push
-     */
-    public void tag(String tagName, String commit, GitlabUser user) {
-        // TO.DO Maybe there's an better implementation for this!
-        String m = null;
-        if (commit != null) {
-            m = getCurrentBranch();
-            selectCommit(commit);
-        }
-        try {
-            tag(tagName, user);
-        } finally {
-            if (commit != null) {
-                switchToBranch(m);
-            }
-        }
-    }
-    
-    private void tag(String tagName, GitlabUser user) {
-        String action = "creating";
-        try (Git git = Git.open(workspace)) {
-            // step 1: create
-            git.tag()
-                .setName(tagName)
-                .setMessage(tagName)
-                .call();
-            
-            // step 2: push
-            if (user != null) {
-                try {
-                    action = "pushing";
-                    git.push()
-                        .setPushTags()
-                        .setRefSpecs(new RefSpec(tagName))
-                        .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
-                        .call();
-                } catch (Exception up) {
-                    try {
-                        deleteTag(tagName, git);
-                        Logger.warn("tag push error! -> compensation: local tag " + tagName + " deleted");
-                    } catch (Throwable ignore) { //
-                    }
-                    throw up;
-                }
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Error " + action + " a tag!", e);
-        }
-    }
-    
-    /**
-     * Delete local tag
-     * @param tagName e.g. "3.12.4"
-     */
-    public void deleteTag(String tagName) {
-        try (Git git = Git.open(workspace)) {
-            deleteTag(tagName, git);
-        } catch (Exception e) {
-            throw new RuntimeException("Error deleting local tag " + tagName, e);
-        }
-    }
-    
-    /**
-     * Delete all tags that a returned by getTags(). Does no push.
-     */
-    public void clearTags() {
-        try (Git git = Git.open(workspace)) {
-            for (Tag tag : getTags()) {
-                deleteTag(tag.getName(), git);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Error deleting all local tags!", e);
-        }
-    }
-    
-    private void deleteTag(String tagName, Git git) throws GitAPIException {
-        git.tagDelete()
-            .setTags(tagName)
-            .call();
     }
 
     /**
@@ -403,15 +264,6 @@ public class GitService {
         }
     }
     
-    public Commit getCurrentCommit() {
-        try (Git git = Git.open(workspace)) {
-            Iterator<RevCommit> iter = git.log().setMaxCount(1).call().iterator();
-            return iter.hasNext() ? new Commit(iter.next()) : null;
-        } catch (Exception e) {
-            throw new RuntimeException("Error getting current commit!", e);
-        }
-    }
-    
     /**
      * @return e.g. "master"
      */
@@ -476,14 +328,6 @@ public class GitService {
         }
     }
 
-    public Commit getMasterHead() {
-        Optional<Branch> result = getBranches().stream().filter(b -> "master".equals(b.getName())).findFirst();
-        if (result.isPresent()) {
-            return result.orElse(null).getHead();
-        }
-        throw new RuntimeException("There is no master branch!");
-    }
-    
     public List<HCommit> getFileHistory(String file, boolean followRenames) {
         try (Git git = Git.open(workspace)) {
             Iterable<RevCommit> commits;
