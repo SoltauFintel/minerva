@@ -19,26 +19,23 @@ import minerva.model.WorkspaceSO;
 public class PublishService {
     private final List<String> langs;
     
-    public PublishService(List<String> langs) {
-        this.langs = langs;
-    }
-    
-    public static File loginAndPublish(String langsStr, String login, String password, String branch) {
-        List<String> langs = new ArrayList<>();
+    public PublishService(String langsStr) {
+        langs = new ArrayList<>();
         for (String lang : langsStr.split(",")) {
             langs.add(lang);
         }
         if (langs.isEmpty()) {
             throw new RuntimeException("Parameter lang must not be empty!");
         }
-
-        UserSO userSO = new UserSO(MinervaWebapp.factory().getLoginService().login(login, password));
-        WorkspaceSO workspace = userSO.getWorkspace(branch);
-
-        return new PublishService(langs).publish(workspace);
     }
 
-    public File publish(WorkspaceSO workspace) {
+    public File loginAndPublish(String login, String password, String branch) {
+        UserSO userSO = new UserSO(MinervaWebapp.factory().getLoginService().login(login, password));
+        WorkspaceSO workspace = userSO.getWorkspace(branch);
+        return publish(workspace);
+    }
+
+    private File publish(WorkspaceSO workspace) {
         File targetFolder = MinervaWebapp.factory().getWorkFolder("publish");
         FileService.deleteFolder(targetFolder);
         targetFolder.mkdirs();
@@ -88,11 +85,7 @@ public class PublishService {
         for (SeiteSO seite : seiten) {
             // collect page data
             for (String lang : langs) {
-                TocEntry p = new TocEntry(); // needed fields: id,subpages,labels,title,helpKeys
-                p.setId(seite.getId());
-                p.setTitle(seite.getSeite().getTitle().getString(lang));
-                p.getLabels().addAll(seite.getSeite().getTags());
-                p.getHelpKeys().addAll(seite.getSeite().getHelpKeys());
+                TocEntry p = createTocEntry(seite, lang);
                 parent.get(lang).getSubpages().add(p);
                 pages.put(lang, p);
 
@@ -110,5 +103,14 @@ public class PublishService {
 
             copyHtmlAndImg(seite.getSeiten(), pages, targetFolder); // recursive
         }
+    }
+
+    private TocEntry createTocEntry(SeiteSO seite, String lang) {
+        TocEntry p = new TocEntry(); // needed fields: id,subpages,labels,title,helpKeys
+        p.setId(seite.getId());
+        p.setTitle(seite.getSeite().getTitle().getString(lang));
+        p.getLabels().addAll(seite.getSeite().getTags());
+        p.getHelpKeys().addAll(seite.getSeite().getHelpKeys());
+        return p;
     }
 }

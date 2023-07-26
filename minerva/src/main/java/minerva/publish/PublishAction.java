@@ -26,18 +26,14 @@ public class PublishAction extends Action {
         }
         
         synchronized (handle) {
-            File targetFolder = PublishService.loginAndPublish(langs, login, password, branch);
+            File targetFolder = new PublishService(langs).loginAndPublish(login, password, branch);
             downloadFolderAsZip(targetFolder, ctx);
         }
         Logger.info("PublishAction finished");
     }
     
     public static void downloadFolderAsZip(File sourceFolder, Context ctx) {
-        downloadFolderAsZip(sourceFolder, sourceFolder.getName(), ctx);
-    }
-    
-    public static void downloadFolderAsZip(File sourceFolder, String name, Context ctx) {
-        File zipFile = new File(sourceFolder.getParentFile(), name + ".zip");
+        File zipFile = new File(sourceFolder.getParentFile(), sourceFolder.getName() + ".zip");
         FileService.zip(sourceFolder, zipFile);
         
         ctx.res.type("application/zip");
