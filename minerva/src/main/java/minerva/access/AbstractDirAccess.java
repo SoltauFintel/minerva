@@ -13,8 +13,8 @@ import org.apache.commons.io.FileUtils;
 import org.pmw.tinylog.Logger;
 
 import minerva.base.FileService;
-import minerva.git.CommitMessage;
 import minerva.model.WorkspaceSO;
+import minerva.persistence.gitlab.git.CommitMessage;
 import minerva.seite.move.ChangeFile;
 import minerva.seite.move.IMoveFile;
 import minerva.seite.move.MoveFile;

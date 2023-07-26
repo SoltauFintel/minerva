@@ -26,7 +26,7 @@ import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
-import minerva.git.CommitMessage;
+import minerva.persistence.gitlab.git.CommitMessage;
 import minerva.seite.IPageChangeStrategy;
 import minerva.seite.NotifyWatchers;
 import minerva.seite.PageChange;

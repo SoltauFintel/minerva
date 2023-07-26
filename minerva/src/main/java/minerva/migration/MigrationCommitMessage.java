@@ -1,6 +1,6 @@
 package minerva.migration;
 
-import minerva.git.CommitMessage;
+import minerva.persistence.gitlab.git.CommitMessage;
 
 public class MigrationCommitMessage extends CommitMessage {
 

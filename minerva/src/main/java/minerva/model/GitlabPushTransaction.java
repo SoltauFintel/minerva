@@ -9,11 +9,11 @@ import java.util.stream.Collectors;
 import org.gitlab4j.api.GitLabApiException;
 import org.pmw.tinylog.Logger;
 
-import minerva.git.CommitMessage;
-import minerva.git.GitService;
-import minerva.git.MinervaEmptyCommitException;
 import minerva.persistence.gitlab.GitlabUser;
 import minerva.persistence.gitlab.MergeRequestService;
+import minerva.persistence.gitlab.git.CommitMessage;
+import minerva.persistence.gitlab.git.GitService;
+import minerva.persistence.gitlab.git.MinervaEmptyCommitException;
 
 /**
  * Sub class for GitlabRepositorySO.

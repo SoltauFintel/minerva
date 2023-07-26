@@ -14,7 +14,7 @@ import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.book.Book;
 import minerva.book.Books;
-import minerva.git.CommitMessage;
+import minerva.persistence.gitlab.git.CommitMessage;
 
 public class BooksSO extends MList<BookSO> {
     private static final String DN = "books.json";

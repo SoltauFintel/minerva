@@ -20,7 +20,7 @@ import minerva.MinervaWebapp;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.base.StringService;
 import minerva.config.MinervaConfig;
-import minerva.git.CommitMessage;
+import minerva.persistence.gitlab.git.CommitMessage;
 import minerva.seite.Note;
 
 public class NotesSO {

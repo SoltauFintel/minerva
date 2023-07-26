@@ -1,4 +1,4 @@
-package minerva.git;
+package minerva.persistence.gitlab.git;
 // https://stackoverflow.com/a/11504177
 
 import java.io.IOException;

@@ -3,7 +3,7 @@ package minerva.subscription;
 import java.util.List;
 
 import minerva.base.StringService;
-import minerva.git.CommitMessage;
+import minerva.persistence.gitlab.git.CommitMessage;
 import minerva.seite.SAction;
 
 public class AddMappingAction extends SAction {

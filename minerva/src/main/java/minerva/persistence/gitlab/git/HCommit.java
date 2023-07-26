@@ -1,4 +1,4 @@
-package minerva.git;
+package minerva.persistence.gitlab.git;
 
 import java.io.IOException;
 import java.time.ZoneId;

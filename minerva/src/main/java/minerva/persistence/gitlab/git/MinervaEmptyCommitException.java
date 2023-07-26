@@ -1,4 +1,4 @@
-package minerva.git;
+package minerva.persistence.gitlab.git;
 
 public class MinervaEmptyCommitException extends RuntimeException {
 

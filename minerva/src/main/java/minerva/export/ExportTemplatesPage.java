@@ -7,7 +7,7 @@ import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.templating.ColumnFormularGenerator;
 import github.soltaufintel.amalia.web.templating.TemplatesInitializer;
-import minerva.git.CommitMessage;
+import minerva.persistence.gitlab.git.CommitMessage;
 import minerva.workspace.WPage;
 
 /**

@@ -9,7 +9,6 @@ import minerva.access.DirAccess;
 import minerva.auth.LoginService;
 import minerva.base.FileService;
 import minerva.base.NlsString;
-import minerva.git.CommitMessage;
 import minerva.model.GitlabRepositorySO;
 import minerva.model.GitlabSystemSO;
 import minerva.model.SeiteSO;
@@ -18,6 +17,7 @@ import minerva.persistence.filesystem.FileSystemDirAccess;
 import minerva.persistence.filesystem.FileSystemLoginService;
 import minerva.persistence.gitlab.GitlabDirAccess;
 import minerva.persistence.gitlab.GitlabLoginService;
+import minerva.persistence.gitlab.git.CommitMessage;
 import minerva.seite.IPageChangeStrategy;
 import minerva.seite.PageChange;
 

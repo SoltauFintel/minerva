@@ -1,4 +1,4 @@
-package minerva.git;
+package minerva.persistence.gitlab.git;
 
 import minerva.MinervaWebapp;
 import minerva.base.StringService;

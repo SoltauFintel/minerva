@@ -11,11 +11,11 @@ import org.pmw.tinylog.Logger;
 
 import minerva.base.FileService;
 import minerva.base.UserMessage;
-import minerva.git.CommitMessage;
-import minerva.git.GitService;
-import minerva.git.HCommit;
 import minerva.persistence.gitlab.GitlabAuthService;
 import minerva.persistence.gitlab.GitlabUser;
+import minerva.persistence.gitlab.git.CommitMessage;
+import minerva.persistence.gitlab.git.GitService;
+import minerva.persistence.gitlab.git.HCommit;
 
 public class GitlabRepositorySO {
     private final GitlabSystemSO gitlab;

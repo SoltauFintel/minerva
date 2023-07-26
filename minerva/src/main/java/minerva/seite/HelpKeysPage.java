@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import minerva.git.CommitMessage;
+import minerva.persistence.gitlab.git.CommitMessage;
 
 public class HelpKeysPage extends SPage {
 

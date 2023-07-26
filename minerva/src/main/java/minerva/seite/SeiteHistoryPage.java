@@ -9,8 +9,8 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.MinervaWebapp;
-import minerva.git.HCommit;
 import minerva.model.GitlabRepositorySO;
+import minerva.persistence.gitlab.git.HCommit;
 
 public class SeiteHistoryPage extends SPage {
 
