@@ -1,6 +1,7 @@
 package minerva.publish;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import minerva.base.FileService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
+import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
 
 public class PublishService {
@@ -20,6 +22,21 @@ public class PublishService {
     // TODO Wird hier sichergestellt, dass der TargetFolder frisch ist?
     public PublishService(List<String> langs) {
         this.langs = langs;
+    }
+    
+    public static File loginAndPublish(String langsStr, String login, String password, String branch) {
+        List<String> langs = new ArrayList<>();
+        for (String lang : langsStr.split(",")) {
+            langs.add(lang);
+        }
+        if (langs.isEmpty()) {
+            throw new RuntimeException("Parameter lang must not be empty!");
+        }
+
+        UserSO userSO = new UserSO(MinervaWebapp.factory().getLoginService().login(login, password));
+        WorkspaceSO workspace = userSO.getWorkspace(branch);
+
+        return new PublishService(langs).publish(workspace);
     }
 
     public File publish(WorkspaceSO workspace) {

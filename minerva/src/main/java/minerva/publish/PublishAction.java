@@ -5,17 +5,12 @@ import static minerva.base.StringService.isNullOrEmpty;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.web.action.Action;
 import minerva.base.FileService;
-import minerva.model.UserSO;
-import minerva.model.WorkspaceSO;
-import minerva.persistence.gitlab.GitlabUser;
 
 public class PublishAction extends Action {
     private static String handle = "handle";
@@ -25,27 +20,16 @@ public class PublishAction extends Action {
         String branch = ctx.queryParam("branch");
         String login = ctx.queryParam("login");
         String password = ctx.queryParam("password");
-        String langsStr = ctx.queryParam("lang"); // should be "de,en"
-        if (isNullOrEmpty(branch) || isNullOrEmpty(login) || isNullOrEmpty(password) || isNullOrEmpty(langsStr)) {
+        String langs = ctx.queryParam("lang"); // should be "de,en"
+        if (isNullOrEmpty(branch) || isNullOrEmpty(login) || isNullOrEmpty(password) || isNullOrEmpty(langs)) {
             throw new RuntimeException("Missing parameter");
         }
-
-        List<String> langs = new ArrayList<>();
-        for (String lang : langsStr.split(",")) {
-            langs.add(lang);
-        }
-        if (langs.isEmpty()) {
-            throw new RuntimeException("Parameter lang must not be empty!");
-        }
+        
         synchronized (handle) {
-            UserSO userSO = new UserSO(new GitlabUser(login, password));
-            WorkspaceSO workspace = userSO.getWorkspace(branch);
-    
-            File targetFolder = new PublishService(langs).publish(workspace);
+            File targetFolder = PublishService.loginAndPublish(langs, login, password, branch);
             downloadFolderAsZip(targetFolder, ctx);
-    
-            Logger.info("PublishAction finished");
         }
+        Logger.info("PublishAction finished");
     }
     
     public static void downloadFolderAsZip(File sourceFolder, Context ctx) {
