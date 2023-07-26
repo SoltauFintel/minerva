@@ -216,8 +216,22 @@ public class MultiPageHtmlExportService extends GenericExportService {
     private String addDotHtml(String html) {
         List<Link> links = LinkService.extractLinks(html, false);
         for (Link link : links) {
-            if (!(link.getHref().startsWith("http://") || link.getHref().startsWith("https://"))) {
-                html = html.replace("<a href=\"" + link.getHref() + "\">", "<a href=\"" + link.getHref() + ".html\">");
+            String href = link.getHref();
+            if (!href.startsWith("http://") && !href.startsWith("https://")) {
+                String newHref;
+                int o = href.lastIndexOf("#");
+                if (o >= 0) {
+                    String li = href.substring(0, o);
+                    String re = href.substring(o);
+                    if (li.endsWith(".html")) {
+                        continue; // replace not necessary
+                    } else {
+                        newHref = li + ".html" + re;
+                    }
+                } else {
+                    newHref = href + ".html";
+                }
+                html = html.replace("<a href=\"" + href + "\">", "<a href=\"" + newHref + "\">");
             }
         }
         return html;
