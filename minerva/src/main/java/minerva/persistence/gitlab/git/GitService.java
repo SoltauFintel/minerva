@@ -123,13 +123,15 @@ public class GitService {
      * @return branch name list
      */
     public List<String> getBranchNames() {
+        final String LOCAL = "refs/heads/";
+        final String REMOTE = "refs/remotes/origin/";
         try (Git git = Git.open(workspace)) {
             return git.branchList()
                     .setListMode(onlyRemoteBranches ? ListMode.REMOTE : ListMode.ALL)
                     .call()
                     .stream()
                     .filter(ref -> !"HEAD".equals(ref.getName()))
-                    .map(ref -> ref.getName())
+                    .map(ref -> ref.getName().replace(LOCAL, "").replace(REMOTE, ""))
                     .collect(Collectors.toList());
         } catch (Exception e) {
             throw new RuntimeException("Error loading branches!", e);

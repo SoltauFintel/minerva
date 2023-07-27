@@ -32,6 +32,7 @@ public class UserSO {
     private SeitenSO orderPagesModel; // SeitenSO working copy
     /** branch list */
     private final Set<String> hasToPull = new HashSet<>();
+    private String lastSelectedBranch;
     
     public UserSO(User user) {
         this.user = user;
@@ -69,9 +70,21 @@ public class UserSO {
     }
 
     public void setCurrentWorkspace(WorkspaceSO currentWorkspace) {
+        String name = currentWorkspace.getBranch();
+        if (!"master".equals(name)) {
+            lastSelectedBranch = name;
+        }
         this.currentWorkspace = currentWorkspace;
     }
     
+    public String getLastSelectedBranch() {
+        return lastSelectedBranch;
+    }
+
+    public void setLastSelectedBranch(String lastSelectedBranch) {
+        this.lastSelectedBranch = lastSelectedBranch;
+    }
+
     /**
      * @param branch -
      * @param bookFolder -
@@ -233,7 +246,7 @@ public class UserSO {
         }
         return null;
     }
-    
+
     public static class LoginAndEndTime {
         /** locked by user */
         private final String login;

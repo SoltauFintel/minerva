@@ -45,7 +45,8 @@ public class MergeBranchPage extends UPage {
             header(n("mergeBranch"));
             put("branch", esc(branch));
             put("mergeInfo", esc(n("mergeInfo").replace("$t", branch)));
-            combobox("branches", branches, branches.get(0), false, model);
+            String select = user.getLastSelectedBranch() == null ? branches.get(0) : user.getLastSelectedBranch();
+            combobox("branches", branches, select, false, model);
             ColumnFormularGenerator gen = new ColumnFormularGenerator(1, 1);
             initColumnFormularGenerator(gen);
             TemplatesInitializer.fp.setContent(gen
