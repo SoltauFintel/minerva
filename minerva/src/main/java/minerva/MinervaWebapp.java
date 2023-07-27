@@ -90,7 +90,7 @@ import minerva.workspace.CreateBranchPage;
 import minerva.workspace.CurrentWorkspaceAction;
 import minerva.workspace.DeleteWorkspacePage;
 import minerva.workspace.MergeBranchPage;
-import minerva.workspace.PullWorkspace;
+import minerva.workspace.PullWorkspaceAction;
 import minerva.workspace.WorkspaceHistoryPage;
 import minerva.workspace.WorkspacesPage;
 
@@ -104,7 +104,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/", WorkspacesPage.class);
         get("/w", CurrentWorkspaceAction.class);
         get("/w/:branch", BooksPage.class);
-        get("/w/:branch/pull", PullWorkspace.class);
+        get("/w/:branch/pull", PullWorkspaceAction.class);
         form("/w/:branch/exclusions/edit", ExclusionsEditPage.class);
         get("/w/:branch/delete", DeleteWorkspacePage.class);
         get("/w/:branch/my-tasks", MyTasksPage.class);

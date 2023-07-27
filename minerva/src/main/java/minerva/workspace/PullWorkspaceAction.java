@@ -1,17 +1,15 @@
 package minerva.workspace;
 
 import minerva.base.StringService;
-import minerva.user.UAction;
 
-public class PullWorkspace extends UAction {
+public class PullWorkspaceAction extends WAction {
 
     @Override
     protected void execute() {
-        String branch = ctx.pathParam("branch");
         boolean force = "1".equals(ctx.queryParam("force"));
         String book = ctx.queryParam("book");
         
-        user.getWorkspace(branch).pull(force);
+        workspace.pull(force);
 
         if (StringService.isNullOrEmpty(book)) {
             ctx.redirect("/w/" + branch);
