@@ -62,7 +62,7 @@
                     <div class="col-lg-12 mwtab" style="border: 1px solid #ddd; border-top: 0px white;">
                         {{if hasEditorsNote}}
                             <div id="enDIV" style="background-color: #ff9; margin-top: 1em; padding: .5em; max-width: 40%; min-width: 10%; min-height: 7em; float: right;"><div style="text-align: center;"><i
-                                class="fa fa-thumb-tack" style="font-size: 13pt;" onclick="document.querySelector('#enDIV').remove();"
+                                class="fa fa-thumb-tack" style="font-size: 13pt;" onclick="$('#enDIV').fadeOut(2000);"
                                 title="{{N.clickToRemove}}"></i></div>{{editorsNoteBR}}</div>
                         {{/if}}
                         <div class="breadcrumbs">
