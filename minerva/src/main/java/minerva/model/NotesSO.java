@@ -32,8 +32,6 @@ public class NotesSO {
     }
    
     public void addNote(String text, List<String> persons, String parentId) {
-// TODO ich muss dann eher die notes neu laden       UpToDateCheckService.check(seite, () -> seite = seite.getMeAsFreshInstance());
-
         Note note = new Note();
         note.setId(IdGenerator.createId6());
         note.setParentId(parentId == null ? "" : parentId);
