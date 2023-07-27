@@ -8,6 +8,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Escaper;
+import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -83,6 +84,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("ctrlS", n("ctrlS"));
         levellist("levellist", seite.getTocHeadingsLevels());
         levellist("levellist2", seite.getTocSubpagesLevels());
+        put("editorsNote", esc(seite.getEditorsNote()));
+        put("editorsNoteBR", esc(seite.getEditorsNote()).replace("\n", "<br/>"));
+        put("hasEditorsNote", !StringService.isNullOrEmpty(seite.getEditorsNote()));
         header(modifyHeader(seiteSO.getTitle()));
 
         fillLinks(branch, bookFolder, id, seiteSO, seite);

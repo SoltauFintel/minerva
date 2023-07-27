@@ -31,6 +31,10 @@
                     {{if gitlab}}
                         <li><a href="{{viewlink}}/history"><i class="fa fa-clock-o"></i> {{N.history}}</a></li>
                     {{/if}}
+                    {{if isAdmin}}
+                        <li style="background-color: #ff9;"><a href="#" data-toggle="modal" data-target="#editorsnoteModal"><i class="fa fa-thumb-tack"></i>
+                            {{N.editorsNote}}</a></li>
+                    {{/if}}
                     {{if isCustomerVersion}}
                         <li><a href="{{viewlink}}/help-keys"><i class="fa fa-question-circle"></i>
                             {{N.helpKeys}} ({{helpKeysSize}})</a></li>
@@ -56,6 +60,9 @@
             {{each L in languages}}
                 <div role="tabpanel" class="tab-pane{{if L.active}} active{{/if}}" id="{{L.lang}}">
                     <div class="col-lg-12 mwtab" style="border: 1px solid #ddd; border-top: 0px white;">
+                        {{if hasEditorsNote}}
+                            <div style="background-color: #ff9; margin-top: 1em; padding: .5em; width: 40%; float: right;"><i class="fa fa-thumb-tack"></i> {{editorsNoteBR}}</div>
+                        {{/if}}
                         <div class="breadcrumbs">
                             {{each b in L.breadcrumbs}}
                                 {{if b.first}}<i class="fa fa-book greenbook"></i>{{/if}}
@@ -195,6 +202,35 @@
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary br" onclick=" document.querySelector('#ssave').style='';">{{N.save}}
                     <i id="ssave" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{N.cancel}}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal dialog for Editor's note -->
+<div class="modal fade" id="editorsnoteModal" tabindex="-1" role="dialog" aria-labelledby="meinModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="form" class="form-horizontal" action="{{viewlink}}/editorsnote" method="POST">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                        aria-hidden="true">&times;</span><span
+                        class="sr-only">{{N.close}}</span></button>
+                    <h4 class="modal-title">{{N.editorsNote}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <textarea class="form-control" rows="4" name="editorsnote">{{editorsNote}}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary br" onclick=" document.querySelector('#ssave2').style='';">{{N.save}}
+                    <i id="ssave2" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">{{N.cancel}}</button>
                 </div>
             </div>

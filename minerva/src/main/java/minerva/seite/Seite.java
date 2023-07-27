@@ -29,6 +29,7 @@ public class Seite {
     private final List<PageChange> changes = new ArrayList<>();
     private int tocHeadingsLevels = 0;
     private int tocSubpagesLevels = 0;
+    private String editorsNote;
 
     public Seite() {
     }
@@ -124,5 +125,13 @@ public class Seite {
 
     public void setTocSubpagesLevels(int tocSubpagesLevels) {
         this.tocSubpagesLevels = tocSubpagesLevels;
+    }
+
+    public String getEditorsNote() {
+        return editorsNote;
+    }
+
+    public void setEditorsNote(String editorsNote) {
+        this.editorsNote = editorsNote;
     }
 }

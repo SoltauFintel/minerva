@@ -56,6 +56,7 @@ import minerva.seite.LockedByPage;
 import minerva.seite.OrderSeitePage;
 import minerva.seite.PostContentsAction;
 import minerva.seite.PullSeiteAction;
+import minerva.seite.SaveEditorsNoteAction;
 import minerva.seite.SeiteHistoryPage;
 import minerva.seite.SortSeiteAction;
 import minerva.seite.TocAction;
@@ -154,6 +155,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/s/:branch/:book/:id/links", LinkAnalysisPage.class);
         get("/s/:branch/:book/:id/export", ExportSeiteAction.class);
         post("/s/:branch/:book/:id/toc", TocAction.class);
+        post("/s/:branch/:book/:id/editorsnote", SaveEditorsNoteAction.class);
         
         // Image
         post("/s-image-upload/:branch/:book/:id", ImageUploadAction.class);

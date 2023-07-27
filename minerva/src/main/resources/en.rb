@@ -188,3 +188,4 @@ off=off
 tocHeadingsLevels=Levels for headings
 tocSubpagesLevels=Levels for subpages
 cantDeleteAllFiles=Not all files could be deleted!\nPlease contact the administrator. ID $id
+editorsNote=Editor's note
