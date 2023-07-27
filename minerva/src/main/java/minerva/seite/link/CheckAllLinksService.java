@@ -5,7 +5,6 @@ import java.util.List;
 
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
-import minerva.model.SeitenSO;
 
 public class CheckAllLinksService {
     private final BookSO book;
@@ -17,22 +16,13 @@ public class CheckAllLinksService {
     }
 
     public List<CALBrokenLink> getBrokenLinks() {
-        List<CALBrokenLink> ret=new ArrayList<>();
-        check(book.getSeiten(), ret);
+        List<CALBrokenLink> ret = new ArrayList<>();
+        for (SeiteSO seite : book.getAlleSeiten()) {
+            InvalidLinksModel invalidLinks = new InvalidLinksModel(seite, langs);
+            for (Link link : invalidLinks.getLinks()) {
+                ret.add(new CALBrokenLink(link, seite));
+            }
+        }
         return ret;
-    }
-
-    private void check(SeitenSO seiten, List<CALBrokenLink> links) {
-        for (SeiteSO seite : seiten) {
-            check(seite, links);
-            check(seite.getSeiten(), links);
-        }
-    }
-
-    private void check(SeiteSO seite, List<CALBrokenLink> links) {
-        InvalidLinksModel invalidLinks = new InvalidLinksModel(seite, langs);
-        for (Link link : invalidLinks.getLinks()) {
-            links.add(new CALBrokenLink(link, seite));
-        }
     }
 }

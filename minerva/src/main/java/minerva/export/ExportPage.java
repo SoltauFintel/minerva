@@ -12,7 +12,6 @@ import github.soltaufintel.amalia.web.templating.ColumnFormularGenerator;
 import github.soltaufintel.amalia.web.templating.TemplatesInitializer;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
-import minerva.model.SeitenSO;
 import minerva.model.UserSettingsSO;
 import minerva.model.WorkspaceSO;
 import minerva.workspace.WPage;
@@ -68,17 +67,16 @@ public class ExportPage extends WPage {
         items.add(n("allBooks") + " " + W);
         for (BookSO book : workspace.getBooks()) {
             items.add(book.getBook().getTitle().getString(lang) + " " + B + book.getBook().getFolder());
-            addPageTitles(book.getSeiten(), pageTitles);
+            addPageTitles(book, pageTitles);
         }
         pageTitles.sort((a, b) -> umlaute(a).compareTo(umlaute(b)));
         items.addAll(pageTitles);
         return items;
     }
 
-    private void addPageTitles(SeitenSO seiten, List<String> items) {
-        for (SeiteSO seite : seiten) {
+    private void addPageTitles(BookSO book, List<String> items) {
+        for (SeiteSO seite : book.getAlleSeiten()) {
             items.add(seite.getSeite().getTitle().getString(lang) + " " + S + seite.getId());
-            addPageTitles(seite.getSeiten(), items);
         }
     }
     

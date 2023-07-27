@@ -5,8 +5,8 @@ import java.util.List;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import minerva.model.BookSO;
 import minerva.model.SeiteSO;
-import minerva.model.SeitenSO;
 import minerva.seite.SPage;
 
 public class LinkAnalysisPage extends SPage {
@@ -32,7 +32,7 @@ public class LinkAnalysisPage extends SPage {
             }
         }
         // incoming links
-        analyze(book.getSeiten(), list);
+        analyze(book, list);
         put("hasLinks", !list.isEmpty());
     }
 
@@ -44,8 +44,8 @@ public class LinkAnalysisPage extends SPage {
         return s == null ? link.getTitle() : s.getSeite().getTitle().getString(lang);
     }
 
-    private void analyze(SeitenSO seiten, DataList list) {
-        for (SeiteSO s : seiten) {
+    private void analyze(BookSO book, DataList list) {
+        for (SeiteSO s : book.getAlleSeiten()) {
             for (String lang : langs) {
                 List<Link> links = LinkService.extractLinks(s.getContent().getString(lang), true);
                 for (Link link : links) {
@@ -61,7 +61,6 @@ public class LinkAnalysisPage extends SPage {
                     }
                 }
             }
-            analyze(s.getSeiten(), list); // recursive
         }
     }
 }

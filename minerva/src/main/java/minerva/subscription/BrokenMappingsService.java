@@ -5,7 +5,6 @@ import java.util.List;
 
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
-import minerva.model.SeitenSO;
 import minerva.model.WorkspaceSO;
 
 public class BrokenMappingsService {
@@ -19,21 +18,17 @@ public class BrokenMappingsService {
 
 	public List<BrokenMapping> getBrokenMappings(WorkspaceSO workspace) {
 		List<BrokenMapping> ret = new ArrayList<>();
-		for (BookSO book : workspace.getBooks()) {
-			collectBrokenMappings(book.getSeiten(), ret);
-		}
+        workspace.getBooks().forEach(book -> collectBrokenMappings(book, ret));
 		return ret;
 	}
 
-	private void collectBrokenMappings(SeitenSO seiten, List<BrokenMapping> brokenMappings) {
-		for (SeiteSO seite : seiten) {
+	private void collectBrokenMappings(BookSO book, List<BrokenMapping> brokenMappings) {
+		for (SeiteSO seite : book.getAlleSeiten()) {
 			for (String key : seite.getSeite().getHelpKeys()) {
 				if (!find(key)) {
 					brokenMappings.add(new BrokenMapping(seite, key));
 				}
 			}
-			
-			collectBrokenMappings(seite.getSeiten(), brokenMappings); // recursive
 		}
 	}
 	

@@ -72,8 +72,11 @@ public class BookSO {
         return seiten;
     }
 
-    // TODO Es gibt Stellen, wo ich rekursiv durch die Seiten gehe. Diese wenn sinnvoll auf getAllSeiten() umstellen, um den Code zu vereinfachen.
-    public List<SeiteSO> getAllSeiten() {
+    /**
+     * Use this method to get all pages and for writing an algo without recursion (if recursion isn't needed).
+     * @return all pages
+     */
+    public List<SeiteSO> getAlleSeiten() {
         List<SeiteSO> ret = new ArrayList<>();
         addSeiten(seiten, ret);
         return ret;

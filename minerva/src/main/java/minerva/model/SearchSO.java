@@ -37,9 +37,7 @@ public class SearchSO {
     public void indexBooks() {
         long start = System.currentTimeMillis();
         createSite();
-        for (BookSO book : workspace.getBooks()) {
-            index(book.getSeiten());
-        }
+        workspace.getBooks().forEach(book -> book.getAlleSeiten().forEach(seite -> index(seite))); // Index pages including all subpages
         long end = System.currentTimeMillis();
         Logger.info("All books of workspace " + workspace.getBranch() + " have been reindexed. "
                 + (end - start) + "ms");
@@ -55,17 +53,6 @@ public class SearchSO {
         }
     }
     
-    /**
-     * Index pages including all subpages
-     * @param seiten pages
-     */
-    private void index(SeitenSO seiten) {
-        for (SeiteSO seite : seiten) {
-            index(seite);
-            index(seite.getSeiten()); // recursive
-        }
-    }
-
     /**
      * Index single page excluding subpages
      * @param seite page
