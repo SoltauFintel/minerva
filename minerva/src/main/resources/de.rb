@@ -190,3 +190,4 @@ tocHeadingsLevels=Überschriften-Ebenen
 tocSubpagesLevels=Unterseiten-Ebenen
 cantDeleteAllFiles=Es konnten nicht alle Dateien gelöscht werden!\nBitte an Administrator wenden. ID $id
 editorsNote=Editor's note
+clickToRemove=Editor's note ausblenden
