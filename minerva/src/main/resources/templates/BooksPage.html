@@ -101,10 +101,6 @@
                         onclick="document.querySelector('#s3').style='';">{{N.reindex}}!
                         <i id="s3" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
                 {{/if}}
-                {{if migrationAllowed}}
-                    <a href="/migration/{{branch}}" class="btn btn-danger brr"><i class="fa fa-cloud-download"></i>
-                        Confluence Import...</a>
-                {{/if}}
                 {{if hasExportRight}}
                     <a href="/w/{{branch}}/export-what" class="btn btn-default brr"><i class="fa fa-download"></i>
                         {{N.export}}...</a>
@@ -143,5 +139,11 @@
                 <a href="/serverlog" class="btn btn-default brr"><i class="fa fa-paw"></i> {{N.serverlog}}</a>
             {{/if}}
         </p>
+        {{if migrationAllowed}}
+            <p>
+                <a href="/migration/{{branch}}" class="btn btn-danger brr"><i class="fa fa-cloud-download"></i>
+                    Confluence Import...</a>
+            </p>
+        {{/if}}
     </div>
 </div>
