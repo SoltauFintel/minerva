@@ -19,6 +19,7 @@ public class MyTasksPage extends UPage implements Uptodatecheck {
         AllNotesPage.fill(getNotes(branch), branch, model);
     }
 
+    // TODO move to Service class
     private List<NoteWithSeite> getNotes(String branch) {
         String login = user.getLogin();
         List<NoteWithSeite> notes = new ArrayList<>();

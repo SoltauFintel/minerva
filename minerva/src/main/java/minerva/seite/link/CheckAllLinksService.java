@@ -23,9 +23,9 @@ public class CheckAllLinksService {
     }
 
     private void check(SeitenSO seiten, List<CALBrokenLink> links) {
-        for (SeiteSO seite:seiten) {
+        for (SeiteSO seite : seiten) {
             check(seite, links);
-            check(seite.getSeiten(),links);
+            check(seite.getSeiten(), links);
         }
     }
 
