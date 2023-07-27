@@ -114,9 +114,10 @@ public class NotesSO {
                     .replace("{pageTitle}", seite.getTitle()) // no esc!
                     .replace("{bookFolder}", seite.getBook().getBook().getFolder())
                     .replace("{branch}", seite.getBook().getWorkspace().getBranch()));
+            String login = seite.getLogin();
             for (String person : persons) {
                 mail.setToEmailaddress(c.getMailAddress(person));
-                if (!StringService.isNullOrEmpty(mail.getToEmailaddress())) {
+                if (!StringService.isNullOrEmpty(mail.getToEmailaddress()) && !person.equals(login)) {
                     c.sendMail(mail);
                 }
             }
