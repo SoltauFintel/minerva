@@ -161,7 +161,7 @@ public class SeiteSO implements ISeite {
      * @return parent page
      */
     public SeiteSO getParent() {
-        return book.getSeiten().byId(seite.getParentId());
+        return book.seiteById(seite.getParentId());
     }
 
     public String getLogin() {
@@ -303,7 +303,7 @@ public class SeiteSO implements ISeite {
             seite.setPosition(book.getSeiten().calculateNextPosition());
             book.getSeiten().add(this);
         } else {
-            SeiteSO parentSeite = book.getSeiten().byId(parentId); // soll auch prüfen, ob parentId gültig ist
+            SeiteSO parentSeite = book.seiteById(parentId); // soll auch prüfen, ob parentId gültig ist
             seite.setPosition(parentSeite.getSeiten().calculateNextPosition());
             parentSeite.getSeiten().add(this);
         }
@@ -581,7 +581,7 @@ public class SeiteSO implements ISeite {
      * @return same page but as fresh instance from fresh book instance
      */
     public SeiteSO getMeAsFreshInstance() {
-        return book.getMeAsFreshInstance().getSeiten().byId(getId());
+        return book.getMeAsFreshInstance().seiteById(getId());
     }
     
     public TocMacroPage getTocMacroPage() {

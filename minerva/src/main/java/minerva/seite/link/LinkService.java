@@ -71,7 +71,7 @@ public class LinkService {
             return true;
         }
         for (BookSO book : books) {
-            SeiteSO seite = book.getSeiten()._byId(href);
+            SeiteSO seite = book._seiteById(href);
             if (seite != null) {
                 return true;
             }

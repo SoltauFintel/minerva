@@ -81,7 +81,7 @@ public class WorkspaceHistoryPage extends WPage implements Uptodatecheck {
             String id = dnt.substring(0, dnt.length() - ".html".length());
             try {
                 BookSO book = workspace.getBooks().byFolder(bookFolder);
-                seite = book.getSeiten()._byId(id);
+                seite = book._seiteById(id);
                 link = "/s/" + branch + "/" + bookFolder + "/" + seite.getId();
             } catch (Exception fallThru) { // book or page does not exist
             }

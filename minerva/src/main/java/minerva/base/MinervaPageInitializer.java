@@ -94,7 +94,7 @@ public class MinervaPageInitializer extends PageInitializer {
             String linkPrefix = "/s/" + m.getBranch() + "/";
             for (String id : m.getFavorites()) {
                 for (BookSO book : m.getBooks()) {
-                    SeiteSO seite = book.getSeiten()._byId(id);
+                    SeiteSO seite = book._seiteById(id);
                     if (seite != null) {
                         DataMap map = list.add();
                         map.put("link", esc(linkPrefix + book.getBook().getFolder() + "/" + seite.getId()));

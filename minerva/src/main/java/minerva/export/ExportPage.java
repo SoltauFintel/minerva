@@ -131,7 +131,7 @@ public class ExportPage extends WPage {
     
     private SeiteSO getSeite(String seiteId) {
         for (BookSO book : workspace.getBooks()) {
-            SeiteSO seite = book.getSeiten()._byId(seiteId);
+            SeiteSO seite = book._seiteById(seiteId);
             if (seite != null) {
                 return seite;
             }

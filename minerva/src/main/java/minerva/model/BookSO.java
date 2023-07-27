@@ -85,6 +85,14 @@ public class BookSO {
             addSeiten(seite.getSeiten(), result); // recursive
         }
     }
+    
+    public SeiteSO seiteById(String id) {
+        return seiten.byId(id);
+    }
+    
+    public SeiteSO _seiteById(String id) {
+        return seiten._byId(id);
+    }
 
     public Book getBook() {
         return book;

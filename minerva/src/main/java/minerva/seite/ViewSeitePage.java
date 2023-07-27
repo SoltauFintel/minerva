@@ -17,7 +17,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     
     @Override
     protected SeiteSO getSeite() {
-        return book.getSeiten()._byId(id);
+        return book._seiteById(id);
     }
     
     @Override

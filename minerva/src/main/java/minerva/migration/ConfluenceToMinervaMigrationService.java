@@ -419,7 +419,7 @@ public class ConfluenceToMinervaMigrationService {
                 } else {
                     SeiteSO theParent = parent;
                     if (!englishSoloPage.getParentId().isEmpty()) {
-                        final SeiteSO parent2 = book.getSeiten()._byId(englishSoloPage.getParentId());
+                        final SeiteSO parent2 = book._seiteById(englishSoloPage.getParentId());
                         if (parent2 != null) {
                             theParent = parent2;
                         } else {

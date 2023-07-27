@@ -32,7 +32,7 @@ public class ImageUploadAction extends JsonAction<Success> {
         UserSO user = StatesSO.get(ctx).getUser();
         WorkspaceSO workspace = user.getWorkspace(branch);
         BookSO book = workspace.getBooks().byFolder(bookFolder);
-        SeiteSO seite = book.getSeiten().byId(id);
+        SeiteSO seite = book.seiteById(id);
 
         ctx.req.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("upload"));
         ctx.res.type("application/json");

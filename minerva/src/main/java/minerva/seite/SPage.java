@@ -26,6 +26,6 @@ public abstract class SPage extends BPage {
     }
     
     protected SeiteSO getSeite() {
-        return book.getSeiten().byId(id);
+        return book.seiteById(id);
     }
 }

@@ -21,7 +21,7 @@ public class MoveSeiteAckPage extends SPage {
             if (SeiteSO.ROOT_ID.equals(parentId)) {
                 parentTitle = book.getTitle();
             } else {
-                SeiteSO parent = book.getSeiten().byId(parentId);
+                SeiteSO parent = book.seiteById(parentId);
                 parentTitle = parent.getTitle();
             }
     

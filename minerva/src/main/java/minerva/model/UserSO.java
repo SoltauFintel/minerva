@@ -84,7 +84,7 @@ public class UserSO {
         if (SeiteSO.ROOT_ID.equals(parentSeiteId)) {
             id = book.createTopLevelSeite();
         } else {
-            SeiteSO parentSeite = book.getSeiten().byId(parentSeiteId);
+            SeiteSO parentSeite = book.seiteById(parentSeiteId);
             id = parentSeite.getSeiten().createSeite(parentSeite, book, dao);
         }
         return id;

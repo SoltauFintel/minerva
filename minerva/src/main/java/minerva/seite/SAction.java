@@ -18,6 +18,6 @@ public abstract class SAction extends BAction {
         id = ctx.pathParam("id");
         viewlink = "/s/" + branch + "/" + bookFolder + "/" + id;
 
-        seite = book.getSeiten().byId(id);
+        seite = book.seiteById(id);
     }
 }

@@ -40,7 +40,7 @@ public class LinkAnalysisPage extends SPage {
         if (external) {
             return "";
         }
-        SeiteSO s = book.getSeiten()._byId(link.getHref());
+        SeiteSO s = book._seiteById(link.getHref());
         return s == null ? link.getTitle() : s.getSeite().getTitle().getString(lang);
     }
 
