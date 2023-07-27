@@ -8,26 +8,26 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import minerva.model.SeiteSO;
-import minerva.model.SeitenSO;
 import minerva.publish.TocEntry;
 
 public class TocMacro {
-    protected final SeiteSO seite;
-    private final String lang;
-    private final String customer;
+    protected final TocMacroPage page;
+    protected final String customer;
+    protected final String lang;
+    protected final String liStyle;
     private String toc = null;
     
-    public TocMacro(SeiteSO seite, String lang, String customer) {
-        this.seite = seite;
-        this.lang = lang;
+    public TocMacro(TocMacroPage page, String customer, String lang, String liStyle) {
+        this.page = page;
         this.customer = customer;
+        this.lang = lang;
+        this.liStyle = liStyle;
     }
 
     public String transform(String html) {
         toc = "";
-        int headingslevels = getTocHeadingsLevels();
-        int subpagesLevels = getTocSubpagesLevels();
+        int headingslevels = page.getTocHeadingsLevels();
+        int subpagesLevels = page.getTocSubpagesLevels();
         if (headingslevels == 0 && subpagesLevels == 0) {
             return html; // nothing to do
         }
@@ -40,20 +40,12 @@ public class TocMacro {
         }
         
         final int nHeadings = entries.size();
-        subpages2TocEntries(seite.getSeiten(), entries, 1, subpagesLevels);
+        subpages2TocEntries(page.getSubpages(lang), entries, 1, subpagesLevels);
         
         if (!entries.isEmpty()) {
             toc = "<div class=\"toc\">" + makeTocHtml(entries, nHeadings) + "</div>";
         }
         return doc.html();
-    }
-
-    protected int getTocHeadingsLevels() {
-    	return seite.getSeite().getTocHeadingsLevels();
-    }
-
-    protected int getTocSubpagesLevels() {
-        return seite.getSeite().getTocSubpagesLevels();
     }
 
     private void collectTocEntries(int headingslevels, Elements headings, List<TocEntry> entries) {
@@ -90,17 +82,17 @@ public class TocMacro {
         }
     }
 
-    private void subpages2TocEntries(SeitenSO seiten, List<TocEntry> entries, int level, int maxLevel) {
+    private void subpages2TocEntries(List<TocMacroPage> seiten, List<TocEntry> entries, int level, int maxLevel) {
         if (level > maxLevel) {
             return;
         }
-        for (SeiteSO seite : seiten) {
-            if (seite.isVisible(customer, lang).isVisible()) {
+        for (TocMacroPage seite : seiten) {
+            if (seite.isVisible(customer, lang)) {
                 TocEntry entry = new TocEntry();
                 entry.setId(seite.getId());
-                entry.setTitle(seite.getSeite().getTitle().getString(lang));
+                entry.setTitle(seite.getTitle(lang));
                 entries.add(entry);
-                subpages2TocEntries(seite.getSeiten(), entry.getSubpages(), level + 1, maxLevel); // recursive
+                subpages2TocEntries(seite.getSubpages(lang), entry.getSubpages(), level + 1, maxLevel); // recursive
             }
         }
     }
@@ -118,7 +110,7 @@ public class TocMacro {
                 cls = " class=\"subpage\"";
                 nHeadings = Integer.MAX_VALUE;
             }
-            ret += "<li" + cls + ">" //
+            ret += "<li" + cls + liStyle + ">" //
                     + "<a href=\"" + entry.getId() + "\">" + entry.getTitle() + "</a>" //
                     + makeTocHtml(entry.getSubpages(), Integer.MAX_VALUE) // recursive 
                     + "</li>";

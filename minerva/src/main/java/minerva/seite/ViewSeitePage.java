@@ -43,7 +43,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             map.put("LANG", lang.toUpperCase());
             map.put("lang", lang);
             map.put("titel", esc(seite.getTitle().getString(lang)));
-            TocMacro macro = new TocMacro(seiteSO, lang, "-");
+            TocMacro macro = new TocMacro(seiteSO.getTocMacroPage(), "-", lang, "");
             map.put("content", macro.transform(seiteSO.getContent().getString(lang)));
             map.put("toc", macro.getTOC()); // no esc, after transform()
             map.put("active", lang.equals(user.getPageLanguage()));

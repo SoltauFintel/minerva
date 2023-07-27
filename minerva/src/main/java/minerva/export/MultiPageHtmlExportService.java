@@ -22,6 +22,7 @@ import minerva.model.SeitenSO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.NavigateService;
 import minerva.seite.TocMacro;
+import minerva.seite.TocMacroPage;
 import minerva.seite.link.Link;
 import minerva.seite.link.LinkService;
 
@@ -174,13 +175,9 @@ public class MultiPageHtmlExportService extends GenericExportService {
     }
 
     private String tocMacro(String html, SeiteSO seite, String customer) {
-        TocMacro toc = new TocMacro(seite, lang, customer) {
-            @Override
-            protected int getTocSubpagesLevels() {
-                return 0; // Export has subpages TOC at page end, so turn it off here.
-                // However, I'm not sure about this here because tocSubpagesLevels is an explicit setting.
-            }
-        };
+        TocMacroPage page = seite.getTocMacroPage(false); /* Export has subpages TOC at page end, so turn it off here.
+        However, I'm not sure about this here because tocSubpagesLevels is an explicit setting. */
+        TocMacro toc = new TocMacro(page, customer, lang, "");
         html = toc.transform(html);
         return toc.getTOC() + html;
     }

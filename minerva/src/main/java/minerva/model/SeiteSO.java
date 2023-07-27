@@ -31,6 +31,7 @@ import minerva.seite.IPageChangeStrategy;
 import minerva.seite.NotifyWatchers;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
+import minerva.seite.TocMacroPage;
 import minerva.seite.move.ChangeFile;
 import minerva.seite.move.IMoveFile;
 import minerva.seite.move.MoveFile;
@@ -581,5 +582,53 @@ public class SeiteSO implements ISeite {
      */
     public SeiteSO getMeAsFreshInstance() {
         return book.getMeAsFreshInstance().getSeiten().byId(getId());
+    }
+    
+    public TocMacroPage getTocMacroPage() {
+        return getTocMacroPage(true);
+    }
+    
+    public TocMacroPage getTocMacroPage(boolean withSubpagesLevels) {
+        return new TocMacroPage() {
+
+            @Override
+            public String getId() {
+                return getSeite().getId();
+            }
+
+            @Override
+            public String getTitle(String lang) {
+                return getSeite().getTitle().getString(lang);
+            }
+            
+            @Override
+            public Set<String> getTags() {
+                return getSeite().getTags();
+            }
+
+            @Override
+            public int getTocHeadingsLevels() {
+                return getSeite().getTocHeadingsLevels();
+            }
+
+            @Override
+            public int getTocSubpagesLevels() {
+                return withSubpagesLevels ? getSeite().getTocSubpagesLevels() : 0;
+            }
+            
+            @Override
+            public boolean isVisible(String customer, String lang) {
+                return SeiteSO.this.isVisible(customer, lang).isVisible();
+            }
+            
+            @Override
+            public List<TocMacroPage> getSubpages(String lang) {
+                List<TocMacroPage> ret = new ArrayList<>();
+                for (SeiteSO seite : getSeiten(lang)) {
+                    ret.add(seite.getTocMacroPage(withSubpagesLevels));
+                }
+                return ret;
+            }
+        };
     }
 }

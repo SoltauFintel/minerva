@@ -37,7 +37,7 @@ public class PreviewPage extends SPage {
                 + TITLE_POSTFIX);
         put("titel", esc(seite.getSeite().getTitle().getString(lang)));
         String html = seite.getContent().getString(lang);
-        TocMacro toc = new TocMacro(seite, lang, customer);
+        TocMacro toc = new TocMacro(seite.getTocMacroPage(), customer, lang, "");
         put("content", toc.transform(html)); // transform before getTOC
         put("toc", toc.getTOC());
 
