@@ -83,25 +83,31 @@ public class PublishService {
         File targetImgFolder = new File(targetFolder, "img");
         Map<String, TocEntry> pages = new HashMap<>();
         for (SeiteSO seite : seiten) {
+            boolean copied = false;
             // collect page data
             for (String lang : langs) {
-                TocEntry p = createTocEntry(seite, lang);
-                parent.get(lang).getSubpages().add(p);
-                pages.put(lang, p);
-
-                // copy .html files
-                File src = new File(seite.filenameHtml(lang));
-                if (src.isFile()) {
-                    FileService.copyFile(src, new File(targetFolder, lang));
+                if (seite.hasContent(lang) > 0) { // Don't publish empty pages.
+                    copied = true;
+                    TocEntry p = createTocEntry(seite, lang);
+                    parent.get(lang).getSubpages().add(p);
+                    pages.put(lang, p);
+    
+                    // copy .html files
+                    File src = new File(seite.filenameHtml(lang));
+                    if (src.isFile()) {
+                        FileService.copyFile(src, new File(targetFolder, lang));
+                    }
                 }
             }
-            // copy images
-            File src = new File(sourceImgFolder, seite.getId());
-            if (src.isDirectory()) {
-                FileService.copyFiles(src, new File(targetImgFolder, seite.getId()));
+            if (copied) {
+                // copy images
+                File src = new File(sourceImgFolder, seite.getId());
+                if (src.isDirectory()) {
+                    FileService.copyFiles(src, new File(targetImgFolder, seite.getId()));
+                }
+    
+                copyHtmlAndImg(seite.getSeiten(), pages, targetFolder); // recursive
             }
-
-            copyHtmlAndImg(seite.getSeiten(), pages, targetFolder); // recursive
         }
     }
 
