@@ -406,6 +406,10 @@ ul.toc {
     padding-left: 1.3em;
 }
 
+ul.toc li {
+    list-style-type: square;
+}
+
 div.toc {
     padding-left: 2em;
 }

@@ -118,7 +118,7 @@ public class TocMacro {
                 cls = " class=\"subpage\"";
                 nHeadings = Integer.MAX_VALUE;
             }
-            ret += "<li" + cls + " style=\"list-style-type: square;\">" //
+            ret += "<li" + cls + ">" //
                     + "<a href=\"" + entry.getId() + "\">" + entry.getTitle() + "</a>" //
                     + makeTocHtml(entry.getSubpages(), Integer.MAX_VALUE) // recursive 
                     + "</li>";
