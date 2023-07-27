@@ -224,7 +224,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="col-sm-12">
-                            <textarea class="form-control" rows="4" name="editorsnote">{{editorsNote}}</textarea>
+                            <textarea class="form-control" rows="4" id="enTA" name="editorsnote">{{editorsNote}}</textarea>
                         </div>
                     </div>
                 </div>
@@ -241,6 +241,10 @@
 <script>
     $('#tocModal').on('shown.bs.modal', function() {
         $('#tocLevels').focus();
+    })
+    
+    $('#editorsnoteModal').on('shown.bs.modal', function() {
+        $('#enTA').focus();
     })
 
     $('#langTabs a').click(function (e) {
