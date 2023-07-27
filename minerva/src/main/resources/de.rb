@@ -27,48 +27,38 @@ persistence=Persistenz
 createWS=Neuen Workspace erstellen
 save=Speichern
 cancel=Abbruch
-
 deletePage1=Hiermit löschen Sie die Seite
 deletePage2=Es wird die Seite in allen Sprachen und mit allen enthaltenen Bildern gelöscht. Ebenso werden alle Unterseiten gelöscht.
 deletePage=Seite löschen
 keepPage=Seite behalten
-
 addBook=Neues Buch anlegen
 buchtitel=Buchtitel
 editBook=Buch bearbeiten
-
 deleteBook=Buch löschen
 deleteBook1=Hiermit löschen Sie den Bucheintrag
 deleteBook2=Der Buchordner wird nicht gelöscht und muss ggf. im Speichersystem manuell gelöscht werden.
 keepBook=Buch behalten
-
 reorderSubpages=Unterseiten ordnen
 reorder1=Bitte die Unterseiten per Drag & Drop umordnen:
 fertigSpeichern=Fertig, speichern!
-
 linkResolver1=Seite <b>$t</b> wählen und weiter...
 linkResolver0=Link unverändert lassen und weiter...
-
 message=Meldung
 goToHomepage=Zur Startseite
 pageNotFound=Seite nicht vorhanden!
 pageNotFound2=Die gesuchte Seite ist leider nicht verfügbar. Möglicherweise liegen die gesuchten Informationen inzwischen an einem anderen Ort oder die Seite existiert nicht mehr. Starten Sie erneut von der Startseite aus.
-
 error.enterFolder=Bitte Ordnernamen eingeben!
 error.folderAlreadyExists=Buchordner bereits vorhanden!
 error.enterTitle=Bitte Titel eingeben!
 error.simultaneousEditing=Gleichzeitige Bearbeitung erkannt! Bitte zurück gehen, die Änderungen anderweitig speichern, Seite neu laden und Bearbeitung erneut versuchen.
 error.imageTooBig=Bitte verwenden Sie eine Grafik, die nicht größer als 10 MB ist!
-
 createWS1=Bereits erstellte Workspaces und Minerva-interne Branches werden in der Liste nicht aufgeführt.
-
 deleteWS=Workspace löschen
 deleteWS1=Hiermit löschen Sie den Workspace
 deleteWS2=Der Branch wird nicht im Gitlab Repository gelöscht.
 deleteWS3=Workspace "master" darf nicht gelöscht werden!
 deleteWS4=Der letzte Workspace darf nicht gelöscht werden!
 keepWS=Workspace behalten
-
 note=Kommentar
 addNote=Neuen Kommentar schreiben
 editNote=Kommentar bearbeiten
@@ -77,7 +67,6 @@ notes=Kommentare
 backToPage=Zurück zur Seite
 reply=Antworten
 deleteQ=Hiermit löschen Sie diesen Kommentar.
-
 movePage=Seite verschieben
 movePage1=Die Seite "$t" erhält die Seite "$p" als neue übergeordnete Seite.
 movePage2=Die Seite "$t" wird in das Buch "$b" verschoben.
@@ -110,7 +99,6 @@ addMoreTags=Weitere tags hinzufügen
 noTags=keine tags vorhanden
 noNotes=keine Kommentare vorhanden
 allPages=Alle Seiten anzeigen
-
 done=Erledigt
 doneNote=Kommentar als erledigt kennzeichnen
 undoneNote=Kommentar als unerledigt kennzeichnen
@@ -189,5 +177,5 @@ off=aus
 tocHeadingsLevels=Überschriften-Ebenen
 tocSubpagesLevels=Unterseiten-Ebenen
 cantDeleteAllFiles=Es konnten nicht alle Dateien gelöscht werden!\nBitte an Administrator wenden. ID $id
-editorsNote=Editor's note
-clickToRemove=Editor's note ausblenden
+editorsNote=Hinweis der Chefredaktion
+clickToRemove=Hinweis ausblenden
