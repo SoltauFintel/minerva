@@ -4,9 +4,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.move.IMoveFile;
-import minerva.user.User;
 
 /**
  * That's an generic DAO.
@@ -59,5 +59,5 @@ public interface DirAccess {
     
     List<String> getBranchNames(WorkspaceSO workspace);
 
-    void mergeBranch(String sourceBranch, String targetBranch, User user);
+    void mergeBranch(String sourceBranch, String targetBranch, UserSO user);
 }

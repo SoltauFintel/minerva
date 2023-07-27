@@ -12,17 +12,17 @@ import minerva.model.GitFactory;
 public class MergeRequestService {
 
     public void createAndSquash(String title, String branch, String targetBranch, String gitlabUrl,
-            String project, GitlabUser user) throws GitLabApiException {
-        work(title, branch, targetBranch, gitlabUrl, project, user, Boolean.TRUE);
+            String project, GitlabUser user, String userGuiLanguage) throws GitLabApiException {
+        work(title, branch, targetBranch, gitlabUrl, project, user, Boolean.TRUE, userGuiLanguage);
     }
 
     public void createAndMerge(String title, String branch, String targetBranch, String gitlabUrl,
-            String project, GitlabUser user) throws GitLabApiException {
-        work(title, branch, targetBranch, gitlabUrl, project, user, Boolean.TRUE);
+            String project, GitlabUser user, String userGuiLanguage) throws GitLabApiException {
+        work(title, branch, targetBranch, gitlabUrl, project, user, Boolean.TRUE, userGuiLanguage);
     }
 
     private void work(String title, String branch, String targetBranch, String gitlabUrl,
-            String project, GitlabUser user, Boolean squash) throws GitLabApiException {
+            String project, GitlabUser user, Boolean squash, String userGuiLanguage) throws GitLabApiException {
         try (GitLabApi gitLabApi = GitFactory.getGitLabApi(user)) {
             MergeRequestParams params = new MergeRequestParams()
                     .withSourceBranch(branch)
@@ -33,14 +33,14 @@ public class MergeRequestService {
             
             MergeRequestApi api = gitLabApi.getMergeRequestApi();
             MergeRequest mr = api.createMergeRequest(project, params);
-            waitForCanBeMerged(project, api, mr);
+            waitForCanBeMerged(project, api, mr, targetBranch, userGuiLanguage);
             
             api.acceptMergeRequest(project, mr.getIid());
             waitForMergedState(project, api, mr);
         }
     }
     
-    private void waitForCanBeMerged(String project, MergeRequestApi api, MergeRequest mr) throws GitLabApiException {
+    private void waitForCanBeMerged(String project, MergeRequestApi api, MergeRequest mr, String targetBranch, String userGuiLanguage) throws GitLabApiException {
         int loop = 0;
         int time = 500;
         while (true) {
@@ -53,7 +53,7 @@ public class MergeRequestService {
                 if ("can_be_merged".equals(getMergeStatus(s))) {
                     break;
                 } else if ("cannot_be_merged".equals(getMergeStatus(s))) {
-                    throw new MergeRequestException("Merge Request " + mr.getIid() + " can not be merged!");
+                    throw new MergeRequestException(mr.getIid(), targetBranch, userGuiLanguage);
                 }
             }
             if (++loop > (1000 / time) * 60) { // 1 minute

@@ -11,10 +11,10 @@ import minerva.MinervaWebapp;
 import minerva.access.AbstractDirAccess;
 import minerva.access.CommitMessage;
 import minerva.model.GitlabRepositorySO;
+import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.move.IMoveFile;
 import minerva.seite.move.MoveFile;
-import minerva.user.User;
 
 public class GitlabDirAccess extends AbstractDirAccess {
     private final GitlabRepositorySO repo = MinervaWebapp.factory().getGitlabRepository();
@@ -66,14 +66,15 @@ public class GitlabDirAccess extends AbstractDirAccess {
     }
 
     @Override
-    public void mergeBranch(String sourceBranch, String targetBranch, User user) {
+    public void mergeBranch(String sourceBranch, String targetBranch, UserSO user) {
         try {
             new MergeRequestService().createAndMerge(
                     new CommitMessage("Merge " + sourceBranch + " into " + targetBranch).toString(),
                     sourceBranch,
                     targetBranch,
                     repo.getGitlabSystemUrl(), repo.getProject(),
-                    (GitlabUser) user);
+                    (GitlabUser) user.getUser(),
+                    user.getGuiLanguage());
         } catch (GitLabApiException e) {
             throw new RuntimeException(e);
         }

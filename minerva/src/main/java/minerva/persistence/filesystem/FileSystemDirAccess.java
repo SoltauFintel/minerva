@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import minerva.access.AbstractDirAccess;
+import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
-import minerva.user.User;
 
 public class FileSystemDirAccess extends AbstractDirAccess {
 
@@ -25,7 +25,7 @@ public class FileSystemDirAccess extends AbstractDirAccess {
     }
 
     @Override
-    public void mergeBranch(String sourceBranch, String targetBranch, User user) {
+    public void mergeBranch(String sourceBranch, String targetBranch, UserSO user) {
         throw new UnsupportedOperationException("Merge branch not supported");
     }
 }

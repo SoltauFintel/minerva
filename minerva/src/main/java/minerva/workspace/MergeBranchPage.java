@@ -9,7 +9,6 @@ import github.soltaufintel.amalia.web.templating.TemplatesInitializer;
 import minerva.MinervaWebapp;
 import minerva.base.UserMessage;
 import minerva.model.WorkspacesSO;
-import minerva.persistence.gitlab.GitlabUser;
 import minerva.user.UPage;
 
 public class MergeBranchPage extends UPage {
@@ -28,7 +27,7 @@ public class MergeBranchPage extends UPage {
             Logger.info(info);
             user.log(info);
        
-            user.dao().mergeBranch(sourceBranch, branch, (GitlabUser) user.getUser());
+            user.dao().mergeBranch(sourceBranch, branch, user);
             if (deleteWorkspace) {
                 user.getWorkspaces().remove(user.getWorkspace(sourceBranch));
             }

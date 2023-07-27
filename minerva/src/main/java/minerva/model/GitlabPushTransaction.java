@@ -80,7 +80,8 @@ public class GitlabPushTransaction {
                     workBranch,
                     workspace.getBranch(),
                     repo.getGitlabSystemUrl(), repo.getProject(),
-                    user);
+                    user,
+                    user.getGuiLanguage());
             doPull = true;
         } catch (GitLabApiException e) {
             throw new RuntimeException( //

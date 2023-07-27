@@ -327,7 +327,7 @@ public class GitService {
             throw new MinervaEmptyCommitException(e.getMessage());
         } catch (Exception e) {
             Logger.error(e); // Das muss leider so, damit keine Info verloren geht.
-            throw new RuntimeException("Error committing changes! See log.");
+            throw new RuntimeException("Error committing changes! (See log.) Try to logout and login.");
         }
     }
 

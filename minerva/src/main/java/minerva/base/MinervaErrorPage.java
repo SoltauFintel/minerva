@@ -37,7 +37,11 @@ public class MinervaErrorPage extends Page implements ErrorPage {
             Logger.error(exception);
         }
         ctx.status(500);
-        put("msg", esc(msg)); // for subclasses
+        if (exception instanceof ErrorMessageHolder e) {
+            put("msg", e.getErrorMessage()); // no esc
+        } else {
+            put("msg", esc(msg)); // for subclasses
+        }
         put("p", "");
         put("title", "Minerva error");
         put("header", exception instanceof UserMessage ? "Message" : "Sorry, this should not happen!");
