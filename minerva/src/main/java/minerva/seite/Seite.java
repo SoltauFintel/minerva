@@ -19,7 +19,11 @@ public class Seite {
     private boolean sorted = true;
     private final Set<String> tags = new TreeSet<>();
     private int version = 1;
-    // TODO Leerzeilen? Kommentare erlaubt? trim?
+    /**
+     * Help keys are trimmed.
+     * No empty entries.
+     * Commented-out help keys are not planned, but practically possible by prefixing them with characters that break the key.
+     */
     private final List<String> helpKeys = new ArrayList<>();
     private final transient List<Note> notes = new ArrayList<>();
     private final List<PageChange> changes = new ArrayList<>();

@@ -33,7 +33,7 @@ public class EditNotePage extends SPage {
             put("changed", esc(note.getChanged()));
             put("hasChanged", !note.getChanged().isEmpty());
             put("text1", esc(note.getText()));
-            put("editAllowed", note.getUser().equals(seite.getLogin())); // TODO oder Admin-Rechte wurden aktiviert
+            put("editAllowed", note.getUser().equals(seite.getLogin()) || isAdmin);
             combobox("persons", MinervaWebapp.factory().getPersons(), note.getPersons(), true, model);
         }
     }

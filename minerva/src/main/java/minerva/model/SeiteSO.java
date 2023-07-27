@@ -278,8 +278,7 @@ public class SeiteSO implements ISeite {
             Logger.error("Tried to delete page " + getId() + ": These files could not be deleted:"
                     + cantBeDeleted.stream().map(i -> "\n  - " + i).collect(Collectors.joining())
                     + "\n  Please delete these files manually.");
-            throw new RuntimeException("Es konnten nicht alle Dateien gelöscht werden!" // TODO UserMessage
-                    + "\nBitte an Administrator wenden. ID " + getId());
+            throw new UserMessage("cantDeleteAllFiles", book.getWorkspace(), msg -> msg.replace("$id", getId()));
         }
     }
     

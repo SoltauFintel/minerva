@@ -6,7 +6,6 @@ import minerva.MinervaWebapp;
 import minerva.user.UPage;
 
 public class MathPage extends UPage {
-    // TODO Zoom Trigger über DblClick machen
 
     @Override
     protected void execute() {

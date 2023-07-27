@@ -435,15 +435,15 @@ public class ConfluenceToMinervaMigrationService {
     }
 
     private void migrateHelpKeys(ConfluencePage de, ConfluencePage en, SeiteSO tp) {
-        List<String> helpKeys = tp.getSeite().getHelpKeys();
-        helpKeys.clear();
+        List<String> helpKeysTarget = tp.getSeite().getHelpKeys();
+        helpKeysTarget.clear();
         if (de != null) {
-            addHelpKeys(helpKeysCollection.getHelpKeys(de.getId()), helpKeys);
+            addHelpKeys(helpKeysCollection.getHelpKeys(de.getId()), helpKeysTarget);
         }
         if (en != null) {
-            addHelpKeys(helpKeysCollection.getHelpKeys(en.getId()), helpKeys);
+            addHelpKeys(helpKeysCollection.getHelpKeys(en.getId()), helpKeysTarget);
         }
-        Collections.sort(helpKeys);
+        Collections.sort(helpKeysTarget);
     }
 
     private void addHelpKeys(List<String> source, List<String> target) {

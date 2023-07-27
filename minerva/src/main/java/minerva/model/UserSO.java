@@ -7,6 +7,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,6 +21,7 @@ import minerva.access.DirAccess;
 import minerva.base.FileService;
 import minerva.base.Tosmap;
 import minerva.seite.link.InvalidLinksModel;
+import minerva.seite.note.NoteWithSeite;
 import minerva.user.User;
 
 public class UserSO {
@@ -265,5 +267,18 @@ public class UserSO {
         public String getEndTime() {
             return endTime;
         }
+    }
+
+    public List<NoteWithSeite> getNotes(String branch) {
+        String login = user.getLogin();
+        List<NoteWithSeite> notes = new ArrayList<>();
+        for (BookSO book : getWorkspace(branch).getBooks()) {
+            for (NoteWithSeite n : book.getSeiten().getAllNotes()) {
+                if (!n.getNote().isDone() && n.getNote().getPersons().contains(login)) {
+                    notes.add(n);
+                }
+            }
+        }
+        return notes;
     }
 }

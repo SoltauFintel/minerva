@@ -30,22 +30,21 @@ public class MappingPage extends SPage {
                 map.put("title", esc(t.getTitle()));
             }
             String forceText = n("force");
-            for (String id : seite.getSeite().getHelpKeys()) {
-                id = id.trim();
-                boolean force = id.endsWith("!");
+            for (String key : seite.getSeite().getHelpKeys()) {
+                boolean force = key.endsWith("!");
                 if (force) {
-                    id = id.substring(0, id.length() - "!".length()).trim();
+                    key = key.substring(0, key.length() - "!".length());
                 }
                 DataMap map2 = list2.add();
-                String x = "#" + id;
+                String x = "#" + key;
                 for (PageTitle t : titleList) {
-                    if (t.getId().equals(id)) {
+                    if (t.getId().equals(key)) {
                         x = t.getTitle();
                         break;
                     }
                 }
                 map2.put("title", esc(x + (force ? " (" + forceText + ")" : "")));
-                map2.put("link", esc(viewlink + "/add-mapping?m=d&ohid=" + u(id)));
+                map2.put("link", esc(viewlink + "/add-mapping?m=d&ohid=" + u(key)));
                 hasMappings = true;
             }
         }

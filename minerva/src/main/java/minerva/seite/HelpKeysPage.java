@@ -21,15 +21,15 @@ public class HelpKeysPage extends SPage {
     }
 
     private void saveHelpKeys(String helpKeysText) {
-        List<String> helpKeys = seite.getSeite().getHelpKeys();
-        helpKeys.clear();
+        List<String> helpKeysTarget = seite.getSeite().getHelpKeys();
+        helpKeysTarget.clear();
         for (String line : helpKeysText.split("\n")) {
             String helpKey = line.trim();
             if (!helpKey.isEmpty()) {
-                helpKeys.add(helpKey);
+                helpKeysTarget.add(helpKey);
             }
         }
-        Collections.sort(helpKeys);
+        Collections.sort(helpKeysTarget);
         seite.saveMeta(new CommitMessage(seite, "help keys"));
         seite.updateOnlineHelp();
     }

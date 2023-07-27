@@ -196,11 +196,40 @@ public class SubscriptionService {
             return new PageTitles();
         }
         checkMode();
-        // TODO eigentlich müssten alle Subscriber abgefragt werden und ein Set gebildet werden
-        String url = subscribers.split(",")[0] + "/rest/page-titles";
-        Logger.info(url);
-        PageTitles ret = new REST(url).get().fromJson(PageTitles.class);
+        PageTitles ret = null;
+        for (String subscriber : subscribers.split(",")) {
+            String url = subscriber + "/rest/page-titles";
+            Logger.info(url);
+            PageTitles titles = new REST(url).get().fromJson(PageTitles.class);
+            if (ret == null) {
+                ret = titles;
+            } else {
+                for (String lang : titles.getLang().keySet()) {
+                    List<PageTitle> source = titles.getLang().get(lang);
+                    List<PageTitle> target = ret.getLang().get(lang);
+                    if (target == null) {
+                        ret.getLang().put(lang, source);
+                    } else {
+                        for (PageTitle t : source) {
+                            if (!find(t, target)) {
+                                target.add(t);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return ret;
+    }
+
+    private boolean find(PageTitle t, List<PageTitle> list) {
+        for (PageTitle i : list) {
+            if (i.getId().equals(t.getId()) && i.getTitle().equals(i.getTitle())) {
+                // can result in same ID but different titles
+                return true;
+            }
+        }
+        return false;
     }
 
     private String getSubscribers() {

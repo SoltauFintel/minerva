@@ -40,7 +40,6 @@ public class User {
         this.pageLanguage = language;
     }
 
-    // TODO bei GitlabUser könnte man hier den richtigen Namen setzen
     public String getRealName() {
         return getLogin();
     }

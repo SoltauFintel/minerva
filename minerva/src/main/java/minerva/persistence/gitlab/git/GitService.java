@@ -68,7 +68,7 @@ public class GitService {
                 .setBare(bare)
                 .call()) {
         } catch (Exception e) {
-            e.printStackTrace(); // TODO brauch ich für Fehleranalyse   (Wieso wird so viel Stacktrace geschluckt???)
+            e.printStackTrace(); // Brauch ich für die Fehleranalyse. Ich habe den Verdacht, dass tinylog zu viel vom Stacktrace nicht ausgibt.
             Logger.error("Error cloning Git repository! URL: " + url + " | user: " + user.getLogin()
                 + " | branch: " + branch);
             throw new RuntimeException("Error accessing Git repository! Please try logout and login.", e);
