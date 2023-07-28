@@ -20,6 +20,7 @@ import minerva.search.SearchResult;
 
 /**
  * Indexing and search function
+ * <p>Search service: https://github.com/SoltauFintel/xsearch</p>
  */
 public class SearchSO {
     private final String host;
@@ -35,10 +36,9 @@ public class SearchSO {
     }
 
     public void indexBooks() {
-Logger.info("search host: " + host + ", site prefix: " + sitePrefix + ", workspace: " + workspace.getBranch() + ", languages: " + langs); // XXX        
+        // If this takes too long the search service has to be restarted.
         long start = System.currentTimeMillis();
         createSite();
-Logger.info("books: " + workspace.getBooks().size()); // XXX
         workspace.getBooks().forEach(book -> book.getAlleSeiten().forEach(seite -> index(seite))); // Index pages including all subpages
         long end = System.currentTimeMillis();
         Logger.info("All books of workspace " + workspace.getBranch() + " have been reindexed. "
@@ -50,8 +50,9 @@ Logger.info("books: " + workspace.getBooks().size()); // XXX
             CreateSiteRequest req = new CreateSiteRequest();
             req.setLanguage(lang);
             String siteName = getSiteName(lang);
-            Logger.info("create site: " + siteName);
+            Logger.info("creating site by calling " + host + "/indexing/" + siteName + " ...");
             post("/indexing/" + siteName, req);
+            Logger.info("created site: " + siteName);
         }
     }
     
@@ -60,7 +61,6 @@ Logger.info("books: " + workspace.getBooks().size()); // XXX
      * @param seite page
      */
     public void index(SeiteSO seite) {
-Logger.info("-- indexing page \"" + seite.getTitle() + "\"..."); // XXX Fehlersuche        
         for (String lang : langs) {
             CreatePageRequest req = new CreatePageRequest();
             req.setHtml("<title>" + Escaper.esc(seite.getSeite().getTitle().getString(lang)) + "</title>"
