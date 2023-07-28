@@ -27,6 +27,7 @@ public class SearchSO {
     private final WorkspaceSO workspace;
     private final List<String> langs;
     private final String sitePrefix;
+    private int nPages;
     
     public SearchSO(String searchHost, String sitePrefix, WorkspaceSO workspace, List<String> langs) {
         this.host = searchHost;
@@ -38,11 +39,12 @@ public class SearchSO {
     public void indexBooks() {
         // If this takes too long the search service has to be restarted.
         long start = System.currentTimeMillis();
+        nPages = 0;
         createSite();
         workspace.getBooks().forEach(book -> book.getAlleSeiten().forEach(seite -> index(seite))); // Index pages including all subpages
         long end = System.currentTimeMillis();
         Logger.info("All books of workspace " + workspace.getBranch() + " have been reindexed. "
-                + (end - start) + "ms");
+                + nPages + " pages, " + (end - start) + "ms");
     }
     
     private void createSite() {
@@ -67,6 +69,7 @@ public class SearchSO {
                     + seite.getContent().getString(lang));
             req.setPath(getPath(seite));
             post("/indexing/" + getSiteName(lang) + "/page", req);
+            nPages++;
         }
     }
 
