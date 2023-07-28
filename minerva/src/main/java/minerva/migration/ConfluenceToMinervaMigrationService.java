@@ -219,6 +219,8 @@ public class ConfluenceToMinervaMigrationService {
         tp.getContent().setString("en", html_en);
         migrateHelpKeys(sp, en, tp);
         MinervaWebapp.factory().getPageChangeStrategy().set("Migration", tp);
+        
+        migrateNotes(sp.getId(), en == null ? null : en.getId(), tp.getId(), files);
 
         tp.saveMetaTo(files);
         tp.saveHtmlTo(files, langs);
@@ -455,5 +457,13 @@ public class ConfluenceToMinervaMigrationService {
                 target.add(helpKey);
             }
         }
+    }
+
+    private void migrateNotes(String deId, String enId, String minervaPageId, Map<String, String> files) {
+        // TODO Notes von deId laden, falls vorh.
+        // TODO Notes von enId laden, falls vorh. | enId kann null sein
+        // TODO Ich muss überlegen wie ich DE vs. EN Kommentare zusammenführe.
+        // TODO Notes ins Minerva Format überführen
+        // TODO Notes-Dateien nach files speichern
     }
 }
