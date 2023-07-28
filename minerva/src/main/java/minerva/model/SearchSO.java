@@ -35,6 +35,7 @@ public class SearchSO {
     }
 
     public void indexBooks() {
+Logger.info("search host: " + host + ", site prefix: " + sitePrefix + ", workspace: " + workspace.getBranch() + ", languages: " + langs); // XXX        
         long start = System.currentTimeMillis();
         createSite();
 Logger.info("books: " + workspace.getBooks().size()); // XXX
