@@ -9,9 +9,9 @@ public class IndexWorkspaceAction extends UAction {
         String branch = ctx.pathParam("branch");
 
         user.onlyAdmin();
-        user.log("Indexing...");
+        user.log(branch + " | Indexing...");
         user.getWorkspace(branch).getSearch().indexBooks();
-        user.log("Indexing finished.");
+        user.log(branch + " | Indexing finished.");
 
         ctx.redirect("/message?m=3");
     }

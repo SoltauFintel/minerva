@@ -37,6 +37,7 @@ public class SearchSO {
     public void indexBooks() {
         long start = System.currentTimeMillis();
         createSite();
+Logger.info("books: " + workspace.getBooks().size()); // XXX
         workspace.getBooks().forEach(book -> book.getAlleSeiten().forEach(seite -> index(seite))); // Index pages including all subpages
         long end = System.currentTimeMillis();
         Logger.info("All books of workspace " + workspace.getBranch() + " have been reindexed. "
@@ -58,6 +59,7 @@ public class SearchSO {
      * @param seite page
      */
     public void index(SeiteSO seite) {
+Logger.info("-- indexing page \"" + seite.getTitle() + "\"..."); // XXX Fehlersuche        
         for (String lang : langs) {
             CreatePageRequest req = new CreatePageRequest();
             req.setHtml("<title>" + Escaper.esc(seite.getSeite().getTitle().getString(lang)) + "</title>"
