@@ -74,15 +74,15 @@ public class ConfluenceToMinervaMigrationService {
 
         // Schritt 3: Confluence Daten laden
         File csvFile = new File(sourceFolder, "html/mapping-tabelle-csv.csv");
-        deEnMap = readMappings(csvFile);
+        deEnMap = loadMappings(csvFile);
         enDeMap = new HashMap<>();
         for (Entry<String, String> e : deEnMap.entrySet()) {
             enDeMap.put(e.getValue(), e.getKey()); // create reversed map
         }
-        englishSoloPages = readMappings_soloEnId(csvFile);
+        englishSoloPages = loadMappings_soloEnId(csvFile);
         Logger.info("DE->EN mappings: " + deEnMap.size() + ", solo EN IDs: " + englishSoloPages.size());
         htmlSourceFolder = new File(sourceFolder, "html");
-        readHtmlFiles(htmlSourceFolder);
+        loadHtmlFiles(htmlSourceFolder);
 
         // Schritt 4: Inhalte übertragen
         Logger.info("Migration main part starts");
@@ -122,12 +122,16 @@ public class ConfluenceToMinervaMigrationService {
         }
     }
 
-    private void readHtmlFiles(File confluenceHtmlDir) {
+    private void loadHtmlFiles(File confluenceHtmlDir) {
         Logger.info("readHtmlFiles: " + confluenceHtmlDir.getAbsolutePath());
         ConfluencePage root = FileService.loadJsonFile(new File(confluenceHtmlDir, "data.json"), ConfluencePage.class);
         root_de = root.getSubpages().get(0);
         root_en = root.getSubpages().get(1);
     }
+
+    private String loadHtmlFile(String id) {
+		return FileService.loadPlainTextFile(new File(htmlSourceFolder, id + ".html"));
+	}
 
     private void migrateBook(ConfluencePage sp, int position) {
         Map<String, String> files = new HashMap<>();
@@ -213,12 +217,12 @@ public class ConfluenceToMinervaMigrationService {
                 "//en " + removeUnderscores(sp.getTitle()) : removeUnderscores(en.getTitle()));
         seite.getTags().addAll(sp.getLabels());
 
-        String html = FileService.loadPlainTextFile(new File(htmlSourceFolder, sp.getId() + ".html"));
+        String html = loadHtmlFile(sp.getId());
         html = migrateImages(tp, seite, html, files);
         tp.getContent().setString("de", processHTML(html));
         String html_en = "";
         if (en != null) {
-            html_en = FileService.loadPlainTextFile(new File(htmlSourceFolder, en.getId() + ".html"));
+            html_en = loadHtmlFile(en.getId());
             html_en = migrateImages(tp, seite, html_en, files);
             html_en = processHTML(html_en);
         }
@@ -237,7 +241,7 @@ public class ConfluenceToMinervaMigrationService {
         }
     }
 
-    private String removeUnderscores(String title) {
+	private String removeUnderscores(String title) {
         if (title == null) {
             return "//null";
         }
@@ -255,7 +259,7 @@ public class ConfluenceToMinervaMigrationService {
         seite.getTitle().setString("en", removeUnderscores(sp.getTitle()));
         seite.getTags().addAll(sp.getLabels());
 
-        String html = FileService.loadPlainTextFile(new File(htmlSourceFolder, sp.getId() + ".html"));
+        String html = loadHtmlFile(sp.getId());
         html = migrateImages(tp, seite, html, files);
         tp.getContent().setString("de", "");
         tp.getContent().setString("en", processHTML(html));
@@ -296,13 +300,13 @@ public class ConfluenceToMinervaMigrationService {
         for (String img : imgList) {
             int o = img.indexOf("/");
             if (o < 0) {
-            	Logger.error("'/' unexpected not found in image filename: " + img + " | skip");
+            	Logger.error("'/' unexpected not found in image filename: " + img + " | skip | " + tp.getTitle());
             	imgErrors++;
             	continue;
             }
             int oo = img.indexOf("/", o + 1);
             if (oo < 0) {
-                Logger.error("2nd '/' unexpected not found in image filename: " + img + " | skip");
+                Logger.error("2nd '/' unexpected not found in image filename: " + img + " | skip | " + tp.getTitle());
             	imgErrors++;
                 continue;
             }
@@ -376,7 +380,7 @@ public class ConfluenceToMinervaMigrationService {
         return set;
     }
     
-    private Map<String, String> readMappings(File csvFile) {
+    private Map<String, String> loadMappings(File csvFile) {
         Map<String, String> map = new HashMap<>(); // key: de ID, value: en ID
         String content = FileService.loadPlainTextFile(csvFile);
         if (content == null) {
@@ -395,7 +399,7 @@ public class ConfluenceToMinervaMigrationService {
         return map;
     }
 
-    private List<EnglishSoloPage> readMappings_soloEnId(File csvFile) {
+    private List<EnglishSoloPage> loadMappings_soloEnId(File csvFile) {
         List<EnglishSoloPage> ret = new ArrayList<>();
         String[] lines = FileService.loadPlainTextFile(csvFile).split("\r\n");
         for (int i = 1 /* omit 1st line */; i < lines.length; i++) {
@@ -472,7 +476,10 @@ public class ConfluenceToMinervaMigrationService {
 
     private void migrateNotes(String deId, String enId, SeiteSO seite, Map<String, String> files) {
     	ConfluenceComments deNotes = loadNotes(deId);
-    	ConfluenceComments enNotes = loadNotes(deId);
+    	ConfluenceComments enNotes = loadNotes(enId);
+    	if (deId.equals(enId)) {
+    		throw new RuntimeException("deId is = enId! " + deId);
+    	}
     	if (!deNotes.getComments().isEmpty() && !enNotes.getComments().isEmpty()) {
     		// TODO Ich muss überlegen wie ich DE vs. EN Kommentare zusammenführe. Mischen? Sprachen nacheinander?
     	}
