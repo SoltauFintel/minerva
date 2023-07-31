@@ -10,7 +10,7 @@ public class Note {
     /** format "yyyy-MM-dd HH:mm" */
     private String created;
     /** format "yyyy-MM-dd HH:mm", can be null or empty */
-    private String changed;
+    private String changed = "";
     private String text;
     private final transient List<Note> notes = new ArrayList<>();
     private final List<String> persons = new ArrayList<>();
@@ -20,7 +20,7 @@ public class Note {
     /** format "yyyy-MM-dd HH:mm", can be null or empty */
     private String doneDate;
     /** null or empty for top level notes, if parent note is missing this note is displayed as a top level note */
-    private String parentId;
+    private String parentId = null;
     private transient boolean added = false;
     
     public String getId() {

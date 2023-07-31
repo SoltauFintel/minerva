@@ -32,11 +32,12 @@ public class NotesSO {
     }
    
     public void addNote(String text, List<String> persons, String parentId) {
+    	// TODO call createNote()
         Note note = new Note();
         note.setId(IdGenerator.createId6());
         note.setParentId(parentId == null ? "" : parentId);
         note.setUser(seite.getBook().getUser().getLogin());
-        note.setCreated(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        note.setCreated(now());
         note.setChanged("");
         note.setText(text);
         note.getPersons().addAll(persons);
@@ -48,6 +49,30 @@ public class NotesSO {
         saveNote(note, new CommitMessage(seite, "note added"));
         
         sendNotifications(note.getId(), persons);
+    }
+    
+    public Note createNote(Note parentNote, String text, String user, String created) {
+		Note note = new Note();
+		note.setId(IdGenerator.createId6());
+		note.setParentId(parentNote == null ? "" : parentNote.getId());
+		note.setUser(user);
+		note.setCreated(created);
+		note.setText(text);
+		if (parentNote == null) {
+			seite.getSeite().getNotes().add(note);
+		} else {
+			note.setParentId(parentNote.getId());
+			parentNote.getNotes().add(note);
+		}
+		return note;
+    }
+    
+    public void saveTo(Note note, Map<String, String> files) {
+    	files.put(filename(note), StringService.prettyJSON(note));
+    }
+    
+    public String now() {
+    	return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
     
     public void deleteNote(String id) {

@@ -22,10 +22,13 @@ import minerva.MinervaWebapp;
 import minerva.access.DirAccess;
 import minerva.base.FileService;
 import minerva.base.NlsString;
+import minerva.base.StringService;
 import minerva.model.BookSO;
 import minerva.model.ExclusionsSO;
+import minerva.model.NotesSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
+import minerva.seite.Note;
 import minerva.seite.Seite;
 
 /**
@@ -220,7 +223,7 @@ public class ConfluenceToMinervaMigrationService {
         migrateHelpKeys(sp, en, tp);
         MinervaWebapp.factory().getPageChangeStrategy().set("Migration", tp);
         
-        migrateNotes(sp.getId(), en == null ? null : en.getId(), tp.getId(), files);
+        migrateNotes(sp.getId(), en == null ? null : en.getId(), tp, files);
 
         tp.saveMetaTo(files);
         tp.saveHtmlTo(files, langs);
@@ -459,11 +462,53 @@ public class ConfluenceToMinervaMigrationService {
         }
     }
 
-    private void migrateNotes(String deId, String enId, String minervaPageId, Map<String, String> files) {
-        // TODO Notes von deId laden, falls vorh.
-        // TODO Notes von enId laden, falls vorh. | enId kann null sein
-        // TODO Ich muss überlegen wie ich DE vs. EN Kommentare zusammenführe.
-        // TODO Notes ins Minerva Format überführen
-        // TODO Notes-Dateien nach files speichern
+    private void migrateNotes(String deId, String enId, SeiteSO seite, Map<String, String> files) {
+    	ConfluenceComments deNotes = loadNotes(deId);
+    	ConfluenceComments enNotes = loadNotes(deId);
+    	if (!deNotes.getComments().isEmpty() && !enNotes.getComments().isEmpty()) {
+    		// TODO Ich muss überlegen wie ich DE vs. EN Kommentare zusammenführe. Mischen? Sprachen nacheinander?
+    	}
+    	migrateNotes2("deutsche",  deNotes, seite, files);
+    	migrateNotes2("englische", enNotes, seite, files);
+    	
+    	// TODO Darf man eine Antwort auf eine mig.Note schreiben?
+    	// TODO Muss man zwischen mig.Note und normale Note unterscheiden können?
     }
+    
+	private ConfluenceComments loadNotes(String id) {
+		ConfluenceComments ret = null;
+		if (!StringService.isNullOrEmpty(id)) {
+			File file = new File(sourceFolder, "html/notes/" + id + ".json");
+			if (file.isFile()) {
+				ret = FileService.loadJsonFile(file, ConfluenceComments.class);
+			}
+		}
+		if (ret == null) {
+			ret = new ConfluenceComments();
+		}
+		if (ret.getComments() == null) {
+			ret.setComments(new ArrayList<>());
+		}
+		return ret;
+	}
+	
+	private void migrateNotes2(String lang, ConfluenceComments cnotes, SeiteSO seite, Map<String, String> files) {
+		int n = cnotes.getComments().size();
+		if (n > 0) {
+			NotesSO notesSO = seite.notes();
+			migrateNotes3(cnotes.getComments(), null, notesSO, files);
+			Note mnote = notesSO.createNote(null,
+					"// Die Kommentare oberhalb stammen aus dem Altsystem und beziehen sich auf die " + lang + " Seite.",
+					"Minerva", notesSO.now());
+    		notesSO.saveTo(mnote, files);
+		}
+	}
+	
+	private void migrateNotes3(List<ConfluenceComment> cnotes, Note mnote_parent, NotesSO notesSO, Map<String, String> files) {
+    	for (ConfluenceComment cnote : cnotes) {
+    		Note mnote = notesSO.createNote(mnote_parent, cnote.getPlainText(), cnote.getAuthor(), cnote.getCreated());
+    		notesSO.saveTo(mnote, files);
+    		migrateNotes3(cnote.getComments(), mnote, notesSO, files); // recursive
+		}
+	}
 }
