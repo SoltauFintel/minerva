@@ -87,7 +87,7 @@ public class ConfluenceComment {
         }
 		int ni = doc.selectXpath("//img").size();
 		if (ni > 0) {
-			ret = "(comment contained image" + (ni == 1 ? "" : "s") + ")\n" + ret;
+			ret = "(Kommentar enthielt " + (ni == 1 ? "eine Grafik" : "Grafiken") + ".)\n" + ret;
 		}
         return ret;
     }
