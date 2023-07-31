@@ -171,6 +171,10 @@
 
 .noteTextNC {
     white-space: break-spaces;
+    border: #ccc 1pt solid;
+    border-radius: 6px;
+    background-color: #eee;
+    padding: 5px;
 }
 
 .noteTextarea {

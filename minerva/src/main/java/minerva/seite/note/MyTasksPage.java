@@ -9,8 +9,9 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
 
     @Override
     protected void execute() {
-        Logger.info(user.getLogin() + " | My tasks");
+    	String login = ctx.queryParam("login");
+		Logger.info(user.getLogin() + " | " + (user.getLogin().equals(login) ? "My tasks" : "All tasks for " + login));
         header(n("myTasks"));
-        AllNotesPage.fill(user.getNotes(branch), branch, model);
+        AllNotesPage.fill(user.getNotes(branch, login), branch, model);
     }
 }

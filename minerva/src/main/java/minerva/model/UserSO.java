@@ -19,6 +19,7 @@ import com.google.common.base.Strings;
 import minerva.MinervaWebapp;
 import minerva.access.DirAccess;
 import minerva.base.FileService;
+import minerva.base.StringService;
 import minerva.base.Tosmap;
 import minerva.seite.link.InvalidLinksModel;
 import minerva.seite.note.NoteWithSeite;
@@ -269,8 +270,10 @@ public class UserSO {
         }
     }
 
-    public List<NoteWithSeite> getNotes(String branch) {
-        String login = user.getLogin();
+    public List<NoteWithSeite> getNotes(String branch, String login) {
+    	if (StringService.isNullOrEmpty(login)) {
+    		login = user.getLogin();
+    	}
         List<NoteWithSeite> notes = new ArrayList<>();
         for (BookSO book : getWorkspace(branch).getBooks()) {
             for (NoteWithSeite n : book.getSeiten().getAllNotes()) {
