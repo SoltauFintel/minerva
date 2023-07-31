@@ -51,13 +51,15 @@ public class NotesSO {
         sendNotifications(note.getId(), persons);
     }
     
-    public Note createNote(Note parentNote, String text, String user, String created) {
+    public Note createNote(Note parentNote, String text, String user, String created, List<String> persons) {
 		Note note = new Note();
 		note.setId(IdGenerator.createId6());
 		note.setParentId(parentNote == null ? "" : parentNote.getId());
 		note.setUser(user);
 		note.setCreated(created);
 		note.setText(text);
+		note.getPersons().clear();
+		note.getPersons().addAll(persons);
 		if (parentNote == null) {
 			seite.getSeite().getNotes().add(note);
 		} else {

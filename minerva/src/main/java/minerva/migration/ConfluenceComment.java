@@ -17,6 +17,7 @@ public class ConfluenceComment {
     private String created;
     private String html;
     private final List<ConfluenceComment> comments = new ArrayList<>();
+    private final transient List<String> persons = new ArrayList<>();
 
     public String getPageId() {
         return pageId;
@@ -55,6 +56,7 @@ public class ConfluenceComment {
     }
     
     public String getPlainText() {
+    	persons.clear();
         if (StringService.isNullOrEmpty(html)) {
             return "";
         }
@@ -62,7 +64,9 @@ public class ConfluenceComment {
         String html2 = html;
         // mentions
         for (Element e : doc.selectXpath("//a[@class='confluence-userlink user-mention']")) {
-            html2 = html2.replace(from(e), "@[" + e.text() + "]");
+            String personName = e.text();
+			html2 = html2.replace(from(e), "@[" + personName + "]");
+            persons.add(personName);
         }
         // links
         for (Element e : doc.selectXpath("//a[not(@class='confluence-userlink user-mention')]")) {
@@ -78,6 +82,9 @@ public class ConfluenceComment {
         if (ret.startsWith("\n")) { // remove empty line at begin
             ret = ret.substring(1);
         }
+        while (ret.endsWith("\n")) { // remove empty lines at end
+        	ret = ret.substring(0, ret.length() - 1);
+        }
         return ret;
     }
     
@@ -87,4 +94,8 @@ public class ConfluenceComment {
                 .replace("Ü", "&Uuml;").replace("Ä", "&Auml;").replace("Ö", "&Ouml;") //
                 .replace("ß", "&szlig;");
     }
+
+	public List<String> getPersons() {
+		return persons;
+	}
 }

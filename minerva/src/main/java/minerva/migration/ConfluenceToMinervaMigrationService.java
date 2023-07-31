@@ -482,6 +482,7 @@ public class ConfluenceToMinervaMigrationService {
     	}
     	if (!deNotes.getComments().isEmpty() && !enNotes.getComments().isEmpty()) {
     		// TODO Ich muss überlegen wie ich DE vs. EN Kommentare zusammenführe. Mischen? Sprachen nacheinander?
+    		Logger.info("de+en notes for page " + seite.getId());
     	}
     	migrateNotes2("deutsche",  deNotes, seite, files);
     	migrateNotes2("englische", enNotes, seite, files);
@@ -514,16 +515,21 @@ public class ConfluenceToMinervaMigrationService {
 			migrateNotes3(cnotes.getComments(), null, notesSO, files);
 			Note mnote = notesSO.createNote(null,
 					"// Die Kommentare oberhalb stammen aus dem Altsystem und beziehen sich auf die " + lang + " Seite.",
-					"Minerva", notesSO.now());
+					"Minerva", notesSO.now(), new ArrayList<>());
     		notesSO.saveTo(mnote, files);
 		}
 	}
 	
 	private void migrateNotes3(List<ConfluenceComment> cnotes, Note mnote_parent, NotesSO notesSO, Map<String, String> files) {
     	for (ConfluenceComment cnote : cnotes) {
-    		Note mnote = notesSO.createNote(mnote_parent, cnote.getPlainText(), cnote.getAuthor(), cnote.getCreated());
+    		String text = cnote.getPlainText(); // must be called before getPersons()
+			Note mnote = notesSO.createNote(mnote_parent, text, cnote.getAuthor(), transformDate(cnote.getCreated()), cnote.getPersons());
     		notesSO.saveTo(mnote, files);
     		migrateNotes3(cnote.getComments(), mnote, notesSO, files); // recursive
 		}
+	}
+
+	private String transformDate(String date) { // 2022-10-05T14:10:32 -> 2022-10-05 14:10
+		return date.substring(0, 10) + " " + date.substring(11, 16);
 	}
 }
