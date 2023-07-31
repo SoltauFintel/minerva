@@ -43,6 +43,7 @@ public class AllNotesPage extends BPage {
             String v = v0 + bookFolder + "/" + n.getSeite().getId();
             map.put("pagelink", v);
             map.put("link", v + "/notes");
+            map.put("linkh", v + "/notes?highlight=" + note.getId());
             map.put("bookTitle", mesc(n.getSeite().getBook().getTitle()));
             map.put("pageTitle", mesc(n.getSeite().getTitle()));
             map.put("hasPersons", !note.getPersons().isEmpty());

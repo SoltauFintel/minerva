@@ -20,14 +20,15 @@ public class NotesPage extends SPage implements Uptodatecheck {
     
     @Override
     protected void execute() {
+		String highlight = ctx.queryParam("highlight");
         Logger.info(user.getLogin() + " | Notes page for \"" + seite.getTitle() + "\"");
         header(n("notes"));
-        put("noteHTML", noteHTML(seite.getSeite().getNotes(), 1));
+        put("noteHTML", noteHTML(seite.getSeite().getNotes(), highlight, 1));
         put("hasNotes", !seite.getSeite().getNotes().isEmpty());
         put("showTopCreateButton", seite.notes().getNotesSize() >= 4);
     }
 
-    private String noteHTML(List<Note> notes, int ebene) {
+    private String noteHTML(List<Note> notes, String highlight, int ebene) {
         StringBuilder sb = new StringBuilder();
         for (Note note : notes) {
             DataMap m = new DataMap();
@@ -42,11 +43,12 @@ public class NotesPage extends SPage implements Uptodatecheck {
             m.put("done", note.isDone());
             m.put("doneDate", esc(note.getDoneDate()));
             m.put("doneBy", esc(MinervaWebapp.factory().login2RealName(note.getDoneBy())));
-            m.put("notes", noteHTML(note.getNotes(), ebene + 1)); // recursive
+            m.put("notes", noteHTML(note.getNotes(), highlight, ebene + 1)); // recursive
             m.put("viewlink", viewlink);
             m.put("addAllowed", ebene < 7);
             m.put("editAllowed", note.getUser().equals(seite.getLogin()) || isAdmin);
             m.put("N", "en".equals(user.getGuiLanguage()) ? NLS.dataMap_en : NLS.dataMap_de); // RB texts
+            m.put("highlight", note.getId().equals(highlight));
             sb.append(Page.templates.render("NotePiece", m));
         }
         return sb.toString();

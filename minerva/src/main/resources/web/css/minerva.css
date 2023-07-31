@@ -155,6 +155,10 @@
     color: #900;
 }
 
+.noteHighlight {
+	background-color: #efe;
+}
+
 .noteUser {
     font-weight: bold;
 }

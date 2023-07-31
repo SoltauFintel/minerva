@@ -17,12 +17,12 @@
 			{{if done}}
 	            <a href="{{viewlink}}/note-done?id={{noteId}}&m=u" title="{{N.undoneNote}}"
 	                onclick="document.querySelector('#nd_{{noteId}}').style='';"
-	                class="btn btn-default btn-xs"><i class="fa fa-undo"></i> <i id="nd_{{noteId}}"
+	                class="btn btn-default btn-xs" style="margin-left: 5px;"><i class="fa fa-undo"></i> <i id="nd_{{noteId}}"
 	                class="fa fa-delicious fa-spin" style="display: none;"></i></a>
 	        {{/if}}
         {{/if}}
     </p>
-    <p class="noteTextNC">{{text}}</p>
+    <p class="noteTextNC{{if highlight}} noteHighlight{{/if}}">{{text}}</p>
     <p class="noteCommands">
         {{if addAllowed}}
             <a href="{{viewlink}}/add-note?parent={{noteId}}" class="btn btn-default btn-xs br"><i
