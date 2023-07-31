@@ -40,7 +40,7 @@ public class MigrationPage extends UPage {
                 Logger.error(e);
                 throw new RuntimeException("Migration error. See log.");
             }
-            ctx.redirect("/b/"+ branch);
+            ctx.redirect("/w/" + branch);
         }
         
         put("branch", esc(branch));
