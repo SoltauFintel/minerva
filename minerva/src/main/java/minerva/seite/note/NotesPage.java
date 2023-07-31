@@ -1,6 +1,8 @@
 package minerva.seite.note;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.pmw.tinylog.Logger;
 
@@ -35,7 +37,7 @@ public class NotesPage extends SPage implements Uptodatecheck {
             m.put("created", esc(note.getCreated()));
             m.put("changed", esc(note.getChanged()));
             m.put("hasChanged", !note.getChanged().isEmpty());
-            m.put("text", esc(note.getText()));
+            m.put("text", makeLinks(esc(note.getText())));
             fillPersons(note, m);
             m.put("done", note.isDone());
             m.put("doneDate", esc(note.getDoneDate()));
@@ -50,7 +52,23 @@ public class NotesPage extends SPage implements Uptodatecheck {
         return sb.toString();
     }
 
-    private void fillPersons(Note note, DataMap m) {
+    private String makeLinks(String text) {
+		Pattern regex = Pattern.compile("\\((.*)\\)\\[(.*)\\]", Pattern.MULTILINE);
+		Matcher matcher = regex.matcher(text);
+		while (matcher.find()) {
+			String url = matcher.group(2);
+			String target = "";
+			if (url.startsWith("http://") || url.startsWith("https://")) {
+				target = " target=\"_blank\"";
+			} else {
+				url = "../" + url;
+			}
+			text = text.replace(matcher.group(0), "<a href=\"" + url + "\"" + target + ">" + matcher.group(1) + "</a>");
+		}
+		return text;
+	}
+
+	private void fillPersons(Note note, DataMap m) {
         DataList list = m.list("persons");
         String login = user.getLogin();
         int max = note.getPersons().size() - 1;
