@@ -7,6 +7,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Escaper;
+import minerva.base.StringService;
 import minerva.book.BPage;
 import minerva.seite.Note;
 
@@ -32,13 +33,13 @@ public class AllNotesPage extends BPage {
             map.put("created", mesc(note.getCreated()));
             String text = note.getText();
             if (text.length() > 113) {
-                map.put("text1", mesc(text.substring(0, 110)));
+                map.put("text1", StringService.makeClickableLinks(mesc(text.substring(0, 110))));
                 map.put("hasMoreText", true);
             } else {
-                map.put("text1", mesc(text));
+                map.put("text1", StringService.makeClickableLinks(mesc(text)));
                 map.put("hasMoreText", false);
             }
-            map.put("completeText", mesc(text));
+            map.put("completeText", StringService.makeClickableLinks(mesc(text)));
             String bookFolder = n.getSeite().getBook().getBook().getFolder();
             String v = v0 + bookFolder + "/" + n.getSeite().getId();
             map.put("pagelink", v);

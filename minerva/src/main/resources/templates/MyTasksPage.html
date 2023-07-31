@@ -7,18 +7,21 @@
         <p>Branch: {{branch}} | {{N.user}}: {{login}} | {{N.anzahl}}: {{n}}</p>
 
         {{each n in notes}}
-            <p class="mt2">
-                <a href="{{n.pagelink}}"><i class="fa fa-file-text" style="color: rgb(0,101,255);"></i></a> <b>{{n.pageTitle}}</b>
-                <p id="na{{n.id}}" class="noteTextNC" style="margin-bottom: 0;">{{n.text1}}{{if n.hasMoreText}}<a
+            <div class="mt2" style="border-top: 1pt #ccc solid;">
+               	<div style="margin-top: 4px;">
+               		<a href="{{n.pagelink}}"><i class="fa fa-file-text" style="color: rgb(0,101,255);"></i></a>
+               		<b>{{n.pageTitle}}</b>
+               	</div>
+                <div id="na{{n.id}}" class="noteTextNC" style="margin-bottom: 0;">{{n.text1}}{{if n.hasMoreText}}<a
                     onclick="moreText('{{n.id}}');" class="noteMehr">mehr...</a>{{/if}}<br><a
-                    href="{{n.linkh}}" class="btn btn-primary btn-sm">{{N.viewNote}}</a></p>
+                    href="{{n.linkh}}" class="btn btn-primary btn-sm">{{N.viewNote}}</a></div>
                 
-                <p id="nb{{n.id}}" class="noteTextNC" style="margin-bottom: 0;" hidden>{{n.completeText}}<br/><a
-                    href="{{n.linkh}}" class="btn btn-primary btn-sm">{{N.viewNote}}</a></p>
+                <div id="nb{{n.id}}" class="noteTextNC" style="margin-bottom: 0;" hidden>{{n.completeText}}<br/><a
+                    href="{{n.linkh}}" class="btn btn-primary btn-sm">{{N.viewNote}}</a></div>
                 
-                <span style="font-size: 8pt; color: #999;">{{n.created}} &ndash; {{n.user}} &ndash;
-                <i class="fa fa-book greenbook"></i> {{n.bookTitle}}</span>
-            </p>
+                <span style="font-size: 8pt; color: #999; margin-left: 3em;">{{n.created}} &ndash; {{n.user}}<!-- &ndash;
+                <i class="fa fa-book greenbook"></i> {{n.bookTitle}} --></span>
+            </div>
         {{/each}}
     </div>
 </div>

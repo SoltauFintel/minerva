@@ -1,6 +1,8 @@
 package minerva.base;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.jsoup.Jsoup;
@@ -60,4 +62,24 @@ public class StringService {
     public static List<String> upper(List<String> list) {
         return list.stream().map(i -> i.toUpperCase()).collect(Collectors.toList());
     }
+
+    /**
+     * @param text contains many Markdown links: (title)[url]
+     * @return HTML link
+     */
+    public static String makeClickableLinks(String text) {
+		Pattern regex = Pattern.compile("\\((.*)\\)\\[(.*)\\]", Pattern.MULTILINE);
+		Matcher matcher = regex.matcher(text);
+		while (matcher.find()) {
+			String url = matcher.group(2);
+			String target = "";
+			if (url.startsWith("http://") || url.startsWith("https://")) {
+				target = " target=\"_blank\"";
+			} else {
+				url = "../" + url;
+			}
+			text = text.replace(matcher.group(0), "<a href=\"" + url + "\"" + target + ">" + matcher.group(1) + "</a>");
+		}
+		return text;
+	}
 }

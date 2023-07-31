@@ -184,6 +184,7 @@
 .noteTextNC {
     white-space: break-spaces;
     padding: 5px;
+    margin-left: 1em;
     margin-bottom: 5px;
 }
 

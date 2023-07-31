@@ -1,8 +1,6 @@
 package minerva.seite.note;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.pmw.tinylog.Logger;
 
@@ -12,6 +10,7 @@ import com.github.template72.data.DataMap;
 import github.soltaufintel.amalia.web.action.Page;
 import minerva.MinervaWebapp;
 import minerva.base.NLS;
+import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
 import minerva.seite.Note;
 import minerva.seite.SPage;
@@ -38,7 +37,7 @@ public class NotesPage extends SPage implements Uptodatecheck {
             m.put("created", esc(note.getCreated()));
             m.put("changed", esc(note.getChanged()));
             m.put("hasChanged", !note.getChanged().isEmpty());
-            m.put("text", makeLinks(esc(note.getText())));
+            m.put("text", StringService.makeClickableLinks(esc(note.getText())));
             fillPersons(note, m);
             m.put("done", note.isDone());
             m.put("doneDate", esc(note.getDoneDate()));
@@ -53,22 +52,6 @@ public class NotesPage extends SPage implements Uptodatecheck {
         }
         return sb.toString();
     }
-
-    private String makeLinks(String text) {
-		Pattern regex = Pattern.compile("\\((.*)\\)\\[(.*)\\]", Pattern.MULTILINE);
-		Matcher matcher = regex.matcher(text);
-		while (matcher.find()) {
-			String url = matcher.group(2);
-			String target = "";
-			if (url.startsWith("http://") || url.startsWith("https://")) {
-				target = " target=\"_blank\"";
-			} else {
-				url = "../" + url;
-			}
-			text = text.replace(matcher.group(0), "<a href=\"" + url + "\"" + target + ">" + matcher.group(1) + "</a>");
-		}
-		return text;
-	}
 
 	private void fillPersons(Note note, DataMap m) {
         DataList list = m.list("persons");
