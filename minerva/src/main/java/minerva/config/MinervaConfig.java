@@ -3,7 +3,10 @@ package minerva.config;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import github.soltaufintel.amalia.auth.webcontext.WebContext;
 import github.soltaufintel.amalia.mail.Mail;
@@ -251,4 +254,21 @@ public class MinervaConfig {
         String ret = System.getenv("MINERVA_" + name);
         return ret == null ? "" : ret;
     }
+    
+	public Map<String, String> getUsers() {
+    	Map<String, String> users = new HashMap<>();
+    	for (String name : getPersons()) {
+    		users.put(name, config.get("user." + name, name));
+    	}
+    	return users;
+    }
+	
+	public String toLogin(String name) {
+		for (Entry<String, String> e : getUsers().entrySet()) {
+			if (e.getValue().equals(name)) {
+				return e.getKey();
+			}
+		}
+		return name;
+	}
 }
