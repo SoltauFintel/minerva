@@ -164,6 +164,14 @@
     color: #666;
 }
 
+.noteInfoNC {
+    font-size: 8pt;
+    color: #666;
+    border-top: 1pt #ccc solid;
+    margin-bottom: 5px;
+    padding-top: 4px;
+}
+
 .noteText {
     white-space: break-spaces;
     font-family: 'Courier New', monospace;
@@ -171,14 +179,17 @@
 
 .noteTextNC {
     white-space: break-spaces;
-    border: #ccc 1pt solid;
-    border-radius: 6px;
-    background-color: #eee;
     padding: 5px;
+    margin-bottom: 5px;
 }
 
 .noteTextarea {
     font-family: 'Courier New', monospace;
+}
+
+.noteCommands {
+	margin-left: 5mm;
+	margin-bottom: 20px;
 }
 
 .noteMehr {

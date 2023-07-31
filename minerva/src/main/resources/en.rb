@@ -179,3 +179,4 @@ cantDeleteAllFiles=Not all files could be deleted!\nPlease contact the administr
 editorsNote=Editor's note
 clickToRemove=click to hide
 mergeRequestCantBeMerged=Merge Request <a href="$url" target="_blank">$id</a> can not be merged. Please <a href="$url/conflicts" target="_blank">resolve the conflicts</a> in Gitlab, commit them and merge the merge request. After that <a href="/w/$tb/pull">refresh</a> the Minerva workspace.
+user=User

@@ -257,7 +257,7 @@ public class MinervaConfig {
     }
     
     private String env(String name) {
-        String ret = System.getenv("MINERVA_" + name);
+        String ret = System.getenv("MINERVA_" + name); // TODO doof. Das MINERVA_ bei den Aufrufern platzieren!
         return ret == null ? "" : ret;
     }
     

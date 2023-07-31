@@ -4,17 +4,17 @@
     <div class="col-lg-12">
         <h1 class="page-header">{{header}}</h1>
 
-        <p>Branch: {{branch}}</p>
+        <p>Branch: {{branch}} | {{N.user}}: {{login}} | {{N.anzahl}}: {{n}}</p>
 
         {{each n in notes}}
             <p class="mt2">
                 <a href="{{n.pagelink}}"><i class="fa fa-file-text" style="color: rgb(0,101,255);"></i></a> <b>{{n.pageTitle}}</b>
-                <pre id="na{{n.id}}" class="noteText" style="margin-bottom: 0;">{{n.text1}}{{if n.hasMoreText}}<a
+                <p id="na{{n.id}}" class="noteTextNC" style="margin-bottom: 0;">{{n.text1}}{{if n.hasMoreText}}<a
                     onclick="moreText('{{n.id}}');" class="noteMehr">mehr...</a>{{/if}}<br><a
-                    href="{{n.link}}" class="btn btn-primary btn-sm">{{N.viewNote}}</a></pre>
+                    href="{{n.link}}" class="btn btn-primary btn-sm">{{N.viewNote}}</a></p>
                 
-                <pre id="nb{{n.id}}" class="noteText" style="margin-bottom: 0;" hidden>{{n.completeText}}<br/><a
-                    href="{{n.link}}" class="btn btn-primary btn-sm">{{N.viewNote}}</a></pre>
+                <p id="nb{{n.id}}" class="noteTextNC" style="margin-bottom: 0;" hidden>{{n.completeText}}<br/><a
+                    href="{{n.link}}" class="btn btn-primary btn-sm">{{N.viewNote}}</a></p>
                 
                 <span style="font-size: 8pt; color: #999;">{{n.created}} &ndash; {{n.user}} &ndash;
                 <i class="fa fa-book greenbook"></i> {{n.bookTitle}}</span>

@@ -79,7 +79,7 @@ public class ConfluenceComment {
         }
         // make nice formatted non-HTML text
         String ret = new HtmlToPlainText().getPlainText(Jsoup.parse(html2).root());
-        if (ret.startsWith("\n")) { // remove empty line at begin
+        while (ret.startsWith("\n")) { // remove empty line at begin
             ret = ret.substring(1);
         }
         while (ret.endsWith("\n")) { // remove empty lines at end

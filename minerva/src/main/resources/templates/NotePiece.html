@@ -1,5 +1,5 @@
 <div class="note">
-    <p class="noteInfo">
+    <p class="noteInfoNC">
         <i class="fa fa-stop note{{color}}"></i>
         <span class="noteUser">{{user}}</span> -
         <span class="noteCreated" title="created">{{created}}</span>{{if hasChanged}} -
@@ -14,20 +14,21 @@
         {{if done}}
             &mdash; <span style="color: #090;" title="{{doneDate}}"><i
                         class="fa fa-check"></i> {{N.doneBy}} {{doneBy}}</span>
+			{{if done}}
+	            <a href="{{viewlink}}/note-done?id={{noteId}}&m=u" title="{{N.undoneNote}}"
+	                onclick="document.querySelector('#nd_{{noteId}}').style='';"
+	                class="btn btn-default btn-xs"><i class="fa fa-undo"></i> <i id="nd_{{noteId}}"
+	                class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+	        {{/if}}
         {{/if}}
     </p>
     <p class="noteTextNC">{{text}}</p>
-    <p>
+    <p class="noteCommands">
         {{if addAllowed}}
             <a href="{{viewlink}}/add-note?parent={{noteId}}" class="btn btn-default btn-xs br"><i
                 class="fa fa-comments"></i> {{N.reply}}</a>
         {{/if}}
-        {{if done}}
-            <a href="{{viewlink}}/note-done?id={{noteId}}&m=u" title="{{N.undoneNote}}"
-                onclick="document.querySelector('#nd_{{noteId}}').style='';"
-                class="btn btn-default btn-xs"><i class="fa fa-undo"></i> <i id="nd_{{noteId}}"
-                class="fa fa-delicious fa-spin" style="display: none;"></i></a>
-        {{else}}
+        {{if not done}}
             <a href="{{viewlink}}/note-done?id={{noteId}}" title="{{N.doneNote}}"
                 onclick="document.querySelector('#nd_{{noteId}}').style='';"
                 class="btn btn-default btn-xs br"><i class="fa fa-check"></i> {{N.done}}! <i id="nd_{{noteId}}"
