@@ -85,6 +85,10 @@ public class ConfluenceComment {
         while (ret.endsWith("\n")) { // remove empty lines at end
         	ret = ret.substring(0, ret.length() - 1);
         }
+		int ni = doc.selectXpath("//img").size();
+		if (ni > 0) {
+			ret = "(comment contained image" + (ni == 1 ? "" : "s") + ")\n" + ret;
+		}
         return ret;
     }
     

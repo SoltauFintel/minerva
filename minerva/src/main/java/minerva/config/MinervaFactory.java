@@ -160,4 +160,14 @@ public class MinervaFactory {
     public List<String> getLogins() {
         return FileService.listFolders(new File(config.getWorkspacesFolder()));
     }
+    
+    public String login2RealName(String login) {
+    	String ret = config.getLogin2RealName().get(login);
+    	return ret == null ? login : ret;
+    }
+    
+    public String realName2Login(String realName) {
+    	String ret = config.getRealName2Login().get(realName);
+    	return ret == null ? realName : ret;
+    }
 }

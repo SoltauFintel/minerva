@@ -481,15 +481,9 @@ public class ConfluenceToMinervaMigrationService {
     	if (deId.equals(enId)) {
     		throw new RuntimeException("deId is = enId! " + deId);
     	}
-    	if (!deNotes.getComments().isEmpty() && !enNotes.getComments().isEmpty()) {
-    		// TODO Ich muss überlegen wie ich DE vs. EN Kommentare zusammenführe. Mischen? Sprachen nacheinander?
-    		Logger.info("de+en notes for page " + seite.getId());
-    	}
-    	migrateNotes2("deutsche",  deNotes, seite, files);
-    	migrateNotes2("englische", enNotes, seite, files);
-    	
-    	// TODO Darf man eine Antwort auf eine mig.Note schreiben?
-    	// TODO Muss man zwischen mig.Note und normale Note unterscheiden können?
+    	boolean de_en_Hinweis = !deNotes.getComments().isEmpty() && !enNotes.getComments().isEmpty();
+    	migrateNotes2("deutsche",  deNotes, de_en_Hinweis, seite, files);
+    	migrateNotes2("englische", enNotes, de_en_Hinweis, seite, files);
     }
     
 	private ConfluenceComments loadNotes(String id) {
@@ -509,28 +503,31 @@ public class ConfluenceToMinervaMigrationService {
 		return ret;
 	}
 	
-	private void migrateNotes2(String lang, ConfluenceComments cnotes, SeiteSO seite, Map<String, String> files) {
+	private void migrateNotes2(String lang, ConfluenceComments cnotes, boolean de_en_Hinweis, SeiteSO seite, Map<String, String> files) {
 		int n = cnotes.getComments().size();
 		if (n > 0) {
 			NotesSO notesSO = seite.notes();
-			migrateNotes3(cnotes.getComments(), null, notesSO, files);
+			migrateNotes3(lang, cnotes.getComments(), null, de_en_Hinweis, notesSO, files);
+			/* Zwischennotiz
 			Note mnote = notesSO.createNote(null,
 					"// Die Kommentare oberhalb stammen aus dem Altsystem und beziehen sich auf die " + lang + " Seite.",
 					"Minerva", notesSO.now(), new ArrayList<>());
-    		notesSO.saveTo(mnote, files);
+    		notesSO.saveTo(mnote, files);*/
 		}
 	}
 	
-	private void migrateNotes3(List<ConfluenceComment> cnotes, Note mnote_parent, NotesSO notesSO, Map<String, String> files) {
+	private void migrateNotes3(String lang, List<ConfluenceComment> cnotes, Note mnote_parent, boolean de_en_Hinweis,
+			NotesSO notesSO, Map<String, String> files) {
     	for (ConfluenceComment cnote : cnotes) {
     		String text = cnote.getPlainText(); // must be called before getPersons()
 			Note mnote = notesSO.createNote(mnote_parent,
+					(de_en_Hinweis ? "(Diese Notiz bezieht sich auf die " + lang + " Seite.)\n" : "") +
 					text,
 					realName2Login(cnote.getAuthor()),
 					transformDate(cnote.getCreated()),
 					cnote.getPersons().stream().map(p -> realName2Login(p)).collect(Collectors.toList()));
     		notesSO.saveTo(mnote, files);
-    		migrateNotes3(cnote.getComments(), mnote, notesSO, files); // recursive
+    		migrateNotes3(lang, cnote.getComments(), mnote, de_en_Hinweis, notesSO, files); // recursive
 		}
 	}
 	
