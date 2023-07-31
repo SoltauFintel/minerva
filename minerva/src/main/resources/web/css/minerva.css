@@ -169,6 +169,10 @@
     font-family: 'Courier New', monospace;
 }
 
+.noteTextNC {
+    white-space: break-spaces;
+}
+
 .noteTextarea {
     font-family: 'Courier New', monospace;
 }
