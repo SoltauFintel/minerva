@@ -48,7 +48,8 @@ public class ConfluenceToMinervaMigrationService {
     private Map<String, String> enDeMap;
     private List<EnglishSoloPage> englishSoloPages;
     private OldHelpKeysReader helpKeysCollection;
-
+    private int imgErrors;
+    
     public ConfluenceToMinervaMigrationService(File sourceFolder, File helpKeysFolder,
             WorkspaceSO workspace, List<String> langs) {
         this.sourceFolder = sourceFolder;
@@ -59,6 +60,7 @@ public class ConfluenceToMinervaMigrationService {
 
     public void migrate() throws Exception {
         Logger.info("[Migration] Start of migration | source folder: " + sourceFolder.getAbsolutePath());
+        imgErrors = 0;
 
         // Schritt 1: pullen, alle Dateien löschen und pushen
         workspace.pull();
@@ -88,6 +90,7 @@ public class ConfluenceToMinervaMigrationService {
         for (ConfluencePage sp : root_de.getSubpages()) {
             migrateBook(sp, position++);
         }
+        Logger.info("image migration errors: " + imgErrors + " (see log)");
         Logger.info("---- Migration finished ----");
     }
 
@@ -293,11 +296,15 @@ public class ConfluenceToMinervaMigrationService {
         for (String img : imgList) {
             int o = img.indexOf("/");
             if (o < 0) {
-                throw new RuntimeException("'/' unexpected not found in image filename\n" + img);
+            	Logger.error("'/' unexpected not found in image filename: " + img + " | skip");
+            	imgErrors++;
+            	continue;
             }
             int oo = img.indexOf("/", o + 1);
             if (oo < 0) {
-                throw new RuntimeException("2nd '/' unexpected not found in image filename\n" + img);
+                Logger.error("2nd '/' unexpected not found in image filename: " + img + " | skip");
+            	imgErrors++;
+                continue;
             }
             String dnSource = img.substring(0, o) + img.substring(oo);
             String dnTarget = img;
@@ -310,10 +317,11 @@ public class ConfluenceToMinervaMigrationService {
                     files.put(targetImg.getAbsolutePath().replace("\\", "/"), DirAccess.IMAGE);
                 } else {
                     Logger.error("src img ('" + img + "') not found: " + srcImg.toString());
+                	imgErrors++;
                 }
             } catch (IOException e) {
                 Logger.error(e, "copy error for file: " + img);
-                throw new RuntimeException("Error copying image file during migration.");
+            	imgErrors++;
             }
         }
         return html;
