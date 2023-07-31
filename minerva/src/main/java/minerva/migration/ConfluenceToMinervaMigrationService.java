@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -523,10 +524,19 @@ public class ConfluenceToMinervaMigrationService {
 	private void migrateNotes3(List<ConfluenceComment> cnotes, Note mnote_parent, NotesSO notesSO, Map<String, String> files) {
     	for (ConfluenceComment cnote : cnotes) {
     		String text = cnote.getPlainText(); // must be called before getPersons()
-			Note mnote = notesSO.createNote(mnote_parent, text, cnote.getAuthor(), transformDate(cnote.getCreated()), cnote.getPersons());
+			Note mnote = notesSO.createNote(mnote_parent,
+					text,
+					realName2Login(cnote.getAuthor()),
+					transformDate(cnote.getCreated()),
+					cnote.getPersons().stream().map(p -> realName2Login(p)).collect(Collectors.toList()));
     		notesSO.saveTo(mnote, files);
     		migrateNotes3(cnote.getComments(), mnote, notesSO, files); // recursive
 		}
+	}
+	
+	private String realName2Login(String realname) {
+		String login = MinervaWebapp.factory().getConfig().getRealName2Login().get(realname);
+		return login == null ? realname : login;
 	}
 
 	private String transformDate(String date) { // 2022-10-05T14:10:32 -> 2022-10-05 14:10

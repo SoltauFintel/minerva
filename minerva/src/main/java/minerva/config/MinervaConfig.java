@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import github.soltaufintel.amalia.auth.webcontext.WebContext;
 import github.soltaufintel.amalia.mail.Mail;
@@ -17,10 +16,17 @@ import minerva.base.StringService;
 
 public class MinervaConfig {
     private final AppConfig config;
+    private final Map<String, String> login2RealName = new HashMap<>();
+    private final Map<String, String> realName2Login = new HashMap<>();
 
     public MinervaConfig(AppConfig config) {
         this.config = config;
         WebContext.setCookieName(this.config);
+    	for (String login : config.get("persons").split(",")) {
+    		String realName = config.get("user." + login, login);
+			login2RealName.put(login, realName);
+			realName2Login.put(realName, login);
+    	}
     }
     
     public boolean isDevelopment() {
@@ -255,20 +261,11 @@ public class MinervaConfig {
         return ret == null ? "" : ret;
     }
     
-	public Map<String, String> getUsers() {
-    	Map<String, String> users = new HashMap<>();
-    	for (String name : getPersons()) {
-    		users.put(name, config.get("user." + name, name));
-    	}
-    	return users;
-    }
-	
-	public String toLogin(String name) {
-		for (Entry<String, String> e : getUsers().entrySet()) {
-			if (e.getValue().equals(name)) {
-				return e.getKey();
-			}
-		}
-		return name;
+	public Map<String, String> getLogin2RealName() {
+		return login2RealName;
+	}
+
+	public Map<String, String> getRealName2Login() {
+		return realName2Login;
 	}
 }
