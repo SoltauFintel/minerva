@@ -68,7 +68,7 @@ public class StringService {
      * @return HTML link
      */
     public static String makeClickableLinks(String text) {
-		Pattern regex = Pattern.compile("\\((.*)\\)\\[(.*)\\]", Pattern.MULTILINE);
+		Pattern regex = Pattern.compile("\\(([^\\)]+)\\)\\[([^\\]]+)\\]");
 		Matcher matcher = regex.matcher(text);
 		while (matcher.find()) {
 			String url = matcher.group(2);
@@ -79,7 +79,12 @@ public class StringService {
 			if (url.startsWith("http://") || url.startsWith("https://")) {
 				target = " target=\"_blank\"";
 			} else {
-				url = "../" + url;
+				if (url.startsWith("N")) { // note link
+					url = url.substring(1);
+					url = "?highlight=" + url + "#" + url;
+				} else { // page link
+					url = "../" + url;
+				}
 			}
 			text = text.replace(matcher.group(0), "<a href=\"" + url + "\"" + target + ">" + matcher.group(1) + "</a>");
 		}
