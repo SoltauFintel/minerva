@@ -1,0 +1,25 @@
+
+
+
+Persistenz:
+1 Datei je User        user-<login>.json
+gespeichert im Workspaces Ordner
+
+
+transient String login;
+String guiLanguage
+String pageLanguage
+ExportUserSettings export;
+final List<String> favorites = new ArrayList<>();
+final List<String> watchlist = new ArrayList<>();
+exportAllowed
+realName
+
+
+UsersSO        alle User laden, 1 User speichern, 1 User löschen
+
+
+Users Page
+Add Page
+Edit Page
+Delete Page
