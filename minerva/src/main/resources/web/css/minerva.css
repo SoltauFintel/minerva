@@ -155,6 +155,10 @@
     color: #900;
 }
 
+.noteByMe {
+	color: #909;
+}
+
 .noteHighlight {
 	background-color: #efe;
 }

@@ -7,6 +7,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Escaper;
+import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.book.BPage;
 import minerva.seite.Note;
@@ -17,10 +18,10 @@ public class AllNotesPage extends BPage {
     protected void execute() {
         header(n("allNotes"));
         put("bookTitle", mesc(book.getTitle()));
-        fill(book.getSeiten().getAllNotes(), branch, model);
+        fill(book.getSeiten().getAllNotes(), branch, model, user.getLogin());
     }
     
-    public static void fill(List<NoteWithSeite> notes, String branch, DataMap model) {
+    public static void fill(List<NoteWithSeite> notes, String branch, DataMap model, String login) {
         String v0 = "/s/" + branch + "/";
         notes.sort((a, b) -> b.getNote().getCreated().compareTo(a.getNote().getCreated()));
         DataList list = model.list("notes");
@@ -29,7 +30,8 @@ public class AllNotesPage extends BPage {
             Note note = n.getNote();
             map.put("noteId", note.getId());
             map.put("id", n.getSeite().getId() + "-" + note.getId());
-            map.put("user", mesc(note.getUser()));
+            map.put("me", note.getUser().equals(login));
+            map.put("user", mesc(MinervaWebapp.factory().login2RealName(note.getUser())));
             map.put("created", mesc(note.getCreated()));
             String text = note.getText();
             if (text.length() > 113) {
@@ -44,7 +46,7 @@ public class AllNotesPage extends BPage {
             String v = v0 + bookFolder + "/" + n.getSeite().getId();
             map.put("pagelink", v);
             map.put("link", v + "/notes");
-            map.put("linkh", v + "/notes?highlight=" + note.getId());
+            map.put("linkh", v + "/notes?highlight=" + note.getId() + "#" + note.getId());
             map.put("bookTitle", mesc(n.getSeite().getBook().getTitle()));
             map.put("pageTitle", mesc(n.getSeite().getTitle()));
             map.put("hasPersons", !note.getPersons().isEmpty());

@@ -48,6 +48,7 @@ public class NotesPage extends SPage implements Uptodatecheck {
             m.put("editAllowed", note.getUser().equals(seite.getLogin()) || isAdmin);
             m.put("N", "en".equals(user.getGuiLanguage()) ? NLS.dataMap_en : NLS.dataMap_de); // RB texts
             m.put("highlight", note.getId().equals(highlight));
+            m.put("me", note.getUser().equals(user.getLogin()));
             sb.append(Page.templates.render("NotePiece", m));
         }
         return sb.toString();

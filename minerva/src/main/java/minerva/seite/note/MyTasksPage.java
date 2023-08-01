@@ -17,7 +17,7 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
 		put("login", esc(StringService.isNullOrEmpty(login) ? user.getLogin() : login));
         header(n("myTasks"));
         List<NoteWithSeite> notes = user.getNotes(branch, login);
-		AllNotesPage.fill(notes, branch, model);
+		AllNotesPage.fill(notes, branch, model, user.getLogin());
 		putInt("n", notes.size());
     }
 }
