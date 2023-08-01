@@ -16,11 +16,11 @@ public class ExportSeiteAction extends SAction {
         String lang = ctx.queryParam("lang");
         String customer = ctx.queryParam("customer");
 
-        Logger.info(user.getLogin() + " | " + branch + " | " + bookFolder
-                + " | export page \"" + seite.getSeite().getTitle().getString(lang)
-                + "\" for customer " + customer + " and language " + lang);
-        user.log("export page #" + seite.getId() + " \"" + seite.getSeite().getTitle().getString(lang)
-                + "\", " + customer + ", " + lang);
+        String info = branch + " | " + bookFolder
+		                + " | exporting page \"" + seite.getSeite().getTitle().getString(lang)
+		                + "\" for customer \"" + customer + "\" and language \"" + lang + "\"";
+		Logger.info(user.getLogin() + " | " + info);
+        user.log(info);
 
         File outputFolder = new MultiPageHtmlExportService(book.getWorkspace(), customer, lang).saveSeite(seite);
         

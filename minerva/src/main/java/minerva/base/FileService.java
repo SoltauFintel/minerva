@@ -145,6 +145,7 @@ public class FileService {
     }
 
     public static void zip(File folder, File zipFile) {
+    	zipFile.delete();
         int startOfFilenameWithRelativePath = folder.getAbsolutePath().length() + 1;
         try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))) {
             Files.walkFileTree(folder.toPath(), new SimpleFileVisitor<Path>() {
