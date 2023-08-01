@@ -244,8 +244,8 @@
     font-style: italic;
 }
 
-.seite table.confluenceTable {
-}
+/*.seite table.confluenceTable {
+}*/
 
 .seite table.confluenceTable td {
     border: 1px solid #BBB;
@@ -297,8 +297,8 @@
     font-weight: bold;
 }
 
-.highlight {
-}
+/*.highlight {
+}*/
 
 .highlight1 {
     background-color: #FFFF99;
