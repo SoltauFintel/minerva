@@ -181,3 +181,4 @@ editorsNote=Bearbeitungshinweis
 clickToRemove=Hinweis ausblenden
 mergeRequestCantBeMerged=Merge Request <a href="$url" target="_blank">$id</a> kann nicht gemerget werden. Bitte <a href="$url/conflicts" target="_blank">lösen Sie die Konflikte</a> in Gitlab, committen diese und mergen den Merge Request. Danach <a href="/w/$tb/pull">aktualisieren</a> Sie bitte den Minerva-Workspace.
 user=Benutzer
+moveToBookInfo=Bitte beachte, dass die Links beim Verschieben in ein anderes Buch nicht mehr funktionieren werden.

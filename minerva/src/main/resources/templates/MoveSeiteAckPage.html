@@ -5,6 +5,9 @@
         <h1 class="page-header">{{N.movePage}}</h1>
         
         <h3 style="max-width: 800px;">{{movePageText}}</h3>
+        {{if moveToBook}}
+        	<p>{{N.moveToBookInfo}}</p>
+        {{/if}}
         
         <p style="margin-top: 2em;">
             <a href="{{viewlink}}/move{{if moveToBook}}?folder={{folder}}{{else}}?parentid={{parentId}}{{/if}}"
