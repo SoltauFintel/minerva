@@ -7,6 +7,7 @@ import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.IdGenerator;
 import github.soltaufintel.amalia.rest.REST;
+import github.soltaufintel.amalia.rest.RestStatusException;
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
 import minerva.base.Tosmap;
@@ -78,7 +79,12 @@ public class GitlabAuthService {
 
     public void refreshToken(GitlabUser user) {
         String param = getParam() + "&grant_type=refresh_token&refresh_token=" + u(user.getRefreshToken());
-        Answer answer = new REST(cfg().getGitlabUrl() + "/oauth/token").post(param).fromJson(Answer.class);
+        Answer answer;
+		try {
+			answer = new REST(cfg().getGitlabUrl() + "/oauth/token").post(param).fromJson(Answer.class);
+		} catch (RestStatusException e) { // Status is 401
+			throw new RuntimeException(e.getMessage() + "\nTry to log out and log in.", e);
+		}
         
         user.setAccessToken(answer.getAccess_token());
         user.setRefreshToken(answer.getRefresh_token());

@@ -1,5 +1,6 @@
 package minerva.seite;
 
+import minerva.MinervaWebapp;
 import minerva.model.UserSO.LoginAndEndTime;
 
 /**
@@ -19,7 +20,7 @@ public class LockedByPage extends SPage {
         }
         
         header(n("locked.header"));
-        put("msg", esc(n("locked.info").replace("$t", seite.getTitle()).replace("$u", lockedBy.getLogin())));
+        put("msg", esc(n("locked.info").replace("$t", seite.getTitle()).replace("$u", MinervaWebapp.factory().login2RealName(lockedBy.getLogin()))));
         put("msg2", esc(n("locked.time").replace("$o", lockedBy.getEndTime())));
         put("editlink", editlink + "?m=cl");
         put("edit", n("locked.edit"));
