@@ -74,7 +74,7 @@ public class UserSO {
 
     public void setCurrentWorkspace(WorkspaceSO currentWorkspace) {
         String name = currentWorkspace.getBranch();
-        if (!"master".equals(name)) {
+        if (!"master".equals(name) && !"migration".equals(name)) {
             lastSelectedBranch = name;
         }
         this.currentWorkspace = currentWorkspace;
