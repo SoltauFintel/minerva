@@ -72,6 +72,9 @@ public class StringService {
 		Matcher matcher = regex.matcher(text);
 		while (matcher.find()) {
 			String url = matcher.group(2);
+			if (url.contains("createpage.action")) {
+				continue;
+			}
 			String target = "";
 			if (url.startsWith("http://") || url.startsWith("https://")) {
 				target = " target=\"_blank\"";
