@@ -36,7 +36,6 @@ public class Book6LoginAction extends Action {
             Logger.error("Wrong password");
             throw new RuntimeException("No access granted.");
         }
-        Logger.info("user: " + user + ", password: " + password);
         id = "b6L-" + IdGenerator.genId();
         Tosmap.add(id, System.currentTimeMillis() + 1000 * 60, user);
     }
