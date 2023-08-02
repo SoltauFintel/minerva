@@ -16,6 +16,7 @@ public class MappingPage extends SPage {
         
         header(n("customerMapping"));
         put("delete", n("delete").toLowerCase());
+        put("hasMappings", false);
         DataList titles_list = list("titles");
         DataList linked_list = list("linked");
 
@@ -25,8 +26,6 @@ public class MappingPage extends SPage {
                     StringService.umlaute(b.getTitle())));
             createPageTitlesList(titleList, titles_list);
             createLinkedPagesList(titleList, linked_list);
-        } else {
-            put("hasMappings", false);
         }
     }
 
