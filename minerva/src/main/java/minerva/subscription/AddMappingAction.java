@@ -25,6 +25,8 @@ public class AddMappingAction extends SAction {
             hk.add(ohId);
         }
         seite.saveMeta(new CommitMessage(seite, "d".equals(m) ? "remove mapping" : "add mapping"));
+        
+        seite.updateOnlineHelp();
 
         ctx.redirect(viewlink + "/mapping");
     }
