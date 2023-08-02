@@ -454,3 +454,11 @@ li.subpage {
 .copybtn:hover {
 	color: #333;
 }
+
+@media print
+{    
+    .hidden-print, .hidden-print *
+    {
+        display: none !important;
+    }
+}

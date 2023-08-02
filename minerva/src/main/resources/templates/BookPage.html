@@ -8,14 +8,14 @@
 
 <div class="row"> 
     <div class="col-lg-9">
-        <div class="mt1" style="margin-bottom: 10px; padding-left: 0;">
+        <div class="mt1 hidden-print" style="margin-bottom: 10px; padding-left: 0;">
             <a {{if hasPrevlink}}href="{{prevlink}}"{{else}}disabled{{/if}} class="btn btn-default"
                 title="{{N.pageToPrev}}" id="prev1"><i class="fa fa-arrow-left"></i></a>
             <a {{if hasNextlink}}href="{{nextlink}}"{{else}}disabled{{/if}} class="btn btn-default br"
                 title="{{N.pageToNext}}" id="next1"><i class="fa fa-arrow-right"></i></a>
         </div>
 
-        <ul class="nav nav-tabs" id="langTabs">
+        <ul class="nav nav-tabs hidden-print" id="langTabs">
             {{each L in languages}}
                 <li role="presentation"{{if L.active}} class="active"{{/if}}><a href="#{{L.lang}}"
                     data="{{L.LANG}}">{{N.language}}
@@ -35,7 +35,7 @@
             {{/each}}
         </div>
         
-        <div class="col-lg-12 visible-lg-block mt1" style="padding-left: 0;">
+        <div class="col-lg-12 visible-lg-block mt1 hidden-print" style="padding-left: 0;">
             <p>
                 <a {{if hasPrevlink}}href="{{prevlink}}"{{else}}disabled{{/if}} class="btn btn-default"
                     title="{{N.pageToPrev}}" id="prev2"><i class="fa fa-arrow-left"></i></a>
@@ -48,7 +48,7 @@
         </div>
     </div>
     
-    <div class="col-lg-3">
+    <div class="col-lg-3 hidden-print">
         <p class="mb2" style="margin-top: 16px;">
             <a href="/s/{{branch}}/{{bookFolder}}/root/add"
                 class="btn btn-primary br">{{N.newPage}}</a>

@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <div class="mt1" style="margin-bottom: 10px; padding-left: 0;">
+        <div class="mt1 hidden-print" style="margin-bottom: 10px; padding-left: 0;">
             <a {{if hasPrevlink}}href="{{prevlink}}"{{else}}disabled{{/if}} class="btn btn-default"
                 title="{{N.pageToPrev}}"><i class="fa fa-arrow-left"></i></a>
             <a {{if hasNextlink}}href="{{nextlink}}"{{else}}disabled{{/if}} class="btn btn-default br"
@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <div class="col-lg-12 visible-lg-block mt1" style="padding-left: 0;">
+        <div class="col-lg-12 visible-lg-block mt1 hidden-print" style="padding-left: 0;">
             <p>
                 <a {{if hasPrevlink}}href="{{prevlink}}"{{else}}disabled{{/if}} class="btn btn-default"
                     title="{{N.pageToPrev}}"><i class="fa fa-arrow-left"></i></a>
