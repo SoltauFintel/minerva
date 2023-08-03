@@ -61,7 +61,7 @@ public class MinervaAuth extends AbstractAuth {
         wctx.session().setGoBackPath(null);
         if (path == null || path.isBlank() || path.equals(ctx.path())) {
             if (MinervaWebapp.factory().isCustomerVersion()) {
-                ctx.redirect("/b/master");
+                ctx.redirect("/w/master");
             } else {
                 ctx.redirect("/");
             }
