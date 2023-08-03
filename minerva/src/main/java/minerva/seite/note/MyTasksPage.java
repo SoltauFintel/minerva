@@ -14,7 +14,7 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
     @Override
     protected void execute() {
     	String login = ctx.queryParam("login");
-		Logger.info(user.getLogin() + " | " + (user.getLogin().equals(login) ? "My tasks" : "All tasks for " + login));
+		Logger.info(user.getLogin() + " | " + (login == null || user.getLogin().equals(login) ? "My tasks" : "All tasks for " + login));
 		put("login", esc(MinervaWebapp.factory().login2RealName(StringService.isNullOrEmpty(login) ? user.getLogin() : login)));
         header(n("myTasks"));
         List<NoteWithSeite> notes = user.getNotes(branch, login);
