@@ -15,6 +15,7 @@ public class UserSettingsSO {
     private ExportUserSettings export;
     private final List<String> favorites = new ArrayList<>();
     private final List<String> watchlist = new ArrayList<>();
+    private String lastEditedPage;
     
     public static UserSettingsSO load(String login) {
         UserSettingsSO us;
@@ -72,4 +73,11 @@ public class UserSettingsSO {
         return watchlist;
     }
 
+    public String getLastEditedPage() {
+        return lastEditedPage;
+    }
+
+    public void setLastEditedPage(String lastEditedPage) {
+        this.lastEditedPage = lastEditedPage;
+    }
 }

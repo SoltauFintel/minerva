@@ -54,6 +54,9 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("isAdmin", isAdmin);
         page.put("canBeAdmin", hasUser && MinervaWebapp.factory().getAdmins().contains(m.getLogin()));
         page.put("hasExportRight", hasUser && MinervaWebapp.factory().getPersonsWithExportRight().contains(m.getLogin()));
+        page.put("hasLastEditedPage", m.getLastEditedPage_link() != null);
+        page.put("lastEditedPage_link", m.getLastEditedPage_link());
+        page.put("lastEditedPage_title", m.getLastEditedPage_title());
         hasUserVars(page, m);
     }
 

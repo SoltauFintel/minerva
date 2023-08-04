@@ -39,6 +39,11 @@
                     <a href="{{f.link}}"><i class="fa fa-star fav"></i> {{f.title}}</a>
                 </li>
             {{/each}}
+            {{if hasLastEditedPage}}
+                <li>
+                    <a href="{{lastEditedPage_link}}"><i class="fa fa-pencil fav"></i> {{lastEditedPage_title}}</a>
+                </li>
+            {{/if}}
         {{/if}}
         <li>
             <a href="/auth/logout" style="color: #900;"><i class="fa fa-sign-out"></i> {{abmelden}} ({{user}}){{if isAdmin}}*{{/if}}</a>
