@@ -357,13 +357,15 @@ public class GitService {
             List<HCommit> ret = new ArrayList<>();
             for (RevCommit commit : commits) {
                 if (commit.getParentCount() == 1) {
-                    HCommit hc = new HCommit(commit);
-                    hc.setFiles(hc.loadFiles(git).stream()
-                            .map(diff -> "/dev/null".equals(diff.getNewPath()) ? diff.getOldPath()
-                                    : diff.getNewPath())
-                            .filter(dn -> dn.endsWith(".html"))
-                            .collect(Collectors.toList()));
-                    ret.add(hc);
+                    if (!commit.getShortMessage().startsWith("(Migration)")) {
+                        HCommit hc = new HCommit(commit);
+                        hc.setFiles(hc.loadFiles(git).stream() //
+                                .map(diff -> "/dev/null".equals(diff.getNewPath()) ? diff.getOldPath() //
+                                        : diff.getNewPath()) //
+                                .filter(dn -> dn.endsWith(".html")) //
+                                .collect(Collectors.toList()));
+                        ret.add(hc);
+                    }
                 }
             }
             return ret;
