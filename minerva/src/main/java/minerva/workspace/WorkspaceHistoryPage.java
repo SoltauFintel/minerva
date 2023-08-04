@@ -33,14 +33,15 @@ public class WorkspaceHistoryPage extends WPage implements Uptodatecheck {
         for (HCommit commit : commits) {
             for (String dn : commit.getFiles()) { // dn is e.g. "handbuch/en/alw123.html"
                 CommitEntry ce = new CommitEntry(dn, branch, workspace);
+                String author = getAuthor(commit);
                 if (ce.seite == null || exists(ce.link, list)) {
                     continue;
-                } else if (!commit.getAuthor().equals(prevUser)) {
+                } else if (!author.equals(prevUser)) {
                     c = changes.add(); // Gruppenwechsel
-                    c.put("user", esc(commit.getAuthor()));
+                    c.put("user", esc(author));
                     list = c.list("pages");
                 }
-                prevUser = commit.getAuthor();
+                prevUser = author;
                 add(commit, ce.seite, ce.link, url, list.add());
                 empty = false;
             }
@@ -48,6 +49,17 @@ public class WorkspaceHistoryPage extends WPage implements Uptodatecheck {
         putInt("nextStart", start += size);
         put("empty", empty);
         header(n("workspaceHistory").replace("$b", branch));
+    }
+
+    private String getAuthor(HCommit commit) {
+        String author = commit.getAuthor();
+        if (author.contains(" ")) { // "user2 user2" -> "user2"
+            String[] w = author.split(" ");
+            if (w.length == 2 && w[0].equals(w[1])) {
+                author = w[0];
+            }
+        }
+        return author;
     }
     
     private int qp(String key, int pDefault, int min, int max) {
