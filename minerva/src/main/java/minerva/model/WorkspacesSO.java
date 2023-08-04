@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
 import minerva.access.DirAccess;
 import minerva.base.FileService;
@@ -50,7 +51,7 @@ public class WorkspacesSO extends MList<WorkspaceSO> {
                 return w;
             }
         }
-        throw new UserMessage("noWS4branch", get(0));
+        throw new UserMessage("noWS4branch", get(0), msg -> msg.replace("$b", Escaper.esc(branch)));
     }
 
     @Override
