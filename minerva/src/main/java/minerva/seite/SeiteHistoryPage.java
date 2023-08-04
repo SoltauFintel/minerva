@@ -33,10 +33,11 @@ public class SeiteHistoryPage extends SPage {
             map.put("hash", esc(commit.getHash()));
             map.put("hash7", esc(commit.getHash7()));
             map.put("gitlabCommitLink", url + commit.getHash());
-            map.put("author", esc(MinervaWebapp.factory().login2RealName(commit.getAuthor())));
+            String author = MinervaWebapp.factory().login2RealName(commit.getAuthor());
+            authors.add(author);
+            map.put("author", esc(author));
             map.put("date", commit.getCommitDateTime());
             map.put("message", esc(commit.getMessage()));
-            authors.add(commit.getAuthor());
         }
         put("authors", esc(authors.stream().collect(Collectors.joining(", "))));
         putInt("n", commits.size());
