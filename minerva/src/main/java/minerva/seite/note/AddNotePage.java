@@ -15,8 +15,10 @@ public class AddNotePage extends SPage {
         String parentId = ctx.queryParam("parent");
         if (isPOST()) {
             String text = ctx.formParam("text1");
-            List<String> persons = toPersons(ctx);
-            seite.notes().addNote(text, persons, parentId);
+            if (!text.isBlank()) {
+                List<String> persons = toPersons(ctx);
+                seite.notes().addNote(text, persons, parentId);
+            }
             ctx.redirect(viewlink + "/notes");
         } else {
             if (StringService.isNullOrEmpty(parentId)) {
