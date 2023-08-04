@@ -33,7 +33,7 @@ public class SeiteHistoryPage extends SPage {
             map.put("hash", esc(commit.getHash()));
             map.put("hash7", esc(commit.getHash7()));
             map.put("gitlabCommitLink", url + commit.getHash());
-            map.put("author", esc(commit.getAuthor()));
+            map.put("author", esc(MinervaWebapp.factory().login2RealName(commit.getAuthor())));
             map.put("date", commit.getCommitDateTime());
             map.put("message", esc(commit.getMessage()));
             authors.add(commit.getAuthor());
