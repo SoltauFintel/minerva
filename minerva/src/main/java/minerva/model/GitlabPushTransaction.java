@@ -76,7 +76,11 @@ public class GitlabPushTransaction {
 
     public void doMergeRequest() {
         try {
-            new MergeRequestService().createAndSquash(commitMessage.toString(),
+            MergeRequestService mrs = new MergeRequestService();
+            if (commitMessage.isBigCommit()) {
+                mrs.waitLonger();
+            }
+            mrs.createAndSquash(commitMessage.toString(),
                     workBranch,
                     workspace.getBranch(),
                     repo.getGitlabSystemUrl(), repo.getProject(),

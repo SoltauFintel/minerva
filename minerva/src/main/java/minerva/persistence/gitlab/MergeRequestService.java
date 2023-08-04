@@ -10,7 +10,8 @@ import minerva.base.StringService;
 import minerva.model.GitFactory;
 
 public class MergeRequestService {
-
+    private boolean waitLonger = false;
+    
     public void createAndSquash(String title, String branch, String targetBranch, String gitlabUrl,
             String project, GitlabUser user, String userGuiLanguage) throws GitLabApiException {
         work(title, branch, targetBranch, gitlabUrl, project, user, Boolean.TRUE, userGuiLanguage);
@@ -76,6 +77,10 @@ public class MergeRequestService {
     private void waitForMergedState(String project, MergeRequestApi api, MergeRequest mr) throws GitLabApiException {
         int loop = 0;
         int time = 200;
+        int max = (1000 / time) * 60; // 1 minute
+        if (waitLonger) { // for migration (commit with many files)
+            max *= 4;
+        }
         while (true) {
             MergeRequest s = null;
             try {
@@ -85,7 +90,7 @@ public class MergeRequestService {
             if (s != null && "merged".equals(s.getState())) {
                 break;
             }
-            if (++loop > (1000 / time) * 60) { // 1 minute
+            if (++loop > max) {
                 throw new RuntimeException("Killer loop while waiting for merged MR. ID: " + mr.getIid()
                     + "  Please check MR state manually. State is: " + s.getState() + ", merge state is: "
                     + getMergeStatus(s) + ", error: " + s.getMergeError());
@@ -96,5 +101,9 @@ public class MergeRequestService {
                 throw new RuntimeException("Interrupt error while waiting for merged state", e);
             }
         }
+    }
+    
+    public void waitLonger() {
+        waitLonger = true;
     }
 }

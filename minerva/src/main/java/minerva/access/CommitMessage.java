@@ -9,7 +9,8 @@ import minerva.model.SeiteSO;
  */
 public class CommitMessage {
     private final String text;
-
+    private boolean bigCommit = false;
+    
     public CommitMessage(String commitMessage) {
         if (StringService.isNullOrEmpty(commitMessage)) {
             throw new IllegalArgumentException("commitMessage must not be empty!");
@@ -31,6 +32,15 @@ public class CommitMessage {
             return title;
         }
         return title + ": " + comment;
+    }
+    
+    /** many files */
+    public void bigCommit() {
+        bigCommit = true;
+    }
+    
+    public boolean isBigCommit() {
+        return bigCommit;
     }
 
     @Override

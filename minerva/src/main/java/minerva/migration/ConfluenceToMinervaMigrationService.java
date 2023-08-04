@@ -173,7 +173,9 @@ public class ConfluenceToMinervaMigrationService {
         // commit and push everything ----
         Logger.info("saving " + files.size() + " files for book \"" + sp.getTitle() + "\"...");
         if (!files.isEmpty()) {
-            workspace.dao().saveFiles(files, new MigrationCommitMessage(sp.getTitle()), workspace);
+            MigrationCommitMessage cm = new MigrationCommitMessage(sp.getTitle());
+            cm.bigCommit();
+            workspace.dao().saveFiles(files, cm, workspace);
         }
     }
 
