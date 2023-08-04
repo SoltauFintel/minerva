@@ -13,8 +13,10 @@ public class TagsPage extends SPage {
         String me = viewlink + "/tags";
         if (isPOST()) { // create tag
             String tag = ctx.formParam("tag");
-            seite.log("add tag(s): " + tag);
-            seite.tags().addTag(tag);
+            if (!tag.isBlank()) {
+                seite.log("add tag(s): " + tag);
+                seite.tags().addTag(tag);
+            }
             ctx.redirect(me);
         } else { // list tags
             header("tags");
