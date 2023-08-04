@@ -21,7 +21,8 @@ public class MergeRequestException extends RuntimeException implements ErrorMess
     @Override
     public String getErrorMessage() {
         return NLS.get(lang, "mergeRequestCantBeMerged")
-                .replace("$url", MinervaWebapp.factory().getGitlabRepository().getProjectUrl() + "/-/merge_requests/" + id)
+                .replace("$url", MinervaWebapp.factory().getGitlabRepository().getProjectUrl() + 
+                        MinervaWebapp.factory().getConfig().getGitlabMergeRequestPath() + id)
                 .replace("$id", "" + id)
                 .replace("$tb", esc(targetBranch));
     }

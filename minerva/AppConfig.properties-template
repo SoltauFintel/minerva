@@ -7,8 +7,9 @@ workspaces=C:/somewhere-outside-eclipse/minerva-workspaces
 
 gitlab.url=http://gitlab-host:port
 gitlab.project=user/project
-# /commit/ (default) or in newer Gitlab version /-/commit/
+# /commit/ (default) or in newer Gitlab version /-/commit/, same with /merge_requests/ vs. /-/merge_requests/
 gitlab.commit-path=/commit/
+gitlab.merge-request-path=/merge_requests/
 gitlab.auth-callback=http://minerva-host:port/gitlab-auth-callback
 gitlab.appid=hex-string
 gitlab.secret=hex-string

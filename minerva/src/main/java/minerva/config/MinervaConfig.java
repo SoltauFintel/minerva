@@ -142,7 +142,11 @@ public class MinervaConfig {
     public String getGitlabCommitPath() {
         return config.get("gitlab.commit-path", "/commit/");
     }
-    
+
+    public String getGitlabMergeRequestPath() {
+        return config.get("gitlab.merge-request-path", "/merge_requests/");
+    }
+
     public String getSearchUrl() {
         return config.get("search.url");
     }
