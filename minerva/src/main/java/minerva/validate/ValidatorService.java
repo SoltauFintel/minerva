@@ -8,6 +8,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.base.NLS;
 import minerva.model.SeiteSO;
 
@@ -33,7 +34,7 @@ public class ValidatorService {
                 headings(body, msg);
             }
         }
-        return msg.stream().map(key -> _translate(key, guiLang)).collect(Collectors.toList());
+        return msg.stream().map(key -> translate(key, guiLang)).collect(Collectors.toList());
     }
 
     private void emptyLinesAtBegin(Element body, List<String> msg) {
@@ -114,12 +115,34 @@ public class ValidatorService {
     private void headings(Element body, List<String> msg) {
         int prev = -1;
         for (int i = 0; i < body.childrenSize(); i++) {
-            String tag = body.child(i).tagName();
-            if (tag.startsWith("h")) {
+            Element ci = body.child(i);
+            String tag = ci.tagName();
+            if (tag.startsWith("h") && !"hr".equals(tag)) {
                 int ebene = Integer.parseInt(tag.substring(1));
                 if (ebene < 2 || ebene > 6) {
                     msg.add("v.illegalHeading;" + tag);
                 } else {
+                    boolean hasFormatting = false;
+                    for (int j = 0; j < ci.childrenSize(); j++) {
+                        Element cj = ci.child(j);
+                        if (cj.tagName().equals("span")) {
+                            if (cj.attributesSize() == 0) {
+                                // ok
+                            } else if (cj.attr("class") != null
+                                    && cj.attr("class").contains("confluence-anchor-link")) {
+                                // ok
+                            /*} else {
+                                hasFormatting = true;
+                                break;*/
+                            }
+                        } else {
+                            hasFormatting = true;
+                            break;
+                        }
+                    }
+                    if (hasFormatting && !ci.html().contains("<img")) {
+                        msg.add("v.illegalTagsInHeading;" + ci.html().replace(";", ","));
+                    }
                     if (prev == -1) {
                         if (ebene != 2) {
                             msg.add("v.firstHeadingMustBe1");
@@ -135,7 +158,7 @@ public class ValidatorService {
         }
     }
 
-    private String _translate(String key, String lang) {
+    private String translate(String key, String lang) {
         String ret;
         int o = key.indexOf(";");
         if (o >= 0) {
@@ -143,7 +166,7 @@ public class ValidatorService {
             key = key.substring(0, o);
             ret = NLS.get(lang, key);
             for (int i = 0; i < params.length; i++) {
-                ret = ret.replace("$" + i, params[i]);
+                ret = ret.replace("$" + i, Escaper.esc(params[i]));
             }
         } else {
             ret = NLS.get(lang, key);

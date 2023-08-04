@@ -28,7 +28,7 @@ public class ValidationPage extends BPage {
                     DataList list2 = map.list("fehlerliste");
                     for (String text : msg) {
                         DataMap map2 = list2.add();
-                        map2.put("text", esc(text));
+                        map2.put("text", text);
                         nMessages++;
                     }
                     map.putInt("n", msg.size());

@@ -195,6 +195,7 @@ v.emptyLinesAtEnd=There are $0 empty lines at the end.
 v.emptyLinesAtEnd1=There is $0 empty line at the end. 
 v.doubleEmptyLines=There are $0 double empty lines pairs.
 v.doubleEmptyLines1=There is $0 double empty lines pairs.
+v.illegalTagsInHeading=Heading must not contain formatting: $0
 validate=Validate pages
 nMessages=Number of errors
 nPages=Number of pages with errors

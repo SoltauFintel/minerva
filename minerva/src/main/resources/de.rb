@@ -196,6 +196,7 @@ v.emptyLinesAtEnd=Es gibt $0 Leerzeilen am Ende.
 v.emptyLinesAtEnd1=Es gibt $0 Leerzeile am Ende. 
 v.doubleEmptyLines=Es gibt $0 Doppel-Leerzeilen.
 v.doubleEmptyLines1=Es gibt $0 Doppel-Leerzeile.
+v.illegalTagsInHeading=Überschrift darf keine weitere Formatierung enthalten: $0
 validate=Prüfe Seiten
 nMessages=Anzahl Fehler
 nPages=Anzahl Seiten mit Fehlern
