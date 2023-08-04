@@ -85,6 +85,7 @@ import minerva.subscription.BrokenMappingsPage;
 import minerva.subscription.MappingPage;
 import minerva.subscription.PushDataAction;
 import minerva.subscription.SubscribeAction;
+import minerva.validate.ValidationPage;
 import minerva.workspace.AddWorkspacePage;
 import minerva.workspace.CreateBranchPage;
 import minerva.workspace.CurrentWorkspaceAction;
@@ -130,6 +131,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/b/:branch/:book/notes", AllNotesPage.class);
         get("/b/:branch/:book/cal", CheckAllLinksPage.class);
         get("/b/:branch/:book/export", ExportBookAction.class);
+        get("/b/:branch/:book/validate", ValidationPage.class);
         get("/b/", CurrentWorkspaceAction.class); // falls man sich dahin verirren sollte
         
         // Seite

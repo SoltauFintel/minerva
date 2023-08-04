@@ -182,3 +182,19 @@ mergeRequestCantBeMerged=Merge Request <a href="$url" target="_blank">$id</a> ca
 user=User
 moveToBookInfo=Links will not work if you move the page to another book.
 noWS4branch=Workspace does not exist for branch "$b"! Please create workspace on Workspaces page and try again.
+
+v._ok=OK. No errors.
+v._emptyHTML=Page is empty.
+v.noBody=Page has no body tag.
+v.illegalHeading=Heading of that level is not allowed. $0
+v.firstHeadingMustBe1=Page must start with heading level 1.
+v.headingGap=Page contains a gap between heading level $0 and heading level $1.
+v.emptyLinesAtBegin=There are $0 empty lines at the begin.
+v.emptyLinesAtBegin1=There is $0 empty line at the begin.
+v.emptyLinesAtEnd=There are $0 empty lines at the end. 
+v.emptyLinesAtEnd1=There is $0 empty line at the end. 
+v.doubleEmptyLines=There are $0 double empty lines pairs.
+v.doubleEmptyLines1=There is $0 double empty lines pairs.
+validate=Validate pages
+nMessages=Number of errors
+nPages=Number of pages with errors

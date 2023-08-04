@@ -183,3 +183,19 @@ mergeRequestCantBeMerged=Merge Request <a href="$url" target="_blank">$id</a> ka
 user=Benutzer
 moveToBookInfo=Bitte beachte, dass die Links beim Verschieben in ein anderes Buch nicht mehr funktionieren werden.
 noWS4branch=Für Branch $b gibt es keinen Workspace! Bitte erstellen Sie zunächst den Workspace auf der Workspaces Seite und versuchen es dann erneut.
+
+v._ok=OK. Keine Fehler.
+v._emptyHTML=Page is empty.
+v.noBody=Page has no body tag.
+v.illegalHeading=Heading of that level is not allowed. $0
+v.firstHeadingMustBe1=Seite muss mit Überschrift 1 beginnen.
+v.headingGap=Es gibt eine Überschriften Lücke zwischen $0 und $1.
+v.emptyLinesAtBegin=Es gibt $0 Leerzeilen am Anfang.
+v.emptyLinesAtBegin1=Es gibt $0 Leerzeile am Anfang.
+v.emptyLinesAtEnd=Es gibt $0 Leerzeilen am Ende. 
+v.emptyLinesAtEnd1=Es gibt $0 Leerzeile am Ende. 
+v.doubleEmptyLines=Es gibt $0 Doppel-Leerzeilen.
+v.doubleEmptyLines1=Es gibt $0 Doppel-Leerzeile.
+validate=Prüfe Seiten
+nMessages=Anzahl Fehler
+nPages=Anzahl Seiten mit Fehlern
