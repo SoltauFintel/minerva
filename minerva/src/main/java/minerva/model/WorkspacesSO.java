@@ -13,6 +13,7 @@ import minerva.MinervaWebapp;
 import minerva.access.DirAccess;
 import minerva.base.FileService;
 import minerva.base.MList;
+import minerva.base.UserMessage;
 
 public class WorkspacesSO extends MList<WorkspaceSO> {
     public static final String MINERVA_BRANCH = "minerva";
@@ -41,12 +42,15 @@ public class WorkspacesSO extends MList<WorkspaceSO> {
     }
 
     public WorkspaceSO byBranch(String branch) {
+        if (isEmpty()) {
+            throw new RuntimeException("There are no workspaces.");
+        }
         for (WorkspaceSO w : this) {
             if (w.getBranch().equals(branch)) {
                 return w;
             }
         }
-        throw new RuntimeException("Workspace does not exist for this branch!");
+        throw new UserMessage("noWS4branch", get(0));
     }
 
     @Override
