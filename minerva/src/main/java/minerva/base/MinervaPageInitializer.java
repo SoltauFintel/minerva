@@ -22,6 +22,7 @@ public class MinervaPageInitializer extends PageInitializer {
         MinervaConfig config = MinervaWebapp.factory().getConfig();
         boolean gitlab = config.isGitlab();
         boolean hasUser = m.hasUser();
+        boolean isAdmin = "1".equals(ctx.req.session().attribute("admin"));
         if (page instanceof Uptodatecheck
                 && gitlab
                 && m.getUser() != null && m.getBranch() != null
@@ -50,23 +51,21 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("hasBook", false);
         page.put("book0Title", "");
         page.put("myTasks", "");
-        boolean isAdmin = "1".equals(ctx.req.session().attribute("admin"));
         page.put("isAdmin", isAdmin);
         page.put("canBeAdmin", hasUser && MinervaWebapp.factory().getAdmins().contains(m.getLogin()));
         page.put("hasExportRight", hasUser && MinervaWebapp.factory().getPersonsWithExportRight().contains(m.getLogin()));
         page.put("hasLastEditedPage", m.getLastEditedPage_link() != null);
         page.put("lastEditedPage_link", m.getLastEditedPage_link());
         page.put("lastEditedPage_title", m.getLastEditedPage_title());
-        hasUserVars(page, m);
+        if (m.hasUser()) {
+            hasUserVars(page, m);
+        }
     }
 
     private void booksForMenu(boolean hasUser, String userLang, BooksSO books, Page page) {
         DataList list = page.list("booksForMenu");
         page.put("bookslinkForMenu", "/w");
-        if (!hasUser) {
-            return;
-        }
-        if (books != null) {
+        if (hasUser && books != null) {
             for (BookSO book : books) {
                 DataMap map = list.add();
                 map.put("folder", esc(book.getBook().getFolder()));
@@ -76,9 +75,6 @@ public class MinervaPageInitializer extends PageInitializer {
     }
 
     private void hasUserVars(Page page, MinervaPageInitModel m) {
-        if (!m.hasUser()) {
-            return;
-        }
         String userLang = m.getUserLang();
         page.put("abmelden", NLS.get(userLang, "logout"));
         page.put("booksLabel", NLS.get(userLang, "books"));
@@ -87,22 +83,23 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("myTasks", NLS.get(userLang, "myTasks"));
         page.put("formulaEditor", NLS.get(userLang, "formulaEditor"));
         DataList list = page.list("favorites");
-        if (m.getBooks() != null) {
-            if (!"master".equals(m.getBranch())) {
-                page.put("branch0", esc(m.getBranch()));
-            }
-            page.put("previewTitle", NLS.get(userLang, "preview"));
-            page.put("previewlink", "/p/" + m.getBranch());
-            page.put("hasBook", true);
-            String linkPrefix = "/s/" + m.getBranch() + "/";
-            for (String id : m.getFavorites()) {
-                for (BookSO book : m.getBooks()) {
-                    SeiteSO seite = book._seiteById(id);
-                    if (seite != null) {
-                        DataMap map = list.add();
-                        map.put("link", esc(linkPrefix + book.getBook().getFolder() + "/" + seite.getId()));
-                        map.put("title", esc(seite.getTitle()));
-                    }
+        if (m.getBooks() == null) {
+            return;
+        }
+        if (!"master".equals(m.getBranch())) {
+            page.put("branch0", esc(m.getBranch()));
+        }
+        page.put("previewTitle", NLS.get(userLang, "preview"));
+        page.put("previewlink", "/p/" + m.getBranch());
+        page.put("hasBook", true);
+        String linkPrefix = "/s/" + m.getBranch() + "/";
+        for (String id : m.getFavorites()) {
+            for (BookSO book : m.getBooks()) {
+                SeiteSO seite = book._seiteById(id);
+                if (seite != null) {
+                    DataMap map = list.add();
+                    map.put("link", esc(linkPrefix + book.getBook().getFolder() + "/" + seite.getId()));
+                    map.put("title", esc(seite.getTitle()));
                 }
             }
         }
