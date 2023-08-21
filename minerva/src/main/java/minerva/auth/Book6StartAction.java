@@ -8,6 +8,9 @@ import minerva.base.StringService;
 import minerva.base.Tosmap;
 import minerva.user.User;
 
+/**
+ * Foreign application call this in 2nd step to open online help editor.
+ */
 public class Book6StartAction extends Action {
 
     @Override

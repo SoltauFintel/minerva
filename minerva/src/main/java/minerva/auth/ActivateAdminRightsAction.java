@@ -5,6 +5,10 @@ import org.pmw.tinylog.Logger;
 import minerva.MinervaWebapp;
 import minerva.user.UAction;
 
+/**
+ * User (de)activates ability to use administrator-only commands. Only users with admin right can use this feature.
+ * Users with not activated admin mode behave like normal users, except this ability.
+ */
 public class ActivateAdminRightsAction extends UAction {
 
     @Override

@@ -8,6 +8,9 @@ import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.base.Tosmap;
 
+/**
+ * Called by foreign application to login to book 6 online help editor. Responses with login ID for calling Book6StartAction.
+ */
 public class Book6LoginAction extends Action {
     private String id;
     
