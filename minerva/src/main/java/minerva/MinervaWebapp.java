@@ -101,7 +101,18 @@ public class MinervaWebapp extends RouteDefinitions {
     
     @Override
     public void routes() {
-        // Workspaces, 1 workspace == n books
+        workspacesAndBooks();
+        oneBook();
+        page();
+        images();
+        tags();
+        notes();
+        preview();
+        misc();
+        restApi();
+    }
+
+    private void workspacesAndBooks() { // Workspaces, 1 workspace == n books
         get("/", WorkspacesPage.class);
         get("/w", CurrentWorkspaceAction.class);
         get("/w/:branch", BooksPage.class);
@@ -120,8 +131,9 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/push-data", PushDataAction.class);
         get("/w/:branch/language", SelectLanguageAction.class);
         get("/w/:branch/broken-mappings", BrokenMappingsPage.class);
-        
-        // Book (1)
+    }
+
+    private void oneBook() {
         form("/b/:branch/add", AddBookPage.class);
         form("/b/:branch/:book/edit", EditBookPage.class);
         get("/b/:branch/:book/delete", DeleteBookPage.class);
@@ -133,8 +145,9 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/b/:branch/:book/export", ExportBookAction.class);
         get("/b/:branch/:book/validate", ValidationPage.class);
         get("/b/", CurrentWorkspaceAction.class); // falls man sich dahin verirren sollte
-        
-        // Seite
+    }
+
+    private void page() {
         get("/s/:branch/:book/:id", ViewSeitePage.class);
         form("/s-edit/:branch/:book/:id", EditSeitePage.class); // Wegen den Images hänge ich hier nicht "/edit" hinten dran, sondern ändere den 1. Pfadteil auf "s-edit".
         post("/s/:branch/:book/:id/post-contents", PostContentsAction.class);
@@ -158,35 +171,43 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/s/:branch/:book/:id/export", ExportSeiteAction.class);
         post("/s/:branch/:book/:id/toc", TocAction.class);
         post("/s/:branch/:book/:id/editorsnote", SaveEditorsNoteAction.class);
-        
-        // Image
-        post("/s-image-upload/:branch/:book/:id", ImageUploadAction.class);
-        get("/s/:branch/:book/img/:id/:dn", ImageDownloadAction.class);
-        get("/s-edit/:branch/:book/img/:id/:dn", ImageDownloadAction.class); // Image download must also work in edit mode.
-        get("/p/:branch/:customer/:book/:lang/img/:id/:dn", ImageDownloadAction.class); // Image download must also work in preview mode.
 
         // Links
         form("/links/:branch/:book/:id", LinkResolverPage.class);
+    }
+
+    private void images() {
+        // upload
+        post("/s-image-upload/:branch/:book/:id", ImageUploadAction.class);
         
-        // tags
+        // download
+        get("/s/:branch/:book/img/:id/:dn", ImageDownloadAction.class);
+        get("/s-edit/:branch/:book/img/:id/:dn", ImageDownloadAction.class); // Image download must also work in edit mode.
+        get("/p/:branch/:customer/:book/:lang/img/:id/:dn", ImageDownloadAction.class); // Image download must also work in preview mode.
+    }
+
+    private void tags() {
         form("/s/:branch/:book/:id/tags", TagsPage.class);
         get("/s/:branch/:book/:id/delete-tag", DeleteTagAction.class);
         get("/w/:branch/tag/:tag", TagWPage.class);
         get("/w/:branch/tag-cloud", TagCloudPage.class);
-        
-        // Notes
+    }
+
+    private void notes() {
         get("/s/:branch/:book/:id/notes", NotesPage.class);
         form("/s/:branch/:book/:id/add-note", AddNotePage.class);
         form("/s/:branch/:book/:id/edit-note", EditNotePage.class);
         form("/s/:branch/:book/:id/delete-note", DeleteNoteAction.class);
         form("/s/:branch/:book/:id/note-done", NoteDoneAction.class);
+    }
 
-        // Preview
+    private void preview() {
         get("/p/:branch/:customer/:book/:lang/:id", PreviewPage.class);
         get("/p/:branch/:customer/:book/:lang", PreviewBookPage.class);
         get("/p/:branch", PreviewCustomerPage.class);
-        
-        // Sonstiges
+    }
+
+    private void misc() {
         get("/message", MessagePage.class);
         addNotProtected("/message");
         get("/migration/:branch", MigrationPage.class);
@@ -200,8 +221,9 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/serverlog", ServerlogPage.class);
         form("/branch/:branch", CreateBranchPage.class);
         form("/merge/:branch", MergeBranchPage.class);
-        
-        // REST API
+    }
+
+    private void restApi() {
         addNotProtected("/rest");
         get("/rest/info", InfoAction.class); // not protected
         get("/rest/publish", PublishAction.class); // protected by query params
