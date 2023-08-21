@@ -23,7 +23,6 @@ import minerva.seite.move.MoveFile;
  */
 public abstract class AbstractDirAccess implements DirAccess {
 
-    // alle Workspaces ermitteln
     @Override
     public List<String> getAllFolders(String folder) {
         return FileService.listFolders(new File(folder));

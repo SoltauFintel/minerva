@@ -12,10 +12,21 @@ import minerva.seite.move.IMoveFile;
  * That's an generic DAO.
  */
 public interface DirAccess {
+    /** Indicator that entry is an image. */
     String IMAGE = "$$image";
     
+    /**
+     * Load or update workspace if needed
+     * @param workspace -
+     * @param force false: update (or load if needed), true: load in new folder
+     */
     void initWorkspace(WorkspaceSO workspace, boolean force);
     
+    /**
+     * alle Workspaces ermitteln
+     * @param folder parent folder
+     * @return folder names, without parent path
+     */
     List<String> getAllFolders(String folder);
 
     /**
@@ -47,6 +58,11 @@ public interface DirAccess {
      */
     void deleteFiles(Set<String> filenames, CommitMessage commitMessage, WorkspaceSO workspace, List<String> cantBeDeleted);
 
+    /**
+     * @param files changed or moved files
+     * @param commitMessage -
+     * @param workspace -
+     */
     void moveFiles(List<IMoveFile> files, CommitMessage commitMessage, WorkspaceSO workspace);
 
     /**
@@ -57,7 +73,17 @@ public interface DirAccess {
      */
     void createBranch(WorkspaceSO workspace, String newBranch, String commit);
     
+    /**
+     * @param workspace needed for accessing Git repository
+     * @return all branch names
+     */
     List<String> getBranchNames(WorkspaceSO workspace);
 
+    /**
+     * Merge source branch into target branch.
+     * @param sourceBranch branch name, e.g. "feature-4711"
+     * @param targetBranch branch name, often "master"
+     * @param user current user
+     */
     void mergeBranch(String sourceBranch, String targetBranch, UserSO user);
 }
