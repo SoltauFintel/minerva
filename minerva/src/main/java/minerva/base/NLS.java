@@ -8,6 +8,9 @@ import java.util.Map;
 
 import com.github.template72.data.DataMap;
 
+/**
+ * National language support
+ */
 public class NLS {
     private static final Map<String, String> de = loadRB("de");
     private static final Map<String, String> en = loadRB("en");

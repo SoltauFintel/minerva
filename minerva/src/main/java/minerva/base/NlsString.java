@@ -3,6 +3,9 @@ package minerva.base;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Holds texts for different languages
+ */
 public class NlsString {
     private final Map<String, String> nls = new HashMap<>();
     

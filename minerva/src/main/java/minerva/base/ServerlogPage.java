@@ -2,6 +2,9 @@ package minerva.base;
 
 import minerva.user.UPage;
 
+/**
+ * Display important operations to administrator
+ */
 public class ServerlogPage extends UPage {
 
     @Override
