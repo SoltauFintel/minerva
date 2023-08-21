@@ -53,7 +53,7 @@ public class MinervaConfig {
      * true: persistence with local file system and remote Gitlab
      */
     public boolean isGitlab() {
-        String backend = env("BACKEND"); // for setting backend to file-system in IDE mode
+        String backend = env("MINERVA_BACKEND"); // for setting backend to file-system in IDE mode
         if (StringService.isNullOrEmpty(backend)) {
             backend = config.get("backend");
         }
@@ -229,39 +229,39 @@ public class MinervaConfig {
      * @return book 6 editor password, not null
      */
     public String getEditorPassword() {
-        return env("EDITORPASSWORD");
+        return env("MINERVA_EDITORPASSWORD");
     }
     
     public String getUserFolder() {
-        return env("USERFOLDER");
+        return env("MINERVA_USERFOLDER");
     }
     
     public String getSubscribers() {
-        return env("SUBSCRIBERS");
+        return env("MINERVA_SUBSCRIBERS");
     }
     
     public String getKunde() {
-        return env("KUNDE");
+        return env("MINERVA_KUNDE");
     }
     
     public String getMigration() {
-        return env("MIGRATION");
+        return env("MINERVA_MIGRATION");
     }
     
     public String getMigrationUsers() {
-        return env("MIGRATIONUSERS");
+        return env("MINERVA_MIGRATIONUSERS");
     }
     
     public String getMigrationSourceFolder() {
-        return env("MIGRATIONSOURCEFOLDER");
+        return env("MINERVA_MIGRATIONSOURCEFOLDER");
     }
     
     public String getMigrationHelpKeysFolder() {
-        return env("MIGRATIONHELPKEYSFOLDER");
+        return env("MINERVA_MIGRATIONHELPKEYSFOLDER");
     }
     
     private String env(String name) {
-        String ret = System.getenv("MINERVA_" + name); // TODO doof. Das MINERVA_ bei den Aufrufern platzieren!
+        String ret = System.getenv(name);
         return ret == null ? "" : ret;
     }
     
