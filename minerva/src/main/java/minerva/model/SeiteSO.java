@@ -21,7 +21,6 @@ import com.google.gson.Gson;
 import minerva.MinervaWebapp;
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
-import minerva.access.MultiPurposeDirAccess;
 import minerva.base.NlsString;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
@@ -179,10 +178,7 @@ public class SeiteSO implements ISeite {
     }
 
     public void forceReloadIfCheap() {
-        if (MinervaWebapp.factory().isGitlab()) {
-            return;
-        }
-        Seite s = new MultiPurposeDirAccess(dao()).load(filenameMeta(), Seite.class);
+        Seite s = MinervaWebapp.factory().getBackendService().forceReloadIfCheap(filenameMeta());
         if (s == null) { // any problem, then just cancel
             return;
         }

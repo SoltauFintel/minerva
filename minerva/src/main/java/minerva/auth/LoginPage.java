@@ -4,13 +4,14 @@ import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.action.Page;
 import minerva.MinervaWebapp;
+import minerva.config.BackendService;
 import minerva.user.User;
 
 public class LoginPage extends Page {
 
     @Override
     protected void execute() {
-        LoginService loginService = MinervaWebapp.factory().getLoginService();
+        BackendService loginService = MinervaWebapp.factory().getBackendService();
         if (isPOST()) {
             String login = ctx.formParam("user[login]"); // gleiche name's wie bei Gitlab
             String password = ctx.formParam("user[password]");

@@ -65,13 +65,7 @@ public class WorkspacesSO extends MList<WorkspaceSO> {
     }
 
     public List<String> getAddableBranches(WorkspaceSO ref) {
-        ref.pull();
-        List<String> ret = MinervaWebapp.factory().getGitlabRepository().getBranches(ref);
-        ret.removeIf(branch -> branch.toLowerCase().contains(MINERVA_BRANCH));
-        for (WorkspaceSO w : this) {
-            ret.remove(w.getBranch());
-        }
-        return ret;
+        return MinervaWebapp.factory().getBackendService().getAddableBranches(this, ref);
     }
 
     public void addWorkspace(String branch, UserSO user) {

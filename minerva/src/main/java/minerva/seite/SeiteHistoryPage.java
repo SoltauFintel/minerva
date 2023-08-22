@@ -9,21 +9,18 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.MinervaWebapp;
-import minerva.model.GitlabRepositorySO;
+import minerva.config.MinervaFactory;
 import minerva.persistence.gitlab.git.HCommit;
 
 public class SeiteHistoryPage extends SPage {
 
     @Override
     protected void execute() {
-        if (!MinervaWebapp.factory().isGitlab()) {
-            throw new RuntimeException("Page only for Gitlab mode");
-        }
         boolean followRenames = "fr".equals(ctx.queryParam("m"));
+        MinervaFactory fac = MinervaWebapp.factory();
+        fac.gitlabOnlyPage();
 
-        GitlabRepositorySO repo = MinervaWebapp.factory().getGitlabRepository();
-        String url = repo.getProjectUrl() + MinervaWebapp.factory().getConfig().getGitlabCommitPath(); // http://host:port/user/repo/-/commit/
-        List<HCommit> commits = repo.getSeiteMetaHistory(seite, followRenames);
+        List<HCommit> commits = fac.getBackendService().getSeiteMetaHistory(seite, followRenames);
         Set<String> authors = new TreeSet<>();
 
         header(seite.getTitle() + " - " + n("history"));
@@ -32,8 +29,8 @@ public class SeiteHistoryPage extends SPage {
             DataMap map = list.add();
             map.put("hash", esc(commit.getHash()));
             map.put("hash7", esc(commit.getHash7()));
-            map.put("gitlabCommitLink", url + commit.getHash());
-            String author = MinervaWebapp.factory().login2RealName(commit.getAuthor());
+            map.put("gitlabCommitLink", fac.getBackendService().getCommitLink(commit.getHash()));
+            String author = fac.login2RealName(commit.getAuthor());
             authors.add(author);
             map.put("author", esc(author));
             map.put("date", commit.getCommitDateTime());

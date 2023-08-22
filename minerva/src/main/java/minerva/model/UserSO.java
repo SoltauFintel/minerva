@@ -40,7 +40,7 @@ public class UserSO {
     public UserSO(User user) {
         this.user = user;
         String userFolder = getWorkspacesFolder() + "/" + user.getFolder();
-        dao = MinervaWebapp.factory().getDirAccess(this);
+        dao = MinervaWebapp.factory().getBackendService().getDirAccess();
         this.workspaces = new WorkspacesSO(this, userFolder);
     }
 

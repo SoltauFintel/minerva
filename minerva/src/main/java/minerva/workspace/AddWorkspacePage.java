@@ -12,9 +12,7 @@ public class AddWorkspacePage extends UPage {
     @Override
     protected void execute() {
         render = false;
-        if (!MinervaWebapp.factory().isGitlab()) {
-            throw new RuntimeException("Page only for Gitlab mode");
-        }
+        MinervaWebapp.factory().gitlabOnlyPage();
         if (isPOST()) {
             String branch1 = ctx.queryParam("branch");
             

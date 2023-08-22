@@ -115,10 +115,9 @@ public class ConfluenceToMinervaMigrationService {
         if (filenames.isEmpty()) {
             Logger.info("[Migration] deleteWorkspace() has nothing to do");
         } else {
-            MinervaWebapp.factory().getGitlabRepository().push(
+            MinervaWebapp.factory().getBackendService().saveFiles(
                     new MigrationCommitMessage("empty branch " + workspace.getBranch()),
-                    workspace, new HashSet<>(), filenames, () -> {
-                    });
+                    workspace, new HashSet<>(), filenames, () -> {});
             Logger.info("[Migration] deleteWorkspace() ok");
         }
     }

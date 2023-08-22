@@ -12,9 +12,7 @@ public class CreateBranchPage extends UPage {
 
     @Override
     protected void execute() {
-        if (!MinervaWebapp.factory().isGitlab()) {
-            throw new RuntimeException("Page only for Gitlab mode");
-        }
+        MinervaWebapp.factory().gitlabOnlyPage();
         String branch = ctx.pathParam("branch");
         if (isPOST()) {
             String newBranch = ctx.formParam("newBranch");

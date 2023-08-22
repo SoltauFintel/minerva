@@ -28,7 +28,7 @@ public class WorkspacesPage extends UPage {
             map2.put("lastAction", state.getUser().getLastAction().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         }
         list2.sort((a,b) -> b.get("lastAction").toString().compareTo(a.get("lastAction").toString()));
-        put("persistenceInfo", MinervaWebapp.factory().getPersistenceInfo());
+        put("persistenceInfo", MinervaWebapp.factory().getBackendService().getInfo());
         header("Workspaces");
 
         if (MinervaWebapp.factory().isCustomerVersion()) {

@@ -86,4 +86,10 @@ public interface DirAccess {
      * @param user current user
      */
     void mergeBranch(String sourceBranch, String targetBranch, UserSO user);
+    
+    /**
+     * @param workspace -
+     * @return CommitHash of given workspace, not null
+     */
+    CommitHash getCommitHash(WorkspaceSO workspace);
 }

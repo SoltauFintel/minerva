@@ -15,9 +15,7 @@ public class MergeBranchPage extends UPage {
 
     @Override
     protected void execute() {
-        if (!MinervaWebapp.factory().isGitlab()) {
-            throw new RuntimeException("Page only for Gitlab mode");
-        }
+        MinervaWebapp.factory().gitlabOnlyPage();
         String branch = ctx.pathParam("branch");
         if (isPOST()) {
             String sourceBranch = ctx.formParam("sourceBranch");

@@ -2,8 +2,8 @@ package minerva.exclusions;
 
 import org.pmw.tinylog.Logger;
 
+import minerva.MinervaWebapp;
 import minerva.model.ExclusionsSO;
-import minerva.persistence.gitlab.UpToDateCheckService;
 import minerva.user.UPage;
 
 public class ExclusionsEditPage extends UPage {
@@ -21,7 +21,7 @@ public class ExclusionsEditPage extends UPage {
             user.log("Exclusions saved");
             ctx.redirect("/w/" + esc(branch) + "/exclusions/edit");
         } else {
-            UpToDateCheckService.check(user.getWorkspace(branch), () -> {});
+            MinervaWebapp.factory().getBackendService().uptodatecheck(user.getWorkspace(branch), () -> {});
             header(n("exclusions"));
             put("exclusions", esc(ex(branch).get()));
         }

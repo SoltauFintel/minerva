@@ -1,12 +1,12 @@
 package minerva.book;
 
-import org.pmw.tinylog.Logger;
-
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.spark.Context;
 import minerva.MinervaWebapp;
+import minerva.access.CommitHash;
+import minerva.config.MinervaFactory;
 import minerva.model.BookSO;
 import minerva.model.BooksSO;
 import minerva.model.WorkspaceSO;
@@ -29,30 +29,19 @@ public class BooksPage extends UPage {
         
         WorkspaceSO workspace = user.getWorkspace(branch);
         BooksSO books = workspace.getBooks();
-        String hash = "";
-        String hash7 = "";
-        if (MinervaWebapp.factory().isGitlab()) {
-            try {
-                hash = MinervaWebapp.factory().getGitlabRepository().getCommitHashOfHead(workspace);
-            } catch (Exception e) {
-                Logger.error("Can't load hash of HEAD commit.");
-                hash = "";
-            }
-            if (hash != null && hash.length() > 7) {
-                hash7 = hash.substring(0, 7);
-            }
-        }
+        CommitHash hash = workspace.getCommitHash();
+        MinervaFactory fac = MinervaWebapp.factory();
         
         header(n("books"));
         put("branch", esc(branch));
-        put("hash", esc(hash));
-        put("hash7", esc(hash7));
+        put("hash", esc(hash.getHash()));
+        put("hash7", esc(hash.getShortHash()));
         put("migrationAllowed", isMigrationAllowed());
         put("updateOnlineHelpAllowed",
-                    MinervaWebapp.factory().isCustomerVersion()
-                && !MinervaWebapp.factory().isGitlab()
-                && !MinervaWebapp.factory().getConfig().getSubscribers().isEmpty());
-        put("addBookAllowed", !MinervaWebapp.factory().isCustomerVersion() || books.isEmpty());
+                    fac.isCustomerVersion()
+                && !fac.isGitlab()
+                && !fac.getConfig().getSubscribers().isEmpty());
+        put("addBookAllowed", !fac.isCustomerVersion() || books.isEmpty());
         DataList list = list("books");
         if (books != null) {
             for (BookSO book : books) {

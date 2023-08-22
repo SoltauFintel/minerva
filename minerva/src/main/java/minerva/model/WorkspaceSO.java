@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import org.pmw.tinylog.Logger;
 
 import minerva.MinervaWebapp;
+import minerva.access.CommitHash;
 import minerva.access.DirAccess;
 import minerva.config.MinervaConfig;
 import minerva.config.MinervaFactory;
@@ -126,5 +127,9 @@ public class WorkspaceSO {
     
     public void onEditing(SeiteSO seite, boolean finished) {
         StatesSO.onEditing(user.getLogin(), branch, seite.getId(), finished);
+    }
+    
+    public CommitHash getCommitHash() {
+        return dao().getCommitHash(this);
     }
 }

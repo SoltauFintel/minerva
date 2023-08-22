@@ -18,7 +18,8 @@ public class MinervaConfig {
     private final AppConfig config;
     private final Map<String, String> login2RealName = new HashMap<>();
     private final Map<String, String> realName2Login = new HashMap<>();
-
+    private final boolean gitlab;
+    
     public MinervaConfig(AppConfig config) {
         this.config = config;
         WebContext.setCookieName(this.config);
@@ -27,6 +28,13 @@ public class MinervaConfig {
 			login2RealName.put(login, realName);
 			realName2Login.put(realName, login);
     	}
+    	
+    	// gitlab?
+        String backend = env("MINERVA_BACKEND"); // for setting backend to file-system in IDE mode
+        if (StringService.isNullOrEmpty(backend)) {
+            backend = config.get("backend");
+        }
+        gitlab = "gitlab".equalsIgnoreCase(backend);
     }
     
     public boolean isDevelopment() {
@@ -53,11 +61,7 @@ public class MinervaConfig {
      * true: persistence with local file system and remote Gitlab
      */
     public boolean isGitlab() {
-        String backend = env("MINERVA_BACKEND"); // for setting backend to file-system in IDE mode
-        if (StringService.isNullOrEmpty(backend)) {
-            backend = config.get("backend");
-        }
-        return "gitlab".equalsIgnoreCase(backend);
+        return gitlab;
     }
     
     public String getWorkspacesFolder() {

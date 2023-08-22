@@ -8,8 +8,8 @@ import com.github.template72.data.IDataMap;
 
 import minerva.MinervaWebapp;
 import minerva.base.Uptodatecheck;
+import minerva.config.BackendService;
 import minerva.model.BookSO;
-import minerva.model.GitlabRepositorySO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.persistence.gitlab.git.HCommit;
@@ -21,9 +21,10 @@ public class WorkspaceHistoryPage extends WPage implements Uptodatecheck {
         int start = qp("start", 0, 0, Integer.MAX_VALUE);
         int size = qp("size", 200, 1, 500);
         
-        GitlabRepositorySO repo = MinervaWebapp.factory().getGitlabRepository();
-        List<HCommit> commits = repo.getHtmlChangesHistory(workspace, start, size);
-        String url = repo.getProjectUrl() + MinervaWebapp.factory().getConfig().getGitlabCommitPath(); // http://host:port/user/repo/-/commit/
+        BackendService bs = MinervaWebapp.factory().getBackendService();
+        List<HCommit> commits = bs.getHtmlChangesHistory(workspace, start, size);
+System.out.println(commits.size());
+        String url = bs.getCommitLink("{t}");
         
         DataList changes = list("changes");
         DataMap c = null;
@@ -112,7 +113,7 @@ public class WorkspaceHistoryPage extends WPage implements Uptodatecheck {
     }
 
     private void add(HCommit commit, SeiteSO seite, String link, String url, DataMap map) {
-        map.put("commitlink", esc(url + commit.getHash()));
+        map.put("commitlink", esc(url.replace("{t}", commit.getHash())));
         map.put("pageTitle", esc(seite.getTitle()));
         map.put("date", esc(commit.getCommitDateTime()));
         map.put("link", link);

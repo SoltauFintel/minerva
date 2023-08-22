@@ -144,4 +144,9 @@ public abstract class AbstractDirAccess implements DirAccess {
             }
         }
     }
+    
+    @Override
+    public CommitHash getCommitHash(WorkspaceSO workspace) {
+        return new CommitHash();
+    }
 }

@@ -6,9 +6,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.gitlab4j.api.GitLabApiException;
+import org.pmw.tinylog.Logger;
 
-import minerva.MinervaWebapp;
 import minerva.access.AbstractDirAccess;
+import minerva.access.CommitHash;
 import minerva.access.CommitMessage;
 import minerva.model.GitlabRepositorySO;
 import minerva.model.UserSO;
@@ -17,8 +18,12 @@ import minerva.seite.move.IMoveFile;
 import minerva.seite.move.MoveFile;
 
 public class GitlabDirAccess extends AbstractDirAccess {
-    private final GitlabRepositorySO repo = MinervaWebapp.factory().getGitlabRepository();
+    private final GitlabRepositorySO repo;
 
+    public GitlabDirAccess(GitlabRepositorySO repo) {
+        this.repo = repo;
+    }
+    
     @Override
     public void initWorkspace(WorkspaceSO workspace, boolean forceClone) {
         repo.pull(workspace, forceClone);
@@ -77,6 +82,16 @@ public class GitlabDirAccess extends AbstractDirAccess {
                     user.getGuiLanguage());
         } catch (GitLabApiException e) {
             throw new RuntimeException(e);
+        }
+    }
+    
+    @Override
+    public CommitHash getCommitHash(WorkspaceSO workspace) {
+        try {
+            return new CommitHash(repo.getCommitHashOfHead(workspace));
+        } catch (Exception e) {
+            Logger.error("Can't load hash of HEAD commit.");
+            return new CommitHash();
         }
     }
 }

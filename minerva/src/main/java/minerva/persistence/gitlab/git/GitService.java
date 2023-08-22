@@ -15,6 +15,7 @@ import org.eclipse.jgit.api.errors.EmptyCommitException;
 import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
 import org.eclipse.jgit.api.errors.RefNotFoundException;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.transport.FetchResult;
 import org.eclipse.jgit.transport.RefSpec;
 import org.pmw.tinylog.Logger;
 
@@ -371,6 +372,19 @@ public class GitService {
             return ret;
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+    
+    public boolean areThereRemoteUpdates(String targetBranch, GitlabUser user) {
+        try (Git git = Git.open(workspace)) {
+            FetchResult f = git.fetch()
+                    .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
+                    .call();
+            long n = f.getTrackingRefUpdates().stream().filter(i -> i.getRemoteName().endsWith("/" + targetBranch)).count();
+            return n > 0;
+        } catch (Exception e) {
+            Logger.error(e);
+            return true;
         }
     }
 }

@@ -2,11 +2,11 @@ package minerva.seite;
 
 import org.pmw.tinylog.Logger;
 
+import minerva.MinervaWebapp;
 import minerva.base.NlsString;
 import minerva.model.SeiteSO;
 import minerva.model.UserSO.LoginAndEndTime;
 import minerva.model.UserSettingsSO;
-import minerva.persistence.gitlab.UpToDateCheckService;
 import minerva.seite.link.InvalidLinksModel;
 
 public class EditSeitePage extends ViewSeitePage {
@@ -26,7 +26,7 @@ public class EditSeitePage extends ViewSeitePage {
                     return;
                 }
             }
-            UpToDateCheckService.check(workspace, () -> seiteSO.freshcheck(langs));
+            MinervaWebapp.factory().getBackendService().uptodatecheck(workspace, () -> seiteSO.freshcheck(langs));
             workspace.onEditing(seite, false); // editing started
             
             super.execute2(branch, bookFolder, id, seiteSO);

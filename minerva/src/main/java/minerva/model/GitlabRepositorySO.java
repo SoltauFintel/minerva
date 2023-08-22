@@ -119,8 +119,8 @@ public class GitlabRepositorySO {
         return git(workspace).getCurrentCommitHash();
     }
     
-    public List<HCommit> getSeiteMetaHistory(SeiteSO seite, boolean followRenames) {
-        return git(seite.getBook().getWorkspace()).getFileHistory(seite.gitFilenameMeta(), followRenames);
+    public List<HCommit> getFileHistory(String filename, boolean followRenames, WorkspaceSO workspace) {
+        return git(workspace).getFileHistory(filename, followRenames);
     }
 
     public List<HCommit> getHtmlChangesHistory(WorkspaceSO workspace, int start, int size) {
