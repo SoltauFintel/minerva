@@ -71,7 +71,10 @@ public class PublishService {
         File tocJson = new File(targetFolder, "toc.json");
         FileService.saveJsonFile(tocJson, root);
         Logger.info("saved to " + tocJson.getAbsolutePath());
-        FileService.savePlainTextFile(new File(targetFolder, "exclusions.txt"), workspace.getExclusions().get());
+        // save exclusions file
+        File exclusionsFile = new File(targetFolder, "exclusions.txt");
+        FileService.savePlainTextFile(exclusionsFile, workspace.getExclusions().get());
+        Logger.info("saved to " + exclusionsFile.getAbsolutePath());
         return targetFolder;
     }
     
