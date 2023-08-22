@@ -14,7 +14,6 @@ import minerva.MinervaWebapp;
 import minerva.model.StateSO;
 import minerva.model.StatesSO;
 import minerva.model.UserSO;
-import minerva.persistence.gitlab.GitFactory;
 import minerva.user.User;
 
 public class MinervaAuth extends AbstractAuth {
@@ -78,8 +77,8 @@ public class MinervaAuth extends AbstractAuth {
         StateSO stateSO = StatesSO.get(ctx);
         if (stateSO != null) {
             stateSO.getUser().finishMyEditings();
-            boolean revoked = GitFactory.logout(stateSO.getUser().getUser());
-            Logger.info(stateSO.getUser().getLogin() + " | logout" + (revoked ? " | Gitlab revoke ok" : ""));
+            String info = MinervaWebapp.factory().getBackendService().logout(stateSO.getUser().getUser());
+            Logger.info(stateSO.getUser().getLogin() + " | logout" + (info.isEmpty() ? "" : " | " + info));
         }
         logout2(ctx);
     }

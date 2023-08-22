@@ -103,4 +103,9 @@ public class FileSystemBackendService implements BackendService {
     public List<HCommit> getHtmlChangesHistory(WorkspaceSO workspace, int start, int size) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public String logout(User user) {
+        return "";
+    }
 }

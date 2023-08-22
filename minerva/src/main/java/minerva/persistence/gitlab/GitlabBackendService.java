@@ -112,4 +112,12 @@ public class GitlabBackendService implements BackendService {
     public List<HCommit> getHtmlChangesHistory(WorkspaceSO workspace, int start, int size) {
         return repo.getHtmlChangesHistory(workspace, start, size);
     }
+
+    @Override
+    public String logout(User user) {
+        if (GitFactory.logout(user)) {
+            return "Gitlab revoke ok";
+        }
+        return "";
+    }
 }

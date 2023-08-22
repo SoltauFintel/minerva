@@ -26,6 +26,12 @@ public interface BackendService {
      * @return null if login failed
      */
     User login(String login, String password);
+    
+    /**
+     * @param user -
+     * @return additional logout info
+     */
+    String logout(User user);
 
     /**
      * @return name of backend and details
