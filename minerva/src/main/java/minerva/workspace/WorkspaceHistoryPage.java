@@ -9,10 +9,10 @@ import com.github.template72.data.IDataMap;
 import minerva.MinervaWebapp;
 import minerva.base.Uptodatecheck;
 import minerva.config.BackendService;
+import minerva.config.ICommit;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
-import minerva.persistence.gitlab.git.HCommit;
 
 public class WorkspaceHistoryPage extends WPage implements Uptodatecheck {
 
@@ -22,8 +22,7 @@ public class WorkspaceHistoryPage extends WPage implements Uptodatecheck {
         int size = qp("size", 200, 1, 500);
         
         BackendService bs = MinervaWebapp.factory().getBackendService();
-        List<HCommit> commits = bs.getHtmlChangesHistory(workspace, start, size);
-System.out.println(commits.size());
+        List<ICommit> commits = bs.getHtmlChangesHistory(workspace, start, size);
         String url = bs.getCommitLink("{t}");
         
         DataList changes = list("changes");
@@ -31,7 +30,7 @@ System.out.println(commits.size());
         DataList list = null;
         String prevUser = "{";
         boolean empty = true;
-        for (HCommit commit : commits) {
+        for (ICommit commit : commits) {
             for (String dn : commit.getFiles()) { // dn is e.g. "handbuch/en/alw123.html"
                 CommitEntry ce = new CommitEntry(dn, branch, workspace);
                 String author = getAuthor(commit);
@@ -52,7 +51,7 @@ System.out.println(commits.size());
         header(n("workspaceHistory").replace("$b", branch));
     }
 
-    private String getAuthor(HCommit commit) {
+    private String getAuthor(ICommit commit) {
         String author = commit.getAuthor();
         if (author.contains(" ")) { // "user2 user2" -> "user2"
             String[] w = author.split(" ");
@@ -112,7 +111,7 @@ System.out.println(commits.size());
         return false;
     }
 
-    private void add(HCommit commit, SeiteSO seite, String link, String url, DataMap map) {
+    private void add(ICommit commit, SeiteSO seite, String link, String url, DataMap map) {
         map.put("commitlink", esc(url.replace("{t}", commit.getHash())));
         map.put("pageTitle", esc(seite.getTitle()));
         map.put("date", esc(commit.getCommitDateTime()));

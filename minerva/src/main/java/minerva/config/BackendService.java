@@ -8,7 +8,6 @@ import minerva.access.DirAccess;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.model.WorkspacesSO;
-import minerva.persistence.gitlab.git.HCommit;
 import minerva.seite.Seite;
 import minerva.user.User;
 
@@ -56,9 +55,9 @@ public interface BackendService {
     
     String getCommitLink(String hash);
     
-    List<HCommit> getSeiteMetaHistory(SeiteSO seite, boolean followRenames);
+    List<ICommit> getSeiteMetaHistory(SeiteSO seite, boolean followRenames);
 
-    List<HCommit> getHtmlChangesHistory(WorkspaceSO workspace, int start, int size);
+    List<ICommit> getHtmlChangesHistory(WorkspaceSO workspace, int start, int size);
     
     void uptodatecheck(WorkspaceSO workspace, UpdateAction updateAction);
     

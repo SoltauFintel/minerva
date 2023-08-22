@@ -9,8 +9,8 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.MinervaWebapp;
+import minerva.config.ICommit;
 import minerva.config.MinervaFactory;
-import minerva.persistence.gitlab.git.HCommit;
 
 public class SeiteHistoryPage extends SPage {
 
@@ -20,12 +20,12 @@ public class SeiteHistoryPage extends SPage {
         MinervaFactory fac = MinervaWebapp.factory();
         fac.gitlabOnlyPage();
 
-        List<HCommit> commits = fac.getBackendService().getSeiteMetaHistory(seite, followRenames);
+        List<ICommit> commits = fac.getBackendService().getSeiteMetaHistory(seite, followRenames);
         Set<String> authors = new TreeSet<>();
 
         header(seite.getTitle() + " - " + n("history"));
         DataList list = list("commits");
-        for (HCommit commit : commits) {
+        for (ICommit commit : commits) {
             DataMap map = list.add();
             map.put("hash", esc(commit.getHash()));
             map.put("hash7", esc(commit.getHash7()));

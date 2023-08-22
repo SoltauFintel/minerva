@@ -16,8 +16,9 @@ import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 
 import minerva.base.StringService;
+import minerva.config.ICommit;
 
-public class HCommit {
+public class HCommit implements ICommit {
     private final RevCommit c;
     private List<String> files;
     
@@ -25,19 +26,23 @@ public class HCommit {
         this.c = c;
     }
     
+    @Override
     public String getMessage() {
         return c.getShortMessage();
     }
     
+    @Override
     public String getCommitDateTime() {
         return c.getCommitterIdent().getWhen().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
     
+    @Override
     public String getHash() {
         return c.getId().getName();
     }
 
+    @Override
     public String getHash7() {
         String ret = getHash();
         if (!StringService.isNullOrEmpty(ret) && ret.length() > 7) {
@@ -46,6 +51,7 @@ public class HCommit {
         return ret;
     }
 
+    @Override
     public String getAuthor() {
         return c.getAuthorIdent().getName();
     }
@@ -76,6 +82,7 @@ public class HCommit {
         }
     }
 
+    @Override
     public List<String> getFiles() {
         return files;
     }

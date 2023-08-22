@@ -21,6 +21,7 @@ import org.pmw.tinylog.Logger;
 
 import minerva.access.CommitMessage;
 import minerva.base.StringService;
+import minerva.config.ICommit;
 import minerva.persistence.gitlab.GitFactory;
 import minerva.persistence.gitlab.GitlabUser;
 
@@ -332,7 +333,7 @@ public class GitService {
         }
     }
 
-    public List<HCommit> getFileHistory(String file, boolean followRenames) {
+    public List<ICommit> getFileHistory(String file, boolean followRenames) {
         try (Git git = Git.open(workspace)) {
             Iterable<RevCommit> commits;
             if (followRenames) {
@@ -340,7 +341,7 @@ public class GitService {
             } else {
                 commits = git.log().addPath(file).call();
             }
-            List<HCommit> ret = new ArrayList<>();
+            List<ICommit> ret = new ArrayList<>();
             for (RevCommit commit : commits) {
                 if (commit.getParentCount() == 1) {
                     ret.add(new HCommit(commit));
@@ -352,10 +353,10 @@ public class GitService {
         }
     }
 
-    public List<HCommit> getHtmlChangesHistory(int start, int size) {
+    public List<ICommit> getHtmlChangesHistory(int start, int size) {
         try (Git git = Git.open(workspace)) {
             Iterable<RevCommit> commits = git.log().setSkip(start).setMaxCount(size).call();
-            List<HCommit> ret = new ArrayList<>();
+            List<ICommit> ret = new ArrayList<>();
             for (RevCommit commit : commits) {
                 if (commit.getParentCount() == 1) {
                     if (!commit.getShortMessage().startsWith("(Migration)")) {

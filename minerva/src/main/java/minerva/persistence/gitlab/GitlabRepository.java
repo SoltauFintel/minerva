@@ -12,9 +12,9 @@ import org.pmw.tinylog.Logger;
 import minerva.access.CommitMessage;
 import minerva.base.FileService;
 import minerva.base.UserMessage;
+import minerva.config.ICommit;
 import minerva.model.WorkspaceSO;
 import minerva.persistence.gitlab.git.GitService;
-import minerva.persistence.gitlab.git.HCommit;
 
 public class GitlabRepository {
     private final GitlabSystem gitlab;
@@ -118,11 +118,11 @@ public class GitlabRepository {
         return git(workspace).getCurrentCommitHash();
     }
     
-    public List<HCommit> getFileHistory(String filename, boolean followRenames, WorkspaceSO workspace) {
+    public List<ICommit> getFileHistory(String filename, boolean followRenames, WorkspaceSO workspace) {
         return git(workspace).getFileHistory(filename, followRenames);
     }
 
-    public List<HCommit> getHtmlChangesHistory(WorkspaceSO workspace, int start, int size) {
+    public List<ICommit> getHtmlChangesHistory(WorkspaceSO workspace, int start, int size) {
         return git(workspace).getHtmlChangesHistory(start, size);
     }
     

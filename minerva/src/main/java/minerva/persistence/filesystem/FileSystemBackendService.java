@@ -13,11 +13,11 @@ import minerva.access.DirAccess;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.base.StringService;
 import minerva.config.BackendService;
+import minerva.config.ICommit;
 import minerva.config.MinervaConfig;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.model.WorkspacesSO;
-import minerva.persistence.gitlab.git.HCommit;
 import minerva.seite.Seite;
 import minerva.user.User;
 
@@ -93,12 +93,12 @@ public class FileSystemBackendService implements BackendService {
     }
 
     @Override
-    public List<HCommit> getSeiteMetaHistory(SeiteSO seite, boolean followRenames) {
+    public List<ICommit> getSeiteMetaHistory(SeiteSO seite, boolean followRenames) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public List<HCommit> getHtmlChangesHistory(WorkspaceSO workspace, int start, int size) {
+    public List<ICommit> getHtmlChangesHistory(WorkspaceSO workspace, int start, int size) {
         throw new UnsupportedOperationException();
     }
 
