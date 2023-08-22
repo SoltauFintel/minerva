@@ -32,41 +32,27 @@ public class NotesSO {
     }
    
     public void addNote(String text, List<String> persons, String parentId) {
-    	// TODO call createNote()
-        Note note = new Note();
-        note.setId(IdGenerator.createId6());
-        note.setParentId(parentId == null ? "" : parentId);
-        note.setUser(seite.getBook().getUser().getLogin());
-        note.setCreated(now());
-        note.setChanged("");
-        note.setText(text);
-        note.getPersons().addAll(persons);
-        if (StringService.isNullOrEmpty(parentId)) {
-            seite.getSeite().getNotes().add(note);
-        } else {
-            find(parentId).getNotes().add(note);
-        }
+        Note parentNote = parentId == null ? null : find(parentId);
+        Note note = createNote(parentNote, text, seite.getBook().getUser().getLogin(), now(), persons);
         saveNote(note, new CommitMessage(seite, "note added"));
         
         sendNotifications(note.getId(), persons);
     }
     
     public Note createNote(Note parentNote, String text, String user, String created, List<String> persons) {
-		Note note = new Note();
-		note.setId(IdGenerator.createId6());
-		note.setParentId(parentNote == null ? "" : parentNote.getId());
-		note.setUser(user);
-		note.setCreated(created);
-		note.setText(text);
-		note.getPersons().clear();
-		note.getPersons().addAll(persons);
-		if (parentNote == null) {
-			seite.getSeite().getNotes().add(note);
-		} else {
-			note.setParentId(parentNote.getId());
-			parentNote.getNotes().add(note);
-		}
-		return note;
+        Note note = new Note();
+        note.setId(IdGenerator.createId6());
+        note.setParentId(parentNote == null ? "" : parentNote.getId());
+        note.setUser(user);
+        note.setCreated(created);
+        note.setText(text);
+        note.getPersons().addAll(persons);
+        if (parentNote == null) {
+            seite.getSeite().getNotes().add(note);
+        } else {
+            parentNote.getNotes().add(note);
+        }
+        return note;
     }
     
     public void saveTo(Note note, Map<String, String> files) {
