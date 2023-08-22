@@ -8,6 +8,8 @@ import java.util.Map;
 
 import org.pmw.tinylog.Logger;
 
+import com.google.gson.Gson;
+
 import minerva.MinervaWebapp;
 import minerva.base.FileService;
 import minerva.model.BookSO;
@@ -70,7 +72,7 @@ public class PublishService {
         }
         // save table of contents file
         File tocJson = new File(targetFolder, "toc.json");
-        FileService.saveJsonFile(tocJson, root);
+        FileService.savePlainTextFile(tocJson, new Gson().toJson(root)); // no pretty print
         Logger.info(prefix + "saved to " + tocJson.getAbsolutePath());
         // save exclusions file
         File exclusionsFile = new File(targetFolder, "exclusions.txt");
