@@ -21,7 +21,6 @@
 	                class="fa fa-delicious fa-spin" style="display: none;"></i></a>
 	        {{/if}}
         {{/if}}
-        <a onclick="copy{{noteId}}();" class="copybtn">copy link</a>
     </p>
     <p class="noteTextNC{{if highlight}} noteHighlight{{/if}}">{{text}}</p>
     <p class="noteCommands">
@@ -42,6 +41,7 @@
                 onclick="return loeschen{{noteId}}();"><i class="fa fa-trash"></i> <i id="n_{{noteId}}"
                 class="fa fa-delicious fa-spin" style="display: none;"></i></a>
         {{/if}}
+        <span class="copybtn">(Notiz)[N{{noteId}}]</span>
     </p>
     <div class="subnotes">
         {{notes}}
@@ -55,12 +55,5 @@ function loeschen{{noteId}}() {
         document.querySelector('#n_{{noteId}}').style='';
     }
     return ret;
-}
-
-function copy{{noteId}}() {
-	var text = "(Notiz)[N{{noteId}}]";
-	navigator.clipboard.writeText(text).then(function() {}, function(err) {
-		console.error('copy text error: ', err);
-	});
 }
 </script>
