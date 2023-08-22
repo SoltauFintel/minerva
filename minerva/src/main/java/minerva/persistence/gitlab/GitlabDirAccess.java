@@ -11,7 +11,6 @@ import org.pmw.tinylog.Logger;
 import minerva.access.AbstractDirAccess;
 import minerva.access.CommitHash;
 import minerva.access.CommitMessage;
-import minerva.model.GitlabRepository;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.move.IMoveFile;

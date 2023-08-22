@@ -1,4 +1,4 @@
-package minerva.model;
+package minerva.persistence.gitlab;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -10,8 +10,8 @@ import org.gitlab4j.api.GitLabApiException;
 import org.pmw.tinylog.Logger;
 
 import minerva.access.CommitMessage;
-import minerva.persistence.gitlab.GitlabUser;
-import minerva.persistence.gitlab.MergeRequestService;
+import minerva.model.WorkspaceSO;
+import minerva.model.WorkspacesSO;
 import minerva.persistence.gitlab.git.GitService;
 import minerva.persistence.gitlab.git.MinervaEmptyCommitException;
 

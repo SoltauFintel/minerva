@@ -1,4 +1,4 @@
-package minerva.model;
+package minerva.persistence.gitlab;
 
 import java.io.File;
 import java.util.List;
@@ -12,8 +12,7 @@ import org.pmw.tinylog.Logger;
 import minerva.access.CommitMessage;
 import minerva.base.FileService;
 import minerva.base.UserMessage;
-import minerva.persistence.gitlab.GitlabAuthService;
-import minerva.persistence.gitlab.GitlabUser;
+import minerva.model.WorkspaceSO;
 import minerva.persistence.gitlab.git.GitService;
 import minerva.persistence.gitlab.git.HCommit;
 

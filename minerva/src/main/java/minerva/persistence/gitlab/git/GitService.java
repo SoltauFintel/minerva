@@ -21,7 +21,7 @@ import org.pmw.tinylog.Logger;
 
 import minerva.access.CommitMessage;
 import minerva.base.StringService;
-import minerva.model.GitFactory;
+import minerva.persistence.gitlab.GitFactory;
 import minerva.persistence.gitlab.GitlabUser;
 
 /**

@@ -1,10 +1,8 @@
-package minerva.model;
+package minerva.persistence.gitlab;
 
 import org.gitlab4j.api.GitLabApi;
 import org.gitlab4j.api.GitLabApiException;
 import org.pmw.tinylog.Logger;
-
-import minerva.persistence.gitlab.GitlabUser;
 
 public class GitlabSystem {
     private final String url;

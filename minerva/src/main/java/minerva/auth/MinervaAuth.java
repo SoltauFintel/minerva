@@ -11,10 +11,10 @@ import github.soltaufintel.amalia.auth.rememberme.NoOpRememberMe;
 import github.soltaufintel.amalia.auth.webcontext.WebContext;
 import github.soltaufintel.amalia.spark.Context;
 import minerva.MinervaWebapp;
-import minerva.model.GitFactory;
 import minerva.model.StateSO;
 import minerva.model.StatesSO;
 import minerva.model.UserSO;
+import minerva.persistence.gitlab.GitFactory;
 import minerva.user.User;
 
 public class MinervaAuth extends AbstractAuth {

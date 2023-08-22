@@ -7,7 +7,6 @@ import org.gitlab4j.api.models.MergeRequest;
 import org.gitlab4j.api.models.MergeRequestParams;
 
 import minerva.base.StringService;
-import minerva.model.GitFactory;
 
 public class MergeRequestService {
     private boolean waitLonger = false;

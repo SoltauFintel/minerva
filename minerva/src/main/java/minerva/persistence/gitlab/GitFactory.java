@@ -1,4 +1,4 @@
-package minerva.model;
+package minerva.persistence.gitlab;
 
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.gitlab4j.api.Constants.TokenType;
@@ -10,7 +10,6 @@ import github.soltaufintel.amalia.rest.REST;
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
 import minerva.config.MinervaConfig;
-import minerva.persistence.gitlab.GitlabUser;
 import minerva.user.User;
 
 /**

@@ -12,7 +12,6 @@ import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
 import minerva.base.Tosmap;
 import minerva.config.MinervaConfig;
-import minerva.model.GitFactory;
 
 public class GitlabAuthService {
     private static final String STATE_PREFIX = "minerva-state-";
