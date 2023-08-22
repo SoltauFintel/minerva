@@ -14,7 +14,7 @@ import minerva.access.MultiPurposeDirAccess;
 import minerva.base.StringService;
 import minerva.config.BackendService;
 import minerva.config.MinervaConfig;
-import minerva.model.GitlabRepositorySO.SaveProcedure;
+import minerva.model.GitlabRepository.SaveProcedure;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.model.WorkspacesSO;

@@ -9,9 +9,9 @@ import minerva.access.DirAccess;
 import minerva.base.StringService;
 import minerva.config.BackendService;
 import minerva.config.MinervaConfig;
-import minerva.model.GitlabRepositorySO;
-import minerva.model.GitlabRepositorySO.SaveProcedure;
-import minerva.model.GitlabSystemSO;
+import minerva.model.GitlabRepository;
+import minerva.model.GitlabRepository.SaveProcedure;
+import minerva.model.GitlabSystem;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.model.WorkspacesSO;
@@ -22,13 +22,13 @@ import minerva.user.User;
 
 public class GitlabBackendService implements BackendService {
     private final MinervaConfig config;
-    private final GitlabSystemSO gitlabSystem;
-    private final GitlabRepositorySO repo;
+    private final GitlabSystem gitlabSystem;
+    private final GitlabRepository repo;
 
     public GitlabBackendService(MinervaConfig config) {
         this.config = config;
-        gitlabSystem = new GitlabSystemSO(config.getGitlabUrl());
-        repo = new GitlabRepositorySO(gitlabSystem, config.getGitlabProject());
+        gitlabSystem = new GitlabSystem(config.getGitlabUrl());
+        repo = new GitlabRepository(gitlabSystem, config.getGitlabProject());
     }
 
     @Override

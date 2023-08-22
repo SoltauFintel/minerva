@@ -6,10 +6,10 @@ import org.pmw.tinylog.Logger;
 
 import minerva.persistence.gitlab.GitlabUser;
 
-public class GitlabSystemSO {
+public class GitlabSystem {
     private final String url;
     
-    public GitlabSystemSO(String url) {
+    public GitlabSystem(String url) {
         this.url = url;
     }
     

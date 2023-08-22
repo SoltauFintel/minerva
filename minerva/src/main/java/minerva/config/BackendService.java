@@ -5,7 +5,7 @@ import java.util.Set;
 
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
-import minerva.model.GitlabRepositorySO.SaveProcedure;
+import minerva.model.GitlabRepository.SaveProcedure;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.model.WorkspacesSO;

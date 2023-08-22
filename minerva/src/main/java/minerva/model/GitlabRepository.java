@@ -17,11 +17,11 @@ import minerva.persistence.gitlab.GitlabUser;
 import minerva.persistence.gitlab.git.GitService;
 import minerva.persistence.gitlab.git.HCommit;
 
-public class GitlabRepositorySO {
-    private final GitlabSystemSO gitlab;
+public class GitlabRepository {
+    private final GitlabSystem gitlab;
     private final String project;
 
-    public GitlabRepositorySO(GitlabSystemSO gitlab, String project) {
+    public GitlabRepository(GitlabSystem gitlab, String project) {
         this.gitlab = gitlab;
         this.project = project;
     }

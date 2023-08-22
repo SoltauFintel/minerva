@@ -11,16 +11,16 @@ import org.pmw.tinylog.Logger;
 import minerva.access.AbstractDirAccess;
 import minerva.access.CommitHash;
 import minerva.access.CommitMessage;
-import minerva.model.GitlabRepositorySO;
+import minerva.model.GitlabRepository;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.move.IMoveFile;
 import minerva.seite.move.MoveFile;
 
 public class GitlabDirAccess extends AbstractDirAccess {
-    private final GitlabRepositorySO repo;
+    private final GitlabRepository repo;
 
-    public GitlabDirAccess(GitlabRepositorySO repo) {
+    public GitlabDirAccess(GitlabRepository repo) {
         this.repo = repo;
     }
     

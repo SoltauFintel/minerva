@@ -21,7 +21,7 @@ import minerva.persistence.gitlab.git.MinervaEmptyCommitException;
  * createWorkBranch -> switchToWorkBranch -> commitAndPush -> doMergeRequest -> finish.
  */
 public class GitlabPushTransaction {
-    private final GitlabRepositorySO repo;
+    private final GitlabRepository repo;
     private final CommitMessage commitMessage;
     private final WorkspaceSO workspace;
     private String workBranch;
@@ -29,7 +29,7 @@ public class GitlabPushTransaction {
     private GitlabUser user;
     private boolean doPull = false;
     
-    public GitlabPushTransaction(GitlabRepositorySO repo, CommitMessage commitMessage, WorkspaceSO workspace) {
+    public GitlabPushTransaction(GitlabRepository repo, CommitMessage commitMessage, WorkspaceSO workspace) {
         if (commitMessage == null) {
             throw new IllegalArgumentException("commitMessage must not be null");
         }
