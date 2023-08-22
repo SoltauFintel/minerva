@@ -74,7 +74,7 @@ public interface DirAccess {
     void createBranch(WorkspaceSO workspace, String newBranch, String commit);
     
     /**
-     * @param workspace needed for accessing Git repository
+     * @param workspace -
      * @return all branch names
      */
     List<String> getBranchNames(WorkspaceSO workspace);

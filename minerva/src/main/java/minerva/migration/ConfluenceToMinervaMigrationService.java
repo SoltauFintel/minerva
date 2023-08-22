@@ -117,7 +117,7 @@ public class ConfluenceToMinervaMigrationService {
         } else {
             MinervaWebapp.factory().getBackendService().saveFiles(
                     new MigrationCommitMessage("empty branch " + workspace.getBranch()),
-                    workspace, new HashSet<>(), filenames, () -> {});
+                    workspace, new HashSet<>(), filenames);
             Logger.info("[Migration] deleteWorkspace() ok");
         }
     }

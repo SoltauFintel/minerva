@@ -8,7 +8,6 @@ import minerva.access.DirAccess;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.model.WorkspacesSO;
-import minerva.persistence.gitlab.GitlabRepository.SaveProcedure;
 import minerva.persistence.gitlab.git.HCommit;
 import minerva.seite.Seite;
 import minerva.user.User;
@@ -51,7 +50,7 @@ public interface BackendService {
 
     List<String> getAddableBranches(WorkspacesSO workspaces, WorkspaceSO ref);
     
-    void saveFiles(CommitMessage commitMessage, WorkspaceSO workspace, Set<String> addFilenames, Set<String> removeFilenames, SaveProcedure saveFiles);
+    void saveFiles(CommitMessage commitMessage, WorkspaceSO workspace, Set<String> addFilenames, Set<String> removeFilenames);
     
     String getMergeRequestPath(Long id);
     

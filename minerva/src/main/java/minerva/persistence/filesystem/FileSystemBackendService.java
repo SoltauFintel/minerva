@@ -17,7 +17,6 @@ import minerva.config.MinervaConfig;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.model.WorkspacesSO;
-import minerva.persistence.gitlab.GitlabRepository.SaveProcedure;
 import minerva.persistence.gitlab.git.HCommit;
 import minerva.seite.Seite;
 import minerva.user.User;
@@ -79,8 +78,7 @@ public class FileSystemBackendService implements BackendService {
     }
 
     @Override
-    public void saveFiles(CommitMessage commitMessage, WorkspaceSO workspace, Set<String> addFilenames,
-            Set<String> removeFilenames, SaveProcedure saveFiles) {
+    public void saveFiles(CommitMessage commitMessage, WorkspaceSO workspace, Set<String> addFilenames, Set<String> removeFilenames) {
         throw new UnsupportedOperationException();
     }
 

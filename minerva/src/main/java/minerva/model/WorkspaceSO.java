@@ -45,7 +45,7 @@ public class WorkspaceSO {
 
     public BooksSO getBooks() {
         if (books == null) {
-            // Late access on books. This is the first access onto the workspace. Pull Git repo!
+            // Late access on books. This is the first access onto the workspace. If Git backend: Pull repo!
             userMessage = null;
             try {
                 dao().initWorkspace(this, false);

@@ -12,7 +12,6 @@ import minerva.config.MinervaConfig;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.model.WorkspacesSO;
-import minerva.persistence.gitlab.GitlabRepository.SaveProcedure;
 import minerva.persistence.gitlab.git.GitService;
 import minerva.persistence.gitlab.git.HCommit;
 import minerva.seite.Seite;
@@ -87,8 +86,8 @@ public class GitlabBackendService implements BackendService {
 
     @Override
     public void saveFiles(CommitMessage commitMessage, WorkspaceSO workspace, Set<String> addFilenames,
-            Set<String> removeFilenames, SaveProcedure saveFiles) {
-        repo.push(commitMessage, workspace, addFilenames, removeFilenames, saveFiles);
+            Set<String> removeFilenames) {
+        repo.push(commitMessage, workspace, addFilenames, removeFilenames, () -> {});
     }
 
     @Override
