@@ -29,7 +29,7 @@ public class PublishAction extends Action {
             File targetFolder = new PublishService(langs).loginAndPublish(login, password, branch);
             downloadFolderAsZip(targetFolder, ctx);
         }
-        Logger.info("PublishAction finished");
+        Logger.info(login + " | " + branch + " | PublishAction finished");
     }
     
     public static void downloadFolderAsZip(File sourceFolder, Context ctx) {
