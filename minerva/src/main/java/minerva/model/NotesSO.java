@@ -1,7 +1,7 @@
 package minerva.model;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import static minerva.base.StringService.now;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -59,10 +59,6 @@ public class NotesSO {
     	files.put(filename(note), StringService.prettyJSON(note));
     }
     
-    public String now() {
-    	return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-    }
-    
     public void deleteNote(String id) {
         Note note = find(id);
         if (note != null) {
@@ -97,7 +93,7 @@ public class NotesSO {
         } else {
             note.setDone(done);
             note.setDoneBy(done ? seite.getLogin() : null);
-            note.setDoneDate(done ? LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) : null);
+            note.setDoneDate(done ? now() : null);
             saveNote(note, new CommitMessage(seite, "note " + (done ? "done" : "undone")));
         }
     }
@@ -228,7 +224,7 @@ public class NotesSO {
             seite.notes().sendNotifications(note, persons);
             note.getPersons().clear();
             note.getPersons().addAll(persons);
-            note.setChanged(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            note.setChanged(now());
             saveNote(note, new CommitMessage(seite, "note modified"));
         }
     }

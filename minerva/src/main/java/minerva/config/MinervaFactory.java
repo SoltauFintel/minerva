@@ -1,13 +1,12 @@
 package minerva.config;
 
 import java.io.File;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import minerva.access.CommitMessage;
 import minerva.base.FileService;
 import minerva.base.NlsString;
+import minerva.base.StringService;
 import minerva.model.SeiteSO;
 import minerva.persistence.filesystem.FileSystemBackendService;
 import minerva.persistence.gitlab.GitlabBackendService;
@@ -49,7 +48,7 @@ public class MinervaFactory {
                 PageChange change = new PageChange();
                 change.setComment(comment);
                 change.setUser(seite.getLogin());
-                change.setDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+                change.setDate(StringService.now());
                 List<PageChange> changes = seite.getSeite().getChanges();
                 changes.add(change);
             }

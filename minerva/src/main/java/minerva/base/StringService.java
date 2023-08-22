@@ -1,5 +1,7 @@
 package minerva.base;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -90,4 +92,8 @@ public class StringService {
 		}
 		return text;
 	}
+    
+    public static String now() {
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+    }
 }
