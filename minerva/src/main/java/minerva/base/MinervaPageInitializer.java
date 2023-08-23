@@ -1,6 +1,7 @@
 package minerva.base;
 
 import static github.soltaufintel.amalia.web.action.Escaper.esc;
+import static minerva.base.StringService.umlaute;
 
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
@@ -103,5 +104,6 @@ public class MinervaPageInitializer extends PageInitializer {
                 }
             }
         }
+        list.sort((a, b) -> umlaute(a.get("title").toString()).compareTo(umlaute(b.get("title").toString())));
     }
 }
