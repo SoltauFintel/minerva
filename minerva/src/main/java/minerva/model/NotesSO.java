@@ -110,6 +110,21 @@ public class NotesSO {
         return ret;
     }
 
+    public int getOpenNotesSize() {
+        return _getOpenNotesSize(seite.getSeite().getNotes());
+    }
+
+    private int _getOpenNotesSize(List<Note> notes) {
+        int ret = 0;
+        for (Note note : notes) {
+            if (!note.isDone()) {
+                ret++;
+            }
+            ret += _getOpenNotesSize(note.getNotes()); // recursive
+        }
+        return ret;
+    }
+
     private void sendNotifications(String noteId, List<String> persons) {
         MinervaConfig c = MinervaWebapp.factory().getConfig();
         if (!persons.isEmpty() && c.readyForNoteNotifications()) {

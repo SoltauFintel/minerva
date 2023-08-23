@@ -199,3 +199,5 @@ v.illegalTagsInHeading=Heading must not contain formatting: $0
 validate=Validate pages
 nMessages=Number of errors
 nPages=Number of pages with errors
+openNote=open comment
+openNotes=open comments

@@ -25,6 +25,8 @@ public class NotesPage extends SPage implements Uptodatecheck {
         put("noteHTML", noteHTML(seite.getSeite().getNotes(), highlight, 1));
         put("hasNotes", !seite.getSeite().getNotes().isEmpty());
         put("showTopCreateButton", seite.notes().getNotesSize() >= 4);
+        int openNotes = seite.notes().getOpenNotesSize();
+        put("openNotes", openNotes == 0 ? "" : openNotes + " " + (openNotes == 1 ? n("openNote") : n("openNotes")));
     }
 
     private String noteHTML(List<Note> notes, String highlight, int ebene) {

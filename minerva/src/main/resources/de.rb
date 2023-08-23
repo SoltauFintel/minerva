@@ -200,3 +200,5 @@ v.illegalTagsInHeading=Überschrift darf keine weitere Formatierung enthalten: $
 validate=Prüfe Seiten
 nMessages=Anzahl Fehler
 nPages=Anzahl Seiten mit Fehlern
+openNote=unerledigter Kommentar
+openNotes=unerledigte Kommentare
