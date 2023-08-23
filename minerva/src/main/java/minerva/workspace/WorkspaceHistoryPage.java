@@ -38,7 +38,7 @@ public class WorkspaceHistoryPage extends WPage implements Uptodatecheck {
                     continue;
                 } else if (!author.equals(prevUser)) {
                     c = changes.add(); // Gruppenwechsel
-                    c.put("user", esc(author));
+                    c.put("user", esc(MinervaWebapp.factory().login2RealName(author)));
                     list = c.list("pages");
                 }
                 prevUser = author;
