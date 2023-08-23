@@ -12,7 +12,7 @@
                 {{/each}}
         {{/if}}
         {{if done}}
-            &mdash; <span style="color: #090;" title="{{doneDate}}"><i
+            &mdash; <span class="noteDone" title="{{doneDate}}"><i
                         class="fa fa-check"></i> {{N.doneBy}} {{doneBy}}</span>
 			{{if done}}
 	            <a href="{{viewlink}}/note-done?id={{noteId}}&m=u" title="{{N.undoneNote}}"

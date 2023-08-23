@@ -235,6 +235,13 @@
     color: #832;
 }
 
+.noteDone {
+    color: #fff;
+    background-color: #090;
+    border-radius: 4pt;
+    padding: 2px;
+}
+
 .ck-toolbar {
     background-color: #f5f5f9 !important;
 }

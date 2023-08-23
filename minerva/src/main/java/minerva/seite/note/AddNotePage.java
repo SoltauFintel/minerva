@@ -6,6 +6,7 @@ import java.util.List;
 import github.soltaufintel.amalia.spark.Context;
 import minerva.MinervaWebapp;
 import minerva.base.StringService;
+import minerva.seite.Note;
 import minerva.seite.SPage;
 
 public class AddNotePage extends SPage {
@@ -21,16 +22,19 @@ public class AddNotePage extends SPage {
             }
             ctx.redirect(viewlink + "/notes");
         } else {
+            List<String> selectedItems = new ArrayList<>();
             if (StringService.isNullOrEmpty(parentId)) {
                 put("parentText", "");
                 put("hasParent", false);
             } else {
-                put("parentText", esc(seite.notes().find(parentId).getText()));
+                Note parentNote = seite.notes().find(parentId);
+                put("parentText", esc(parentNote.getText()));
                 put("hasParent", true);
+                selectedItems.add(parentNote.getUser());
             }
             header(n("addNote"));
             put("parentId", parentId);
-            combobox("persons", MinervaWebapp.factory().getPersons(), "", true, model);
+            combobox("persons", MinervaWebapp.factory().getPersons(), selectedItems, true, model);
         }
     }
 
