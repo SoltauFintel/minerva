@@ -23,7 +23,7 @@ public class BookPage extends BPage implements Uptodatecheck {
         put("hasPositionlink", book.getSeiten().size() > 1);
         boolean sorted = book.getBook().isSorted();
         put("isSorted", sorted);
-        put("Sortierung", n(sorted ?  "alfaSorted" : "manuSorted"));
+        put("Sortierung", n(sorted ? "alfaSorted" : "manuSorted"));
         put("hasPrevlink", false);
         boolean hasSeiten = !book.getSeiten().isEmpty();
         put("hasNextlink", hasSeiten);
@@ -33,7 +33,7 @@ public class BookPage extends BPage implements Uptodatecheck {
         SeiteSO change = book.getLastChange();
         put("hasLastChange", change != null);
         if (change != null) {
-            ViewSeitePage.fillLastChange(change.getLastChange(), change.getTitle(), n("lastChangeInfoForBook"), model);
+            ViewSeitePage.fillLastChange(change, change.getLastChange(), n("lastChangeInfoForBook")/*no esc()*/, model);
         }
 
         DataList list = list("languages");

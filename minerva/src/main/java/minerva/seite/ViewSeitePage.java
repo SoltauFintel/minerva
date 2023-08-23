@@ -8,6 +8,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Escaper;
+import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
 import minerva.model.SeiteSO;
@@ -71,7 +72,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         PageChange change = seiteSO.getLastChange();
         put("hasLastChange", change != null);
         if (change != null) {
-            fillLastChange(change, seiteSO.getTitle(), n("lastChangeInfo"), model);
+            fillLastChange(seiteSO, change, esc(n("lastChangeInfo")), model);
         }
         putInt("helpKeysSize", seite.getHelpKeys().size());
         String oneHelpKey = getOneHelpKey(seite.getHelpKeys());
@@ -103,13 +104,14 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         }
     }
 
-    public static void fillLastChange(PageChange change, String pageTitle, String infotext, DataMap model) {
+    public static void fillLastChange(SeiteSO seite, PageChange change, String infotext, DataMap model) {
         String lastChangeInfo = infotext
-            .replace("$d", change.getDate())
-            .replace("$u", change.getUser())
-            .replace("$c", change.getComment().isEmpty() ? "" : (": " + change.getComment()))
-            .replace("$p", pageTitle);
-        model.put("lastChangeInfo", Escaper.esc(lastChangeInfo));
+            .replace("$d", Escaper.esc(change.getDate()))
+            .replace("$u", Escaper.esc(MinervaWebapp.factory().login2RealName(change.getUser())))
+            .replace("$c", Escaper.esc(change.getComment().isEmpty() ? "" : (": " + change.getComment())))
+            .replace("$p", Escaper.esc(seite.getTitle()))
+            .replace("$h", Escaper.esc("/s/" + seite.getBook().getWorkspace().getBranch() + "/" + seite.getBook().getBook().getFolder() + "/" + seite.getId()));
+        model.put("lastChangeInfo", lastChangeInfo);
         model.put("lastChange", Escaper.esc(change.getComment()));
         model.put("lastChangeDate", Escaper.esc(change.getDate()));
         model.put("lastChangeUser", Escaper.esc(change.getUser()));
