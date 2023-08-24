@@ -29,6 +29,7 @@ import minerva.persistence.gitlab.GitlabUser;
  * Control Git repository with quite low level functions: clone, fetch, pull, tag, branch, commit, select branch/commit.
  */
 public class GitService {
+    public static final String ADD_ALL_FILES = "$$ALL";
     private final File workspace;
     private final boolean onlyRemoteBranches;
     
@@ -303,15 +304,19 @@ public class GitService {
             throw new IllegalArgumentException("mail must not be empty!");
         }
         try (Git git = Git.open(workspace)) {
-            if (!addFilenames.isEmpty()) {
-                AddCommand add = git.add(); // "."/*=all files*/
-                addFilenames.forEach(filename -> add.addFilepattern(filename));
-                add.call();
-            }
-            if (!removeFilenames.isEmpty()) {
-                RmCommand rm = git.rm();
-                removeFilenames.forEach(filename -> rm.addFilepattern(filename));
-                rm.call();
+            if (addFilenames.size() == 1 && addFilenames.contains(ADD_ALL_FILES)) {
+                git.add().addFilepattern(".").call();
+            } else {
+                if (!addFilenames.isEmpty()) {
+                    AddCommand add = git.add();
+                    addFilenames.forEach(filename -> add.addFilepattern(filename));
+                    add.call();
+                }
+                if (!removeFilenames.isEmpty()) {
+                    RmCommand rm = git.rm();
+                    removeFilenames.forEach(filename -> rm.addFilepattern(filename));
+                    rm.call();
+                }
             }
             RevCommit commit = git.commit()
                 .setMessage(commitMessage.toString())

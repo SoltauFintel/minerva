@@ -106,4 +106,13 @@ public class FileSystemBackendService implements BackendService {
     public String logout(User user) {
         return "";
     }
+
+    @Override
+    public void saveAll(CommitMessage commitMessage, WorkspaceSO workspace) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void checkIfMoveIsAllowed(WorkspaceSO workspace) { // it's always allowed
+    }
 }

@@ -36,6 +36,8 @@ public class MergeBranchPage extends UPage {
             List<String> branches = user.dao().getBranchNames(user.getWorkspace(branch));
             branches.remove(branch);
             branches.removeIf(n -> n.startsWith(WorkspacesSO.MINERVA_BRANCH) || n.contains(WorkspacesSO.MINERVA_BRANCH));
+            List<String> delayedPush = user.getUserSettings().getDelayedPush();
+            branches.removeIf(n -> delayedPush.contains(n));
             if (branches.isEmpty()) {
                 throw new UserMessage("noBranches", user);
             }

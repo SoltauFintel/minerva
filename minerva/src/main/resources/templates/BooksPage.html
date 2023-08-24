@@ -7,6 +7,11 @@
             {{if gitlab}}
                 <p><span title="Commit: {{hash7}}">Branch: {{branch}}</span></p>
             {{/if}}
+            {{if delayedPushAllowed}}
+                {{if delayedPush}}
+                    <p><a href="/w/{{branch}}/deactivate-f-s-mode" class="btn btn-primary brr">{{N.endFSMode}}...</a></p>
+                {{/if}}
+            {{/if}}
             
             <p class="mt2">
                 {{if addBookAllowed}}
@@ -111,8 +116,8 @@
                 {{/if}}
             {{/if}}
         </p>
-        <p>
-            {{if gitlab}}
+        {{if gitlab}}
+            <p>
                 <a href="/w/{{branch}}/pull" class="btn btn-default brr" title="pull"
                     onclick="document.querySelector('#s1').style='';"><i class="fa fa-refresh"></i>
                     {{N.pullWS}}! <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
@@ -121,12 +126,19 @@
                     {{N.cloneWS}}! <i id="s2" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
                 <a href="/w/{{branch}}/delete" class="btn btn-danger brr"><i
                     class="fa fa-trash-o"></i> {{N.deleteWS}}...</a>
+            </p>
+            <p>
                 <a href="/branch/{{branch}}" class="btn btn-default brr"><i class="fa fa-code-fork"></i>
                     {{N.createBranch}}</a>
                 <a href="/merge/{{branch}}" class="btn btn-default brr"><i class="fa fa-code-fork"></i>
                     {{N.mergeBranch}}</a>
-            {{/if}}
-        </p>
+                {{if delayedPushAllowed}}
+                    {{if not delayedPush}}
+                        <a href="/w/{{branch}}/activate-f-s-mode" class="btn btn-default brr">{{N.beginFSMode}}</a>
+                    {{/if}}
+                {{/if}}
+            </p>
+        {{/if}}
         <p>
             {{if canBeAdmin}}
                 {{if isAdmin}}

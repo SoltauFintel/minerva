@@ -86,9 +86,11 @@ import minerva.subscription.MappingPage;
 import minerva.subscription.PushDataAction;
 import minerva.subscription.SubscribeAction;
 import minerva.validate.ValidationPage;
+import minerva.workspace.ActivateFSModeAction;
 import minerva.workspace.AddWorkspacePage;
 import minerva.workspace.CreateBranchPage;
 import minerva.workspace.CurrentWorkspaceAction;
+import minerva.workspace.DeactivateFSModePage;
 import minerva.workspace.DeleteWorkspacePage;
 import minerva.workspace.MergeBranchPage;
 import minerva.workspace.PullWorkspaceAction;
@@ -131,6 +133,8 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/push-data", PushDataAction.class);
         get("/w/:branch/language", SelectLanguageAction.class);
         get("/w/:branch/broken-mappings", BrokenMappingsPage.class);
+        get("/w/:branch/activate-f-s-mode", ActivateFSModeAction.class);
+        form("/w/:branch/deactivate-f-s-mode", DeactivateFSModePage.class);
     }
 
     private void oneBook() {

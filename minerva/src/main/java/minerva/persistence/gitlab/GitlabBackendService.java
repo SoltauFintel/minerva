@@ -3,10 +3,12 @@ package minerva.persistence.gitlab;
 import java.io.File;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.base.StringService;
+import minerva.base.UserMessage;
 import minerva.config.BackendService;
 import minerva.config.ICommit;
 import minerva.config.MinervaConfig;
@@ -118,5 +120,20 @@ public class GitlabBackendService implements BackendService {
             return "Gitlab revoke ok";
         }
         return "";
+    }
+
+    @Override
+    public void saveAll(CommitMessage commitMessage, WorkspaceSO workspace) {
+        Set<String> add = new TreeSet<>();
+        add.add(GitService.ADD_ALL_FILES);
+        repo.push(commitMessage, workspace, add, new TreeSet<>(), () -> {});
+    }
+
+    @Override
+    public void checkIfMoveIsAllowed(WorkspaceSO workspace) {
+        if (workspace.getUser().getUserSettings().getDelayedPush().contains(workspace.getBranch())) {
+            // User will loose Git history. So better end f-s mode before moving a page.
+            throw new UserMessage("moveNotAllowedForFSMode", workspace);
+        }
     }
 }

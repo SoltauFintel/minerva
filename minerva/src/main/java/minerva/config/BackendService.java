@@ -51,6 +51,10 @@ public interface BackendService {
     
     void saveFiles(CommitMessage commitMessage, WorkspaceSO workspace, Set<String> addFilenames, Set<String> removeFilenames);
     
+    void saveAll(CommitMessage commitMessage, WorkspaceSO workspace);
+    
+    void checkIfMoveIsAllowed(WorkspaceSO workspace);
+    
     String getMergeRequestPath(Long id);
     
     String getCommitLink(String hash);

@@ -1,0 +1,29 @@
+{{master: master}}
+
+<div class="row"> 
+    <div class="col-lg-12">
+        <h1 class="page-header">{{N.endFSMode}}</h1>
+        
+        <h3 style="max-width: 700px;">{{N.endFSModeInfo}}</h3>
+        
+        <form action="/w/{{branch}}/deactivate-f-s-mode" class="form-horizontal mt3" method="post">
+            <fieldset>
+                <div class="form-group">
+                    <label for="cm" class="col-lg-2 control-label">{{N.commitMessage}}</label>
+                    <div class="col-lg-4">
+                        <input class="form-control" id="cm" name="cm" value="{{cm}}" autofocus>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-2 col-lg-4">
+                        <button type="submit" class="btn btn-primary br"
+                            onclick="document.querySelector('#s1').style='';">{{N.persist}}
+                            <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
+                        <a href="/w/{{branch}}/deactivate-f-s-mode?m=cancel" class="btn btn-danger br">{{N.cancelFSMode}}</a>
+                        <a href="/w/{{branch}}" class="btn btn-default br">{{N.cancel}}</a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

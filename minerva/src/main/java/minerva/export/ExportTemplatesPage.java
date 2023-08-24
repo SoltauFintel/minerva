@@ -29,7 +29,7 @@ public class ExportTemplatesPage extends WPage {
             save(ExportTemplatesService.PAGE, ctx.formParam("page"));
             save(ExportTemplatesService.TEMPLATE, ctx.formParam("template"));
             save(ExportTemplatesService.TEMPLATE_CSS, ctx.formParam("templateCss"));
-            user.dao().saveFiles(files, new CommitMessage("Export templates"), workspace);
+            workspace.dao().saveFiles(files, new CommitMessage("Export templates"), workspace);
             ctx.redirect("/w/" + branch);
         } else {
             header(n("exportTemplates"));

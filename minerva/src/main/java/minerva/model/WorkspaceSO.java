@@ -8,9 +8,11 @@ import org.pmw.tinylog.Logger;
 
 import minerva.MinervaWebapp;
 import minerva.access.CommitHash;
+import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.config.MinervaConfig;
 import minerva.config.MinervaFactory;
+import minerva.persistence.filesystem.FileSystemDirAccess;
 import minerva.seite.tag.TagNList;
 
 public class WorkspaceSO {
@@ -40,7 +42,11 @@ public class WorkspaceSO {
     }
 
     public DirAccess dao() {
-        return user.dao();
+        if (user.getUserSettings().getDelayedPush().contains(branch)) {
+            return new FileSystemDirAccess();
+        } else {
+            return user.dao();
+        }
     }
 
     public BooksSO getBooks() {
@@ -131,5 +137,9 @@ public class WorkspaceSO {
     
     public CommitHash getCommitHash() {
         return dao().getCommitHash(this);
+    }
+
+    public void save(CommitMessage commitMessage) {
+        MinervaWebapp.factory().getBackendService().saveAll(commitMessage, this);
     }
 }

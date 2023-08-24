@@ -1,6 +1,7 @@
 package minerva.seite.move;
 
 import github.soltaufintel.amalia.web.action.Escaper;
+import minerva.MinervaWebapp;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -10,6 +11,8 @@ public class MoveSeitePage extends SPage {
     
     @Override
     protected void execute() {
+        MinervaWebapp.factory().getBackendService().checkIfMoveIsAllowed(workspace);
+
         header(n("movePage"));
         put("pageTitle", esc(seite.getTitle()));
 

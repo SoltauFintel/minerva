@@ -16,6 +16,8 @@ public class UserSettingsSO {
     private final List<String> favorites = new ArrayList<>();
     private final List<String> watchlist = new ArrayList<>();
     private String lastEditedPage;
+    /** only used with Gitlab backend: all branch names where file-system mode is temporarily active */
+    private final List<String> delayedPush = new ArrayList<>();
     
     public static UserSettingsSO load(String login) {
         UserSettingsSO us;
@@ -79,5 +81,9 @@ public class UserSettingsSO {
 
     public void setLastEditedPage(String lastEditedPage) {
         this.lastEditedPage = lastEditedPage;
+    }
+
+    public List<String> getDelayedPush() {
+        return delayedPush;
     }
 }
