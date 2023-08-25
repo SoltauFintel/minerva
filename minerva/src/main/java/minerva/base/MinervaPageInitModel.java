@@ -41,7 +41,7 @@ public class MinervaPageInitModel {
                     if (user.getCurrentWorkspace().getBooks() != null //
                             && !user.getCurrentWorkspace().getBooks().isEmpty()) {
                         books = user.getCurrentWorkspace().getBooks();
-                        String id = user.getUserSettings().getLastEditedPage();
+                        String id = user.getUser().getLastEditedPage();
                         if (!StringService.isNullOrEmpty(id)) {
                             for (BookSO book : books) {
                                 SeiteSO les = book._seiteById(id);

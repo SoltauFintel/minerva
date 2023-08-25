@@ -21,12 +21,15 @@ import minerva.access.DirAccess;
 import minerva.base.FileService;
 import minerva.base.StringService;
 import minerva.base.Tosmap;
+import minerva.export.ExportUserSettings;
 import minerva.seite.link.InvalidLinksModel;
 import minerva.seite.note.NoteWithSeite;
 import minerva.user.User;
+import minerva.user.UserAccess;
 
 public class UserSO {
-    private final User user;
+    private User user;
+    private final String folder;
     private final WorkspacesSO workspaces;
     private WorkspaceSO currentWorkspace;
     private DirAccess dao;
@@ -39,9 +42,19 @@ public class UserSO {
     
     public UserSO(User user) {
         this.user = user;
-        String userFolder = getWorkspacesFolder() + "/" + user.getFolder();
+
+        // TODO >> BackendService
+        String userFolder = MinervaWebapp.factory().getConfig().getUserFolder();   // TODO im Gitlab Modus ist folder immer der login
+        if (userFolder.isEmpty()) {
+            folder = user.getLogin();
+        } else {
+            folder = userFolder;
+        }
+        Logger.debug(user.getLogin() + " | folder: " + folder);
+        // <<
+
         dao = MinervaWebapp.factory().getBackendService().getDirAccess();
-        this.workspaces = new WorkspacesSO(this, userFolder);
+        this.workspaces = new WorkspacesSO(this, getWorkspacesFolder() + "/" + folder);
     }
 
     public User getUser() {
@@ -133,35 +146,54 @@ public class UserSO {
     public void setOrderPagesModel(SeitenSO orderPagesModel) {
         this.orderPagesModel = orderPagesModel;
     }
+    
+    public void selectLanguage(String language, boolean pageMode) {
+        if (!MinervaWebapp.factory().getLanguages().contains(language)) {
+            throw new IllegalArgumentException("Illegal language value!");
+        }
+        load();
+        user.setPageLanguage(language);
+        if (!pageMode) {
+            user.setGuiLanguage(language);
+        }
+        save();
+    }
 
     public void toggleFavorite(String id) {
-        UserSettingsSO us = getUserSettings();
-        List<String> favorites = us.getFavorites();
+        load();
+        List<String> favorites = user.getFavorites();
         if (favorites.contains(id)) {
             favorites.remove(id);
         } else {
             favorites.add(id);
         }
-        us.save();
+        save();
     }
 
     public void toggleWatch(String id) {
-        UserSettingsSO us = getUserSettings();
-        List<String> watchlist = us.getWatchlist();
+        load();
+        List<String> watchlist = user.getWatchlist();
         if (watchlist.contains(id)) {
             watchlist.remove(id);
         } else {
             watchlist.add(id);
         }
-        us.save();
+        save();
     }
 
     public List<String> getFavorites() {
-        return getUserSettings().getFavorites();
+        return user.getFavorites();
     }
     
-    public UserSettingsSO getUserSettings() {
-        return UserSettingsSO.load(user.getLogin());
+    public void saveExportSettings(String item, String customer, String lang) {
+        load();
+        if (user.getExport() == null) {
+            user.setExport(new ExportUserSettings());
+        }
+        user.getExport().setItem(item);
+        user.getExport().setCustomer(customer);
+        user.getExport().setLang(lang);
+        save();
     }
     
     public void onlyAdmin() {
@@ -283,5 +315,13 @@ public class UserSO {
             }
         }
         return notes;
+    }
+
+    private void load() {
+        user = UserAccess.loadUser(user.getLogin());
+    }
+
+    private void save() {
+        UserAccess.save(user);
     }
 }

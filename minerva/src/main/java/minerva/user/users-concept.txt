@@ -7,11 +7,14 @@ gespeichert im Workspaces Ordner
 
 
 transient String login;
+String folder
 String guiLanguage
 String pageLanguage
 ExportUserSettings export;
 final List<String> favorites = new ArrayList<>();
 final List<String> watchlist = new ArrayList<>();
+String lastEditedPage;
+List<String> delayedPush = new ArrayList<>();
 exportAllowed
 realName
 

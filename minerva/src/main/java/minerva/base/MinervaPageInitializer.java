@@ -85,7 +85,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("exclusionsTitle", NLS.get(userLang, "exclusions"));
         page.put("myTasks", NLS.get(userLang, "myTasks"));
         page.put("formulaEditor", NLS.get(userLang, "formulaEditor"));
-        page.put("delayedPush", m.getUser().getUserSettings().getDelayedPush().contains(m.getBranch()));
+        page.put("delayedPush", m.getUser().getUser().getDelayedPush().contains(m.getBranch()));
         page.put("delayedPushAllowed", MinervaWebapp.factory().isGitlab()
                 && !"master".equals(m.getBranch())
                 && !(m.getBranch().length() >= 1 && m.getBranch().charAt(0) >= '0' && m.getBranch().charAt(0) <= '9'));
