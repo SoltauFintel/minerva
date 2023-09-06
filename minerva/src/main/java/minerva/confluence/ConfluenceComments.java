@@ -1,4 +1,4 @@
-package minerva.migration;
+package minerva.confluence;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package minerva.migration;
+package minerva.confluence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import minerva.base.StringService;
+import minerva.migration.HtmlToPlainText;
 
 public class ConfluenceComment {
     private String pageId;
