@@ -209,3 +209,7 @@ endFSModeInfo=Hiermit schalten Sie die verzögerte Persistierung aus. Sollen all
 persist=Speichern
 cancelFSMode=Verwerfen
 moveNotAllowedForFSMode=Bitte verschieben Sie keine Seite wenn die verzögerte Persistierung aktiv ist.
+loadReleaseNotes=Release Notes
+spacekey=Confluence Bereichskürzel
+Release=Release
+Import=Importieren

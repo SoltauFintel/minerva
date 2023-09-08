@@ -39,3 +39,6 @@ work-folder=
 
 # real user names
 user.<login>=
+
+release-notes.base-url=
+release-notes.token=

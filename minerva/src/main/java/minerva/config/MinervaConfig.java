@@ -276,4 +276,12 @@ public class MinervaConfig {
 	public Map<String, String> getRealName2Login() {
 		return realName2Login;
 	}
+	
+	public String getReleaseNotesBaseUrl() {
+		return config.get("release-notes.base-url");
+	}
+	
+	public String getReleaseNotesToken() {
+		return config.get("release-notes.token");
+	}
 }

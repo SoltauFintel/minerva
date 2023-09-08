@@ -153,6 +153,7 @@ public class ConfluenceAccess {
             req.getHttpResponse().getEntity().writeTo(fos);
             req.close();
         } catch (Exception e) {
+        	e.printStackTrace();
             error("[SE-3] Can not download file: " + img + " | " + e.getMessage() + " | " + pageId);
         }
     }
