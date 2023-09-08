@@ -34,8 +34,9 @@ public class ConfluenceAccess {
         final int limit = 500;
         int n;
         do {
-            ConfluenceSearchResults p = request("/rest/api/content/search?expand=ancestors&cql=space=" + spaceKey + "+and+type=page+order+by+id&limit=" + limit + "&start=" + start)
-                    .fromJson(ConfluenceSearchResults.class);
+			String url = "/rest/api/content/search?expand=ancestors&cql=space=" + spaceKey
+					+ "+and+type=page+order+by+id&limit=" + limit + "&start=" + start;
+			ConfluenceSearchResults p = request(url).fromJson(ConfluenceSearchResults.class);
             n = p.getResults().size();
             for (ConfluenceResult r : p.getResults()) {
                 ConfluencePage2 page = new ConfluencePage2();
