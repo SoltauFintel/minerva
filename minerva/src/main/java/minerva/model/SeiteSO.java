@@ -476,7 +476,7 @@ public class SeiteSO implements ISeite {
         return book.getFolder() + "/" + lang + "/" + getId() + ".html";
     }
 
-    private String filenameImage(String filename) {
+    public String filenameImage(String filename) {
         return book.getFolder() + "/" + filename;
     }
 

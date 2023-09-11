@@ -3,12 +3,15 @@ package minerva.releasenotes;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.IdGenerator;
 import minerva.MinervaWebapp;
 import minerva.access.CommitMessage;
+import minerva.access.DirAccess;
+import minerva.base.FileService;
 import minerva.base.NlsString;
 import minerva.config.MinervaFactory;
 import minerva.confluence.ConfluenceAccess;
@@ -43,6 +46,10 @@ public class ReleaseNotesService {
 	public String importRelease() {
 		ConfluencePage2 root = loadReleaseNotesPage(ctx.getSpaceKey(), ctx.getRootTitle());
 		ConfluencePage2 release = root.getSubpages().stream().filter(i -> i.getTitle().equals(ctx.getReleaseTitle())).findFirst().orElse(null);
+		if (release.getSubpages().isEmpty()) {
+		    Logger.info(release.getTitle() + " | No import because there are no ticket pages.");
+		    return null;
+		}
 		ctx.setReleasePage(release);
 		for (ConfluencePage2 sub : release.getSubpages()) {
 			access.loadPage(sub);
@@ -75,7 +82,7 @@ public class ReleaseNotesService {
             customerPage.getSeite().getTags().add("reversed-order");
             customerPage.getSeite().setSorted(true);
             setTitleAndDummyContent(customerPage, "Programmänderungen " + ctx.getSpaceKey(), "Release Notes " + ctx.getSpaceKey());
-            customerPage.getSeite().setTocSubpagesLevels(1);
+            customerPage.getSeite().setTocSubpagesLevels(2);
             customerPage.saveMetaTo(ctx.getFiles());
             customerPage.saveHtmlTo(ctx.getFiles(), langs());
         }
@@ -141,7 +148,6 @@ public class ReleaseNotesService {
         releasePage.saveMetaTo(ctx.getFiles());
         releasePage.saveHtmlTo(ctx.getFiles(), langs());
         ctx.setResultingReleasePage(releasePage);
-System.out.println("--Release page angelegt: " + releasePage.getTitle());        
     }
 
     private void createTicketPages() {
@@ -153,6 +159,7 @@ System.out.println("--Release page angelegt: " + releasePage.getTitle());
             for (ConfluencePage2 details : src.getSubpages()) {
                 html += details.getHtml();
             }
+            html = processImages(html, seite);
             if (html.isBlank()) {
                 html = "<p>.</p>";
             }
@@ -160,6 +167,28 @@ System.out.println("--Release page angelegt: " + releasePage.getTitle());
             seite.saveMetaTo(ctx.getFiles());
             seite.saveHtmlTo(ctx.getFiles(), langs());
         }
+    }
+
+    private String processImages(String html, SeiteSO seite) {
+        Set<String> images = ConfluenceAccess.extract(html, "img", "src");
+        File imagesFolder = MinervaWebapp.factory().getWorkFolder("release-notes-images");
+        for (String img : images) {
+            if (img.startsWith("img/")) {
+                System.out.println("im HTML==> " + img);
+                File imgFile = new File(imagesFolder, img.substring("img/".length()));
+                if (imgFile.isFile()) {
+                    File targetFolder = new File(ctx.getBook().getFolder(), "img/" + seite.getId());
+                    FileService.copyFile(imgFile, targetFolder);
+//                    imgFile.delete();
+                    html = html.replace(img, "img/" + seite.getId() + "/" + imgFile.getName());
+                    ctx.getFiles().put(seite.filenameImage("img/" + seite.getId() + "/" + imgFile.getName()),
+                            DirAccess.IMAGE);
+                } else {
+                    throw new RuntimeException("File not found: " + imgFile.getAbsolutePath() + "\nin HTML: " + img);
+                }
+            }
+        }
+        return html;
     }
 
     private void setTitleAndDummyContent(SeiteSO seite, String titleDE, String titleEN) {

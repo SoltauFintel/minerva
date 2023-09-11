@@ -11,6 +11,7 @@ import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.rest.REST;
 import github.soltaufintel.amalia.rest.RestResponse;
+import github.soltaufintel.amalia.web.action.Escaper;
 
 public class ConfluenceAccess {
     private final String baseUrl;
@@ -33,7 +34,7 @@ public class ConfluenceAccess {
         final int limit = 500;
         int n;
         do {
-			String url = "/rest/api/content/search?expand=ancestors&cql=space=" + spaceKey
+			String url = "/rest/api/content/search?expand=ancestors&cql=space=" + Escaper.urlEncode(spaceKey, spaceKey)
 					+ "+and+type=page+order+by+id&limit=" + limit + "&start=" + start;
 			ConfluenceSearchResults p = request(url).fromJson(ConfluenceSearchResults.class);
             n = p.getResults().size();
@@ -90,19 +91,23 @@ public class ConfluenceAccess {
         String html = page.getHtml();
         Set<String> images = extract(html, "img", "src");
         for (String img : images) {
-            String dn = getShortImageFilename(img);
-            if (dn == null) {
-                error("[SE-4] Can not extract filename: " + img);
-                continue;
-            } else {
-                downloadImage(img, page.getId(), dn);
-                html = html.replace(img, "img/" + dn);
+            if (img.startsWith("http://") || img.startsWith("https://")) {
+System.out.println("        " + img);
+                String dn = getShortImageFilename(img);
+                if (dn == null) {
+                    error("[SE-4] Can not extract filename: " + img);
+                    continue;
+                } else {
+                    downloadImage(img, page.getId(), dn);
+                    html = html.replace(img, "img/" + page.getId() + "/" + dn);
+                }
             }
+else System.err.println("YYY -> img ohne http: " + img); // XXX            
         }
         page.setHtml(html);
     }
 
-    private Set<String> extract(String html, final String tag, final String attr) {
+    public static Set<String> extract(String html, final String tag, final String attr) {
         final String x1 = "<" + tag;
         final String x2 = attr + "=\"";
         Set<String> ret = new HashSet<>();
@@ -117,9 +122,7 @@ public class ConfluenceAccess {
                     int pp = img.indexOf("\"", p);
                     if (pp > p) {
                         String url = img.substring(p, pp);
-                        if (url.startsWith("http://") || url.startsWith("https://")) {
-                            ret.add(url);
-                        }
+                        ret.add(url);
                     }
                 }
             }
@@ -139,13 +142,14 @@ public class ConfluenceAccess {
     }
 
     private void downloadImage(String img, String pageId, String shortFilename) {
-        File imgFile =  new File(imagesFolder, pageId + "/" + shortFilename);
+        File imgFile = new File(imagesFolder, pageId + "/" + shortFilename);
         imgFile.getParentFile().mkdirs();
         if (imgFile.isFile()) {
-//TODO            return;
+//  FIXME TODO          return;
         }
         
         String url = fixBrokenUrl(pageId, img);
+System.out.println("load==> "+imgFile.toString());        
         try (FileOutputStream fos = new FileOutputStream(imgFile)) {
             RestResponse req = request(url);
             req.getHttpResponse().getEntity().writeTo(fos);
@@ -173,15 +177,18 @@ public class ConfluenceAccess {
         final String x = linkBegin + "/pages/viewpage.action?pageId=";
         final String x2 = linkBegin + "/display/";
         for (String href : refs) {
-            if (href.startsWith(x)) {
-                String aPageId = href.substring(x.length());
-                html = html.replace(href, "/html/" + aPageId + ".html");
-            } else if (href.startsWith(x2)) {
-                html = html.replace(href, "#"); // clear that link (Datenschutz)
-                System.out.println("hyperlink " + href + " was changed to \"#\" | " + pageId);
-            } else {
-                System.out.println("hyperlink " + href + " was not replaced | " + pageId);
+            if (href.startsWith("http://") || href.startsWith("https://")) {
+                if (href.startsWith(x)) {
+                    String aPageId = href.substring(x.length());
+                    html = html.replace(href, "/html/" + aPageId + ".html");
+                } else if (href.startsWith(x2)) {
+                    html = html.replace(href, "#"); // clear that link (Datenschutz)
+                    System.out.println("hyperlink " + href + " was changed to \"#\" | " + pageId);
+                } else {
+                    System.out.println("hyperlink " + href + " was not replaced | " + pageId);
+                }
             }
+else System.err.println("ZZZ -> href ohne http: " + href); // XXX            
         }
         return html;
     }
@@ -190,6 +197,7 @@ public class ConfluenceAccess {
         if (!url.startsWith(baseUrl)) {
             url = baseUrl + url;
         }
+        Logger.info(url);
         return new REST(url)
                 .withAuthorization("Bearer " + token)
                 .get();

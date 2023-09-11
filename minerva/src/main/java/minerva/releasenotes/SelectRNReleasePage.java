@@ -69,7 +69,7 @@ public class SelectRNReleasePage extends BPage {
         	Logger.info(msg);
         	user.log(msg);
         	String seiteId = service(spaceKey, rootTitle, releaseTitle, lang).importRelease();
-        	ctx.redirect(booklink.replace("/b/", "/s/") + "/" + seiteId);
+        	ctx.redirect(seiteId == null ? booklink : (booklink.replace("/b/", "/s/") + "/" + seiteId));
         }
     }
     
