@@ -15,15 +15,18 @@ public class SelectRNCustomerPage extends BPage {
         if (isPOST()) {
         	String spaceKey = ctx.formParam("spaceKey");
         	String rootTitle = ctx.formParam("rootTitle");
-        	ctx.redirect(booklink + "/rn-select-release?s=" + u(spaceKey) + "&t=" + u(rootTitle));
+        	String lang = ctx.formParam("lang");
+        	ctx.redirect(booklink + "/rn-select-release?s=" + u(spaceKey) + "&t=" + u(rootTitle) + "&l=" + u(lang));
         } else {
         	header(n("loadReleaseNotes"));
         	put("spaceKey", "BASF");
         	put("rootTitle", "Release notes");
+        	combobox("langs", ReleaseNotesService.langs(), "en", false, model);
             ColumnFormularGenerator gen = new ColumnFormularGenerator(2, 1);
             initColumnFormularGenerator(gen);
             TemplatesInitializer.fp.setContent(gen
             		.textfield("spaceKey", n("spacekey"), 1)
+            		.combobox("lang", n("language"), 1, "langs")
             		.textfield("rootTitle", n("title"), 2)
                     .save(n("Forward"))
                     .getHTML(booklink + "/rn-select-customer", booklink));

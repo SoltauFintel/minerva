@@ -64,7 +64,7 @@ public class ReleaseNotesService {
         ctx.getBook().dao().saveFiles(ctx.getFiles(),
                 new CommitMessage("Release Notes " + ctx.getSpaceKey() + " " + releaseNumber),
                 ctx.getBook().getWorkspace());
-        Logger.info(releaseNumber +" | Number of saved pages: " + ctx.getFiles().size());
+        Logger.info(releaseNumber +" | Number of saved pages: " + ctx.getFiles().keySet().stream().filter(i -> i.endsWith(".meta")).count());
     }
 
     private void createCustomerPage() {
@@ -147,13 +147,14 @@ System.out.println("--Release page angelegt: " + releasePage.getTitle());
             seite.getSeite().getTitle().setString("en", src.getTitle());
             String html = src.getHtml();
             for (ConfluencePage2 details : src.getSubpages()) {
-System.out.println("------Details -->");                
-                html += "<h2>details: " + details.getTitle() + "</h2>" + details.getHtml();
+                html += details.getHtml();
+            }
+            if (html.isBlank()) {
+                html = "<p>.</p>";
             }
             seite.getContent().setString(ctx.getLang(), html);
             seite.saveMetaTo(ctx.getFiles());
             seite.saveHtmlTo(ctx.getFiles(), langs());
-System.out.println("----Ticket page angelegt: " + seite.getTitle());            
         }
     }
 
@@ -166,7 +167,7 @@ System.out.println("----Ticket page angelegt: " + seite.getTitle());
         content.setString("en", "en".equals(ctx.getLang()) ? "<p>.</p>" : ""); // "" =page empty (will not be displayed)
     }
 
-    private List<String> langs() {
+    public static List<String> langs() {
         List<String> langs = new ArrayList<>();
         langs.add("de");
         langs.add("en");

@@ -22,8 +22,8 @@ public class SelectRNReleasePage extends BPage {
 		// TODO MinervaWebapp.factory().gitlabOnlyPage();
 		String spaceKey = ctx.queryParam("s");
 		String rootTitle = ctx.queryParam("t");
-		String lang = "en"; // TODO
-		if (spaceKey == null || rootTitle == null || rootTitle.isEmpty()) {
+		String lang = ctx.queryParam("l");
+		if (spaceKey == null || rootTitle == null || rootTitle.isEmpty() || lang == null) {
 			throw new RuntimeException("Missing parameters");
 		}
 		if (isPOST()) {
@@ -51,7 +51,7 @@ public class SelectRNReleasePage extends BPage {
         TemplatesInitializer.fp.setContent(gen
         		.combobox("release", n("Release"), 5, "releases", true)
                 .save(n("Import"))
-                .getHTML(booklink + "/rn-select-release?s=" + u(spaceKey) + "&t=" + u(rootTitle), booklink));
+                .getHTML(booklink + "/rn-select-release?s=" + u(spaceKey) + "&t=" + u(rootTitle) + "&l=" + u(lang), booklink));
     }
 
     private void importRelease(String spaceKey, String rootTitle, String lang) {
