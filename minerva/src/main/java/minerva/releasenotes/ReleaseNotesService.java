@@ -68,20 +68,26 @@ public class ReleaseNotesService {
     }
 
     private void createCustomerPage() {
-        String tag = "release-notes-" + ctx.getSpaceKey().toLowerCase();
-        ctx.setCustomerPage(ctx.getBook().getSeiten()._byTag(tag));
-        if (ctx.getCustomerPage() != null) {
-            return;
+        SeiteSO customerPage = findCustomerPage();
+        if (customerPage == null) {
+            customerPage = ctx.getBook().getSeiten().createSeite(ctx.getBook().getISeite(), ctx.getBook(), IdGenerator.createId6());
+            customerPage.getSeite().getTags().add(tag());
+            setTitleAndDummyContent(customerPage, "Programmänderungen " + ctx.getSpaceKey(), "Release Notes " + ctx.getSpaceKey());
+            customerPage.getSeite().setTocSubpagesLevels(1);
+            customerPage.saveMetaTo(ctx.getFiles());
+            customerPage.saveHtmlTo(ctx.getFiles(), langs());
         }
-        SeiteSO customerPage = ctx.getBook().getSeiten().createSeite(ctx.getBook().getISeite(), ctx.getBook(), IdGenerator.createId6());
-        customerPage.getSeite().getTags().add(tag);
-        setTitleAndDummyContent(customerPage, "Programmänderungen " + ctx.getSpaceKey() , "Release Notes " + ctx.getSpaceKey());
-        customerPage.getSeite().setTocSubpagesLevels(1);
-        customerPage.saveMetaTo(ctx.getFiles());
-        customerPage.saveHtmlTo(ctx.getFiles(), langs());
         ctx.setCustomerPage(customerPage);
     }
-    
+
+    private SeiteSO findCustomerPage() {
+        return ctx.getBook().getSeiten()._byTag(tag());
+    }
+
+    private String tag() {
+        return "release-notes-" + ctx.getSpaceKey().toLowerCase();
+    }
+
     private String getReleaseNumber(final String pTitle) {
         String title = " " + pTitle + " ";
         // searching for blank + digit[1-9] + dot ...
@@ -100,22 +106,27 @@ public class ReleaseNotesService {
 
     // Create release section page "3.26.x" for release "3.26.7".
     private void createReleaseSectionPage(String releaseNumber) {
-        int o = releaseNumber.lastIndexOf(".");
-        if (o >= 0) {
-            String title = releaseNumber.substring(0, o + 1) + "x";
-            ctx.setReleaseSectionPage(ctx.getCustomerPage().getSeiten(ctx.getLang())._byTitle(title, ctx.getLang()));
-            if (ctx.getReleaseSectionPage() == null) {
-                SeiteSO sectionPage = ctx.getCustomerPage().getSeiten().createSeite(ctx.getCustomerPage(), ctx.getBook(), IdGenerator.createId6());
-                setTitleAndDummyContent(sectionPage, title, title);
-                sectionPage.getSeite().setTocSubpagesLevels(1);
-                sectionPage.saveMetaTo(ctx.getFiles());
-                sectionPage.saveHtmlTo(ctx.getFiles(), langs());
-System.out.println("Section page angelegt: " + sectionPage.getTitle());
-                ctx.setReleaseSectionPage(sectionPage);
-            }
+        String title = section(releaseNumber);
+        SeiteSO sectionPage = findReleaseSectionPage(title);
+        if (sectionPage == null) {
+            sectionPage = ctx.getCustomerPage().getSeiten().createSeite(ctx.getCustomerPage(), ctx.getBook(), IdGenerator.createId6());
+            setTitleAndDummyContent(sectionPage, title, title);
+            sectionPage.getSeite().setTocSubpagesLevels(1);
+            sectionPage.saveMetaTo(ctx.getFiles());
+            sectionPage.saveHtmlTo(ctx.getFiles(), langs());
         } // else: Release number can't be extracted or has a special format. Then omit section page.
+        ctx.setReleaseSectionPage(sectionPage);
     }
     
+    private SeiteSO findReleaseSectionPage(String title) {
+        return title == null ? null : ctx.getCustomerPage().getSeiten(ctx.getLang())._byTitle(title, ctx.getLang());
+    }
+    
+    private String section(String releaseNumber) {
+        int o = releaseNumber.lastIndexOf(".");
+        return o >= 0 ? (releaseNumber.substring(0, o + 1) + "x") : null;
+    }
+
     private void createReleasePage() {
         SeiteSO parent = ctx.getReleaseSectionPage() == null ? ctx.getCustomerPage() : ctx.getReleaseSectionPage();
         SeiteSO releasePage = parent.getSeiten().createSeite(parent, ctx.getBook(), IdGenerator.createId6());
@@ -160,5 +171,20 @@ System.out.println("----Ticket page angelegt: " + seite.getTitle());
         langs.add("de");
         langs.add("en");
         return langs;
+    }
+    
+    public List<String> getExistingReleasePages() {
+        List<String> titles = new ArrayList<>();
+        SeiteSO customerPage = findCustomerPage();
+        if (customerPage != null) {
+            for (SeiteSO sectionPage : customerPage.getSeiten()) {
+                if (sectionPage.getSeiten().isEmpty()) { // If no subpages it's a release page.
+                    titles.add(sectionPage.getSeite().getTitle().getString(ctx.getLang()));
+                } else { // Subpages are release pages.
+                    sectionPage.getSeiten().forEach(seite -> titles.add(seite.getSeite().getTitle().getString(ctx.getLang())));
+                }
+            }
+        }
+        return titles;
     }
 }

@@ -29,19 +29,20 @@ public class SelectReleasePage extends BPage { // TODO rename RN
 		if (isPOST()) {
 			importRelease(spaceKey, rootTitle, lang);
 		} else {
-			displayFormular(spaceKey, rootTitle);
+			displayFormular(spaceKey, rootTitle, lang);
 		}
 	}
 
-    private void displayFormular(String spaceKey, String rootTitle) {
+    private void displayFormular(String spaceKey, String rootTitle, String lang) {
         ConfluencePage2 rnpage = new ReleaseNotesService(null).loadReleaseNotesPage(spaceKey, rootTitle);
         if (rnpage == null) {
         	throw new UserMessage("pageDoesntExist", user, s -> s.replace("$t", rootTitle));
         }
 
         List<String> releases = rnpage.getSubpages().stream().map(i -> i.getTitle()).collect(Collectors.toList());
+        List<String> existingReleasePageTitles = new ReleaseNotesService(new ReleaseNotesContext(spaceKey, null, null, book, lang)).getExistingReleasePages();
+        releases.removeIf(title -> existingReleasePageTitles.contains(title));
         releases.add(n("alleNochNichtVorhandenen"));
-        // TODO Bereits vorhandene Seiten herausfiltern.
 
         header(n("loadReleaseNotes"));
         ColumnFormularGenerator gen = new ColumnFormularGenerator(1, 1);
