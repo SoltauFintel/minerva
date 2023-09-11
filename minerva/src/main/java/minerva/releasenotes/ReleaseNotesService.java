@@ -16,13 +16,12 @@ import minerva.base.NlsString;
 import minerva.config.MinervaFactory;
 import minerva.confluence.ConfluenceAccess;
 import minerva.confluence.ConfluencePage2;
+import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 
 public class ReleaseNotesService {
 	private ConfluenceAccess access;
 	private ReleaseNotesContext ctx;
-	
-	// TODO createSeite syntax schöner machen
 	
 	public ReleaseNotesService(ReleaseNotesContext ctx) {
 	    this.ctx = ctx;
@@ -76,7 +75,7 @@ public class ReleaseNotesService {
     private void createCustomerPage() {
         SeiteSO customerPage = findCustomerPage();
         if (customerPage == null) {
-            customerPage = ctx.getBook().getSeiten().createSeite(ctx.getBook().getISeite(), ctx.getBook(), IdGenerator.createId6());
+            customerPage = createSeite(ctx.getBook());
             customerPage.getSeite().getTags().add(tag());
             customerPage.getSeite().getTags().add("reversed-order");
             customerPage.getSeite().setSorted(true);
@@ -117,7 +116,7 @@ public class ReleaseNotesService {
         String title = section(releaseNumber);
         SeiteSO sectionPage = findReleaseSectionPage(title);
         if (sectionPage == null) {
-            sectionPage = ctx.getCustomerPage().getSeiten().createSeite(ctx.getCustomerPage(), ctx.getBook(), IdGenerator.createId6());
+            sectionPage = createSeite(ctx.getCustomerPage());
             setTitleAndDummyContent(sectionPage, title, title);
             sectionPage.getSeite().setTocSubpagesLevels(1);
             sectionPage.getSeite().getTags().add("reversed-order");
@@ -127,7 +126,7 @@ public class ReleaseNotesService {
         } // else: Release number can't be extracted or has a special format. Then omit section page.
         ctx.setReleaseSectionPage(sectionPage);
     }
-    
+
     private SeiteSO findReleaseSectionPage(String title) {
         return title == null ? null : ctx.getCustomerPage().getSeiten(ctx.getLang())._byTitle(title, ctx.getLang());
     }
@@ -139,7 +138,7 @@ public class ReleaseNotesService {
 
     private void createReleasePage() {
         SeiteSO parent = ctx.getReleaseSectionPage() == null ? ctx.getCustomerPage() : ctx.getReleaseSectionPage();
-        SeiteSO releasePage = parent.getSeiten().createSeite(parent, ctx.getBook(), IdGenerator.createId6());
+        SeiteSO releasePage = createSeite(parent);
         releasePage.getSeite().getTitle().setString("de", ctx.getReleasePage().getTitle());
         releasePage.getSeite().getTitle().setString("en", ctx.getReleasePage().getTitle());
         releasePage.getContent().setString(ctx.getLang(), "<p>.</p>");
@@ -151,7 +150,7 @@ public class ReleaseNotesService {
 
     private void createTicketPages() {
         for (ConfluencePage2 src : ctx.getReleasePage().getSubpages()) {
-            SeiteSO seite = ctx.getResultingReleasePage().getSeiten().createSeite(ctx.getResultingReleasePage(), ctx.getBook(), IdGenerator.createId6());
+            SeiteSO seite = createSeite(ctx.getResultingReleasePage());
             seite.getSeite().getTitle().setString("de", src.getTitle());
             seite.getSeite().getTitle().setString("en", src.getTitle());
             String html = src.getHtml();
@@ -218,5 +217,13 @@ public class ReleaseNotesService {
             }
         }
         return titles;
+    }
+    
+    private SeiteSO createSeite(SeiteSO parent) {
+        return parent.getSeiten().createSeite(parent, parent.getBook(), IdGenerator.createId6());
+    }
+
+    private SeiteSO createSeite(BookSO parent) {
+        return parent.getSeiten().createSeite(parent.getISeite(), parent, IdGenerator.createId6());
     }
 }
