@@ -39,7 +39,14 @@ public class ReleaseNotesService {
 	}
 
     public void importAllNonExistingReleases() {
-        // TODO
+        ConfluencePage2 root = loadReleaseNotesPage(ctx.getSpaceKey(), ctx.getRootTitle());
+        List<String> existing = getExistingReleasePages();
+        for (ConfluencePage2 release : root.getSubpages()) {
+            if (!release.getSubpages().isEmpty() && !existing.contains(release.getTitle())) {
+                Logger.info("importing releaste notes... | " + release.getTitle());
+                importRelease2(release);
+            }
+        }
     }
 
 	public String importRelease() {
@@ -49,7 +56,11 @@ public class ReleaseNotesService {
 		    Logger.info(release.getTitle() + " | No import because there are no ticket pages.");
 		    return null;
 		}
-		ctx.setReleasePage(release);
+		return importRelease2(release);
+	}
+
+    private String importRelease2(ConfluencePage2 release) {
+        ctx.setReleasePage(release);
 		for (ConfluencePage2 sub : release.getSubpages()) {
 			access.loadPage(sub);
 			for (ConfluencePage2 details : sub.getSubpages()) {
@@ -58,7 +69,7 @@ public class ReleaseNotesService {
 		}
 		createReleasePages();
 		return ctx.getResultingReleasePage().getId();
-	}
+    }
 	
 	private void createReleasePages() {
 	    createCustomerPage();
