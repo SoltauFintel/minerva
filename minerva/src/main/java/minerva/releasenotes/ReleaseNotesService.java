@@ -61,7 +61,6 @@ public class ReleaseNotesService {
 		return ctx.getResultingReleasePage().getId();
 	}
 	
-	// TODO gucken, ob es überhaupt Ticketseiten gibt
 	private void createReleasePages() {
 	    createCustomerPage();
 	    String releaseNumber = getReleaseNumber(ctx.getReleasePage().getTitle());
@@ -174,12 +173,11 @@ public class ReleaseNotesService {
         File imagesFolder = MinervaWebapp.factory().getWorkFolder("release-notes-images");
         for (String img : images) {
             if (img.startsWith("img/")) {
-                System.out.println("im HTML==> " + img);
                 File imgFile = new File(imagesFolder, img.substring("img/".length()));
                 if (imgFile.isFile()) {
                     File targetFolder = new File(ctx.getBook().getFolder(), "img/" + seite.getId());
                     FileService.copyFile(imgFile, targetFolder);
-//                    imgFile.delete();
+                    imgFile.delete();
                     html = html.replace(img, "img/" + seite.getId() + "/" + imgFile.getName());
                     ctx.getFiles().put(seite.filenameImage("img/" + seite.getId() + "/" + imgFile.getName()),
                             DirAccess.IMAGE);

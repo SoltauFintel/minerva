@@ -92,7 +92,6 @@ public class ConfluenceAccess {
         Set<String> images = extract(html, "img", "src");
         for (String img : images) {
             if (img.startsWith("http://") || img.startsWith("https://")) {
-System.out.println("        " + img);
                 String dn = getShortImageFilename(img);
                 if (dn == null) {
                     error("[SE-4] Can not extract filename: " + img);
@@ -102,7 +101,6 @@ System.out.println("        " + img);
                     html = html.replace(img, "img/" + page.getId() + "/" + dn);
                 }
             }
-else System.err.println("YYY -> img ohne http: " + img); // XXX            
         }
         page.setHtml(html);
     }
@@ -145,11 +143,10 @@ else System.err.println("YYY -> img ohne http: " + img); // XXX
         File imgFile = new File(imagesFolder, pageId + "/" + shortFilename);
         imgFile.getParentFile().mkdirs();
         if (imgFile.isFile()) {
-//  FIXME TODO          return;
+            return;
         }
         
         String url = fixBrokenUrl(pageId, img);
-System.out.println("load==> "+imgFile.toString());        
         try (FileOutputStream fos = new FileOutputStream(imgFile)) {
             RestResponse req = request(url);
             req.getHttpResponse().getEntity().writeTo(fos);
@@ -188,7 +185,6 @@ System.out.println("load==> "+imgFile.toString());
                     System.out.println("hyperlink " + href + " was not replaced | " + pageId);
                 }
             }
-else System.err.println("ZZZ -> href ohne http: " + href); // XXX            
         }
         return html;
     }
