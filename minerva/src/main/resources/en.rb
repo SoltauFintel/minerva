@@ -212,3 +212,6 @@ loadReleaseNotes=Release Notes
 spacekey=Confluence space key
 Release=Release
 Import=Import
+alleNochNichtVorhandenen=all non-existing
+selectRelease=Please select a release!
+pageDoesntExist=Page with title "$t" does not exist!

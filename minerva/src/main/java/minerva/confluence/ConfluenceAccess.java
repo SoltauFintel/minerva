@@ -2,7 +2,6 @@ package minerva.confluence;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -28,7 +27,7 @@ public class ConfluenceAccess {
         this.linkBegin = linkBegin;
     }
 
-    public List<ConfluencePage2> searchPages() throws IOException {
+    public List<ConfluencePage2> searchPages() {
         List<ConfluencePage2> ret = new ArrayList<>();
         int start = 0;
         final int limit = 500;
@@ -74,9 +73,8 @@ public class ConfluenceAccess {
     /**
      * Loads position and HTML. Also loads images and modifies links.
      * @param page -
-     * @throws IOException
      */
-    public void loadPage(ConfluencePage2 page) throws IOException {
+    public void loadPage(ConfluencePage2 page) {
         ConfluenceResult result = request("/rest/api/content/" + page.getId() + "?expand=body.export_view").fromJson(ConfluenceResult.class);
         try {
             page.setPosition(Integer.valueOf(result.getExtensions().getPosition()));
@@ -144,7 +142,7 @@ public class ConfluenceAccess {
         File imgFile =  new File(imagesFolder, pageId + "/" + shortFilename);
         imgFile.getParentFile().mkdirs();
         if (imgFile.isFile()) {
-            return;
+//TODO            return;
         }
         
         String url = fixBrokenUrl(pageId, img);
@@ -189,7 +187,10 @@ public class ConfluenceAccess {
     }
     
     private RestResponse request(String url) {
-        return new REST(baseUrl + url)
+        if (!url.startsWith(baseUrl)) {
+            url = baseUrl + url;
+        }
+        return new REST(url)
                 .withAuthorization("Bearer " + token)
                 .get();
     }
