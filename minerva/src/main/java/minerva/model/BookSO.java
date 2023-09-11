@@ -50,6 +50,11 @@ public class BookSO {
             public boolean isSorted() {
                 return book.isSorted();
             }
+            
+            @Override
+            public boolean isReversedOrder() {
+                return false;
+            }
 
             @Override
             public String getTitle() {

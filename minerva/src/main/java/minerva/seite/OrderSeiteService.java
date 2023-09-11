@@ -148,6 +148,11 @@ public abstract class OrderSeiteService {
             }
             
             @Override
+            public boolean isReversedOrder() {
+                return false;
+            }
+            
+            @Override
             public String getId() {
                 return seiteId;
             }

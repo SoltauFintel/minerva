@@ -28,7 +28,7 @@ public class SeitenSO extends MList<SeiteSO> {
 
     private static Comparator<SeiteSO> getComparator(ISeite parent) {
         if (parent.isSorted()) {
-            return new SeiteTitleComparator();
+            return new SeiteTitleComparator(parent.isReversedOrder());
         } else {
             return (a, b) -> Integer.valueOf(a.getSeite().getPosition())
                     .compareTo(Integer.valueOf(b.getSeite().getPosition()));

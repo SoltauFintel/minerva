@@ -3,16 +3,26 @@ package minerva.model;
 import java.util.Comparator;
 
 public class SeiteTitleComparator implements Comparator<SeiteSO> {
+    private final boolean reversedOrder;
     private String language;
-    
+
+    public SeiteTitleComparator(boolean reversedOrder) {
+        this.reversedOrder = reversedOrder;
+    }
+
     @Override
     public int compare(SeiteSO a, SeiteSO b) {
+        int ret;
         if (language == null) {
             // sort by current user language
-            return a.getSortTitle().compareTo(b.getSortTitle());
+            ret = a.getSortTitle().compareTo(b.getSortTitle());
         } else {
-            return a.getSortTitle(language).compareTo(b.getSortTitle(language));
+            ret = a.getSortTitle(language).compareTo(b.getSortTitle(language));
         }
+        if (reversedOrder) {
+            ret *= -1;
+        }
+        return ret;
     }
 
     public void setLanguage(String language) {

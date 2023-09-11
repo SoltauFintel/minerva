@@ -59,8 +59,8 @@ public class ReleaseNotesService {
 	    createCustomerPage();
 	    String releaseNumber = getReleaseNumber(ctx.getReleasePage().getTitle());
         createReleaseSectionPage(releaseNumber);
-	    createReleasePage(); // TODO die Release Seite anlegen
-	    createTicketPages(); // TODO die Ticketseiten anlegen
+	    createReleasePage();
+	    createTicketPages();
         ctx.getBook().dao().saveFiles(ctx.getFiles(),
                 new CommitMessage("Release Notes " + ctx.getSpaceKey() + " " + releaseNumber),
                 ctx.getBook().getWorkspace());
@@ -72,6 +72,8 @@ public class ReleaseNotesService {
         if (customerPage == null) {
             customerPage = ctx.getBook().getSeiten().createSeite(ctx.getBook().getISeite(), ctx.getBook(), IdGenerator.createId6());
             customerPage.getSeite().getTags().add(tag());
+            customerPage.getSeite().getTags().add("reversed-order");
+            customerPage.getSeite().setSorted(true);
             setTitleAndDummyContent(customerPage, "Programmänderungen " + ctx.getSpaceKey(), "Release Notes " + ctx.getSpaceKey());
             customerPage.getSeite().setTocSubpagesLevels(1);
             customerPage.saveMetaTo(ctx.getFiles());
@@ -112,6 +114,8 @@ public class ReleaseNotesService {
             sectionPage = ctx.getCustomerPage().getSeiten().createSeite(ctx.getCustomerPage(), ctx.getBook(), IdGenerator.createId6());
             setTitleAndDummyContent(sectionPage, title, title);
             sectionPage.getSeite().setTocSubpagesLevels(1);
+            sectionPage.getSeite().getTags().add("reversed-order");
+            sectionPage.getSeite().setSorted(true);
             sectionPage.saveMetaTo(ctx.getFiles());
             sectionPage.saveHtmlTo(ctx.getFiles(), langs());
         } // else: Release number can't be extracted or has a special format. Then omit section page.

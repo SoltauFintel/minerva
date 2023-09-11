@@ -8,5 +8,7 @@ public interface ISeite {
 
     boolean isSorted();
     
+    boolean isReversedOrder();
+    
     SeitenSO getSeiten();
 }

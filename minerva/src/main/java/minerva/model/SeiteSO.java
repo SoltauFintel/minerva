@@ -121,6 +121,11 @@ public class SeiteSO implements ISeite {
     public boolean isSorted() {
         return seite.isSorted();
     }
+    
+    @Override
+    public boolean isReversedOrder() {
+        return seite.getTags().contains("reversed-order");
+    }
 
     @Override
     public String getTitle() {
