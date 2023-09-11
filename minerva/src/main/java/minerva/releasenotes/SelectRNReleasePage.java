@@ -15,7 +15,7 @@ import minerva.confluence.ConfluencePage2;
 /**
  * Release notes: select release to be imported
  */
-public class SelectReleasePage extends BPage { // TODO rename RN
+public class SelectRNReleasePage extends BPage {
 
 	@Override
 	protected void execute() {

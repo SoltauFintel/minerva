@@ -45,7 +45,7 @@ import minerva.preview.PreviewCustomerPage;
 import minerva.preview.PreviewPage;
 import minerva.publish.PublishAction;
 import minerva.releasenotes.SelectRNCustomerPage;
-import minerva.releasenotes.SelectReleasePage;
+import minerva.releasenotes.SelectRNReleasePage;
 import minerva.search.IndexWorkspaceAction;
 import minerva.search.SearchPage;
 import minerva.seite.AddSeiteAction;
@@ -151,7 +151,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/b/:branch/:book/export", ExportBookAction.class);
         get("/b/:branch/:book/validate", ValidationPage.class);
         form("/b/:branch/:book/rn-select-customer", SelectRNCustomerPage.class);
-        form("/b/:branch/:book/rn-select-release", SelectReleasePage.class);
+        form("/b/:branch/:book/rn-select-release", SelectRNReleasePage.class);
         get("/b/", CurrentWorkspaceAction.class); // falls man sich dahin verirren sollte
     }
 
