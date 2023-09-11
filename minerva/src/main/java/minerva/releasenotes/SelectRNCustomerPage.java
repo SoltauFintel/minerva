@@ -25,7 +25,7 @@ public class SelectRNCustomerPage extends BPage {
             TemplatesInitializer.fp.setContent(gen
             		.textfield("spaceKey", n("spacekey"), 1)
             		.textfield("rootTitle", n("title"), 2)
-                    .save(n("forward"))
+                    .save(n("Forward"))
                     .getHTML(booklink + "/rn-select-customer", booklink));
         }
 	}

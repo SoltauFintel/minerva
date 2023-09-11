@@ -15,25 +15,26 @@ import minerva.confluence.ConfluencePage2;
 /**
  * Release notes: select release to be imported
  */
-public class SelectReleasePage extends BPage {
+public class SelectReleasePage extends BPage { // TODO rename RN
 
 	@Override
 	protected void execute() {
 		// TODO MinervaWebapp.factory().gitlabOnlyPage();
 		String spaceKey = ctx.queryParam("s");
 		String rootTitle = ctx.queryParam("t");
+		String lang = "en"; // TODO
 		if (spaceKey == null || rootTitle == null || rootTitle.isEmpty()) {
 			throw new RuntimeException("Missing parameters");
 		}
 		if (isPOST()) {
-			importRelease(spaceKey, rootTitle);
+			importRelease(spaceKey, rootTitle, lang);
 		} else {
 			displayFormular(spaceKey, rootTitle);
 		}
 	}
 
     private void displayFormular(String spaceKey, String rootTitle) {
-        ConfluencePage2 rnpage = new ReleaseNotesService().loadReleaseNotesPage(spaceKey, rootTitle);
+        ConfluencePage2 rnpage = new ReleaseNotesService(null).loadReleaseNotesPage(spaceKey, rootTitle);
         if (rnpage == null) {
         	throw new UserMessage("pageDoesntExist", user, s -> s.replace("$t", rootTitle));
         }
@@ -52,23 +53,27 @@ public class SelectReleasePage extends BPage {
                 .getHTML(booklink + "/rn-select-release?s=" + u(spaceKey) + "&t=" + u(rootTitle), booklink));
     }
 
-    private void importRelease(String spaceKey, String rootTitle) {
-        String release = ctx.formParam("release");
-        if (StringService.isNullOrEmpty(release)) {
+    private void importRelease(String spaceKey, String rootTitle, String lang) {
+        String releaseTitle = ctx.formParam("release");
+        if (StringService.isNullOrEmpty(releaseTitle)) {
             throw new UserMessage("selectRelease", user);
-        } else if (n("alleNochNichtVorhandenen").equals(release)) {
+        } else if (n("alleNochNichtVorhandenen").equals(releaseTitle)) {
             String msg = "Importing release notes: " + spaceKey + " > all non-existing";
             Logger.info(msg);
             user.log(msg);
-            new ReleaseNotesService().importAllNonExistingReleases(spaceKey, rootTitle);
+            service(spaceKey, rootTitle, null, lang).importAllNonExistingReleases();
             ctx.redirect(booklink);
         } else {
-            String msg = "Importing release notes: " + spaceKey + " > " + release;
+            String msg = "Importing release notes: " + spaceKey + " > " + releaseTitle;
         	Logger.info(msg);
         	user.log(msg);
-        	new ReleaseNotesService().importRelease(spaceKey, rootTitle, release);
-        	ctx.redirect(booklink); // TODO die importierte Release Seite anzeigen
+        	String seiteId = service(spaceKey, rootTitle, releaseTitle, lang).importRelease();
+        	ctx.redirect(booklink.replace("/b/", "/s/") + "/" + seiteId);
         }
+    }
+    
+    private ReleaseNotesService service(String spaceKey, String rootTitle, String releaseTitle, String lang) {
+        return new ReleaseNotesService(new ReleaseNotesContext(spaceKey, rootTitle, releaseTitle, book, lang));
     }
 
 	@Override
@@ -79,7 +84,7 @@ public class SelectReleasePage extends BPage {
 	@Override
 	protected String render() {
 	    String html = super.render();
-	    html = html.replace(" autofocus", " autofocus size=\"20\"");
+	    html = html.replace(" autofocus", " autofocus size=\"20\""); // TODO Amalia
 	    return html;
 	}
 }

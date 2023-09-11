@@ -76,6 +76,35 @@ public class SeitenSO extends MList<SeiteSO> {
     }
 
     /**
+     * not recursive
+     * @param tag -
+     * @return null if not found
+     */
+    public SeiteSO _byTag(String tag) {
+        for (SeiteSO seite : this) {
+            if (seite.getSeite().getTags().contains(tag)) {
+                return seite;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * not recursive
+     * @param title -
+     * @param lang -
+     * @return null if not found
+     */
+    public SeiteSO _byTitle(String title, String lang) {
+        for (SeiteSO seite : this) {
+            if (seite.getSeite().getTitle().getString(lang).equals(title)) {
+                return seite;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Just create new SeiteSO. Does not save object.
      * @param parent -
      * @param book -
