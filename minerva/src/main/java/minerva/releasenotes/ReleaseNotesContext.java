@@ -16,7 +16,7 @@ public class ReleaseNotesContext {
     private final Map<String, String> files = new HashMap<>();
     private ConfluencePage2 releasePage;
     private SeiteSO customerPage;
-    private SeiteSO releaseSectionPage;
+    private SeiteSO sectionPage;
     private SeiteSO resultingReleasePage;
     
     public ReleaseNotesContext(String spaceKey, String rootTitle, String releaseTitle,
@@ -68,12 +68,12 @@ public class ReleaseNotesContext {
         this.customerPage = customerPage;
     }
 
-    public SeiteSO getReleaseSectionPage() {
-        return releaseSectionPage;
+    public SeiteSO getSectionPage() {
+        return sectionPage;
     }
 
-    public void setReleaseSectionPage(SeiteSO releaseSectionPage) {
-        this.releaseSectionPage = releaseSectionPage;
+    public void setSectionPage(SeiteSO releaseSectionPage) {
+        this.sectionPage = releaseSectionPage;
     }
 
     public SeiteSO getResultingReleasePage() {

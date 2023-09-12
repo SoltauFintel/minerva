@@ -74,7 +74,7 @@ public class ReleaseNotesService {
 	private void createReleasePages() {
 	    createCustomerPage();
 	    String releaseNumber = getReleaseNumber(ctx.getReleasePage().getTitle());
-        createReleaseSectionPage(releaseNumber);
+        createSectionPage(releaseNumber);
 	    createReleasePage();
 	    createTicketPages();
         ctx.getBook().dao().saveFiles(ctx.getFiles(),
@@ -123,13 +123,13 @@ public class ReleaseNotesService {
     }
 
     // Create release section page "3.26.x" for release "3.26.7".
-    private void createReleaseSectionPage(String releaseNumber) {
+    private void createSectionPage(String releaseNumber) {
         String title = section(releaseNumber);
         if (title == null) {
-            ctx.setReleaseSectionPage(null);
+            ctx.setSectionPage(null);
             return;
         }
-        SeiteSO sectionPage = findReleaseSectionPage(title);
+        SeiteSO sectionPage = findSectionPage(title);
         if (sectionPage == null) {
             sectionPage = createSeite(ctx.getCustomerPage());
             setTitleAndDummyContent(sectionPage, title, title);
@@ -139,10 +139,10 @@ public class ReleaseNotesService {
             sectionPage.saveMetaTo(ctx.getFiles());
             sectionPage.saveHtmlTo(ctx.getFiles(), langs());
         } // else: Release number can't be extracted or has a special format. Then omit section page.
-        ctx.setReleaseSectionPage(sectionPage);
+        ctx.setSectionPage(sectionPage);
     }
 
-    private SeiteSO findReleaseSectionPage(String title) {
+    private SeiteSO findSectionPage(String title) {
         return title == null ? null : ctx.getCustomerPage().getSeiten(ctx.getLang())._byTitle(title, ctx.getLang());
     }
     
@@ -152,7 +152,7 @@ public class ReleaseNotesService {
     }
 
     private void createReleasePage() {
-        SeiteSO parent = ctx.getReleaseSectionPage() == null ? ctx.getCustomerPage() : ctx.getReleaseSectionPage();
+        SeiteSO parent = ctx.getSectionPage() == null ? ctx.getCustomerPage() : ctx.getSectionPage();
         SeiteSO releasePage = createSeite(parent);
         releasePage.getSeite().getTitle().setString("de", ctx.getReleasePage().getTitle());
         releasePage.getSeite().getTitle().setString("en", ctx.getReleasePage().getTitle());
