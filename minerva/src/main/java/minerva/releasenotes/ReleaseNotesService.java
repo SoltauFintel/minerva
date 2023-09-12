@@ -125,6 +125,10 @@ public class ReleaseNotesService {
     // Create release section page "3.26.x" for release "3.26.7".
     private void createReleaseSectionPage(String releaseNumber) {
         String title = section(releaseNumber);
+        if (title == null) {
+            ctx.setReleaseSectionPage(null);
+            return;
+        }
         SeiteSO sectionPage = findReleaseSectionPage(title);
         if (sectionPage == null) {
             sectionPage = createSeite(ctx.getCustomerPage());
