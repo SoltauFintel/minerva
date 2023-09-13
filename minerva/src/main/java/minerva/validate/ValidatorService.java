@@ -173,4 +173,23 @@ public class ValidatorService {
         }
         return ret;
     }
+
+    public String removeEmptyLinesAtEnd(String html) {
+        Document doc = Jsoup.parse(html);
+        Element body = doc.select("body").get(0); // There's always a body!
+        boolean dirty = false;
+        for (int i = body.childrenSize() - 1; i >= 0; i--) {
+            if (body.child(i).tagName().equals("p")) {
+                if (blank(body.child(i))) {
+                    body.child(i).remove();
+                    dirty = true;
+                } else {
+                    break;
+                }
+            } else {
+                break;
+            }
+        }
+        return dirty ? doc.toString() : html;
+    }
 }

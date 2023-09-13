@@ -19,6 +19,7 @@ import minerva.confluence.ConfluenceAccess;
 import minerva.confluence.ConfluencePage2;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
+import minerva.validate.ValidatorService;
 
 public class ReleaseNotesService {
 	private ConfluenceAccess access;
@@ -167,10 +168,11 @@ public class ReleaseNotesService {
     
     private String getReleasePageContent() {
         String part1 = "", part2 = "";
+        ValidatorService v = new ValidatorService();
         for (ConfluencePage2 src : ctx.getReleasePage().getSubpages()) {
-            String body = src.getHtml();
+            String body = v.removeEmptyLinesAtEnd(src.getHtml());
             for (ConfluencePage2 details : src.getSubpages()) {
-                body += details.getHtml();
+                body += v.removeEmptyLinesAtEnd(details.getHtml());
             }
             String html = "<h3>" + src.getTitle() + "</h3>" + processImages(body, ctx.getResultingReleasePage());
             if (src.getTitle().contains(ctx.getConfig().getTicketPrefix())) {
