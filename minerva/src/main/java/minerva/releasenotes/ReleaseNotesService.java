@@ -46,7 +46,6 @@ public class ReleaseNotesService {
         List<String> existing = getExistingReleasePages();
         for (ConfluencePage2 release : root.getSubpages()) {
             if (!release.getSubpages().isEmpty() && !existing.contains(release.getTitle())) {
-                Logger.info("importing releaste notes... | " + release.getTitle());
                 importRelease2(release);
             }
         }
@@ -55,7 +54,9 @@ public class ReleaseNotesService {
 	public String importRelease() {
 		ConfluencePage2 root = loadReleaseNotesPage(ctx.getSpaceKey(), ctx.getRootTitle());
 		ConfluencePage2 release = root.getSubpages().stream().filter(i -> i.getId().equals(ctx.getReleaseId())).findFirst().orElse(null);
-		if (release.getSubpages().isEmpty()) {
+		if (release == null) {
+            Logger.info("Can't import release notes because release page is not found. Release ID: " + ctx.getReleaseId());
+		} else if (release.getSubpages().isEmpty()) {
 		    Logger.info(release.getTitle() + " | No import because there are no ticket pages.");
 		    return null;
 		}
@@ -63,6 +64,7 @@ public class ReleaseNotesService {
 	}
 
     private String importRelease2(ConfluencePage2 release) {
+        Logger.info("importing releaste notes... | " + release.getTitle());
         ctx.setReleasePage(release);
 		for (ConfluencePage2 sub : release.getSubpages()) {
 			access.loadPage(sub);
