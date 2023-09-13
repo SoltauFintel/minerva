@@ -37,11 +37,13 @@ public class BrokenMappingsService {
 			key = key.substring(0, key.length() - "!".length());
 		}
 		for (String lang : langs) {
-			for (PageTitle pageTitle : titles.getLang().get(lang)) {
-				if (pageTitle.getId().equals(key)) {
-					return true;
-				}
-			}
+		    if (titles.getLang() != null) {
+    			for (PageTitle pageTitle : titles.getLang().get(lang)) {
+    				if (pageTitle.getId().equals(key)) {
+    					return true;
+    				}
+    			}
+		    }
 		}
 		return false;
 	}
