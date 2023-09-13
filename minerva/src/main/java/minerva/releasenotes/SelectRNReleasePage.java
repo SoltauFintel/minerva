@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.action.IdAndLabel;
+import github.soltaufintel.amalia.web.action.Page;
 import github.soltaufintel.amalia.web.templating.ColumnFormularGenerator;
 import github.soltaufintel.amalia.web.templating.TemplatesInitializer;
 import minerva.MinervaWebapp;
@@ -18,7 +19,8 @@ import minerva.confluence.ConfluencePage2;
  * Release notes: select release to be imported
  */
 public class SelectRNReleasePage extends BPage {
-
+    private static final String ALL = "!all";
+    
 	@Override
 	protected void execute() {
 		// TODO MinervaWebapp.factory().gitlabOnlyPage();
@@ -34,8 +36,10 @@ public class SelectRNReleasePage extends BPage {
 		String rootTitle = config.getRootTitle();
 		String language = config.getLanguage();
 		if (isPOST()) {
+		    Logger.info("SelectRNReleasePage POST " + spaceKey + ", " + rootTitle + ", " + language);
 			importRelease(config, spaceKey, rootTitle, language);
 		} else {
+            Logger.info("SelectRNReleasePage GET  " + spaceKey + ", " + rootTitle + ", " + language);
 			displayFormular(config, spaceKey, rootTitle, language);
 		}
 	}
@@ -62,7 +66,7 @@ public class SelectRNReleasePage extends BPage {
         releases.add(new IdAndLabel() {
             @Override
             public String getId() {
-                return "!all";
+                return ALL;
             }
 
             @Override
@@ -75,17 +79,18 @@ public class SelectRNReleasePage extends BPage {
         ColumnFormularGenerator gen = new ColumnFormularGenerator(1, 1);
         initColumnFormularGenerator(gen);
         combobox_idAndLabel("releases", releases, "", false, model);
-        TemplatesInitializer.fp.setContent(gen
-                .listbox_idAndLabel("release", n("Release"), 5, "releases", true, 20)
-                .save(n("Import"))
-                .getHTML(booklink + "/rn-select-release?s=" + u(config.getSpaceKey()), booklink + "/rn-select-customer"));
+        String k = gen
+            .listbox_idAndLabel("release", n("Release"), 5, "releases", true, 20)
+            .save(n("Import"))
+            .getHTML(booklink + "/rn-select-release?s=" + spaceKey, booklink + "/rn-select-customer");
+        TemplatesInitializer.fp.setContent(k);
     }
 
     private void importRelease(ReleaseNotesConfig config, String spaceKey, String rootTitle, String lang) {
         String release = ctx.formParam("release");
         if (StringService.isNullOrEmpty(release)) {
             throw new UserMessage("selectRelease", user);
-        } else if ("!all".equals(release)) {
+        } else if (ALL.equals(release)) {
             String msg = "Importing release notes: " + spaceKey + " > all non-existing";
             Logger.info(msg);
             user.log(msg);
@@ -109,5 +114,16 @@ public class SelectRNReleasePage extends BPage {
 	@Override
 	protected String getPage() {
 		return "formular/" + super.getPage();
+	}
+	
+	@Override
+    protected String render() {
+        boolean devMode = Page.templates.devMode();
+        Page.templates.setDevMode(true); // do not cache template because action link differs (Krücke/Hotfix)
+        try {
+            return super.render();
+        } finally {
+            Page.templates.setDevMode(devMode);
+        }
 	}
 }
