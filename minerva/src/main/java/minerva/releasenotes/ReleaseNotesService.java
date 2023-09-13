@@ -56,6 +56,7 @@ public class ReleaseNotesService {
 		ConfluencePage2 release = root.getSubpages().stream().filter(i -> i.getId().equals(ctx.getReleaseId())).findFirst().orElse(null);
 		if (release == null) {
             Logger.info("Can't import release notes because release page is not found. Release ID: " + ctx.getReleaseId());
+            return null;
 		} else if (release.getSubpages().isEmpty()) {
 		    Logger.info(release.getTitle() + " | No import because there are no ticket pages.");
 		    return null;
