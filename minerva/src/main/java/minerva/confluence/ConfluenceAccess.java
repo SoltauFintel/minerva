@@ -193,7 +193,7 @@ public class ConfluenceAccess {
         if (!url.startsWith(baseUrl)) {
             url = baseUrl + url;
         }
-        Logger.info(url);
+        Logger.debug(url);
         return new REST(url)
                 .withAuthorization("Bearer " + token)
                 .get();

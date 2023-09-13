@@ -8,32 +8,31 @@ import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 
 public class ReleaseNotesContext {
-    private final String spaceKey;
-    private final String rootTitle;
+    private final ReleaseNotesConfig config;
     private final String releaseTitle;
     private final BookSO book;
-    private final String lang;
     private final Map<String, String> files = new HashMap<>();
     private ConfluencePage2 releasePage;
     private SeiteSO customerPage;
     private SeiteSO sectionPage;
     private SeiteSO resultingReleasePage;
     
-    public ReleaseNotesContext(String spaceKey, String rootTitle, String releaseTitle,
-            BookSO book, String lang) {
-        this.spaceKey = spaceKey;
-        this.rootTitle = rootTitle;
+    public ReleaseNotesContext(ReleaseNotesConfig config, String releaseTitle, BookSO book) {
+        this.config = config;
         this.releaseTitle = releaseTitle;
         this.book = book;
-        this.lang = lang;
+    }
+
+    public ReleaseNotesConfig getConfig() {
+        return config;
     }
 
     public String getSpaceKey() {
-        return spaceKey;
+        return config.getSpaceKey();
     }
 
     public String getRootTitle() {
-        return rootTitle;
+        return config.getRootTitle();
     }
 
     public String getReleaseTitle() {
@@ -45,7 +44,7 @@ public class ReleaseNotesContext {
     }
 
     public String getLang() {
-        return lang;
+        return config.getLanguage();
     }
 
     public ConfluencePage2 getReleasePage() {

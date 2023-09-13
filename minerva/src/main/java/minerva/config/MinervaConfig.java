@@ -13,6 +13,7 @@ import github.soltaufintel.amalia.mail.MailSender;
 import github.soltaufintel.amalia.web.action.Escaper;
 import github.soltaufintel.amalia.web.config.AppConfig;
 import minerva.base.StringService;
+import minerva.releasenotes.ReleaseNotesConfig;
 
 public class MinervaConfig {
     private final AppConfig config;
@@ -283,5 +284,38 @@ public class MinervaConfig {
 	
 	public String getReleaseNotesToken() {
 		return config.get("release-notes.token");
+	}
+    
+    public String[] getReleaseNotesBookTitles() {
+        String c = config.get("release-notes.book-titles");
+        if (StringService.isNullOrEmpty(c)) {
+            return new String[0];
+        } else {
+            return c.split(",");
+        }
+    }
+	
+	public List<ReleaseNotesConfig> loadReleaseNotesConfigs() {
+	    List<ReleaseNotesConfig> ret = new ArrayList<>();
+	    int i = 0;
+	    while (true) {
+	        String c = config.get("release-notes.config" + ++i);
+	        if (c == null) {
+	            break;
+	        }
+	        String[] w = c.split(",");
+	        if (w.length < 5 || w[4].isEmpty()) {
+	            throw new RuntimeException("release-notes.config" + (i - 1) + " entry is not ok! Format is: root title, de|en, ticket prefix, space key, customer");
+	        }
+	        ReleaseNotesConfig e = new ReleaseNotesConfig();
+	        e.setRootTitle(w[0]);
+	        e.setLanguage(w[1]);
+	        e.setTicketPrefix(w[2]);
+	        e.setSpaceKey(w[3]);
+	        e.setCustomer(w[4]);
+	        ret.add(e);
+	    }
+        ret.sort((a, b) -> a.getCustomer().compareToIgnoreCase(b.getCustomer()));
+	    return ret;
 	}
 }

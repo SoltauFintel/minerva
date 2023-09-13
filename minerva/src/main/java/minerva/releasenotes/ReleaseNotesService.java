@@ -12,6 +12,7 @@ import minerva.MinervaWebapp;
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.base.FileService;
+import minerva.base.NLS;
 import minerva.base.NlsString;
 import minerva.config.MinervaFactory;
 import minerva.confluence.ConfluenceAccess;
@@ -76,7 +77,6 @@ public class ReleaseNotesService {
 	    String releaseNumber = getReleaseNumber(ctx.getReleasePage().getTitle());
         createSectionPage(releaseNumber);
 	    createReleasePage();
-	    createTicketPages();
         ctx.getBook().dao().saveFiles(ctx.getFiles(),
                 new CommitMessage("Release Notes " + ctx.getSpaceKey() + " " + releaseNumber),
                 ctx.getBook().getWorkspace());
@@ -87,10 +87,12 @@ public class ReleaseNotesService {
         SeiteSO customerPage = findCustomerPage();
         if (customerPage == null) {
             customerPage = createSeite(ctx.getBook());
+            customerPage.getSeite().getTags().add("release-notes");
             customerPage.getSeite().getTags().add(tag());
             customerPage.getSeite().getTags().add("reversed-order");
             customerPage.getSeite().setSorted(true);
-            setTitleAndDummyContent(customerPage, "Programmänderungen " + ctx.getSpaceKey(), "Release Notes " + ctx.getSpaceKey());
+            String customer = ctx.getConfig().getCustomer();
+            setTitleAndDummyContent(customerPage, "Programmänderungen " + customer, "Release Notes " + customer);
             customerPage.getSeite().setTocSubpagesLevels(2);
             customerPage.saveMetaTo(ctx.getFiles());
             customerPage.saveHtmlTo(ctx.getFiles(), langs());
@@ -154,32 +156,36 @@ public class ReleaseNotesService {
     private void createReleasePage() {
         SeiteSO parent = ctx.getSectionPage() == null ? ctx.getCustomerPage() : ctx.getSectionPage();
         SeiteSO releasePage = createSeite(parent);
+        ctx.setResultingReleasePage(releasePage);
         releasePage.getSeite().getTitle().setString("de", ctx.getReleasePage().getTitle());
         releasePage.getSeite().getTitle().setString("en", ctx.getReleasePage().getTitle());
-        releasePage.getContent().setString(ctx.getLang(), "<p>.</p>");
-        releasePage.getSeite().setTocSubpagesLevels(1);
+        releasePage.getContent().setString(ctx.getLang(), getReleasePageContent());
+        releasePage.getSeite().setTocHeadingsLevels(2);
         releasePage.saveMetaTo(ctx.getFiles());
         releasePage.saveHtmlTo(ctx.getFiles(), langs());
-        ctx.setResultingReleasePage(releasePage);
     }
-
-    private void createTicketPages() {
+    
+    private String getReleasePageContent() {
+        String part1 = "", part2 = "";
         for (ConfluencePage2 src : ctx.getReleasePage().getSubpages()) {
-            SeiteSO seite = createSeite(ctx.getResultingReleasePage());
-            seite.getSeite().getTitle().setString("de", src.getTitle());
-            seite.getSeite().getTitle().setString("en", src.getTitle());
-            String html = src.getHtml();
+            String body = src.getHtml();
             for (ConfluencePage2 details : src.getSubpages()) {
-                html += details.getHtml();
+                body += details.getHtml();
             }
-            html = processImages(html, seite);
-            if (html.isBlank()) {
-                html = "<p>.</p>";
+            String html = "<h3>" + src.getTitle() + "</h3>" + processImages(body, ctx.getResultingReleasePage());
+            if (src.getTitle().contains(ctx.getConfig().getTicketPrefix())) {
+                if (part1.isEmpty()) {
+                    part1 = "<h2>" + ctx.getConfig().getCustomer() + "</h2>";
+                }
+                part1 += html;
+            } else {
+                if (part2.isEmpty()) {
+                    part2 = "<h2>" + NLS.get(ctx.getLang(), "generalChanges") + "</h2>";
+                }
+                part2 += html;
             }
-            seite.getContent().setString(ctx.getLang(), html);
-            seite.saveMetaTo(ctx.getFiles());
-            seite.saveHtmlTo(ctx.getFiles(), langs());
         }
+        return part1 + part2;
     }
 
     private String processImages(String html, SeiteSO seite) {

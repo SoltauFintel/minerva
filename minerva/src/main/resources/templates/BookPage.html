@@ -2,11 +2,11 @@
 
 <style>
 .mw {
-    min-width: 200px;
+    min-width: 220px;
 }
 </style>
 
-<div class="row"> 
+<div class="row">
     <div class="col-lg-9">
         <div class="mt1 hidden-print" style="margin-bottom: 10px; padding-left: 0;">
             <a {{if hasPrevlink}}href="{{prevlink}}"{{else}}disabled{{/if}} class="btn btn-default"
@@ -74,9 +74,11 @@
         <p>
             <a href="{{booklink}}/validate" class="btn btn-default mw">{{N.validate}}</a>
         </p>
-        <p>
-            <a href="{{booklink}}/rn-select-customer" class="btn btn-default mw">{{N.loadReleaseNotes}}</a>
-        </p>
+        {{if hasReleaseNotesBtn}}
+            <p>
+                <a href="{{booklink}}/rn-select-customer" class="btn btn-default mw">{{N.loadReleaseNotes}}</a>
+            </p>
+        {{/if}}
     </div>
 </div>
 

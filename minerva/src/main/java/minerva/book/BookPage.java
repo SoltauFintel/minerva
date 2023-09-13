@@ -3,6 +3,7 @@ package minerva.book;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import minerva.MinervaWebapp;
 import minerva.base.Uptodatecheck;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -24,6 +25,7 @@ public class BookPage extends BPage implements Uptodatecheck {
         boolean sorted = book.getBook().isSorted();
         put("isSorted", sorted);
         put("Sortierung", n(sorted ? "alfaSorted" : "manuSorted"));
+        put("hasReleaseNotesBtn", hasReleaseNotesBtn());
         put("hasPrevlink", false);
         boolean hasSeiten = !book.getSeiten().isEmpty();
         put("hasNextlink", hasSeiten);
@@ -79,5 +81,16 @@ public class BookPage extends BPage implements Uptodatecheck {
             }
         }
         gliederung.append("</ul>\n");
+    }
+    
+    private boolean hasReleaseNotesBtn() {
+        for (String allowedTitle : MinervaWebapp.factory().getConfig().getReleaseNotesBookTitles()) {
+            for (String lang : langs) {
+                if (book.getBook().getTitle().getString(lang).equalsIgnoreCase(allowedTitle.trim())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

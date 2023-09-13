@@ -1,41 +1,26 @@
 package minerva.releasenotes;
 
-import github.soltaufintel.amalia.web.templating.ColumnFormularGenerator;
-import github.soltaufintel.amalia.web.templating.TemplatesInitializer;
+import com.github.template72.data.DataList;
+import com.github.template72.data.DataMap;
+
+import minerva.MinervaWebapp;
 import minerva.book.BPage;
 
 /**
- * Enter Confluence space key (=customer) and title of "Release notes" page for importing release notes
+ * Select customer for importing release notes
  */
 public class SelectRNCustomerPage extends BPage {
 
 	@Override
 	protected void execute() {
 		// TODO MinervaWebapp.factory().gitlabOnlyPage();
-        if (isPOST()) {
-        	String spaceKey = ctx.formParam("spaceKey");
-        	String rootTitle = ctx.formParam("rootTitle");
-        	String lang = ctx.formParam("lang");
-        	ctx.redirect(booklink + "/rn-select-release?s=" + u(spaceKey) + "&t=" + u(rootTitle) + "&l=" + u(lang));
-        } else {
-        	header(n("loadReleaseNotes"));
-        	put("spaceKey", "BASF");
-        	put("rootTitle", "Release notes");
-        	combobox("langs", ReleaseNotesService.langs(), "en", false, model);
-            ColumnFormularGenerator gen = new ColumnFormularGenerator(2, 1);
-            initColumnFormularGenerator(gen);
-            TemplatesInitializer.fp.setContent(gen
-            		.textfield("spaceKey", n("spacekey"), 1)
-            		.combobox("lang", n("language"), 1, "langs")
-            		.textfield("rootTitle", n("title"), 2)
-                    .save(n("Forward"))
-                    .getHTML(booklink + "/rn-select-customer", booklink));
+    	header(n("loadReleaseNotes"));
+    	DataList list = list("configs");
+    	for (ReleaseNotesConfig c : MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs()) {
+            DataMap map = list.add();
+            map.put("customer", esc(c.getCustomer()));
+            map.put("spaceKey", esc(c.getSpaceKey()));
+            map.put("link", esc(booklink + "/rn-select-release?s=" + u(c.getSpaceKey())));
         }
-	}
-	
-	@Override
-	protected String getPage() {
-		return "formular/" + super.getPage();
-		// ReleaseNotes2Page uses same template
 	}
 }

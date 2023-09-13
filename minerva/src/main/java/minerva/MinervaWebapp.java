@@ -150,7 +150,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/b/:branch/:book/cal", CheckAllLinksPage.class);
         get("/b/:branch/:book/export", ExportBookAction.class);
         get("/b/:branch/:book/validate", ValidationPage.class);
-        form("/b/:branch/:book/rn-select-customer", SelectRNCustomerPage.class);
+        get("/b/:branch/:book/rn-select-customer", SelectRNCustomerPage.class);
         form("/b/:branch/:book/rn-select-release", SelectRNReleasePage.class);
         get("/b/", CurrentWorkspaceAction.class); // falls man sich dahin verirren sollte
     }

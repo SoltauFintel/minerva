@@ -7,6 +7,7 @@ import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.templating.ColumnFormularGenerator;
 import github.soltaufintel.amalia.web.templating.TemplatesInitializer;
+import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.book.BPage;
@@ -21,40 +22,45 @@ public class SelectRNReleasePage extends BPage {
 	protected void execute() {
 		// TODO MinervaWebapp.factory().gitlabOnlyPage();
 		String spaceKey = ctx.queryParam("s");
-		String rootTitle = ctx.queryParam("t");
-		String lang = ctx.queryParam("l");
-		if (spaceKey == null || rootTitle == null || rootTitle.isEmpty() || lang == null) {
-			throw new RuntimeException("Missing parameters");
+		if (StringService.isNullOrEmpty(spaceKey)) {
+			throw new RuntimeException("Missing parameter");
 		}
+		ReleaseNotesConfig config = MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs().stream()
+		        .filter(c -> c.getSpaceKey().equals(spaceKey)).findFirst().orElse(null);
+		if (config == null) {
+		    throw new RuntimeException("Unknown space key: " + esc(spaceKey));
+		}
+		String rootTitle = config.getRootTitle();
+		String language = config.getLanguage();
 		if (isPOST()) {
-			importRelease(spaceKey, rootTitle, lang);
+			importRelease(config, spaceKey, rootTitle, language);
 		} else {
-			displayFormular(spaceKey, rootTitle, lang);
+			displayFormular(config, spaceKey, rootTitle, language);
 		}
 	}
 
-    private void displayFormular(String spaceKey, String rootTitle, String lang) {
+    private void displayFormular(ReleaseNotesConfig config, String spaceKey, String rootTitle, String lang) {
         ConfluencePage2 rnpage = new ReleaseNotesService(null).loadReleaseNotesPage(spaceKey, rootTitle);
         if (rnpage == null) {
         	throw new UserMessage("pageDoesntExist", user, s -> s.replace("$t", rootTitle));
         }
 
         List<String> releases = rnpage.getSubpages().stream().map(i -> i.getTitle()).collect(Collectors.toList());
-        List<String> existingReleasePageTitles = new ReleaseNotesService(new ReleaseNotesContext(spaceKey, null, null, book, lang)).getExistingReleasePages();
+        List<String> existingReleasePageTitles = new ReleaseNotesService(new ReleaseNotesContext(config, null, book)).getExistingReleasePages();
         releases.removeIf(title -> existingReleasePageTitles.contains(title));
         releases.add(n("alleNochNichtVorhandenen"));
 
-        header(n("loadReleaseNotes"));
+        header(n("loadReleaseNotes") + " (" + config.getCustomer() + ")");
         ColumnFormularGenerator gen = new ColumnFormularGenerator(1, 1);
         initColumnFormularGenerator(gen);
         combobox("releases", releases, "", false, model); // TODO Amalia: ID
         TemplatesInitializer.fp.setContent(gen
         		.combobox("release", n("Release"), 5, "releases", true)
                 .save(n("Import"))
-                .getHTML(booklink + "/rn-select-release?s=" + u(spaceKey) + "&t=" + u(rootTitle) + "&l=" + u(lang), booklink));
+                .getHTML(booklink + "/rn-select-release?s=" + u(config.getSpaceKey()), booklink + "/rn-select-customer"));
     }
 
-    private void importRelease(String spaceKey, String rootTitle, String lang) {
+    private void importRelease(ReleaseNotesConfig config, String spaceKey, String rootTitle, String lang) {
         String releaseTitle = ctx.formParam("release");
         if (StringService.isNullOrEmpty(releaseTitle)) {
             throw new UserMessage("selectRelease", user);
@@ -62,24 +68,28 @@ public class SelectRNReleasePage extends BPage {
             String msg = "Importing release notes: " + spaceKey + " > all non-existing";
             Logger.info(msg);
             user.log(msg);
-            service(spaceKey, rootTitle, null, lang).importAllNonExistingReleases();
+            service(config, null).importAllNonExistingReleases();
+// TODO ? workspace.pull(); // sort order might be wrong
+            user.getUser().setPageLanguage(lang);
             ctx.redirect(booklink);
         } else {
             String msg = "Importing release notes: " + spaceKey + " > " + releaseTitle;
         	Logger.info(msg);
         	user.log(msg);
-        	String seiteId = service(spaceKey, rootTitle, releaseTitle, lang).importRelease();
+        	String seiteId = service(config, releaseTitle).importRelease();
+// TODO ? workspace.pull(); // sort order might be wrong
+        	user.getUser().setPageLanguage(lang);
         	ctx.redirect(seiteId == null ? booklink : (booklink.replace("/b/", "/s/") + "/" + seiteId));
         }
     }
     
-    private ReleaseNotesService service(String spaceKey, String rootTitle, String releaseTitle, String lang) {
-        return new ReleaseNotesService(new ReleaseNotesContext(spaceKey, rootTitle, releaseTitle, book, lang));
+    private ReleaseNotesService service(ReleaseNotesConfig config, String releaseTitle) {
+        return new ReleaseNotesService(new ReleaseNotesContext(config, releaseTitle, book));
     }
 
 	@Override
 	protected String getPage() {
-		return "formular/" + SelectRNCustomerPage.class.getSimpleName();
+		return "formular/" + super.getPage();
 	}
 	
 	@Override
