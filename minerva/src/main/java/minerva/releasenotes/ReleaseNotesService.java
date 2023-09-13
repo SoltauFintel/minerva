@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
@@ -169,27 +170,24 @@ public class ReleaseNotesService {
     }
     
     private String getReleasePageContent() {
-        String part1 = "", part2 = "";
+        List<String> part1 = new ArrayList<>();
+        List<String> part2 = new ArrayList<>();
         ValidatorService v = new ValidatorService();
         for (ConfluencePage2 src : ctx.getReleasePage().getSubpages()) {
             String body = v.removeEmptyLinesAtEnd(src.getHtml());
             for (ConfluencePage2 details : src.getSubpages()) {
                 body += v.removeEmptyLinesAtEnd(details.getHtml());
             }
-            String html = "<h3>" + src.getTitle() + "</h3>" + processImages(body, ctx.getResultingReleasePage());
-            if (src.getTitle().contains(ctx.getConfig().getTicketPrefix())) {
-                if (part1.isEmpty()) {
-                    part1 = "<h2>" + ctx.getConfig().getCustomer() + "</h2>";
-                }
-                part1 += html;
-            } else {
-                if (part2.isEmpty()) {
-                    part2 = "<h2>" + NLS.get(ctx.getLang(), "generalChanges") + "</h2>";
-                }
-                part2 += html;
+            String html = "<h3>" + src.getTitle() + "</h3>"
+                    + processImages(body, ctx.getResultingReleasePage());
+            if (src.getTitle().contains(ctx.getConfig().getTicketPrefix())) { // customer-specific
+                part1.add(html);
+            } else { // general
+                part2.add(html);
             }
         }
-        return part1 + part2;
+        return part2html(part1, ctx.getConfig().getCustomer())
+                + part2html(part2, NLS.get(ctx.getLang(), "generalChanges"));
     }
 
     private String processImages(String html, SeiteSO seite) {
@@ -213,6 +211,11 @@ public class ReleaseNotesService {
         return html;
     }
 
+    private String part2html(List<String> part, String title) {
+        return (part.isEmpty() ? "" : ("<h2>" + title + "</h2>"))
+                + part.stream().sorted().collect(Collectors.joining());
+    }
+    
     private void setTitleAndDummyContent(SeiteSO seite, String titleDE, String titleEN) {
         NlsString title = seite.getSeite().getTitle();
         title.setString("de", titleDE);
