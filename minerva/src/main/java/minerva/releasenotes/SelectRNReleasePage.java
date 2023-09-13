@@ -69,7 +69,6 @@ public class SelectRNReleasePage extends BPage {
             Logger.info(msg);
             user.log(msg);
             service(config, null).importAllNonExistingReleases();
-// TODO ? workspace.pull(); // sort order might be wrong
             user.getUser().setPageLanguage(lang);
             ctx.redirect(booklink);
         } else {
@@ -77,7 +76,6 @@ public class SelectRNReleasePage extends BPage {
         	Logger.info(msg);
         	user.log(msg);
         	String seiteId = service(config, releaseTitle).importRelease();
-// TODO ? workspace.pull(); // sort order might be wrong
         	user.getUser().setPageLanguage(lang);
         	ctx.redirect(seiteId == null ? booklink : (booklink.replace("/b/", "/s/") + "/" + seiteId));
         }
