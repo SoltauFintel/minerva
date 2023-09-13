@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.web.action.IdAndLabel;
 import github.soltaufintel.amalia.web.templating.ColumnFormularGenerator;
 import github.soltaufintel.amalia.web.templating.TemplatesInitializer;
 import minerva.MinervaWebapp;
@@ -45,26 +46,46 @@ public class SelectRNReleasePage extends BPage {
         	throw new UserMessage("pageDoesntExist", user, s -> s.replace("$t", rootTitle));
         }
 
-        List<String> releases = rnpage.getSubpages().stream().map(i -> i.getTitle()).collect(Collectors.toList());
+        List<IdAndLabel> releases = rnpage.getSubpages().stream().map(i -> new IdAndLabel() {
+                @Override
+                public String getId() {
+                    return i.getId();
+                }
+
+                @Override
+                public String getLabel() {
+                    return i.getTitle();
+                }
+            }).collect(Collectors.toList());
         List<String> existingReleasePageTitles = new ReleaseNotesService(new ReleaseNotesContext(config, null, book)).getExistingReleasePages();
-        releases.removeIf(title -> existingReleasePageTitles.contains(title));
-        releases.add(n("alleNochNichtVorhandenen"));
+        releases.removeIf(title -> existingReleasePageTitles.contains(title.getLabel()));
+        releases.add(new IdAndLabel() {
+            @Override
+            public String getId() {
+                return "!all";
+            }
+
+            @Override
+            public String getLabel() {
+                return n("alleNochNichtVorhandenen");
+            }
+        });
 
         header(n("loadReleaseNotes") + " (" + config.getCustomer() + ")");
         ColumnFormularGenerator gen = new ColumnFormularGenerator(1, 1);
         initColumnFormularGenerator(gen);
-        combobox("releases", releases, "", false, model); // TODO Amalia: ID
+        combobox_idAndLabel("releases", releases, "", false, model);
         TemplatesInitializer.fp.setContent(gen
-        		.combobox("release", n("Release"), 5, "releases", true)
+                .listbox_idAndLabel("release", n("Release"), 5, "releases", true, 20)
                 .save(n("Import"))
                 .getHTML(booklink + "/rn-select-release?s=" + u(config.getSpaceKey()), booklink + "/rn-select-customer"));
     }
 
     private void importRelease(ReleaseNotesConfig config, String spaceKey, String rootTitle, String lang) {
-        String releaseTitle = ctx.formParam("release");
-        if (StringService.isNullOrEmpty(releaseTitle)) {
+        String release = ctx.formParam("release");
+        if (StringService.isNullOrEmpty(release)) {
             throw new UserMessage("selectRelease", user);
-        } else if (n("alleNochNichtVorhandenen").equals(releaseTitle)) {
+        } else if ("!all".equals(release)) {
             String msg = "Importing release notes: " + spaceKey + " > all non-existing";
             Logger.info(msg);
             user.log(msg);
@@ -72,28 +93,21 @@ public class SelectRNReleasePage extends BPage {
             user.getUser().setPageLanguage(lang);
             ctx.redirect(booklink);
         } else {
-            String msg = "Importing release notes: " + spaceKey + " > " + releaseTitle;
+            String msg = "Importing release notes: " + spaceKey + " > " + release;
         	Logger.info(msg);
         	user.log(msg);
-        	String seiteId = service(config, releaseTitle).importRelease();
+        	String seiteId = service(config, release).importRelease();
         	user.getUser().setPageLanguage(lang);
         	ctx.redirect(seiteId == null ? booklink : (booklink.replace("/b/", "/s/") + "/" + seiteId));
         }
     }
     
-    private ReleaseNotesService service(ReleaseNotesConfig config, String releaseTitle) {
-        return new ReleaseNotesService(new ReleaseNotesContext(config, releaseTitle, book));
+    private ReleaseNotesService service(ReleaseNotesConfig config, String releaseId) {
+        return new ReleaseNotesService(new ReleaseNotesContext(config, releaseId, book));
     }
 
 	@Override
 	protected String getPage() {
 		return "formular/" + super.getPage();
-	}
-	
-	@Override
-	protected String render() {
-	    String html = super.render();
-	    html = html.replace(" autofocus", " autofocus size=\"20\""); // TODO Amalia
-	    return html;
 	}
 }

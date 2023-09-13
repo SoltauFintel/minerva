@@ -54,7 +54,7 @@ public class ReleaseNotesService {
 
 	public String importRelease() {
 		ConfluencePage2 root = loadReleaseNotesPage(ctx.getSpaceKey(), ctx.getRootTitle());
-		ConfluencePage2 release = root.getSubpages().stream().filter(i -> i.getTitle().equals(ctx.getReleaseTitle())).findFirst().orElse(null);
+		ConfluencePage2 release = root.getSubpages().stream().filter(i -> i.getId().equals(ctx.getReleaseId())).findFirst().orElse(null);
 		if (release.getSubpages().isEmpty()) {
 		    Logger.info(release.getTitle() + " | No import because there are no ticket pages.");
 		    return null;
