@@ -141,6 +141,7 @@ public class ReleaseNotesService {
             sectionPage.getSeite().setSorted(true);
             sectionPage.saveMetaTo(ctx.getFiles());
             sectionPage.saveHtmlTo(ctx.getFiles(), langs());
+            ctx.getCustomerPage().getSeiten(ctx.getLang()); // sort
         } // else: Release number can't be extracted or has a special format. Then omit section page.
         ctx.setSectionPage(sectionPage);
     }
@@ -164,6 +165,7 @@ public class ReleaseNotesService {
         releasePage.getSeite().setTocHeadingsLevels(2);
         releasePage.saveMetaTo(ctx.getFiles());
         releasePage.saveHtmlTo(ctx.getFiles(), langs());
+        parent.getSeiten(ctx.getLang()); // sort
     }
     
     private String getReleasePageContent() {
