@@ -47,7 +47,7 @@ public class ExportTemplatesPage extends WPage {
                     .textarea("page", n("page"), 10, 10, false, true)
                     .textarea("template", n("template"), 10, 10, false, true)
                     .textarea("templateCss", "CSS", 10, 10, false, true)
-                    .getHTML("/w/" + branch + "/export-templates", "/w/" + branch));
+                    .getHTML(model, "/w/" + branch + "/export-templates", "/w/" + branch));
         }
     }
     

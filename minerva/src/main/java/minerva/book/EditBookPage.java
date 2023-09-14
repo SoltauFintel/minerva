@@ -34,7 +34,7 @@ public class EditBookPage extends BPage {
             putInt("position", book.getBook().getPosition());
             TemplatesInitializer.fp.setContent(gen
                     .textfield("position", "Position", 1, false, true)
-                    .getHTML(booklink + "/edit", "/w/" + branch));
+                    .getHTML(model, booklink + "/edit", "/w/" + branch));
         }
     }
     

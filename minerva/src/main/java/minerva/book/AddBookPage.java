@@ -35,7 +35,7 @@ public class AddBookPage extends UPage {
             TemplatesInitializer.fp.setContent(gen
                     .textfield("folder", n("ordner"), 3, false, false)
                     .textfield("position", "Position", 1, false, true)
-                    .getHTML("/b/" + branch + "/add", "/w/" + branch));
+                    .getHTML(model, "/b/" + branch + "/add", "/w/" + branch));
         }
     }
     

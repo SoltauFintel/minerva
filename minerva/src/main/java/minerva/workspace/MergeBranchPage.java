@@ -52,7 +52,7 @@ public class MergeBranchPage extends UPage {
                     .combobox("sourceBranch", n("Branch"), 4, "branches")
                     .checkbox("deleteWorkspace", n("deleteWS"), 2, false, true)
                     .save(n("mergen"))
-                    .getHTML("/merge/" + branch, "/w/" + branch));
+                    .getHTML(model, "/merge/" + branch, "/w/" + branch));
         }
     }
     

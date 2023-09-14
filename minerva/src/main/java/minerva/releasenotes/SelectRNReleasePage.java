@@ -75,15 +75,13 @@ public class SelectRNReleasePage extends BPage {
         });
 
         header(n("loadReleaseNotes") + " (" + config.getCustomer() + ")");
-        put("actionlink", booklink + "/rn-select-release?s=" + spaceKey);
-        put("cancellink", booklink + "/rn-select-customer");
         ColumnFormularGenerator gen = new ColumnFormularGenerator(1, 1);
         initColumnFormularGenerator(gen);
         combobox_idAndLabel("releases", releases, "", false, model);
         TemplatesInitializer.fp.setContent(gen
                 .listbox_idAndLabel("release", n("Release"), 5, "releases", true, 20)
                 .save(n("Import"))
-                .getHTML("{{actionlink}}", "{{cancellink}}"));
+                .getHTML(model, booklink + "/rn-select-release?s=" + spaceKey, booklink + "/rn-select-customer"));
     }
 
     private void importRelease(ReleaseNotesConfig config, String spaceKey, String rootTitle, String lang) {

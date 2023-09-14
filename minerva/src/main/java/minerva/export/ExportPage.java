@@ -57,7 +57,7 @@ public class ExportPage extends WPage {
                     .combobox("items", n("exportWhat") + "?", 7, "items")
                     .combobox("customers", n("customer"), 2, "customers")
                     .combobox("langs", n("language"), 1, "langs")
-                    .getHTML("/w/" + branch + "/export-what", "/w/" + branch));
+                    .getHTML(model, "/w/" + branch + "/export-what", "/w/" + branch));
         }
     }
     
