@@ -13,7 +13,9 @@ public class SelectRNCustomerPage extends BPage {
 
 	@Override
 	protected void execute() {
-		// TODO MinervaWebapp.factory().gitlabOnlyPage();
+	    if (!MinervaWebapp.factory().getConfig().isDevelopment()) {
+	        MinervaWebapp.factory().gitlabOnlyPage();
+	    }
     	header(n("loadReleaseNotes"));
     	DataList list = list("configs");
     	for (ReleaseNotesConfig c : MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs()) {

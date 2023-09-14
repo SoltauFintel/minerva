@@ -84,6 +84,9 @@ public class BookPage extends BPage implements Uptodatecheck {
     }
     
     private boolean hasReleaseNotesBtn() {
+        if (!MinervaWebapp.factory().isGitlab()) {
+            return false;
+        }
         for (String allowedTitle : MinervaWebapp.factory().getConfig().getReleaseNotesBookTitles()) {
             for (String lang : langs) {
                 if (book.getBook().getTitle().getString(lang).equalsIgnoreCase(allowedTitle.trim())) {

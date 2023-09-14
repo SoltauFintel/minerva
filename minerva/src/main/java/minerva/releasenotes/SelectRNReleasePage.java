@@ -22,7 +22,9 @@ public class SelectRNReleasePage extends BPage {
     
 	@Override
 	protected void execute() {
-		// TODO MinervaWebapp.factory().gitlabOnlyPage();
+        if (!MinervaWebapp.factory().getConfig().isDevelopment()) {
+            MinervaWebapp.factory().gitlabOnlyPage();
+        }
 		String spaceKey = ctx.queryParam("s");
 		if (StringService.isNullOrEmpty(spaceKey)) {
 			throw new RuntimeException("Missing parameter");
