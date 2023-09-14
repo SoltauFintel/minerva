@@ -37,10 +37,8 @@ public class SelectRNReleasePage extends BPage {
 		String rootTitle = config.getRootTitle();
 		String language = config.getLanguage();
 		if (isPOST()) {
-		    Logger.info("SelectRNReleasePage POST " + spaceKey + ", " + rootTitle + ", " + language);
 			importRelease(config, spaceKey, rootTitle, language);
 		} else {
-            Logger.info("SelectRNReleasePage GET  " + spaceKey + ", " + rootTitle + ", " + language);
 			displayFormular(config, spaceKey, rootTitle, language);
 		}
 	}
