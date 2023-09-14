@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.action.IdAndLabel;
-import github.soltaufintel.amalia.web.action.Page;
 import github.soltaufintel.amalia.web.templating.ColumnFormularGenerator;
 import github.soltaufintel.amalia.web.templating.TemplatesInitializer;
 import minerva.MinervaWebapp;
@@ -76,14 +75,15 @@ public class SelectRNReleasePage extends BPage {
         });
 
         header(n("loadReleaseNotes") + " (" + config.getCustomer() + ")");
+        put("actionlink", booklink + "/rn-select-release?s=" + spaceKey);
+        put("cancellink", booklink + "/rn-select-customer");
         ColumnFormularGenerator gen = new ColumnFormularGenerator(1, 1);
         initColumnFormularGenerator(gen);
         combobox_idAndLabel("releases", releases, "", false, model);
-        String k = gen
-            .listbox_idAndLabel("release", n("Release"), 5, "releases", true, 20)
-            .save(n("Import"))
-            .getHTML(booklink + "/rn-select-release?s=" + spaceKey, booklink + "/rn-select-customer");
-        TemplatesInitializer.fp.setContent(k);
+        TemplatesInitializer.fp.setContent(gen
+                .listbox_idAndLabel("release", n("Release"), 5, "releases", true, 20)
+                .save(n("Import"))
+                .getHTML("{{actionlink}}", "{{cancellink}}"));
     }
 
     private void importRelease(ReleaseNotesConfig config, String spaceKey, String rootTitle, String lang) {
@@ -114,16 +114,5 @@ public class SelectRNReleasePage extends BPage {
 	@Override
 	protected String getPage() {
 		return "formular/" + super.getPage();
-	}
-	
-	@Override
-    protected String render() {
-        boolean devMode = Page.templates.devMode();
-        Page.templates.setDevMode(true); // do not cache template because action link differs (Krücke/Hotfix)
-        try {
-            return super.render();
-        } finally {
-            Page.templates.setDevMode(devMode);
-        }
 	}
 }
