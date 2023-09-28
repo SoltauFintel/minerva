@@ -15,32 +15,13 @@
 		                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
 		                    aria-expanded="false" title="{{N.Menu}}"><i class="fa fa-navicon"></i></button>
 		                <ul class="dropdown-menu in">
-		                    <li><a href="{{viewlink}}/toggle-favorite"><i class="fa fa-star{{if not isFavorite}}-o{{/if}} fav"></i>
-		                        {{N.favorite}}{{if isFavorite}} <i class="fa fa-check greenbook"></i>{{/if}}</a></li>
-		                    
-		                    <li><a href="{{viewlink}}/toggle-watch"><i class="fa fa-bell{{if not pageWatched}}-o{{/if}}"></i> {{N.watchPage}}
-		                        {{if pageWatched}}<i class="fa fa-check greenbook"></i>{{/if}}</a></li>
-		                    <li><a href="{{viewlink}}/toggle-watch?m=s"><i class="fa fa-sitemap"></i> {{N.watchSubpages}}
-		                        {{if subpagesWatched}}<i class="fa fa-check greenbook"></i>{{/if}}</a></li>
-		                    <li><a href="#" data-toggle="modal" data-target="#tocModal"><i class="fa fa-list-ul"></i> {{N.TOC}}</a></li>
-		
-		                    <hr style="margin: 0;"/>
-		                    
-		                    {{if gitlab}}
-		                        <li><a href="{{viewlink}}/history"><i class="fa fa-clock-o"></i> {{N.history}}</a></li>
-		                    {{/if}}
-		                    {{if isAdmin}}
-		                        <li style="background-color: #ff9;"><a href="#" data-toggle="modal" data-target="#editorsnoteModal"><i class="fa fa-thumb-tack"></i>
-		                            {{N.editorsNote}}</a></li>
-		                    {{/if}}
-		                    {{if isCustomerVersion}}
-		                        <li><a href="{{viewlink}}/help-keys"><i class="fa fa-question-circle"></i>
-		                            {{N.helpKeys}} ({{helpKeysSize}})</a></li>
-		                    {{/if}}
-		                    <li><a href="{{viewlink}}/links"><i class="fa fa-link"></i> {{N.linkAnalysis}}</a></li>
-		                    <hr style="margin: 0;"/>
-		                    <li><a href="{{movelink}}"><i class="fa fa-arrow-circle-right"></i> {{N.movePage}}</a></li>
-		                    <li><a href="{{deletelink}}" style="color: #900;"><i class="fa fa-trash"></i> {{N.deletePage}}...</a></li>
+		                	{{each m in menuitems}}
+		                		{{if m.line}}
+		                			<hr style="margin: 0;"/>
+		                		{{else}}
+			                    	<li{{m.liArgs}}><a href="{{m.link}}"{{m.attrs}}><i class="fa {{m.icon}}"></i> {{m.label}}</a></li>
+			                    {{/if}}
+			                {{/each}}        
 		                </ul>
 	            	</li>
 	            </ul>
