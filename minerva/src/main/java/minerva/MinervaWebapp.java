@@ -243,16 +243,24 @@ public class MinervaWebapp extends RouteDefinitions {
     }
 
     public static void main(String[] args) {
-        WebApp webapp = new WebAppBuilder(VERSION)
-            .withLogging(new LoggingInitializer(Level.INFO, "{date} {level}  {message}"))
-            .withTemplatesFolders(MinervaWebapp.class, "/templates")
+        WebApp webapp = getWebAppBuilder(VERSION)
             .withPageInitializer(new MinervaPageInitializer())
-            .withErrorPage(MinervaErrorPage.class, MinervaError404Page.class)
-            .withInitializer(config -> factory = new MinervaFactory(new MinervaConfig(config)))
-            .withAuth(new MinervaAuth())
             .withRoutes(new MinervaWebapp())
             .build();
         webapp.boot();
+        info();
+    }
+    
+    public static WebAppBuilder getWebAppBuilder(String version) {
+        return new WebAppBuilder(version)
+                .withLogging(new LoggingInitializer(Level.INFO, "{date} {level}  {message}"))
+                .withTemplatesFolders(MinervaWebapp.class, "/templates")
+                .withErrorPage(MinervaErrorPage.class, MinervaError404Page.class)
+                .withInitializer(config -> factory = new MinervaFactory(new MinervaConfig(config)))
+                .withAuth(new MinervaAuth());
+    }
+    
+    public static void info() {
         System.out.println("languages: " + MinervaWebapp.factory().getLanguages()
                 + " | backend: " + MinervaWebapp.factory().getBackendService().getInfo()
                 + MinervaWebapp.factory().getFolderInfo());
