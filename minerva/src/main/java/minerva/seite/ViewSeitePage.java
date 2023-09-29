@@ -265,7 +265,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         return "";
     }
     
-	protected void menu(boolean isFavorite, boolean pageWatched, boolean subpagesWatched, boolean gitlab, boolean isCustomerVersion) {
+	protected DataList menu(boolean isFavorite, boolean pageWatched, boolean subpagesWatched, boolean gitlab, boolean isCustomerVersion) {
     	DataList i = model.list("menuitems");
 		String viewLink = model.get("viewlink").toString();
 		menuitem(i, viewLink + "/toggle-favorite",
@@ -296,13 +296,18 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
 	    			n("helpKeys") + " (" + model.get("helpKeysSize").toString() + ")");
 		}
     	menuitem(i, viewLink + "/links", "fa-link", n("linkAnalysis"));
+    	additionalMenuItems(i);
 		menuitem(i, "", "", "-");
 		
     	menuitem(i, model.get("movelink").toString(), "fa-arrow-circle-right", n("movePage"));
     	menuitem(i, model.get("deletelink").toString(), "fa-trash", n("deletePage") + "...");
+    	return i;
     }
     
-    protected void menuitem(DataList menuitems, String link, String icon, String label) {
+    protected void additionalMenuItems(DataList i) { //
+	}
+
+	protected void menuitem(DataList menuitems, String link, String icon, String label) {
     	DataMap map = menuitems.add();
     	map.put("link", link);
     	map.put("icon", icon);

@@ -106,6 +106,7 @@
                         onclick="document.querySelector('#s3').style='';">{{N.reindex}}!
                         <i id="s3" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
                 {{/if}}
+               	<a href="/values/{{branch}}" class="btn btn-default brr"><i class="fa fa-key"></i> Schlüsselverwaltung</a>
                 {{if hasExportRight}}
                     <a href="/w/{{branch}}/export-what" class="btn btn-default brr"><i class="fa fa-download"></i>
                         {{N.export}}...</a>
