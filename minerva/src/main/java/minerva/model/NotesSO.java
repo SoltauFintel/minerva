@@ -207,8 +207,9 @@ public class NotesSO {
         Map<String, String> files = seite.getBook().dao().loadAllFiles(folder());
         
         List<Note> allNotes = new ArrayList<>();
+        Gson gson = new Gson();
         for (Entry<String, String> e : files.entrySet()) {
-            allNotes.add(new Gson().fromJson(e.getValue(), Note.class));
+			allNotes.add(gson.fromJson(e.getValue(), Note.class));
         }
         
         seite.getSeite().getNotes().clear();

@@ -30,9 +30,10 @@ public class BookSO {
         
         // Alle Seiten eines Buchs laden
         Map<String, String> files = workspace.dao().loadAllFiles(workspace.getFolder() + "/" + book.getFolder());
+        Gson gson = new Gson();
         List<Seite> alleSeiten = files.entrySet().stream()
                 .filter(e -> e.getKey().endsWith(SeiteSO.META_SUFFIX))
-                .map(e -> new Gson().fromJson(e.getValue(), Seite.class))
+                .map(e -> gson.fromJson(e.getValue(), Seite.class))
                 .collect(Collectors.toList());
 
         seiten = SeitenSO.findeUnterseiten(getISeite(), alleSeiten, this);
