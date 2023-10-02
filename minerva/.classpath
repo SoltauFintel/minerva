@@ -1,18 +1,402 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" output="bin/main" path="src/main/java">
+	<classpathentry kind="output" path="bin/default"/>
+	<classpathentry output="bin/main" kind="src" path="src/main/java">
 		<attributes>
 			<attribute name="gradle_scope" value="main"/>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="src" output="bin/main" path="src/main/resources">
+	<classpathentry output="bin/main" kind="src" path="src/main/resources">
 		<attributes>
 			<attribute name="gradle_scope" value="main"/>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17/"/>
-	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
-	<classpathentry kind="output" path="bin/default"/>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.github.SoltauFintel.amalia/amalia-web/0.8.4/7dc59d50d3410d964992b95c3685960b5bc7458c/amalia-web-0.8.4-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.github.SoltauFintel.amalia/amalia-web/0.8.4/151a6f576ad8ef88b1204b675c03e6c0af55bdff/amalia-web-0.8.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.github.SoltauFintel/spark/2.10.0-a1/c36fbb25a00269dcd8cbbde0853dce5ae0724767/spark-2.10.0-a1-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.github.SoltauFintel/spark/2.10.0-a1/c285c1f9ca837ce3d40c71dd9499ea47f2df7557/spark-2.10.0-a1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-nop/2.0.6/66a2439519dfc119a50671784ebc582437987957/slf4j-nop-2.0.6-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-nop/2.0.6/bd0a88459dd8c99bb9d2474965c1aa36c7d66fb9/slf4j-nop-2.0.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.12.0/39d78c3ee55e4b6f3f4f5ea6e4e2ecad045dc4de/commons-io-2.12.0-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.12.0/e5e3eb2ff05b494287f51476bc715161412c525f/commons-io-2.12.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jgit/org.eclipse.jgit/6.5.0.202303070854-r/406f0394dc2a8d9b3e6ee45da018eb640e373cd3/org.eclipse.jgit-6.5.0.202303070854-r-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jgit/org.eclipse.jgit/6.5.0.202303070854-r/a846f632cf00da830745b721807d05ddf3e0790f/org.eclipse.jgit-6.5.0.202303070854-r.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.gitlab4j/gitlab4j-api/5.0.1/f47b61c1d790707d97b8b52386ffb63ffe11d55f/gitlab4j-api-5.0.1-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.gitlab4j/gitlab4j-api/5.0.1/7b000409a76fbb567fd1b7b5e22e082f8ef5bb2b/gitlab4j-api-5.0.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.jsoup/jsoup/1.16.1/9c150c9b9257a3c319115d87b9f4a732dd41762d/jsoup-1.16.1-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.jsoup/jsoup/1.16.1/ae551410a16433984cd4a8603622fafa9d8299f0/jsoup-1.16.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.tinylog/tinylog/1.3.6/ce6d12b895a74ad5c2f55536f1e2bbe3a5c76f4a/tinylog-1.3.6-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.tinylog/tinylog/1.3.6/2b98a4013ce309de14b2a90a3145294c2cd80069/tinylog-1.3.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.github.template72/template72/1.0.0/54f4e8b3b850cb29588a56d15771360418930cb4/template72-1.0.0-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.github.template72/template72/1.0.0/4659b8c5c7633c140cff81c6e38618b418a1cef3/template72-1.0.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/31.1-jre/c388a68bc2b17a314dfa7c769d858ada0fc32dcf/guava-31.1-jre-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/31.1-jre/60458f877d055d0c9114d9e1a2efb737b4bc282c/guava-31.1-jre.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.10.1/982a90132e942f302e6fe79d6e78c4bc2e998569/gson-2.10.1-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.10.1/b3add478d4382b78ea20b1671390a858002feb6c/gson-2.10.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/commons-lang/commons-lang/2.6/67313d715fbf0ea4fd0bdb69217fb77f807a8ce5/commons-lang-2.6-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/commons-lang/commons-lang/2.6/ce1edb914c94ebc388f086c6827e8bdeec71ac2/commons-lang-2.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.quartz-scheduler/quartz/2.3.2/c22b720ab9a92367424cda3d628fea758dd7e4cf/quartz-2.3.2-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.quartz-scheduler/quartz/2.3.2/18a6d6b5a40b77bd060b34cb9f2acadc4bae7c8a/quartz-2.3.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.jersey.connectors/jersey-apache-connector/2.35/a387a76c56031401e1427c59c031d1d99af6d602/jersey-apache-connector-2.35-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.jersey.connectors/jersey-apache-connector/2.35/b09cfd6d2e645f1d8db538ba93201b2d69b8403d/jersey-apache-connector-2.35.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.13/9654e91a61d7662c36be6710ef8e720c0e3f9807/httpclient-4.5.13-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.5.13/e5f6cae5ca7ecaac1ec2827a9e2d65ae2869cada/httpclient-4.5.13.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP-java7/2.4.13/fc995c9e7945c5d9efa11fdbb5cbf10606409cd5/HikariCP-java7-2.4.13-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.zaxxer/HikariCP-java7/2.4.13/3e441eddedb374d4de8e3abbb0c90997f51cc97b/HikariCP-java7-2.4.13.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/2.0.6/e5127f7758d47c789645d37725ab9262ea38873e/slf4j-api-2.0.6-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/2.0.6/88c40d8b4f33326f19a7d3c0aaf2c7e8721d4953/slf4j-api-2.0.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-webapp/9.4.48.v20220622/b844e3fdd407ef60b5a96b79cbfad414c303f67a/jetty-webapp-9.4.48.v20220622-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-webapp/9.4.48.v20220622/9317a8518674c54b5ed9ec5ece8fcad92af91802/jetty-webapp-9.4.48.v20220622.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.websocket/websocket-server/9.4.48.v20220622/cb553653fdf80dc1ed7d499a2e4f3d5e3d3f680b/websocket-server-9.4.48.v20220622-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.websocket/websocket-server/9.4.48.v20220622/317d5fcb9f4a11265201546a0f55a0c2f4b1dd5c/websocket-server-9.4.48.v20220622.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-servlet/9.4.48.v20220622/cce01febd6000b909cfd192011283629ba773936/jetty-servlet-9.4.48.v20220622-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-servlet/9.4.48.v20220622/8a9a53e0aad3f194a4cc9940f7e9d5619254bf62/jetty-servlet-9.4.48.v20220622.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-security/9.4.48.v20220622/180f6a2febc5d34139c079bc8ca4ab17a61c9261/jetty-security-9.4.48.v20220622-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-security/9.4.48.v20220622/6114f92529e9cff489528e6be77b48526a92d577/jetty-security-9.4.48.v20220622.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-server/9.4.48.v20220622/486907a29bcc49daaa40ce988eb7fb24bc4ca9b8/jetty-server-9.4.48.v20220622-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-server/9.4.48.v20220622/b91a0641cda31c93962503b88f783602d2bd8093/jetty-server-9.4.48.v20220622.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.websocket/websocket-servlet/9.4.48.v20220622/e39518deb7c9899093ac21f9001ff578399ec5a4/websocket-servlet-9.4.48.v20220622-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.websocket/websocket-servlet/9.4.48.v20220622/6216200152965667066df70b65698e3a063e383d/websocket-servlet-9.4.48.v20220622.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.googlecode.javaewah/JavaEWAH/1.1.13/143b4431254a808c1b73fdf8047be9313e5562c8/JavaEWAH-1.1.13-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.googlecode.javaewah/JavaEWAH/1.1.13/32cd724a42dc73f99ca08453d11a4bb83e0034c7/JavaEWAH-1.1.13.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.jersey.media/jersey-media-json-jackson/2.35/e54f5cac2d30ed0fcf68aa384b73eb0d2f7a3f18/jersey-media-json-jackson-2.35-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.jersey.media/jersey-media-json-jackson/2.35/6383927e15ecb4baeef2cf0d3373b1ff1795c062/jersey-media-json-jackson-2.35.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.12.2/ef9d09d9a257275ecce4e5b4c26c1223007e14c5/jackson-databind-2.12.2-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.12.2/5f9d79e09ebf5d54a46e9f4543924cf7ae7654e0/jackson-databind-2.12.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.12.2/7a80d185a44cb2380929ac880bb1a59ed58d2e80/jackson-annotations-2.12.2-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.12.2/a770cc4c0a1fb0bfd8a150a6a0004e42bc99fca/jackson-annotations-2.12.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.12.2/882b7c5f3b71f22f181e0b4c88d5a1f818de04a6/jackson-core-2.12.2-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.12.2/8df50138521d05561a308ec2799cc8dda20c06df/jackson-core-2.12.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.module/jackson-module-jaxb-annotations/2.12.2/aea12a03d52cd2eca61ad1fd23e8bc9be5c2e947/jackson-module-jaxb-annotations-2.12.2-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.module/jackson-module-jaxb-annotations/2.12.2/f226bd0766b4e81493822e8c81eaa6cab27e589f/jackson-module-jaxb-annotations-2.12.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/jakarta.xml.bind/jakarta.xml.bind-api/2.3.2/8f7b9baa75556d2c03371c7e4b45b484683c7d28/jakarta.xml.bind-api-2.3.2-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/jakarta.xml.bind/jakarta.xml.bind-api/2.3.2/8d49996a4338670764d7ca4b85a1c4ccf7fe665d/jakarta.xml.bind-api-2.3.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/jakarta.activation/jakarta.activation-api/1.2.2/c45b5962230be8a5f93759203870c98917bb8b31/jakarta.activation-api-1.2.2-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/jakarta.activation/jakarta.activation-api/1.2.2/99f53adba383cb1bf7c3862844488574b559621f/jakarta.activation-api-1.2.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.jersey.inject/jersey-hk2/2.35/38cd2eaa2ed1380b42e471762341676ec5741aa9/jersey-hk2-2.35-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.jersey.inject/jersey-hk2/2.35/2be6d2227081028566e8e2b0fc6a1abbaecf56f7/jersey-hk2-2.35.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.jersey.core/jersey-client/2.35/645cdfd35f5580a6f7cb3d430794174df07bdad8/jersey-client-2.35-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.jersey.core/jersey-client/2.35/ea92be0dd34d0b298930a7514e715783f4eaba97/jersey-client-2.35.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.jersey.media/jersey-media-multipart/2.35/a4d7c8114c5326682dabc63f9c18d442b57b53fc/jersey-media-multipart-2.35-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.jersey.media/jersey-media-multipart/2.35/5181de4ae2c81147cb788e946e96c06a9765e84f/jersey-media-multipart-2.35.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/jakarta.servlet/jakarta.servlet-api/4.0.4/55ef0efd787dd54add675acdbb5092714505073b/jakarta.servlet-api-4.0.4-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/jakarta.servlet/jakarta.servlet-api/4.0.4/b8a1142e04838fe54194049c6e7a18dae8f9b960/jakarta.servlet-api-4.0.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/uk.org.webcompere/system-stubs-jupiter/1.2.0/f400dcbfb9c344fce505c9ab5bada0a31961a969/system-stubs-jupiter-1.2.0-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/uk.org.webcompere/system-stubs-jupiter/1.2.0/2cced7cf49d90ebbb56c6189fcefccf3b08724e8/system-stubs-jupiter-1.2.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1d064e61aad6c51cc77f9b59dc2cccc78e792f5a/failureaccess-1.0.1-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.google.guava/failureaccess/1.0.1/1dcf1de382a0bf95a3d8b0849546c88bac1292c9/failureaccess-1.0.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.google.guava/listenablefuture/9999.0-empty-to-avoid-conflict-with-guava/b421526c5f297295adef1c886e5246c39d4ac629/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/b19b5927c2c25b6c70f093767041e641ae0b1b35/jsr305-3.0.2-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.2/25ea2e8b0c338a877313bd4672d3fe056ea78f0d/jsr305-3.0.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/3.12.0/10dacb8b36398debceca36cd0db5f3316967f80e/checker-qual-3.12.0-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-qual/3.12.0/d5692f0526415fcc6de94bb5bfbd3afd9dd3b3e5/checker-qual-3.12.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.11.0/d060e42b6aa896a3abe2ec612e1cf8cc307f8a49/error_prone_annotations-2.11.0-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.11.0/c5a0ace696d3f8b1c1d8cc036d8c03cc0cbe6b69/error_prone_annotations-2.11.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/d26c56180205cbb50447c3eca98ecb617cf9f58b/j2objc-annotations-1.3-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.3/ba035118bc8bac37d7eff77700720999acd9986d/j2objc-annotations-1.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.mchange/c3p0/0.9.5.4/c3bebeb3a803901e8bb0707cb85abe22232fee9a/c3p0-0.9.5.4-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.mchange/c3p0/0.9.5.4/a21a1d37ae0b59efce99671544f51c34ed1e8def/c3p0-0.9.5.4.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.mchange/mchange-commons-java/0.2.15/dbcfc59448950a4899d9ad88f0a916d5f1e420a0/mchange-commons-java-0.2.15-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.mchange/mchange-commons-java/0.2.15/6ef5abe5f1b94ac45b7b5bad42d871da4fda6bbc/mchange-commons-java-0.2.15.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.13/d6e6365dac44108fb2cc0684daea0d40bc6609f5/httpcore-4.4.13-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.4.13/853b96d3afbb7bf8cc303fe27ee96836a10c1834/httpcore-4.4.13.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/ecf26c7507d67782a3bbd148d170b31dfad001aa/commons-logging-1.2-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.2/4bfc12adfe4842bf07b657f0369c4cb522955686/commons-logging-1.2.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.11/bce4ba84fd527950e35040b20a991c63e90e2850/commons-codec-1.11-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.11/3acb4705652e16236558f0f4f2192cc33c3bd189/commons-codec-1.11.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.1.0/ab3976d4574c48d22dc1abf6a9e8bd0fdf928223/javax.servlet-api-3.1.0-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/javax.servlet/javax.servlet-api/3.1.0/3cd63d075497751784b2fa84be59432f4905bf7c/javax.servlet-api-3.1.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.websocket/websocket-client/9.4.48.v20220622/8b4f8b01cd3d33d1296b970d14ac007c66977f27/websocket-client-9.4.48.v20220622-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.websocket/websocket-client/9.4.48.v20220622/e5536fc714ab049505f99ad799a831f7be36bbf0/websocket-client-9.4.48.v20220622.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-client/9.4.48.v20220622/c1eb8ff42d9eb964ec488739a598ab4e31e48589/jetty-client-9.4.48.v20220622-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-client/9.4.48.v20220622/fc2e953a7030045e1ca467d57e200856a170848e/jetty-client-9.4.48.v20220622.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-http/9.4.48.v20220622/1de62f13303ac045191d9ad1abbb8b83817e68c8/jetty-http-9.4.48.v20220622-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-http/9.4.48.v20220622/8cb235e70bda0c5e97a41e7ee0ea33ee7f5bcc6a/jetty-http-9.4.48.v20220622.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.websocket/websocket-common/9.4.48.v20220622/dd06db21eea93ead4dbc738723c4cf4cb7689437/websocket-common-9.4.48.v20220622-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.websocket/websocket-common/9.4.48.v20220622/3953122cd495f64ff72831e889a5a661631f580/websocket-common-9.4.48.v20220622.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-io/9.4.48.v20220622/6a870b7a0fee95293c337d0b5873257cc97b1321/jetty-io-9.4.48.v20220622-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-io/9.4.48.v20220622/b09b55209d0a304e542f779750a01f6914dc55e7/jetty-io-9.4.48.v20220622.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-xml/9.4.48.v20220622/e9df6b710d051df46535349d88d96ce3546e797b/jetty-xml-9.4.48.v20220622-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-xml/9.4.48.v20220622/2c8b7ad6b64437a693cd30666f3def666aac8207/jetty-xml-9.4.48.v20220622.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.websocket/websocket-api/9.4.48.v20220622/ae9a169ddd246b87c7e0daba109b164735df6d47/websocket-api-9.4.48.v20220622-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty.websocket/websocket-api/9.4.48.v20220622/76523923d4a5efabe05c2a7aa120282ac1db8c79/websocket-api-9.4.48.v20220622.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.jersey.core/jersey-common/2.35/61dcd73db207969c328ff777fd09416c35f3e945/jersey-common-2.35-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.jersey.core/jersey-common/2.35/2f15ec1b3a3598d6b12d4b0c6ff6f0905f5e5b4c/jersey-common-2.35.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.hk2/hk2-locator/2.6.1/73883e1a0effc4d1409743b515030a634f7b45c3/hk2-locator-2.6.1-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.hk2/hk2-locator/2.6.1/9dedf9d2022e38ec0743ed44c1ac94ad6149acdd/hk2-locator-2.6.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.25.0-GA/f00308c31650161577a0d152898ec606a08945da/javassist-3.25.0-GA-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.javassist/javassist/3.25.0-GA/442dc1f9fd520130bd18da938622f4f9b2e5fba3/javassist-3.25.0-GA.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.jersey.ext/jersey-entity-filtering/2.35/20c71e3331fc1dd16f3601e9601a17b2a49a0374/jersey-entity-filtering-2.35-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.jersey.ext/jersey-entity-filtering/2.35/2fbe9e89f6597e10976d1431dde64b282a761aeb/jersey-entity-filtering-2.35.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/jakarta.ws.rs/jakarta.ws.rs-api/2.1.6/6c66d1fc6dfd1de469e831d2cab362ce07b2561d/jakarta.ws.rs-api-2.1.6-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/jakarta.ws.rs/jakarta.ws.rs-api/2.1.6/1dcb770bce80a490dff49729b99c7a60e9ecb122/jakarta.ws.rs-api-2.1.6.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.hk2/hk2-api/2.6.1/911d7e334b8b230b491bb130af8404fdb7a81059/hk2-api-2.6.1-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.hk2/hk2-api/2.6.1/114bd7afb4a1bd9993527f52a08a252b5d2acac5/hk2-api-2.6.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.hk2/hk2-utils/2.6.1/91a2264ed6d909c44763fc807d22a19da87b84c9/hk2-utils-2.6.1-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.hk2/hk2-utils/2.6.1/396513aa96c1d5a10aa4f75c4dcbf259a698d62d/hk2-utils-2.6.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.hk2.external/jakarta.inject/2.6.1/74132e0252fda12812a851695e488d3a862e09de/jakarta.inject-2.6.1-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.hk2.external/jakarta.inject/2.6.1/8096ebf722902e75fbd4f532a751e514f02e1eb7/jakarta.inject-2.6.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.jvnet.mimepull/mimepull/1.9.13/44bcc5aaca2e32abac98a6110731a119d34d7697/mimepull-1.9.13-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.jvnet.mimepull/mimepull/1.9.13/a4f12d0da986cae55dd5c4a735b4fefc700eb266/mimepull-1.9.13.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/uk.org.webcompere/system-stubs-core/1.2.0/f2428733750832b5b2819d080ea28177c97b082/system-stubs-core-1.2.0-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/uk.org.webcompere/system-stubs-core/1.2.0/3cd5e39e60fb3c39eabb63761c56b5e9db2f8b4d/system-stubs-core-1.2.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-util-ajax/9.4.48.v20220622/a65e73418c1ff2e38ba674f6b141d1cef56639b3/jetty-util-ajax-9.4.48.v20220622-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-util-ajax/9.4.48.v20220622/def39454993d094df10b1689592d235e636d7dde/jetty-util-ajax-9.4.48.v20220622.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-util/9.4.48.v20220622/8735704c5946a65ed5f6ce11a8fca9cc56de49af/jetty-util-9.4.48.v20220622-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.eclipse.jetty/jetty-util/9.4.48.v20220622/7efc06f7ec0ff33d8c219bcc8c7415280c103669/jetty-util-9.4.48.v20220622.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/jakarta.annotation/jakarta.annotation-api/1.3.5/1ad35f11d17abb52426bfe15ea7b4c583795012/jakarta.annotation-api-1.3.5-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/jakarta.annotation/jakarta.annotation-api/1.3.5/59eb84ee0d616332ff44aba065f3888cf002cd2d/jakarta.annotation-api-1.3.5.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.hk2/osgi-resource-locator/1.0.3/2f01d4501f52f63016fe70f7aea79c19cccb8d44/osgi-resource-locator-1.0.3-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.hk2/osgi-resource-locator/1.0.3/de3b21279df7e755e38275137539be5e2c80dd58/osgi-resource-locator-1.0.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.hk2.external/aopalliance-repackaged/2.6.1/8225e1c5c5615a447227ed9164e709be1e77802d/aopalliance-repackaged-2.6.1-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.glassfish.hk2.external/aopalliance-repackaged/2.6.1/b2eb0a83bcbb44cc5d25f8b18f23be116313a638/aopalliance-repackaged-2.6.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/javaxt/javaxt-core/1.7.9/da39a3ee5e6b4b0d3255bfef95601890afd80709/javaxt-core-1.7.9-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/javaxt/javaxt-core/1.7.9/f9daf3da56835159a7317ac96602c45a1e4e85ae/javaxt-core-1.7.9.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.simplejavamail/simple-java-mail/6.0.5/1fa493db7b1c393e3892e9600d306bd5647592ac/simple-java-mail-6.0.5-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.simplejavamail/simple-java-mail/6.0.5/4671e0488379f9c22a88b65e9abae6d7ad9cbfe8/simple-java-mail-6.0.5.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.simplejavamail/core-module/6.0.5/28740210927e1524d2636a0d742ab386ba70f00e/core-module-6.0.5-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/org.simplejavamail/core-module/6.0.5/2481ae3e4724f23e344bd66915b816b952ea42b9/core-module-6.0.5.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.github.bbottema/jetbrains-runtime-annotations/1.0.0/41eda5eb94c45308000bf6ac6dd3e950d1a4dba8/jetbrains-runtime-annotations-1.0.0-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.github.bbottema/jetbrains-runtime-annotations/1.0.0/86f7e1ab1f817825736f5b6c2105a18e1182fb93/jetbrains-runtime-annotations-1.0.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.github.bbottema/emailaddress-rfc2822/2.1.3/49bb0a9b480dfd69469db9bf8f8684f1d90ca716/emailaddress-rfc2822-2.1.3-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.github.bbottema/emailaddress-rfc2822/2.1.3/c23d0239737c913f16bb482b4fd1ddd6060e186c/emailaddress-rfc2822-2.1.3.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.sun.mail/jakarta.mail/1.6.5/6ae0a47b5807fc4047a6fd616f31de2d882d8314/jakarta.mail-1.6.5-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.sun.mail/jakarta.mail/1.6.5/d08124137cf42397d00b71b5985fd1dc248ac07f/jakarta.mail-1.6.5.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.sun.activation/jakarta.activation/1.2.1/fa236a4c2936b9c0cf6e5712290d0cbf42ae553/jakarta.activation-1.2.1-sources.jar" kind="lib" path="C:/Users/warm/.gradle/caches/modules-2/files-2.1/com.sun.activation/jakarta.activation/1.2.1/8013606426a73d8ba6b568370877251e91a38b89/jakarta.activation-1.2.1.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
 </classpath>
