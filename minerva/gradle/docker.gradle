@@ -1,12 +1,6 @@
-int getPort() {
-    def props = new Properties()
-    file("AppConfig.properties").withInputStream { is -> props.load(is) }
-    return props.getProperty('port') as int
-}
-
 docker {
     javaApplication {
-        ports = [ getPort() ]
+        ports = [ 8080 ]
         def imagename = findProperty('dockerhub') + project.name
         def target = findProperty('target')
         if (target == 'base') {
