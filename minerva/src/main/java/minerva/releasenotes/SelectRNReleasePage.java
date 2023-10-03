@@ -79,7 +79,7 @@ public class SelectRNReleasePage extends BPage {
         initColumnFormularGenerator(gen);
         combobox_idAndLabel("releases", releases, "", false, model);
         TemplatesInitializer.fp.setContent(gen
-                .listbox_idAndLabel("release", n("Release"), 5, "releases", true, 20)
+                .listbox_idAndLabel("release", n("Release"), 5, "releases", true, 20, false)
                 .save(n("Import"))
                 .getHTML(model, booklink + "/rn-select-release?s=" + spaceKey, booklink + "/rn-select-customer"));
     }
