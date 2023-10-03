@@ -44,13 +44,14 @@ public class MergeBranchPage extends UPage {
             header(n("mergeBranch"));
             put("branch", esc(branch));
             put("mergeInfo", esc(n("mergeInfo").replace("$t", branch)));
+            put("deleteWorkspace", true);
             String select = user.getLastSelectedBranch() == null ? branches.get(0) : user.getLastSelectedBranch();
             combobox("branches", branches, select, false, model);
             ColumnFormularGenerator gen = new ColumnFormularGenerator(1, 1);
             initColumnFormularGenerator(gen);
             TemplatesInitializer.fp.setContent(gen
                     .combobox("sourceBranch", n("Branch"), 4, "branches")
-                    .checkbox("deleteWorkspace", n("deleteWS"), 2, false, true)
+                    .checkbox("deleteWorkspace", n("deleteWS"), 2, false)
                     .save(n("mergen"))
                     .getHTML(model, "/merge/" + branch, "/w/" + branch));
         }
