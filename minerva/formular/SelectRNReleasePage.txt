@@ -1,0 +1,7 @@
+indent: 1
+
+// .listbox_idAndLabel("release", n("Release"), 5, "releases", true, 20, false)
+c: release
+
+ok:  {{booklink}}/rn-select-release?s={{spaceKey}}
+cancel: {{booklink}}/rn-select-customer

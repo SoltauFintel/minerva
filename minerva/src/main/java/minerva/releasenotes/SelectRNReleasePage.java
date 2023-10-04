@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.action.IdAndLabel;
-import github.soltaufintel.amalia.web.templating.ColumnFormularGenerator;
-import github.soltaufintel.amalia.web.templating.TemplatesInitializer;
 import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
@@ -75,17 +73,12 @@ public class SelectRNReleasePage extends BPage {
         });
 
         header(n("loadReleaseNotes") + " (" + config.getCustomer() + ")");
-        ColumnFormularGenerator gen = new ColumnFormularGenerator(1, 1);
-        initColumnFormularGenerator(gen);
+        put("spaceKey", esc(spaceKey));
         combobox_idAndLabel("releases", releases, "", false, model);
-        TemplatesInitializer.fp.setContent(gen
-                .listbox_idAndLabel("release", n("Release"), 5, "releases", true, 20, false)
-                .save(n("Import"))
-                .getHTML(model, booklink + "/rn-select-release?s=" + spaceKey, booklink + "/rn-select-customer"));
     }
 
     private void importRelease(ReleaseNotesConfig config, String spaceKey, String rootTitle, String lang) {
-        String release = ctx.formParam("release");
+        String release = ctx.formParam("release"); // It's the ID.
         if (StringService.isNullOrEmpty(release)) {
             throw new UserMessage("selectRelease", user);
         } else if (ALL.equals(release)) {
@@ -108,9 +101,4 @@ public class SelectRNReleasePage extends BPage {
     private ReleaseNotesService service(ReleaseNotesConfig config, String releaseId) {
         return new ReleaseNotesService(new ReleaseNotesContext(config, releaseId, book));
     }
-
-	@Override
-	protected String getPage() {
-		return "formular/" + super.getPage();
-	}
 }
