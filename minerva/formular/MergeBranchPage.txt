@@ -1,0 +1,10 @@
+indent: 1
+
+// width=4
+c: sourceBranch
+
+// width=2
+k: deleteWorkspace
+
+ok: /merge/{{branch}}
+cancel: /w/{{branch}}
