@@ -2,8 +2,6 @@ package minerva.workspace;
 
 import java.util.List;
 
-import github.soltaufintel.amalia.web.templating.ColumnFormularGenerator;
-import github.soltaufintel.amalia.web.templating.TemplatesInitializer;
 import minerva.MinervaWebapp;
 import minerva.user.UPage;
 
@@ -11,34 +9,19 @@ public class AddWorkspacePage extends UPage {
     
     @Override
     protected void execute() {
-        render = false;
         MinervaWebapp.factory().gitlabOnlyPage();
         if (isPOST()) {
-            String branch1 = ctx.queryParam("branch");
-            
-            user.getWorkspaces().addWorkspace(branch1, user);
-
+            user.getWorkspaces().addWorkspace(ctx.formParam("branch"), user);
             ctx.redirect("/");
         } else {
-            List<String> branches = user.getWorkspaces().getAddableBranches(user.getWorkspaces().master());
-            if (branches.isEmpty()) {
+            List<String> branchs = user.getWorkspaces().getAddableBranches(user.getWorkspaces().master());
+            if (branchs.isEmpty()) {
+                render = false;
                 ctx.redirect("/message?m=2");
             } else {
-                combobox("branches", branches, (String) null, false, model);
                 header(n("createWS"));
-                
-                ColumnFormularGenerator gen = new ColumnFormularGenerator(1, 1);
-                initColumnFormularGenerator(gen);
-                TemplatesInitializer.fp.setContent(gen
-                        .combobox("branch", "Branch", 4, "branches", true)
-                        .getHTML("/create-workspace", "/"));
-                render = true;
+                combobox("branchs", branchs, "", false, model);
             }
         }
-    }
-    
-    @Override
-    protected String getPage() {
-        return "formular/" + super.getPage();
     }
 }
