@@ -8,8 +8,6 @@ import java.util.List;
 
 import org.pmw.tinylog.Logger;
 
-import github.soltaufintel.amalia.web.templating.ColumnFormularGenerator;
-import github.soltaufintel.amalia.web.templating.TemplatesInitializer;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.UserSettingsSO;
@@ -50,14 +48,6 @@ public class ExportPage extends WPage {
             combobox("customers", upper(customers), us.getCustomer(), false, model);
             combobox("langs", upper(langs), us.getLang(), false, model);
             // Denkbar wäre hier noch die Wahl eines Template-Sets und/oder einer CSS-Datei.
-            
-            ColumnFormularGenerator gen = new ColumnFormularGenerator(2, 1);
-            gen.save(n("export")).cancel(n("cancel"));
-            TemplatesInitializer.fp.setContent(gen
-                    .combobox("items", n("exportWhat") + "?", 7, "items")
-                    .combobox("customers", n("customer"), 2, "customers")
-                    .combobox("langs", n("language"), 1, "langs")
-                    .getHTML(model, "/w/" + branch + "/export-what", "/w/" + branch));
         }
     }
     
@@ -82,13 +72,13 @@ public class ExportPage extends WPage {
     
     @Override
     protected String getPage() {
-        return "formular/" + super.getPage();
+        return super.getPage();
     }
 
     private void callExportDownload() {
-        String item = ctx.queryParam("items");
-        String customer = ctx.queryParam("customers").toLowerCase();
-        String lang = ctx.queryParam("langs").toLowerCase();
+        String item = ctx.formParam("item");
+        String customer = ctx.formParam("customer").toLowerCase();
+        String lang = ctx.formParam("lang").toLowerCase();
         saveSettings(item, customer, lang);
         String q = "/export?lang=" + u(lang) + "&customer=" + u(customer);
 
