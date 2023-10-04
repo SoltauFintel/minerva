@@ -5,8 +5,6 @@ import java.util.Map;
 
 import org.pmw.tinylog.Logger;
 
-import github.soltaufintel.amalia.web.templating.ColumnFormularGenerator;
-import github.soltaufintel.amalia.web.templating.TemplatesInitializer;
 import minerva.access.CommitMessage;
 import minerva.workspace.WPage;
 
@@ -38,16 +36,6 @@ public class ExportTemplatesPage extends WPage {
             put("page", esc(x.loadTemplate(ExportTemplatesService.PAGE)));
             put("template", esc(x.loadTemplate(ExportTemplatesService.TEMPLATE)));
             put("templateCss", esc(x.loadTemplate(ExportTemplatesService.TEMPLATE_CSS)));
-            
-            ColumnFormularGenerator gen = new ColumnFormularGenerator(1, 1);
-            initColumnFormularGenerator(gen);
-            TemplatesInitializer.fp.setContent(gen
-                    .textarea("books", n("booksOverview"), 10, 10, true, true)
-                    .textarea("book", n("book"), 10, 10, false, true)
-                    .textarea("page", n("page"), 10, 10, false, true)
-                    .textarea("template", n("template"), 10, 10, false, true)
-                    .textarea("templateCss", "CSS", 10, 10, false, true)
-                    .getHTML(model, "/w/" + branch + "/export-templates", "/w/" + branch));
         }
     }
     
