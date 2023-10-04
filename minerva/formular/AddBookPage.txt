@@ -1,0 +1,6 @@
+t: bookTitlede
+t: bookTitleen
+t: folder
+t: position
+ok: /b/{{branch}}/add
+cancel: /w/{{branch}}

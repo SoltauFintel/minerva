@@ -1,0 +1,5 @@
+t: bookTitlede
+t: bookTitleen
+t: position
+ok: /b/{{branch}}/edit
+cancel: /w/{{branch}}

@@ -1,7 +1,5 @@
 package minerva.book;
 
-import github.soltaufintel.amalia.web.templating.ColumnFormularGenerator;
-import github.soltaufintel.amalia.web.templating.TemplatesInitializer;
 import minerva.base.NlsString;
 import minerva.user.UPage;
 
@@ -24,23 +22,8 @@ public class AddBookPage extends UPage {
             ctx.redirect("/w/" + branch);
         } else {
             header(n("addBook"));
-            ColumnFormularGenerator gen = new ColumnFormularGenerator(2, 1);
-            initColumnFormularGenerator(gen);
-            boolean first = true;
-            for (String lang : langs) {
-                gen.textfield("bookTitle" + lang, n("buchtitel") + " " + lang, 3, first, false);
-                first = false;
-            }
+            put("branch", esc(branch));
             putInt("position", user.getWorkspace(branch).getBooks().calculateNextPosition()); 
-            TemplatesInitializer.fp.setContent(gen
-                    .textfield("folder", n("ordner"), 3, false, false)
-                    .textfield("position", "Position", 1, false, true)
-                    .getHTML(model, "/b/" + branch + "/add", "/w/" + branch));
         }
-    }
-    
-    @Override
-    protected String getPage() {
-        return "formular/" + super.getPage();
     }
 }

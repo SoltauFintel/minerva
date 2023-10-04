@@ -4,7 +4,6 @@ import java.util.List;
 
 import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.web.action.Page;
-import github.soltaufintel.amalia.web.templating.ColumnFormularGenerator;
 import minerva.MinervaWebapp;
 import minerva.base.NLS;
 import minerva.model.StatesSO;
@@ -43,11 +42,6 @@ public abstract class UPage extends Page {
         return NLS.get(user.getGuiLanguage(), key);
     }
     
-    protected ColumnFormularGenerator initColumnFormularGenerator(ColumnFormularGenerator gen) {
-        return gen
-                .save(n("save"))
-                .cancel(n("cancel"))
-                .submit(" onclick=\"document.querySelector('#s1').style='';\"",
-                        "<i id=\"s1\" class=\"fa fa-delicious fa-spin\" style=\"display: none;\"></i>");
-    }
+// TODO                .submit(" onclick=\"document.querySelector('#s1').style='';\"",
+//                        "<i id=\"s1\" class=\"fa fa-delicious fa-spin\" style=\"display: none;\"></i>");
 }
