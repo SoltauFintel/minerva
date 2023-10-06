@@ -217,3 +217,4 @@ alleNochNichtVorhandenen=all non-existing
 selectRelease=Please select a release!
 pageDoesntExist=Page with title "$t" does not exist!
 generalChanges=General changes
+Schnittstellen=Interfaces

@@ -26,6 +26,7 @@ public class BookPage extends BPage implements Uptodatecheck {
         put("isSorted", sorted);
         put("Sortierung", n(sorted ? "alfaSorted" : "manuSorted"));
         put("hasReleaseNotesBtn", hasReleaseNotesBtn());
+        put("hasSchnittstellen", "Prozesse".equalsIgnoreCase(book.getBook().getTitle().getString("de")) || MinervaWebapp.factory().getConfig().isDevelopment());
         put("hasPrevlink", false);
         boolean hasSeiten = !book.getSeiten().isEmpty();
         put("hasNextlink", hasSeiten);
