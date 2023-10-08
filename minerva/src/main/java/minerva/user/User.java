@@ -9,6 +9,7 @@ import minerva.export.ExportUserSettings;
 public class User {
     private String login;
     private String realName;
+    private String mailAddress;
     private boolean exportAllowed;
     /** The user has a preferred language. That will be used for the GUI. */
     private String guiLanguage = MinervaWebapp.factory().getLanguages().get(0);
@@ -27,6 +28,14 @@ public class User {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public String getMailAddress() {
+        return mailAddress;
+    }
+
+    public void setMailAddress(String mailAddress) {
+        this.mailAddress = mailAddress;
     }
 
     public String getGuiLanguage() {

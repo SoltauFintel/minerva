@@ -180,6 +180,12 @@ public class UserSO {
         }
         save();
     }
+    
+    public void setLastEditedPage(String id) {
+        load();
+        user.setLastEditedPage(id);
+        save();
+    }
 
     public List<String> getFavorites() {
         return user.getFavorites();
@@ -315,6 +321,30 @@ public class UserSO {
             }
         }
         return notes;
+    }
+    
+    public void activateDelayedPush(String branch) {
+        load();
+        if (!user.getDelayedPush().contains(branch)) {
+            user.getDelayedPush().add(branch);
+            save();
+            Logger.info(getLogin() + " | " + branch + " | file-system mode activated");
+        }
+    }
+
+    public void deactivateDelayedPush(String branch) {
+        load();
+        if (!user.getDelayedPush().contains(branch)) {
+            throw new RuntimeException("Can only be called for active file-system mode.");
+        }
+        user.getDelayedPush().remove(branch);
+        save();
+        Logger.info(getLogin() + " | " + branch + " | file-system mode deactivated");
+    }
+
+    public boolean isDelayedPush(String branch) {
+        load();
+        return user.getDelayedPush().contains(branch);
     }
 
     private void load() {

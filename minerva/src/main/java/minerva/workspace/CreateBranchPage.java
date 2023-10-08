@@ -14,8 +14,8 @@ public class CreateBranchPage extends UPage {
     protected void execute() {
         MinervaWebapp.factory().gitlabOnlyPage();
         String branch = ctx.pathParam("branch");
-        if (user.getUserSettings().getDelayedPush().contains(branch)) {
-            throw new RuntimeException("End f-s mode before creating a branch!");
+        if (user.isDelayedPush(branch)) {
+            throw new RuntimeException("End file-system mode before creating a branch!");
         }
         if (isPOST()) {
             String newBranch = ctx.formParam("newBranch");

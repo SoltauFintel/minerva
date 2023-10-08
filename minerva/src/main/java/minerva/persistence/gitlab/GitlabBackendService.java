@@ -131,7 +131,7 @@ public class GitlabBackendService implements BackendService {
 
     @Override
     public void checkIfMoveIsAllowed(WorkspaceSO workspace) {
-        if (workspace.getUser().getUserSettings().getDelayedPush().contains(workspace.getBranch())) {
+        if (workspace.getUser().getUser().getDelayedPush().contains(workspace.getBranch())) {
             // User will loose Git history. So better end f-s mode before moving a page.
             throw new UserMessage("moveNotAllowedForFSMode", workspace);
         }

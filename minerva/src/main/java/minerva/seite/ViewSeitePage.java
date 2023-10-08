@@ -13,7 +13,8 @@ import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
-import minerva.model.UserSettingsSO;
+import minerva.user.User;
+import minerva.user.UserAccess;
 
 public class ViewSeitePage extends SPage implements Uptodatecheck {
     
@@ -78,10 +79,10 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         String oneHelpKey = getOneHelpKey(seite.getHelpKeys());
         put("oneHelpKey", esc(oneHelpKey));
         put("hasOneHelpKey", !oneHelpKey.isEmpty());
-        UserSettingsSO us = user.getUserSettings();
-        put("isFavorite", us.getFavorites().contains(id));
-        put("pageWatched", us.getWatchlist().contains(id));
-        put("subpagesWatched", us.getWatchlist().contains(id + "+"));
+        User u = UserAccess.loadUser(user.getLogin());
+        put("isFavorite", u.getFavorites().contains(id));
+        put("pageWatched", u.getWatchlist().contains(id));
+        put("subpagesWatched", u.getWatchlist().contains(id + "+"));
         put("ctrlS", n("ctrlS"));
         levellist("levellist", seite.getTocHeadingsLevels());
         levellist("levellist2", seite.getTocSubpagesLevels());

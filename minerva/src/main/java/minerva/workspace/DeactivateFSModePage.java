@@ -4,17 +4,12 @@ import org.pmw.tinylog.Logger;
 
 import minerva.access.CommitMessage;
 import minerva.base.StringService;
-import minerva.model.UserSettingsSO;
 
 public class DeactivateFSModePage extends WPage {
     private static final String defaultCM = "many changes";
     
     @Override
     protected void execute() {
-        UserSettingsSO us = user.getUserSettings();
-        if (!us.getDelayedPush().contains(branch)) {
-            throw new RuntimeException("Can only be called for active file-system mode.");
-        }
         header(n("endFSMode"));
         put("cm", defaultCM);
         if (isPOST()) {
@@ -22,17 +17,14 @@ public class DeactivateFSModePage extends WPage {
             if (StringService.isNullOrEmpty(cm)) {
                 cm = defaultCM;
             }
-            
-            save(us, new CommitMessage(cm));
+            save(new CommitMessage(cm));
         } else if ("cancel".equals(ctx.queryParam("m"))) {
-            save(us, null);
+            save(null);
         }
     }
 
-    private void save(UserSettingsSO us, CommitMessage cm) {
-        us.getDelayedPush().remove(branch);
-        us.save();
-        Logger.info(user.getLogin() + " | " + branch + " | file-system mode deactivated");
+    private void save(CommitMessage cm) {
+        user.deactivateDelayedPush(branch);
         if (cm == null) {
             workspace.pull(); // revert changes
             Logger.info(user.getLogin() + " | " + branch + " | changes reverted");

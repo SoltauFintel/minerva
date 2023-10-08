@@ -3,13 +3,14 @@ package minerva.persistence.gitlab;
 import minerva.user.User;
 
 public class GitlabUser extends User {
+    /** usually empty */
     private final String password;
     private String mail;
     private String accessToken;
     private String refreshToken;
     
     public GitlabUser(String login, String password) {
-        super(login, login /*user folder is always the login*/);
+        setLogin(login);
         this.password = password;
     }
 
