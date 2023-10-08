@@ -59,7 +59,7 @@ public class GitlabAuthService {
         String mail = currentUser.getEmail();
         
         GitlabUser user = new GitlabUser(login, "");
-        user.setMail(mail);
+        user.setMailAddress(mail);
         user.setAccessToken(answer.getAccess_token());
         user.setRefreshToken(answer.getRefresh_token());
         

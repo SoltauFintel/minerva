@@ -41,6 +41,10 @@ public class UserSO {
     private String lastSelectedBranch;
     
     public UserSO(User user) {
+        if (user == null) {
+            throw new RuntimeException("user must not be null");
+        }
+        UserAccess.validateLogin(user.getLogin());
         this.user = user;
 
         // TODO >> BackendService
@@ -346,9 +350,20 @@ public class UserSO {
         load();
         return user.getDelayedPush().contains(branch);
     }
+    
+    public User getFreshUser() {
+        load();
+        return user;
+    }
 
     private void load() {
-        user = UserAccess.loadUser(user.getLogin());
+        User u = UserAccess.loadUser(user.getLogin());
+        if (u == null) {
+            Logger.info("create User " + user.getLogin());
+            save();
+        } else {
+            user = u;
+        }
     }
 
     private void save() {

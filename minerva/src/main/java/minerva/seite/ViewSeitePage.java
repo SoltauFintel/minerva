@@ -14,7 +14,6 @@ import minerva.base.Uptodatecheck;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.user.User;
-import minerva.user.UserAccess;
 
 public class ViewSeitePage extends SPage implements Uptodatecheck {
     
@@ -38,6 +37,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     }
     
     protected void execute2(String branch, String bookFolder, String id, SeiteSO seiteSO) {
+        User u = user.getFreshUser();
         seiteSO.forceReloadIfCheap();
         Seite seite = seiteSO.getSeite();
         DataList list = list("languages");
@@ -49,7 +49,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             TocMacro macro = new TocMacro(seiteSO.getTocMacroPage(), "-", lang, "");
             map.put("content", macro.transform(seiteSO.getContent().getString(lang)));
             map.put("toc", macro.getTOC()); // no esc, after transform()
-            map.put("active", lang.equals(user.getPageLanguage()));
+            map.put("active", lang.equals(u.getPageLanguage()));
             fillBreadcrumbs(lang, map.list("breadcrumbs"));
             map.putInt("subpagesSize", fillSubpages(seiteSO.getSeiten(), lang, map.list("subpages"),
                     branch, bookFolder, false));
@@ -63,7 +63,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("parentId", esc(seite.getParentId()));
         putInt("position", seite.getPosition());
         putInt("version", seite.getVersion());
-        put("bookTitle", esc(seiteSO.getBook().getBook().getTitle().getString(user.getPageLanguage()))); // bin usicher
+        put("bookTitle", esc(seiteSO.getBook().getBook().getTitle().getString(u.getPageLanguage()))); // bin usicher
         put("hasSubPages", !seiteSO.getSeiten().isEmpty());
         put("Sortierung", n(seite.isSorted() ? "alfaSorted" : "manuSorted"));
         put("isSorted", seite.isSorted());
@@ -79,7 +79,6 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         String oneHelpKey = getOneHelpKey(seite.getHelpKeys());
         put("oneHelpKey", esc(oneHelpKey));
         put("hasOneHelpKey", !oneHelpKey.isEmpty());
-        User u = UserAccess.loadUser(user.getLogin());
         put("isFavorite", u.getFavorites().contains(id));
         put("pageWatched", u.getWatchlist().contains(id));
         put("subpagesWatched", u.getWatchlist().contains(id + "+"));
@@ -91,9 +90,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("hasEditorsNote", !StringService.isNullOrEmpty(seite.getEditorsNote()));
         header(modifyHeader(seiteSO.getTitle()));
 
-        fillLinks(branch, bookFolder, id, seiteSO, seite);
-        Logger.info(user.getLogin() + " | " + seiteSO.getBook().getWorkspace().getBranch() + " | "
-                + seiteSO.getTitle() + " | " + user.getPageLanguage());
+        fillLinks(branch, bookFolder, id, seiteSO, seite, u.getPageLanguage());
+        Logger.info(u.getLogin() + " | " + seiteSO.getBook().getWorkspace().getBranch() + " | "
+                + seiteSO.getTitle() + " | " + u.getPageLanguage());
     }
     
     private void levellist(String listId, int levels) {
@@ -149,14 +148,14 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         return header;
     }
 
-    private void fillLinks(String branch, String bookFolder, String id, SeiteSO seiteSO, Seite seite) {
+    private void fillLinks(String branch, String bookFolder, String id, SeiteSO seiteSO, Seite seite, String pageLanguage) {
         String onlyBookFolder = "/s/" + branch + "/" + bookFolder + "/";
 
         // Navigation
         String booklink = "/b/" + branch + "/" + bookFolder;
         put("booklink", booklink);
         put("parentlink", seiteSO.hasParent() ? (onlyBookFolder + seite.getParentId()) : booklink);
-        NavigateService nav = new NavigateService(true, user.getPageLanguage(), null);
+        NavigateService nav = new NavigateService(true, pageLanguage, null);
         navlink("prevlink", nav.previousPage(seiteSO), id, onlyBookFolder, "/b/" + branch + "/" + book.getBook().getFolder());
         navlink("nextlink", nav.nextPage(seiteSO), id, onlyBookFolder, null);
         put("tabcode", getTabCode(nav, seiteSO, id, onlyBookFolder));

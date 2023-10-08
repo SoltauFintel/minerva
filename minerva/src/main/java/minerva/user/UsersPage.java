@@ -1,0 +1,28 @@
+package minerva.user;
+
+import org.pmw.tinylog.Logger;
+
+import com.github.template72.data.DataList;
+import com.github.template72.data.DataMap;
+
+public class UsersPage extends UPage {
+
+    @Override
+    protected void execute() {
+        user.onlyAdmin();
+        Logger.info("Users");
+        user.log("Users");
+        
+        header(n("manageUsers"));
+        DataList list = list("users");
+        for (User u : UserAccess.loadUsers()) {
+            DataMap map = list.add();
+            map.put("login", esc(u.getLogin()));
+            map.put("link", esc("/user/" + u.getLogin()));
+            map.put("realName", esc(u.getRealName()));
+            map.put("mailAddress", esc(u.getMailAddress()));
+            map.put("exportAllowed", u.isExportAllowed());
+        }
+        putInt("n", list.size());
+    }
+}

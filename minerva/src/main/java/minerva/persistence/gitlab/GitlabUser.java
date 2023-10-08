@@ -4,10 +4,9 @@ import minerva.user.User;
 
 public class GitlabUser extends User {
     /** usually empty */
-    private final String password;
-    private String mail;
-    private String accessToken;
-    private String refreshToken;
+    private final transient String password;
+    private transient String accessToken;
+    private transient String refreshToken;
     
     public GitlabUser(String login, String password) {
         setLogin(login);
@@ -16,14 +15,6 @@ public class GitlabUser extends User {
 
     public String getPassword() {
         return password;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public void setMail(String mail) {
-        this.mail = mail;
     }
 
     public String getAccessToken() {

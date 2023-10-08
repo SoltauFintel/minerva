@@ -85,6 +85,8 @@ import minerva.subscription.BrokenMappingsPage;
 import minerva.subscription.MappingPage;
 import minerva.subscription.PushDataAction;
 import minerva.subscription.SubscribeAction;
+import minerva.user.EditUserPage;
+import minerva.user.UsersPage;
 import minerva.validate.ValidationPage;
 import minerva.workspace.ActivateFSModeAction;
 import minerva.workspace.AddWorkspacePage;
@@ -110,6 +112,7 @@ public class MinervaWebapp extends RouteDefinitions {
         tags();
         notes();
         preview();
+        users();
         misc();
         restApi();
     }
@@ -210,18 +213,23 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/p/:branch/:customer/:book/:lang", PreviewBookPage.class);
         get("/p/:branch", PreviewCustomerPage.class);
     }
-
-    private void misc() {
-        get("/message", MessagePage.class);
-        addNotProtected("/message");
-        get("/migration/:branch", MigrationPage.class);
+    
+    private void users() {
+        get("/users", UsersPage.class);
+        form("/user/:login", EditUserPage.class);
         get("/gitlab-auth", GitlabAuthAction.class);
         get("/gitlab-auth-callback", GitlabAuthCallbackAction.class);
         addNotProtected("/gitlab-auth");
         form("/backdoor", Login2Page.class);
         addNotProtected("/backdoor");
-        get("/math", MathPage.class);
         get("/activate-admin-rights", ActivateAdminRightsAction.class);
+    }
+
+    private void misc() {
+        get("/message", MessagePage.class);
+        addNotProtected("/message");
+        get("/migration/:branch", MigrationPage.class);
+        get("/math", MathPage.class);
         get("/serverlog", ServerlogPage.class);
         form("/branch/:branch", CreateBranchPage.class);
         form("/merge/:branch", MergeBranchPage.class);

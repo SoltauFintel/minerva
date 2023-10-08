@@ -208,3 +208,7 @@ endFSModeInfo=Turn off delayed persistence. Should all your changes be persisted
 persist=Persist
 cancelFSMode=Discard
 moveNotAllowedForFSMode=Please do not move a page if delayed persistence is active.
+mailAddress=Mail address
+exportAllowed=Export allowed
+yes=yes
+manageUsers=Manage users

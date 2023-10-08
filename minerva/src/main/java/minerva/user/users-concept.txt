@@ -1,28 +1,49 @@
-
-
-
 Persistenz:
 1 Datei je User        user-<login>.json
 gespeichert im Workspaces Ordner
 
 
-transient String login;
-String folder
-String guiLanguage
-String pageLanguage
-ExportUserSettings export;
-final List<String> favorites = new ArrayList<>();
-final List<String> watchlist = new ArrayList<>();
-String lastEditedPage;
-List<String> delayedPush = new ArrayList<>();
-exportAllowed
-realName
+- String login;
+- String realName;
+- String mailAddress;
+- boolean exportAllowed;
+- String guiLanguage = MinervaWebapp.factory().getLanguages().get(0); /** The user has a preferred language. That will be used for the GUI. */
+- String pageLanguage = MinervaWebapp.factory().getLanguages().get(0); /** The current language tab for a page. */
+- ExportUserSettings export;
+- final List<String> favorites = new ArrayList<>();
+- final List<String> watchlist = new ArrayList<>();
+- final List<String> delayedPush = new ArrayList<>(); /** only used with Gitlab backend: all branch names where file-system mode is temporarily active */
+- String lastEditedPage;
 
 
 UsersSO        alle User laden, 1 User speichern, 1 User löschen
 
-
 Users Page
-Add Page
+Add Page ???
 Edit Page
-Delete Page
+Delete Page ???
+
+KUNDENVERSION
+- jeder kann sich einloggen
+- keine User-Verwaltung
+
+GITLAB VERSION
+- User ergeben sich durch Gitlab Logins.
+
+State-Felder:
+guiLanguage
+pageLanguage
+ExportUserSettings
+lastEditedPage
+delay...
+fav
+watch
+
+Admin-Felder:
+- realName, soferns nicht von github kommt
+- mailAddress, soferns nicht von github kommt
+- exportAllowed
+
+nicht speichern:
+- token
+- password

@@ -61,7 +61,7 @@ public class GitlabPushTransaction {
             String x = workspace.getFolder() + "/";
             Set<String> filesToAdd = addFilenames.stream().map(dn -> dn.replace(x, "")).collect(Collectors.toSet());
             Set<String> filesToRemove = removeFilenames.stream().map(dn -> dn.replace(x, "")).collect(Collectors.toSet());
-            git.commit(commitMessage, user.getRealName(), user.getMail(), user, filesToAdd,
+            git.commit(commitMessage, user.getRealName(), user.getMailAddress(), user, filesToAdd,
                     filesToRemove);
             workspace.onPush();
         } catch (MinervaEmptyCommitException ex) {

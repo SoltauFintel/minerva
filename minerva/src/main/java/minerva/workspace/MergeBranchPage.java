@@ -11,7 +11,6 @@ import minerva.base.UserMessage;
 import minerva.model.WorkspacesSO;
 import minerva.user.UPage;
 import minerva.user.User;
-import minerva.user.UserAccess;
 
 public class MergeBranchPage extends UPage {
 
@@ -38,7 +37,7 @@ public class MergeBranchPage extends UPage {
             List<String> branches = user.dao().getBranchNames(user.getWorkspace(branch));
             branches.remove(branch);
             branches.removeIf(n -> n.startsWith(WorkspacesSO.MINERVA_BRANCH) || n.contains(WorkspacesSO.MINERVA_BRANCH));
-            User u = UserAccess.loadUser(user.getLogin());
+            User u = user.getFreshUser();
             branches.removeIf(n -> u.getDelayedPush().contains(n)); // Branches im Delayed-Push-Modus nicht anbieten
             if (branches.isEmpty()) {
                 throw new UserMessage("noBranches", user);

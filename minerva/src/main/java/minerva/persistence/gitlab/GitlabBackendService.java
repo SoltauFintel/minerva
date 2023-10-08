@@ -55,7 +55,7 @@ public class GitlabBackendService implements BackendService {
         if (mail == null) {
             return null;
         }
-        user.setMail(mail);
+        user.setMailAddress(mail);
         return user;
     }
 
