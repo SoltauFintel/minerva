@@ -27,14 +27,16 @@ public class GitFactory {
      * @return GitLabApi
      * @throws GitLabApiException
      */
-    public static GitLabApi getGitLabApi(GitlabUser user) throws GitLabApiException {
+    public static GitLabApi getGitLabApi(User user) throws GitLabApiException {
         String gitlabUrl = MinervaWebapp.factory().getConfig().getGitlabUrl();
-        if (user.getAccessToken() == null) {
+        GitlabDataStore xu = new GitlabDataStore(user);
+        String accessToken = xu.getAccessToken();
+        if (accessToken == null) {
             Logger.debug("GitLabApi via login+password");
-            return GitLabApi.oauth2Login(gitlabUrl, user.getLogin(), user.getPassword());
+            return GitLabApi.oauth2Login(gitlabUrl, user.getLogin(), xu.getPassword());
         } else {
             Logger.debug("GitLabApi via access token");
-            return new GitLabApi(gitlabUrl, TokenType.OAUTH2_ACCESS, user.getAccessToken());
+            return new GitLabApi(gitlabUrl, TokenType.OAUTH2_ACCESS, accessToken);
         }
     }
     
@@ -83,13 +85,15 @@ public class GitFactory {
      * @param user -
      * @return UsernamePasswordCredentialsProvider
      */
-    public static UsernamePasswordCredentialsProvider getUsernamePasswordCredentialsProvider(GitlabUser user) {
-        if (user.getAccessToken() == null) {
+    public static UsernamePasswordCredentialsProvider getUsernamePasswordCredentialsProvider(User user) {
+        GitlabDataStore xu = new GitlabDataStore(user);
+        String accessToken = xu.getAccessToken();
+        if (accessToken == null) {
             Logger.debug(user.getLogin() + " | Git access with login and password");
-            return new UsernamePasswordCredentialsProvider(user.getLogin(), user.getPassword());
+            return new UsernamePasswordCredentialsProvider(user.getLogin(), xu.getPassword());
         } else {
             Logger.debug(user.getLogin() + " | Git access with Gitlab oauth2 access token");
-            return new UsernamePasswordCredentialsProvider("oauth2", user.getAccessToken());
+            return new UsernamePasswordCredentialsProvider("oauth2", accessToken);
         }
     }
 
@@ -99,9 +103,11 @@ public class GitFactory {
      * @param user -
      * @return modified url
      */
-    public static String handleUrl(String url, GitlabUser user) {
-        if (user.getAccessToken() != null) {
-            return "http://gitlab-ci-token:" + Escaper.urlEncode(user.getAccessToken(), "") + "@"
+    public static String handleUrl(String url, User user) {
+        GitlabDataStore xu = new GitlabDataStore(user);
+        String accessToken = xu.getAccessToken();
+        if (accessToken != null) {
+            return "http://gitlab-ci-token:" + Escaper.urlEncode(accessToken, "") + "@"
                     + url.substring("http://".length());
         }
         return url;

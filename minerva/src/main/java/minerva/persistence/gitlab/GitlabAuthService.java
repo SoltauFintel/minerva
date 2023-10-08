@@ -2,7 +2,6 @@ package minerva.persistence.gitlab;
 
 import org.gitlab4j.api.GitLabApi;
 import org.gitlab4j.api.GitLabApiException;
-import org.gitlab4j.api.models.User;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.IdGenerator;
@@ -54,14 +53,17 @@ public class GitlabAuthService {
     }
 
     private void initUser(GitLabApi gitLabApi, DoLogin loginAction, Answer answer) throws GitLabApiException {
-        User currentUser = gitLabApi.getUserApi().getCurrentUser();
+        org.gitlab4j.api.models.User currentUser = gitLabApi.getUserApi().getCurrentUser();
         String login = currentUser.getUsername();
         String mail = currentUser.getEmail();
         
-        GitlabUser user = new GitlabUser(login, "");
+        minerva.user.User user = new minerva.user.User();
+        user.setLogin(login);
         user.setMailAddress(mail);
-        user.setAccessToken(answer.getAccess_token());
-        user.setRefreshToken(answer.getRefresh_token());
+        GitlabDataStore xu = new GitlabDataStore(user);
+        xu.setPassword("");
+        xu.setAccessToken(answer.getAccess_token());
+        xu.setRefreshToken(answer.getRefresh_token());
         
         loginAction.doLogin(user);
         
@@ -69,15 +71,16 @@ public class GitlabAuthService {
     }
     
     public interface DoLogin {
-        void doLogin(GitlabUser user);
+        void doLogin(minerva.user.User user);
     }
     
     private boolean isStateValid(String state) {
         return state != null && state.startsWith(STATE_PREFIX) && state.equals(Tosmap.pop(state));
     }
 
-    public void refreshToken(GitlabUser user) {
-        String param = getParam() + "&grant_type=refresh_token&refresh_token=" + u(user.getRefreshToken());
+    public void refreshToken(minerva.user.User user) {
+        GitlabDataStore xu = new GitlabDataStore(user);
+        String param = getParam() + "&grant_type=refresh_token&refresh_token=" + u(xu.getRefreshToken());
         Answer answer;
 		try {
 			answer = new REST(cfg().getGitlabUrl() + "/oauth/token").post(param).fromJson(Answer.class);
@@ -85,8 +88,8 @@ public class GitlabAuthService {
 			throw new RuntimeException(e.getMessage() + "\nTry to log out and log in.", e);
 		}
         
-        user.setAccessToken(answer.getAccess_token());
-        user.setRefreshToken(answer.getRefresh_token());
+        xu.setAccessToken(answer.getAccess_token());
+        xu.setRefreshToken(answer.getRefresh_token());
         
         Logger.info(user.getLogin() + " | Gitlab access token refreshed");
     }

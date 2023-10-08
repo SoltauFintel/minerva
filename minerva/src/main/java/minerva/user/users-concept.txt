@@ -47,3 +47,9 @@ Admin-Felder:
 nicht speichern:
 - token
 - password
+
+
+TODO
+- GitlabUser darf nicht gespeichert werden, da sonst die tokens verloren gehen.
+  Ich muss also die Tokens woanders speichern. Oder beim Laden irgendwas machen.
+- Test für Kundenversion

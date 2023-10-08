@@ -212,3 +212,4 @@ mailAddress=Mail address
 exportAllowed=Export allowed
 yes=yes
 manageUsers=Manage users
+editUser=Edit user

@@ -213,3 +213,4 @@ mailAddress=Emailadresse
 exportAllowed=Export-Recht
 yes=ja
 manageUsers=Benutzerverwaltung
+editUser=Benutzer bearbeiten
