@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.pmw.tinylog.Logger;
-
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.base.StringService;
@@ -67,7 +65,6 @@ public class GitlabBackendService implements BackendService {
         GitlabUser gitlabUser = (GitlabUser) workspace.getUser().getUser();
         boolean areThereRemoteUpdates = new GitService(workspaceFolder).areThereRemoteUpdates(workspace.getBranch(), gitlabUser);
         if (areThereRemoteUpdates) {
-			Logger.info(workspace.getUser().getLogin() + " | " + workspace.getBranch() + " | There are remote updates. -> pull"); // XXX DEBUG
             workspace.pull();
             updateAction.update();
         }
