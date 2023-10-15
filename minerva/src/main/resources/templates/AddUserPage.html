@@ -4,25 +4,31 @@
     <div class="col-lg-12">
         <h1 class="page-header">{{header}}</h1>
         
-        <form action="/user/{{u_login}}" class="form-horizontal" method="post">
+        <form action="/user/add" class="form-horizontal" method="post">
             <fieldset>
+                <div class="form-group">
+                    <label for="u_login" class="col-lg-2 control-label">Login</label>
+                    <div class="col-lg-3">
+                        <input class="form-control" id="u_login" name="u_login" autofocus>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label for="u_name" class="col-lg-2 control-label">Name</label>
                     <div class="col-lg-3">
-                        <input class="form-control" id="u_name" name="u_name" value="{{u_name}}" autofocus>
+                        <input class="form-control" id="u_name" name="u_name">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="u_mail" class="col-lg-2 control-label">{{N.mailAddress}}</label>
                     <div class="col-lg-3">
-                        <input class="form-control" id="u_mail" name="u_mail" value="{{u_mail}}">
+                        <input class="form-control" id="u_mail" name="u_mail">
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-lg-2 col-lg-offset-2">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" id="u_ea" name="u_ea"{{if u_ea}} checked{{/if}}>
+                                <input type="checkbox" id="u_ea" name="u_ea">
                                 {{N.exportAllowed}}
                             </label>
                         </div>

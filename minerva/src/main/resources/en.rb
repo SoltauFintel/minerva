@@ -213,3 +213,7 @@ exportAllowed=Export allowed
 yes=yes
 manageUsers=Manage users
 editUser=Edit user
+addUser=Add user
+createUser=Add user
+deleteUser=Delete user
+deleteUserX=Delete user $user?

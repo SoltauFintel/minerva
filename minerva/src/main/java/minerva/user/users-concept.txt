@@ -57,3 +57,7 @@ TODO
 - user.login muss gültig sein, kein "?" etc.   ERL
 - user folder Sache (BackendService)     ERL
 - GitlabUser. mail doppelt   ERL
+
+
+- Ich muss die alten Methoden ausbauen.
+- Und ich will doch die User vorerfassen können, damit man sie bspw. in der Zuständigkeit-Combo auswählen kann.

@@ -214,3 +214,7 @@ exportAllowed=Export-Recht
 yes=ja
 manageUsers=Benutzerverwaltung
 editUser=Benutzer bearbeiten
+addUser=Neuen Benutzer anlegen
+createUser=Neuer Benutzer
+deleteUser=Benutzer löschen
+deleteUserX=Benutzer $user löschen?

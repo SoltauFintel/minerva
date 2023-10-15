@@ -85,6 +85,8 @@ import minerva.subscription.BrokenMappingsPage;
 import minerva.subscription.MappingPage;
 import minerva.subscription.PushDataAction;
 import minerva.subscription.SubscribeAction;
+import minerva.user.AddUserPage;
+import minerva.user.DeleteUserAction;
 import minerva.user.EditUserPage;
 import minerva.user.UsersPage;
 import minerva.validate.ValidationPage;
@@ -216,7 +218,9 @@ public class MinervaWebapp extends RouteDefinitions {
     
     private void users() {
         get("/users", UsersPage.class);
+        form("/user/add", AddUserPage.class);
         form("/user/:login", EditUserPage.class);
+        get("/user/:login/delete", DeleteUserAction.class);
         get("/gitlab-auth", GitlabAuthAction.class);
         get("/gitlab-auth-callback", GitlabAuthCallbackAction.class);
         addNotProtected("/gitlab-auth");

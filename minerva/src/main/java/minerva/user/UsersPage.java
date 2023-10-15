@@ -19,6 +19,8 @@ public class UsersPage extends UPage {
             DataMap map = list.add();
             map.put("login", esc(u.getLogin()));
             map.put("link", esc("/user/" + u.getLogin()));
+            map.put("deletelink", esc("/user/" + u.getLogin() + "/delete"));
+            map.put("deleteQuestion", esc(n("deleteUserX").replace("$user", u.getLogin())));
             map.put("realName", esc(u.getRealName()));
             map.put("mailAddress", esc(u.getMailAddress()));
             map.put("exportAllowed", u.isExportAllowed());

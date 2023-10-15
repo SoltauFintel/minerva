@@ -38,6 +38,10 @@ public class UserAccess {
         FileService.saveJsonFile(file(user.getLogin()), user);
     }
     
+    public static void deleteUser(String login) {
+        file(login).delete();
+    }
+
     private static File file(String login) {
         return new File(folder(), login + ".user");
     }
