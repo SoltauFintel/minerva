@@ -21,8 +21,6 @@ public class MinervaFactory {
     private final MinervaConfig config;
     private final boolean gitlab;
     private final List<String> languages;
-    private final List<String> persons;
-    private final List<String> personsWithExportRight;
     private final List<String> admins;
     private final IPageChangeStrategy pageChangeStrategy;
     private final BackendService backendService;
@@ -31,10 +29,7 @@ public class MinervaFactory {
         this.config = config;
         languages = config.getLanguages();
         gitlab = config.isGitlab();
-        persons = config.getPersons();
         admins = config.getAdmins();
-        personsWithExportRight = config.getPersonsWithExportRight();
-        personsWithExportRight.addAll(admins);
         
         backendService = gitlab ? new GitlabBackendService(config) : new FileSystemBackendService(config);
         
@@ -101,14 +96,6 @@ public class MinervaFactory {
         }
     }
     
-    public List<String> getPersons() {
-        return persons;
-    }
-
-    public List<String> getPersonsWithExportRight() {
-        return personsWithExportRight;
-    }
-
     public List<String> getAdmins() {
         return admins;
     }
@@ -128,16 +115,6 @@ public class MinervaFactory {
     
     public List<String> getLogins() {
         return FileService.listFolders(new File(config.getWorkspacesFolder()));
-    }
-    
-    public String login2RealName(String login) {
-    	String ret = config.getLogin2RealName().get(login);
-    	return ret == null ? login : ret;
-    }
-    
-    public String realName2Login(String realName) {
-    	String ret = config.getRealName2Login().get(realName);
-    	return ret == null ? realName : ret;
     }
     
     public String getFolderInfo() {

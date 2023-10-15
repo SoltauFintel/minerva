@@ -8,12 +8,12 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Escaper;
-import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.user.User;
+import minerva.user.UserAccess;
 
 public class ViewSeitePage extends SPage implements Uptodatecheck {
     
@@ -107,7 +107,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     public static void fillLastChange(SeiteSO seite, PageChange change, String infotext, DataMap model) {
         String lastChangeInfo = infotext
             .replace("$d", Escaper.esc(change.getDate()))
-            .replace("$u", Escaper.esc(MinervaWebapp.factory().login2RealName(change.getUser())))
+            .replace("$u", Escaper.esc(UserAccess.login2RealName(change.getUser())))
             .replace("$c", Escaper.esc(change.getComment().isEmpty() ? "" : (": " + change.getComment())))
             .replace("$p", Escaper.esc(seite.getTitle()))
             .replace("$h", Escaper.esc("/s/" + seite.getBook().getWorkspace().getBranch() + "/" + seite.getBook().getBook().getFolder() + "/" + seite.getId()));

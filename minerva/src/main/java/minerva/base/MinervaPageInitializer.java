@@ -14,6 +14,7 @@ import minerva.config.MinervaConfig;
 import minerva.model.BookSO;
 import minerva.model.BooksSO;
 import minerva.model.SeiteSO;
+import minerva.user.UserAccess;
 
 public class MinervaPageInitializer extends PageInitializer {
     
@@ -56,7 +57,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("myTasks", "");
         page.put("isAdmin", isAdmin);
         page.put("canBeAdmin", hasUser && MinervaWebapp.factory().getAdmins().contains(m.getLogin()));
-        page.put("hasExportRight", hasUser && MinervaWebapp.factory().getPersonsWithExportRight().contains(m.getLogin()));
+        page.put("hasExportRight", hasUser && UserAccess.hasExportRight(m.getLogin()));
         page.put("hasLastEditedPage", m.getLastEditedPage_link() != null);
         page.put("lastEditedPage_link", m.getLastEditedPage_link());
         page.put("lastEditedPage_title", m.getLastEditedPage_title());

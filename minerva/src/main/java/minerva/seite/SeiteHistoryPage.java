@@ -11,6 +11,7 @@ import com.github.template72.data.DataMap;
 import minerva.MinervaWebapp;
 import minerva.config.ICommit;
 import minerva.config.MinervaFactory;
+import minerva.user.UserAccess;
 
 public class SeiteHistoryPage extends SPage {
 
@@ -30,7 +31,7 @@ public class SeiteHistoryPage extends SPage {
             map.put("hash", esc(commit.getHash()));
             map.put("hash7", esc(commit.getHash7()));
             map.put("gitlabCommitLink", fac.getBackendService().getCommitLink(commit.getHash()));
-            String author = fac.login2RealName(commit.getAuthor());
+            String author = UserAccess.login2RealName(commit.getAuthor());
             authors.add(author);
             map.put("author", esc(author));
             map.put("date", commit.getCommitDateTime());

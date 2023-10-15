@@ -2,9 +2,9 @@ package minerva.seite.note;
 
 import java.util.List;
 
-import minerva.MinervaWebapp;
 import minerva.seite.Note;
 import minerva.seite.SPage;
+import minerva.user.UserAccess;
 
 public class EditNotePage extends SPage {
 
@@ -34,7 +34,7 @@ public class EditNotePage extends SPage {
             put("hasChanged", !note.getChanged().isEmpty());
             put("text1", esc(note.getText()));
             put("editAllowed", note.getUser().equals(seite.getLogin()) || isAdmin);
-            combobox("persons", MinervaWebapp.factory().getPersons(), note.getPersons(), true, model);
+            combobox("persons", UserAccess.getUserNames(), note.getPersons(), true, model);
         }
     }
 }

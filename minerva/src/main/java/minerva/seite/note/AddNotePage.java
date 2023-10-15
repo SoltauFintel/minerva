@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import github.soltaufintel.amalia.spark.Context;
-import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.seite.Note;
 import minerva.seite.SPage;
+import minerva.user.UserAccess;
 
 public class AddNotePage extends SPage {
     
@@ -34,7 +34,7 @@ public class AddNotePage extends SPage {
             }
             header(n("addNote"));
             put("parentId", parentId);
-            combobox("persons", MinervaWebapp.factory().getPersons(), selectedItems, true, model);
+            combobox("persons", UserAccess.getUserNames(), selectedItems, true, model);
         }
     }
 

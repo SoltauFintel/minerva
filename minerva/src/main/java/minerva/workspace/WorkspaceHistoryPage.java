@@ -13,6 +13,7 @@ import minerva.config.ICommit;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
+import minerva.user.UserAccess;
 
 public class WorkspaceHistoryPage extends WPage implements Uptodatecheck {
 
@@ -38,7 +39,7 @@ public class WorkspaceHistoryPage extends WPage implements Uptodatecheck {
                     continue;
                 } else if (!author.equals(prevUser)) {
                     c = changes.add(); // Gruppenwechsel
-                    c.put("user", esc(MinervaWebapp.factory().login2RealName(author)));
+                    c.put("user", esc(UserAccess.login2RealName(author)));
                     list = c.list("pages");
                 }
                 prevUser = author;

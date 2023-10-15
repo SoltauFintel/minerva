@@ -3,9 +3,7 @@ package minerva.config;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import github.soltaufintel.amalia.auth.webcontext.WebContext;
 import github.soltaufintel.amalia.mail.Mail;
@@ -16,18 +14,11 @@ import minerva.base.StringService;
 
 public class MinervaConfig {
     private final AppConfig config;
-    private final Map<String, String> login2RealName = new HashMap<>();
-    private final Map<String, String> realName2Login = new HashMap<>();
     private final boolean gitlab;
     
     public MinervaConfig(AppConfig config) {
         this.config = config;
         WebContext.setCookieName(this.config);
-    	for (String login : config.get("persons").split(",")) {
-    		String realName = config.get("user." + login, login);
-			login2RealName.put(login, realName);
-			realName2Login.put(realName, login);
-    	}
     	
     	// gitlab?
         String backend = env("MINERVA_BACKEND"); // for setting backend to file-system in IDE mode
@@ -104,14 +95,6 @@ public class MinervaConfig {
     
     private String get(String key) {
         return config.get(key);
-    }
-
-    public List<String> getPersons() {
-        return splitPersons(get("persons"));
-    }
-
-    public List<String> getPersonsWithExportRight() {
-        return splitPersons(get("persons-with-export-right"));
     }
 
     public List<String> getAdmins() {
@@ -268,12 +251,4 @@ public class MinervaConfig {
         String ret = System.getenv(name);
         return ret == null ? "" : ret;
     }
-    
-	public Map<String, String> getLogin2RealName() {
-		return login2RealName;
-	}
-
-	public Map<String, String> getRealName2Login() {
-		return realName2Login;
-	}
 }

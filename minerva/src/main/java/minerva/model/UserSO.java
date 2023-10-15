@@ -203,7 +203,7 @@ public class UserSO {
     }
 
     public void onlyWithExportRight() {
-        if (!MinervaWebapp.factory().getPersonsWithExportRight().contains(user.getLogin())) {
+    	if (!UserAccess.hasExportRight(user.getLogin())) {
             throw new RuntimeException("User " + user.getLogin() + " has no export right!");
         }
     }

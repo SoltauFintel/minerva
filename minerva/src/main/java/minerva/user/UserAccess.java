@@ -3,6 +3,7 @@ package minerva.user;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import minerva.MinervaWebapp;
 import minerva.base.FileService;
@@ -61,5 +62,27 @@ public class UserAccess {
                 throw new RuntimeException("login must contain only these characters: a-z A-Z 0-9 . - _");
             }
         }
+    }
+    
+    public static List<String> getUserNames() {
+    	return loadUsers().stream().map(u -> u.getRealName()).collect(Collectors.toList());
+    }
+    
+    public static boolean hasExportRight(String login) {
+    	if (MinervaWebapp.factory().getConfig().getAdmins().contains(login)) {
+    		return true;
+    	}
+    	User u = loadUser(login);
+    	return u == null || u.isExportAllowed();
+    }
+
+    public static String login2RealName(String login) {
+    	User u = loadUser(login);
+		return u == null || StringService.isNullOrEmpty(u.getRealName()) ? login : u.getRealName();
+    }
+    
+    public static String realName2Login(String realName) {
+    	return loadUsers().stream().filter(u -> u.getRealName().equals(realName))
+    			.map(u -> u.getLogin()).findFirst().orElse(realName);
     }
 }
