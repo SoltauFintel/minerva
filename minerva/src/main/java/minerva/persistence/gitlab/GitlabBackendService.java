@@ -50,7 +50,8 @@ public class GitlabBackendService implements BackendService {
         if (StringService.isNullOrEmpty(login) || StringService.isNullOrEmpty(password)) {
             return null;
         }
-        GitlabUser user = new GitlabUser(login, password);
+        User user = new User();
+        user.setLogin(login);
         String mail = gitlabSystem.login(user);
         if (mail == null) {
             return null;
@@ -62,8 +63,8 @@ public class GitlabBackendService implements BackendService {
     @Override
     public void uptodatecheck(WorkspaceSO workspace, UpdateAction updateAction) {
         File workspaceFolder = new File(workspace.getFolder());
-        GitlabUser gitlabUser = (GitlabUser) workspace.getUser().getUser();
-        boolean areThereRemoteUpdates = new GitService(workspaceFolder).areThereRemoteUpdates(workspace.getBranch(), gitlabUser);
+        User user = workspace.getUser().getUser();
+        boolean areThereRemoteUpdates = new GitService(workspaceFolder).areThereRemoteUpdates(workspace.getBranch(), user);
         if (areThereRemoteUpdates) {
             workspace.pull();
             updateAction.update();

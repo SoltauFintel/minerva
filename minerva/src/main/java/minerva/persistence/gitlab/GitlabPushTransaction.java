@@ -14,6 +14,7 @@ import minerva.model.WorkspaceSO;
 import minerva.model.WorkspacesSO;
 import minerva.persistence.gitlab.git.GitService;
 import minerva.persistence.gitlab.git.MinervaEmptyCommitException;
+import minerva.user.User;
 
 /**
  * Sub class for GitlabRepositorySO.
@@ -26,7 +27,7 @@ public class GitlabPushTransaction {
     private final WorkspaceSO workspace;
     private String workBranch;
     private GitService git;
-    private GitlabUser user;
+    private User user;
     private boolean doPull = false;
     
     public GitlabPushTransaction(GitlabRepository repo, CommitMessage commitMessage, WorkspaceSO workspace) {
@@ -57,7 +58,7 @@ public class GitlabPushTransaction {
      */
     public boolean commitAndPush(Set<String> addFilenames, Set<String> removeFilenames) {
         try {
-            user = (GitlabUser) workspace.getUser().getUser();
+            user = workspace.getUser().getUser();
             String x = workspace.getFolder() + "/";
             Set<String> filesToAdd = addFilenames.stream().map(dn -> dn.replace(x, "")).collect(Collectors.toSet());
             Set<String> filesToRemove = removeFilenames.stream().map(dn -> dn.replace(x, "")).collect(Collectors.toSet());

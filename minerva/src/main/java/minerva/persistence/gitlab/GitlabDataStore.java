@@ -18,7 +18,7 @@ public class GitlabDataStore {
     }
 
     public void setPassword(String password) {
-        put(login, "password", password)
+        put(login, "password", password);
     }
 
     public String getAccessToken() {

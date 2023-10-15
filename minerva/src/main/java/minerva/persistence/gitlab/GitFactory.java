@@ -40,28 +40,27 @@ public class GitFactory {
         }
     }
     
-    public static boolean logout(User pUser) {
+    public static boolean logout(User user) {
         boolean revokeOk = false;
-        if (pUser instanceof GitlabUser user) {
-            if (user.getAccessToken() == null) {
-                return false;
-            }
-            MinervaConfig cfg = MinervaWebapp.factory().getConfig();
-            String gitlabUrl = cfg.getGitlabUrl();
-            String appId = cfg.getGitlabAppId();
-            String secret = cfg.getGitlabSecret();
-            String params = "client_id=" + u(appId) //
-                    + "&client_secret=" + u(secret) //
-                    + "&token=" + u(user.getAccessToken());
-            String r = new REST(gitlabUrl + "/oauth/revoke").post(params).response();
-            if ("{}".equals(r)) {
-                revokeOk = true;
-            } else {
-                Logger.warn("Gitlab revoke failed");
-            }
-            user.setAccessToken(null);
-            user.setRefreshToken(null);
+        GitlabDataStore xu = new GitlabDataStore(user);
+        if (xu.getAccessToken() == null) {
+            return false;
         }
+        MinervaConfig cfg = MinervaWebapp.factory().getConfig();
+        String gitlabUrl = cfg.getGitlabUrl();
+        String appId = cfg.getGitlabAppId();
+        String secret = cfg.getGitlabSecret();
+        String params = "client_id=" + u(appId) //
+                + "&client_secret=" + u(secret) //
+                + "&token=" + u(xu.getAccessToken());
+        String r = new REST(gitlabUrl + "/oauth/revoke").post(params).response();
+        if ("{}".equals(r)) {
+            revokeOk = true;
+        } else {
+            Logger.warn("Gitlab revoke failed");
+        }
+        xu.setAccessToken(null);
+        xu.setRefreshToken(null);
         return revokeOk;
     }
 
