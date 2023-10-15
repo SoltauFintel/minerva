@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.pmw.tinylog.Logger;
+
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.base.StringService;
@@ -50,20 +52,29 @@ public class GitlabBackendService implements BackendService {
         if (StringService.isNullOrEmpty(login) || StringService.isNullOrEmpty(password)) {
             return null;
         }
-        GitlabUser user = new GitlabUser(login, password);
+        Logger.info("GitlabBackendService.login(" + login + ",***)");
+        User user = new User();
+        user.setLogin(login);
         String mail = gitlabSystem.login(user);
         if (mail == null) {
             return null;
         }
-        user.setMail(mail);
+        user.setMailAddress(mail);
         return user;
+    }
+    
+    @Override
+    public String getUserFolder(User user) {
+    	String folder = user.getLogin();
+        Logger.debug(user.getLogin() + " | folder: " + folder);
+    	return folder;
     }
 
     @Override
     public void uptodatecheck(WorkspaceSO workspace, UpdateAction updateAction) {
         File workspaceFolder = new File(workspace.getFolder());
-        GitlabUser gitlabUser = (GitlabUser) workspace.getUser().getUser();
-        boolean areThereRemoteUpdates = new GitService(workspaceFolder).areThereRemoteUpdates(workspace.getBranch(), gitlabUser);
+        User user = workspace.getUser().getUser();
+        boolean areThereRemoteUpdates = new GitService(workspaceFolder).areThereRemoteUpdates(workspace.getBranch(), user);
         if (areThereRemoteUpdates) {
             workspace.pull();
             updateAction.update();
@@ -131,7 +142,7 @@ public class GitlabBackendService implements BackendService {
 
     @Override
     public void checkIfMoveIsAllowed(WorkspaceSO workspace) {
-        if (workspace.getUser().getUserSettings().getDelayedPush().contains(workspace.getBranch())) {
+        if (workspace.getUser().getUser().getDelayedPush().contains(workspace.getBranch())) {
             // User will loose Git history. So better end f-s mode before moving a page.
             throw new UserMessage("moveNotAllowedForFSMode", workspace);
         }

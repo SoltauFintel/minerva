@@ -7,22 +7,23 @@ import org.gitlab4j.api.models.MergeRequest;
 import org.gitlab4j.api.models.MergeRequestParams;
 
 import minerva.base.StringService;
+import minerva.user.User;
 
 public class MergeRequestService {
     private boolean waitLonger = false;
     
     public void createAndSquash(String title, String branch, String targetBranch, String gitlabUrl,
-            String project, GitlabUser user, String userGuiLanguage) throws GitLabApiException {
+            String project, User user, String userGuiLanguage) throws GitLabApiException {
         work(title, branch, targetBranch, gitlabUrl, project, user, Boolean.TRUE, userGuiLanguage);
     }
 
     public void createAndMerge(String title, String branch, String targetBranch, String gitlabUrl,
-            String project, GitlabUser user, String userGuiLanguage) throws GitLabApiException {
+            String project, User user, String userGuiLanguage) throws GitLabApiException {
         work(title, branch, targetBranch, gitlabUrl, project, user, Boolean.TRUE, userGuiLanguage);
     }
 
     private void work(String title, String branch, String targetBranch, String gitlabUrl,
-            String project, GitlabUser user, Boolean squash, String userGuiLanguage) throws GitLabApiException {
+            String project, User user, Boolean squash, String userGuiLanguage) throws GitLabApiException {
         try (GitLabApi gitLabApi = GitFactory.getGitLabApi(user)) {
             MergeRequestParams params = new MergeRequestParams()
                     .withSourceBranch(branch)

@@ -10,7 +10,6 @@ import org.pmw.tinylog.Logger;
 
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
-import minerva.model.UserSettingsSO;
 import minerva.model.WorkspaceSO;
 import minerva.workspace.WPage;
 
@@ -36,7 +35,7 @@ public class ExportPage extends WPage {
             List<String> customers = new ArrayList<>(workspace.getExclusions().getCustomers());
             customers.add(0, "-");
             
-            ExportUserSettings us = user.getUserSettings().getExport();
+            ExportUserSettings us = user.getUser().getExport();
             if (us == null) {
                us = new ExportUserSettings();
                us.setItem(items.get(1));
@@ -76,10 +75,10 @@ public class ExportPage extends WPage {
     }
 
     private void callExportDownload() {
-        String item = ctx.formParam("item");
-        String customer = ctx.formParam("customer").toLowerCase();
-        String lang = ctx.formParam("lang").toLowerCase();
-        saveSettings(item, customer, lang);
+        String item = ctx.queryParam("items"); // TODO item oder items?
+        String customer = ctx.queryParam("customers").toLowerCase();
+        String lang = ctx.queryParam("langs").toLowerCase();
+        user.saveExportSettings(item, customer, lang);
         String q = "/export?lang=" + u(lang) + "&customer=" + u(customer);
 
         if (item.contains(W)) { // all books
@@ -106,17 +105,6 @@ public class ExportPage extends WPage {
         }
     }
 
-    private void saveSettings(String item, String customer, String lang) {
-        UserSettingsSO us = user.getUserSettings();
-        if (us.getExport() == null) {
-            us.setExport(new ExportUserSettings());
-        }
-        us.getExport().setItem(item);
-        us.getExport().setCustomer(customer);
-        us.getExport().setLang(lang);
-        us.save();
-    }
-    
     private SeiteSO getSeite(String seiteId) {
         for (BookSO book : workspace.getBooks()) {
             SeiteSO seite = book._seiteById(seiteId);

@@ -6,7 +6,6 @@ import minerva.MinervaWebapp;
 import minerva.base.NlsString;
 import minerva.model.SeiteSO;
 import minerva.model.UserSO.LoginAndEndTime;
-import minerva.model.UserSettingsSO;
 import minerva.seite.link.InvalidLinksModel;
 
 public class EditSeitePage extends ViewSeitePage {
@@ -58,9 +57,7 @@ public class EditSeitePage extends ViewSeitePage {
         seiteSO.saveAll(title, data.getContent(), version, comment, langs, start);
         data.setDone(true);
         
-        UserSettingsSO us = user.getUserSettings();
-        us.setLastEditedPage(seite.getId());
-        us.save();
+        user.setLastEditedPage(seite.getId());
 
         InvalidLinksModel linksModel = new InvalidLinksModel(seiteSO, langs);
         if (linksModel.hasLinks()) {

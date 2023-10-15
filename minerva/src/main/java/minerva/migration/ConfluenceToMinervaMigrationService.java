@@ -34,6 +34,7 @@ import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.Note;
 import minerva.seite.Seite;
+import minerva.user.UserAccess;
 
 /**
  * This migration is based on the Confluence export for the online help (.html files).
@@ -536,7 +537,7 @@ public class ConfluenceToMinervaMigrationService {
 	}
 	
 	private String realName2Login(String realname) {
-		String login = MinervaWebapp.factory().getConfig().getRealName2Login().get(realname);
+		String login = UserAccess.realName2Login(realname);
 		return login == null ? realname : login;
 	}
 
