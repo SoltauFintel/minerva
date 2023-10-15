@@ -46,17 +46,7 @@ public class UserSO {
         }
         UserAccess.validateLogin(user.getLogin());
         this.user = user;
-
-        // TODO >> BackendService
-        String userFolder = MinervaWebapp.factory().getConfig().getUserFolder();   // TODO im Gitlab Modus ist folder immer der login
-        if (userFolder.isEmpty()) {
-            folder = user.getLogin();
-        } else {
-            folder = userFolder;
-        }
-        Logger.debug(user.getLogin() + " | folder: " + folder);
-        // <<
-
+        folder = MinervaWebapp.factory().getBackendService().getUserFolder(user);
         dao = MinervaWebapp.factory().getBackendService().getDirAccess();
         this.workspaces = new WorkspacesSO(this, getWorkspacesFolder() + "/" + folder);
     }

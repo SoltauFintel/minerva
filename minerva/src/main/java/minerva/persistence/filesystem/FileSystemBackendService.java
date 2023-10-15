@@ -62,6 +62,13 @@ public class FileSystemBackendService implements BackendService {
         }
 		return user;
     }
+    
+    @Override
+    public String getUserFolder(User user) {
+        String folder = config.getUserFolder();
+        Logger.debug(user.getLogin() + " | folder: " + folder);
+    	return folder;
+    }
 
     @Override
     public void uptodatecheck(WorkspaceSO workspace, UpdateAction updateAction) { //

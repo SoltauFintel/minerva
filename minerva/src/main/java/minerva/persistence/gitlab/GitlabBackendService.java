@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.pmw.tinylog.Logger;
+
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.base.StringService;
@@ -58,6 +60,13 @@ public class GitlabBackendService implements BackendService {
         }
         user.setMailAddress(mail);
         return user;
+    }
+    
+    @Override
+    public String getUserFolder(User user) {
+    	String folder = user.getLogin();
+        Logger.debug(user.getLogin() + " | folder: " + folder);
+    	return folder;
     }
 
     @Override
