@@ -51,9 +51,9 @@ nicht speichern:
 
 TODO
 - GitlabUser darf nicht gespeichert werden, da sonst die tokens verloren gehen.
-  Ich muss also die Tokens woanders speichern. Oder beim Laden irgendwas machen.
-- Test für Kundenversion
+  Ich muss also die Tokens woanders speichern. Oder beim Laden irgendwas machen.     ERL
+- Test für Kundenversion    ERL
 - delayed Push Sache testen, insbesondere den cancel mode
 - user.login muss gültig sein, kein "?" etc.   ERL
-- user folder Sache (BackendService)
+- user folder Sache (BackendService)     ERL
 - GitlabUser. mail doppelt   ERL
