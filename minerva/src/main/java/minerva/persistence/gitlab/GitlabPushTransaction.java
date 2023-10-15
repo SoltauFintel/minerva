@@ -10,6 +10,7 @@ import org.gitlab4j.api.GitLabApiException;
 import org.pmw.tinylog.Logger;
 
 import minerva.access.CommitMessage;
+import minerva.base.StringService;
 import minerva.model.WorkspaceSO;
 import minerva.model.WorkspacesSO;
 import minerva.persistence.gitlab.git.GitService;
@@ -62,8 +63,8 @@ public class GitlabPushTransaction {
             String x = workspace.getFolder() + "/";
             Set<String> filesToAdd = addFilenames.stream().map(dn -> dn.replace(x, "")).collect(Collectors.toSet());
             Set<String> filesToRemove = removeFilenames.stream().map(dn -> dn.replace(x, "")).collect(Collectors.toSet());
-            git.commit(commitMessage, user.getRealName(), user.getMailAddress(), user, filesToAdd,
-                    filesToRemove);
+            String name = StringService.isNullOrEmpty(user.getRealName()) ? user.getLogin() : user.getRealName();
+            git.commit(commitMessage, name, user.getMailAddress(), user, filesToAdd, filesToRemove);
             workspace.onPush();
         } catch (MinervaEmptyCommitException ex) {
             Logger.info("no changes -> no commit and no merge request needed\nadd: "

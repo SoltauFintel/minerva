@@ -11,6 +11,7 @@ import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
 import minerva.base.Tosmap;
 import minerva.config.MinervaConfig;
+import minerva.user.UserAccess;
 
 public class GitlabAuthService {
     private static final String STATE_PREFIX = "minerva-state-";
@@ -57,9 +58,16 @@ public class GitlabAuthService {
         String login = currentUser.getUsername();
         String mail = currentUser.getEmail();
         
-        minerva.user.User user = new minerva.user.User();
-        user.setLogin(login);
-        user.setMailAddress(mail);
+        minerva.user.User user = UserAccess.loadUser(login);
+        if (user == null) {
+        	user = new minerva.user.User();
+        	user.setLogin(login);
+        	user.setMailAddress(mail);
+        	user.setRealName(currentUser.getName());
+        	UserAccess.save(user);
+        } else if (!user.getMailAddress().equals(mail)) {
+			Logger.warn("Gitlab user " + login + " mail mismatch: " + user.getMailAddress() + " <> " + mail);
+        }
         GitlabDataStore xu = new GitlabDataStore(user);
         xu.setPassword("");
         xu.setAccessToken(answer.getAccess_token());
