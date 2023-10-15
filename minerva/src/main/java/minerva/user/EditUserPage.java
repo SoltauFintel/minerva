@@ -15,7 +15,7 @@ public class EditUserPage extends UPage {
             u.setRealName(ctx.formParam("u_name"));
             u.setMailAddress(ctx.formParam("u_mail"));
             u.setExportAllowed("on".equals(ctx.formParam("u_ea")));
-            UserAccess.save(u);
+            UserAccess.saveUser(u);
             Logger.info(user.getLogin() + " | saved user: " + login);
 
             ctx.redirect("/users");

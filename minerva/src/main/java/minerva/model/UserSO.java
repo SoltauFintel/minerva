@@ -357,6 +357,6 @@ public class UserSO {
     }
 
     private void save() {
-        UserAccess.save(user);
+        UserAccess.saveUser(user);
     }
 }

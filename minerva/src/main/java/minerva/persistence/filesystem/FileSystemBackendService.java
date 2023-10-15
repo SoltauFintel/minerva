@@ -58,7 +58,7 @@ public class FileSystemBackendService implements BackendService {
         	user = new User();
         	user.setLogin(login);
         	user.setRealName(login);
-        	UserAccess.save(user);
+        	UserAccess.saveUser(user);
         }
 		return user;
     }

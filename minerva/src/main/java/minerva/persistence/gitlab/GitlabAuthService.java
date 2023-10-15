@@ -64,7 +64,7 @@ public class GitlabAuthService {
         	user.setLogin(login);
         	user.setMailAddress(mail);
         	user.setRealName(currentUser.getName());
-        	UserAccess.save(user);
+        	UserAccess.saveUser(user);
         } else if (!user.getMailAddress().equals(mail)) {
 			Logger.warn("Gitlab user " + login + " mail mismatch: " + user.getMailAddress() + " <> " + mail);
         }

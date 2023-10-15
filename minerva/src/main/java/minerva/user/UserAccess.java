@@ -26,7 +26,6 @@ public class UserAccess {
         return ret;
     }
 
-    // TODO loadUser() vs. save() -> rename
     public static User loadUser(String login) {
         File file = file(login);
         if (file.isFile()) {
@@ -35,14 +34,10 @@ public class UserAccess {
         return null;
     }
     
-    public static void save(User user) {
+    public static void saveUser(User user) {
         FileService.saveJsonFile(file(user.getLogin()), user);
     }
     
-    public static void delete(String login) {
-        file(login).delete();
-    }
-
     private static File file(String login) {
         return new File(folder(), login + ".user");
     }
