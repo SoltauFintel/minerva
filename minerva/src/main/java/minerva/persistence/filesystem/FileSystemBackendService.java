@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.pmw.tinylog.Logger;
+
 import minerva.MinervaWebapp;
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
@@ -50,7 +52,15 @@ public class FileSystemBackendService implements BackendService {
         if (!MinervaWebapp.factory().getConfig().getEditorPassword().equals(password)) {
             return null;
         }
-        return UserAccess.loadUser(login);
+        User user = UserAccess.loadUser(login);
+        if (user == null) {
+        	Logger.info(login + " | User file does not exist. Create it.");
+        	user = new User();
+        	user.setLogin(login);
+        	user.setRealName(login);
+        	UserAccess.save(user);
+        }
+		return user;
     }
 
     @Override

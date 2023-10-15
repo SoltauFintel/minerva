@@ -25,7 +25,8 @@ public class UserAccess {
         }
         return ret;
     }
-    
+
+    // TODO loadUser() vs. save() -> rename
     public static User loadUser(String login) {
         File file = file(login);
         if (file.isFile()) {
