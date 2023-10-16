@@ -4,13 +4,16 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.MinervaWebapp;
+import minerva.base.DeliverHtmlContent;
 import minerva.base.Uptodatecheck;
+import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.seite.ViewSeitePage;
 
 public class BookPage extends BPage implements Uptodatecheck {
-
+    public static DeliverHtmlContent<BookSO> additionalButtons = i -> "";
+    
     @Override
     protected void execute() {
         boolean allPages = "all".equals(ctx.queryParam("m"));
@@ -26,7 +29,7 @@ public class BookPage extends BPage implements Uptodatecheck {
         put("isSorted", sorted);
         put("Sortierung", n(sorted ? "alfaSorted" : "manuSorted"));
         put("hasReleaseNotesBtn", hasReleaseNotesBtn());
-        put("hasSchnittstellen", "Prozesse".equalsIgnoreCase(book.getBook().getTitle().getString("de")) || MinervaWebapp.factory().getConfig().isDevelopment());
+        put("additionalButtons", additionalButtons.getHTML(book));
         put("hasPrevlink", false);
         boolean hasSeiten = !book.getSeiten().isEmpty();
         put("hasNextlink", hasSeiten);

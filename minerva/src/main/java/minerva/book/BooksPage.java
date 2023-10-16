@@ -6,6 +6,7 @@ import com.github.template72.data.DataMap;
 import github.soltaufintel.amalia.spark.Context;
 import minerva.MinervaWebapp;
 import minerva.access.CommitHash;
+import minerva.base.DeliverHtmlContent;
 import minerva.config.MinervaFactory;
 import minerva.model.BookSO;
 import minerva.model.BooksSO;
@@ -13,6 +14,7 @@ import minerva.model.WorkspaceSO;
 import minerva.user.UPage;
 
 public class BooksPage extends UPage {
+    public static DeliverHtmlContent<WorkspaceSO> additionalButtons = i -> "";
     
     @Override
     public void init(Context ctx) {
@@ -53,6 +55,7 @@ public class BooksPage extends UPage {
         put("booksOk", books != null);
         put("workspaceNotOk", n("workspaceNotOk").replace("$b", esc(branch)));
         put("userMessage", esc(workspace.getUserMessage()));
+        put("additionalButtons", additionalButtons.getHTML(workspace));
         
         DataList list2 = list("langs");
         for (String lang : langs) {
