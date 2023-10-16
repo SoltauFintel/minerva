@@ -12,19 +12,19 @@ import com.github.template72.data.DataMap;
  * National language support
  */
 public class NLS {
-    private static final Map<String, String> de = loadRB("de");
-    private static final Map<String, String> en = loadRB("en");
-    public static final DataMap dataMap_de = loadDataMap(de);
-    public static final DataMap dataMap_en = loadDataMap(en);
+    public static final Map<String, String> de = loadRB("de", "/de.rb");
+    public static final Map<String, String> en = loadRB("en", "/en.rb");
+    public static DataMap dataMap_de = loadDataMap(de);
+    public static DataMap dataMap_en = loadDataMap(en);
     
     private NLS() {
     }
 
-    private static Map<String, String> loadRB(String lang) {
+    public static Map<String, String> loadRB(String lang, String filename) {
         // Properties Klasse ist doof
         Map<String, String> map = new HashMap<>();
         try (BufferedReader r = new BufferedReader(
-                new InputStreamReader(NLS.class.getResourceAsStream("/" + lang + ".rb")))) {
+                new InputStreamReader(NLS.class.getResourceAsStream(filename)))) {
             String line;
             while ((line = r.readLine()) != null) {
                 if (line.trim().startsWith("#")) {
@@ -38,12 +38,12 @@ public class NLS {
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException("Error reading NLS file '" + lang + "'", e);
+            throw new RuntimeException("Error reading NLS file '" + filename + "' for language '" + lang + "'", e);
         }
         return map;
     }
 
-    private static DataMap loadDataMap(Map<String, String> map) {
+    public static DataMap loadDataMap(Map<String, String> map) {
         DataMap dataMap = new DataMap();
         dataMap.putAll(map);
         return dataMap;

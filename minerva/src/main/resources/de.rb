@@ -218,4 +218,3 @@ alleNochNichtVorhandenen=alle noch nicht vorhandenen
 selectRelease=Bitte wählen Sie ein Release!
 pageDoesntExist=Seite mit Titel "$t" existiert nicht!
 generalChanges=Allgemeine Änderungen
-Schnittstellen=Schnittstellen
