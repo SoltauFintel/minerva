@@ -57,7 +57,7 @@ public class UserSO {
     }
     
     public WorkspaceSO getWorkspace(String branch) {
-        return workspaces.byBranch(branch);
+        return workspaces.byBranch(this, branch);
     }
     
     public String getGuiLanguage() {
@@ -283,5 +283,9 @@ public class UserSO {
             }
         }
         return notes;
+    }
+    
+    public WorkspaceSO masterWorkspace() {
+        return getWorkspaces().byBranch(this, "master");
     }
 }

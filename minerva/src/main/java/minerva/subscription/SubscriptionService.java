@@ -54,7 +54,7 @@ public class SubscriptionService {
         StateSO state = new StateSO(new User(LOGIN, folder));
         
         // get book
-        WorkspaceSO workspace = state.getUser().getWorkspaces().master();
+        WorkspaceSO workspace = state.getUser().masterWorkspace();
         int n = workspace.getBooks().size();
         if (n != 1) {
             throw new RuntimeException("1 book is expected but there are " + n + " books.");

@@ -48,7 +48,7 @@ public class StatesSO {
         // hier der master eingestellt. Zukünftig könnte man sich den zuletzt aktiven
         // Workspace merken.
         try {
-            WorkspaceSO workspace = state.getUser().getWorkspaces().master();
+            WorkspaceSO workspace = state.getUser().masterWorkspace();
             state.getUser().setCurrentWorkspace(workspace);
         } catch (Exception ignore) {
         }

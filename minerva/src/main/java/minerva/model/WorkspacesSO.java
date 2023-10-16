@@ -9,12 +9,10 @@ import java.util.Map;
 
 import org.pmw.tinylog.Logger;
 
-import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
 import minerva.access.DirAccess;
 import minerva.base.FileService;
 import minerva.base.MList;
-import minerva.base.UserMessage;
 
 public class WorkspacesSO extends MList<WorkspaceSO> {
     public static final String MINERVA_BRANCH = "minerva";
@@ -38,11 +36,7 @@ public class WorkspacesSO extends MList<WorkspaceSO> {
         return userFolder;
     }
 
-    public WorkspaceSO master() {
-        return byBranch("master");
-    }
-
-    public WorkspaceSO byBranch(String branch) {
+    public WorkspaceSO byBranch(UserSO user, String branch) {
         if (isEmpty()) {
             throw new RuntimeException("There are no workspaces.");
         }
@@ -51,15 +45,17 @@ public class WorkspacesSO extends MList<WorkspaceSO> {
                 return w;
             }
         }
-        throw new UserMessage("noWS4branch", get(0), msg -> msg.replace("$b", Escaper.esc(branch)));
+        Logger.info(user.getLogin() + " | " + branch + " | Workspace not found. Workspace will be created.");
+        return user.getWorkspaces().addWorkspace(branch, user);
     }
 
     @Override
     public boolean remove(WorkspaceSO workspace) {
         FileService.deleteFolder(new File(workspace.getFolder()));
         boolean ret = super.remove(workspace);
-        if (workspace.getUser().getCurrentWorkspace() == workspace) {
-            workspace.getUser().setCurrentWorkspace(workspace.getUser().getWorkspaces().master());
+        UserSO user = workspace.getUser();
+        if (user.getCurrentWorkspace() == workspace) {
+            user.setCurrentWorkspace(user.masterWorkspace());
         }
         return ret;
     }
@@ -68,10 +64,11 @@ public class WorkspacesSO extends MList<WorkspaceSO> {
         return MinervaWebapp.factory().getBackendService().getAddableBranches(this, ref);
     }
 
-    public void addWorkspace(String branch, UserSO user) {
+    public WorkspaceSO addWorkspace(String branch, UserSO user) {
         WorkspaceSO workspace = new WorkspaceSO(user, userFolder, branch);
         add(workspace);
         workspace.pull(true);
+        return workspace;
     }
 
     public static class WorkspacesComparator implements Comparator<WorkspaceSO> {

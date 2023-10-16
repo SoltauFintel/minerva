@@ -14,7 +14,7 @@ public class AddWorkspacePage extends UPage {
             user.getWorkspaces().addWorkspace(ctx.formParam("branch"), user);
             ctx.redirect("/");
         } else {
-            List<String> branchs = user.getWorkspaces().getAddableBranches(user.getWorkspaces().master());
+            List<String> branchs = user.getWorkspaces().getAddableBranches(user.masterWorkspace());
             if (branchs.isEmpty()) {
                 render = false;
                 ctx.redirect("/message?m=2"); // noBranchToAdd
