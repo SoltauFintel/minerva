@@ -17,7 +17,7 @@ public class AddWorkspacePage extends UPage {
             List<String> branchs = user.getWorkspaces().getAddableBranches(user.getWorkspaces().master());
             if (branchs.isEmpty()) {
                 render = false;
-                ctx.redirect("/message?m=2");
+                ctx.redirect("/message?m=2"); // noBranchToAdd
             } else {
                 header(n("createWS"));
                 combobox("branchs", branchs, "", false, model);

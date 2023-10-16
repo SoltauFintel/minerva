@@ -37,7 +37,7 @@ public class MergeBranchPage extends UPage {
             List<String> delayedPush = user.getUserSettings().getDelayedPush();
             branches.removeIf(n -> delayedPush.contains(n));
             if (branches.isEmpty()) {
-                throw new UserMessage("noBranches", user);
+                throw new UserMessage("noBranchForMerge", user);
             }
             header(n("mergeBranch"));
             put("branch", esc(branch));
