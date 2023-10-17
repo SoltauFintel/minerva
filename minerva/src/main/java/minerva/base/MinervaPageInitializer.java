@@ -14,6 +14,7 @@ import minerva.config.MinervaConfig;
 import minerva.model.BookSO;
 import minerva.model.BooksSO;
 import minerva.model.SeiteSO;
+import minerva.user.UserAccess;
 
 public class MinervaPageInitializer extends PageInitializer {
     
@@ -56,7 +57,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("myTasks", "");
         page.put("isAdmin", isAdmin);
         page.put("canBeAdmin", hasUser && MinervaWebapp.factory().getAdmins().contains(m.getLogin()));
-        page.put("hasExportRight", hasUser && MinervaWebapp.factory().getPersonsWithExportRight().contains(m.getLogin()));
+        page.put("hasExportRight", hasUser && UserAccess.hasExportRight(m.getLogin()));
         page.put("hasLastEditedPage", m.getLastEditedPage_link() != null);
         page.put("lastEditedPage_link", m.getLastEditedPage_link());
         page.put("lastEditedPage_title", m.getLastEditedPage_title());
@@ -85,7 +86,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("exclusionsTitle", NLS.get(userLang, "exclusions"));
         page.put("myTasks", NLS.get(userLang, "myTasks"));
         page.put("formulaEditor", NLS.get(userLang, "formulaEditor"));
-        page.put("delayedPush", m.getUser().getUserSettings().getDelayedPush().contains(m.getBranch()));
+        page.put("delayedPush", m.getUser().getUser().getDelayedPush().contains(m.getBranch()));
         page.put("delayedPushAllowed", MinervaWebapp.factory().isGitlab()
                 && !"master".equals(m.getBranch())
                 && !(m.getBranch().length() >= 1 && m.getBranch().charAt(0) >= '0' && m.getBranch().charAt(0) <= '9'));

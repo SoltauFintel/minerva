@@ -23,7 +23,7 @@ import minerva.access.CommitMessage;
 import minerva.base.StringService;
 import minerva.config.ICommit;
 import minerva.persistence.gitlab.GitFactory;
-import minerva.persistence.gitlab.GitlabUser;
+import minerva.user.User;
 
 /**
  * Control Git repository with quite low level functions: clone, fetch, pull, tag, branch, commit, select branch/commit.
@@ -62,7 +62,7 @@ public class GitService {
      * @param branch which branch should be active after clone, e.g. "master"
      * @param bare false: with repository and with workspace, true: with repository and without workspace
      */
-    public void clone(String url, GitlabUser user, String branch, boolean bare) {
+    public void clone(String url, User user, String branch, boolean bare) {
         try (Git result = Git.cloneRepository()
                 .setURI(GitFactory.handleUrl(url, user))
                 .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
@@ -82,7 +82,7 @@ public class GitService {
      * Git fetch action
      * @param user user to log into remote Git repository
      */
-    public void fetch(GitlabUser user) {
+    public void fetch(User user) {
         try (Git git = Git.open(workspace)) {
             git.fetch()
                 .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
@@ -97,7 +97,7 @@ public class GitService {
      * <p>Please call clearTags() before if you want to ensure that deleted tags on remote do not exist in local repo.</p>
      * @param user user to log into remote Git repository
      */
-    public void pull(GitlabUser user) {
+    public void pull(User user) {
         try (Git git = Git.open(workspace)) {
             git.pull()
                 .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
@@ -158,7 +158,7 @@ public class GitService {
      * @param commit null: current commit, otherwise commit hash or tag name
      * @param user user to log into remote Git repository, null: don't push
      */
-    public void branch(String name, String commit, GitlabUser user) {
+    public void branch(String name, String commit, User user) {
         if (StringService.isNullOrEmpty(name)) {
             throw new RuntimeException("Branch name is not valid!");
         }
@@ -184,7 +184,7 @@ public class GitService {
         }
     }
     
-    private void branch(String name, GitlabUser user) {
+    private void branch(String name, User user) {
         String action = "creating";
         try (Git git = Git.open(workspace)) {
             // step 1: create
@@ -292,7 +292,7 @@ public class GitService {
      * @param removeFilenames files to delete
      * @return commit hash of newly created commit
      */
-    public String commit(CommitMessage commitMessage, String authorName, String mail, GitlabUser user,
+    public String commit(CommitMessage commitMessage, String authorName, String mail, User user,
             Set<String> addFilenames, Set<String> removeFilenames) {
         if (commitMessage == null) {
             throw new IllegalArgumentException("commitMessage must not be null!");
@@ -381,7 +381,7 @@ public class GitService {
         }
     }
     
-    public boolean areThereRemoteUpdates(String targetBranch, GitlabUser user) {
+    public boolean areThereRemoteUpdates(String targetBranch, User user) {
         try (Git git = Git.open(workspace)) {
             FetchResult f = git.fetch()
                     .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))

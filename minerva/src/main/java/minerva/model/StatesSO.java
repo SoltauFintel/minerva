@@ -33,14 +33,6 @@ public class StatesSO {
         StateSO state = new StateSO(user);
         state.getUser().finishMyEditings();
         
-        UserSettingsSO us = state.getUser().getUserSettings();
-        if (us.getGuiLanguage() != null) {
-            state.getUser().getUser().setGuiLanguage(us.getGuiLanguage());
-        }
-        if (us.getPageLanguage() != null) {
-            state.getUser().getUser().setPageLanguage(us.getPageLanguage());
-        }
-        
         int sessionTimeout = 1000 * 60 * 60 * 24 * 7; // I'm not sure what value and if needs to be configurable.
         Tosmap.add(key(ctx), System.currentTimeMillis() + sessionTimeout, state);
         

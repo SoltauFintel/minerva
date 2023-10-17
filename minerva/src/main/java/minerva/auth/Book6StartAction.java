@@ -5,7 +5,7 @@ import org.pmw.tinylog.Logger;
 import github.soltaufintel.amalia.web.action.Action;
 import minerva.base.StringService;
 import minerva.base.Tosmap;
-import minerva.persistence.filesystem.FileSystemBackendService;
+import minerva.user.UserAccess;
 
 /**
  * Foreign application call this in 2nd step to open online help editor.
@@ -26,7 +26,7 @@ public class Book6StartAction extends Action {
             ctx.redirect("/message?m=4");
             return;
         }
-        MinervaAuth.login1(ctx, FileSystemBackendService.loginUser(login));
+        MinervaAuth.login1(ctx, UserAccess.loadUser(login));
         
         ctx.redirect("/");
     }

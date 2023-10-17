@@ -31,14 +31,9 @@ mail.note.body=
 mail.watch.subject=
 mail.watch.body=
 
-persons=user1,user2,user3
-persons-with-export-right=user3
 admins=user2
 
 work-folder=
-
-# real user names
-user.<login>=
 
 release-notes.base-url=
 release-notes.token=

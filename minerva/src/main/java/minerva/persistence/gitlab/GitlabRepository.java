@@ -15,6 +15,7 @@ import minerva.base.UserMessage;
 import minerva.config.ICommit;
 import minerva.model.WorkspaceSO;
 import minerva.persistence.gitlab.git.GitService;
+import minerva.user.User;
 
 public class GitlabRepository {
     private final GitlabSystem gitlab;
@@ -35,7 +36,7 @@ public class GitlabRepository {
             }
         }
         String branch = workspace.getBranch();
-        GitlabUser user = (GitlabUser) workspace.getUser().getUser();
+        User user = workspace.getUser().getUser();
         
         GitService git = new GitService(workspaceFolder);
         if (new File(workspaceFolder, ".git").exists()) {
@@ -126,7 +127,7 @@ public class GitlabRepository {
         return git(workspace).getHtmlChangesHistory(start, size);
     }
     
-    public void createBranch(WorkspaceSO workspace, String newBranch, String commit, GitlabUser user) {
+    public void createBranch(WorkspaceSO workspace, String newBranch, String commit, User user) {
         GitService git = git(workspace);
         git.fetch(user);
         git.branch(newBranch, commit, user);

@@ -9,7 +9,7 @@ import minerva.base.StringService;
 import minerva.config.MinervaConfig;
 import minerva.model.SeiteSO;
 import minerva.model.UserSO;
-import minerva.model.UserSettingsSO;
+import minerva.user.UserAccess;
 
 public class NotifyWatchers {
     private final MinervaConfig c = MinervaWebapp.factory().getConfig();
@@ -28,9 +28,9 @@ public class NotifyWatchers {
         }
         
         // get all users
-        List<NotifyUser> nu = MinervaWebapp.factory().getLogins().stream()
-                .filter(login -> !login.equals(me.getLogin()))
-                .map(login -> new NotifyUser(login))
+        List<NotifyUser> nu = UserAccess.loadUsers().stream()
+                .filter(user -> !user.getLogin().equals(me.getLogin()))
+                .map(user -> new NotifyUser(user.getMailAddress(), user.getWatchlist()))
                 .collect(Collectors.toList());
         
         // collect all watchers
@@ -41,14 +41,18 @@ public class NotifyWatchers {
     }
     
     private static class NotifyUser {
-        private final String login;
+        private final String mailAddress;
         private final List<String> watchlist;
         private boolean notify = false;
         private SeiteSO notifiedBecauseOfPage;
 
-        private NotifyUser(String login) {
-            this.login = login;
-            watchlist = UserSettingsSO.load(login).getWatchlist();
+        private NotifyUser(String mailAddress, List<String> watchlist) {
+            this.mailAddress = mailAddress;
+            this.watchlist = watchlist;
+        }
+        
+        String getMailAddress() {
+            return mailAddress;
         }
 
         List<String> getWatchlist() {
@@ -61,10 +65,6 @@ public class NotifyWatchers {
 
         void setNotify(boolean notify) {
             this.notify = notify;
-        }
-
-        String getLogin() {
-            return login;
         }
 
         SeiteSO getNotifiedBecauseOfPage() {
@@ -89,11 +89,11 @@ public class NotifyWatchers {
     }
     
     private void notifyWatcher(NotifyUser user) {
-        Mail mail = new Mail();
-        mail.setToEmailaddress(c.getMailAddress(user.getLogin()));
-        if (StringService.isNullOrEmpty(mail.getToEmailaddress())) {
+        if (StringService.isNullOrEmpty(user.getMailAddress())) {
             return;
         }
+        Mail mail = new Mail();
+        mail.setToEmailaddress(user.getMailAddress());
         mail.setSubject(c.getWatchSubject());
         mail.setBody(c.getWatchBody()
                 .replace("{pageId}", editedSeite.getId())

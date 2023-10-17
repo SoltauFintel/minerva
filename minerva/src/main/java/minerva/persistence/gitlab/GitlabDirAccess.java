@@ -61,7 +61,7 @@ public class GitlabDirAccess extends AbstractDirAccess {
 
     @Override
     public void createBranch(WorkspaceSO workspace, String newBranch, String commit) {
-        repo.createBranch(workspace, newBranch, commit, (GitlabUser) workspace.getUser().getUser());
+        repo.createBranch(workspace, newBranch, commit, workspace.getUser().getUser());
     }
     
     @Override
@@ -77,7 +77,7 @@ public class GitlabDirAccess extends AbstractDirAccess {
                     sourceBranch,
                     targetBranch,
                     repo.getGitlabSystemUrl(), repo.getProject(),
-                    (GitlabUser) user.getUser(),
+                    user.getUser(),
                     user.getGuiLanguage());
         } catch (GitLabApiException e) {
             throw new RuntimeException(e);

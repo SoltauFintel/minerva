@@ -42,7 +42,7 @@ public class WorkspaceSO {
     }
 
     public DirAccess dao() {
-        if (user.getUserSettings().getDelayedPush().contains(branch)) {
+        if (user.getUser().getDelayedPush().contains(branch)) {
             return new FileSystemDirAccess();
         } else {
             return user.dao();

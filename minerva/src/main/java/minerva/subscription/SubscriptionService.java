@@ -46,12 +46,9 @@ public class SubscriptionService {
     
     private File createZipFile() {
         // login
-        String folder = MinervaWebapp.factory().getConfig().getUserFolder();
-        if (folder.isEmpty()) {
-            folder = LOGIN;
-        }
-        Logger.info("SubscriptionService | folder: " + folder);
-        StateSO state = new StateSO(new User(LOGIN, folder));
+        User user = new User();
+        user.setLogin(LOGIN);
+        StateSO state = new StateSO(user);
         
         // get book
         WorkspaceSO workspace = state.getUser().masterWorkspace();

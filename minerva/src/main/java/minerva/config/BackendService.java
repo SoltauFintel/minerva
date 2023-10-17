@@ -32,6 +32,12 @@ public interface BackendService {
     String logout(User user);
 
     /**
+     * @param user -
+     * @return user folder
+     */
+	String getUserFolder(User user);
+
+    /**
      * @return name of backend and details
      */
     String getInfo();

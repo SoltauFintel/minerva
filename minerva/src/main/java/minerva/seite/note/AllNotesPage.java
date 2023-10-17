@@ -7,10 +7,10 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Escaper;
-import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.book.BPage;
 import minerva.seite.Note;
+import minerva.user.UserAccess;
 
 public class AllNotesPage extends BPage {
     
@@ -31,7 +31,7 @@ public class AllNotesPage extends BPage {
             map.put("noteId", note.getId());
             map.put("id", n.getSeite().getId() + "-" + note.getId());
             map.put("me", note.getUser().equals(login));
-            map.put("user", mesc(MinervaWebapp.factory().login2RealName(note.getUser())));
+            map.put("user", mesc(UserAccess.login2RealName(note.getUser())));
             map.put("created", mesc(note.getCreated()));
             String text = note.getText();
             if (text.length() > 113) {
