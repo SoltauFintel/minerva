@@ -186,7 +186,7 @@ public class MinervaConfig {
      * @return never null
      */
     public String getNoteBody() {
-        return config.get("mail.note.body", "").replace("\\n", "\n");
+        return config.get("mail.note.body", "").replace("{host}", config.get("host")).replace("\\n", "\n");
     }
     
     public boolean readyForNoteNotifications() {
@@ -200,7 +200,7 @@ public class MinervaConfig {
     }
     
     public String getWatchBody() {
-        return config.get("mail.watch.body", "").replace("\\n", "\n");
+        return config.get("mail.watch.body", "").replace("{host}", config.get("host")).replace("\\n", "\n");
     }
 
     public boolean readyForWatchNotifications() {
