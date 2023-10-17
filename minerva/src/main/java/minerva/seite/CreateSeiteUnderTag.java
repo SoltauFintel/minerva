@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.pmw.tinylog.Logger;
+
 import minerva.access.CommitMessage;
 import minerva.model.BookSO;
 import minerva.model.ISeite;
@@ -78,7 +80,7 @@ public class CreateSeiteUnderTag {
         }
         SeiteSO seite = seiten._byTitle(title, lang);
         if (seite == null) {
-            String id = parent.getSeiten().createSeite(iseite, book, book.dao());
+            String id = seiten.createSeite(iseite, book, book.dao());
             seite = book._seiteById(id);
             seite.getSeite().getTitle().setString("de", title);
             seite.getSeite().getTitle().setString("en", title);
@@ -86,6 +88,7 @@ public class CreateSeiteUnderTag {
                 seite.getSeite().getTags().add(tag);
             }
             seite.saveMetaTo(files);
+            Logger.info(book.getUser().getLogin() + " | created interface parent page: " + title);
         }
         return seite;
     }
@@ -98,11 +101,23 @@ public class CreateSeiteUnderTag {
         seite.getSeite().getTitle().setString("en", title);
         seite.saveMetaTo(files);
         
-        seite.getContent().setString(lang, "TODO");
-        List<String> langs = new ArrayList<>();
-        langs.add(lang);
+		seite.getContent().setString(lang, body("TODO"));
+		List<String> langs = new ArrayList<>();
+		langs.add(lang);
+		if ("de".equals(lang)) {
+			seite.getContent().setString("en", body("::"));
+			langs.add("en");
+		} else {
+			seite.getContent().setString("de", body("::"));
+			langs.add("de");
+		}
         seite.saveHtmlTo(files, langs);
         
+        Logger.info(book.getUser().getLogin() + " | created interface page: " + title);
         return seite;
+    }
+    
+    private String body(String text) {
+    	return "<html><body><p>" + text + "</p></body></html>";
     }
 }
