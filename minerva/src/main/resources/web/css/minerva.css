@@ -534,4 +534,9 @@ li.subpage {
     border-top-left-radius: 0;
     margin-left: -1px
 }
+
+	/* by MW: */
+	.has-float-label-textarea label {
+		left: 1.3em;
+	}
 /* -----------end of floating labels------- */
