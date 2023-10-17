@@ -15,8 +15,8 @@ public class UsersPage extends UPage {
         
         header(n("manageUsers"));
         DataList list = list("users");
-        for (User u : UserAccess.loadUsers()) {
-            DataMap map = list.add();
+		UserAccess.loadUsers().stream().sorted((a, b) -> a.getRealName().compareToIgnoreCase(b.getRealName())).forEach(u -> {
+		    DataMap map = list.add();
             map.put("login", esc(u.getLogin()));
             map.put("link", esc("/user/" + u.getLogin()));
             map.put("deletelink", esc("/user/" + u.getLogin() + "/delete"));
@@ -24,7 +24,7 @@ public class UsersPage extends UPage {
             map.put("realName", esc(u.getRealName()));
             map.put("mailAddress", esc(u.getMailAddress()));
             map.put("exportAllowed", u.isExportAllowed());
-        }
+        });
         putInt("n", list.size());
     }
 }
