@@ -81,14 +81,15 @@ public class ReleaseNotesService {
 	    createCustomerPage();
 	    String releaseNumber = getReleaseNumber(ctx.getReleasePage().getTitle());
         createSectionPage(releaseNumber);
-	    createReleasePage(releaseNumber);
+	    SeiteSO seite = createReleasePage(releaseNumber);
         ctx.getBook().dao().saveFiles(ctx.getFiles(),
                 new CommitMessage("Release Notes " + ctx.getSpaceKey() + " " + releaseNumber),
                 ctx.getBook().getWorkspace());
         Logger.info(releaseNumber +" | Number of saved pages: " + ctx.getFiles().keySet().stream().filter(i -> i.endsWith(".meta")).count());
+        seite.reindex();
     }
 
-    private void createCustomerPage() {
+	private void createCustomerPage() {
         SeiteSO customerPage = findCustomerPage();
         if (customerPage == null) {
             customerPage = createSeite(ctx.getBook());
@@ -159,7 +160,7 @@ public class ReleaseNotesService {
         return o >= 0 ? (releaseNumber.substring(0, o + 1) + "x") : null;
     }
 
-    private void createReleasePage(String releaseNumber) {
+    private SeiteSO createReleasePage(String releaseNumber) {
         SeiteSO parent = ctx.getSectionPage() == null ? ctx.getCustomerPage() : ctx.getSectionPage();
         SeiteSO releasePage = createSeite(parent);
         ctx.setResultingReleasePage(releasePage);
@@ -171,6 +172,7 @@ public class ReleaseNotesService {
         releasePage.saveMetaTo(ctx.getFiles());
         releasePage.saveHtmlTo(ctx.getFiles(), langs());
         parent.getSeiten(ctx.getLang()); // sort
+        return releasePage;
     }
     
     private String getReleasePageContent() {

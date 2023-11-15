@@ -419,7 +419,7 @@ public class SeiteSO implements ISeite {
         }
     }
     
-    private void reindex() {
+    public void reindex() {
         new Thread(() -> {  // Access index in background so user does not have to wait for completion.
             Logger.debug("Reindexing page #" + SeiteSO.this.getId() + "...");
             book.getWorkspace().getSearch().index(SeiteSO.this);
