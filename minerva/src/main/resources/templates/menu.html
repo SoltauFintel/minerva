@@ -34,6 +34,7 @@
             <li>
                 <a href="/w/{{branch}}/my-tasks"><i class="fa fa-inbox"></i> {{myTasks}}</a>
             </li>
+            {{additionalMenus}}
             {{each f in favorites}}
                 <li>
                     <a href="{{f.link}}"><i class="fa fa-star fav"></i> {{f.title}}</a>

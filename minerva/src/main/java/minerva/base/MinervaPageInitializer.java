@@ -61,6 +61,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("hasLastEditedPage", m.getLastEditedPage_link() != null);
         page.put("lastEditedPage_link", m.getLastEditedPage_link());
         page.put("lastEditedPage_title", m.getLastEditedPage_title());
+        page.put("additionalMenus", getAdditionalMenus(m));
         if (m.hasUser()) {
             hasUserVars(page, m);
         }
@@ -76,6 +77,10 @@ public class MinervaPageInitializer extends PageInitializer {
                 map.put("title", esc(book.getBook().getTitle().getString(userLang)));
             }
         }
+    }
+    
+    protected String getAdditionalMenus(MinervaPageInitModel m) {
+    	return "";
     }
 
     private void hasUserVars(Page page, MinervaPageInitModel m) {
