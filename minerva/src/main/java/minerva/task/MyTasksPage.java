@@ -30,7 +30,7 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
     private void fill(List<NoteWithSeite> notes, String branch, DataMap model, String login) {
         String v0 = "/s/" + branch + "/";
         notes.sort((a, b) -> b.getNote().getCreated().compareTo(a.getNote().getCreated()));
-        DataList list = model.list("notes");
+        DataList list = model.list("tasks");
         for (NoteWithSeite n : notes) {
             DataMap map = list.add();
             Note note = n.getNote();
