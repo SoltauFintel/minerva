@@ -14,14 +14,13 @@
                	</div>
                 <div id="na{{n.id}}" class="noteTextNC" style="margin-bottom: 0;">{{n.text1}}{{if n.hasMoreText}}<a
                     onclick="moreText('{{n.id}}');" class="noteMehr">mehr...</a>{{/if}}<br><a
-                    href="{{n.linkh}}" class="btn btn-primary btn-sm">{{N.viewNote}}</a></div>
+                    href="{{n.link}}" class="btn btn-primary btn-sm">{{N.viewNote}}</a></div>
                 
                 <div id="nb{{n.id}}" class="noteTextNC" style="margin-bottom: 0;" hidden>{{n.completeText}}<br/><a
-                    href="{{n.linkh}}" class="btn btn-primary btn-sm">{{N.viewNote}}</a></div>
+                    href="{{n.link}}" class="btn btn-primary btn-sm">{{N.viewNote}}</a></div>
                 
-                <span style="font-size: 8pt; color: #999; margin-left: 3em;">{{n.created}} &ndash;
+                <span style="font-size: 8pt; color: #999; margin-left: 3em;">{{n.date}} &ndash;
                 <span{{if n.me}} class="noteByMe"{{/if}}>{{n.user}}</span><!-- &ndash;
-                <i class="fa fa-book greenbook"></i> {{n.bookTitle}} --></span>
             </div>
         {{/each}}
     </div>
