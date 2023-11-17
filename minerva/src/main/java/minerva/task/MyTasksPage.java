@@ -48,6 +48,7 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
             map.put("parentLink", task.getParentLink());
             map.put("parentTitle", esc(task.getParentTitle()));
             map.put("viewTask", esc(n("viewTask").replace("$t", task.getTypeName())));
+            map.put("color", esc(task.getColor()));
         }
     }
 }

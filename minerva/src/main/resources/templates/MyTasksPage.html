@@ -9,7 +9,7 @@
         {{each n in tasks}}
             <div class="mt2" style="border-top: 1pt #ccc solid;">
                	<div style="margin-top: 4px;">
-               		<a href="{{n.parentLink}}"><i class="fa fa-file-text" style="color: rgb(0,101,255);"></i></a>
+               		<a href="{{n.parentLink}}"><i class="fa fa-file-text" style="color: {{n.color}};"></i></a>
                		<b>{{n.parentTitle}}</b>
                	</div>
                 <div id="na{{n.id}}" class="noteTextNC" style="margin-bottom: 0;">{{n.text1}}{{if n.hasMoreText}}<a

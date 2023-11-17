@@ -56,4 +56,9 @@ public class NoteTask implements Task {
 	public String getTypeName() {
 		return "Kommentar";
 	}
+
+	@Override
+	public String getColor() {
+		return "rgb(0,101,255)";
+	}
 }
