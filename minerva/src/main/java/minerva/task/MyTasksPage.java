@@ -1,4 +1,4 @@
-package minerva.seite.note;
+package minerva.task;
 
 import java.util.List;
 
@@ -6,6 +6,8 @@ import org.pmw.tinylog.Logger;
 
 import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
+import minerva.seite.note.AllNotesPage;
+import minerva.seite.note.NoteWithSeite;
 import minerva.user.UserAccess;
 import minerva.workspace.WPage;
 
