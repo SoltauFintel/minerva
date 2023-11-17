@@ -72,7 +72,6 @@ import minerva.seite.move.MoveSeiteAckPage;
 import minerva.seite.move.MoveSeiteAction;
 import minerva.seite.move.MoveSeitePage;
 import minerva.seite.note.AddNotePage;
-import minerva.seite.note.AllNotesPage;
 import minerva.seite.note.DeleteNoteAction;
 import minerva.seite.note.EditNotePage;
 import minerva.seite.note.NoteDoneAction;
@@ -151,7 +150,6 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/b/:branch/:book", BookPage.class);
         form("/b/:branch/:book/order", OrderTopLevelSeitePage.class);
         get("/b/:branch/:book/sort", SortTopLevelSeiteAction.class);
-        get("/b/:branch/:book/notes", AllNotesPage.class);
         get("/b/:branch/:book/cal", CheckAllLinksPage.class);
         get("/b/:branch/:book/export", ExportBookAction.class);
         get("/b/:branch/:book/validate", ValidationPage.class);
