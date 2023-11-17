@@ -9,18 +9,18 @@
         {{each n in tasks}}
             <div class="mt2" style="border-top: 1pt #ccc solid;">
                	<div style="margin-top: 4px;">
-               		<a href="{{n.pagelink}}"><i class="fa fa-file-text" style="color: rgb(0,101,255);"></i></a>
-               		<b>{{n.pageTitle}}</b>
+               		<a href="{{n.parentLink}}"><i class="fa fa-file-text" style="color: rgb(0,101,255);"></i></a>
+               		<b>{{n.parentTitle}}</b>
                	</div>
                 <div id="na{{n.id}}" class="noteTextNC" style="margin-bottom: 0;">{{n.text1}}{{if n.hasMoreText}}<a
                     onclick="moreText('{{n.id}}');" class="noteMehr">mehr...</a>{{/if}}<br><a
-                    href="{{n.link}}" class="btn btn-primary btn-sm">{{N.viewNote}}</a></div>
+                    href="{{n.link}}" class="btn btn-primary btn-sm">{{n.viewTask}}</a></div>
                 
                 <div id="nb{{n.id}}" class="noteTextNC" style="margin-bottom: 0;" hidden>{{n.completeText}}<br/><a
-                    href="{{n.link}}" class="btn btn-primary btn-sm">{{N.viewNote}}</a></div>
+                    href="{{n.link}}" class="btn btn-primary btn-sm">{{n.viewTask}}</a></div>
                 
                 <span style="font-size: 8pt; color: #999; margin-left: 3em;">{{n.date}} &ndash;
-                <span{{if n.me}} class="noteByMe"{{/if}}>{{n.user}}</span><!-- &ndash;
+                <span{{if n.me}} class="noteByMe"{{/if}}>{{n.user}}</span>
             </div>
         {{/each}}
     </div>

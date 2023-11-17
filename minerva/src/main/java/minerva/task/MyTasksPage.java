@@ -9,36 +9,33 @@ import com.github.template72.data.DataMap;
 
 import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
-import minerva.seite.Note;
-import minerva.seite.note.NoteWithSeite;
 import minerva.user.UserAccess;
 import minerva.workspace.WPage;
 
 public class MyTasksPage extends WPage implements Uptodatecheck {
-
+	
     @Override
     protected void execute() {
     	String login = ctx.queryParam("login");
 		Logger.info(user.getLogin() + " | " + (login == null || user.getLogin().equals(login) ? "My tasks" : "All tasks for " + login));
-		put("login", esc(UserAccess.login2RealName(StringService.isNullOrEmpty(login) ? user.getLogin() : login)));
+        
+        List<Task> tasks = new TaskService().getTasks(user, branch, login);
+        
         header(n("myTasks"));
-        List<NoteWithSeite> notes = user.getNotes(branch, login);
-		fill(notes, branch, model, user.getLogin());
-		putInt("n", notes.size());
+        put("login", esc(UserAccess.login2RealName(StringService.isNullOrEmpty(login) ? user.getLogin() : login)));
+		fill(tasks, branch, model, user.getLogin());
+        model.putInt("n", tasks.size());
     }
     
-    private void fill(List<NoteWithSeite> notes, String branch, DataMap model, String login) {
-        String v0 = "/s/" + branch + "/";
-        notes.sort((a, b) -> b.getNote().getCreated().compareTo(a.getNote().getCreated()));
+    private void fill(List<Task> tasks, String branch, DataMap model, String login) {
         DataList list = model.list("tasks");
-        for (NoteWithSeite n : notes) {
+        for (Task task : tasks) {
             DataMap map = list.add();
-            Note note = n.getNote();
-            map.put("id", n.getSeite().getId() + "-" + note.getId());
-            map.put("me", note.getUser().equals(login));
-            map.put("user", esc(UserAccess.login2RealName(note.getUser())));
-            map.put("date", esc(note.getCreated()));
-            String text = note.getText();
+            map.put("id", task.getId());
+            map.put("me", task.getLogin().equals(login));
+            map.put("user", esc(UserAccess.login2RealName(task.getLogin())));
+            map.put("date", esc(task.getDateTime()));
+            String text = task.getText();
             if (text.length() > 113) {
                 map.put("text1", StringService.makeClickableLinks(esc(text.substring(0, 110))));
                 map.put("hasMoreText", true);
@@ -47,12 +44,10 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
                 map.put("hasMoreText", false);
             }
             map.put("completeText", StringService.makeClickableLinks(esc(text)));
-            String bookFolder = n.getSeite().getBook().getBook().getFolder();
-            String v = v0 + bookFolder + "/" + n.getSeite().getId();
-            map.put("link", v + "/notes?highlight=" + note.getId() + "#" + note.getId());
-            map.put("pagelink", v);
-            map.put("pageTitle", esc(n.getSeite().getTitle()));
+            map.put("link", task.getLink());
+            map.put("parentLink", task.getParentLink());
+            map.put("parentTitle", esc(task.getParentTitle()));
+            map.put("viewTask", esc(n("viewTask").replace("$t", task.getTypeName())));
         }
-        model.putInt("n", notes.size());
     }
 }
