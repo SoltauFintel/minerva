@@ -14,6 +14,7 @@ import minerva.base.UserMessage;
 import minerva.config.BackendService;
 import minerva.config.ICommit;
 import minerva.config.MinervaConfig;
+import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.model.WorkspacesSO;
@@ -119,7 +120,11 @@ public class GitlabBackendService implements BackendService {
 
     @Override
     public List<ICommit> getSeiteMetaHistory(SeiteSO seite, boolean followRenames) {
-        return repo.getFileHistory(seite.gitFilenameMeta(), followRenames, seite.getBook().getWorkspace());
+		return getHistory(seite.gitFilenameMeta(), seite.getBook(), followRenames);
+	}
+
+	protected final List<ICommit> getHistory(String filename, BookSO book, boolean followRenames) {
+    	return repo.getFileHistory(filename, followRenames, book.getWorkspace());
     }
 
     @Override

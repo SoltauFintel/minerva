@@ -8,8 +8,6 @@ import minerva.base.FileService;
 import minerva.base.NlsString;
 import minerva.base.StringService;
 import minerva.model.SeiteSO;
-import minerva.persistence.filesystem.FileSystemBackendService;
-import minerva.persistence.gitlab.GitlabBackendService;
 import minerva.seite.IPageChangeStrategy;
 import minerva.seite.PageChange;
 
@@ -18,6 +16,7 @@ import minerva.seite.PageChange;
  * diese Factory diejeweilige richtige Klasse zurück.
  */
 public class MinervaFactory {
+	public static BackendServiceFactory backendServiceFactory = new BackendServiceFactory();
     private final MinervaConfig config;
     private final boolean gitlab;
     private final List<String> languages;
@@ -31,7 +30,8 @@ public class MinervaFactory {
         gitlab = config.isGitlab();
         admins = config.getAdmins();
         
-        backendService = gitlab ? new GitlabBackendService(config) : new FileSystemBackendService(config);
+System.out.println("use BackendServiceFactory");
+        backendService = backendServiceFactory.getBackendService(gitlab, config);
         
         // denkbar wären: A. alle speichern
         //   B. nur 1 speichern
