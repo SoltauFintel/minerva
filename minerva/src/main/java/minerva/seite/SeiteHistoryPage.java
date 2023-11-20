@@ -8,7 +8,9 @@ import java.util.stream.Collectors;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
+import minerva.config.BackendService;
 import minerva.config.ICommit;
 import minerva.config.MinervaFactory;
 import minerva.user.UserAccess;
@@ -18,28 +20,33 @@ public class SeiteHistoryPage extends SPage {
     @Override
     protected void execute() {
         boolean followRenames = "fr".equals(ctx.queryParam("m"));
+
         MinervaFactory fac = MinervaWebapp.factory();
         fac.gitlabOnlyPage();
-
-        List<ICommit> commits = fac.getBackendService().getSeiteMetaHistory(seite, followRenames);
-        Set<String> authors = new TreeSet<>();
+        BackendService backend = fac.getBackendService();
+		List<ICommit> commits = backend.getSeiteMetaHistory(seite, followRenames);
 
         header(seite.getTitle() + " - " + n("history"));
-        DataList list = list("commits");
-        for (ICommit commit : commits) {
-            DataMap map = list.add();
-            map.put("hash", esc(commit.getHash()));
-            map.put("hash7", esc(commit.getHash7()));
-            map.put("gitlabCommitLink", fac.getBackendService().getCommitLink(commit.getHash()));
-            String author = UserAccess.login2RealName(commit.getAuthor());
-            authors.add(author);
-            map.put("author", esc(author));
-            map.put("date", commit.getCommitDateTime());
-            map.put("message", esc(commit.getMessage()));
-        }
-        put("authors", esc(authors.stream().collect(Collectors.joining(", "))));
-        putInt("n", commits.size());
+        putCommits(commits, backend, model);
         put("filename", esc(seite.gitFilenameMeta()));
         put("followRenames", followRenames);
+    }
+    
+    public static void putCommits(List<ICommit> commits, BackendService backend, DataMap model) {
+        Set<String> authors = new TreeSet<>();
+        DataList list = model.list("commits");
+        for (ICommit commit : commits) {
+            DataMap map = list.add();
+            map.put("hash", Escaper.esc(commit.getHash()));
+            map.put("hash7", Escaper.esc(commit.getHash7()));
+            map.put("gitlabCommitLink", backend.getCommitLink(commit.getHash()));
+            String author = UserAccess.login2RealName(commit.getAuthor());
+            authors.add(author);
+            map.put("author", Escaper.esc(author));
+            map.put("date", Escaper.esc(commit.getCommitDateTime()));
+            map.put("message", Escaper.esc(commit.getMessage()));
+        }
+        model.put("authors", Escaper.esc(authors.stream().collect(Collectors.joining(", "))));
+        model.putInt("n", commits.size());
     }
 }
