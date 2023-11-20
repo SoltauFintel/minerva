@@ -30,7 +30,6 @@ public class MinervaFactory {
         gitlab = config.isGitlab();
         admins = config.getAdmins();
         
-System.out.println("use BackendServiceFactory");
         backendService = backendServiceFactory.getBackendService(gitlab, config);
         
         // denkbar wären: A. alle speichern
