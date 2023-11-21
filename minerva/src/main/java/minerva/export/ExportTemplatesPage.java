@@ -42,9 +42,4 @@ public class ExportTemplatesPage extends WPage {
     private void save(String dn, String content) {
         files.put(workspace.getFolder() + "/" + dn, content);
     }
-
-    @Override
-    protected String getPage() {
-        return "formular/" + super.getPage();
-    }
 }
