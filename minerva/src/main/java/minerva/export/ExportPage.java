@@ -75,9 +75,9 @@ public class ExportPage extends WPage {
     }
 
     private void callExportDownload() {
-        String item = ctx.queryParam("items"); // TODO item oder items?
-        String customer = ctx.queryParam("customers").toLowerCase();
-        String lang = ctx.queryParam("langs").toLowerCase();
+        String item = ctx.queryParam("item");
+        String customer = ctx.queryParam("customer").toLowerCase();
+        String lang = ctx.queryParam("lang").toLowerCase();
         user.saveExportSettings(item, customer, lang);
         String q = "/export?lang=" + u(lang) + "&customer=" + u(customer);
 
