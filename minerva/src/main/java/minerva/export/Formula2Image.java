@@ -48,7 +48,7 @@ public class Formula2Image {
                 File file = expression2ImageFile(expression, outputFolder, title);
                 
                 replaceMap.put(key,
-                        prefixHtml + "<img src=\"" + path + file.getName() + "\" class=\"math\">" + postfixHtml);
+                        prefixHtml + "<img src=\"" + path + file.getName() + "\" class=\"math\"/>" + postfixHtml);
             }
 
             o = html.indexOf(prefix, oo + postfix.length());
