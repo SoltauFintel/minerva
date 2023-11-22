@@ -7,11 +7,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.pmw.tinylog.Logger;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+import com.openhtmltopdf.util.Diagnostic;
+import com.openhtmltopdf.util.XRLog;
 
+import minerva.base.StringService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
@@ -19,6 +23,7 @@ import minerva.seite.link.Link;
 import minerva.seite.link.LinkService;
 
 public class PdfExportService extends MultiPageHtmlExportService {
+	private final String pdfCss;
 	public File pdfFile;
 	public static boolean check = false;
 	private StringBuilder sb = new StringBuilder();
@@ -26,8 +31,14 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	private String imageBaseDir;
 	private List<String> errorMessages = new ArrayList<>();
 	
+	// TODO Klasse zerschlagen? PDF-Technik, HTML besorgen+aufbereiten, Seitensteuerung, CSS
+	
 	public PdfExportService(WorkspaceSO workspace, String customer, String language) {
 		super(workspace, customer, language);
+		pdfCss = new ExportTemplatesService(workspace).loadTemplate(ExportTemplatesService.PDF_CSS);
+		if (StringService.isNullOrEmpty(pdfCss)) {
+			Logger.warn("PDF CSS is empty!");
+		}
 	}
 	
 	@Override
@@ -45,31 +56,9 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	private StringBuilder createHtmlContent() {
 		StringBuilder html = new StringBuilder();
         html.append(getDoctype());
-        html.append("<html><head><style>\n"
-        		+ "h1 { color: #000099; }\n" // XXX temp. damit man Seitenbeginn erkennen kann
-        		+ "h1,h2,h3,h4,h5,h6 { font-family: 'Noto Sans'; }\n"
-                + "@page {\n"
-                + "    @bottom-center {\n"
-                + "      content: counter(page);\n"
-                + "    }\n"
-                + "    margin-top:    50px;\n"
-                + "    margin-left:   50px;\n"
-                + "    margin-right:  50px;\n"
-                + "    margin-bottom: 50px;\n"
-                + "}\n"
-                + "table { border-spacing: 0; border-collapse: collapse; }\n"   // table-layout: fixed;
-                + "table td {\n"
-                + "    border: 1px solid #BBB;\n"
-                + "    padding: 5px;\n"
-                + "}\n"
-                + "p img {\n"
-                + "    max-width: 100%;\n" // gegen zu breite Grafiken
-                + "}\n"
-                + "h2 {\n"
-                + "    border-bottom: 1px solid #ccc;\n"
-                + "}\n"
-                + "div { widows: 7; orphans: 7; }\n"
-        		+ "</style></head><body>\n");
+        html.append("<html><head><style>\n");
+        html.append(pdfCss);
+        html.append("</style></head><body>\n");
         html.append(sb.toString());
         html.append("</body></html>\n");
 		return html;
@@ -84,13 +73,45 @@ public class PdfExportService extends MultiPageHtmlExportService {
 		//FileService.savePlainTextFile(new File("pdf-export.html"), s.toString()); // für die Fehleranalyse
 		try (OutputStream os = new FileOutputStream(pdfFile)) {
             PdfRendererBuilder builder = new PdfRendererBuilder();
+
+            XRLog.listRegisteredLoggers().forEach(logger -> XRLog.setLevel(logger, java.util.logging.Level.OFF)); // no output to syserr
+    		List<Diagnostic> diagonstics = new ArrayList<>();
+    		builder.withDiagnosticConsumer(diagonstics::add); // https://github.com/danfickle/openhtmltopdf/wiki/Logging
+            
             builder.useFont(new File("fonts/NotoSans-Regular.ttf"), "Noto Sans");
             builder.withHtmlContent(s.toString(), "/");
             builder.toStream(os);
             builder.run();
+			
+            warnings(diagonstics);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	private void warnings(List<Diagnostic> diagnostics) {
+		int eColor = 0;
+		int eImgJira = 0;
+		int eImgOldMinervaUrl = 0;
+		for (Diagnostic d : diagnostics) {
+			if (d.getLevel().equals(Level.WARNING) || d.getLevel().equals(Level.SEVERE)) {
+				String m = d.getFormattedMessage();
+				if (m.contains("color must be")) {
+					eColor++;
+				} else if (m.contains("Unrecognized image format for: http://jira01")) {
+					eImgJira++;
+					// Da muss die Minerva Seite korrigiert werden.
+				} else if (m.contains("Can't read image file; unexpected problem for URI 'http://jira01")) { // ignore, same as eImgJira
+				} else if (m.contains("IO problem for http://docker01:9000")) {
+					eImgOldMinervaUrl++;
+					// Da muss die Minerva Seite korrigiert werden.
+				} else { // Die sonstigen Meldungen könnten interessant sein.
+					errorMessages.add(d.getFormattedMessage());
+				}
+			}
+		}
+		errorMessages.add("INFO: color warnings: " + eColor + ", Confluence image warnings: " + eImgJira
+				+ ", old Minerva image warnings: " + eImgOldMinervaUrl);
 	}
 	
 	@Override
@@ -214,4 +235,8 @@ public class PdfExportService extends MultiPageHtmlExportService {
 		}
 		return html;
     }
+
+	public List<String> getErrorMessages() {
+		return errorMessages;
+	}
 }

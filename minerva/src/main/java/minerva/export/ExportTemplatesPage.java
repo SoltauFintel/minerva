@@ -27,6 +27,7 @@ public class ExportTemplatesPage extends WPage {
             save(ExportTemplatesService.PAGE, ctx.formParam("page"));
             save(ExportTemplatesService.TEMPLATE, ctx.formParam("template"));
             save(ExportTemplatesService.TEMPLATE_CSS, ctx.formParam("templateCss"));
+            save(ExportTemplatesService.PDF_CSS, ctx.formParam("pdfCss"));
             workspace.dao().saveFiles(files, new CommitMessage("Export templates"), workspace);
             ctx.redirect("/w/" + branch);
         } else {
@@ -36,6 +37,7 @@ public class ExportTemplatesPage extends WPage {
             put("page", esc(x.loadTemplate(ExportTemplatesService.PAGE)));
             put("template", esc(x.loadTemplate(ExportTemplatesService.TEMPLATE)));
             put("templateCss", esc(x.loadTemplate(ExportTemplatesService.TEMPLATE_CSS)));
+            put("pdfCss", esc(x.loadTemplate(ExportTemplatesService.PDF_CSS)));
         }
     }
     

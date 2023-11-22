@@ -1,5 +1,5 @@
 h1 {
-	color: #000066;   /* XXX temp. damit man Seitenbeginn erkennen kann */
+    color: #000066;   /* XXX temp. damit man Seitenbeginn erkennen kann */
 }
 
 h2 {
@@ -7,22 +7,19 @@ h2 {
 }
 
 h1,h2,h3,h4,h5,h6 {
-	font-family: 'Noto Sans';
+    font-family: 'Noto Sans';
 }
 
 @page {
+    margin: 50px;
     @bottom-center {
-    	content: counter(page);
+        content: counter(page);
     }
-    margin-top:    50px;
-    margin-left:   50px;
-    margin-right:  50px;
-    margin-bottom: 50px;
 }
 
 table {
-	border-spacing: 0;
-	border-collapse: collapse;
+    border-spacing: 0;
+    border-collapse: collapse;
 }
 
 table td {
@@ -35,6 +32,6 @@ p img {
 }
 
 div {
-	widows: 7;
-	orphans: 7;
+    widows: 7;
+    orphans: 7;
 }
