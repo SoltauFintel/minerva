@@ -109,7 +109,7 @@ public class MinervaWebapp extends RouteDefinitions {
     
     @Override
     public void routes() {
-    	get("/notes-bugfix", NotesBugfix.class); // XXX
+    	get("/:branch/notes-bugfix", NotesBugfix.class); // XXX
         workspacesAndBooks();
         oneBook();
         page();
