@@ -1,6 +1,7 @@
 package minerva.seite.note;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import minerva.seite.Note;
 import minerva.seite.SPage;
@@ -34,7 +35,9 @@ public class EditNotePage extends SPage {
             put("hasChanged", !note.getChanged().isEmpty());
             put("text1", esc(note.getText()));
             put("editAllowed", note.getUser().equals(seite.getLogin()) || isAdmin);
-            combobox("persons", UserAccess.getUserNames(), note.getPersons(), true, model);
+			List<String> _persons = note.getPersons() == null ? note.getPersons()
+					: note.getPersons().stream().map(login -> UserAccess.login2RealName(login)).collect(Collectors.toList());
+			combobox("persons", UserAccess.getUserNames(), _persons, true, model);
         }
     }
 }

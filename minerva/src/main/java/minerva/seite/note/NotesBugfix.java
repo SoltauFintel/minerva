@@ -15,7 +15,8 @@ import minerva.user.UserAccess;
 import minerva.workspace.WAction;
 
 public class NotesBugfix extends WAction {
-
+	private String info = "?";
+	
 	@Override
 	protected void execute() {
 		Logger.info("notes bugfix...");
@@ -47,6 +48,12 @@ public class NotesBugfix extends WAction {
 		if (!files.isEmpty()) {
 			workspace.dao().saveFiles(files, new CommitMessage("note.persons bugfix"), workspace);
 		}
+		info = "note.persons bugfix for " + branch + ": " + files.size();
 		Logger.info("<< notes bugfix << " + files.size());
+	}
+	
+	@Override
+	protected String render() {
+		return info;
 	}
 }

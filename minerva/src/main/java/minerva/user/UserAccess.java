@@ -65,7 +65,7 @@ public class UserAccess {
     }
     
     public static List<String> getUserNames() {
-    	return loadUsers().stream().map(u -> u.getRealName()).collect(Collectors.toList());
+    	return loadUsers().stream().map(u -> u.getRealName()).sorted().collect(Collectors.toList());
     }
     
     public static boolean hasExportRight(String login) {
