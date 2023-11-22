@@ -75,7 +75,6 @@ import minerva.seite.note.AddNotePage;
 import minerva.seite.note.DeleteNoteAction;
 import minerva.seite.note.EditNotePage;
 import minerva.seite.note.NoteDoneAction;
-import minerva.seite.note.NotesBugfix;
 import minerva.seite.note.NotesPage;
 import minerva.seite.tag.DeleteTagAction;
 import minerva.seite.tag.TagCloudPage;
@@ -109,7 +108,6 @@ public class MinervaWebapp extends RouteDefinitions {
     
     @Override
     public void routes() {
-    	get("/:branch/notes-bugfix", NotesBugfix.class); // XXX
         workspacesAndBooks();
         oneBook();
         page();
