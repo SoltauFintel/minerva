@@ -22,6 +22,7 @@ import minerva.access.MultiPurposeDirAccess;
 import minerva.base.StringService;
 import minerva.config.MinervaConfig;
 import minerva.seite.Note;
+import minerva.user.UserAccess;
 
 public class NotesSO {
     private static final String NOTES_FOLDER = "notes";
@@ -127,6 +128,7 @@ public class NotesSO {
 
     private void sendNotifications(String noteId, List<String> persons) {
         MinervaConfig c = MinervaWebapp.factory().getConfig();
+Logger.info("jux: " + persons.size() + ", " + c.getNoteSubject() + ", " + c.getNoteBody() + "<<");
         if (!persons.isEmpty() && c.readyForNoteNotifications()) {
             Mail mail = new Mail();
             mail.setSubject(c.getNoteSubject());
@@ -138,11 +140,18 @@ public class NotesSO {
                     .replace("{branch}", seite.getBook().getWorkspace().getBranch()));
             String login = seite.getLogin();
             for (String person : persons) {
-                mail.setToEmailaddress(c.getMailAddress(person));
-                if (!StringService.isNullOrEmpty(mail.getToEmailaddress()) && !person.equals(login)) {
+            	String ea = UserAccess.loadUser(person) ==null ? null:UserAccess.loadUser(person).getMailAddress();
+Logger.info("jux: " +person + " => " + ea);
+                if (!StringService.isNullOrEmpty(ea) && !person.equals(login)) {
+                	mail.setToEmailaddress(ea);
+Logger.info("jux: Mail wird versendet");
                     c.sendMail(mail);
                 }
             }
+} else if (persons.isEmpty()) {
+Logger.info("jux: kein Mailversand, da persons leer");
+} else if (!c.readyForNoteNotifications()) {
+Logger.info("jux: readyForNoteNotifications ist false");
         }
     }
 

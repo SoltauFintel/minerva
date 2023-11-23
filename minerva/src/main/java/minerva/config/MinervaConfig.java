@@ -174,10 +174,6 @@ public class MinervaConfig {
         new MailSender().send(mail, config);
     }
 
-    public String getMailAddress(String login) {
-        return config.get("mail.address." + login);
-    }
-
     public String getNoteSubject() {
         return config.get("mail.note.subject", "new comment");
     }
