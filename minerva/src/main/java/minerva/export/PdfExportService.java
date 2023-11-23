@@ -2,6 +2,7 @@ package minerva.export;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,7 +16,6 @@ import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import com.openhtmltopdf.util.Diagnostic;
 import com.openhtmltopdf.util.XRLog;
 
-import github.soltaufintel.amalia.web.config.AppConfig;
 import minerva.base.FileService;
 import minerva.base.StringService;
 import minerva.model.BookSO;
@@ -85,7 +85,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	}
 
 	private void writePDF(StringBuilder s) {
-		try (OutputStream os = new FileOutputStream(pdfFile)) {
+		try (OutputStream os = new FileOutputStream(pdfFile); InputStream notoSans = getClass().getResourceAsStream("/fonts/NotoSans-Regular.ttf")) {
             PdfRendererBuilder builder = new PdfRendererBuilder();
 
             if (org.pmw.tinylog.Level.DEBUG.equals(Logger.getLevel())) {
@@ -97,11 +97,9 @@ public class PdfExportService extends MultiPageHtmlExportService {
             }
     		List<Diagnostic> diagonstics = new ArrayList<>();
     		builder.withDiagnosticConsumer(diagonstics::add); // https://github.com/danfickle/openhtmltopdf/wiki/Logging
-            
-            File ttf = new File(new AppConfig().get("fonts-dir", "") + "fonts/NotoSans-Regular.ttf");
-            Logger.info("Noto Sans font: " + ttf.getAbsolutePath());
-			builder.useFont(ttf, "Noto Sans");
-            builder.withHtmlContent(s.toString(), "/");
+
+			builder.useFont(() -> notoSans, "Noto Sans");
+    		builder.withHtmlContent(s.toString(), "/");
             builder.toStream(os).run();
 			
             warnings(diagonstics);
