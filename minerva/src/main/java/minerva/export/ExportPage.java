@@ -80,11 +80,12 @@ public class ExportPage extends WPage {
 
     private void callExportDownload() {
         String item = ctx.formParam("item");
-        String customer = ctx.formParam("customer").toLowerCase();
-        String lang = ctx.formParam("lang").toLowerCase();
+        String customer = ctx.formParam("customer");
+        String lang = ctx.formParam("lang");
         String format = ctx.formParam("format");
         user.saveExportSettings(item, customer, lang, format);
-        String q = "/export?lang=" + u(lang) + "&customer=" + u(customer);
+        
+        String q = "/export?lang=" + u(lang.toLowerCase()) + "&customer=" + u(customer.toLowerCase());
         if ("PDF".equals(format)) {
         	q += "&w=pdf";
         }
