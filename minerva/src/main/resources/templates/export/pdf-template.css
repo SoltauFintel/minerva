@@ -27,6 +27,12 @@ table td {
     padding: 5px;
 }
 
+table th {
+    border: 1px solid #BBB;
+    padding: 5px;
+    background-color: #EEE;
+}
+
 p img {
     max-width: 100%; /* gegen zu breite Grafiken */
 }
