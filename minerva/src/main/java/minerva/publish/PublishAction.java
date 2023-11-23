@@ -33,7 +33,7 @@ public class PublishAction extends Action {
     }
     
     public static void downloadFolderAsZip(File sourceFolder, Context ctx) {
-    	File pdfFile = new File(sourceFolder.getParentFile(), sourceFolder.getName() + ".pdf");
+    	File pdfFile = new File(sourceFolder, sourceFolder.getName() + ".pdf");
     	if (pdfFile.isFile()) {
 	        ctx.res.type("application/pdf");
 	        // TODO dup code

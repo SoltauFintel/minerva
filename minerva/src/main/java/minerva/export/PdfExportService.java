@@ -87,7 +87,6 @@ public class PdfExportService extends MultiPageHtmlExportService {
         return html;
 	}
 
-
 	private String createFinalHtmlDocument() {
 		StringBuilder html = new StringBuilder();
         html.append(getDoctype());
