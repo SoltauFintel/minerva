@@ -156,14 +156,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
         navigation(seite, parent, model);
         html = render(new ExportTemplatesService(workspace).loadTemplate(ExportTemplatesService.PAGE), model);
         html = addDotHtml(html);
-        
-        // formulas to images
-        Formula2Image c = new Formula2Image();
-        c.setCounter(counter);
-        c.setPath("img/" + seite.getId() + "/");
-        html = c.processHTML(html, "\\[", "\\]", outputFolder, seite, "<p class=\"math\">", "</p>", title);
-        html = c.processHTML(html, "\\(", "\\)", outputFolder, seite, "", "", title);
-        counter = c.getCounter();
+		html = formulas2images(html, seite, outputFolder, title);
         
         // HTML file
         FileService.savePlainTextFile(new File(outputFolder, seite.getId() + ".html"), html);
@@ -182,7 +175,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
         return toc.getTOC() + html;
     }
 
-    private String getBody(String html, String title) {
+    protected final String getBody(String html, String title) {
         String body;
         int o = html.indexOf("<body>");
         if (o >= 0) {
@@ -210,7 +203,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
         return ret.isEmpty() ? ret : "<div class=\"subpages\"><ul>" + ret + "</ul></div>";
     }
 
-    private String addDotHtml(String html) {
+    protected final String addDotHtml(String html) {
         List<Link> links = LinkService.extractLinks(html, false);
         for (Link link : links) {
             String href = link.getHref();
@@ -273,6 +266,16 @@ public class MultiPageHtmlExportService extends GenericExportService {
             model.put("booksModeTitle", n("booksModeTitle"));
         }
     }
+    
+	protected final String formulas2images(String html, SeiteSO seite, File outputFolder, String title) {
+		Formula2Image c = new Formula2Image();
+		c.setCounter(counter);
+		c.setPath("img/" + seite.getId() + "/");
+		html = c.processHTML(html, "\\[", "\\]", outputFolder, seite, "<p class=\"math\">", "</p>", title);
+		html = c.processHTML(html, "\\(", "\\)", outputFolder, seite, "", "", title);
+		counter = c.getCounter();
+		return html;
+	}
     
     private void saveIndex(File outputFolder, String dn, DataMap model) {
         FileService.savePlainTextFile(new File(outputFolder, "index.html"),

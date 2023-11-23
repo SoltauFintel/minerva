@@ -2,6 +2,7 @@ package minerva.export;
 
 import java.io.File;
 
+import github.soltaufintel.amalia.spark.Context;
 import minerva.MinervaWebapp;
 import minerva.base.FileService;
 import minerva.base.NLS;
@@ -105,4 +106,13 @@ public abstract class GenericExportService {
     }
 
     protected abstract void init(File outputFolder);
+
+    public static GenericExportService getService(WorkspaceSO workspace, String customer, String language, Context ctx) {
+        String w = ctx.queryParam("w");
+        if ("pdf".equals(w)) {
+            return new PdfExportService(workspace, customer, language);
+        } else { // Multi page HTML
+            return new MultiPageHtmlExportService(workspace, customer, language);
+        }
+    }
 }

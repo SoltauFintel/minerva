@@ -24,7 +24,7 @@ public class ExportWorkspaceAction extends UAction {
         if (workspace.getBooks().isEmpty()) {
             throw new RuntimeException("There are no books!");
         }
-        File outputFolder = new MultiPageHtmlExportService(workspace, customer, lang).saveWorkspace(workspace);
+        File outputFolder = GenericExportService.getService(workspace, customer, lang, ctx).saveWorkspace(workspace);
         
         PublishAction.downloadFolderAsZip(outputFolder, ctx);
     }

@@ -63,6 +63,7 @@ encoding//src/main/resources/templates/export/export-template-book.html=UTF-8
 encoding//src/main/resources/templates/export/export-template-page.html=UTF-8
 encoding//src/main/resources/templates/export/export-template.css=UTF-8
 encoding//src/main/resources/templates/export/export-template.html=UTF-8
+encoding//src/main/resources/templates/export/pdf-template.css=UTF-8
 encoding//src/main/resources/templates/master.html=UTF-8
 encoding//src/main/resources/templates/master_ck.html=UTF-8
 encoding//src/main/resources/templates/master_jqueryoben.html=UTF-8

@@ -33,18 +33,32 @@ public class PublishAction extends Action {
     }
     
     public static void downloadFolderAsZip(File sourceFolder, Context ctx) {
-        File zipFile = new File(sourceFolder.getParentFile(), sourceFolder.getName() + ".zip");
-        FileService.zip(sourceFolder, zipFile);
-        
-        ctx.res.type("application/zip");
-        ctx.res.header("Content-Disposition", "attachment; filename=\"" + zipFile.getName() + "\"");
-        try {
-            ctx.res.raw().getOutputStream().write(Files.readAllBytes(zipFile.toPath()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        zipFile.delete();
+    	File pdfFile = new File(sourceFolder.getParentFile(), sourceFolder.getName() + ".pdf");
+    	if (pdfFile.isFile()) {
+	        ctx.res.type("application/pdf");
+	        // TODO dup code
+	        ctx.res.header("Content-Disposition", "attachment; filename=\"" + pdfFile.getName() + "\"");
+	        try {
+	            ctx.res.raw().getOutputStream().write(Files.readAllBytes(pdfFile.toPath()));
+	        } catch (IOException e) {
+	            throw new RuntimeException(e);
+	        }
+	
+	        pdfFile.delete();
+    	} else {
+	        File zipFile = new File(sourceFolder.getParentFile(), sourceFolder.getName() + ".zip");
+	        FileService.zip(sourceFolder, zipFile);
+	        
+	        ctx.res.type("application/zip");
+	        ctx.res.header("Content-Disposition", "attachment; filename=\"" + zipFile.getName() + "\"");
+	        try {
+	            ctx.res.raw().getOutputStream().write(Files.readAllBytes(zipFile.toPath()));
+	        } catch (IOException e) {
+	            throw new RuntimeException(e);
+	        }
+	
+	        zipFile.delete();
+    	}
         FileService.deleteFolder(sourceFolder);
     }
 }

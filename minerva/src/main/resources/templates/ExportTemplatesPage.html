@@ -12,6 +12,7 @@
 
         <form action="/w/{{branch}}/export-templates" class="form-horizontal" method="post">
             <fieldset>
+				<h3>{{N.multiPageHtml}}</h3>
                 <div class="form-group">
                     <label for="books" class="col-lg-1 control-label">{{N.booksOverview}}</label>
                     <div class="col-lg-10">
@@ -40,6 +41,15 @@
                     <label for="templateCss" class="col-lg-1 control-label">CSS</label>
                     <div class="col-lg-10">
                         <textarea class="form-control" rows="10" id="templateCss" name="templateCss">{{templateCss}}</textarea>
+                    </div>
+                </div>
+
+                <hr/>
+                <h3>PDF</h3>
+                <div class="form-group">
+                    <label for="pdfCss" class="col-lg-1 control-label">CSS</label>
+                    <div class="col-lg-10">
+                        <textarea class="form-control" rows="10" id="pdfCss" name="pdfCss">{{pdfCss}}</textarea>
                     </div>
                 </div>
 

@@ -13,6 +13,7 @@ public class ExportTemplatesService {
     public static final String PAGE = "export-template-page.html";
     public static final String TEMPLATE = "export-template.html";
     public static final String TEMPLATE_CSS = "export-template.css";
+    public static final String PDF_CSS = "pdf-template.css";
     private final WorkspaceSO workspace;
     
     public ExportTemplatesService(WorkspaceSO workspace) {

@@ -1,0 +1,37 @@
+h1 {
+    color: #000066;   /* XXX temp. damit man Seitenbeginn erkennen kann */
+}
+
+h2 {
+    border-bottom: 1px solid #ccc;
+}
+
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Noto Sans';
+}
+
+@page {
+    margin: 50px;
+    @bottom-center {
+        content: counter(page);
+    }
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+table td {
+    border: 1px solid #BBB;
+    padding: 5px;
+}
+
+p img {
+    max-width: 100%; /* gegen zu breite Grafiken */
+}
+
+div {
+    widows: 7;
+    orphans: 7;
+}
