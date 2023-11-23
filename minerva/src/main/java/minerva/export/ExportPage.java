@@ -46,6 +46,10 @@ public class ExportPage extends WPage {
             combobox("items", items, us.getItem(), false, model);
             combobox("customers", upper(customers), us.getCustomer(), false, model);
             combobox("langs", upper(langs), us.getLang(), false, model);
+            List<String> formats = new ArrayList<>();
+            formats.add(n("multiPageHtml"));
+            formats.add("PDF");
+            combobox("formats", formats, us.getFormat(), false, model);
             // Denkbar wäre hier noch die Wahl eines Template-Sets und/oder einer CSS-Datei.
         }
     }
@@ -75,11 +79,15 @@ public class ExportPage extends WPage {
     }
 
     private void callExportDownload() {
-        String item = ctx.queryParam("item");
-        String customer = ctx.queryParam("customer").toLowerCase();
-        String lang = ctx.queryParam("lang").toLowerCase();
-        user.saveExportSettings(item, customer, lang);
+        String item = ctx.formParam("item");
+        String customer = ctx.formParam("customer").toLowerCase();
+        String lang = ctx.formParam("lang").toLowerCase();
+        String format = ctx.formParam("format");
+        user.saveExportSettings(item, customer, lang, format);
         String q = "/export?lang=" + u(lang) + "&customer=" + u(customer);
+        if ("PDF".equals(format)) {
+        	q += "&w=pdf";
+        }
 
         if (item.contains(W)) { // all books
             ctx.redirect("/w/" + branch + q);

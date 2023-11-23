@@ -15,6 +15,8 @@ import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import com.openhtmltopdf.util.Diagnostic;
 import com.openhtmltopdf.util.XRLog;
 
+import github.soltaufintel.amalia.web.config.AppConfig;
+import minerva.base.FileService;
 import minerva.base.StringService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
@@ -42,15 +44,28 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	}
 	
 	@Override
+	public File saveWorkspace(WorkspaceSO workspace) {
+		// TODO
+		throw new UnsupportedOperationException("Derzeit kann man nur ein Buch als PDF ausgeben.");
+	}
+	
+	@Override
 	public File saveBook(BookSO book) {
 		Logger.info("exporting book \"" + book.getBook().getTitle().getString(lang) + "\"...");
 		imageBaseDir = book.getFolder();
 		File outputFolder = super.saveBook(book);
 		Logger.info("creating PDF file...");
         StringBuilder s = createHtmlContent();
-		pdfFile = new File(outputFolder, book.getTitle() + ".pdf");
+		pdfFile = new File(outputFolder, outputFolder.getName() + ".pdf");
 		writePDF(s);
+		Logger.info("error messages: " + errorMessages.size());
 		return outputFolder;
+	}
+	
+	@Override
+	public File saveSeite(SeiteSO seite) {
+		// TODO
+		throw new UnsupportedOperationException("Derzeit kann man nur ein Buch als PDF ausgeben.");
 	}
 	
 	private StringBuilder createHtmlContent() {
@@ -70,18 +85,24 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	}
 
 	private void writePDF(StringBuilder s) {
-		//FileService.savePlainTextFile(new File("pdf-export.html"), s.toString()); // für die Fehleranalyse
 		try (OutputStream os = new FileOutputStream(pdfFile)) {
             PdfRendererBuilder builder = new PdfRendererBuilder();
 
-            XRLog.listRegisteredLoggers().forEach(logger -> XRLog.setLevel(logger, java.util.logging.Level.OFF)); // no output to syserr
+            if (org.pmw.tinylog.Level.DEBUG.equals(Logger.getLevel())) {
+            	File d = Files.createTempFile("pdf-export", ".html").toFile();
+				FileService.savePlainTextFile(d, s.toString());
+				Logger.debug("für die Fehleranalyse: " + d.getAbsolutePath());
+            } else {
+            	XRLog.listRegisteredLoggers().forEach(logger -> XRLog.setLevel(logger, java.util.logging.Level.OFF)); // no output to syserr
+            }
     		List<Diagnostic> diagonstics = new ArrayList<>();
     		builder.withDiagnosticConsumer(diagonstics::add); // https://github.com/danfickle/openhtmltopdf/wiki/Logging
             
-            builder.useFont(new File("fonts/NotoSans-Regular.ttf"), "Noto Sans");
+            File ttf = new File(new AppConfig().get("fonts-dir", "") + "fonts/NotoSans-Regular.ttf");
+            Logger.info("Noto Sans font: " + ttf.getAbsolutePath());
+			builder.useFont(ttf, "Noto Sans");
             builder.withHtmlContent(s.toString(), "/");
-            builder.toStream(os);
-            builder.run();
+            builder.toStream(os).run();
 			
             warnings(diagonstics);
 		} catch (Exception e) {

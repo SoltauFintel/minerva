@@ -109,7 +109,6 @@ public abstract class GenericExportService {
 
     public static GenericExportService getService(WorkspaceSO workspace, String customer, String language, Context ctx) {
         String w = ctx.queryParam("w");
-w = "pdf"; // XXX
         if ("pdf".equals(w)) {
             return new PdfExportService(workspace, customer, language);
         } else { // Multi page HTML

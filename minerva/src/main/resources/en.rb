@@ -227,3 +227,4 @@ createUser=Add user
 deleteUser=Delete user
 deleteUserX=Delete user $user?
 multiPageHtml=Multi page HTML
+exportFormat=Export format
