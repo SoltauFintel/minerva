@@ -1,22 +1,12 @@
 package minerva.export;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import org.pmw.tinylog.Logger;
 
-import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
-import com.openhtmltopdf.util.Diagnostic;
-import com.openhtmltopdf.util.XRLog;
-
-import minerva.base.FileService;
 import minerva.base.StringService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
@@ -31,6 +21,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	private final String pdfCss;
 	private boolean firstPage = true;
 	private String imageBaseDir;
+	public File pdfFile;
 	
 	public PdfExportService(WorkspaceSO workspace, String customer, String language) {
 		super(workspace, customer, language);
@@ -53,8 +44,11 @@ public class PdfExportService extends MultiPageHtmlExportService {
 		File outputFolder = super.saveBook(book);
 		
 		Logger.info("creating PDF file...");
-        StringBuilder html = createHtmlContent();
-		writePDF(html, new File(outputFolder, outputFolder.getName() + ".pdf"));
+		pdfFile = new File(outputFolder, outputFolder.getName() + ".pdf");
+        PdfWriter pdf = new PdfWriter();
+		pdf.writePDF(createHtmlContent(), true, pdfFile);
+
+		errorMessages.addAll(pdf.getErrorMessages());
 		Logger.info("error messages: " + errorMessages.size());
 		return outputFolder;
 	}
@@ -85,55 +79,6 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	    sb.append("</div>\n\n");
 	}
 
-	private void writePDF(StringBuilder html, File pdfFile) {
-		try (OutputStream os = new FileOutputStream(pdfFile); InputStream notoSans = getClass().getResourceAsStream("/fonts/NotoSans-Regular.ttf")) {
-            PdfRendererBuilder builder = new PdfRendererBuilder();
-
-            if (org.pmw.tinylog.Level.DEBUG.equals(Logger.getLevel())) {
-            	File d = Files.createTempFile("pdf-export", ".html").toFile();
-				FileService.savePlainTextFile(d, html.toString());
-				Logger.debug("für die Fehleranalyse: " + d.getAbsolutePath());
-            } else {
-            	XRLog.listRegisteredLoggers().forEach(logger -> XRLog.setLevel(logger, java.util.logging.Level.OFF)); // no output to syserr
-            }
-    		List<Diagnostic> diagonstics = new ArrayList<>();
-    		builder.withDiagnosticConsumer(diagonstics::add); // https://github.com/danfickle/openhtmltopdf/wiki/Logging
-
-			builder.useFont(() -> notoSans, "Noto Sans");
-    		builder.withHtmlContent(html.toString(), "/");
-            builder.toStream(os).run();
-			
-            warnings(diagonstics);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private void warnings(List<Diagnostic> diagnostics) {
-		int eColor = 0;
-		int eImgJira = 0;
-		int eImgOldMinervaUrl = 0;
-		for (Diagnostic d : diagnostics) {
-			if (d.getLevel().equals(Level.WARNING) || d.getLevel().equals(Level.SEVERE)) {
-				String m = d.getFormattedMessage();
-				if (m.contains("color must be")) {
-					eColor++;
-				} else if (m.contains("Unrecognized image format for: http://jira01")) {
-					eImgJira++;
-					// Da muss die Minerva Seite korrigiert werden.
-				} else if (m.contains("Can't read image file; unexpected problem for URI 'http://jira01")) { // ignore, same as eImgJira
-				} else if (m.contains("IO problem for http://docker01:9000")) {
-					eImgOldMinervaUrl++;
-					// Da muss die Minerva Seite korrigiert werden.
-				} else { // Die sonstigen Meldungen könnten interessant sein.
-					errorMessages.add(d.getFormattedMessage());
-				}
-			}
-		}
-		errorMessages.add("INFO: color warnings: " + eColor + ", Confluence image warnings: " + eImgJira
-				+ ", old Minerva image warnings: " + eImgOldMinervaUrl);
-	}
-	
 	private String getHTML(SeiteSO seite, String title, File outputFolder) {
 		String info = seite.getId() + ": \"" + title + "\"";
         String html = super.getBody(seite.getContent().getString(lang), title);
@@ -176,14 +121,9 @@ public class PdfExportService extends MultiPageHtmlExportService {
 			return true;
 		}
 		try {
-			Path file = Files.createTempFile("Minerva-PDF-", ".pdf");
-			try (OutputStream os = new FileOutputStream(file.toFile())) {
-				PdfRendererBuilder builder = new PdfRendererBuilder();
-				builder.withHtmlContent(getDoctype() + html, "/");
-				builder.toStream(os);
-				builder.run();
-				return true;
-			}
+			File file = Files.createTempFile("Minerva-PDF-", ".pdf").toFile();
+			new PdfWriter().writePDF(getDoctype() + html, false, file);
+			return true;
 		} catch (Exception e) {
 			Logger.error(info + " will be excluded from PDF export because of error: " + e.getMessage());
 			return false;
@@ -235,7 +175,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
 		return html;
     }
 
-	private StringBuilder createHtmlContent() {
+	private String createHtmlContent() {
 		StringBuilder html = new StringBuilder();
         html.append(getDoctype());
         html.append("<html><head><style>\n");
@@ -243,7 +183,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
         html.append("</style></head><body>\n");
         html.append(sb.toString());
         html.append("</body></html>\n");
-		return html;
+		return html.toString();
 	}
 
 	private String getDoctype() {
