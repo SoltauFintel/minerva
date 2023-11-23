@@ -128,8 +128,9 @@ public class NotesSO {
 
     private void sendNotifications(String noteId, List<String> persons) {
         MinervaConfig c = MinervaWebapp.factory().getConfig();
-Logger.info("jux: " + persons.size() + ", " + c.getNoteSubject() + ", " + c.getNoteBody() + "<<");
-        if (!persons.isEmpty() && c.readyForNoteNotifications()) {
+        if (!c.readyForNoteNotifications()) {
+        	Logger.info("send no mails because there's no mail configuration");
+        } else if (!persons.isEmpty()) {
             Mail mail = new Mail();
             mail.setSubject(c.getNoteSubject());
             mail.setBody(c.getNoteBody()
@@ -139,19 +140,19 @@ Logger.info("jux: " + persons.size() + ", " + c.getNoteSubject() + ", " + c.getN
                     .replace("{bookFolder}", seite.getBook().getBook().getFolder())
                     .replace("{branch}", seite.getBook().getWorkspace().getBranch()));
             String login = seite.getLogin();
-            for (String person : persons) {
-            	String ea = UserAccess.loadUser(person) ==null ? null:UserAccess.loadUser(person).getMailAddress();
-Logger.info("jux: " +person + " => " + ea);
-                if (!StringService.isNullOrEmpty(ea) && !person.equals(login)) {
-                	mail.setToEmailaddress(ea);
-Logger.info("jux: Mail wird versendet");
-                    c.sendMail(mail);
-                }
+			for (String person : persons) {
+				if (person.equals(login)) {
+					Logger.debug("don't send note notification mail to myself");
+				} else {
+					String ea = UserAccess.loadUser(person) == null ? null : UserAccess.loadUser(person).getMailAddress();
+					if (StringService.isNullOrEmpty(ea)) {
+						Logger.warn("don't send note notification mail because there's no mail address for " + person);
+					} else {
+						mail.setToEmailaddress(ea);
+						c.sendMail(mail);
+					}
+				}
             }
-} else if (persons.isEmpty()) {
-Logger.info("jux: kein Mailversand, da persons leer");
-} else if (!c.readyForNoteNotifications()) {
-Logger.info("jux: readyForNoteNotifications ist false");
         }
     }
 
