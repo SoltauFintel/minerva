@@ -37,7 +37,7 @@ public class PublishAction extends Action {
     	if (pdfFile.isFile()) {
 	        ctx.res.type("application/pdf");
 	        // TODO duplicate code
-	        ctx.res.header("Content-Disposition", "filename=\"" + pdfFile.getName() + "\"");
+	        ctx.res.header("Content-Disposition", "attachment; filename=\"" + pdfFile.getName() + "\"");
 	        try {
 	            ctx.res.raw().getOutputStream().write(Files.readAllBytes(pdfFile.toPath()));
 	        } catch (IOException e) {
