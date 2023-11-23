@@ -25,15 +25,12 @@ import minerva.seite.link.Link;
 import minerva.seite.link.LinkService;
 
 public class PdfExportService extends MultiPageHtmlExportService {
-	private final String pdfCss;
-	public File pdfFile;
 	public static boolean check = false;
-	private StringBuilder sb = new StringBuilder();
+	private final List<String> errorMessages = new ArrayList<>();
+	private final StringBuilder sb = new StringBuilder();
+	private final String pdfCss;
 	private boolean firstPage = true;
 	private String imageBaseDir;
-	private List<String> errorMessages = new ArrayList<>();
-	
-	// TODO Klasse zerschlagen? PDF-Technik, HTML besorgen+aufbereiten, Seitensteuerung, CSS
 	
 	public PdfExportService(WorkspaceSO workspace, String customer, String language) {
 		super(workspace, customer, language);
@@ -45,52 +42,56 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	
 	@Override
 	public File saveWorkspace(WorkspaceSO workspace) {
-		// TODO
-		throw new UnsupportedOperationException("Derzeit kann man nur ein Buch als PDF ausgeben.");
+		throw new UnsupportedOperationException("Derzeit kann man nur ein Buch als PDF ausgeben."); // TO-DO
 	}
 	
 	@Override
 	public File saveBook(BookSO book) {
 		Logger.info("exporting book \"" + book.getBook().getTitle().getString(lang) + "\"...");
 		imageBaseDir = book.getFolder();
+		
 		File outputFolder = super.saveBook(book);
+		
 		Logger.info("creating PDF file...");
-        StringBuilder s = createHtmlContent();
-		pdfFile = new File(outputFolder, outputFolder.getName() + ".pdf");
-		writePDF(s);
+        StringBuilder html = createHtmlContent();
+		writePDF(html, new File(outputFolder, outputFolder.getName() + ".pdf"));
 		Logger.info("error messages: " + errorMessages.size());
 		return outputFolder;
 	}
 	
 	@Override
 	public File saveSeite(SeiteSO seite) {
-		// TODO
-		throw new UnsupportedOperationException("Derzeit kann man nur ein Buch als PDF ausgeben.");
+		throw new UnsupportedOperationException("Derzeit kann man nur ein Buch als PDF ausgeben."); // TO-DO
 	}
 	
-	private StringBuilder createHtmlContent() {
-		StringBuilder html = new StringBuilder();
-        html.append(getDoctype());
-        html.append("<html><head><style>\n");
-        html.append(pdfCss);
-        html.append("</style></head><body>\n");
-        html.append(sb.toString());
-        html.append("</body></html>\n");
-		return html;
+	@Override
+	protected void saveSeiteTo(SeiteSO seite, SeiteSO parent, File outputFolder) {
+		String title = seite.getSeite().getTitle().getString(lang);
+	    String html = getHTML(seite, title, outputFolder);
+	    if (html == null) {
+	    	return;
+	    }
+	
+	    if (firstPage) {
+	    	sb.append("<div id=\"" + seite.getId() + "\" class=\"page\">");
+	    	firstPage = false;
+	    } else {
+	    	sb.append("<div id=\"" + seite.getId() + "\" class=\"page\" style=\"page-break-before: always;\">");
+	    }
+	    sb.append("\n<h1 class=\"page-title\">");
+	    sb.append(title.replace("&", "&amp;"));
+	    sb.append("</h1>\n");
+		sb.append(html);
+	    sb.append("</div>\n\n");
 	}
 
-	private String getDoctype() {
-        return "<!DOCTYPE html PUBLIC \"-//OPENHTMLTOPDF//DOC XHTML Character Entities Only 1.0//" // damit &uuml; funktioniert
-        		+ lang.toUpperCase() + "\" \"\">\n";
-	}
-
-	private void writePDF(StringBuilder s) {
+	private void writePDF(StringBuilder html, File pdfFile) {
 		try (OutputStream os = new FileOutputStream(pdfFile); InputStream notoSans = getClass().getResourceAsStream("/fonts/NotoSans-Regular.ttf")) {
             PdfRendererBuilder builder = new PdfRendererBuilder();
 
             if (org.pmw.tinylog.Level.DEBUG.equals(Logger.getLevel())) {
             	File d = Files.createTempFile("pdf-export", ".html").toFile();
-				FileService.savePlainTextFile(d, s.toString());
+				FileService.savePlainTextFile(d, html.toString());
 				Logger.debug("für die Fehleranalyse: " + d.getAbsolutePath());
             } else {
             	XRLog.listRegisteredLoggers().forEach(logger -> XRLog.setLevel(logger, java.util.logging.Level.OFF)); // no output to syserr
@@ -99,7 +100,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
     		builder.withDiagnosticConsumer(diagonstics::add); // https://github.com/danfickle/openhtmltopdf/wiki/Logging
 
 			builder.useFont(() -> notoSans, "Noto Sans");
-    		builder.withHtmlContent(s.toString(), "/");
+    		builder.withHtmlContent(html.toString(), "/");
             builder.toStream(os).run();
 			
             warnings(diagonstics);
@@ -133,37 +134,16 @@ public class PdfExportService extends MultiPageHtmlExportService {
 				+ ", old Minerva image warnings: " + eImgOldMinervaUrl);
 	}
 	
-	@Override
-	protected void saveSeiteTo(SeiteSO seite, SeiteSO parent, File outputFolder) {
-		String title = seite.getSeite().getTitle().getString(lang);
-        String html = getHTML(seite, title, outputFolder);
-        if (html == null) {
-        	return;
-        }
-
-        if (firstPage) {
-        	sb.append("<div id=\"" + seite.getId() + "\" class=\"page\">");
-        	firstPage = false;
-        } else {
-        	sb.append("<div id=\"" + seite.getId() + "\" class=\"page\" style=\"page-break-before: always;\">");
-        }
-        sb.append("\n<h1 class=\"page-title\">");
-        sb.append(title.replace("&", "&amp;"));
-        sb.append("</h1>\n");
-		sb.append(html);
-        sb.append("</div>\n\n");
-	}
-	
 	private String getHTML(SeiteSO seite, String title, File outputFolder) {
 		String info = seite.getId() + ": \"" + title + "\"";
-        String html = getBody(seite.getContent().getString(lang), title);
+        String html = super.getBody(seite.getContent().getString(lang), title);
         html = toXHTML(html);
         if (!checkHtml(html, info)) {
         	return null;
         }
         html = modifyLinks(html, info);
 		html = images(html, info);
-		return formulas2images(html, seite, outputFolder, title);
+		return super.formulas2images(html, seite, outputFolder, title);
 	}
 
 	private String toXHTML(String html) {
@@ -254,6 +234,22 @@ public class PdfExportService extends MultiPageHtmlExportService {
 		}
 		return html;
     }
+
+	private StringBuilder createHtmlContent() {
+		StringBuilder html = new StringBuilder();
+        html.append(getDoctype());
+        html.append("<html><head><style>\n");
+        html.append(pdfCss);
+        html.append("</style></head><body>\n");
+        html.append(sb.toString());
+        html.append("</body></html>\n");
+		return html;
+	}
+
+	private String getDoctype() {
+        return "<!DOCTYPE html PUBLIC \"-//OPENHTMLTOPDF//DOC XHTML Character Entities Only 1.0//" // damit &uuml; funktioniert
+        		+ lang.toUpperCase() + "\" \"\">\n";
+	}
 
 	public List<String> getErrorMessages() {
 		return errorMessages;
