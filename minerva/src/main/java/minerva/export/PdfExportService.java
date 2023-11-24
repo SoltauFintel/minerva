@@ -114,18 +114,22 @@ public class PdfExportService extends MultiPageHtmlExportService {
         if ("DEVKH1".equalsIgnoreCase(customer)) {
             name = "X-map H1";
         }
-        // TODO StringBuilder Syntax optimieren
-        html.append("<div class=\"cover\">"
-        		+ "<h1>" + name + "<br/>" + bookTitle.replace("&", "&amp;") + "</h1>"
-        		+ "<h2>" + customer + "</h2>"
-        		+ "<p class=\"copyright\">Copyright by X-map AG</p></div>\n");
+		html.append("<div class=\"cover\"><h1>");
+		html.append(name);
+		html.append("<br/>");
+		html.append(bookTitle.replace("&", "&amp;"));
+		html.append("</h1><h2>");
+		html.append(customer);
+		html.append("</h2><p class=\"copyright\">Copyright by X-map AG</p></div>\n");
 		
         // TOC
-		html.append("<div class=\"toc\" style=\"page-break-before: always;\">\n<h1>"
-				+ ("de".equals(lang) ? "Inhaltsverzeichnis" : "Table of contents") + "</h1>");
-		for (Bookmark bm : bookmarks) {
-			html.append("<p><a href=\"#" + bm.getId() + "\">" + bm.getTitle().replace("&", "&amp;") + "</a>" //
-					+ "<span class=\"tocpn\" href=\"#" + bm.getId() + "\"></span></p>\n");
+		html.append("<div class=\"toc\" style=\"page-break-before: always;\">\n<h1>");
+		html.append("de".equals(lang) ? "Inhaltsverzeichnis" : "Table of contents");
+		html.append("</h1>");
+		if (bookmarks.size() == 1) { // typical for release notes book
+			toc(bookmarks.get(0).getBookmarks(), html);
+		} else {
+			toc(bookmarks, html);
 		}
 		html.append("</div>\n");
 
@@ -134,6 +138,16 @@ public class PdfExportService extends MultiPageHtmlExportService {
         
         html.append("</body>\n</html>\n");
 		return html.toString();
+	}
+	
+	private void toc(List<Bookmark> list, StringBuilder html) {
+		for (Bookmark bm : list) {
+			html.append("<p><a href=\"#");
+			html.append(bm.getId());
+			html.append("\">");
+			html.append(bm.getTitle().replace("&", "&amp;"));
+			html.append("</a></p>");
+		}
 	}
 
 	private String getDoctype() {
