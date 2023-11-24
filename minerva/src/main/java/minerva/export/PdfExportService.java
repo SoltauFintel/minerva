@@ -125,7 +125,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
 		html.append("<div class=\"toc\" style=\"page-break-before: always;\">\n<h1>"
 				+ ("de".equals(lang) ? "Inhaltsverzeichnis" : "Table of contents") + "</h1>");
 		for (Bookmark bm : bookmarks) {
-			html.append("<p><a href=\"#" + bm.getId() + "\">" + bm.getTitle() + "</a>" //
+			html.append("<p><a href=\"#" + bm.getId() + "\">" + Escaper.esc(bm.getTitle()) + "</a>" //
 					+ "<span class=\"tocpn\" href=\"#" + bm.getId() + "\"></span></p>\n");
 		}
 		html.append("</div>\n");
