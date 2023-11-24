@@ -94,10 +94,7 @@ public class ConfluenceComment {
     }
     
     private String from(Element e) {
-        return e.toString() //
-                .replace("ü", "&uuml;").replace("ä", "&auml;").replace("ö", "&ouml;") //
-                .replace("Ü", "&Uuml;").replace("Ä", "&Auml;").replace("Ö", "&Ouml;") //
-                .replace("ß", "&szlig;");
+        return StringService.umlaute4html(e.toString());
     }
 
 	public List<String> getPersons() {

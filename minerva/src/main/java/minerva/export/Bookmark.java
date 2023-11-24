@@ -3,6 +3,7 @@ package minerva.export;
 import java.util.ArrayList;
 import java.util.List;
 
+import minerva.base.StringService;
 import minerva.model.SeiteSO;
 
 public class Bookmark {
@@ -16,7 +17,7 @@ public class Bookmark {
 	}
 	
 	public Bookmark(SeiteSO seite, String lang, Chapter chapter) {
-		this(seite.getId(), chapter.toString() + " " + seite.getSeite().getTitle().getString(lang));
+		this(seite.getId(), chapter.toString() + " " + StringService.umlaute4html(seite.getSeite().getTitle().getString(lang)));
 	}
 
 	public String getId() {

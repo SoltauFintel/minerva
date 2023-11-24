@@ -60,6 +60,12 @@ public class StringService {
             .replace("ü", "ue")
             .replace("ß", "ss");
     }
+    
+    public static String umlaute4html(String text) {
+    	return text.replace("ü", "&uuml;").replace("ä", "&auml;").replace("ö", "&ouml;") //
+                   .replace("Ü", "&Uuml;").replace("Ä", "&Auml;").replace("Ö", "&Ouml;") //
+                   .replace("ß", "&szlig;");
+    }
 
     public static List<String> upper(List<String> list) {
         return list.stream().map(i -> i.toUpperCase()).collect(Collectors.toList());
