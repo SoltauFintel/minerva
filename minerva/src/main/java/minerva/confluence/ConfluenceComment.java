@@ -94,7 +94,13 @@ public class ConfluenceComment {
     }
     
     private String from(Element e) {
-        return StringService.umlaute4html(e.toString());
+        return umlaute4html(e.toString());
+    }
+    
+    public static String umlaute4html(String text) {
+    	return text.replace("ü", "&uuml;").replace("ä", "&auml;").replace("ö", "&ouml;") //
+                   .replace("Ü", "&Uuml;").replace("Ä", "&Auml;").replace("Ö", "&Ouml;") //
+                   .replace("ß", "&szlig;");
     }
 
 	public List<String> getPersons() {
