@@ -41,3 +41,28 @@ div {
     widows: 7;
     orphans: 7;
 }
+
+.cover h1 {
+	padding-top: 10cm;
+	text-align: center;
+	color: #000;
+}
+
+.cover h2 {
+	text-align: center;
+    border-bottom: none;
+}
+
+.cover .copyright {
+	margin-top: 75mm;
+	text-align: center;
+	color: #555;
+}
+
+.toc h1 {
+	color: #000;
+}
+
+.tocpn {
+	content: target-counter(attr(href), page);
+}

@@ -1,6 +1,7 @@
 package minerva.export;
 
 import java.io.File;
+import java.util.List;
 
 import github.soltaufintel.amalia.spark.Context;
 import minerva.MinervaWebapp;
@@ -24,6 +25,9 @@ public abstract class GenericExportService {
     protected ExclusionsService exclusionsService;
     protected BookSO currentBook = null;
     protected boolean booksMode = false;
+    /** current parent bookmark */
+    protected Bookmark cb = new Bookmark("root", "book");
+    protected final List<Bookmark> bookmarks = cb.getBookmarks();
 
     public GenericExportService(WorkspaceSO workspace, String customer, String language) {
         lang = language;
@@ -70,34 +74,43 @@ public abstract class GenericExportService {
         currentBook = book;
         outputFolder = new File(outputFolder, "html");
         init(outputFolder);
-        saveSeitenTo(book.getSeiten(lang), null, outputFolder);
+        saveSeitenTo(book.getSeiten(lang), null, new Chapter(), outputFolder);
     }
     
-    public void saveSeitenTo(SeitenSO seiten, SeiteSO parent, File outputFolder) {
+    public void saveSeitenTo(SeitenSO seiten, SeiteSO parent, Chapter chapter, File outputFolder) {
+    	chapter = chapter.child();
         for (SeiteSO seite : seiten) {
-            _saveSeiteTo(seite, parent, outputFolder);
+            if (_saveSeiteTo(seite, parent, chapter, outputFolder)) {
+            	chapter = chapter.inc();
+            }
         }
     }
     
     public File saveSeite(SeiteSO seite) {
         File outputFolder = getFolder(seite.getSeite().getTitle().getString(lang));
         init(outputFolder);
-        if (!_saveSeiteTo(seite, null, outputFolder)) {
+        if (!_saveSeiteTo(seite, null, new Chapter(), outputFolder)) {
             throw new RuntimeException("Page #" + seite.getId() + " \"" + seite.getTitle() + "\" is not visible!");
         }
         return outputFolder;
     }
     
-    private boolean _saveSeiteTo(SeiteSO seite, SeiteSO parent, File outputFolder) {
+    private boolean _saveSeiteTo(SeiteSO seite, SeiteSO parent, Chapter chapter, File outputFolder) {
         if (seite.isVisible(exclusionsService, lang).isVisible()) {
-            saveSeiteTo(seite, parent, outputFolder);
-            saveSeitenTo(seite.getSeiten(), seite, outputFolder);
+        	saveSeiteTo(seite, parent, chapter, outputFolder);
+
+            Bookmark keep = cb; // remember
+    		keep.getBookmarks().add(cb = new Bookmark(seite, lang, chapter));
+        	
+            saveSeitenTo(seite.getSeiten(), seite, chapter, outputFolder);
+            
+            cb = keep; // restore
             return true;
         }
         return false;
     }
     
-    protected abstract void saveSeiteTo(SeiteSO seite, SeiteSO parent, File outputFolder);
+    protected abstract void saveSeiteTo(SeiteSO seite, SeiteSO parent, Chapter chapter, File outputFolder);
     
     private File getFolder(String name) {
         File folder = new File(MinervaWebapp.factory().getWorkFolder("export"), FileService.getSafeName(name));

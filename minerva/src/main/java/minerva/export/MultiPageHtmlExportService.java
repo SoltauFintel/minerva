@@ -140,7 +140,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
     }
     
     @Override
-    protected void saveSeiteTo(SeiteSO seite, SeiteSO parent, File outputFolder) {
+    protected void saveSeiteTo(SeiteSO seite, SeiteSO parent, Chapter chapter, File outputFolder) {
         String html = seite.getContent().getString(lang);
         String title = seite.getSeite().getTitle().getString(lang);
         DataMap model = new DataMap();
