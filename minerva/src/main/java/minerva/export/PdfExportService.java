@@ -109,13 +109,16 @@ public class PdfExportService extends MultiPageHtmlExportService {
 
         // Cover
         String customer = exclusionsService.getCustomer();
+		if (customer.toLowerCase().equals(customer)) {
+			customer = customer.toUpperCase();
+		}
         String name = "X-map F1";
-        if ("DEVKH1".equals(customer)) {
+        if ("DEVKH1".equalsIgnoreCase(customer)) {
             name = "X-map H1";
         }
         html.append("<div class=\"cover\">"
         		+ "<h1>" + name + "<br/>" + bookTitle.replace("&", "&amp;") + "</h1>"
-        		+ "<h2>" + exclusionsService.getCustomer() + "</h2>"
+        		+ "<h2>" + customer + "</h2>"
         		+ "<p class=\"copyright\">Copyright by X-map AG</p></div>\n");
 		
         // TOC
