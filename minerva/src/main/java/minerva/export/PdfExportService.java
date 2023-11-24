@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.pmw.tinylog.Logger;
 
-import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.base.StringService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
@@ -147,7 +146,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
 			html.append("<bookmark href=\"#");
 			html.append(bm.getId());
 			html.append("\" name=\"");
-			html.append(Escaper.esc(bm.getTitle()));
+			html.append(bm.getTitle()); // no esc()
 			if (bm.getBookmarks().isEmpty()) {
 				html.append("\"/>\n");
 			} else {
