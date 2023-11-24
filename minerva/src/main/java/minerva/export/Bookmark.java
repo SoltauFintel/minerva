@@ -16,7 +16,7 @@ public class Bookmark {
 	}
 	
 	public Bookmark(SeiteSO seite, String lang, Chapter chapter) {
-		this(seite.getId(), chapter.toString() + " " + seite.getSeite().getTitle().getString(lang).replace("&", "&amp;"));
+		this(seite.getId(), chapter.toString() + " " + seite.getSeite().getTitle().getString(lang));
 	}
 
 	public String getId() {
