@@ -12,6 +12,7 @@ public class ExclusionsService {
     private Exclusions exclusions;
     private String customer;
     private Set<String> tags;
+    private String context = ""; // e.g. "PDF"
     
     public Exclusions getExclusions() {
         return exclusions;
@@ -45,7 +46,7 @@ public class ExclusionsService {
     }
 
     public boolean isAccessible() {
-        return isAccessible(exclusions, tags, customer);
+        return isAccessible(exclusions, tags, customer, context);
     }
 
     public boolean isAccessible(Set<String> tags) {
@@ -53,14 +54,20 @@ public class ExclusionsService {
         return isAccessible();
     }
     
-    static boolean isAccessible(Exclusions exclusions, Set<String> tags, String pCustomer) {
+    static boolean isAccessible(Exclusions exclusions, Set<String> tags, String pCustomer, String context) {
         if ("-".equals(pCustomer)) {
             return true;
         }
         boolean ret = true;
         boolean voteForON = false;
+        boolean nicht_drucken = "PDF".equalsIgnoreCase(context);
         for (String tag : tags) {
-            LabelClass v = exclusions.contains(tag, pCustomer);
+        	LabelClass v;
+        	if (nicht_drucken && "nicht_drucken".equals(tag)) {
+        		v = LabelClass.OFF;
+        	} else {
+        		v = exclusions.contains(tag, pCustomer);
+        	}
             if (v == LabelClass.ON) {
                 voteForON = true;
             } else if (v == LabelClass.OFF) {
@@ -71,4 +78,12 @@ public class ExclusionsService {
         }
         return voteForON || ret;
     }
+
+	public String getContext() {
+		return context;
+	}
+
+	public void setContext(String context) {
+		this.context = context;
+	}
 }

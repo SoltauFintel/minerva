@@ -63,6 +63,6 @@ div {
 	color: #000;
 }
 
-.tocpn {
+.tocpn { /* funktioniert nicht */
 	content: target-counter(attr(href), page);
 }

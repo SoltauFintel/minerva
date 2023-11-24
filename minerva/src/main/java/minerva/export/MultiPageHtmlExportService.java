@@ -37,6 +37,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
         super(workspace, customer, language);
         this.workspace = workspace;
         workspace.getUser().onlyWithExportRight();
+		exclusionsService.setContext("Multi-page-HTML-export");
     }
     
     @Override

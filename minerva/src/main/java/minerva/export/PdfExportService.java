@@ -23,6 +23,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	
 	public PdfExportService(WorkspaceSO workspace, String customer, String language) {
 		super(workspace, customer, language);
+		exclusionsService.setContext("PDF");
 		pdfCss = new ExportTemplatesService(workspace).loadTemplate(ExportTemplatesService.PDF_CSS);
 		if (StringService.isNullOrEmpty(pdfCss)) {
 			Logger.warn("PDF CSS is empty!");
@@ -42,8 +43,6 @@ public class PdfExportService extends MultiPageHtmlExportService {
 		
 		File outputFolder = super.saveBook(book);
 		
-//System.out.println(sb.toString());
-//System.exit(0);
 		Logger.info("creating PDF file...");
 		pdfFile = new File(outputFolder, outputFolder.getName() + ".pdf");
         PdfWriter pdf = new PdfWriter();
@@ -116,6 +115,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
         if ("DEVKH1".equalsIgnoreCase(customer)) {
             name = "X-map H1";
         }
+        // TODO StringBuilder Syntax optimieren
         html.append("<div class=\"cover\">"
         		+ "<h1>" + name + "<br/>" + bookTitle.replace("&", "&amp;") + "</h1>"
         		+ "<h2>" + customer + "</h2>"
