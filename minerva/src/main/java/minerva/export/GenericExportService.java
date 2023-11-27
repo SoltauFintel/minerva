@@ -12,6 +12,7 @@ import github.soltaufintel.amalia.spark.Context;
 import minerva.MinervaWebapp;
 import minerva.base.FileService;
 import minerva.base.NLS;
+import minerva.base.UserMessage;
 import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
 import minerva.model.BookSO;
@@ -106,10 +107,11 @@ public abstract class GenericExportService {
     }
 
     public File saveSeite(SeiteSO seite) {
-        File outputFolder = getFolder(seite.getSeite().getTitle().getString(lang));
+        String title = seite.getSeite().getTitle().getString(lang);
+		File outputFolder = getFolder(title);
         init(outputFolder);
         if (!_saveSeiteTo(seite, null, Chapter.withoutChapters(), outputFolder)) {
-            throw new RuntimeException("Page #" + seite.getId() + " \"" + seite.getTitle() + "\" is not visible!");
+            throw new UserMessage("export-page-is-not-visible", seite.getBook().getWorkspace(), msg -> msg.replace("$t", title));
         }
         return outputFolder;
     }
