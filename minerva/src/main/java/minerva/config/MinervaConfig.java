@@ -289,4 +289,8 @@ public class MinervaConfig {
         ret.sort((a, b) -> a.getCustomer().compareToIgnoreCase(b.getCustomer()));
 	    return ret;
 	}
+	
+	public String[] getPDF_tags() {
+		return config.get("pdf-tags", "").split(","); // nicht_drucken
+	}
 }

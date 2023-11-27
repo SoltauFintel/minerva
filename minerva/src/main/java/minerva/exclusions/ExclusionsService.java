@@ -2,6 +2,7 @@ package minerva.exclusions;
 
 import java.util.Set;
 
+import minerva.MinervaWebapp;
 import minerva.exclusions.Exclusions.LabelClass;
 import minerva.model.SeiteSO;
 
@@ -9,6 +10,7 @@ import minerva.model.SeiteSO;
  * Call setExclusions, setCustomer and setTags-or-setSeite and then call isAccessible.
  */
 public class ExclusionsService {
+    private final String[] pdf_tags = MinervaWebapp.factory().getConfig().getPDF_tags();
     private Exclusions exclusions;
     private String customer;
     private Set<String> tags;
@@ -46,7 +48,7 @@ public class ExclusionsService {
     }
 
     public boolean isAccessible() {
-        return isAccessible(exclusions, tags, customer, context);
+        return isAccessible(exclusions, tags, customer, context, pdf_tags);
     }
 
     public boolean isAccessible(Set<String> tags) {
@@ -54,16 +56,16 @@ public class ExclusionsService {
         return isAccessible();
     }
     
-    static boolean isAccessible(Exclusions exclusions, Set<String> tags, String pCustomer, String context) {
+    static boolean isAccessible(Exclusions exclusions, Set<String> tags, String pCustomer, String context, String[] pdf_tags) {
         if ("-".equals(pCustomer)) {
             return true;
         }
         boolean ret = true;
         boolean voteForON = false;
-        boolean nicht_drucken = "PDF".equalsIgnoreCase(context);
+        boolean pdfMode = "PDF".equalsIgnoreCase(context);
         for (String tag : tags) {
         	LabelClass v;
-        	if (nicht_drucken && "nicht_drucken".equals(tag)) {
+        	if (pdfMode && isPdfTag(tag, pdf_tags)) {
         		v = LabelClass.OFF;
         	} else {
         		v = exclusions.contains(tag, pCustomer);
@@ -77,6 +79,15 @@ public class ExclusionsService {
             }
         }
         return voteForON || ret;
+    }
+    
+    private static boolean isPdfTag(String tag, String[] pdf_tags) {
+		for (String i : pdf_tags) {
+			if (i.equals(tag)) {
+				return true;
+			}
+		}
+		return false;
     }
 
 	public String getContext() {
