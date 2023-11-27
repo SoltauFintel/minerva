@@ -1,7 +1,5 @@
 package minerva.export;
 
-import java.io.File;
-
 import org.pmw.tinylog.Logger;
 
 import minerva.model.WorkspaceSO;
@@ -23,9 +21,8 @@ public class ExportWorkspaceAction extends UAction {
         if (workspace.getBooks().isEmpty()) {
             throw new RuntimeException("There are no books!");
         }
-        File outputFolder = GenericExportService.getService(workspace, customer, lang, ctx).saveWorkspace(workspace);
+        String id = GenericExportService.getService(workspace, customer, lang, ctx).getBooksExportDownloadId(workspace);
         
-        String id = new DownloadExportService().prepareDownload(outputFolder);
         ctx.redirect("/w/" + esc(branch) + "/download-export/" + id);
     }
 }

@@ -23,13 +23,9 @@ public class PdfTester {
 
 		String lang = "de";
 		PdfExportService es = new PdfExportService(book.getWorkspace(), "DLH", lang);
-		boolean booksMode = true;
+		boolean booksMode =! true;
 		if (booksMode) {
-			File outputFolder = es.saveWorkspace(book.getWorkspace());
-
-			System.out.println(outputFolder.getAbsolutePath());
-			
-			new DownloadExportService().prepareDownload(es.getPdfFiles(), lang);
+			es.getBooksExportDownloadId(book.getWorkspace());
 		} else {
 			File outputFolder = es.
 					saveBook(book);

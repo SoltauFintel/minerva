@@ -1,7 +1,5 @@
 package minerva.export;
 
-import java.io.File;
-
 import org.pmw.tinylog.Logger;
 
 import minerva.seite.SAction;
@@ -21,9 +19,8 @@ public class ExportSeiteAction extends SAction {
 		Logger.info(user.getLogin() + " | " + info);
         user.log(info);
 
-        File outputFolder = GenericExportService.getService(book.getWorkspace(), customer, lang, ctx).saveSeite(seite);
+        String id = GenericExportService.getService(book.getWorkspace(), customer, lang, ctx).getSeiteExportDownloadId(seite);
         
-        String id = new DownloadExportService().prepareDownload(outputFolder);
         ctx.redirect("/w/" + esc(branch) + "/download-export/" + id);
     }
 }

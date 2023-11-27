@@ -8,6 +8,8 @@ import org.pmw.tinylog.Logger;
 
 import com.github.template72.data.DataMap;
 
+import minerva.base.FileService;
+import minerva.base.NLS;
 import minerva.base.StringService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
@@ -37,12 +39,22 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	}
 	
 	@Override
-	public File saveWorkspace(WorkspaceSO workspace) {
-		File outputFolder = super.saveWorkspace(workspace);
+	public String getBooksExportDownloadId(WorkspaceSO workspace) {
+		String id;
+    	saveWorkspace(workspace);
 		Logger.info("error messages: " + errorMessages.size());
-		return outputFolder;
+		if (pdfFiles.size() == 1) {
+			id = register(pdfFiles.get(0));
+			Logger.info(pdfFiles.get(0).getAbsolutePath() + " => " + id);
+		} else {
+			File zipFile = new File(pdfFiles.get(0).getParentFile().getParentFile(), NLS.get(lang, "allBooks") + ".zip");
+			FileService.zip(pdfFiles, zipFile);
+			id = register(zipFile);
+			Logger.info(zipFile.getAbsolutePath() + " => " + id);
+		}
+		return id;
 	}
-	
+
 	// important for books export
 	@Override
 	protected void saveBookTo(BookSO book, File outputFolder) {
@@ -230,9 +242,5 @@ public class PdfExportService extends MultiPageHtmlExportService {
 
 	public List<String> getErrorMessages() {
 		return errorMessages;
-	}
-
-	public List<File> getPdfFiles() {
-		return pdfFiles;
 	}
 }

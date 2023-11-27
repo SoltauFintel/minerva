@@ -1,8 +1,13 @@
 package minerva.export;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.pmw.tinylog.Logger;
+
+import github.soltaufintel.amalia.base.IdGenerator;
 import github.soltaufintel.amalia.spark.Context;
 import minerva.MinervaWebapp;
 import minerva.base.FileService;
@@ -20,6 +25,7 @@ import minerva.model.WorkspaceSO;
  * for a customer and one language.
  */
 public abstract class GenericExportService {
+	private static final Map<String, File> downloads = new HashMap<>();
     /** language, e.g. "en" */
     protected final String lang;
     protected ExclusionsService exclusionsService;
@@ -40,6 +46,10 @@ public abstract class GenericExportService {
         return exclusionsService.getCustomer().toUpperCase();
     }
 
+    public String getBooksExportDownloadId(WorkspaceSO workspace) {
+    	return prepareDownload(saveWorkspace(workspace));
+    }
+    
     /**
      * @param workspace with at least 1 book
      * @return output folder
@@ -47,6 +57,7 @@ public abstract class GenericExportService {
     public File saveWorkspace(WorkspaceSO workspace) {
         booksMode = true;
         File outputFolder = getFolder(NLS.get(lang, "allBooks"));
+        Logger.info("export books output folder: " + outputFolder.getAbsolutePath());
         for (BookSO book : workspace.getBooks()) {
             if (book.hasContent(lang, exclusionsService)) {
                 String bookFolder = FileService.getSafeName(book.getBook().getFolder());
@@ -54,6 +65,10 @@ public abstract class GenericExportService {
             }
         }
         return outputFolder;
+    }
+
+    public String getBookExportDownloadId(BookSO book) {
+    	return prepareDownload(saveBook(book));
     }
 
     public File saveBook(BookSO book) {
@@ -85,7 +100,11 @@ public abstract class GenericExportService {
             }
         }
     }
-    
+
+    public String getSeiteExportDownloadId(SeiteSO seite) {
+    	return prepareDownload(saveSeite(seite));
+    }
+
     public File saveSeite(SeiteSO seite) {
         File outputFolder = getFolder(seite.getSeite().getTitle().getString(lang));
         init(outputFolder);
@@ -128,4 +147,36 @@ public abstract class GenericExportService {
             return new MultiPageHtmlExportService(workspace, customer, language);
         }
     }
+    
+	private String prepareDownload(File sourceFolder) {
+		String id;
+		File pdfFile = new File(sourceFolder, sourceFolder.getName() + ".pdf");
+		if (pdfFile.isFile()) {
+			id = register(pdfFile);
+			Logger.info(pdfFile.getAbsolutePath() + " => " + id);
+		} else {
+			File zipFile = new File(sourceFolder.getParentFile(), sourceFolder.getName() + ".zip");
+			FileService.zip(sourceFolder, zipFile);
+			id = register(zipFile);
+			Logger.info(zipFile.getAbsolutePath() + " => " + id);
+		}
+		return id;
+	}
+
+	public static String register(File file) {
+		String id = IdGenerator.createId6();
+		downloads.put(id, file);
+		return id;
+	}
+	
+	public static String getFilename(String id) {
+		File file = downloads.get(id);
+		return file == null ? null : file.getName();
+	}
+	
+	public static File pop(String id) {
+		File ret = downloads.get(id);
+		downloads.remove(id);
+		return ret;
+	}
 }

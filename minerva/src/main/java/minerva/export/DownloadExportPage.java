@@ -19,7 +19,7 @@ public class DownloadExportPage extends WPage {
 		
 		if ("dl".equals(mode)) {
 			render = false;
-			File file = new DownloadExportService().pop(id);
+			File file = GenericExportService.pop(id);
 			if (file != null && file.isFile()) {
 				if (file.getName().endsWith(".pdf")) {
 					ctx.res.type("application/pdf");
@@ -32,7 +32,7 @@ public class DownloadExportPage extends WPage {
 				throw new UserMessage("export-already-downloaded", user);
 			}
 		} else {
-			String dn = new DownloadExportService().getFilename(id);
+			String dn = GenericExportService.getFilename(id);
 			if (dn == null) {
 				throw new UserMessage("export-already-downloaded", user);
 			}
