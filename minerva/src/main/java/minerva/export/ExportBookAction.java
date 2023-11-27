@@ -19,7 +19,7 @@ public class ExportBookAction extends BAction {
 
         File outputFolder = GenericExportService.getService(book.getWorkspace(), customer, lang, ctx).saveBook(book);
         
-        String id = new DownloadExportService().prepareDownload(outputFolder, ctx);
+        String id = new DownloadExportService().prepareDownload(outputFolder);
         ctx.redirect("/w/" + esc(branch) + "/download-export/" + id);
     }
 }

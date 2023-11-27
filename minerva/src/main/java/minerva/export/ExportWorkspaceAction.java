@@ -25,7 +25,7 @@ public class ExportWorkspaceAction extends UAction {
         }
         File outputFolder = GenericExportService.getService(workspace, customer, lang, ctx).saveWorkspace(workspace);
         
-        String id = new DownloadExportService().prepareDownload(outputFolder, ctx);
+        String id = new DownloadExportService().prepareDownload(outputFolder);
         ctx.redirect("/w/" + esc(branch) + "/download-export/" + id);
     }
 }

@@ -162,4 +162,22 @@ public class FileService {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Zip given files to zipFile. Duplicate filenames are not supported.
+     * @param files to add to zip file
+     * @param zipFile -
+     */
+    public static void zip(List<File> files, File zipFile) {
+    	zipFile.delete();
+        try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))) {
+        	for (File file : files) {
+                out.putNextEntry(new ZipEntry(file.getName()));
+                Files.copy(file.toPath(), out);
+                out.closeEntry();
+        	}
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -21,18 +21,28 @@ public class PdfTester {
 		System.out.println(book.getFolder());
 		System.out.println(book.getSeiten().size() + ", " + book.getSeiten().get(0).getTitle());
 
-		PdfExportService es = new PdfExportService(book.getWorkspace(), "DLH", "de");
-		File outputFolder = es.
-//				saveBook(book);
-				saveSeite(book.getSeiten().get(0));
-		
-		System.out.println(outputFolder.getAbsolutePath());
-		if (es.pdfFile != null && es.pdfFile.isFile()) {
-			System.out.println(es.pdfFile.getAbsolutePath());
-			Desktop.getDesktop().open(es.pdfFile);
-			System.out.println("fertig");
+		String lang = "de";
+		PdfExportService es = new PdfExportService(book.getWorkspace(), "DLH", lang);
+		boolean booksMode = true;
+		if (booksMode) {
+			File outputFolder = es.saveWorkspace(book.getWorkspace());
+
+			System.out.println(outputFolder.getAbsolutePath());
+			
+			new DownloadExportService().prepareDownload(es.getPdfFiles(), lang);
 		} else {
-			throw new RuntimeException("Kein PDF");
+			File outputFolder = es.
+					saveBook(book);
+//					saveSeite(book.getSeiten().get(0));
+			
+			System.out.println(outputFolder.getAbsolutePath());
+			if (es.pdfFile != null && es.pdfFile.isFile()) {
+				System.out.println(es.pdfFile.getAbsolutePath());
+				Desktop.getDesktop().open(es.pdfFile);
+				System.out.println("fertig");
+			} else {
+				throw new RuntimeException("Kein PDF");
+			}
 		}
 	}
 

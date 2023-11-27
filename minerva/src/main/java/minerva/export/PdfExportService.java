@@ -6,15 +6,18 @@ import java.util.List;
 
 import org.pmw.tinylog.Logger;
 
+import com.github.template72.data.DataMap;
+
 import minerva.base.StringService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 
 public class PdfExportService extends MultiPageHtmlExportService {
+	private final List<File> pdfFiles = new ArrayList<>();
 	private final List<String> errorMessages = new ArrayList<>();
-	private final StringBuilder sb = new StringBuilder();
 	private final String pdfCss;
+	private StringBuilder sb = new StringBuilder();
 	private String imageBaseDir;
 	public File pdfFile;
 	private String bookTitle;
@@ -27,10 +30,45 @@ public class PdfExportService extends MultiPageHtmlExportService {
 			Logger.warn("PDF CSS is empty!");
 		}
 	}
+
+	@Override
+	protected void init(File outputFolder) { //
+	}
 	
 	@Override
 	public File saveWorkspace(WorkspaceSO workspace) {
-		throw new UnsupportedOperationException("Derzeit kann man nur ein Buch als PDF ausgeben."); // TO-DO
+		File outputFolder = super.saveWorkspace(workspace);
+		Logger.info("error messages: " + errorMessages.size());
+		return outputFolder;
+	}
+	
+	// important for books export
+	@Override
+	protected void saveBookTo(BookSO book, File outputFolder) {
+		if (booksMode) {
+			// clear
+			sb = new StringBuilder();
+			cb = new Bookmark("root", "book");
+			bookmarks = cb.getBookmarks();
+			
+			bookTitle = book.getBook().getTitle().getString(lang);
+			Logger.info("exporting book \"" + bookTitle + "\"...");
+			imageBaseDir = book.getFolder();
+			
+			super.saveBookTo(book, outputFolder);
+			
+			Logger.info("creating PDF file...");
+			outputFolder.mkdirs();
+			pdfFile = new File(outputFolder, outputFolder.getName() + ".pdf");
+			System.out.println(pdfFile.getAbsolutePath());
+	        PdfWriter pdf = new PdfWriter();
+			pdf.writePDF(createFinalHtmlDocument(true), true, pdfFile);
+			errorMessages.addAll(pdf.getErrorMessages());
+			
+			pdfFiles.add(pdfFile);
+		} else {
+			super.saveBookTo(book, outputFolder);
+		}
 	}
 	
 	@Override
@@ -71,7 +109,11 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	}
 	
 	@Override
-	protected void createIndexFile(SeiteSO seite, File outputFolder) { //
+	protected void saveIndex(File outputFolder, String dn, DataMap model) { //
+	}
+
+	@Override
+	protected void copyPageFileAsIndexFile(SeiteSO seite, File outputFolder) { //
 	}
 	
 	@Override
@@ -198,5 +240,9 @@ public class PdfExportService extends MultiPageHtmlExportService {
 
 	public List<String> getErrorMessages() {
 		return errorMessages;
+	}
+
+	public List<File> getPdfFiles() {
+		return pdfFiles;
 	}
 }

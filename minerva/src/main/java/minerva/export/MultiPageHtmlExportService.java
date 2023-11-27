@@ -129,11 +129,11 @@ public class MultiPageHtmlExportService extends GenericExportService {
         currentBook = null;
         File outputFolder = super.saveSeite(seite);
 
-        createIndexFile(seite, outputFolder);
+        copyPageFileAsIndexFile(seite, outputFolder);
         return outputFolder;
     }
     
-    protected void createIndexFile(SeiteSO seite, File outputFolder) {
+    protected void copyPageFileAsIndexFile(SeiteSO seite, File outputFolder) {
         // copy main file as index.html as entry point
         File src = new File(outputFolder, seite.getId() + ".html");
         File dest = new File(outputFolder, "index.html");
@@ -283,7 +283,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
 		return html;
 	}
     
-    private void saveIndex(File outputFolder, String dn, DataMap model) {
+    protected void saveIndex(File outputFolder, String dn, DataMap model) {
         FileService.savePlainTextFile(new File(outputFolder, "index.html"),
                 render(new ExportTemplatesService(workspace).loadTemplate(dn), model));
     }

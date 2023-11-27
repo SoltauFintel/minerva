@@ -27,7 +27,7 @@ public abstract class GenericExportService {
     protected boolean booksMode = false;
     /** current parent bookmark */
     protected Bookmark cb = new Bookmark("root", "book");
-    protected final List<Bookmark> bookmarks = cb.getBookmarks();
+    protected List<Bookmark> bookmarks = cb.getBookmarks();
 
     public GenericExportService(WorkspaceSO workspace, String customer, String language) {
         lang = language;
