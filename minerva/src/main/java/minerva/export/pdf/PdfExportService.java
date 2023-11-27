@@ -1,4 +1,4 @@
-package minerva.export;
+package minerva.export.pdf;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ import minerva.base.FileService;
 import minerva.base.NLS;
 import minerva.base.StringService;
 import minerva.export.Formula2Image.TransformPath;
+import minerva.export.MultiPageHtmlExportService;
 import minerva.export.template.ExportTemplatesService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;

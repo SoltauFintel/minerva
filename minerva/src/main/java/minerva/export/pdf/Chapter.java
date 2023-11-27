@@ -1,4 +1,4 @@
-package minerva.export;
+package minerva.export.pdf;
 
 public class Chapter {
 	// immutable class!

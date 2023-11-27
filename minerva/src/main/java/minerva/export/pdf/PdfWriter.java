@@ -1,4 +1,4 @@
-package minerva.export;
+package minerva.export.pdf;
 
 import java.io.File;
 import java.io.FileOutputStream;

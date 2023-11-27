@@ -1,4 +1,4 @@
-package minerva.export;
+package minerva.export.pdf;
 
 import java.util.ArrayList;
 import java.util.List;
