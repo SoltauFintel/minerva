@@ -1,4 +1,4 @@
-package minerva.export;
+package minerva.export.template;
 
 import java.util.HashMap;
 import java.util.Map;
