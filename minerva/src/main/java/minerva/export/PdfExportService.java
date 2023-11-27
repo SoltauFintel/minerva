@@ -107,7 +107,9 @@ public class PdfExportService extends MultiPageHtmlExportService {
 
         // Cover
         String customer = exclusionsService.getCustomer();
-		if (customer.toLowerCase().equals(customer)) {
+        if ("-".equals(customer)) {
+        	customer = "";
+        } else if (customer.toLowerCase().equals(customer)) {
 			customer = customer.toUpperCase();
 		}
         String name = "X-map F1";
