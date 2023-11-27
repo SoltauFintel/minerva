@@ -36,7 +36,7 @@ public class Formula2Image {
     }
 
     public String processHTML(String html, String prefix, String postfix,
-            File outputFolder, SeiteSO seite, String prefixHtml, String postfixHtml, String title) {
+            File outputFolder, SeiteSO seite, String prefixHtml, String postfixHtml, String title, TransformPath tp) {
         Map<String, String> replaceMap = new HashMap<>();
         int o = html.indexOf(prefix);
         while (o >= 0) {
@@ -47,8 +47,8 @@ public class Formula2Image {
                 
                 File file = expression2ImageFile(expression, outputFolder, title);
                 
-                replaceMap.put(key,
-                        prefixHtml + "<img src=\"" + path + file.getName() + "\" class=\"math\"/>" + postfixHtml);
+                String img = "<img src=\"" + tp.transform(path, file) + "\" class=\"math\"/>";
+				replaceMap.put(key, prefixHtml + img + postfixHtml);
             }
 
             o = html.indexOf(prefix, oo + postfix.length());
@@ -96,5 +96,9 @@ public class Formula2Image {
             Logger.error(e);
         }
         return file;
+    }
+    
+    public interface TransformPath {
+    	String transform(String path, File file);
     }
 }

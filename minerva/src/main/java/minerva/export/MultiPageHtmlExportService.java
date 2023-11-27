@@ -15,6 +15,7 @@ import com.github.template72.data.DataMap;
 
 import minerva.base.FileService;
 import minerva.base.NLS;
+import minerva.export.Formula2Image.TransformPath;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeiteVisible;
@@ -277,10 +278,15 @@ public class MultiPageHtmlExportService extends GenericExportService {
 		Formula2Image c = new Formula2Image();
 		c.setCounter(counter);
 		c.setPath("img/" + seite.getId() + "/");
-		html = c.processHTML(html, "\\[", "\\]", outputFolder, seite, "<p class=\"math\">", "</p>", title);
-		html = c.processHTML(html, "\\(", "\\)", outputFolder, seite, "", "", title);
+		TransformPath tp = getTransformPath();
+		html = c.processHTML(html, "\\[", "\\]", outputFolder, seite, "<p class=\"math\">", "</p>", title, tp);
+		html = c.processHTML(html, "\\(", "\\)", outputFolder, seite, "", "", title, tp);
 		counter = c.getCounter();
 		return html;
+	}
+	
+	protected TransformPath getTransformPath() {
+		return (path, file) -> path + file.getName();
 	}
     
     protected void saveIndex(File outputFolder, String dn, DataMap model) {

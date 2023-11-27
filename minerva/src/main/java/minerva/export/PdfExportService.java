@@ -11,6 +11,7 @@ import com.github.template72.data.DataMap;
 import minerva.base.FileService;
 import minerva.base.NLS;
 import minerva.base.StringService;
+import minerva.export.Formula2Image.TransformPath;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
@@ -238,6 +239,11 @@ public class PdfExportService extends MultiPageHtmlExportService {
 				html.append("</bookmark>\n");
 			}
 		}
+	}
+	
+	@Override
+	protected TransformPath getTransformPath() {
+		return (path, file) -> "file:///" + file.getAbsolutePath().replace("\\", "/");
 	}
 
 	public List<String> getErrorMessages() {

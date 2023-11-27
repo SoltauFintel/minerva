@@ -99,7 +99,7 @@ public class HtmlForPdf {
 						html = html.substring(0, o1) + newSrc + html.substring(o2);
 						diff = newSrc.length() - src.length();
 					} else {
-						errorMessages.add(info +" has an image with http URL: " + src);
+						errorMessages.add(info + " has an image with http URL: " + src);
 					}
 				}
 			}

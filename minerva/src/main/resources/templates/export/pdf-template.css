@@ -67,3 +67,7 @@ div {
 .tocpn { /* funktioniert nicht */
 	content: target-counter(attr(href), page);
 }
+
+.math {
+    text-align: center;
+}
