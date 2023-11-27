@@ -5,7 +5,6 @@ import java.io.File;
 import org.pmw.tinylog.Logger;
 
 import minerva.model.WorkspaceSO;
-import minerva.publish.PublishAction;
 import minerva.user.UAction;
 
 public class ExportWorkspaceAction extends UAction {
@@ -26,6 +25,7 @@ public class ExportWorkspaceAction extends UAction {
         }
         File outputFolder = GenericExportService.getService(workspace, customer, lang, ctx).saveWorkspace(workspace);
         
-        PublishAction.downloadFolderAsZip(outputFolder, ctx);
+        String id = new DownloadExportService().prepareDownload(outputFolder, ctx);
+        ctx.redirect("/w/" + esc(branch) + "/download-export/" + id);
     }
 }

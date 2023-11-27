@@ -4,7 +4,6 @@ import java.io.File;
 
 import org.pmw.tinylog.Logger;
 
-import minerva.publish.PublishAction;
 import minerva.seite.SAction;
 
 // Eine Seite kann auf eine Seite verweisen, die es im Export nicht gibt! Eigentlich kann man nur ein Buch
@@ -24,6 +23,7 @@ public class ExportSeiteAction extends SAction {
 
         File outputFolder = GenericExportService.getService(book.getWorkspace(), customer, lang, ctx).saveSeite(seite);
         
-        PublishAction.downloadFolderAsZip(outputFolder, ctx);
+        String id = new DownloadExportService().prepareDownload(outputFolder, ctx);
+        ctx.redirect("/w/" + esc(branch) + "/download-export/" + id);
     }
 }

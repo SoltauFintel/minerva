@@ -228,3 +228,6 @@ deleteUser=Benutzer löschen
 deleteUserX=Benutzer $user löschen?
 multiPageHtml=Mehrseitiges HTML
 exportFormat=Exportformat
+goToBooks=Weiter zu Bücher
+downloadExportInfo=Der Export wurde erstellt und kann jetzt heruntergeladen werden:
+export-already-downloaded=Die Datei wurde bereits heruntergeladen und ist nicht mehr vorhanden. Bitte ggf. Export erneut ausführen.

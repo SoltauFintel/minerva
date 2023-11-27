@@ -30,6 +30,7 @@ import minerva.config.InfoAction;
 import minerva.config.MinervaConfig;
 import minerva.config.MinervaFactory;
 import minerva.exclusions.ExclusionsEditPage;
+import minerva.export.DownloadExportPage;
 import minerva.export.ExportBookAction;
 import minerva.export.ExportPage;
 import minerva.export.ExportSeiteAction;
@@ -133,6 +134,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/books/export", ExportWorkspaceAction.class);
         form("/w/:branch/export", ExportPage.class);
           get("/w/:branch/export-what", ExportPage.class); // TODO ab 1.12.23 entfernen
+        get("/w/:branch/download-export/:id", DownloadExportPage.class);
         form("/w/:branch/export-templates", ExportTemplatesPage.class);
         get("/w/:branch/history", WorkspaceHistoryPage.class);
         get("/w/:branch/index", IndexWorkspaceAction.class);

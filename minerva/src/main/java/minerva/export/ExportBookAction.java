@@ -5,7 +5,6 @@ import java.io.File;
 import org.pmw.tinylog.Logger;
 
 import minerva.book.BAction;
-import minerva.publish.PublishAction;
 
 public class ExportBookAction extends BAction {
 
@@ -20,6 +19,7 @@ public class ExportBookAction extends BAction {
 
         File outputFolder = GenericExportService.getService(book.getWorkspace(), customer, lang, ctx).saveBook(book);
         
-        PublishAction.downloadFolderAsZip(outputFolder, ctx);
+        String id = new DownloadExportService().prepareDownload(outputFolder, ctx);
+        ctx.redirect("/w/" + esc(branch) + "/download-export/" + id);
     }
 }

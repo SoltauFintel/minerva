@@ -227,3 +227,6 @@ deleteUser=Delete user
 deleteUserX=Delete user $user?
 multiPageHtml=Multi page HTML
 exportFormat=Export format
+goToBooks=Go to books
+downloadExportInfo=The export has been created. Please download the file:
+export-already-downloaded=The file has already been downloaded and no longer exists. Please run the export again if necessary.
