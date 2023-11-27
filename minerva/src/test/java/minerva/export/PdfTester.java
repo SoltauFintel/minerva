@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 import minerva.MinervaWebapp;
+import minerva.export.pdf.PdfExportService;
 import minerva.model.BookSO;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
