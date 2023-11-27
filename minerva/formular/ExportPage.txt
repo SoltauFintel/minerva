@@ -1,5 +1,5 @@
 c: item
 c: customer
 c: lang
-ok: /w/{{branch}}/export-what
+ok: /w/{{branch}}/export
 cancel: /w/{{branch}}

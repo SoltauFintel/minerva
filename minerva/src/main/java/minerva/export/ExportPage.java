@@ -91,7 +91,7 @@ public class ExportPage extends WPage {
         }
 
         if (item.contains(W)) { // all books
-            ctx.redirect("/w/" + branch + q);
+            ctx.redirect("/w/" + branch + "/books" + q);
             
         } else if (item.contains(B)) { // book
             String bookFolder = item.substring(item.lastIndexOf(B) + B.length());

@@ -130,8 +130,9 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/my-tasks", MyTasksPage.class);
         form("/create-workspace", AddWorkspacePage.class);
         get("/w/:branch/help-keys", AllHelpKeysPage.class);
-        get("/w/:branch/export", ExportWorkspaceAction.class);
-        form("/w/:branch/export-what", ExportPage.class);
+        get("/w/:branch/books/export", ExportWorkspaceAction.class);
+        form("/w/:branch/export", ExportPage.class);
+          get("/w/:branch/export-what", ExportPage.class); // TODO ab 1.12.23 entfernen
         form("/w/:branch/export-templates", ExportTemplatesPage.class);
         get("/w/:branch/history", WorkspaceHistoryPage.class);
         get("/w/:branch/index", IndexWorkspaceAction.class);
