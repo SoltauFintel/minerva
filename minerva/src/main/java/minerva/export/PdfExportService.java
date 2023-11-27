@@ -160,7 +160,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
 			html.append("<bookmark href=\"#");
 			html.append(bm.getId());
 			html.append("\" name=\"");
-			html.append(bm.getTitle().replace("&", "&amp;"));
+			html.append(bm.getTitle().replace("&", "&amp;").replace("\"", "&quot;"));
 			if (bm.getBookmarks().isEmpty()) {
 				html.append("\"/>\n");
 			} else {
