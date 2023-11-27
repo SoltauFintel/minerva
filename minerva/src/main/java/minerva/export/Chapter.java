@@ -11,6 +11,10 @@ public class Chapter {
 		this("", 0, 0);
 	}
 	
+	public static Chapter withoutChapters() {
+		return new Chapter("", -1, 0);
+	}
+	
 	private Chapter(String prefix, int layer, int lastNumber) {
 		this.prefix = prefix;
 		this.lastNumber = lastNumber;
@@ -21,6 +25,9 @@ public class Chapter {
 	 * create chapter sibling (same layer, +1)
 	 */
 	public Chapter inc() {
+		if (layer < 0) {
+			return this; // The without-chapters-mode doesn't return new chapters.
+		}
 		return new Chapter(prefix, layer, lastNumber + 1);
 	}
 	
@@ -28,6 +35,9 @@ public class Chapter {
 	 * create child chapter (1 layer down, starting with 1)
 	 */
 	public Chapter child() {
+		if (layer < 0) {
+			return this; // The without-chapters-mode doesn't return new chapters.
+		}
 		return new Chapter(text(), layer + 1, 1);
 	}
 
@@ -50,6 +60,10 @@ public class Chapter {
 	 */
 	@Override
 	public String toString() {
-		return text() + (prefix.isEmpty() ? "." : "");
+		String ret = text();
+		if (!ret.isEmpty()) {
+			ret += (prefix.isEmpty() ? "." : "");
+		}
+		return ret;
 	}
 }

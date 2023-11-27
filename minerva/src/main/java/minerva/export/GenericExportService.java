@@ -89,7 +89,7 @@ public abstract class GenericExportService {
     public File saveSeite(SeiteSO seite) {
         File outputFolder = getFolder(seite.getSeite().getTitle().getString(lang));
         init(outputFolder);
-        if (!_saveSeiteTo(seite, null, new Chapter(), outputFolder)) {
+        if (!_saveSeiteTo(seite, null, Chapter.withoutChapters(), outputFolder)) {
             throw new RuntimeException("Page #" + seite.getId() + " \"" + seite.getTitle() + "\" is not visible!");
         }
         return outputFolder;

@@ -22,7 +22,9 @@ public class PdfTester {
 		System.out.println(book.getSeiten().size() + ", " + book.getSeiten().get(0).getTitle());
 
 		PdfExportService es = new PdfExportService(book.getWorkspace(), "DLH", "de");
-		File outputFolder = es.saveBook(book);
+		File outputFolder = es.
+//				saveBook(book);
+				saveSeite(book.getSeiten().get(0));
 		
 		System.out.println(outputFolder.getAbsolutePath());
 		if (es.pdfFile != null && es.pdfFile.isFile()) {

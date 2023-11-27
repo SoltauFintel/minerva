@@ -9,7 +9,6 @@ import org.pmw.tinylog.Logger;
 import minerva.base.StringService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
-import minerva.model.SeitenSO;
 import minerva.model.WorkspaceSO;
 
 public class PdfExportService extends MultiPageHtmlExportService {
@@ -45,7 +44,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
 		Logger.info("creating PDF file...");
 		pdfFile = new File(outputFolder, outputFolder.getName() + ".pdf");
         PdfWriter pdf = new PdfWriter();
-		pdf.writePDF(createFinalHtmlDocument(), true, pdfFile);
+		pdf.writePDF(createFinalHtmlDocument(true), true, pdfFile);
 
 		errorMessages.addAll(pdf.getErrorMessages());
 		Logger.info("error messages: " + errorMessages.size());
@@ -54,12 +53,25 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	
 	@Override
 	public File saveSeite(SeiteSO seite) {
-		throw new UnsupportedOperationException("Derzeit kann man nur ein Buch als PDF ausgeben."); // TO-DO
+		bookTitle = seite.getBook().getBook().getTitle().getString(lang);
+		String title = seite.getSeite().getTitle().getString(lang);
+		Logger.info("exporting page \"" + title + "\"...");
+		imageBaseDir = seite.getBook().getFolder();
+		
+		File outputFolder = super.saveSeite(seite);
+		
+		Logger.info("creating PDF file...");
+		pdfFile = new File(outputFolder, outputFolder.getName() + ".pdf");
+        PdfWriter pdf = new PdfWriter();
+		pdf.writePDF(createFinalHtmlDocument(false), true, pdfFile);
+
+		errorMessages.addAll(pdf.getErrorMessages());
+		Logger.info("error messages: " + errorMessages.size());
+		return outputFolder;
 	}
 	
 	@Override
-	public void saveSeitenTo(SeitenSO seiten, SeiteSO parent, Chapter chapter, File outputFolder) {
-		super.saveSeitenTo(seiten, parent, chapter, outputFolder);
+	protected void createIndexFile(SeiteSO seite, File outputFolder) { //
 	}
 	
 	@Override
@@ -95,45 +107,24 @@ public class PdfExportService extends MultiPageHtmlExportService {
         return html;
 	}
 
-	private String createFinalHtmlDocument() {
+	private String createFinalHtmlDocument(boolean withCoverAndToc) {
 		StringBuilder html = new StringBuilder();
         html.append(getDoctype());
-		html.append("<html><head>\n<bookmarks>");
-		// PDF TOC
-		bookmarks(bookmarks, html);
-		html.append("</bookmarks>\n<style>\n");
+		html.append("<html><head>\n");
+		if (withCoverAndToc) {
+			// PDF TOC
+			html.append("<bookmarks>");
+			bookmarks(bookmarks, html);
+			html.append("</bookmarks>\n");
+		}
+		html.append("<style>\n");
 		html.append(pdfCss);
         html.append("</style>\n</head>\n<body>\n");
 
-        // Cover
-        String customer = exclusionsService.getCustomer();
-        if ("-".equals(customer)) {
-        	customer = "";
-        } else if (customer.toLowerCase().equals(customer)) {
-			customer = customer.toUpperCase();
+		if (withCoverAndToc) {
+	        createCover(html);
+	        createToc(html);
 		}
-        String name = "X-map F1";
-        if ("DEVKH1".equalsIgnoreCase(customer)) {
-            name = "X-map H1";
-        }
-		html.append("<div class=\"cover\"><h1>");
-		html.append(name);
-		html.append("<br/>");
-		html.append(bookTitle.replace("&", "&amp;"));
-		html.append("</h1><h2>");
-		html.append(customer);
-		html.append("</h2><p class=\"copyright\">Copyright by X-map AG</p></div>\n");
-		
-        // TOC
-		html.append("<div class=\"toc\" style=\"page-break-before: always;\">\n<h1>");
-		html.append("de".equals(lang) ? "Inhaltsverzeichnis" : "Table of contents");
-		html.append("</h1>");
-		if (bookmarks.size() == 1) { // typical for release notes book
-			toc(bookmarks.get(0).getBookmarks(), html);
-		} else {
-			toc(bookmarks, html);
-		}
-		html.append("</div>\n");
 
 		// Pages
         html.append(sb.toString());
@@ -141,8 +132,40 @@ public class PdfExportService extends MultiPageHtmlExportService {
         html.append("</body>\n</html>\n");
 		return html.toString();
 	}
-	
-	private void toc(List<Bookmark> list, StringBuilder html) {
+
+	private void createCover(StringBuilder html) {
+		String customer = exclusionsService.getCustomer();
+		if ("-".equals(customer)) {
+			customer = "";
+		} else if (customer.toLowerCase().equals(customer)) {
+			customer = customer.toUpperCase();
+		}
+		String name = "X-map F1";
+		if ("DEVKH1".equalsIgnoreCase(customer)) {
+		    name = "X-map H1"; // TODO param. bzw. template
+		}
+		html.append("<div class=\"cover\"><h1>");
+		html.append(name);
+		html.append("<br/>");
+		html.append(bookTitle.replace("&", "&amp;"));
+		html.append("</h1><h2>");
+		html.append(customer);
+		html.append("</h2><p class=\"copyright\">Copyright by X-map AG</p></div>\n"); // TODO param. bzw. template
+	}
+
+	private void createToc(StringBuilder html) {
+		html.append("<div class=\"toc\" style=\"page-break-before: always;\">\n<h1>");
+		html.append("de".equals(lang) ? "Inhaltsverzeichnis" : "Table of contents");
+		html.append("</h1>");
+		if (bookmarks.size() == 1) { // typical for release notes book
+			createTocLines(bookmarks.get(0).getBookmarks(), html);
+		} else {
+			createTocLines(bookmarks, html);
+		}
+		html.append("</div>\n");
+	}
+
+	private void createTocLines(List<Bookmark> list, StringBuilder html) {
 		for (Bookmark bm : list) {
 			html.append("<p><a href=\"#");
 			html.append(bm.getId());

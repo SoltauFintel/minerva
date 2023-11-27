@@ -129,15 +129,20 @@ public class MultiPageHtmlExportService extends GenericExportService {
         currentBook = null;
         File outputFolder = super.saveSeite(seite);
 
+        createIndexFile(seite, outputFolder);
+        return outputFolder;
+    }
+    
+    protected void createIndexFile(SeiteSO seite, File outputFolder) {
         // copy main file as index.html as entry point
         File src = new File(outputFolder, seite.getId() + ".html");
-        File t = new File(outputFolder, "index.html");
+        File dest = new File(outputFolder, "index.html");
         try {
-            Files.copy(src.toPath(), t.toPath());
+            Files.copy(src.toPath(), dest.toPath());
         } catch (IOException e) {
-            Logger.error(e, "Error creating index.html for " + seite.getId() + ".html");
+            Logger.error(e, "Error creating index.html for " + seite.getId() + ".html\nsrc : "
+            		+ src.getAbsolutePath() + "\ndest: " + dest.getAbsolutePath());
         }
-        return outputFolder;
     }
     
     @Override
