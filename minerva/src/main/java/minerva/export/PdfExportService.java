@@ -32,7 +32,8 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	}
 
 	@Override
-	protected void init(File outputFolder) { //
+	protected void init(File outputFolder) {
+		outputFolder.mkdirs();
 	}
 	
 	@Override
@@ -50,60 +51,49 @@ public class PdfExportService extends MultiPageHtmlExportService {
 			sb = new StringBuilder();
 			cb = new Bookmark("root", "book");
 			bookmarks = cb.getBookmarks();
-			
-			bookTitle = book.getBook().getTitle().getString(lang);
-			Logger.info("exporting book \"" + bookTitle + "\"...");
-			imageBaseDir = book.getFolder();
-			
-			super.saveBookTo(book, outputFolder);
-			
-			Logger.info("creating PDF file...");
-			outputFolder.mkdirs();
-			pdfFile = new File(outputFolder, outputFolder.getName() + ".pdf");
-			System.out.println(pdfFile.getAbsolutePath());
-	        PdfWriter pdf = new PdfWriter();
-			pdf.writePDF(createFinalHtmlDocument(true), true, pdfFile);
-			errorMessages.addAll(pdf.getErrorMessages());
-			
+
+			prepare(book);
+		}
+
+		super.saveBookTo(book, outputFolder);
+		
+		if (booksMode) {
+			createPDF(outputFolder, true);
 			pdfFiles.add(pdfFile);
-		} else {
-			super.saveBookTo(book, outputFolder);
 		}
 	}
 	
 	@Override
 	public File saveBook(BookSO book) {
+		prepare(book);
+		File outputFolder = super.saveBook(book);
+		createPDF(outputFolder, true);
+		Logger.info("error messages: " + errorMessages.size());
+		return outputFolder;
+	}
+
+	private void prepare(BookSO book) {
 		bookTitle = book.getBook().getTitle().getString(lang);
 		Logger.info("exporting book \"" + bookTitle + "\"...");
 		imageBaseDir = book.getFolder();
-		
-		File outputFolder = super.saveBook(book);
-		
+	}
+
+	private void createPDF(File outputFolder, boolean withCoverAndToc) {
 		Logger.info("creating PDF file...");
 		pdfFile = new File(outputFolder, outputFolder.getName() + ".pdf");
         PdfWriter pdf = new PdfWriter();
-		pdf.writePDF(createFinalHtmlDocument(true), true, pdfFile);
-
+		pdf.writePDF(createFinalHtmlDocument(withCoverAndToc), true, pdfFile);
 		errorMessages.addAll(pdf.getErrorMessages());
-		Logger.info("error messages: " + errorMessages.size());
-		return outputFolder;
 	}
 	
 	@Override
 	public File saveSeite(SeiteSO seite) {
-		bookTitle = seite.getBook().getBook().getTitle().getString(lang);
-		String title = seite.getSeite().getTitle().getString(lang);
-		Logger.info("exporting page \"" + title + "\"...");
-		imageBaseDir = seite.getBook().getFolder();
+		prepare(seite.getBook());
+		Logger.info("just exporting page \"" + seite.getSeite().getTitle().getString(lang) + "\" of that book...");
 		
 		File outputFolder = super.saveSeite(seite);
 		
-		Logger.info("creating PDF file...");
-		pdfFile = new File(outputFolder, outputFolder.getName() + ".pdf");
-        PdfWriter pdf = new PdfWriter();
-		pdf.writePDF(createFinalHtmlDocument(false), true, pdfFile);
-
-		errorMessages.addAll(pdf.getErrorMessages());
+		createPDF(outputFolder, false);
 		Logger.info("error messages: " + errorMessages.size());
 		return outputFolder;
 	}
