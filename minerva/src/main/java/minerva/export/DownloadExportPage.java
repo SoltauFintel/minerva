@@ -38,6 +38,7 @@ public class DownloadExportPage extends WPage {
 			}
 			put("id", esc(id));
 			put("dn", esc(dn));
+			put("dnu", u(dn));
 		}
 	}
 	

@@ -23,6 +23,6 @@ public class ExportWorkspaceAction extends WAction {
         }
         String id = GenericExportService.getService(workspace, customer, lang, template, ctx).getBooksExportDownloadId(workspace);
         
-        ctx.redirect("/w/" + esc(branch) + "/download-export/" + id);
+        ctx.redirect("/w/" + esc(branch) + "/download-export/" + id + "/" + u(GenericExportService.getFilename(id)));
     }
 }

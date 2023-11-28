@@ -147,7 +147,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/books/export", ExportWorkspaceAction.class);
         form("/w/:branch/export", ExportPage.class);
           get("/w/:branch/export-what", ExportPage.class); // TODO ab 1.12.23 entfernen
-        get("/w/:branch/download-export/:id", DownloadExportPage.class);
+        get("/w/:branch/download-export/:id/:dn", DownloadExportPage.class);
 
         get("/ets/:branch", ExportTemplateSetsPage.class);
         get("/ets/:branch/add", AddExportTemplateSetAction.class);

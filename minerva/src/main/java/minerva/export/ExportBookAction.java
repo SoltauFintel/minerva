@@ -18,6 +18,6 @@ public class ExportBookAction extends BAction {
 
         String id = GenericExportService.getService(book.getWorkspace(), customer, lang, template, ctx).getBookExportDownloadId(book);
         
-        ctx.redirect("/w/" + esc(branch) + "/download-export/" + id);
+        ctx.redirect("/w/" + esc(branch) + "/download-export/" + id + "/" + u(GenericExportService.getFilename(id)));
     }
 }
