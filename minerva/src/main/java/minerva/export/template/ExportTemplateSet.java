@@ -11,6 +11,7 @@ public class ExportTemplateSet {
 	private String template;
 	private String styles;
 	// PDF----
+	private String pdfToc; // cover and table of contents pages
 	private String pdfStyles;
 	
 	public String getId() {
@@ -75,6 +76,14 @@ public class ExportTemplateSet {
 
 	public void setStyles(String styles) {
 		this.styles = styles;
+	}
+
+	public String getPdfToc() {
+		return pdfToc;
+	}
+
+	public void setPdfToc(String pdfToc) {
+		this.pdfToc = pdfToc;
 	}
 
 	public String getPdfStyles() {

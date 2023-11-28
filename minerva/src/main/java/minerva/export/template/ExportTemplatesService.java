@@ -43,7 +43,10 @@ public class ExportTemplatesService {
     	Map<String, String> files = workspace.dao().loadAllFiles(workspace.getFolder() + "/export-templates");
     	for (Entry<String, String> e : files.entrySet()) {
 			if (e.getKey().endsWith(DN_EXT)) {
-				ret.add(stringToObject(e.getValue()));
+				ExportTemplateSet set = stringToObject(e.getValue());
+				if (set != null) {
+					ret.add(set);
+				}
 			}
 		}
 		ret.sort((a, b) -> umlaute(a.getName()).compareTo(umlaute(b.getName())));

@@ -238,3 +238,4 @@ deleteExportTemplateSet=Export Template Set löschen
 no-export-template-sets=Export nicht möglich, da keine Export Template Sets vorhanden sind!
 copy=Kopie
 copyExportTemplateSet=Export Template Set duplizieren
+pdfToc=Deckblatt und Inhaltsverz.

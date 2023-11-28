@@ -36,6 +36,7 @@ public class EditExportTemplateSetPage extends WPage {
         	set.setPage(ctx.formParam("page"));
         	set.setTemplate(ctx.formParam("template"));
         	set.setStyles(ctx.formParam("templateCss"));
+        	set.setPdfToc(ctx.formParam("pdfToc"));
         	set.setPdfStyles(ctx.formParam("pdfCss"));
         	x.save(set);
 
@@ -53,11 +54,8 @@ public class EditExportTemplateSetPage extends WPage {
             put("page", esc(set.getPage()));
             put("template", esc(set.getTemplate()));
             put("templateCss", esc(set.getStyles()));
+            put("pdfToc", esc(set.getPdfToc()));
             put("pdfCss", esc(set.getPdfStyles()));
         }
     }
-    
-    private void save(String dn, String content) {
-        files.put(workspace.getFolder() + "/" + dn, content);
-    }
-}
+}    

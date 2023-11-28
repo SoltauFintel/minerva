@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.pmw.tinylog.Logger;
 
+import com.github.template72.Template;
+import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.base.FileService;
@@ -169,8 +171,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
         html.append("</style>\n</head>\n<body>\n");
 
 		if (withCoverAndToc) {
-	        createCover(html);
-	        createToc(html);
+	        createCoverAndToc(html);
 		}
 
 		// Pages
@@ -180,45 +181,36 @@ public class PdfExportService extends MultiPageHtmlExportService {
 		return html.toString();
 	}
 
-	private void createCover(StringBuilder html) {
+	private void createCoverAndToc(StringBuilder html) {
+		DataMap model = new DataMap();
+		
 		String customer = exclusionsService.getCustomer();
 		if ("-".equals(customer)) {
 			customer = "";
 		} else if (customer.toLowerCase().equals(customer)) {
 			customer = customer.toUpperCase();
 		}
-		String name = "X-map F1";
-		if ("DEVKH1".equalsIgnoreCase(customer)) {
-		    name = "X-map H1"; // TODO param. bzw. template
-		}
-		html.append("<div class=\"cover\"><h1>");
-		html.append(name);
-		html.append("<br/>");
-		html.append(bookTitle.replace("&", "&amp;"));
-		html.append("</h1><h2>");
-		html.append(customer);
-		html.append("</h2><p class=\"copyright\">Copyright by X-map AG</p></div>\n"); // TODO param. bzw. template
-	}
+		model.put("customer", customer);
+		
+		model.put("bookTitle", bookTitle.replace("&", "&amp;"));
+		model.put("de", "de".equals(lang));
 
-	private void createToc(StringBuilder html) {
-		html.append("<div class=\"toc\" style=\"page-break-before: always;\">\n<h1>");
-		html.append("de".equals(lang) ? "Inhaltsverzeichnis" : "Table of contents");
-		html.append("</h1>");
-		if (bookmarks.size() == 1) { // typical for release notes book
-			createTocLines(bookmarks.get(0).getBookmarks(), html);
+		if (bookmarks.size() == 1 && !bookmarks.get(0).getBookmarks().isEmpty()) { // typical for release notes book
+			createTocLines(bookmarks.get(0).getBookmarks(), model);
 		} else {
-			createTocLines(bookmarks, html);
+			createTocLines(bookmarks, model);
 		}
-		html.append("</div>\n");
+		
+		String aTemplate = exportTemplateSet.getPdfToc();
+		html.append(Template.createFromString(aTemplate).withData(model).render());
 	}
 
-	private void createTocLines(List<Bookmark> list, StringBuilder html) {
-		for (Bookmark bm : list) {
-			html.append("<p><a href=\"#");
-			html.append(bm.getId());
-			html.append("\">");
-			html.append(bm.getTitle().replace("&", "&amp;"));
-			html.append("</a></p>");
+	private void createTocLines(List<Bookmark> bookmarks, DataMap model) {
+		DataList list = model.list("tocLines");
+		for (Bookmark b : bookmarks) {
+			DataMap map = list.add();
+			map.put("id", b.getId());
+			map.put("title", b.getTitle().replace("&", "&amp;"));
 		}
 	}
 

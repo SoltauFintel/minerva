@@ -237,3 +237,4 @@ deleteExportTemplateSet=Delete export template set
 no-export-template-sets=Export not possible because there are no export template sets!
 copy=copy
 copyExportTemplateSet=Copy export template set
+pdfToc=Cover and TOC

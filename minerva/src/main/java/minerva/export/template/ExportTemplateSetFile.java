@@ -1,5 +1,9 @@
 package minerva.export.template;
 
+import org.pmw.tinylog.Logger;
+
+import minerva.base.StringService;
+
 // No JSON, because HTML is not good readable in encoded JSON format.
 public class ExportTemplateSetFile {
 	private static final String PREFIX = "~~~=== [";
@@ -16,6 +20,7 @@ public class ExportTemplateSetFile {
 		write("page", set.getPage());
 		write("template", set.getTemplate());
 		write("styles", set.getStyles());
+		write("pdf-toc", set.getPdfToc());
 		write("pdf-styles", set.getPdfStyles());
 		String ret = sb.toString();
 		sb = null;
@@ -35,12 +40,10 @@ public class ExportTemplateSetFile {
 		ExportTemplateSet set = new ExportTemplateSet();
 		String fieldname = "?";
 		String value = "";
-		int nfields = 0;
 		for (String line : data.split("\n")) {
 			if (line.startsWith(PREFIX) && line.endsWith(POSTFIX)) {
 				if (!"?".equals(fieldname)) {
 					set(fieldname, value, set);
-					nfields++;
 				}
 				fieldname = line.substring(PREFIX.length(), line.length() - POSTFIX.length());
 				value = "";
@@ -49,9 +52,9 @@ public class ExportTemplateSetFile {
 			}
 		}
 		set(fieldname, value, set);
-		nfields++;
-		if (nfields != 9) {
-			throw new RuntimeException("Error parsing export template set file. Not enough fields!");
+		if (StringService.isNullOrEmpty(set.getId()) || StringService.isNullOrEmpty(set.getName())) {
+			Logger.warn("ExportTemplateSet has no ID or no name and will be ignored!");
+			return null;
 		}
 		return set;
 	}
@@ -84,6 +87,9 @@ public class ExportTemplateSetFile {
 			break;
 		case "styles":
 			set.setStyles(value);
+			break;
+		case "pdf-toc":
+			set.setPdfToc(value);
 			break;
 		case "pdf-styles":
 			set.setPdfStyles(value);
