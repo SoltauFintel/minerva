@@ -146,9 +146,6 @@ public class PdfExportService extends MultiPageHtmlExportService {
 
 	private String getHtml(SeiteSO seite, String title, File outputFolder) {
         String html = super.getBody(seite.getContent().getString(lang), title);
-        if ("\n  <p>.</p>\n ".equals(html)) { // suppress nearly-empty release note page
-        	html = "";
-        }
         String info = seite.getId() + ": \"" + title + "\"";
         html = HtmlForPdf.processHtml(html, getDoctype(), info, imageBaseDir, errorMessages);
         if (html != null) {

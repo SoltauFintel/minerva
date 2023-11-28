@@ -16,6 +16,15 @@ public class HtmlForPdf {
 	}
 	
 	public static String processHtml(String html, String doctype, String info, String imageBaseDir, List<String> errorMessages) {
+        while (html.startsWith("\n") || html.startsWith(" ")) {
+        	html = html.substring(1);
+        }
+        while (html.endsWith("\n") || html.endsWith(" ")) {
+        	html = html.substring(0, html.length() - 1);
+        }
+        if ("<p>.</p>".equals(html)) { // suppress nearly-empty release note page
+        	html = "";
+        }
         html = toXHTML(html);
         if (!checkHtml(doctype, html, info)) {
         	return null;
