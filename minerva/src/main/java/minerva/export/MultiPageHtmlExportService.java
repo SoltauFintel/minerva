@@ -17,7 +17,6 @@ import minerva.base.FileService;
 import minerva.base.NLS;
 import minerva.export.Formula2Image.TransformPath;
 import minerva.export.pdf.Chapter;
-import minerva.export.template.ExportTemplatesService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeiteVisible;
@@ -33,20 +32,17 @@ import minerva.seite.link.LinkService;
  * Multi-page HTML export
  */
 public class MultiPageHtmlExportService extends GenericExportService {
-    private final WorkspaceSO workspace;
     private int counter = 0;
     
-    public MultiPageHtmlExportService(WorkspaceSO workspace, String customer, String language) {
-        super(workspace, customer, language);
-        this.workspace = workspace;
+    public MultiPageHtmlExportService(WorkspaceSO workspace, String customer, String language, String templateId) {
+        super(workspace, customer, language, templateId);
         workspace.getUser().onlyWithExportRight();
 		exclusionsService.setContext("Multi-page-HTML-export");
     }
     
     @Override
     protected void init(File outputFolder) {
-        String css = new ExportTemplatesService(workspace).loadTemplate(ExportTemplatesService.TEMPLATE_CSS);
-        FileService.savePlainTextFile(new File(outputFolder, "online-help.css"), css);
+        FileService.savePlainTextFile(new File(outputFolder, "online-help.css"), exportTemplateSet.getStyles());
     }
     
     @Override
@@ -54,7 +50,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
         File outputFolder = super.saveWorkspace(workspace);
 
         // books overview
-        saveIndex(outputFolder, ExportTemplatesService.BOOKS, getBooksModel(workspace));
+        saveIndex(outputFolder, exportTemplateSet.getBooks(), getBooksModel(workspace));
         
         return outputFolder;
     }
@@ -79,7 +75,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
     @Override
     protected void saveBookTo(BookSO book, File outputFolder) {
         // Gliederung
-        saveIndex(outputFolder, ExportTemplatesService.BOOK, getBookModel(book));
+        saveIndex(outputFolder, exportTemplateSet.getBook(), getBookModel(book));
 
         super.saveBookTo(book, outputFolder);
     }
@@ -163,7 +159,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
         model.put("subpages", subpages);
         model.put("hasSubpages", !subpages.isEmpty());
         navigation(seite, parent, model);
-        html = render(new ExportTemplatesService(workspace).loadTemplate(ExportTemplatesService.PAGE), model);
+        html = render(exportTemplateSet.getPage(), model);
         html = addDotHtml(html);
 		html = formulas2images(html, seite, outputFolder, title);
         
@@ -291,18 +287,16 @@ public class MultiPageHtmlExportService extends GenericExportService {
 		return (path, file) -> path + file.getName();
 	}
     
-    protected void saveIndex(File outputFolder, String dn, DataMap model) {
-        FileService.savePlainTextFile(new File(outputFolder, "index.html"),
-                render(new ExportTemplatesService(workspace).loadTemplate(dn), model));
+    protected void saveIndex(File outputFolder, String aTemplate, DataMap model) {
+        FileService.savePlainTextFile(new File(outputFolder, "index.html"), render(aTemplate, model));
     }
     
-    private String render(String template, DataMap model) {
+    private String render(String aTemplate, DataMap model) {
         DataMap model2 = new DataMap();
         model2.put("title", model.get("title").toString());
-        model2.put("content", Template.createFromString(template).withData(model).render());
+        model2.put("content", Template.createFromString(aTemplate).withData(model).render());
         model2.put("cssFolder", model.get("cssFolder").toString());
-        return Template.createFromString(new ExportTemplatesService(workspace)
-                .loadTemplate(ExportTemplatesService.TEMPLATE)).withData(model2).render();
+        return Template.createFromString(exportTemplateSet.getTemplate()).withData(model2).render();
     }
 
     private String n(String key) {

@@ -185,15 +185,17 @@ public class UserSO {
         return user.getFavorites();
     }
     
-    public void saveExportSettings(String item, String customer, String lang, String format) {
+    public void saveExportSettings(String item, String customer, String lang, String format, String template) {
         load();
         if (user.getExport() == null) {
             user.setExport(new ExportUserSettings());
         }
-        user.getExport().setItem(item);
-        user.getExport().setCustomer(customer);
-        user.getExport().setLang(lang);
-        user.getExport().setFormat(format);
+        ExportUserSettings ex = user.getExport();
+		ex.setItem(item);
+        ex.setCustomer(customer);
+        ex.setLang(lang);
+        ex.setFormat(format);
+        ex.setTemplate(template);
         save();
     }
     

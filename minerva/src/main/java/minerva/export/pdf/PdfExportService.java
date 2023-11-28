@@ -27,10 +27,10 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	public File pdfFile;
 	private String bookTitle;
 	
-	public PdfExportService(WorkspaceSO workspace, String customer, String language) {
-		super(workspace, customer, language);
+	public PdfExportService(WorkspaceSO workspace, String customer, String language, String templateId) {
+		super(workspace, customer, language, templateId);
 		exclusionsService.setContext("PDF");
-		pdfCss = new ExportTemplatesService(workspace).loadTemplate(ExportTemplatesService.PDF_CSS);
+		pdfCss = new ExportTemplatesService(workspace).load(templateId).getPdfStyles();
 		if (StringService.isNullOrEmpty(pdfCss)) {
 			Logger.warn("PDF CSS is empty!");
 		}

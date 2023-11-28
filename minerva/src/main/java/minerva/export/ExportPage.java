@@ -5,9 +5,13 @@ import static minerva.base.StringService.upper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
+import minerva.base.UserMessage;
+import minerva.export.template.ExportTemplateSet;
+import minerva.export.template.ExportTemplatesService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
@@ -46,11 +50,18 @@ public class ExportPage extends WPage {
             combobox("items", items, us.getItem(), false, model);
             combobox("customers", upper(customers), us.getCustomer(), false, model);
             combobox("langs", upper(langs), us.getLang(), false, model);
+            
             List<String> formats = new ArrayList<>();
             formats.add(n("multiPageHtml"));
             formats.add("PDF");
             combobox("formats", formats, us.getFormat(), false, model);
-            // Denkbar wäre hier noch die Wahl eines Template-Sets und/oder einer CSS-Datei.
+            
+            List<String> exportTemplateSetNames = new ExportTemplatesService(workspace).loadAll()
+            		.stream().map(i -> i.getName()).collect(Collectors.toList());
+            if (exportTemplateSetNames.isEmpty()) {
+            	throw new UserMessage("no-export-template-sets", user);
+            }
+			combobox("templates", exportTemplateSetNames, us.getTemplate(), false, model);
         }
     }
     
@@ -83,9 +94,12 @@ public class ExportPage extends WPage {
         String customer = ctx.formParam("customer");
         String lang = ctx.formParam("lang");
         String format = ctx.formParam("format");
-        user.saveExportSettings(item, customer, lang, format);
+        String template = ctx.formParam("template");
+        user.saveExportSettings(item, customer, lang, format, template);
         
-        String q = "/export?lang=" + u(lang.toLowerCase()) + "&customer=" + u(customer.toLowerCase());
+        String q = "/export?lang=" + u(lang.toLowerCase())
+        			+ "&customer=" + u(customer.toLowerCase())
+        			+ "&template=" + u(templateName2Id(template));
         if ("PDF".equals(format)) {
         	q += "&w=pdf";
         }
@@ -114,7 +128,16 @@ public class ExportPage extends WPage {
         }
     }
 
-    private SeiteSO getSeite(String seiteId) {
+    private String templateName2Id(String name) {
+    	for (ExportTemplateSet template : new ExportTemplatesService(workspace).loadAll()) {
+			if (template.getName().equals(name)) {
+				return template.getId();
+			}
+		}
+    	throw new RuntimeException("Template with name \"" + name + "\" does not exist!");
+	}
+
+	private SeiteSO getSeite(String seiteId) {
         for (BookSO book : workspace.getBooks()) {
             SeiteSO seite = book._seiteById(seiteId);
             if (seite != null) {

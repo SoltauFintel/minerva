@@ -46,6 +46,16 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="template" class="col-lg-2 control-label">Export Template Set</label>
+                    <div class="col-lg-3">
+                        <select class="form-control" id="template" name="template">
+                            {{each a in templates}}
+                                <option{{if a.selected}} selected{{/if}}>{{a.text}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <div class="col-lg-offset-2 col-lg-5">
@@ -56,5 +66,7 @@
                 </div>
             </fieldset>
         </form>
+        <p class="mt3" style="font-size: 9pt;">Bei Auswahl von Kunde "-" werden keine tags berücksichtigt, d.h. es werden
+        	<i>alle</i> Seiten exportiert.</p>
     </div>
 </div>

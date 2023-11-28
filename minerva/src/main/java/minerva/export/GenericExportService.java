@@ -18,6 +18,8 @@ import minerva.exclusions.ExclusionsService;
 import minerva.export.pdf.Bookmark;
 import minerva.export.pdf.Chapter;
 import minerva.export.pdf.PdfExportService;
+import minerva.export.template.ExportTemplateSet;
+import minerva.export.template.ExportTemplatesService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -32,6 +34,7 @@ public abstract class GenericExportService {
 	private static final Map<String, File> downloads = new HashMap<>();
     /** language, e.g. "en" */
     protected final String lang;
+    protected final ExportTemplateSet exportTemplateSet;
     protected ExclusionsService exclusionsService;
     protected BookSO currentBook = null;
     protected boolean booksMode = false;
@@ -39,8 +42,9 @@ public abstract class GenericExportService {
     protected Bookmark cb = new Bookmark("root", "book");
     protected List<Bookmark> bookmarks = cb.getBookmarks();
 
-    public GenericExportService(WorkspaceSO workspace, String customer, String language) {
+    public GenericExportService(WorkspaceSO workspace, String customer, String language, String templateId) {
         lang = language;
+        exportTemplateSet = new ExportTemplatesService(workspace).load(templateId);
         exclusionsService = new ExclusionsService();
         exclusionsService.setCustomer(customer);
         exclusionsService.setExclusions(new Exclusions(workspace.getExclusions().get()));
@@ -144,12 +148,12 @@ public abstract class GenericExportService {
 
     protected abstract void init(File outputFolder);
 
-    public static GenericExportService getService(WorkspaceSO workspace, String customer, String language, Context ctx) {
+    public static GenericExportService getService(WorkspaceSO workspace, String customer, String language, String templateId, Context ctx) {
         String w = ctx.queryParam("w");
         if ("pdf".equals(w)) {
-            return new PdfExportService(workspace, customer, language);
+            return new PdfExportService(workspace, customer, language, templateId);
         } else { // Multi page HTML
-            return new MultiPageHtmlExportService(workspace, customer, language);
+            return new MultiPageHtmlExportService(workspace, customer, language, templateId);
         }
     }
     

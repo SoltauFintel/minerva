@@ -3,15 +3,15 @@ package minerva.export;
 import org.pmw.tinylog.Logger;
 
 import minerva.model.WorkspaceSO;
-import minerva.user.UAction;
+import minerva.workspace.WAction;
 
-public class ExportWorkspaceAction extends UAction {
+public class ExportWorkspaceAction extends WAction {
 
     @Override
     protected void execute() {
-        String branch = ctx.pathParam("branch");
         String lang = ctx.queryParam("lang");
         String customer = ctx.queryParam("customer");
+        String template = ctx.queryParam("template");
 
         String info = branch + " | exporting books for customer \"" + customer + "\" and language \"" + lang + "\"";
 		Logger.info(user.getLogin() + " | " + info);
@@ -21,7 +21,7 @@ public class ExportWorkspaceAction extends UAction {
         if (workspace.getBooks().isEmpty()) {
             throw new RuntimeException("There are no books!");
         }
-        String id = GenericExportService.getService(workspace, customer, lang, ctx).getBooksExportDownloadId(workspace);
+        String id = GenericExportService.getService(workspace, customer, lang, template, ctx).getBooksExportDownloadId(workspace);
         
         ctx.redirect("/w/" + esc(branch) + "/download-export/" + id);
     }

@@ -42,7 +42,7 @@ public class DownloadExportPage extends WPage {
 	}
 	
 	private void download(File file) {
-		ctx.res.header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
+		ctx.res.header("Content-Disposition", "inline; filename=\"" + file.getName() + "\""); // inline -> opens PDF in new tab instead of showing it in the browser download list
 		try {
 			ctx.res.raw().getOutputStream().write(Files.readAllBytes(file.toPath()));
 		} catch (IOException e) {

@@ -12,6 +12,7 @@ public class ExportSeiteAction extends SAction {
     protected void execute() {
         String lang = ctx.queryParam("lang");
         String customer = ctx.queryParam("customer");
+        String template = ctx.queryParam("template");
 
         String info = branch + " | " + bookFolder
 		                + " | exporting page \"" + seite.getSeite().getTitle().getString(lang)
@@ -19,7 +20,7 @@ public class ExportSeiteAction extends SAction {
 		Logger.info(user.getLogin() + " | " + info);
         user.log(info);
 
-        String id = GenericExportService.getService(book.getWorkspace(), customer, lang, ctx).getSeiteExportDownloadId(seite);
+        String id = GenericExportService.getService(book.getWorkspace(), customer, lang, template, ctx).getSeiteExportDownloadId(seite);
         
         ctx.redirect("/w/" + esc(branch) + "/download-export/" + id);
     }

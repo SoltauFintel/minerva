@@ -35,7 +35,10 @@ import minerva.export.ExportBookAction;
 import minerva.export.ExportPage;
 import minerva.export.ExportSeiteAction;
 import minerva.export.ExportWorkspaceAction;
-import minerva.export.template.ExportTemplatesPage;
+import minerva.export.template.AddExportTemplateSetAction;
+import minerva.export.template.DeleteExportTemplateSetAction;
+import minerva.export.template.EditExportTemplateSetPage;
+import minerva.export.template.ExportTemplateSetsPage;
 import minerva.image.ImageDownloadAction;
 import minerva.image.ImageUploadAction;
 import minerva.migration.MigrationPage;
@@ -131,11 +134,6 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/my-tasks", MyTasksPage.class);
         form("/create-workspace", AddWorkspacePage.class);
         get("/w/:branch/help-keys", AllHelpKeysPage.class);
-        get("/w/:branch/books/export", ExportWorkspaceAction.class);
-        form("/w/:branch/export", ExportPage.class);
-          get("/w/:branch/export-what", ExportPage.class); // TODO ab 1.12.23 entfernen
-        get("/w/:branch/download-export/:id", DownloadExportPage.class);
-        form("/w/:branch/export-templates", ExportTemplatesPage.class);
         get("/w/:branch/history", WorkspaceHistoryPage.class);
         get("/w/:branch/index", IndexWorkspaceAction.class);
         get("/w/:branch/search", SearchPage.class);
@@ -144,6 +142,17 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/broken-mappings", BrokenMappingsPage.class);
         get("/w/:branch/activate-f-s-mode", ActivateFSModeAction.class);
         form("/w/:branch/deactivate-f-s-mode", DeactivateFSModePage.class);
+
+        // Export
+        get("/w/:branch/books/export", ExportWorkspaceAction.class);
+        form("/w/:branch/export", ExportPage.class);
+          get("/w/:branch/export-what", ExportPage.class); // TODO ab 1.12.23 entfernen
+        get("/w/:branch/download-export/:id", DownloadExportPage.class);
+
+        get("/ets/:branch", ExportTemplateSetsPage.class);
+        get("/ets/:branch/add", AddExportTemplateSetAction.class);
+        form("/ets/:branch/edit/:id", EditExportTemplateSetPage.class);
+        get("/ets/:branch/delete/:id", DeleteExportTemplateSetAction.class);
     }
 
     private void oneBook() {
