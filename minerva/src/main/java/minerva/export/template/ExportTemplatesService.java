@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.github.template72.loader.ResourceTemplateLoader;
-import com.google.gson.Gson;
 
 import github.soltaufintel.amalia.base.IdGenerator;
 import minerva.access.CommitMessage;
@@ -18,25 +17,33 @@ import minerva.access.MultiPurposeDirAccess;
 import minerva.model.WorkspaceSO;
 
 public class ExportTemplatesService {
-    public static final String BOOKS = "export-template-books.html";
-    public static final String BOOK = "export-template-book.html";
-    public static final String PAGE = "export-template-page.html";
-    public static final String TEMPLATE = "export-template.html";
-    public static final String TEMPLATE_CSS = "export-template.css";
-    public static final String PDF_CSS = "pdf-template.css";
+    private static final String BOOKS = "export-template-books.html";
+    private static final String BOOK = "export-template-book.html";
+    private static final String PAGE = "export-template-page.html";
+    private static final String TEMPLATE = "export-template.html";
+    private static final String TEMPLATE_CSS = "export-template.css";
+    private static final String PDF_CSS = "pdf-template.css";
+    private static final String DN_EXT = ".txt";
     private final WorkspaceSO workspace;
     
     public ExportTemplatesService(WorkspaceSO workspace) {
         this.workspace = workspace;
     }
     
+    private String objectToString(ExportTemplateSet set) { // serialize
+    	return new ExportTemplateSetFile().serialize(set);
+    }
+    
+    private ExportTemplateSet stringToObject(String data) { // deserialize
+    	return new ExportTemplateSetFile().deserialize(data);
+    }
+    
     public List<ExportTemplateSet> loadAll() {
     	List<ExportTemplateSet> ret = new ArrayList<>();
     	Map<String, String> files = workspace.dao().loadAllFiles(workspace.getFolder() + "/export-templates");
-    	Gson gson = new Gson();
     	for (Entry<String, String> e : files.entrySet()) {
-			if (e.getKey().endsWith(".json")) {
-				ret.add(gson.fromJson(e.getValue(), ExportTemplateSet.class));
+			if (e.getKey().endsWith(DN_EXT)) {
+				ret.add(stringToObject(e.getValue()));
 			}
 		}
 		ret.sort((a, b) -> umlaute(a.getName()).compareTo(umlaute(b.getName())));
@@ -44,7 +51,7 @@ public class ExportTemplatesService {
     }
     
     public ExportTemplateSet load(String id) {
-		ExportTemplateSet set = new MultiPurposeDirAccess(workspace.dao()).load(filename(id), ExportTemplateSet.class);
+		ExportTemplateSet set = stringToObject(new MultiPurposeDirAccess(workspace.dao()).load(filename(id)));
 		if (set == null) {
 			throw new RuntimeException("Export template set doesn't exist!");
 		}
@@ -70,7 +77,8 @@ public class ExportTemplatesService {
 
 	public void save(ExportTemplateSet set) {
 		CommitMessage cm = new CommitMessage("Export template set: " + set.getName());
-		new MultiPurposeDirAccess(workspace.dao()).save(filename(set.getId()), set, cm, workspace);
+		String dn = filename(set.getId());
+		new MultiPurposeDirAccess(workspace.dao()).save(dn, objectToString(set), cm, workspace);
 	}
 	
 	public void delete(String id) {
@@ -88,6 +96,6 @@ public class ExportTemplatesService {
 	}
 	
 	private String filename(String id) {
-		return workspace.getFolder() + "/export-templates/" + id + ".json";
+		return workspace.getFolder() + "/export-templates/" + id + DN_EXT;
 	}
 }
