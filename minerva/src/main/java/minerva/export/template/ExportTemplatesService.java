@@ -22,6 +22,7 @@ public class ExportTemplatesService {
     private static final String PAGE = "export-template-page.html";
     private static final String TEMPLATE = "export-template.html";
     private static final String TEMPLATE_CSS = "export-template.css";
+    private static final String PDF_TOC = "pdf-toc.html";
     private static final String PDF_CSS = "pdf-template.css";
     private static final String DN_EXT = ".txt";
     private final WorkspaceSO workspace;
@@ -70,6 +71,7 @@ public class ExportTemplatesService {
     	ret.setPage(loadBuiltInTemplate(PAGE));
     	ret.setTemplate(loadBuiltInTemplate(TEMPLATE));
     	ret.setStyles(loadBuiltInTemplate(TEMPLATE_CSS));
+    	ret.setPdfToc(loadBuiltInTemplate(PDF_TOC));
     	ret.setPdfStyles(loadBuiltInTemplate(PDF_CSS));
     	return ret;
     }

@@ -1,0 +1,12 @@
+<div class="cover">
+  <h1>Programmname<br/>{{bookTitle}}</h1>
+  <h2>{{customer}}</h2>
+  <p class="copyright">Copyright by ...</p>
+</div>
+
+<div class="toc" style="page-break-before: always;">
+<h1>{{if de}}Inhaltsverzeichnis{{else}}Table of contents{{/if}}</h1>
+{{each b in tocLines}}
+  <p><a href="#{{b.id}}">{{b.title}}</a></p>
+{{/each}}
+</div>

@@ -60,7 +60,7 @@ public class GitlabRepository {
                         // TODO Ich hab hier das Problem, dass ich das nicht reproduzieren kann.
                         // Fehlertext vom e.cause noch genauer untersuchen! Muss wohl irgendwas mit
                         // "not authenticated" sein.
-                    	/* org.eclipse.jgit.api.errors.TransportException: http://gitlab-ci-token@gitlab01/xmap/manual: not authorized
+                    	/* org.eclipse.jgit.api.errors.TransportException: http://gitlab-ci-token@gitlab01/-user-/manual: not authorized
         				at org.eclipse.jgit.api.FetchCommand.call(FetchCommand.java:249)
         				at org.eclipse.jgit.api.PullCommand.call(PullCommand.java:266)
         				at minerva.persistence.gitlab.git.GitService.pull(GitService.java:101)*/

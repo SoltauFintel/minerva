@@ -239,3 +239,4 @@ no-export-template-sets=Export nicht möglich, da keine Export Template Sets vor
 copy=Kopie
 copyExportTemplateSet=Export Template Set duplizieren
 pdfToc=Deckblatt und Inhaltsverz.
+anotherExport=Weiteren Export ausführen

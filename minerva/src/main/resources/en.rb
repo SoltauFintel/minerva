@@ -238,3 +238,4 @@ no-export-template-sets=Export not possible because there are no export template
 copy=copy
 copyExportTemplateSet=Copy export template set
 pdfToc=Cover and TOC
+anotherExport=Do another export
