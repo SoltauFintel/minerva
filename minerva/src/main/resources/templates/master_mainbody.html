@@ -70,6 +70,11 @@
 		      			{{each b in previewBooks}}
 		        			<li><a href="{{b.link}}" class="navbtn"><i class="fa fa-book bluebook"></i> {{b.title}}</a></li>
 		        		{{/each}}
+		        	{{else if hasMenuItems}}
+						<li class="line-vertical"/>
+		        		{{each m in menuItems}}
+		        			<li><a href="{{m.link}}" class="navbtn">{{m.title}}</a></li>
+		        		{{/each}}
 	        		{{/if}}
 	      		</ul>
 	

@@ -16,23 +16,31 @@ public class MenuPage extends WPage {
 		boolean isAdmin = "1".equals(ctx.req.session().attribute("admin"));
 		
 		header(n("Menu"));
+		menu(fac, isAdmin);
+	}
+
+	private void menu(MinervaFactory fac, boolean isAdmin) {
 		DataList list = list("commands");
-		
 		menu(list, "Workspaces", "fa-folder-open-o", "/");
 		menu(list, "myTasks", "fa-inbox", "/w/:branch/my-tasks");
 		menu(list, "preview", "fa-thumbs-o-up", "/p/:branch");
 		menu(list, "formulaEditor", "fa-superscript", "/math");
-		
 		if (fac.isGitlab()) {
 			menu(list, "workspaceHistory", "fa-clock-o", "/w/:branch/history");
 		}
 		menu(list, "tagCloud", "fa-cloud", "/w/:branch/tag-cloud?m=n");
 		menu(list, "allHelpKeys", "fa-question-circle", "/w/:branch/help-keys");
-		
 		if (fac.isCustomerVersion()) {
 			menu(list, "Broken Mappings", "fa-chain-broken", "/w/:branch/broken-mappings");
 		}
-		
+		workspace(list);
+		additionalMenuItems(list);
+		onlinehelp(fac, list);
+		export(list);
+		admin(fac, isAdmin, list);
+	}
+
+	private void workspace(DataList list) {
 		menu(list, "pullWS", "fa-refresh", "/w/:branch/pull");
 		menu(list, "cloneWS", "fa-refresh red", "/w/:branch/pull?force=1");
 		menu(list, "deleteWS", "fa-trash-o red", "/w/:branch/delete");
@@ -43,47 +51,48 @@ public class MenuPage extends WPage {
 		} else {
 			menu(list, "beginFSMode", "fa-flag-checkered", "/w/:branch/activate-f-s-mode");
 		}
+	}
 
-		// ADDITIONAL MENU ITEMS
+	protected void additionalMenuItems(DataList list) { // template method
+	}
 
-		menu(list, "Schnittstellen", "fa-exchange", "/sch/:branch/prozesse"); // TODO -> xminerva
-		menu(list, "Schlüsselverwaltung", "fa-key", "/values/:branch");
-
+	private void onlinehelp(MinervaFactory fac, DataList list) {
 		if (fac.isCustomerVersion()
 		        && !fac.isGitlab()
 		        && !fac.getConfig().getSubscribers().isEmpty()) {
 			menu(list, "updateOnlineHelp", "fa-upload", "/w/:branch/push-data");
 		}
+	}
 
-		// SPECIAL RIGHTS AREA
-
+	private void export(DataList list) {
 		menu(list, "export", "fa-upload", "/w/:branch/export");
 		if (UserAccess.hasExportRight(user.getLogin())) {
 			menu(list, "exportTemplates", "fa-file-text-o", "/ets/:branch");
 		}
+	}
 
-		// ADMIN AREA
-		
-		if (MinervaWebapp.factory().getAdmins().contains(user.getLogin())) {
-			if (isAdmin) {
-				menu(list, "dropAdminRights", "fa-trophy", "/activate-admin-rights?m=0");
-				menu(list, "books", "fa-book", "/w/:branch");
-				if (fac.isGitlab()) {
-					menu(list, "exclusions", "fa-bank", "/w/:branch/exclusions/edit");
-				}
-				menu(list, "manageUsers", "fa-users", "/users");
-				menu(list, "reindex", "fa-refresh", "/w/:branch/index");
-				menu(list, "serverlog", "fa-paw", "/serverlog");
-				if (isMigrationAllowed()) {
-					menu(list, "Confluence Import", "fa-cloud-download", "/migration/:branch");
-				}
-			} else {
-				menu(list, "giveAdminRights", "fa-trophy", "/activate-admin-rights");
+	private void admin(MinervaFactory fac, boolean isAdmin, DataList list) {
+		if (!MinervaWebapp.factory().getAdmins().contains(user.getLogin())) {
+			return;
+		}
+		if (isAdmin) {
+			menu(list, "dropAdminRights", "fa-trophy", "/activate-admin-rights?m=0");
+			menu(list, "books", "fa-book", "/w/:branch");
+			if (fac.isGitlab()) {
+				menu(list, "exclusions", "fa-bank", "/w/:branch/exclusions/edit");
 			}
+			menu(list, "manageUsers", "fa-users", "/users");
+			menu(list, "reindex", "fa-refresh", "/w/:branch/index");
+			menu(list, "serverlog", "fa-paw", "/serverlog");
+			if (isMigrationAllowed()) {
+				menu(list, "Confluence Import", "fa-cloud-download", "/migration/:branch");
+			}
+		} else {
+			menu(list, "giveAdminRights", "fa-trophy", "/activate-admin-rights");
 		}
 	}
 	
-    private void menu(DataList list, String text, String icon, String link) {
+    protected void menu(DataList list, String text, String icon, String link) {
     	DataMap map = list.add();
     	map.put("text", esc(n(text)));
     	map.put("icon", esc(icon));
