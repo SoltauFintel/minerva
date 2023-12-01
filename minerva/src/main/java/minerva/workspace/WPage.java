@@ -17,6 +17,10 @@ public abstract class WPage extends UPage {
         branch = ctx.pathParam("branch");
         workspace = user.getWorkspace(branch);
         
+        // TODO experimentell
+        user.setCurrentWorkspace(user.getWorkspace(ctx.pathParam("branch")));
+
         put("branch", branch);
+        put("isMasterBranch", "master".equals(branch));
     }
 }

@@ -239,3 +239,4 @@ copy=copy
 copyExportTemplateSet=Copy export template set
 pdfToc=Cover and TOC
 anotherExport=Do another export
+moreCommands=More commands

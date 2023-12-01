@@ -30,7 +30,7 @@ public class MergeBranchPage extends UPage {
             }
             user.getWorkspace(branch).pull();
             
-            ctx.redirect("/w/" + branch);
+            ctx.redirect("/w/" + branch + "/menu");
         } else {
             List<String> branches = user.dao().getBranchNames(user.getWorkspace(branch));
             branches.remove(branch);

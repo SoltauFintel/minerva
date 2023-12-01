@@ -7,14 +7,11 @@
                 title="{{N.pageToPrev}}"><i class="fa fa-arrow-left"></i></a>
             <a {{if hasNextlink}}href="{{nextlink}}"{{else}}disabled{{/if}} class="btn btn-default br"
                 title="{{N.pageToNext}}"><i class="fa fa-arrow-right"></i></a>
-            {{each b in books}}
-                <a href="{{b.link}}" class="btn btn-default br"><i class="fa fa-book greenbook"></i> {{b.title}}</a>
-            {{/each}}
         </div>
         
         <div class="col-lg-12 mwtab" style="border: 1px solid #ddd;">
             <div class="breadcrumbs">
-                <i class="fa fa-book greenbook"></i>&nbsp; {{titel}}
+                <i class="fa fa-book bluebook"></i>&nbsp; {{titel}}
             </div>
             <h1 style="margin-top: 10px;">{{titel}}</h1>
             <div class="seite">

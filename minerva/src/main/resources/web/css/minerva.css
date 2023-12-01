@@ -1,3 +1,7 @@
+body {
+	padding-top: 0;
+}
+
 .mt1 {
     margin-top: 1em;
 }
@@ -79,6 +83,10 @@
 
 .greenbook {
     color: #090;
+}
+
+.bluebook {
+    color: #337ab7;
 }
 
 .btn-gitlab {
@@ -540,3 +548,7 @@ li.subpage {
 		left: 1.3em;
 	}
 /* -----------end of floating labels------- */
+
+.treeActivePage {
+	font-weight: bold;
+}

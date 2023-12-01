@@ -19,6 +19,7 @@ public class PreviewCustomerPage extends UPage {
         String bookFolder0 = workspace.getBooks().get(0).getBook().getFolder();
 
         header(n("preview"));
+        put("hasBook", false);
         put("branch", esc(branch));
         put("bookFolder0", esc(bookFolder0));
         DataList list = list("customers");

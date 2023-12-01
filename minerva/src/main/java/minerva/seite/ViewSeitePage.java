@@ -11,6 +11,7 @@ import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
+import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.user.User;
@@ -92,6 +93,8 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("editorsNote", esc(seite.getEditorsNote()));
         put("editorsNoteBR", esc(seite.getEditorsNote()).replace("\n", "<br/>"));
         put("hasEditorsNote", !StringService.isNullOrEmpty(seite.getEditorsNote()));
+        put("hasLeftArea", true);
+        put("leftAreaContent", tree(seiteSO.getBook().getSeiten(), user.getGuiLanguage(), seite.getId()));
         header(modifyHeader(seiteSO.getTitle()));
 
         fillLinks(branch, bookFolder, id, seiteSO, seite, u.getPageLanguage());
@@ -325,4 +328,26 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     		map.put("liArgs", " style=\"background-color: #ff9;\"");
     	}
     }
+	
+	public static String tree(SeitenSO seiten, String lang, String currentSeiteId) {
+		String ret = "<ul>";
+		for (SeiteSO seite : seiten) {
+			if (seite.hasContent(lang) <= 0) {
+				continue;
+			}
+			String a = "";
+			if (currentSeiteId.equals(seite.getId())) {
+				a = " class=\"treeActivePage\"";
+			}
+			BookSO book = seite.getBook();
+			ret += "<li><a" + a + " href=\"/s/" + Escaper.esc(book.getWorkspace().getBranch()) + "/"
+					+ Escaper.esc(book.getBook().getFolder()) + "/" + Escaper.esc(seite.getId()) + "\">"
+					+ seite.getSeite().getTitle().getString(lang) + "</a></li>\n";
+			if (!seite.getSeiten().isEmpty()) { // TODO <- visible
+				ret += tree(seite.getSeiten(), lang, currentSeiteId);
+			}
+		}
+		ret += "</ul>\n";
+		return ret;
+	}
 }

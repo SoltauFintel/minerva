@@ -1,13 +1,9 @@
 package minerva.workspace;
 
-import java.time.format.DateTimeFormatter;
-
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.MinervaWebapp;
-import minerva.model.StateSO;
-import minerva.model.StatesSO;
 import minerva.model.WorkspaceSO;
 import minerva.user.UPage;
 
@@ -20,14 +16,9 @@ public class WorkspacesPage extends UPage {
             DataMap map = list.add();
             map.put("name", esc(workspace.getBranch()));
             map.put("isMaster", "master".equals(workspace.getBranch()));
+            map.put("link", workspace.getBooks().isEmpty() ? "" :
+            	("/b/" + esc(workspace.getBranch()) + "/" + esc(workspace.getBooks().get(0).getBook().getFolder())));
         }
-        DataList list2 = list("users");
-        for (StateSO state : StatesSO.getStates()) {
-            DataMap map2 = list2.add();
-            map2.put("login", esc(state.getUser().getLogin()));
-            map2.put("lastAction", state.getUser().getLastAction().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        }
-        list2.sort((a,b) -> b.get("lastAction").toString().compareTo(a.get("lastAction").toString()));
         put("persistenceInfo", MinervaWebapp.factory().getBackendService().getInfo());
         header("Workspaces");
 

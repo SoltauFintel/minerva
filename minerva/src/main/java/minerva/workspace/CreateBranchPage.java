@@ -5,6 +5,7 @@ import org.pmw.tinylog.Logger;
 import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
+import minerva.model.WorkspaceSO;
 import minerva.model.WorkspacesSO;
 import minerva.user.UPage;
 
@@ -28,9 +29,14 @@ public class CreateBranchPage extends UPage {
             user.log(branch + " | create branch: " + newBranch);
             
             user.getWorkspace(branch).createBranch(newBranch, null);
-            user.getWorkspaces().addWorkspace(newBranch, user);
+            WorkspaceSO newWS = user.getWorkspaces().addWorkspace(newBranch, user);
             
-            ctx.redirect("/w/" + esc(newBranch)); // show new branch
+			if (newWS.getBooks().isEmpty()) {
+				ctx.redirect("/w/" + esc(newBranch) + "/menu");
+			} else {
+				// show new branch
+				ctx.redirect("/b/" + esc(newBranch) + "/" + newWS.getBooks().get(0).getBook().getFolder());
+			}
         } else {
             header(n("createBranch"));
             put("branch", esc(branch));

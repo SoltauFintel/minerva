@@ -153,6 +153,18 @@ public class UserSO {
         save();
     }
 
+	public void toggleGuiLanguage() {
+		load();
+		String lang = user.getGuiLanguage();
+		if ("en".equals(lang)) {
+			lang = "de";
+		} else {
+			lang = "en";
+		}
+		user.setGuiLanguage(lang);
+		save();
+	}
+
     public void toggleFavorite(String id) {
         load();
         List<String> favorites = user.getFavorites();

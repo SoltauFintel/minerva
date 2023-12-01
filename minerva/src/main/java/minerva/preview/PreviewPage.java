@@ -49,7 +49,9 @@ public class PreviewPage extends SPage {
         navlink("prevlink", nav.previousPage(seite), id, onlyBookFolder, onlyBookFolder0);
         navlink("nextlink", nav.nextPage(seite), id, onlyBookFolder, null);
         
-        DataList list = list("books");
+        put("hasBook", false);
+        put("hasPreviewBooks", true);
+        DataList list = list("previewBooks");
         for (BookSO b : books) {
             if (b.hasContent(lang, sv)) {
                 DataMap map = list.add();

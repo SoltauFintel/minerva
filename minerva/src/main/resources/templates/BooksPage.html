@@ -3,157 +3,36 @@
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">{{header}}</h1>
-        {{if booksOk}}
-            {{if gitlab}}
-                <p><span title="Commit: {{hash7}}">Branch: {{branch}}</span></p>
-            {{/if}}
-            {{if delayedPushAllowed}}
-                {{if delayedPush}}
-                    <p><a href="/w/{{branch}}/deactivate-f-s-mode" class="btn btn-primary brr">{{N.endFSMode}}...</a></p>
-                {{/if}}
-            {{/if}}
-            
-            <p class="mt2">
-                {{if addBookAllowed}}
-                    {{if isAdmin}}
-                        <a href="/b/{{branch}}/add" class="btn btn-primary br"><i class="fa fa-book"></i>
-                            {{N.newBook}}</a>
-                    {{/if}}
-                {{/if}}
-                {{each l in langs}}
-                    <a href="/w/{{branch}}/language?lang={{l.lang}}"
-                        class="btn btn-{{if l.selected}}success{{else}}default{{/if}}"><i
-                        class="fa fa-flag"></i> {{l.lang}}</a>
-                {{/each}}
-            </p>
-        {{/if}}
+		{{if addBookAllowed}}
+        	<p class="mt2">
+	            <a href="/b/{{branch}}/add" class="btn btn-primary br"><i class="fa fa-book"></i>
+	                {{N.newBook}}</a>
+			</p>
+		{{/if}}
     </div>
 </div>
-{{if not isAdmin}}
-    <div class="row mt3">
-        <div class="col-lg-10">
-        {{each b in books}}
-            <div class="col-md-2" style="text-align: center;">
-                <a href="/b/{{branch}}/{{b.folder}}"><i class="fa fa-book fa-5x greenbook"></i></a>
-                <br/><a href="/b/{{branch}}/{{b.folder}}">{{b.title}}</a>
-            </div>
-        {{/each}}
-        </div>
-    </div>
-{{/if}}
 <div class="row">
-    <div class="col-lg-6">
-        {{if booksOk}}
-            {{if isAdmin}}
-                <table class="table table-striped table-hover mt2">
-                    <tr>
-                        <th>{{N.title}}</th>
-                        <th>{{N.ordner}}</th>
-                       	<th></th>
-                    </tr>
-                    {{each b in books}}
-                        <tr>
-                            <td><i class="fa fa-book greenbook"></i> <a href="/b/{{branch}}/{{b.folder}}">{{b.title}}</a></td>
-                            <td>{{b.folder}}</td>
-                           	<td style="text-align: right;">
-                                   <a href="/b/{{branch}}/{{b.folder}}/cal" class="btn btn-xs btn-default" title="check all links"><i
-                                       class="fa fa-chain-broken"></i></a>
-                                   <a href="/b/{{branch}}/{{b.folder}}/edit" class="btn btn-xs btn-default" title="{{N.edit}}"><i
-                                       class="fa fa-pencil"></i></a>
-                                   {{if not isCustomerVersion}}
-                                       <a href="/b/{{branch}}/{{b.folder}}/delete" class="btn btn-xs btn-danger" title="{{N.delete}}"><i
-                                           class="fa fa-trash-o"></i></a>
-                                   {{/if}}
-                           	</td>
-                        </tr>
-                    {{/each}}
-                </table>
-            {{/if}}
-        {{else}}
-            <h3 style="color: #c00;">{{workspaceNotOk}}</h3>
-            <p>{{userMessage}}</p>
-        {{/if}}
-    </div>
-    <div class="col-lg-12">
-        <p style="margin-top: 25mm;">
-            {{if gitlab}}
-                <a href="/w/{{branch}}/history" class="btn btn-default brr"><i class="fa fa-clock-o"></i>
-                    {{N.workspaceHistory}}</a>
-            {{/if}}
-            {{if booksOk}}
-                <a href="/w/{{branch}}/tag-cloud?m=n" class="btn btn-default brr"><i
-                    class="fa fa-cloud"></i> {{N.tagCloud}}</a>
-            {{/if}}
-            <a href="/w/{{branch}}/help-keys" class="btn btn-default brr"><i class="fa fa-question-circle"></i>
-                {{N.allHelpKeys}}</a>
-            {{if isCustomerVersion}}
-                <a href="/w/{{branch}}/broken-mappings" class="btn btn-default brr"><i
-                    class="fa fa-chain-broken"></i> Broken Mappings</a>
-            {{/if}}
-            {{if gitlab}}
-                {{if isAdmin}}
-                    <a href="/w/{{branch}}/exclusions/edit" class="btn btn-default brr"><i class="fa fa-bank"></i>
-                        {{N.exclusions}}</a>
-                {{/if}}
-            {{/if}}
-            {{if booksOk}}
-                {{if isAdmin}}
-                    <a href="/w/{{branch}}/index" class="btn btn-default brr"
-                        onclick="document.querySelector('#s3').style='';">{{N.reindex}}!
-                        <i id="s3" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
-                {{/if}}
-                {{additionalButtons}}
-                {{if hasExportRight}}
-                    <a href="/w/{{branch}}/export" class="btn btn-default brr"><i class="fa fa-download"></i>
-                        {{N.export}}...</a>
-                    <a href="/ets/{{branch}}" class="btn btn-default brr">{{N.exportTemplates}}</a>
-                {{/if}}
-                {{if updateOnlineHelpAllowed}}
-                    <a href="/w/{{branch}}/push-data" class="btn btn-default brr">{{N.updateOnlineHelp}}!</a>
-                {{/if}}
-            {{/if}}
-        </p>
-        {{if gitlab}}
-            <p>
-                <a href="/w/{{branch}}/pull" class="btn btn-default brr" title="pull"
-                    onclick="document.querySelector('#s1').style='';"><i class="fa fa-refresh"></i>
-                    {{N.pullWS}}! <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
-                <a href="/w/{{branch}}/pull?force=1" class="btn btn-default brr" title="force clone"
-                    onclick="document.querySelector('#s2').style='';"><i class="fa fa-refresh" style="color: #900;"></i>
-                    {{N.cloneWS}}! <i id="s2" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
-                <a href="/w/{{branch}}/delete" class="btn btn-danger brr"><i
-                    class="fa fa-trash-o"></i> {{N.deleteWS}}...</a>
-            </p>
-            <p>
-                <a href="/branch/{{branch}}" class="btn btn-default brr"><i class="fa fa-code-fork"></i>
-                    {{N.createBranch}}</a>
-                <a href="/merge/{{branch}}" class="btn btn-default brr"><i class="fa fa-code-fork"></i>
-                    {{N.mergeBranch}}</a>
-                {{if delayedPushAllowed}}
-                    {{if not delayedPush}}
-                        <a href="/w/{{branch}}/activate-f-s-mode" class="btn btn-default brr">{{N.beginFSMode}}</a>
-                    {{/if}}
-                {{/if}}
-            </p>
-        {{/if}}
-        <p>
-            {{if canBeAdmin}}
-                {{if isAdmin}}
-                    <a href="/activate-admin-rights?m=0" class="btn btn-danger brr">{{N.dropAdminRights}}!</a>
-                {{else}}
-                    <a href="/activate-admin-rights" class="btn btn-default brr">{{N.giveAdminRights}}!</a>
-                {{/if}}
-            {{/if}}
-            {{if isAdmin}}
-                <a href="/users" class="btn btn-default brr"><i class="fa fa-users"></i> {{N.manageUsers}}</a>
-                <a href="/serverlog" class="btn btn-default brr"><i class="fa fa-paw"></i> {{N.serverlog}}</a>
-            {{/if}}
-        </p>
-        {{if migrationAllowed}}
-            <p>
-                <a href="/migration/{{branch}}" class="btn btn-danger brr"><i class="fa fa-cloud-download"></i>
-                    Confluence Import...</a>
-            </p>
-        {{/if}}
+    <div class="col-lg-5">
+    	<table class="table table-striped table-hover mt2">
+        	<tr>
+            	<th>{{N.title}}</th>
+                <th>{{N.ordner}}</th>
+                <th></th>
+            </tr>
+            {{each b in books}}
+            	<tr>
+                	<td><i class="fa fa-book greenbook"></i> <a href="/b/{{branch}}/{{b.folder}}/edit">{{b.title}}</a></td>
+                	<td>{{b.folder}}</td>
+               		<td style="text-align: right;">
+                    	<a href="/b/{{branch}}/{{b.folder}}/cal" class="btn btn-xs btn-default" title="check all links"><i
+                    		class="fa fa-chain-broken"></i></a>
+                        {{if not isCustomerVersion}}
+                            <a href="/b/{{branch}}/{{b.folder}}/delete" class="btn btn-xs btn-danger" title="{{N.delete}}"><i
+                                class="fa fa-trash-o"></i></a>
+                        {{/if}}
+               		</td>
+            	</tr>
+            {{/each}}
+		</table>
     </div>
 </div>

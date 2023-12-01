@@ -29,6 +29,7 @@ public class BooksPage extends UPage {
         String branch = ctx.pathParam("branch");
         String userLang = user.getGuiLanguage();
         
+        user.onlyAdmin();
         WorkspaceSO workspace = user.getWorkspace(branch);
         BooksSO books = workspace.getBooks();
         CommitHash hash = workspace.getCommitHash();

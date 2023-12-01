@@ -32,6 +32,6 @@ public class DeactivateFSModePage extends WPage {
             workspace.save(cm);
             Logger.info(user.getLogin() + " | " + branch + " | changes pushed: " + cm.toString());
         }
-        ctx.redirect("/w/" + branch);
+        ctx.redirect("/w/" + branch + "/menu");
     }
 }

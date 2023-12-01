@@ -240,3 +240,4 @@ copy=Kopie
 copyExportTemplateSet=Export Template Set duplizieren
 pdfToc=Deckblatt und Inhaltsverz.
 anotherExport=Weiteren Export ausführen
+moreCommands=Weitere Befehle

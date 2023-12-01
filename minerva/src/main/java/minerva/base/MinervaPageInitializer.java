@@ -32,7 +32,18 @@ public class MinervaPageInitializer extends PageInitializer {
             m.getUser().getWorkspace(m.getBranch()).pull();
             page.init(ctx);
         }
+        page.put("hasLeftArea", false);
+        page.put("leftAreaContent", "");
+        page.put("guiLanguage", m.getUserLang());
         page.put("gitlab", gitlab);
+        
+        String qq = ctx.pathParam("branch");
+        if (StringService.isNullOrEmpty(qq)) {
+        	page.put("isMasterBranch", true);
+        } else {
+        	page.put("isMasterBranch", "master".equals(qq));
+        }
+        
         page.put("hasUser", hasUser);
         page.put("title", "Minerva");
         page.put("abmelden", "Abmelden");
@@ -40,6 +51,8 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("VERSION", MinervaWebapp.VERSION);
         page.put("user", esc(m.getLogin()));
         page.put("booksLabel", "Bücher");
+        page.put("Menu", "Menü");
+        page.put("BranchLabel", "Branch");
         page.put("searchPlaceholder", "");
         page.put("searchFocus", false);
         page.put("delayedPush", false);
@@ -53,6 +66,8 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("branch", esc(m.getBranch()));
         page.put("exclusionsTitle", "Exclusions");
         page.put("hasBook", false);
+        page.put("hasPreviewBooks", false);
+        page.list("previewBooks");
         page.put("book0Title", "");
         page.put("myTasks", "");
         page.put("isAdmin", isAdmin);
@@ -65,7 +80,27 @@ public class MinervaPageInitializer extends PageInitializer {
         if (m.hasUser()) {
             hasUserVars(page, m);
         }
+        
+//        DataList list = page.list("menus");
+//		String b = esc(m.getBranch());
+//		if (!MinervaWebapp.factory().isCustomerVersion()) {
+//			menu(list, "Workspaces", "fa-code-fork", "/", b);
+//		}
+//        String userLang = m.getUserLang();
+//		menu(list, NLS.get(userLang, "myTasks"), "fa-inbox", "/w/:branch/my-tasks", b);
+//		menu(list, NLS.get(userLang, "preview"), "fa-thumbs-o-up", "/p/:branch", b);
+//		menu(list, NLS.get(userLang, "formulaEditor"), "fa-superscript", "/math", b);
+//		menu(list, "Schnittstellen", "fa-exchange", "#", b); // TODO -> xminerva
+//		menu(list, NLS.get(userLang, "moreCommands"), "fa-briefcase", "/w/:branch/menu", b);
     }
+//    
+//    private void menu(DataList list, String text, String icon, String link, String branch) {
+//    	DataMap map = list.add();
+//    	map.put("text", esc(text));
+//    	map.put("icon", esc(icon));
+//    	map.put("link", esc(link.replace(":branch", branch)));
+//    	map.put("sep", "-".equals(text));
+//    }
 
     private void booksForMenu(boolean hasUser, String userLang, BooksSO books, Page page) {
         DataList list = page.list("booksForMenu");
@@ -86,6 +121,8 @@ public class MinervaPageInitializer extends PageInitializer {
     private void hasUserVars(Page page, MinervaPageInitModel m) {
         String userLang = m.getUserLang();
         page.put("abmelden", NLS.get(userLang, "logout"));
+        page.put("Menu", NLS.get(userLang, "Menu"));
+        page.put("BranchLabel", NLS.get(userLang, "Branch"));
         page.put("booksLabel", NLS.get(userLang, "books"));
         page.put("searchPlaceholder", NLS.get(userLang, "searchPlaceholder"));
         page.put("exclusionsTitle", NLS.get(userLang, "exclusions"));
@@ -99,8 +136,11 @@ public class MinervaPageInitializer extends PageInitializer {
         if (m.getBooks() == null) {
             return;
         }
-        if (!"master".equals(m.getBranch())) {
-            page.put("branch0", esc(m.getBranch()));
+        boolean isMaster = "master".equals(m.getBranch());
+//        page.put("isMasterBranch", isMaster);
+//System.out.println("isMaster="+isMaster + " | " + m.getBranch());
+        if (!isMaster) {
+            page.put("branch0", esc(m.getBranch())); // TODO brauch ich das noch?
         }
         page.put("previewTitle", NLS.get(userLang, "preview"));
         page.put("previewlink", "/p/" + m.getBranch());

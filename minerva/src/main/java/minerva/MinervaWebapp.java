@@ -23,6 +23,7 @@ import minerva.book.BookPage;
 import minerva.book.BooksPage;
 import minerva.book.DeleteBookPage;
 import minerva.book.EditBookPage;
+import minerva.book.MenuPage;
 import minerva.book.OrderTopLevelSeitePage;
 import minerva.book.SelectLanguageAction;
 import minerva.book.SortTopLevelSeiteAction;
@@ -142,6 +143,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/broken-mappings", BrokenMappingsPage.class);
         get("/w/:branch/activate-f-s-mode", ActivateFSModeAction.class);
         form("/w/:branch/deactivate-f-s-mode", DeactivateFSModePage.class);
+        get("/w/:branch/menu", MenuPage.class);
 
         // Export
         get("/w/:branch/books/export", ExportWorkspaceAction.class);

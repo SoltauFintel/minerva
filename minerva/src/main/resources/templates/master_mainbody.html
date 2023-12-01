@@ -1,27 +1,115 @@
-    <div id="wrapper">
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{if isCustomerVersion}}/w/master{{else}}/{{/if}}"
-                    style="padding-top: 7px;"><img src="/horse.png"
-                    style="width: 36px; display: inline; margin-right: 2mm;">
-                    <span class="app-title">Minerva</span></a>
-                <span class="branch0">{{branch0}}</span>
-            </div>
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    {{include: menu}}
-                </div>
-            </div>
-        </nav>
-        <div id="page-wrapper">
+<!-- <span class="branch0">{{branch0}}</span> -->
+
+<style>
+.pagetable {
+	width: 100%;
+}
+
+.leftarea {
+	width: 360px;
+	vertical-align: top;
+	padding-left: 1em;
+	padding-right: 1em;
+	padding-top: 20px;
+}
+
+.mainarea {
+	vertical-align: top;
+}
+
+.navbtn:hover {
+	background-color: #eee !important;
+}
+
+.logoutBtn {
+	color: #900 !important;
+}
+
+.line-vertical {
+  width: 1px;
+  height: 34px;
+  float: left;
+  background-color: #999;
+  margin: 10px;
+}
+
+.page-header {
+	margin-top: 20px;
+}
+</style>
+
+<nav class="navbar navbar-default" style="margin-bottom: 0;">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav_c1" aria-expanded="false">
+				<span class="sr-only">Navigation ein-/ausblenden</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a href="{{if isCustomerVersion}}/w/master{{else}}/{{/if}}"><img src="/logo.png" title="Minerva"
+				style="padding-top: 8px; padding-right: 8px;"/></a>
+		</div>
+
+		<div class="collapse navbar-collapse" id="nav_c1">
+			{{if hasUser}}
+				<ul class="nav navbar-nav">
+        			<li><a href="/w/{{branch}}/menu" class="navbtn"><i class="fa fa-navicon"></i> {{Menu}}</a></li>
+					<li><a href="/w/{{branch}}/language?m=toggle" class="navbtn"><img src="/{{guiLanguage}}.svg" style="width: 18px;"/></a></li>
+					{{if hasBook}}
+						<li class="line-vertical"/>
+		        
+		      			<!--  class="active", <span class="sr-only">(aktuell)</span> -->
+		      			{{each b in booksForMenu}}
+		        			<li><a href="/b/{{branch}}/{{b.folder}}" class="navbtn"><i class="fa fa-book greenbook"></i> {{b.title}}</a></li>
+		        		{{/each}}
+		        	{{else if hasPreviewBooks}}
+						<li class="line-vertical"/>
+		        
+		      			<!--  class="active", <span class="sr-only">(aktuell)</span> -->
+		      			{{each b in previewBooks}}
+		        			<li><a href="{{b.link}}" class="navbtn"><i class="fa fa-book bluebook"></i> {{b.title}}</a></li>
+		        		{{/each}}
+	        		{{/if}}
+	      		</ul>
+	
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="/auth/logout" class="logoutBtn navbtn">{{abmelden}} ({{user}}){{if isAdmin}}*{{/if}}</a></li>
+				</ul>
+				<form action="/w/{{branch}}/search" class="navbar-form navbar-right">
+					<div class="input-group">
+						<input type="text" class="form-control" id="q" name="q" placeholder="{{searchPlaceholder}}" style="width: 180px;"/>
+						<span class="input-group-btn">
+							<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+						</span>
+					</div>
+				</form>
+			</div>
+		{{/if}}
+	</div>
+</nav>		
+
+<table class="pagetable">
+	{{if not isMasterBranch}}
+		<tr>
+			<td{{if hasLeftArea}} colspan="2"{{/if}} style="background-color: #e9f3fc; padding: 4px 8px; font-size: 9pt; text-align: center;">
+				{{BranchLabel}}: {{branch}}</td>
+		</tr>
+	{{/if}}
+	<tr>
+		{{if hasLeftArea}}
+			<td class="leftarea">
+				{{leftAreaContent}}
+			</td>
+		{{/if}}
+		<td class="mainarea"{{if not hasLeftArea}} style="padding-left: 2em; padding-right: 2em;"{{/if}}>
             <div class="container-fluid" style="padding-bottom: 15mm;">
+            	<!-- CONTENT -->
                 {{content}}
             </div>
-        </div>
-    </div>
+		</td>
+	</tr>
+</table>
+    
+
+    

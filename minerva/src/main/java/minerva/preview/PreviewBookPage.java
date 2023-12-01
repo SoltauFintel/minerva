@@ -29,6 +29,8 @@ public class PreviewBookPage extends BPage {
         put("title", esc(book.getBook().getTitle().getString(lang))
                 + " - " + n("preview") + " " + lang.toUpperCase() + TITLE_POSTFIX);
         put("titel", esc(book.getBook().getTitle().getString(lang)));
+        put("hasBook", false);
+        put("hasPreviewBooks", true);
         put("hasPrevlink", false);
         boolean hasSeiten = !book.getSeiten().isEmpty();
         put("hasNextlink", hasSeiten);
@@ -38,7 +40,7 @@ public class PreviewBookPage extends BPage {
             put("nextlink", linkPrefix + book.getBook().getFolder() + "/" + lang + "/" + id);
         }
         
-        DataList list = list("books");
+        DataList list = list("previewBooks");
         for (BookSO b : books) {
             if (b.hasContent(lang, sv)) {
                 DataMap map = list.add();

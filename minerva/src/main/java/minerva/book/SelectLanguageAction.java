@@ -6,13 +6,20 @@ public class SelectLanguageAction extends WAction {
 
     @Override
     protected void execute() {
-        String lang = ctx.queryParam("lang");
-        boolean pageMode = "page".equals(ctx.queryParam("m"));
-        
-        user.selectLanguage(lang, pageMode);
+    	String mode = ctx.queryParam("m");
+		if ("toggle".equals(mode)) {
+			user.toggleGuiLanguage();
+			
+			ctx.redirect(ctx.req.headers("Referer"));
+		} else { // set language
+	        String lang = ctx.queryParam("lang");
+			boolean pageMode = "page".equals(mode);
 
-        if (!pageMode) {
-            ctx.redirect("/w/" + branch);
-        }
+			user.selectLanguage(lang, pageMode);
+			
+			if (!pageMode) {
+				ctx.redirect("/w/" + branch);
+			}
+		}
     }
 }
