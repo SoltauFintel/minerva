@@ -5,6 +5,7 @@ import com.github.template72.data.DataMap;
 
 import minerva.MinervaWebapp;
 import minerva.config.MinervaFactory;
+import minerva.user.UserAccess;
 import minerva.workspace.WPage;
 
 public class MenuPage extends WPage {
@@ -56,9 +57,10 @@ public class MenuPage extends WPage {
 
 		// SPECIAL RIGHTS AREA
 
-		// if hasExportRights
 		menu(list, "export", "fa-upload", "/w/:branch/export");
-		menu(list, "exportTemplates", "fa-file-text-o", "/ets/:branch");
+		if (UserAccess.hasExportRight(user.getLogin())) {
+			menu(list, "exportTemplates", "fa-file-text-o", "/ets/:branch");
+		}
 
 		// ADMIN AREA
 		
@@ -70,7 +72,6 @@ public class MenuPage extends WPage {
 					menu(list, "exclusions", "fa-bank", "/w/:branch/exclusions/edit");
 				}
 				menu(list, "manageUsers", "fa-users", "/users");
-				// if booksOk, if admin
 				menu(list, "reindex", "fa-refresh", "/w/:branch/index");
 				menu(list, "serverlog", "fa-paw", "/serverlog");
 				if (isMigrationAllowed()) {

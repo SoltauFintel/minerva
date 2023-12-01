@@ -26,7 +26,11 @@ public class WorkspacesPage extends UPage {
             if (user.getCurrentWorkspace() == null) {
                 throw new RuntimeException("Page in this program version not availabe");
             }
-            ctx.redirect("/w/" + user.getCurrentWorkspace().getBranch());
+            if (user.getCurrentWorkspace().getBooks().isEmpty()) {
+            	ctx.redirect("/w/" + user.getCurrentWorkspace().getBranch() + "/menu");
+            } else {
+            	ctx.redirect("/b/" + user.getCurrentWorkspace().getBranch() + "/" + user.getCurrentWorkspace().getBooks().get(0).getBook().getFolder());
+            }
         }
     }
 }

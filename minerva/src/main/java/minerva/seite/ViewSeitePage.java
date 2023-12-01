@@ -332,12 +332,20 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
 	public static String tree(SeitenSO seiten, String lang, String currentSeiteId) {
 		String ret = "<ul>";
 		for (SeiteSO seite : seiten) {
-			if (seite.hasContent(lang) <= 0) {
+			int hc = seite.hasContent(lang);
+			if (hc <= 0) {
 				continue;
 			}
 			String a = "";
+			if (hc == 2) {
+				a = " class=\"noContent\"";
+			}
 			if (currentSeiteId.equals(seite.getId())) {
-				a = " class=\"treeActivePage\"";
+				if (a.isEmpty()) {
+					a = " class=\"treeActivePage\"";
+				} else {
+					a = " class=\"noContent treeActivePage\"";
+				}
 			}
 			BookSO book = seite.getBook();
 			ret += "<li><a" + a + " href=\"/s/" + Escaper.esc(book.getWorkspace().getBranch()) + "/"
