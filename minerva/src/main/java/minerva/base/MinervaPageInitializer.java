@@ -1,7 +1,6 @@
 package minerva.base;
 
 import static github.soltaufintel.amalia.web.action.Escaper.esc;
-import static minerva.base.StringService.umlaute;
 
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
@@ -13,7 +12,6 @@ import minerva.MinervaWebapp;
 import minerva.config.MinervaConfig;
 import minerva.model.BookSO;
 import minerva.model.BooksSO;
-import minerva.model.SeiteSO;
 import minerva.user.UserAccess;
 
 public class MinervaPageInitializer extends PageInitializer {
@@ -147,17 +145,5 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("previewTitle", NLS.get(userLang, "preview"));
         page.put("previewlink", "/p/" + m.getBranch());
         page.put("hasBook", true);
-        String linkPrefix = "/s/" + m.getBranch() + "/";
-        for (String id : m.getFavorites()) {
-            for (BookSO book : m.getBooks()) {
-                SeiteSO seite = book._seiteById(id);
-                if (seite != null) {
-                    DataMap map = list.add();
-                    map.put("link", esc(linkPrefix + book.getBook().getFolder() + "/" + seite.getId()));
-                    map.put("title", esc(seite.getTitle()));
-                }
-            }
-        }
-        list.sort((a, b) -> umlaute(a.get("title").toString()).compareTo(umlaute(b.get("title").toString())));
     }
 }

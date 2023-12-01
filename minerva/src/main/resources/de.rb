@@ -124,6 +124,7 @@ force=Anzeige erzwingen
 mapping1=Vorhandene Verknüpfungen
 mapping2=Verknüpfung hinzufügen
 favorite=Favorit
+Favorites=Seitenfavoriten
 linkAnalysis=Link-Analyse
 type=Typ
 linkTitle=Link-Titel

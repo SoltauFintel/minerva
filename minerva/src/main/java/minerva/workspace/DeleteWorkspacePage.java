@@ -23,7 +23,7 @@ public class DeleteWorkspacePage extends UPage {
         
         if ("d".equals(ctx.queryParam("m"))) {
             user.getWorkspaces().remove(workspace);
-            ctx.redirect("/");
+            ctx.redirect("/w/master/menu");
         }
     }
 }

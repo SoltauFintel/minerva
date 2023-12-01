@@ -125,6 +125,7 @@ force=force
 mapping1=Existing mappings
 mapping2=Add mapping
 favorite=Favorite
+Favorites=Page favorites
 linkAnalysis=Link analysis
 type=Type
 linkTitle=Link title

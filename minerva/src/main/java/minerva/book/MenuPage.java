@@ -1,10 +1,15 @@
 package minerva.book;
 
+import static minerva.base.StringService.umlaute;
+
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.MinervaWebapp;
 import minerva.config.MinervaFactory;
+import minerva.model.BookSO;
+import minerva.model.SeiteSO;
+import minerva.model.WorkspaceSO;
 import minerva.user.UserAccess;
 import minerva.workspace.WPage;
 
@@ -12,18 +17,35 @@ public class MenuPage extends WPage {
 
 	@Override
 	protected void execute() {
-		MinervaFactory fac = MinervaWebapp.factory();
-		boolean isAdmin = "1".equals(ctx.req.session().attribute("admin"));
 		
 		header(n("Menu"));
-		menu(fac, isAdmin);
+		workspaces();
+		menu();
+		
+		DataList list = list("favorites");
+        String linkPrefix = "/s/" + branch + "/";
+        for (String id : user.getFavorites()) {
+            for (BookSO book : user.getWorkspace(branch).getBooks()) {
+                SeiteSO seite = book._seiteById(id);
+                if (seite != null) {
+                    DataMap map = list.add();
+                    map.put("link", esc(linkPrefix + book.getBook().getFolder() + "/" + seite.getId()));
+                    map.put("title", esc(seite.getTitle()));
+                }
+            }
+        }
+        list.sort((a, b) -> umlaute(a.get("title").toString()).compareTo(umlaute(b.get("title").toString())));
 	}
 
-	private void menu(MinervaFactory fac, boolean isAdmin) {
+	private void menu() {
+		MinervaFactory fac = MinervaWebapp.factory();
+		boolean isAdmin = "1".equals(ctx.req.session().attribute("admin"));
 		DataList list = list("commands");
-		menu(list, "Workspaces", "fa-folder-open-o", "/");
+//        if (MinervaWebapp.factory().isGitlab()) {
+//        	menu(list, "Workspaces", "fa-folder-open-o", "/");
+//        }
 		menu(list, "myTasks", "fa-inbox", "/w/:branch/my-tasks");
-		menu(list, "preview", "fa-thumbs-o-up", "/p/:branch");
+		menu(list, "preview", "fa-thumbs-o-up bluebook", "/p/:branch");
 		menu(list, "formulaEditor", "fa-superscript", "/math");
 		if (fac.isGitlab()) {
 			menu(list, "workspaceHistory", "fa-clock-o", "/w/:branch/history");
@@ -33,16 +55,17 @@ public class MenuPage extends WPage {
 		if (fac.isCustomerVersion()) {
 			menu(list, "Broken Mappings", "fa-chain-broken", "/w/:branch/broken-mappings");
 		}
+		export(list);
 		workspace(list);
 		additionalMenuItems(list);
 		onlinehelp(fac, list);
-		export(list);
 		admin(fac, isAdmin, list);
 	}
 
 	private void workspace(DataList list) {
 		menu(list, "pullWS", "fa-refresh", "/w/:branch/pull");
 		menu(list, "cloneWS", "fa-refresh red", "/w/:branch/pull?force=1");
+    	menu(list, "createWS", "fa-folder", "/create-workspace");
 		menu(list, "deleteWS", "fa-trash-o red", "/w/:branch/delete");
 		menu(list, "createBranch", "fa-code-fork", "/branch/:branch");
 		menu(list, "mergeBranch", "fa-code-fork", "/merge/:branch");
@@ -114,4 +137,23 @@ public class MenuPage extends WPage {
         }
         return false;
     }
+
+	private void workspaces() {
+		DataList list = list("workspaces");
+        if (MinervaWebapp.factory().isGitlab()) {
+	        for (WorkspaceSO workspace : user.getWorkspaces()) {
+	            DataMap map = list.add();
+	            map.put("link", workspace.getBooks().isEmpty() ? "" :
+	            	("/b/" + esc(workspace.getBranch()) + "/" + esc(workspace.getBooks().get(0).getBook().getFolder())));
+	            map.put("link", workspace.getBooks().isEmpty() ? "" : ("/w/" + esc(workspace.getBranch()) + "/menu"));
+	            if (branch.equals(workspace.getBranch())) {
+	            	map.put("text", esc(workspace.getBranch()));
+	            	map.put("icon", "fa-folder-open-o current-workspace");
+	            } else {
+	            	map.put("text", esc(workspace.getBranch()));
+	            	map.put("icon", "fa-folder-open-o");
+	            }
+	        }
+        }
+	}
 }
