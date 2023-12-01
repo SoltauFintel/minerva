@@ -45,8 +45,8 @@ public class MenuPage extends WPage {
 
 		// ADDITIONAL MENU ITEMS
 
-		menu(list, "Schnittstellen", "fa-exchange", "/sch/:branch/handbuch"); // TODO -> xminerva
-		menu(list, "Schlüsselverwaltung", "fa-key", "/sch/:branch/handbuch");
+		menu(list, "Schnittstellen", "fa-exchange", "/sch/:branch/prozesse"); // TODO -> xminerva
+		menu(list, "Schlüsselverwaltung", "fa-key", "/values/:branch");
 
 		if (fac.isCustomerVersion()
 		        && !fac.isGitlab()
