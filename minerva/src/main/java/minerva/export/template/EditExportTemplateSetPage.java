@@ -1,7 +1,6 @@
 package minerva.export.template;
 
 import java.util.List;
-import java.util.Map;
 
 import org.pmw.tinylog.Logger;
 
@@ -10,7 +9,6 @@ import minerva.workspace.WPage;
 
 public class EditExportTemplateSetPage extends WPage {
     private ExportTemplatesService x;
-    private Map<String, String> files;
     
     @Override
     protected void execute() {

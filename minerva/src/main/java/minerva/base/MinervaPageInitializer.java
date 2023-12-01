@@ -132,7 +132,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("delayedPushAllowed", MinervaWebapp.factory().isGitlab()
                 && !"master".equals(m.getBranch())
                 && !(m.getBranch().length() >= 1 && m.getBranch().charAt(0) >= '0' && m.getBranch().charAt(0) <= '9'));
-        DataList list = page.list("favorites");
+        /*DataList list = */page.list("favorites");
         if (m.getBooks() == null) {
             return;
         }
