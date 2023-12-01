@@ -92,22 +92,24 @@ h2 {
 				{{/each}}
 			</ul>
 		</div>
-		<h1 class="page-header">{{N.Favorites}}</h1>
-		<div class="bs-glyphicons">
-			<ul class="bs-glyphicons-list">
-				{{each c in favorites}}
-					<li style="cursor: pointer;" onclick="location.href='{{c.link}}';">
-						<span class="glyphicon fa fa-star-o fav fa-fw"></span> <span
-							class="glypicon-class"><br />{{c.title}}</span>
-					</li>
-				{{/each}}
-				{{if hasLastEditedPage}}
-					<li style="cursor: pointer;" onclick="location.href='{{lastEditedPage_link}}';">
-						<span class="glyphicon fa fa-pencil fav fa-fw"></span> <span
-							class="glypicon-class"><br />{{lastEditedPage_title}}</span>
-					</li>
-				{{/if}}				
-			</ul>
-		</div>
+		{{if hasFavorites}}
+			<h1 class="page-header">{{N.Favorites}}</h1>
+			<div class="bs-glyphicons">
+				<ul class="bs-glyphicons-list">
+					{{each c in favorites}}
+						<li style="cursor: pointer;" onclick="location.href='{{c.link}}';">
+							<span class="glyphicon fa fa-star-o fav fa-fw"></span> <span
+								class="glypicon-class"><br />{{c.title}}</span>
+						</li>
+					{{/each}}
+					{{if hasLastEditedPage}}
+						<li style="cursor: pointer;" onclick="location.href='{{lastEditedPage_link}}';">
+							<span class="glyphicon fa fa-pencil fav fa-fw"></span> <span
+								class="glypicon-class"><br />{{lastEditedPage_title}}</span>
+						</li>
+					{{/if}}				
+				</ul>
+			</div>
+		{{/if}}
 	</div>
 </div>

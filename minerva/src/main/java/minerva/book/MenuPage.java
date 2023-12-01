@@ -2,6 +2,7 @@ package minerva.book;
 
 import static minerva.base.StringService.umlaute;
 
+import com.github.template72.data.DataCondition;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
@@ -21,20 +22,7 @@ public class MenuPage extends WPage {
 		header(n("Menu"));
 		workspaces();
 		menu();
-		
-		DataList list = list("favorites");
-        String linkPrefix = "/s/" + branch + "/";
-        for (String id : user.getFavorites()) {
-            for (BookSO book : user.getWorkspace(branch).getBooks()) {
-                SeiteSO seite = book._seiteById(id);
-                if (seite != null) {
-                    DataMap map = list.add();
-                    map.put("link", esc(linkPrefix + book.getBook().getFolder() + "/" + seite.getId()));
-                    map.put("title", esc(seite.getTitle()));
-                }
-            }
-        }
-        list.sort((a, b) -> umlaute(a.get("title").toString()).compareTo(umlaute(b.get("title").toString())));
+		favorites();
 	}
 
 	private void menu() {
@@ -155,5 +143,24 @@ public class MenuPage extends WPage {
 	            }
 	        }
         }
+	}
+
+	private void favorites() {
+		boolean hasFavorites = ((DataCondition) model.get("hasLastEditedPage")).isTrue();
+		DataList list = list("favorites");
+        String linkPrefix = "/s/" + branch + "/";
+        for (String id : user.getFavorites()) {
+            for (BookSO book : user.getWorkspace(branch).getBooks()) {
+                SeiteSO seite = book._seiteById(id);
+                if (seite != null) {
+                    DataMap map = list.add();
+                    map.put("link", esc(linkPrefix + book.getBook().getFolder() + "/" + seite.getId()));
+                    map.put("title", esc(seite.getTitle()));
+                    hasFavorites = true;
+                }
+            }
+        }
+        list.sort((a, b) -> umlaute(a.get("title").toString()).compareTo(umlaute(b.get("title").toString())));
+        put("hasFavorites", hasFavorites);
 	}
 }
