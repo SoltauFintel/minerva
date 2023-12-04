@@ -26,23 +26,16 @@ public class SeitenauswahlPage extends WPage {
         String w = ctx.queryParam("w");
 
         if (isPOST()) {
-            String al = ctx.formParam("al");
-            List<SeiteSO> seiten = new ArrayList<>();
-            if (!StringService.isNullOrEmpty(al)) {
-                for (String i : al.split(",")) {
-                    if (!i.isEmpty()) {
-                        for (BookSO book : workspace.getBooks()) {
-                            SeiteSO x = book._seiteById(i);
-                            if (x != null) {
-                                Logger.debug(i + " => " + x.getSeite().getTitle().getString(lang));
-                                seiten.add(x);
-                            }
-                        }
-                    }
-                }
+            String auswahlliste = ctx.formParam("al");
+            List<SeiteSO> seiten = getSelectedPages(auswahlliste, lang);
+            if (seiten.isEmpty()) {
+                throw new RuntimeException("No pages to export!");
             }
-            // TODO Baustelle
-            ctx.redirect("/w/" + esc(branch) + "/menu");
+            info(lang, customer, seiten);
+        
+            String id = GenericExportService.getService(workspace, customer, lang, template, ctx).getSeitenExportDownloadId(seiten);
+            
+            ctx.redirect("/w/" + esc(branch) + "/download-export/" + id + "/" + u(GenericExportService.getFilename(id)));
         } else {
             header(n("seitenauswahl"));
             put("lang", esc(lang));
@@ -63,6 +56,34 @@ public class SeitenauswahlPage extends WPage {
                 add(book.getSeiten(), "____", lang, list);
             }
         }
+    }
+
+    private List<SeiteSO> getSelectedPages(String auswahlliste, String lang) {
+        List<SeiteSO> seiten = new ArrayList<>();
+        if (!StringService.isNullOrEmpty(auswahlliste)) {
+            for (String id : auswahlliste.split(",")) {
+                if (!id.isEmpty()) {
+                    for (BookSO book : workspace.getBooks()) {
+                        SeiteSO seite = book._seiteById(id);
+                        if (seite != null) {
+                            Logger.debug(id + " => " + seite.getSeite().getTitle().getString(lang));
+                            seiten.add(seite);
+                        }
+                    }
+                }
+            }
+        }
+        return seiten;
+    }
+
+    private void info(String lang, String customer, List<SeiteSO> seiten) {
+        String info = branch + " | language: " + lang + " | customer: " + customer + //
+                (seiten.size() == 1 ? " | exporting this page:" : " | exporting these pages:");
+        for (SeiteSO seite : seiten) {
+            info += "\n- " + seite.getSeite().getTitle().getString(lang);
+        }
+        Logger.info(user.getLogin() + " | " + info);
+        user.log(info);
     }
     
     private void add(SeitenSO seiten, String indent, String lang, DataList list) {

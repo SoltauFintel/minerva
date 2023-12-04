@@ -124,11 +124,11 @@ public class MultiPageHtmlExportService extends GenericExportService {
     }
 
     @Override
-    public File saveSeite(SeiteSO seite) {
+    public File saveSeiten(List<SeiteSO> seiten) {
         currentBook = null;
-        File outputFolder = super.saveSeite(seite);
+        File outputFolder = super.saveSeiten(seiten);
 
-        copyPageFileAsIndexFile(seite, outputFolder);
+// TODO        copyPageFileAsIndexFile(seite, outputFolder);
         return outputFolder;
     }
     

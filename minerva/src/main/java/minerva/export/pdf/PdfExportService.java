@@ -104,11 +104,11 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	}
 	
 	@Override
-	public File saveSeite(SeiteSO seite) {
-		prepare(seite.getBook());
-		Logger.info("just exporting page \"" + seite.getSeite().getTitle().getString(lang) + "\" of that book...");
+	public File saveSeiten(List<SeiteSO> seiten) {
+		prepare(seiten.get(0).getBook()); // TODO es könnten unterschiedliche Bücher sein!
+		// TODO Logger.info("just exporting page \"" + seite.getSeite().getTitle().getString(lang) + "\" of that book...");
 		
-		File outputFolder = super.saveSeite(seite);
+		File outputFolder = super.saveSeiten(seiten);
 		
 		createPDF(outputFolder, false);
 		Logger.info("error messages: " + errorMessages.size());

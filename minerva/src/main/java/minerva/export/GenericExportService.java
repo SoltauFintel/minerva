@@ -12,7 +12,6 @@ import github.soltaufintel.amalia.spark.Context;
 import minerva.MinervaWebapp;
 import minerva.base.FileService;
 import minerva.base.NLS;
-import minerva.base.UserMessage;
 import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
 import minerva.export.pdf.Bookmark;
@@ -41,6 +40,7 @@ public abstract class GenericExportService {
     /** current parent bookmark */
     protected Bookmark cb = new Bookmark("root", "book");
     protected List<Bookmark> bookmarks = cb.getBookmarks();
+    protected boolean withSubpages = true;
 
     public GenericExportService(WorkspaceSO workspace, String customer, String language, String templateId) {
         lang = language;
@@ -109,16 +109,16 @@ public abstract class GenericExportService {
         }
     }
 
-    public String getSeiteExportDownloadId(SeiteSO seite) {
-    	return prepareDownload(saveSeite(seite));
+    public String getSeitenExportDownloadId(List<SeiteSO> seiten) {
+        withSubpages = false;
+    	return prepareDownload(saveSeiten(seiten));
     }
 
-    public File saveSeite(SeiteSO seite) {
-        String title = seite.getSeite().getTitle().getString(lang);
-		File outputFolder = getFolder(title);
+    public File saveSeiten(List<SeiteSO> seiten) {
+		File outputFolder = getFolder(seiten.get(0).getSeite().getTitle().getString(lang));
         init(outputFolder);
-        if (!_saveSeiteTo(seite, null, Chapter.withoutChapters(), outputFolder)) {
-            throw new UserMessage("export-page-is-not-visible", seite.getBook().getWorkspace(), msg -> msg.replace("$t", title));
+        for (SeiteSO seite : seiten) {
+            _saveSeiteTo(seite, null, Chapter.withoutChapters(), outputFolder);
         }
         return outputFolder;
     }
@@ -127,12 +127,14 @@ public abstract class GenericExportService {
         if (seite.isVisible(exclusionsService, lang).isVisible()) {
         	saveSeiteTo(seite, parent, chapter, outputFolder);
 
-            Bookmark keep = cb; // remember
-    		keep.getBookmarks().add(cb = new Bookmark(seite, lang, chapter));
-        	
-            saveSeitenTo(seite.getSeiten(), seite, chapter, outputFolder);
-            
-            cb = keep; // restore
+        	if (withSubpages) {
+                Bookmark keep = cb; // remember
+        		keep.getBookmarks().add(cb = new Bookmark(seite, lang, chapter));
+            	
+                saveSeitenTo(seite.getSeiten(), seite, chapter, outputFolder);
+                
+                cb = keep; // restore
+        	}
             return true;
         }
         return false;

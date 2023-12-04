@@ -232,7 +232,6 @@ exportFormat=Exportformat
 goToMenu=Weiter zum Menü
 downloadExportInfo=Der Export wurde erstellt und kann jetzt heruntergeladen werden:
 export-already-downloaded=Die Datei wurde bereits heruntergeladen und ist nicht mehr vorhanden. Bitte ggf. Export erneut ausführen.
-export-page-is-not-visible=Die Seite "$t" ist für diesen Kunden nicht sichtbar.
 addExportTemplateSet=Export Template Set erstellen
 editExportTemplateSet=Export Template Set bearbeiten
 deleteExportTemplateSet=Export Template Set löschen
