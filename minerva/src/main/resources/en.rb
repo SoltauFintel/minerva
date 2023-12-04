@@ -249,3 +249,4 @@ seitenauswahl=Export: select page(s)
 pages=Pages
 doExport=export
 selectPageError=Please select page!
+createBookInfo=Please create a book.

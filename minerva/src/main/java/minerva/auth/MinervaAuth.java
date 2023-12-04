@@ -65,7 +65,7 @@ public class MinervaAuth extends AbstractAuth {
                 ctx.redirect("/");
             }
         } else {
-            if ("/".equals(path) || "/b/master".equals(path)) {
+            if ("/b/master".equals(path)) {
                 path = "/w/master/menu";
             }
             Logger.info(user.getLogin() + " | Redirect to " + path + " after login");

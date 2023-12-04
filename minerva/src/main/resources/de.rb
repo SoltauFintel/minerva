@@ -250,3 +250,4 @@ seitenauswahl=Export: Seitenauswahl
 pages=Seiten
 doExport=Exportieren
 selectPageError=Bitte wählen Sie eine Seite!
+createBookInfo=Bitte erstellen Sie ein Buch.
