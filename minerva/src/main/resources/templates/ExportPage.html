@@ -60,7 +60,7 @@
                     <div class="col-lg-2 col-lg-offset-2">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" id="withCover" name="withCover" checked>
+                                <input type="checkbox" id="withCover" name="withCover"{{if withCover}} checked{{/if}}>
                                 {{N.withCover}}
                             </label>
                         </div>
@@ -70,7 +70,7 @@
                     <div class="col-lg-2 col-lg-offset-2">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" id="withTOC" name="withTOC" checked>
+                                <input type="checkbox" id="withTOC" name="withTOC"{{if withTOC}} checked{{/if}}>
                                 {{N.withTOC}}
                             </label>
                         </div>
@@ -80,7 +80,7 @@
                     <div class="col-lg-2 col-lg-offset-2">
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" id="withChapters" name="withChapters" checked>
+                                <input type="checkbox" id="withChapters" name="withChapters"{{if withChapters}} checked{{/if}}>
                                 {{N.withChapters}}
                             </label>
                         </div>

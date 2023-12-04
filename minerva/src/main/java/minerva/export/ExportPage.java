@@ -57,6 +57,9 @@ public class ExportPage extends WPage {
             	throw new UserMessage("no-export-template-sets", user);
             }
 			combobox("templates", exportTemplateSetNames, us.getTemplate(), false, model);
+			put("withCover", us.isCover());
+			put("withTOC", us.isToc());
+			put("withChapters", us.isChapters());
         }
     }
     
