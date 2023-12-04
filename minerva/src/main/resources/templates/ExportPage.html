@@ -11,7 +11,7 @@
                     <div class="col-lg-3">
                         <select class="form-control" id="item" name="item" autofocus>
                             {{each a in items}}
-                                <option{{if a.selected}} selected{{/if}}>{{a.text}}</option>
+                                <option value="{{a.id}}"{{if a.selected}} selected{{/if}}>{{a.text}}</option>
                             {{/each}}
                         </select>
                     </div>
@@ -56,6 +56,36 @@
                         </select>
                     </div>
                 </div>
+                <div class="form-group">
+                    <div class="col-lg-2 col-lg-offset-2">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="withCover" name="withCover" checked>
+                                {{N.withCover}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-2 col-lg-offset-2">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="withTOC" name="withTOC" checked>
+                                {{N.withTOC}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-2 col-lg-offset-2">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="withChapters" name="withChapters" checked>
+                                {{N.withChapters}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <div class="col-lg-offset-2 col-lg-5">
@@ -66,7 +96,6 @@
                 </div>
             </fieldset>
         </form>
-        <p class="mt3" style="font-size: 9pt;">Bei Auswahl von Kunde "-" werden keine tags berücksichtigt, d.h. es werden
-        	<i>alle</i> Seiten exportiert.</p>
+        <p class="mt3" style="font-size: 9pt;">{{N.exportInfo}}</p>
     </div>
 </div>

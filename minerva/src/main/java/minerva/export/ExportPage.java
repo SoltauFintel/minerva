@@ -1,31 +1,27 @@
 package minerva.export;
 
-import static minerva.base.StringService.umlaute;
 import static minerva.base.StringService.upper;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.pmw.tinylog.Logger;
-
+import github.soltaufintel.amalia.web.action.IdAndLabel;
 import minerva.base.UserMessage;
 import minerva.export.template.ExportTemplateSet;
 import minerva.export.template.ExportTemplatesService;
-import minerva.model.BookSO;
-import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.workspace.WPage;
 
 public class ExportPage extends WPage {
-    private static final String W = "###";
-    private static final String B = "##";
-    private static final String S = "#";
+    private static final String ALL = "_all_";
+    private static final String PAGE = "_page_";
     private String lang;
     
     @Override
     protected void execute() {
-        if (workspace.getBooks().isEmpty()) {
+        int nBooks = workspace.getBooks().size();
+        if (nBooks == 0) {
             throw new RuntimeException("There are no books!");
         }
         lang = user.getGuiLanguage();
@@ -34,19 +30,19 @@ public class ExportPage extends WPage {
             callExportDownload();
         } else {
             header(n("export"));
-            List<String> items = getItems(workspace);
+            List<IdAndLabel> items = getItems(workspace);
             List<String> customers = new ArrayList<>(workspace.getExclusions().getCustomers());
             customers.add(0, "-");
             
             ExportUserSettings us = user.getUser().getExport();
             if (us == null) {
                us = new ExportUserSettings();
-               us.setItem(items.get(1));
-               us.setCustomer("-");
+               us.setItem(items.get(nBooks > 1 ? 1 : 0).getId());
+               us.setCustomer(customers.get(0));
                us.setLang(langs.get(0).toUpperCase());
             }
             
-            combobox("items", items, us.getItem(), false, model);
+            combobox_idAndLabel("items", items, us.getItem(), false, model);
             combobox("customers", upper(customers), us.getCustomer(), false, model);
             combobox("langs", upper(langs), us.getLang(), false, model);
             
@@ -64,28 +60,14 @@ public class ExportPage extends WPage {
         }
     }
     
-    private List<String> getItems(WorkspaceSO workspace) {
-        List<String> items = new ArrayList<>();
-        List<String> pageTitles = new ArrayList<>();
-        items.add(n("allBooks") + " " + W);
-        for (BookSO book : workspace.getBooks()) {
-            items.add(book.getBook().getTitle().getString(lang) + " " + B + book.getBook().getFolder());
-            addPageTitles(book, pageTitles);
+    private List<IdAndLabel> getItems(WorkspaceSO workspace) {
+        List<IdAndLabel> items = new ArrayList<>();
+        if (workspace.getBooks().size() > 1) {
+            items.add(new ExportItem(ALL, n("allBooks")));
         }
-        pageTitles.sort((a, b) -> umlaute(a).compareTo(umlaute(b)));
-        items.addAll(pageTitles);
+        workspace.getBooks().forEach(book -> items.add(new ExportItem(book.getBook().getFolder(), book.getBook().getTitle().getString(lang))));
+        items.add(new ExportItem(PAGE, n("selectPage")));
         return items;
-    }
-
-    private void addPageTitles(BookSO book, List<String> items) {
-        for (SeiteSO seite : book.getAlleSeiten()) {
-            items.add(seite.getSeite().getTitle().getString(lang) + " " + S + seite.getId());
-        }
-    }
-    
-    @Override
-    protected String getPage() {
-        return super.getPage();
     }
 
     private void callExportDownload() {
@@ -94,36 +76,26 @@ public class ExportPage extends WPage {
         String lang = ctx.formParam("lang");
         String format = ctx.formParam("format");
         String template = ctx.formParam("template");
-        user.saveExportSettings(item, customer, lang, format, template);
+        boolean withCover = "on".equals(ctx.formParam("withCover"));
+        boolean withTOC = "on".equals(ctx.formParam("withTOC"));
+        boolean withChapters = "on".equals(ctx.formParam("withChapters"));
+
+        user.saveExportSettings(item, customer, lang, format, template, withCover, withTOC, withChapters);
         
         String q = "/export?lang=" + u(lang.toLowerCase())
         			+ "&customer=" + u(customer.toLowerCase())
-        			+ "&template=" + u(templateName2Id(template));
+        			+ "&template=" + u(templateName2Id(template))
+        			+ "&o=" + (withCover ? "c" : "") + (withTOC ? "i" : "") + (withChapters ? "k" : "");
         if ("PDF".equals(format)) {
         	q += "&w=pdf";
         }
 
-        if (item.contains(W)) { // all books
+        if (ALL.equals(item)) { // all books
             ctx.redirect("/w/" + branch + "/books" + q);
-            
-        } else if (item.contains(B)) { // book
-            String bookFolder = item.substring(item.lastIndexOf(B) + B.length());
-            ctx.redirect("/b/" + branch + "/" + esc(bookFolder) + q);
-            
-        } else if (item.contains(S)) { // Seite
-            String seiteId = item.substring(item.lastIndexOf(S) + S.length());
-            SeiteSO seite = getSeite(seiteId);
-            if (seite != null) {
-                String bookFolder = seite.getBook().getBook().getFolder();
-                ctx.redirect("/s/" + branch + "/" + esc(bookFolder) + "/" + seiteId + q);
-            } else {
-                Logger.error("Page not found for export item: " + item);
-                throw new RuntimeException("Page not found");
-            }
-            
-        } else {
-            Logger.error("Unknown export item: " + item);
-            throw new RuntimeException("Unknown item");
+        } else if (PAGE.equals(item)) { // Seitenmehrfachauswahl
+            ctx.redirect("/w/" + branch + "/pages" + q);
+        } else { // book
+            ctx.redirect("/b/" + branch + "/" + esc(item) + q);
         }
     }
 
@@ -135,14 +107,4 @@ public class ExportPage extends WPage {
 		}
     	throw new RuntimeException("Template with name \"" + name + "\" does not exist!");
 	}
-
-	private SeiteSO getSeite(String seiteId) {
-        for (BookSO book : workspace.getBooks()) {
-            SeiteSO seite = book._seiteById(seiteId);
-            if (seite != null) {
-                return seite;
-            }
-        }
-        return null;
-    }
 }

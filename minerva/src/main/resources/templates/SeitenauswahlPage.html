@@ -1,0 +1,82 @@
+{{master: master}}
+
+<div class="row"> 
+    <div class="col-lg-12">
+        <h1 class="page-header">{{header}}</h1>
+        
+        <form action="/w/{{branch}}/pages/export?lang={{lang}}&customer={{customer}}&template={{template}}&o={{o}}&w={{w}}" class="form-horizontal" method="post">
+            <fieldset>
+                <table>
+                    <tr>
+                        <td style="width: {{width}}px;">
+                            {{N.pages}}:<br/>
+                            <select id="links" name="links" size="{{size}}" style="width: 100%;" multiple ondblclick="nachRechts()" class="form-control">
+                                {{each a in pages}}
+                                    <option value="{{a.id}}" style="font-family: 'Courier New';{{if a.isBook}} color: #999;{{/if}}">{{a.text}}</option>
+                                {{/each}}
+                            </select>
+                        </td>
+                        <td style="width: 90px; text-align: center;">
+                            <a onclick="nachRechts()" class="btn btn-default" style="width: 50px;"><i class="fa fa-arrow-right"></i></a>
+                            <br/><br/>
+                            <a onclick="nachLinks()" class="btn btn-default" style="width: 50px;"><i class="fa fa-arrow-left"></i></a>
+                        </td>
+                        <td style="width: {{width}}px;">
+                            {{N.doExport}}:<br/>
+                            <select id="rechts" name="rechts" size="{{size}}" style="width: 100%;" ondblclick="nachLinks()" class="form-control">
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <input type="hidden" id="al" name="al"/>
+            
+                <div class="form-group mt1">
+                    <div class="col-lg-5">
+                        <button type="submit" class="btn btn-primary br" onclick="document.getElementById('s1').style='';">{{N.export}}
+                            <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
+                        <a href="/w/{{branch}}/menu" class="btn btn-default">{{N.cancel}}</a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<script>
+function nachRechts() {
+    let links = document.getElementById('links');
+    if (links.selectedIndex < 0) return;
+    let rechts = document.getElementById('rechts');
+    for (var i=0; i<links.options.length; i++) {
+        if (links.options[i].selected) {
+            let id = links.options[i].value;
+            if (!id.startsWith('{{bookPrefix}}')) {
+                var neu = document.createElement('option');
+                neu.value = id;
+                neu.innerHTML = links.options[i].text;
+                neu.style = "font-family: 'Courier New';";
+                rechts.appendChild(neu);
+                if (al.value != '') {
+                    id = ',' + id;
+                }
+                al.value = al.value + id;
+            }
+        }
+    }
+}
+
+function nachLinks() {
+    let rechts = document.getElementById('rechts');
+    let i = rechts.selectedIndex;
+    if (i >= 0) {
+        let id = rechts.options[i].value;
+        rechts.remove(i);
+        if (i < rechts.options.length) {
+            rechts.selectedIndex = i;
+        } else if (rechts.options.length > 0) {
+            rechts.selectedIndex = rechts.options.length - 1;
+        }
+        al.value = al.value.replace(',' + id, ''); 
+    }
+}
+</script>

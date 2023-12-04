@@ -34,8 +34,8 @@ import minerva.exclusions.ExclusionsEditPage;
 import minerva.export.DownloadExportPage;
 import minerva.export.ExportBookAction;
 import minerva.export.ExportPage;
-import minerva.export.ExportSeiteAction;
 import minerva.export.ExportWorkspaceAction;
+import minerva.export.SeitenauswahlPage;
 import minerva.export.template.AddExportTemplateSetAction;
 import minerva.export.template.DeleteExportTemplateSetAction;
 import minerva.export.template.EditExportTemplateSetPage;
@@ -148,7 +148,7 @@ public class MinervaWebapp extends RouteDefinitions {
         // Export
         get("/w/:branch/books/export", ExportWorkspaceAction.class);
         form("/w/:branch/export", ExportPage.class);
-          get("/w/:branch/export-what", ExportPage.class); // TODO ab 1.12.23 entfernen
+        form("/w/:branch/pages/export", SeitenauswahlPage.class);
         get("/w/:branch/download-export/:id/:dn", DownloadExportPage.class);
 
         get("/ets/:branch", ExportTemplateSetsPage.class);
@@ -193,7 +193,6 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/s/:branch/:book/:id/toggle-favorite", ToggleFavoriteAction.class);
         get("/s/:branch/:book/:id/toggle-watch", ToggleWatchAction.class);
         get("/s/:branch/:book/:id/links", LinkAnalysisPage.class);
-        get("/s/:branch/:book/:id/export", ExportSeiteAction.class);
         post("/s/:branch/:book/:id/toc", TocAction.class);
         post("/s/:branch/:book/:id/editorsnote", SaveEditorsNoteAction.class);
 

@@ -6,6 +6,9 @@ public class ExportUserSettings {
     private String lang;
     private String format;
     private String template;
+    private boolean cover = true;
+    private boolean toc = true;
+    private boolean chapters = true;
     
     public String getItem() {
         return item;
@@ -46,4 +49,28 @@ public class ExportUserSettings {
 	public void setTemplate(String template) {
 		this.template = template;
 	}
+
+    public boolean isCover() {
+        return cover;
+    }
+
+    public void setCover(boolean cover) {
+        this.cover = cover;
+    }
+
+    public boolean isToc() {
+        return toc;
+    }
+
+    public void setToc(boolean toc) {
+        this.toc = toc;
+    }
+
+    public boolean isChapters() {
+        return chapters;
+    }
+
+    public void setChapters(boolean chapters) {
+        this.chapters = chapters;
+    }
 }

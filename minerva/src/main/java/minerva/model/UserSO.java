@@ -197,7 +197,7 @@ public class UserSO {
         return user.getFavorites();
     }
     
-    public void saveExportSettings(String item, String customer, String lang, String format, String template) {
+    public void saveExportSettings(String item, String customer, String lang, String format, String template, boolean cover, boolean toc, boolean chapters) {
         load();
         if (user.getExport() == null) {
             user.setExport(new ExportUserSettings());
@@ -208,6 +208,9 @@ public class UserSO {
         ex.setLang(lang);
         ex.setFormat(format);
         ex.setTemplate(template);
+        ex.setCover(cover);
+        ex.setToc(toc);
+        ex.setChapters(chapters);
         save();
     }
     
