@@ -18,7 +18,6 @@ public class MenuPage extends WPage {
 
 	@Override
 	protected void execute() {
-		
 		header(n("Menu"));
 		workspaces();
 		menu();
@@ -26,7 +25,26 @@ public class MenuPage extends WPage {
         put("persistenceInfo", MinervaWebapp.factory().getBackendService().getInfo(user.getGuiLanguage()));
 	}
 
-	private void menu() {
+	private void workspaces() {
+    	DataList list = list("workspaces");
+        if (MinervaWebapp.factory().isGitlab()) {
+            for (WorkspaceSO workspace : user.getWorkspaces()) {
+                DataMap map = list.add();
+                map.put("link", workspace.getBooks().isEmpty() ? "" :
+                	("/b/" + esc(workspace.getBranch()) + "/" + esc(workspace.getBooks().get(0).getBook().getFolder())));
+                map.put("link", workspace.getBooks().isEmpty() ? "" : ("/w/" + esc(workspace.getBranch()) + "/menu"));
+                if (branch.equals(workspace.getBranch())) {
+                	map.put("text", esc(workspace.getBranch()));
+                	map.put("icon", "fa-folder-open-o current-workspace");
+                } else {
+                	map.put("text", esc(workspace.getBranch()));
+                	map.put("icon", "fa-folder-open-o");
+                }
+            }
+        }
+    }
+
+    private void menu() {
 		MinervaFactory fac = MinervaWebapp.factory();
 		boolean isAdmin = "1".equals(ctx.req.session().attribute("admin"));
 		DataList list = list("commands");
@@ -126,25 +144,6 @@ public class MenuPage extends WPage {
         }
         return false;
     }
-
-	private void workspaces() {
-		DataList list = list("workspaces");
-        if (MinervaWebapp.factory().isGitlab()) {
-	        for (WorkspaceSO workspace : user.getWorkspaces()) {
-	            DataMap map = list.add();
-	            map.put("link", workspace.getBooks().isEmpty() ? "" :
-	            	("/b/" + esc(workspace.getBranch()) + "/" + esc(workspace.getBooks().get(0).getBook().getFolder())));
-	            map.put("link", workspace.getBooks().isEmpty() ? "" : ("/w/" + esc(workspace.getBranch()) + "/menu"));
-	            if (branch.equals(workspace.getBranch())) {
-	            	map.put("text", esc(workspace.getBranch()));
-	            	map.put("icon", "fa-folder-open-o current-workspace");
-	            } else {
-	            	map.put("text", esc(workspace.getBranch()));
-	            	map.put("icon", "fa-folder-open-o");
-	            }
-	        }
-        }
-	}
 
 	private void favorites() {
 		boolean hasFavorites = ((DataCondition) model.get("hasLastEditedPage")).isTrue();
