@@ -35,11 +35,11 @@ public class MenuPage extends WPage {
                 map.put("link", workspace.getBooks().isEmpty() ? "" : ("/w/" + esc(workspace.getBranch()) + "/menu"));
                 if (branch.equals(workspace.getBranch())) {
                 	map.put("text", esc(workspace.getBranch()));
-                	map.put("icon", "fa-folder-open-o");
+                	map.put("icon", "fa-folder-open-o currentBranchIcon");
                 	map.put("isCurrent", true);
                 } else {
                 	map.put("text", esc(workspace.getBranch()));
-                	map.put("icon", "fa-folder-open-o");
+                	map.put("icon", "fa-folder-o");
                     map.put("isCurrent", false);
                 }
             }

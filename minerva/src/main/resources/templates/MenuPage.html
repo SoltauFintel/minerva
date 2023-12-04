@@ -70,6 +70,10 @@ h2 {
 .currentBranch:hover {
     background-color: #563d7c !important;
 }
+
+.currentBranchIcon {
+    color: #0dd;
+}
 </style>
 
 <div class="row">
@@ -79,8 +83,8 @@ h2 {
 			<ul class="bs-glyphicons-list">
 				{{each c in workspaces}}
 					<li style="cursor: pointer;"{{if c.isCurrent}} class="currentBranch"{{/if}} onclick="location.href='{{c.link}}';">
-						<span class="glyphicon fa {{c.icon}} fa-fw"></span> <span
-						class="glypicon-class"><br />{{c.text}}</span>
+						<span class="glyphicon fa {{c.icon}} fa-fw"></span>
+						<span class="glypicon-class"><br />{{c.text}}</span>
 					</li>
 				{{/each}}
 			</ul>
