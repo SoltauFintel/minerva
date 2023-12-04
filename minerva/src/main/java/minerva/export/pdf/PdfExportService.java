@@ -194,6 +194,8 @@ public class PdfExportService extends MultiPageHtmlExportService {
 		
 		model.put("bookTitle", bookTitle.replace("&", "&amp;"));
 		model.put("de", "de".equals(lang));
+		model.put("cover", true); // TODO
+		model.put("toc", true); // TODO
 
 		if (bookmarks.size() == 1 && !bookmarks.get(0).getBookmarks().isEmpty()) { // typical for release notes book
 			createTocLines(bookmarks.get(0).getBookmarks(), model);
