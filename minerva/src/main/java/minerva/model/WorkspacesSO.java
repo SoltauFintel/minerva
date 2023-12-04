@@ -21,6 +21,7 @@ public class WorkspacesSO extends MList<WorkspaceSO> {
     public WorkspacesSO(UserSO user, String userFolder) {
         super(new WorkspacesComparator());
         this.userFolder = userFolder;
+        Logger.info(user.getLogin() + " | user folder: " + userFolder);
         DirAccess dao = user.dao();
         List<String> workspaceFolders = dao.getAllFolders(userFolder);
         if (workspaceFolders.isEmpty() || !workspaceFolders.contains("master")) {
