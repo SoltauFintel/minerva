@@ -34,7 +34,7 @@ public class GitlabBackendService implements BackendService {
     }
 
     @Override
-    public String getInfo() {
+    public String getInfo(String lang) {
         return "Gitlab (" + repo.getProjectUrl() + ")";
     }
 

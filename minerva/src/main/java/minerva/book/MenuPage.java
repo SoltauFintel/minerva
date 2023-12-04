@@ -23,6 +23,7 @@ public class MenuPage extends WPage {
 		workspaces();
 		menu();
 		favorites();
+        put("persistenceInfo", MinervaWebapp.factory().getBackendService().getInfo(user.getGuiLanguage()));
 	}
 
 	private void menu() {

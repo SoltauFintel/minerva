@@ -19,7 +19,7 @@ public class WorkspacesPage extends UPage {
             map.put("link", workspace.getBooks().isEmpty() ? "" :
             	("/b/" + esc(workspace.getBranch()) + "/" + esc(workspace.getBooks().get(0).getBook().getFolder())));
         }
-        put("persistenceInfo", MinervaWebapp.factory().getBackendService().getInfo());
+        put("persistenceInfo", MinervaWebapp.factory().getBackendService().getInfo(user.getGuiLanguage()));
         header("Workspaces");
 
         if (MinervaWebapp.factory().isCustomerVersion()) {

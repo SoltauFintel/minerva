@@ -285,7 +285,7 @@ public class MinervaWebapp extends RouteDefinitions {
     
     public static void info() {
         System.out.println("languages: " + MinervaWebapp.factory().getLanguages()
-                + " | backend: " + MinervaWebapp.factory().getBackendService().getInfo()
+                + " | backend: " + MinervaWebapp.factory().getBackendService().getInfo("en")
                 + MinervaWebapp.factory().getFolderInfo());
     }
     

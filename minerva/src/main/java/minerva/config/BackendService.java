@@ -38,9 +38,10 @@ public interface BackendService {
 	String getUserFolder(User user);
 
     /**
+     * @param lang language
      * @return name of backend and details
      */
-    String getInfo();
+    String getInfo(String lang);
     
     /**
      * @return backend-specific persistence service
