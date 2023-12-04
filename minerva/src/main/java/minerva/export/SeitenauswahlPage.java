@@ -67,13 +67,16 @@ public class SeitenauswahlPage extends WPage {
     
     private void add(SeitenSO seiten, String indent, String lang, DataList list) {
         for (SeiteSO seite : seiten) {
-            DataMap map = list.add();
-            String title = seite.getSeite().getTitle().getString(lang);
-            map.put("text", esc(indent + title));
-            map.put("id", esc(seite.getId()));
-            map.put("isBook", false);
-            
-            add(seite.getSeiten(), indent + "____", lang, list); // recursive
+            int hc = seite.hasContent(lang);
+            if (hc > 0) {
+                DataMap map = list.add();
+                String title = seite.getSeite().getTitle().getString(lang);
+                map.put("text", esc(indent + title));
+                map.put("id", esc(seite.getId()));
+                map.put("isBook", false);
+                
+                add(seite.getSeiten(), indent + "____", lang, list); // recursive
+            }
         }
     }
 }
