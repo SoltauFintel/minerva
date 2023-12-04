@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import github.soltaufintel.amalia.web.action.IdAndLabel;
+import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.export.template.ExportTemplateSet;
 import minerva.export.template.ExportTemplatesService;
@@ -29,6 +30,8 @@ public class ExportPage extends WPage {
         if (isPOST()) {
             callExportDownload();
         } else {
+            String seite = ctx.queryParam("seite");
+            
             header(n("export"));
             List<IdAndLabel> items = getItems(workspace);
             List<String> customers = new ArrayList<>(workspace.getExclusions().getCustomers());
@@ -40,6 +43,12 @@ public class ExportPage extends WPage {
                us.setItem(items.get(nBooks > 1 ? 1 : 0).getId());
                us.setCustomer(customers.get(0));
                us.setLang(langs.get(0).toUpperCase());
+            }
+            if (StringService.isNullOrEmpty(seite)) {
+                put("seite", "");
+            } else {
+                put("seite", esc(seite));
+                us.setItem(items.get(items.size() - 1).getId());
             }
             
             combobox_idAndLabel("items", items, us.getItem(), false, model);
@@ -62,7 +71,7 @@ public class ExportPage extends WPage {
 			put("withChapters", us.isChapters());
         }
     }
-    
+
     private List<IdAndLabel> getItems(WorkspaceSO workspace) {
         List<IdAndLabel> items = new ArrayList<>();
         if (workspace.getBooks().size() > 1) {
@@ -82,6 +91,7 @@ public class ExportPage extends WPage {
         boolean withCover = "on".equals(ctx.formParam("withCover"));
         boolean withTOC = "on".equals(ctx.formParam("withTOC"));
         boolean withChapters = "on".equals(ctx.formParam("withChapters"));
+        String seite = ctx.formParam("seite");
 
         user.saveExportSettings(item, customer, lang, format, template, withCover, withTOC, withChapters);
         
@@ -91,6 +101,9 @@ public class ExportPage extends WPage {
         			+ "&o=" + (withCover ? "c" : "") + (withTOC ? "i" : "") + (withChapters ? "k" : "");
         if ("PDF".equals(format)) {
         	q += "&w=pdf";
+        }
+        if (!StringService.isNullOrEmpty(seite)) {
+            q += "&seite=" + u(seite);
         }
 
         if (ALL.equals(item)) { // all books

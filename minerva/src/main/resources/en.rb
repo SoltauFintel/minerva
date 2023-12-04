@@ -250,3 +250,4 @@ pages=Pages
 doExport=export
 selectPageError=Please select page!
 createBookInfo=Please create a book.
+exportPage=Export this page

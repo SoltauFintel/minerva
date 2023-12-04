@@ -41,12 +41,22 @@ public class SeitenauswahlPage extends WPage {
             
             DownloadExportPage.redirectToThisPage(ctx, branch, id);
         } else {
+            String seiteId = ctx.queryParam("seite");
+
             header(n("seitenauswahl"));
             put("lang", esc(lang));
             put("customer", esc(customer));
             put("template", esc(template));
             put("o", esc(o));
             put("w", esc(w));
+            if (StringService.isNullOrEmpty(seiteId)) {
+                put("pageExportMode", false);
+            } else {
+                String pageTitle = getPageTitle(seiteId);
+                put("pageExportMode", !StringService.isNullOrEmpty(pageTitle));
+                put("pageExportId", esc(seiteId));
+                put("pageExportTitle", esc(pageTitle));
+            }
             putInt("size", 30);
             putInt("width", 700);
             put("bookPrefix", BOOK_PREFIX);
@@ -103,5 +113,15 @@ public class SeitenauswahlPage extends WPage {
                 add(seite.getSeiten(), indent + "____", lang, list); // recursive
             }
         }
+    }
+    
+    private String getPageTitle(String seiteId) {
+        for (BookSO book : workspace.getBooks()) {
+            SeiteSO seite = book._seiteById(seiteId);
+            if (seite != null) {
+                return seite.getSeite().getTitle().getString(user.getGuiLanguage());
+            }
+        }
+        return "";
     }
 }

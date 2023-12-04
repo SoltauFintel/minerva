@@ -24,11 +24,14 @@
                         <td style="width: {{width}}px;">
                             {{N.doExport}}:<br/>
                             <select id="rechts" name="rechts" size="{{size}}" style="width: 100%;" ondblclick="nachLinks()" class="form-control">
+                                {{if pageExportMode}}
+                                    <option value="{{pageExportId}}" style="font-family: 'Courier New';">{{pageExportTitle}}</option>
+                                {{/if}}
                             </select>
                         </td>
                     </tr>
                 </table>
-                <input type="hidden" id="al" name="al"/>
+                <input type="hidden" id="al" name="al"{{if pageExportMode}} value="{{pageExportId}}"{{/if}}/>
             
                 <div class="form-group mt1">
                     <div class="col-lg-5">
