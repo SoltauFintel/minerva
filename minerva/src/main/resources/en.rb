@@ -248,3 +248,4 @@ selectPage=Select page(s)
 seitenauswahl=Export: select page(s)
 pages=Pages
 doExport=export
+selectPageError=Please select page!

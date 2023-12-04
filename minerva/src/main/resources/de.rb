@@ -249,3 +249,4 @@ selectPage=Seite(n) auswählen
 seitenauswahl=Export: Seitenauswahl
 pages=Seiten
 doExport=Exportieren
+selectPageError=Bitte wählen Sie eine Seite!

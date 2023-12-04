@@ -32,7 +32,7 @@
             
                 <div class="form-group mt1">
                     <div class="col-lg-5">
-                        <button type="submit" class="btn btn-primary br" onclick="document.getElementById('s1').style='';">{{N.export}}
+                        <button type="submit" class="btn btn-primary br" onclick="return checkAuswahlliste();">{{N.export}}
                             <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
                         <a href="/w/{{branch}}/menu" class="btn btn-default">{{N.cancel}}</a>
                     </div>
@@ -77,6 +77,16 @@ function nachLinks() {
             rechts.selectedIndex = rechts.options.length - 1;
         }
         al.value = al.value.replace(',' + id, ''); 
+    }
+}
+
+function checkAuswahlliste() {
+    if (al.value != '') {
+        document.getElementById('s1').style='';
+        return true;
+    } else {
+        alert('{{N.selectPageError}}');
+        return false;
     }
 }
 </script>
