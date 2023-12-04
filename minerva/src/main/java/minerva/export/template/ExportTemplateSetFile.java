@@ -40,7 +40,7 @@ public class ExportTemplateSetFile {
 		ExportTemplateSet set = new ExportTemplateSet();
 		String fieldname = "?";
 		String value = "";
-		for (String line : data.split("\n")) {
+		for (String line : data.replace("\r\n", "\n").split("\n")) {
 			if (line.startsWith(PREFIX) && line.endsWith(POSTFIX)) {
 				if (!"?".equals(fieldname)) {
 					set(fieldname, value, set);
