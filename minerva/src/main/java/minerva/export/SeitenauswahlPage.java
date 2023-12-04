@@ -14,11 +14,15 @@ import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.workspace.WPage;
 
+/**
+ * Select and then export page(s)
+ */
 public class SeitenauswahlPage extends WPage {
     private static final String BOOK_PREFIX = "book_";
     
     @Override
     protected void execute() {
+        // params see ExportRequest!
         String lang = ctx.queryParam("lang");
         String customer = ctx.queryParam("customer");
         String template = ctx.queryParam("template");
@@ -33,9 +37,9 @@ public class SeitenauswahlPage extends WPage {
             }
             info(lang, customer, seiten);
         
-            String id = GenericExportService.getService(workspace, customer, lang, template, ctx).getSeitenExportDownloadId(seiten);
+            String id = GenericExportService.getService(new ExportRequest(workspace, ctx)).getSeitenExportDownloadId(seiten);
             
-            ctx.redirect("/w/" + esc(branch) + "/download-export/" + id + "/" + u(GenericExportService.getFilename(id)));
+            DownloadExportPage.redirectToThisPage(ctx, branch, id);
         } else {
             header(n("seitenauswahl"));
             put("lang", esc(lang));

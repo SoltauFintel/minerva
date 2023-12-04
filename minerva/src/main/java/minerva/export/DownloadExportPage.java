@@ -6,6 +6,8 @@ import java.nio.file.Files;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.spark.Context;
+import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.base.FileService;
 import minerva.base.UserMessage;
 import minerva.workspace.WPage;
@@ -52,5 +54,9 @@ public class DownloadExportPage extends WPage {
 		}
 		Logger.info("delete folder: " + file.getParentFile().getAbsolutePath());
 		FileService.deleteFolder(file.getParentFile());
+	}
+	
+	public static void redirectToThisPage(Context ctx, String branch, String id) {
+        ctx.redirect("/w/" + Escaper.esc(branch) + "/download-export/" + Escaper.esc(id) + "/" + Escaper.urlEncode(GenericExportService.getFilename(id), ""));
 	}
 }

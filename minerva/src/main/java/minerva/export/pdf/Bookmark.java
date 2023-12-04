@@ -15,8 +15,8 @@ public class Bookmark {
 		this.title = title;
 	}
 	
-	public Bookmark(SeiteSO seite, String lang, Chapter chapter) {
-		this(seite.getId(), chapter.toString() + " " + seite.getSeite().getTitle().getString(lang));
+	public Bookmark(SeiteSO seite, String lang, Chapter chapter, boolean withChapters) {
+		this(seite.getId(), (withChapters ? (chapter.toString() + " ") : "") + seite.getSeite().getTitle().getString(lang));
 	}
 
 	public String getId() {

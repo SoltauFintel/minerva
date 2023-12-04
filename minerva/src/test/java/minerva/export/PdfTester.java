@@ -23,7 +23,7 @@ public class PdfTester {
 		System.out.println(book.getSeiten().size() + ", " + book.getSeiten().get(0).getTitle());
 
 		String lang = "de";
-		PdfExportService es = new PdfExportService(book.getWorkspace(), "DLH", lang, null);
+		PdfExportService es = new PdfExportService(new ExportRequest(book.getWorkspace(), "DLH", lang, null, true, true, true, null));
 		boolean booksMode =! true;
 		if (booksMode) {
 			es.getBooksExportDownloadId(book.getWorkspace());

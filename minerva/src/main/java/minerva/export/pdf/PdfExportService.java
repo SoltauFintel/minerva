@@ -3,6 +3,7 @@ package minerva.export.pdf;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
@@ -13,6 +14,7 @@ import com.github.template72.data.DataMap;
 import minerva.base.FileService;
 import minerva.base.NLS;
 import minerva.base.StringService;
+import minerva.export.ExportRequest;
 import minerva.export.Formula2Image.TransformPath;
 import minerva.export.MultiPageHtmlExportService;
 import minerva.export.template.ExportTemplatesService;
@@ -25,14 +27,14 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	private final List<String> errorMessages = new ArrayList<>();
 	private final String pdfCss;
 	private StringBuilder sb = new StringBuilder();
-	private String imageBaseDir;
 	public File pdfFile;
 	private String bookTitle;
+    private boolean firstPage = true;
 	
-	public PdfExportService(WorkspaceSO workspace, String customer, String language, String templateId) {
-		super(workspace, customer, language, templateId);
+	public PdfExportService(ExportRequest req) {
+		super(req);
 		exclusionsService.setContext("PDF");
-		pdfCss = new ExportTemplatesService(workspace).load(templateId).getPdfStyles();
+		pdfCss = new ExportTemplatesService(req.getWorkspace()).load(req.getTemplateId()).getPdfStyles();
 		if (StringService.isNullOrEmpty(pdfCss)) {
 			Logger.warn("PDF CSS is empty!");
 		}
@@ -68,6 +70,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
 			sb = new StringBuilder();
 			cb = new Bookmark("root", "book");
 			bookmarks = cb.getBookmarks();
+			firstPage = true;
 
 			prepare(book);
 		}
@@ -75,7 +78,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
 		super.saveBookTo(book, outputFolder);
 		
 		if (booksMode) {
-			createPDF(outputFolder, true);
+			createPDF(outputFolder);
 			pdfFiles.add(pdfFile);
 		}
 	}
@@ -84,7 +87,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	public File saveBook(BookSO book) {
 		prepare(book);
 		File outputFolder = super.saveBook(book);
-		createPDF(outputFolder, true);
+		createPDF(outputFolder);
 		Logger.info("error messages: " + errorMessages.size());
 		return outputFolder;
 	}
@@ -92,25 +95,26 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	private void prepare(BookSO book) {
 		bookTitle = book.getBook().getTitle().getString(lang);
 		Logger.info("exporting book \"" + bookTitle + "\"...");
-		imageBaseDir = book.getFolder();
 	}
 
-	private void createPDF(File outputFolder, boolean withCoverAndToc) {
+	private void createPDF(File outputFolder) {
 		Logger.info("creating PDF file...");
 		pdfFile = new File(outputFolder, outputFolder.getName() + ".pdf");
         PdfWriter pdf = new PdfWriter();
-		pdf.writePDF(createFinalHtmlDocument(withCoverAndToc), true, pdfFile);
+		pdf.writePDF(createFinalHtmlDocument(), true, pdfFile);
 		errorMessages.addAll(pdf.getErrorMessages());
 	}
 	
 	@Override
 	public File saveSeiten(List<SeiteSO> seiten) {
-		prepare(seiten.get(0).getBook()); // TODO es könnten unterschiedliche Bücher sein!
-		// TODO Logger.info("just exporting page \"" + seite.getSeite().getTitle().getString(lang) + "\" of that book...");
+        bookTitle = seiten.stream()
+                .map(seite -> seite.getBook().getBook().getTitle().getString(lang))
+                .distinct()
+                .collect(Collectors.joining(", "));
 		
 		File outputFolder = super.saveSeiten(seiten);
 		
-		createPDF(outputFolder, false);
+		createPDF(outputFolder);
 		Logger.info("error messages: " + errorMessages.size());
 		return outputFolder;
 	}
@@ -134,12 +138,23 @@ public class PdfExportService extends MultiPageHtmlExportService {
 		sb.append("<div id=\"");
 		sb.append(seite.getId());
 		sb.append("\" class=\"page\"");
-		if (chapter.getLayer() == 1) {
-			sb.append(" style=\"page-break-before: always;\"");
+		if (chapter.getLayer() <= 1) { // book export: ==1, but "<=1" needed for pages export
+		    boolean pagebreak = true;
+		    if (firstPage) {
+		        firstPage = false;
+		        if (!req.withCover() && !req.withTOC()) {
+		            pagebreak = false;
+		        }
+		    }
+		    if (pagebreak) {
+		        sb.append(" style=\"page-break-before: always;\"");
+		    }
 		}
 	    sb.append(">\n  <h1 class=\"page-title\">");
-	    sb.append(chapter.toString());
-	    sb.append(" ");
+	    if (req.withChapters()) {
+    	    sb.append(chapter.toString());
+    	    sb.append(" ");
+	    }
 	    sb.append(title.replace("&", "&amp;"));
 	    sb.append("</h1>\n");
 		sb.append(html);
@@ -149,30 +164,28 @@ public class PdfExportService extends MultiPageHtmlExportService {
 	private String getHtml(SeiteSO seite, String title, File outputFolder) {
         String html = super.getBody(seite.getContent().getString(lang), title);
         String info = seite.getId() + ": \"" + title + "\"";
-        html = HtmlForPdf.processHtml(html, getDoctype(), info, imageBaseDir, errorMessages);
+        html = HtmlForPdf.processHtml(html, getDoctype(), info, seite.getBook().getFolder(), errorMessages);
         if (html != null) {
         	html = super.formulas2images(html, seite, outputFolder, title);
         }
         return html;
 	}
 
-	private String createFinalHtmlDocument(boolean withCoverAndToc) {
+	private String createFinalHtmlDocument() {
 		StringBuilder html = new StringBuilder();
         html.append(getDoctype());
 		html.append("<html><head>\n");
-		if (withCoverAndToc) {
-			// PDF TOC
-			html.append("<bookmarks>");
-			bookmarks(bookmarks, html);
-			html.append("</bookmarks>\n");
-		}
+		
+		// PDF TOC
+		html.append("<bookmarks>");
+		bookmarks(bookmarks, html);
+		html.append("</bookmarks>\n");
+		
 		html.append("<style>\n");
 		html.append(pdfCss);
         html.append("</style>\n</head>\n<body>\n");
 
-		if (withCoverAndToc) {
-	        createCoverAndToc(html);
-		}
+        createCoverAndToc(html);
 
 		// Pages
         html.append(sb.toString());
@@ -194,8 +207,8 @@ public class PdfExportService extends MultiPageHtmlExportService {
 		
 		model.put("bookTitle", bookTitle.replace("&", "&amp;"));
 		model.put("de", "de".equals(lang));
-		model.put("cover", true); // TODO
-		model.put("toc", true); // TODO
+		model.put("cover", req.withCover());
+		model.put("toc", req.withTOC());
 
 		if (bookmarks.size() == 1 && !bookmarks.get(0).getBookmarks().isEmpty()) { // typical for release notes book
 			createTocLines(bookmarks.get(0).getBookmarks(), model);

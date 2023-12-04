@@ -8,7 +8,6 @@ import java.util.Map;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.IdGenerator;
-import github.soltaufintel.amalia.spark.Context;
 import minerva.MinervaWebapp;
 import minerva.base.FileService;
 import minerva.base.NLS;
@@ -31,10 +30,10 @@ import minerva.model.WorkspaceSO;
  */
 public abstract class GenericExportService {
 	private static final Map<String, File> downloads = new HashMap<>();
-    /** language, e.g. "en" */
-    protected final String lang;
+	protected final ExportRequest req;
+	protected final String lang;
     protected final ExportTemplateSet exportTemplateSet;
-    protected ExclusionsService exclusionsService;
+    protected final ExclusionsService exclusionsService;
     protected BookSO currentBook = null;
     protected boolean booksMode = false;
     /** current parent bookmark */
@@ -42,12 +41,13 @@ public abstract class GenericExportService {
     protected List<Bookmark> bookmarks = cb.getBookmarks();
     protected boolean withSubpages = true;
 
-    public GenericExportService(WorkspaceSO workspace, String customer, String language, String templateId) {
-        lang = language;
-        exportTemplateSet = new ExportTemplatesService(workspace).load(templateId);
+    public GenericExportService(ExportRequest req) {
+        this.req = req;
+        lang = req.getLanguage();
+        exportTemplateSet = new ExportTemplatesService(req.getWorkspace()).load(req.getTemplateId());
         exclusionsService = new ExclusionsService();
-        exclusionsService.setCustomer(customer);
-        exclusionsService.setExclusions(new Exclusions(workspace.getExclusions().get()));
+        exclusionsService.setCustomer(req.getCustomer());
+        exclusionsService.setExclusions(new Exclusions(req.getWorkspace().getExclusions().get()));
     }
     
     protected String getCustomer() {
@@ -117,8 +117,16 @@ public abstract class GenericExportService {
     public File saveSeiten(List<SeiteSO> seiten) {
 		File outputFolder = getFolder(seiten.get(0).getSeite().getTitle().getString(lang));
         init(outputFolder);
-        for (SeiteSO seite : seiten) {
-            _saveSeiteTo(seite, null, Chapter.withoutChapters(), outputFolder);
+        if (req.withChapters()) {
+            Chapter chapter = new Chapter().child();
+            for (SeiteSO seite : seiten) {
+                _saveSeiteTo(seite, null, chapter, outputFolder);
+                chapter = chapter.inc();
+            }
+        } else {
+            for (SeiteSO seite : seiten) {
+                _saveSeiteTo(seite, null, Chapter.withoutChapters(), outputFolder);
+            }
         }
         return outputFolder;
     }
@@ -127,14 +135,14 @@ public abstract class GenericExportService {
         if (seite.isVisible(exclusionsService, lang).isVisible()) {
         	saveSeiteTo(seite, parent, chapter, outputFolder);
 
-        	if (withSubpages) {
-                Bookmark keep = cb; // remember
-        		keep.getBookmarks().add(cb = new Bookmark(seite, lang, chapter));
-            	
-                saveSeitenTo(seite.getSeiten(), seite, chapter, outputFolder);
-                
-                cb = keep; // restore
-        	}
+            Bookmark keep = cb; // remember
+    		keep.getBookmarks().add(cb = new Bookmark(seite, lang, chapter, req.withChapters()));
+        	
+    		if (withSubpages) {
+    		    saveSeitenTo(seite.getSeiten(), seite, chapter, outputFolder);
+    		}
+            
+            cb = keep; // restore
             return true;
         }
         return false;
@@ -150,12 +158,12 @@ public abstract class GenericExportService {
 
     protected abstract void init(File outputFolder);
 
-    public static GenericExportService getService(WorkspaceSO workspace, String customer, String language, String templateId, Context ctx) {
-        String w = ctx.queryParam("w");
+    public static GenericExportService getService(ExportRequest req) {
+        String w = req.getContext().queryParam("w");
         if ("pdf".equals(w)) {
-            return new PdfExportService(workspace, customer, language, templateId);
+            return new PdfExportService(req);
         } else { // Multi page HTML
-            return new MultiPageHtmlExportService(workspace, customer, language, templateId);
+            return new MultiPageHtmlExportService(req);
         }
     }
     

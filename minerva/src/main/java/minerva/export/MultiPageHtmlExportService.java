@@ -34,9 +34,9 @@ import minerva.seite.link.LinkService;
 public class MultiPageHtmlExportService extends GenericExportService {
     private int counter = 0;
     
-    public MultiPageHtmlExportService(WorkspaceSO workspace, String customer, String language, String templateId) {
-        super(workspace, customer, language, templateId);
-        workspace.getUser().onlyWithExportRight();
+    public MultiPageHtmlExportService(ExportRequest req) {
+        super(req);
+        req.getWorkspace().getUser().onlyWithExportRight();
 		exclusionsService.setContext("Multi-page-HTML-export");
     }
     
@@ -128,6 +128,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
         currentBook = null;
         File outputFolder = super.saveSeiten(seiten);
 
+Logger.error("index file not created!");        
 // TODO        copyPageFileAsIndexFile(seite, outputFolder);
         return outputFolder;
     }
