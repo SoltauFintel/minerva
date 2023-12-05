@@ -293,4 +293,8 @@ public class MinervaConfig {
 	public String[] getPDF_tags() {
 		return config.get("pdf-tags", "").split(","); // nicht_drucken
 	}
+	
+	public String getOldHelpKeysReaderJiraUrl() {
+	    return config.get("OldHelpKeysReader.jira-url");
+	}
 }

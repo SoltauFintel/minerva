@@ -10,8 +10,9 @@ import java.util.Map;
 
 import org.pmw.tinylog.Logger;
 
+import minerva.MinervaWebapp;
+
 public class OldHelpKeysReader {
-    private static final String jiraUrl = "http://jira01.intern.x-map.de:8090/pages/viewpage.action?pageId=";
     private boolean lastLineIsGO;
     private final List<String> block = new ArrayList<>();
     private final Map<String, List<String>> helpInfos = new HashMap<>();
@@ -62,6 +63,7 @@ public class OldHelpKeysReader {
         String enPageId = null;
         String dePageId = null;
         List<String> helpKeys = new ArrayList<>();
+        String jiraUrl = MinervaWebapp.factory().getConfig().getOldHelpKeysReaderJiraUrl();
         for (String i : block) {
             if (i.startsWith("de:")) {
                 String line = i.substring("de:".length()).trim();
