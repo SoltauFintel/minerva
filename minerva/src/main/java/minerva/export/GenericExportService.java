@@ -97,13 +97,13 @@ public abstract class GenericExportService {
         currentBook = book;
         outputFolder = new File(outputFolder, "html");
         init(outputFolder);
-        saveSeitenTo(book.getSeiten(lang), null, new Chapter(), outputFolder);
+        saveSeitenTo(book.getSeiten(lang), null, new Chapter(), /*all subpages*/ i -> i.getSeiten(), outputFolder);
     }
     
-    public void saveSeitenTo(Iterable<SeiteSO> seiten, SeiteSO parent, Chapter chapter, File outputFolder) {
+    public void saveSeitenTo(Iterable<SeiteSO> seiten, SeiteSO parent, Chapter chapter, SubpagesSelector ss, File outputFolder) {
     	chapter = chapter.child();
         for (SeiteSO seite : seiten) {
-            if (_saveSeiteTo(seite, parent, chapter, /*all subpages*/ i -> i.getSeiten(), outputFolder)) {
+            if (_saveSeiteTo(seite, parent, chapter, ss, outputFolder)) {
             	chapter = chapter.inc();
             }
         }
@@ -142,7 +142,7 @@ public abstract class GenericExportService {
             Bookmark keep = cb; // remember
     		keep.getBookmarks().add(cb = new Bookmark(seite, lang, chapter, req.withChapters()));
         	
-		    saveSeitenTo(ss.getSubpages(seite), seite, chapter, outputFolder);
+		    saveSeitenTo(ss.getSubpages(seite), seite, chapter, ss, outputFolder);
             
             cb = keep; // restore
             return true;
