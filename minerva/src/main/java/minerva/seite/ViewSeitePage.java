@@ -93,7 +93,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("editorsNoteBR", esc(seite.getEditorsNote()).replace("\n", "<br/>"));
         put("hasEditorsNote", !StringService.isNullOrEmpty(seite.getEditorsNote()));
         put("hasLeftArea", true);
-        put("leftAreaContent", tree(seiteSO.getBook().getSeiten(), user.getGuiLanguage(), seite.getId()));
+        put("leftAreaContent", tree(seiteSO.getBook().getSeiten(), user.getPageLanguage(), seite.getId()));
         header(modifyHeader(seiteSO.getTitle()));
 
         fillLinks(branch, bookFolder, id, seiteSO, seite, u.getPageLanguage());

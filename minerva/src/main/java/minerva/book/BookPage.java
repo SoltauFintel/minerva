@@ -23,7 +23,7 @@ public class BookPage extends BPage implements Uptodatecheck {
         put("header", esc(title));
         put("title", esc(title.toLowerCase().contains("buch") ? title : title + " (Buch)"));
         put("hasLeftArea", true);
-        put("leftAreaContent", ViewSeitePage.tree(book.getSeiten(), user.getGuiLanguage(), ""));
+        put("leftAreaContent", ViewSeitePage.tree(book.getSeiten(), user.getPageLanguage(), ""));
         put("positionlink", booklink + "/order");
         put("sortlink", booklink + "/sort");
         put("hasPositionlink", book.getSeiten().size() > 1);
