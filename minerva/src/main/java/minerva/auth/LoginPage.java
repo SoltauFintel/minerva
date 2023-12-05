@@ -28,7 +28,11 @@ public class LoginPage extends Page {
         } else {
             Logger.debug("LoginPage " + loginService.getClass().getSimpleName());
             put("loginError", "f".equals(ctx.queryParam("m")));
-            put("withPassword", loginService.withPassword());
+            boolean withPassword = loginService.withPassword();
+            put("withPassword", withPassword);
+            if (withPassword) {
+                ctx.redirect("/gitlab-auth");
+            }
         }
     }
     
