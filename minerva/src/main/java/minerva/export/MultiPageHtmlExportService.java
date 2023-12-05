@@ -33,6 +33,7 @@ import minerva.seite.link.LinkService;
  */
 public class MultiPageHtmlExportService extends GenericExportService {
     private int counter = 0;
+    private List<SeiteSO> validPages = null;
     
     public MultiPageHtmlExportService(ExportRequest req) {
         super(req);
@@ -126,10 +127,10 @@ public class MultiPageHtmlExportService extends GenericExportService {
     @Override
     public File saveSeiten(List<SeiteSO> seiten) {
         currentBook = null;
+        validPages = seiten;
         File outputFolder = super.saveSeiten(seiten);
 
-Logger.error("index file not created!");        
-// TODO        copyPageFileAsIndexFile(seite, outputFolder);
+        copyPageFileAsIndexFile(seiten.get(0), outputFolder);
         return outputFolder;
     }
     
@@ -202,8 +203,10 @@ Logger.error("index file not created!");
         String ret = "";
         for (SeiteSO sub : seite.getSeiten()) {
             if (sub.isVisible(exclusionsService, lang).isVisible()) {
-                ret += "<li><a href=\"" + sub.getId() + "\">" + esc(sub.getSeite().getTitle().getString(lang))
-                        + "</a></li>";
+                if (validPages == null || validPages.contains(sub)) {
+                    ret += "<li><a href=\"" + sub.getId() + "\">" + esc(sub.getSeite().getTitle().getString(lang))
+                            + "</a></li>";
+                }
             }
         }
         return ret.isEmpty() ? ret : "<div class=\"subpages\"><ul>" + ret + "</ul></div>";
@@ -236,6 +239,7 @@ Logger.error("index file not created!");
     private void navigation(SeiteSO seite, SeiteSO parent, DataMap model) {
         NavigateService nav = new NavigateService(true, lang, exclusionsService);
         nav.setSortAllowed(false);
+        nav.setValidPages(validPages);
         SeiteSO bb = nav.previousPage(seite);
         boolean b = bb != null && bb != seite;
         model.put("hasPrevLink", b);

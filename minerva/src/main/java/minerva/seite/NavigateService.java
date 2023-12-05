@@ -1,5 +1,7 @@
 package minerva.seite;
 
+import java.util.List;
+
 import minerva.MinervaWebapp;
 import minerva.exclusions.ExclusionsService;
 import minerva.model.BookSO;
@@ -12,6 +14,8 @@ public class NavigateService {
     private final ExclusionsService exclusions;
     private SeiteSO parent;
     private boolean sortAllowed = true;
+    /** null: all pages are valid */
+    private List<SeiteSO> validPages = null;
 
     /**
      * @param omitEmptyPages true: omit empty pages, false: include all pages
@@ -69,6 +73,9 @@ public class NavigateService {
         if (prev == null) {
             if (parent == null) {
                 return current;
+            }
+            if (validPages != null && !validPages.contains(parent)) {
+                return null;
             }
             return parent;
         }
@@ -134,6 +141,14 @@ public class NavigateService {
                 return false;
             }
         }
+        if (validPages != null) { // for select-pages-HTML-export
+            for (SeiteSO i : validPages) {
+                if (i.getId().equals(seite.getId())) {
+                    return true;
+                }
+            }
+            return false;
+        }
         return true;
     }
     
@@ -143,5 +158,9 @@ public class NavigateService {
     
     private SeitenSO seiten(BookSO book) {
         return sortAllowed ? book.getSeiten(lang) : book.getSeiten();
+    }
+
+    public void setValidPages(List<SeiteSO> validPages) {
+        this.validPages = validPages;
     }
 }

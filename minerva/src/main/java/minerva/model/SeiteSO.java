@@ -68,7 +68,7 @@ public class SeiteSO implements ISeite {
         this.book = book;
         this.seite = seite;
         seiten = SeitenSO.findeUnterseiten(this, alleSeiten, book);
-        notes.load();
+        notes.load(); // TODO Es gibt Anwendungsfälle bei denen die Notizen gar nicht benötigt werden.
     }
     
     /**
