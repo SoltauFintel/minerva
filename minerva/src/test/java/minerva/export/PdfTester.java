@@ -3,10 +3,13 @@ package minerva.export;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import minerva.MinervaWebapp;
 import minerva.export.pdf.PdfExportService;
 import minerva.model.BookSO;
+import minerva.model.SeiteSO;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
 import minerva.user.User;
@@ -24,13 +27,19 @@ public class PdfTester {
 
 		String lang = "de";
 		PdfExportService es = new PdfExportService(new ExportRequest(book.getWorkspace(), "DLH", lang, null, true, true, true, null));
-		boolean booksMode =! true;
+		boolean booksMode = false;
 		if (booksMode) {
 			es.getBooksExportDownloadId(book.getWorkspace());
 		} else {
+			List<SeiteSO> seiten = new ArrayList<>();
+			seiten.add(book._seiteById("32998996"));
+			seiten.add(book._seiteById("32999050"));
+				seiten.add(book._seiteById("qsusum"));
+				seiten.add(book._seiteById("t5ng5d"));
+			seiten.add(book._seiteById("84017822"));
 			File outputFolder = es.
-					saveBook(book);
-//					saveSeite(book.getSeiten().get(0));
+//					saveBook(book);
+					saveSeiten(seiten);
 			
 			System.out.println(outputFolder.getAbsolutePath());
 			if (es.pdfFile != null && es.pdfFile.isFile()) {

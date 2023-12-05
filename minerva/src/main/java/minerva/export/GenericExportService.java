@@ -13,6 +13,7 @@ import minerva.base.FileService;
 import minerva.base.NLS;
 import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
+import minerva.export.SomeSubpages.SeiteAndDone;
 import minerva.export.pdf.Bookmark;
 import minerva.export.pdf.Chapter;
 import minerva.export.pdf.PdfExportService;
@@ -39,7 +40,6 @@ public abstract class GenericExportService {
     /** current parent bookmark */
     protected Bookmark cb = new Bookmark("root", "book");
     protected List<Bookmark> bookmarks = cb.getBookmarks();
-    protected boolean withSubpages = true;
 
     public GenericExportService(ExportRequest req) {
         this.req = req;
@@ -100,47 +100,49 @@ public abstract class GenericExportService {
         saveSeitenTo(book.getSeiten(lang), null, new Chapter(), outputFolder);
     }
     
-    public void saveSeitenTo(SeitenSO seiten, SeiteSO parent, Chapter chapter, File outputFolder) {
+    public void saveSeitenTo(Iterable<SeiteSO> seiten, SeiteSO parent, Chapter chapter, File outputFolder) {
     	chapter = chapter.child();
         for (SeiteSO seite : seiten) {
-            if (_saveSeiteTo(seite, parent, chapter, outputFolder)) {
+            if (_saveSeiteTo(seite, parent, chapter, /*all subpages*/ i -> i.getSeiten(), outputFolder)) {
             	chapter = chapter.inc();
             }
         }
     }
 
     public String getSeitenExportDownloadId(List<SeiteSO> seiten) {
-        withSubpages = false;
     	return prepareDownload(saveSeiten(seiten));
     }
 
     public File saveSeiten(List<SeiteSO> seiten) {
 		File outputFolder = getFolder(seiten.get(0).getSeite().getTitle().getString(lang));
         init(outputFolder);
-        if (req.withChapters()) {
-            Chapter chapter = new Chapter().child();
-            for (SeiteSO seite : seiten) {
-                _saveSeiteTo(seite, null, chapter, outputFolder);
-                chapter = chapter.inc();
-            }
-        } else {
-            for (SeiteSO seite : seiten) {
-                _saveSeiteTo(seite, null, Chapter.withoutChapters(), outputFolder);
-            }
-        }
+        SomeSubpages subpagesSelector = new SomeSubpages(seiten);
+		if (req.withChapters()) {
+			Chapter chapter = new Chapter().child();
+			for (SeiteAndDone sd : subpagesSelector.getAllPages()) {
+				if (!sd.isDone()) {
+					_saveSeiteTo(sd.getSeite(), null, chapter, subpagesSelector, outputFolder);
+					chapter = chapter.inc();
+				}
+			}
+		} else {
+			for (SeiteAndDone sd : subpagesSelector.getAllPages()) {
+				if (!sd.isDone()) {
+					_saveSeiteTo(sd.getSeite(), null, Chapter.withoutChapters(), subpagesSelector, outputFolder);
+				}
+			}
+		}
         return outputFolder;
     }
     
-    private boolean _saveSeiteTo(SeiteSO seite, SeiteSO parent, Chapter chapter, File outputFolder) {
+    private boolean _saveSeiteTo(SeiteSO seite, SeiteSO parent, Chapter chapter, SubpagesSelector ss, File outputFolder) {
         if (seite.isVisible(exclusionsService, lang).isVisible()) {
         	saveSeiteTo(seite, parent, chapter, outputFolder);
 
             Bookmark keep = cb; // remember
     		keep.getBookmarks().add(cb = new Bookmark(seite, lang, chapter, req.withChapters()));
         	
-    		if (withSubpages) {
-    		    saveSeitenTo(seite.getSeiten(), seite, chapter, outputFolder);
-    		}
+		    saveSeitenTo(ss.getSubpages(seite), seite, chapter, outputFolder);
             
             cb = keep; // restore
             return true;
