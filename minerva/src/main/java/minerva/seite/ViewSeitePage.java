@@ -363,7 +363,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
                     break;
                 }
             }
-			ret += "<li>" + icon + "<a" + aClass + " href=\"" + seite.getLink() + "\">" + seite.getTitle() + "</a></li>\n";
+			ret += "<li><nobr>" + icon + "<a" + aClass + " href=\"" + seite.getLink() + "\">" + seite.getTitle() + "</a></nobr></li>\n";
             if (hasVisibleSubpages) {
                 ret += tree2(seite.getSubitems(), seite.getId(), seite.isExpanded()); // recursive
 			}

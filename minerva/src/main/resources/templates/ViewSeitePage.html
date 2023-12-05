@@ -93,11 +93,11 @@
         <hr/>
         {{if hasSubPages}}
             {{each L in languages}}
-                <div id="subpages_{{L.lang}}"{{if not L.active}} hidden{{/if}}>
+                <div id="subpages_{{L.lang}}" style="overflow: auto;"{{if not L.active}} hidden{{/if}}>
                     <h4>{{N.subpages}} ({{L.subpagesSize}})</h4>
                     <ul>
                         {{each s in L.subpages}}
-                            <li><a href="{{s.viewlink}}">{{s.titel}}</a></li>
+                            <li><nobr><a href="{{s.viewlink}}">{{s.titel}}</a></nobr></li>
                         {{/each}}
                     </ul>
                 </div>
@@ -105,7 +105,7 @@
         {{else}}
             <h4>{{N.subpages}} (0)</h4>
         {{/if}}
-        <p>
+        <p class="mt1">
             <a href="{{positionlink}}"
                 class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"
                 ><i class="fa fa-sort"></i> {{N.reorder}}</a>
