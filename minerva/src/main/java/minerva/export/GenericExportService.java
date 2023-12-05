@@ -153,8 +153,11 @@ public abstract class GenericExportService {
     protected abstract void saveSeiteTo(SeiteSO seite, SeiteSO parent, Chapter chapter, File outputFolder);
     
     private File getFolder(String name) {
-        File folder = new File(MinervaWebapp.factory().getWorkFolder("export"), FileService.getSafeName(name));
-        FileService.deleteFolder(folder);
+        File folder = new File(
+                MinervaWebapp.factory().getWorkFolder("export_" + IdGenerator.createId6().toUpperCase()),
+                FileService.getSafeName(name));
+        Logger.info("export work folder: " + folder.getAbsolutePath());
+        FileService.deleteFolder(folder); // ensure empty folder
         return folder;
     }
 

@@ -53,7 +53,11 @@ public class DownloadExportPage extends WPage {
 			throw new RuntimeException(e);
 		}
 		Logger.info("delete folder: " + file.getParentFile().getAbsolutePath());
-		FileService.deleteFolder(file.getParentFile());
+		if (file.getParentFile().getParentFile().getName().startsWith("export_")) {
+		    FileService.deleteFolder(file.getParentFile().getParentFile());
+		} else {
+		    FileService.deleteFolder(file.getParentFile());
+		}
 	}
 	
 	public static void redirectToThisPage(Context ctx, String branch, String id) {

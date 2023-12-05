@@ -6,6 +6,6 @@
 /workspaces/
 /*.bat
 /help-keys/
-/export/
+/export*/
 /release-notes-images/
 /formular/*.java
