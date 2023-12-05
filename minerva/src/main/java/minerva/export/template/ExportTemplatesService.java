@@ -55,6 +55,9 @@ public class ExportTemplatesService {
     }
     
     public ExportTemplateSet load(String id) {
+    	if (id == null) { // for test
+    		return createFromBuiltIn();
+    	}
 		ExportTemplateSet set = stringToObject(new MultiPurposeDirAccess(workspace.dao()).load(filename(id)));
 		if (set == null) {
 			throw new RuntimeException("Export template set doesn't exist!");
