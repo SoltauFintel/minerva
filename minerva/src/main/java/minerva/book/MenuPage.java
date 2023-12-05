@@ -30,9 +30,8 @@ public class MenuPage extends WPage {
         if (MinervaWebapp.factory().isGitlab()) {
             for (WorkspaceSO workspace : user.getWorkspaces()) {
                 DataMap map = list.add();
-                map.put("link", workspace.getBooks().isEmpty() ? "" :
-                	("/b/" + esc(workspace.getBranch()) + "/" + esc(workspace.getBooks().get(0).getBook().getFolder())));
-                map.put("link", workspace.getBooks().isEmpty() ? "" : ("/w/" + esc(workspace.getBranch()) + "/menu"));
+                
+                map.put("link", "/w/" + esc(workspace.getBranch()) + "/menu");
                 if (branch.equals(workspace.getBranch())) {
                 	map.put("text", esc(workspace.getBranch()));
                 	map.put("icon", "fa-folder-open-o currentBranchIcon");
