@@ -17,6 +17,7 @@ import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.Note;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
+import minerva.seite.TreeItem;
 import minerva.seite.link.LinkService;
 import minerva.seite.note.NoteWithSeite;
 
@@ -263,6 +264,34 @@ public class SeitenSO extends MList<SeiteSO> {
                 }
             }
             ret.addAll(seite.getSeiten().findLink(href, langs)); // recursive
+        }
+        return ret;
+    }
+    
+    public List<TreeItem> getTreeItems(String lang, String currentPageId, TreeItem parent) {
+        List<TreeItem> ret = new ArrayList<>();
+        for (SeiteSO seite : this) {
+            int hc = seite.hasContent(lang);
+            if (hc > 0) {
+                BookSO book = seite.getBook();
+                TreeItem treeItem = new TreeItem(seite.getId(),
+                        seite.getSeite().getTitle().getString(lang),
+                        hc,
+                        book.getBook().getFolder(),
+                        book.getWorkspace().getBranch(),
+                        seite.getId().equals(currentPageId),
+                        parent);
+                if (treeItem.isCurrent()) {
+                    treeItem.setExpanded(true);
+                    TreeItem p = treeItem.getParent();
+                    while (p != null) {
+                        p.setExpanded(true);
+                        p = p.getParent();
+                    }
+                }
+                ret.add(treeItem);
+                treeItem.setSubitems(seite.getSeiten().getTreeItems(lang, currentPageId, treeItem));
+            }
         }
         return ret;
     }

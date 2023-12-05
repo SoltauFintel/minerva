@@ -11,7 +11,6 @@ import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
-import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.user.User;
@@ -331,29 +330,42 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     }
 	
 	public static String tree(SeitenSO seiten, String lang, String currentSeiteId) {
-		String ret = "<ul>";
-		for (SeiteSO seite : seiten) {
-			int hc = seite.hasContent(lang);
-			if (hc <= 0) {
-				continue;
+        List<TreeItem> treeItems = seiten.getTreeItems(lang, currentSeiteId, null);
+        return tree2(treeItems, "", true);
+	}
+	
+	private static String tree2(List<TreeItem> treeItems, String id, boolean expanded) {
+		String ret = "<ul id=\"P_" + id + "\" class=\"pagetree\"";
+        if (id.isEmpty() || expanded) {
+            ret += ">";
+        } else {
+            ret += " style=\"display:none;\">";
+        }
+		for (TreeItem seite : treeItems) {
+			String aClass = "";
+			if (seite.hasContent() == 2) {
+				aClass = " class=\"noContent\"";
 			}
-			String a = "";
-			if (hc == 2) {
-				a = " class=\"noContent\"";
-			}
-			if (currentSeiteId.equals(seite.getId())) {
-				if (a.isEmpty()) {
-					a = " class=\"treeActivePage\"";
+			if (seite.isCurrent()) {
+				if (aClass.isEmpty()) {
+					aClass = " class=\"treeActivePage\"";
 				} else {
-					a = " class=\"noContent treeActivePage\"";
+					aClass = " class=\"noContent treeActivePage\"";
 				}
 			}
-			BookSO book = seite.getBook();
-			ret += "<li><a" + a + " href=\"/s/" + Escaper.esc(book.getWorkspace().getBranch()) + "/"
-					+ Escaper.esc(book.getBook().getFolder()) + "/" + Escaper.esc(seite.getId()) + "\">"
-					+ seite.getSeite().getTitle().getString(lang) + "</a></li>\n";
-			if (!seite.getSeiten().isEmpty()) { // TODO <- visible
-				ret += tree(seite.getSeiten(), lang, currentSeiteId);
+			String icon = "<i class=\"fa fa-file-o\" style=\"color: #666;\"></i> ";
+            boolean hasVisibleSubpages = false;
+            for (TreeItem subpage : seite.getSubitems()) {
+                if (subpage.hasContent() > 0) {
+                    hasVisibleSubpages = true;
+                    icon = "<a onclick=\"treeclick('P_" + seite.getId() + "')\" class=\"tci\"><i id=\"iP_" +
+                            seite.getId() + "\" class=\"fa fa-caret-right\" style=\"font-size: 15pt;\"></i></a> ";
+                    break;
+                }
+            }
+			ret += "<li>" + icon + "<a" + aClass + " href=\"" + seite.getLink() + "\">" + seite.getTitle() + "</a></li>\n";
+            if (hasVisibleSubpages) {
+                ret += tree2(seite.getSubitems(), seite.getId(), seite.isExpanded()); // recursive
 			}
 		}
 		ret += "</ul>\n";

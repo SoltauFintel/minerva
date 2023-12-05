@@ -552,3 +552,17 @@ li.subpage {
 .treeActivePage {
 	font-weight: bold;
 }
+
+ul.pagetree {
+    list-style-type: "";
+    padding-inline-start: 2em;
+    text-indent: -0.6em;
+}
+
+.tci {
+    cursor: pointer;
+}
+
+.tci:hover {
+    color: #0cc;
+}
