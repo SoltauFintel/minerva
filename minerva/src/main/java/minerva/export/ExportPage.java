@@ -51,21 +51,21 @@ public class ExportPage extends WPage {
                 us.setItem(items.get(items.size() - 1).getId());
             }
             
-            combobox_idAndLabel("items", items, us.getItem(), false, model);
-            combobox("customers", upper(customers), us.getCustomer(), false, model);
-            combobox("langs", upper(langs), us.getLang(), false, model);
+            combobox_idAndLabel("items", items, us.getItem(), false);
+            combobox("customers", upper(customers), us.getCustomer(), false);
+            combobox("langs", upper(langs), us.getLang(), false);
             
             List<String> formats = new ArrayList<>();
             formats.add(n("multiPageHtml"));
             formats.add("PDF");
-            combobox("formats", formats, us.getFormat(), false, model);
+            combobox("formats", formats, us.getFormat(), false);
             
             List<String> exportTemplateSetNames = new ExportTemplatesService(workspace).loadAll()
             		.stream().map(i -> i.getName()).collect(Collectors.toList());
             if (exportTemplateSetNames.isEmpty()) {
             	throw new UserMessage("no-export-template-sets", user);
             }
-			combobox("templates", exportTemplateSetNames, us.getTemplate(), false, model);
+			combobox("templates", exportTemplateSetNames, us.getTemplate(), false);
 			put("withCover", us.isCover());
 			put("withTOC", us.isToc());
 			put("withChapters", us.isChapters());

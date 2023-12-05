@@ -25,6 +25,6 @@ public class ActivateAdminRightsAction extends UAction {
                 user.log("-- Admin rights activated.");
             }
         }
-		ctx.redirect(ctx.req.headers("Referer")); // TODO Amalia
+		ctx.redirectToReferer();
     }
 }

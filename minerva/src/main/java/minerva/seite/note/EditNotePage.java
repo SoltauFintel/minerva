@@ -37,7 +37,7 @@ public class EditNotePage extends SPage {
             put("editAllowed", note.getUser().equals(seite.getLogin()) || isAdmin);
 			List<String> _persons = note.getPersons() == null ? note.getPersons()
 					: note.getPersons().stream().map(login -> UserAccess.login2RealName(login)).collect(Collectors.toList());
-			combobox("persons", UserAccess.getUserNames(), _persons, true, model);
+			combobox("persons", UserAccess.getUserNames(), _persons, true);
         }
     }
 }

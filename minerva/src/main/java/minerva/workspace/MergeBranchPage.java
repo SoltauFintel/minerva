@@ -44,7 +44,7 @@ public class MergeBranchPage extends UPage {
             put("branch", esc(branch));
             put("mergeInfo", esc(n("mergeInfo").replace("$t", branch)));
             String select = user.getLastSelectedBranch() == null ? branches.get(0) : user.getLastSelectedBranch();
-            combobox("sourceBranchs", branches, select, false, model);
+            combobox("sourceBranchs", branches, select, false);
             put("deleteWorkspace", true);
         }
     }

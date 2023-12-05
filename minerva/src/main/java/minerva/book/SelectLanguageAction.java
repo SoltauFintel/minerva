@@ -10,7 +10,7 @@ public class SelectLanguageAction extends WAction {
 		if ("toggle".equals(mode)) {
 			user.toggleGuiLanguage();
 			
-			ctx.redirect(ctx.req.headers("Referer"));
+			ctx.redirectToReferer();
 		} else { // set language
 	        String lang = ctx.queryParam("lang");
 			boolean pageMode = "page".equals(mode);

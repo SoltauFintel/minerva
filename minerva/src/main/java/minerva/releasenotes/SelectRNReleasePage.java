@@ -74,7 +74,7 @@ public class SelectRNReleasePage extends BPage {
 
         header(n("loadReleaseNotes") + " (" + config.getCustomer() + ")");
         put("spaceKey", esc(spaceKey));
-        combobox_idAndLabel("releases", releases, "", false, model);
+        combobox_idAndLabel("releases", releases, "", false);
     }
 
     private void importRelease(ReleaseNotesConfig config, String spaceKey, String rootTitle, String lang) {

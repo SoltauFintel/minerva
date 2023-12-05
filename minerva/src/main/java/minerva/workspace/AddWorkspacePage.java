@@ -20,7 +20,7 @@ public class AddWorkspacePage extends UPage {
                 ctx.redirect("/message?m=2"); // noBranchToAdd
             } else {
                 header(n("createWS"));
-                combobox("branchs", branchs, "", false, model);
+                combobox("branchs", branchs, "", false);
             }
         }
     }

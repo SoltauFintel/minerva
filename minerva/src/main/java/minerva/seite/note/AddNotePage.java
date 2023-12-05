@@ -34,7 +34,7 @@ public class AddNotePage extends SPage {
             }
             header(n("addNote"));
             put("parentId", parentId);
-            combobox("persons", UserAccess.getUserNames(), selectedItems, true, model);
+            combobox("persons", UserAccess.getUserNames(), selectedItems, true);
         }
     }
 

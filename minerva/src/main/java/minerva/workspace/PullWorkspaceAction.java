@@ -8,6 +8,6 @@ public class PullWorkspaceAction extends WAction {
         
         workspace.pull(force);
 
-        ctx.redirect(ctx.req.headers("Referer"));
+        ctx.redirectToReferer();
     }
 }
