@@ -57,7 +57,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         }
         
         fillTags(seite);
-        putInt("tagsSize", seiteSO.getSeite().getTags().size());
+        putSize("tagsSize", seiteSO.getSeite().getTags());
         
         put("book", bookFolder);
         put("id", id);
@@ -76,7 +76,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         if (change != null) {
             fillLastChange(seiteSO, change, esc(n("lastChangeInfo")), model);
         }
-        putInt("helpKeysSize", seite.getHelpKeys().size());
+        putSize("helpKeysSize", seite.getHelpKeys());
         String oneHelpKey = getOneHelpKey(seite.getHelpKeys());
         put("oneHelpKey", esc(oneHelpKey));
         put("hasOneHelpKey", !oneHelpKey.isEmpty());

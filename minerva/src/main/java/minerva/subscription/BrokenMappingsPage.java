@@ -26,7 +26,7 @@ public class BrokenMappingsPage extends WPage {
 			map.put("bookFolder", esc(bm.getSeite().getBook().getBook().getFolder()));
 			map.put("key", esc(bm.getKey()));
 		}
-		putInt("n", brokenMappings.size());
+		putSize("n", brokenMappings);
 		put("empty", brokenMappings.isEmpty());
 		header("Broken Mappings");
 	}

@@ -31,7 +31,7 @@ public class ValidationPage extends BPage {
                         map2.put("text", text);
                         nMessages++;
                     }
-                    map.putInt("n", msg.size());
+                    map.putSize("n", msg);
                     nPages++;
                 }
             }

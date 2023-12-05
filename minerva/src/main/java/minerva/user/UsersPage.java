@@ -25,6 +25,6 @@ public class UsersPage extends UPage {
             map.put("mailAddress", esc(u.getMailAddress()));
             map.put("exportAllowed", u.isExportAllowed());
         });
-        putInt("n", list.size());
+        putSize("n", list);
     }
 }

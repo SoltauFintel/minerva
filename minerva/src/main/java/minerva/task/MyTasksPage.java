@@ -24,7 +24,7 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
         header(n("myTasks"));
         put("login", esc(UserAccess.login2RealName(StringService.isNullOrEmpty(login) ? user.getLogin() : login)));
 		fill(tasks, branch, model, user.getLogin());
-        model.putInt("n", tasks.size());
+        model.putSize("n", tasks);
     }
     
     private void fill(List<Task> tasks, String branch, DataMap model, String login) {

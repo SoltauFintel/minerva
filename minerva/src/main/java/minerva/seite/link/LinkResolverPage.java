@@ -62,7 +62,7 @@ public class LinkResolverPage extends SPage {
         put("aTitle", link == null ? "" : esc(link.getTitle()));
         putInt("nextIndex", index + 1);
         putInt("index", index);
-        putInt("size", linksModel.getLinks().size());
+        putSize("size", linksModel.getLinks());
         put("result0", makeSearchHTML());
     }
 

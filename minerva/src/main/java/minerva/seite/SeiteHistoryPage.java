@@ -47,6 +47,6 @@ public class SeiteHistoryPage extends SPage {
             map.put("message", Escaper.esc(commit.getMessage()));
         }
         model.put("authors", Escaper.esc(authors.stream().collect(Collectors.joining(", "))));
-        model.putInt("n", commits.size());
+        model.putSize("n", commits);
     }
 }

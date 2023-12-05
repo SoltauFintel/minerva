@@ -38,7 +38,7 @@ public class TagWPage extends WPage {
                 map2.put("link", "/w/" + branch + "/tag/" + esc(tagx));
             });
         }
-        putInt("anzahl", seiten.size());
+        putSize("anzahl", seiten);
         header(tag + " (tag)");
     }
 }

@@ -19,7 +19,7 @@ public class AllHelpKeysPage extends UPage {
             fill(book, branch, list);
         }
         list.sort((a, b) -> a.getValue("helpKey").toString().compareToIgnoreCase(b.getValue("helpKey").toString()));
-        putInt("n", list.size());
+        putSize("n", list);
         header(n("allHelpKeys"));
     }
     
