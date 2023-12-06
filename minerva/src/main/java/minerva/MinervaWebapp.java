@@ -6,6 +6,7 @@ import github.soltaufintel.amalia.web.WebApp;
 import github.soltaufintel.amalia.web.builder.LoggingInitializer;
 import github.soltaufintel.amalia.web.builder.WebAppBuilder;
 import github.soltaufintel.amalia.web.config.AppConfig;
+import github.soltaufintel.amalia.web.route.PingRouteDefinition.PingAction;
 import github.soltaufintel.amalia.web.route.RouteDefinitions;
 import minerva.auth.ActivateAdminRightsAction;
 import minerva.auth.Book6LoginAction;
@@ -252,6 +253,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/serverlog", ServerlogPage.class);
         form("/branch/:branch", CreateBranchPage.class);
         form("/merge/:branch", MergeBranchPage.class);
+        get("/rest/ping", PingAction.class);
     }
 
     private void restApi() {
