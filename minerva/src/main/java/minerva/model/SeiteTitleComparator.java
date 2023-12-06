@@ -2,6 +2,8 @@ package minerva.model;
 
 import java.util.Comparator;
 
+import minerva.base.Version;
+
 public class SeiteTitleComparator implements Comparator<SeiteSO> {
     private final boolean reversedOrder;
     private String language;
@@ -12,13 +14,20 @@ public class SeiteTitleComparator implements Comparator<SeiteSO> {
 
     @Override
     public int compare(SeiteSO a, SeiteSO b) {
-        int ret;
+        String aa, bb;
         if (language == null) {
             // sort by current user language
-            ret = a.getSortTitle().compareTo(b.getSortTitle());
+            aa = a.getSortTitle();
+            bb = b.getSortTitle();
         } else {
-            ret = a.getSortTitle(language).compareTo(b.getSortTitle(language));
+            aa = a.getSortTitle(language);
+            bb = b.getSortTitle(language);
         }
+        if (reversedOrder) {
+            aa = Version.version.version(aa);
+            bb = Version.version.version(bb);
+        }
+        int ret = aa.compareTo(bb);
         if (reversedOrder) {
             ret *= -1;
         }
