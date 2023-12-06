@@ -23,8 +23,11 @@ a.small:hover {
             <p><b style="font-size: 13pt;">{{c.user}}</b>
                 {{each p in c.pages}}
                     <br/><i class="fa fa-file-text" style="color: rgb(0,101,255); margin-left: 1em;"></i> <a href="{{p.link}}">{{p.pageTitle}}</a>
+                    {{if p.hasCommitMessage}}
+                        <br/><span style="margin-left: 2.3em;">"{{p.commitMessage}}"</span>
+                    {{/if}}
                     <br/><span class="small" style="margin-left: 3em;">{{p.date}}</span>
-                    <a href="{{p.commitlink}}" target="_blank" class="small" style="">commit</a>
+                         <a href="{{p.commitlink}}" target="_blank" class="small">Änderung anzeigen</a>
                 {{/each}}
             </p>
         {{/each}}

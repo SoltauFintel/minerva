@@ -114,7 +114,18 @@ public class WorkspaceHistoryPage extends WPage implements Uptodatecheck {
 
     private void add(ICommit commit, SeiteSO seite, String link, String url, DataMap map) {
         map.put("commitlink", esc(url.replace("{t}", commit.getHash())));
-        map.put("pageTitle", esc(seite.getTitle()));
+        String title = seite.getTitle();
+        String m = commit.getMessage();
+        String t = title + ": ";
+        if (m.startsWith(t)) {
+            m = m.substring(t.length());
+        }
+        if (m.equals(title)) {
+            m = "";
+        }
+        map.put("commitMessage", esc(m));
+        map.putHas("commitMessage", esc(m));
+        map.put("pageTitle", esc(title));
         map.put("date", esc(commit.getCommitDateTime()));
         map.put("link", link);
     }
