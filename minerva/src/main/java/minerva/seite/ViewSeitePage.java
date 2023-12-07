@@ -11,6 +11,7 @@ import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
+import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.user.User;
@@ -29,6 +30,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             throw new RuntimeException("Illegal page ID");
         }
         if (seite == null) {
+            if (foundInOtherBook()) return;
             Logger.error("Page not found: " + id);
             render = false;
             ctx.redirect("/message?m=1");
@@ -36,7 +38,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         }
         execute2(branch, bookFolder, id, seite);
     }
-    
+
     protected void execute2(String branch, String bookFolder, String id, SeiteSO seiteSO) {
         User u = user.getFreshUser();
         seiteSO.forceReloadIfCheap();
@@ -374,4 +376,20 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
 		ret += "</ul>\n";
 		return ret;
 	}
+    
+    private boolean foundInOtherBook() {
+        for (BookSO book : workspace.getBooks()) {
+            if (!book.getBook().getFolder().equals(bookFolder)) {
+                SeiteSO s = book._seiteById(id);
+                if (s != null) {
+                    String url = "/s/" + esc(branch) + "/" + esc(book.getBook().getFolder()) + "/" + esc(id);
+                    Logger.warn(ctx.path() + ": page does not exist. Found page in another book. Redirecting to: " + url);
+                    render = false;
+                    ctx.redirect(url);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
