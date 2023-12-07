@@ -10,6 +10,7 @@ import org.pmw.tinylog.Logger;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.base.MinervaPageInitializer;
 import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
@@ -51,7 +52,6 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
                 continue;
             }
             DataMap map = list.add();
-            map.put("id", task.getId());
             map.put("me", task.getLogin().equals(login));
             map.put("user", esc(UserAccess.login2RealName(task.getLogin())));
             map.put("date", esc(task.getDateTime()));
@@ -65,16 +65,20 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
             }
             map.put("completeText", makeClickableLinks(esc(text)));
             map.put("link", task.getLink());
-            map.put("priolink", "/w/" + esc(branch) + "/my-tasks/" + esc(task.getId()));
             map.put("parentLink", task.getParentLink());
             map.put("parentTitle", esc(task.getParentTitle()));
             map.put("viewTask", esc(n("viewTask").replace("$t", task.getTypeName())));
             map.put("color", esc(task.getColor()));
             TaskPriority taskPrio = user.getTaskPriority(task.getId());
-            map.put("prio", taskPrio.name());
-            map.put("prio1", TaskPriority.TOP.equals(taskPrio));
-            map.put("prio2", TaskPriority.NORMAL.equals(taskPrio));
-            map.put("prio3", TaskPriority.HIDE.equals(taskPrio));
+            fillTask(task.getId(), branch, taskPrio, map);
         }
+    }
+    
+    public static void fillTask(String id, String branch, TaskPriority taskPrio, DataMap map) {
+        map.put("id", Escaper.esc(id));
+        map.put("priolink", "/w/" + Escaper.esc(branch) + "/my-tasks/" + Escaper.esc(id));
+        map.put("prio1", TaskPriority.TOP.equals(taskPrio));
+        map.put("prio2", TaskPriority.NORMAL.equals(taskPrio));
+        map.put("prio3", TaskPriority.HIDE.equals(taskPrio));
     }
 }

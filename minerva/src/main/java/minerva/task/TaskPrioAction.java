@@ -2,19 +2,30 @@ package minerva.task;
 
 import org.pmw.tinylog.Logger;
 
+import com.github.template72.data.DataMap;
+
+import github.soltaufintel.amalia.web.action.Page;
 import minerva.workspace.WAction;
 
 public class TaskPrioAction extends WAction {
-
+    private String html;
+    
     @Override
     protected void execute() {
         String id = ctx.pathParam("id");
-        TaskPriority p = TaskPriority.valueOf(ctx.queryParam("p").toUpperCase());
+        TaskPriority taskPrio = TaskPriority.valueOf(ctx.queryParam("p").toUpperCase());
         
-        Logger.info("Task Prio: " + id + ", " + p.name());
+        Logger.debug("task prio for " + id + ": " + taskPrio.name());
 
-        user.setTaskPriority(id, p);
+        user.setTaskPriority(id, taskPrio);
         
-        ctx.redirect("/w/" + esc(branch) + "/my-tasks");
+        DataMap model = new DataMap();
+        MyTasksPage.fillTask(id, branch, taskPrio, model.createObject("n"));
+        html = Page.templates.render("taskbuttons2", model);
+    }
+    
+    @Override
+    protected String render() {
+        return html;
     }
 }
