@@ -12,6 +12,6 @@ public class LogoutAction extends Action {
         } catch (SessionExpiredException ignore) {
         }
         
-        ctx.redirect("/");
+        ctx.redirect("/logged-out");
     }
 }

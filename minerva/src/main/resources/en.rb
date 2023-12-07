@@ -251,3 +251,5 @@ doExport=export
 selectPageError=Please select page!
 createBookInfo=Please create a book.
 exportPage=Export this page
+loggedOut=You are logged out.
+relogin=Log in again

@@ -11,6 +11,7 @@ import github.soltaufintel.amalia.web.route.RouteDefinitions;
 import minerva.auth.ActivateAdminRightsAction;
 import minerva.auth.Book6LoginAction;
 import minerva.auth.Book6StartAction;
+import minerva.auth.LoggedOutPage;
 import minerva.auth.Login2Page;
 import minerva.auth.MinervaAuth;
 import minerva.base.MathPage;
@@ -246,6 +247,8 @@ public class MinervaWebapp extends RouteDefinitions {
     }
 
     private void misc() {
+        get("/logged-out", LoggedOutPage.class);
+        addNotProtected("/logged-out");
         get("/message", MessagePage.class);
         addNotProtected("/message");
         get("/migration/:branch", MigrationPage.class);
