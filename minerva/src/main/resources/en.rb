@@ -253,3 +253,4 @@ createBookInfo=Please create a book.
 exportPage=Export this page
 loggedOut=You are logged out.
 relogin=Log in again
+editHTML=Edit HTML

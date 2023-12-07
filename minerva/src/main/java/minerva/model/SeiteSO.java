@@ -445,7 +445,11 @@ public class SeiteSO implements ISeite {
     }
 
     public void saveHtmlTo(Map<String,String> files, List<String> langs) {
-        langs.forEach(lang -> files.put(filenameHtml(lang), StringService.prettyHTML(content.getString(lang))));
+        langs.forEach(lang -> {
+            String html = StringService.prettyHTML(content.getString(lang));
+            content.setString(lang, html); // write it back - important for HTML editing mode
+            files.put(filenameHtml(lang), html);
+        });
     }
 
     // similar method in BookSO

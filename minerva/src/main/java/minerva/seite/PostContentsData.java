@@ -2,7 +2,7 @@ package minerva.seite;
 
 import minerva.base.NlsString;
 
-public class PostContentsData {
+public class PostContentsData implements IPostContentsData {
     private final String branch;
     private final String bookFolder;
     /** Seite ID */
@@ -35,6 +35,7 @@ public class PostContentsData {
         return version;
     }
 
+    @Override
     public NlsString getContent() {
         return content;
     }
@@ -51,6 +52,7 @@ public class PostContentsData {
         return done;
     }
 
+    @Override
     public void setDone(boolean done) {
         this.done = done;
     }

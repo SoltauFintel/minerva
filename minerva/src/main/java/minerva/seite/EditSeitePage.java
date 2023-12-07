@@ -13,7 +13,7 @@ public class EditSeitePage extends ViewSeitePage {
     @Override
     protected void execute2(String branch, String bookFolder, String id, SeiteSO seiteSO) {
         if (isPOST()) {
-            Logger.info(user.getLogin() + " | " + branch + " | saving page #" + id + " ...");
+            Logger.info(user.getLogin() + " | " + branch + " | saving page #" + id + " \"" + seiteSO.getTitle() + "\" ..." + saveinfo());
             save(branch, bookFolder, id, seiteSO);
             workspace.onEditing(seite, true); // editing finished
         } else { // edit
@@ -32,6 +32,10 @@ public class EditSeitePage extends ViewSeitePage {
         }
     }
     
+    protected String saveinfo() {
+        return "";
+    }
+    
     @Override
     protected String modifyHeader(String header) {
         return "edit: " + header;
@@ -40,19 +44,14 @@ public class EditSeitePage extends ViewSeitePage {
     private void save(String branch, String bookFolder, String id, SeiteSO seiteSO) {
         long start = System.currentTimeMillis();
         int version = Integer.parseInt(ctx.formParam("version"));
-        String comment = ctx.formParam("comment");
-        if (comment == null) {
-            comment = "";
-        } else {
-            comment = comment.trim();
-        }
+        String comment = getComment();
         NlsString title = new NlsString();
         for (String lang : langs) {
             String LANG = lang.toUpperCase();
             title.setString(lang, ctx.formParam("titel" + LANG).trim());
         }
         
-        PostContentsData data = waitForContent(branch, bookFolder, id, version);
+        IPostContentsData data = waitForContent(branch, bookFolder, id, version);
         
         seiteSO.saveAll(title, data.getContent(), version, comment, langs, start);
         data.setDone(true);
@@ -70,7 +69,17 @@ public class EditSeitePage extends ViewSeitePage {
         }
     }
 
-    private PostContentsData waitForContent(String branch, String bookFolder, String id, int version) {
+    protected String getComment() {
+        String comment = ctx.formParam("comment");
+        if (comment == null) {
+            comment = "";
+        } else {
+            comment = comment.trim();
+        }
+        return comment;
+    }
+
+    protected IPostContentsData waitForContent(String branch, String bookFolder, String id, int version) {
         PostContentsData data = null;
         long start = System.currentTimeMillis();
         long max = 1000 * 60 * 5;

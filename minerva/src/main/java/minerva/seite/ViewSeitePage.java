@@ -302,6 +302,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     	additionalMenuItems(i);
 		menuitem(i, "", "", "-");
 		
+		if (isAdmin) {
+		    menuitem(i, viewlink + "/html", "fa-code", n("editHTML"));
+		}
     	menuitem(i, "/w/" + esc(branch) + "/export?seite=" + u(seite.getId()), "fa-upload", n("exportPage"));
     	menuitem(i, model.get("movelink").toString(), "fa-arrow-circle-right", n("movePage"));
     	menuitem(i, model.get("deletelink").toString(), "fa-trash", n("deletePage") + "...");

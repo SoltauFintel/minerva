@@ -254,3 +254,4 @@ createBookInfo=Bitte erstellen Sie ein Buch.
 exportPage=Seite exportieren
 loggedOut=Sie sind abgemeldet.
 relogin=Wieder anmelden
+editHTML=HTML bearbeiten

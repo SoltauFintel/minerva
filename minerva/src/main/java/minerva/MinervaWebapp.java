@@ -59,6 +59,7 @@ import minerva.seite.AddSeiteAction;
 import minerva.seite.AllHelpKeysPage;
 import minerva.seite.CancelEditingAction;
 import minerva.seite.DeleteSeitePage;
+import minerva.seite.EditHtmlPage;
 import minerva.seite.EditSeitePage;
 import minerva.seite.HelpKeysPage;
 import minerva.seite.LockedByPage;
@@ -177,6 +178,7 @@ public class MinervaWebapp extends RouteDefinitions {
     private void page() {
         get("/s/:branch/:book/:id", ViewSeitePage.class);
         form("/s-edit/:branch/:book/:id", EditSeitePage.class); // Wegen den Images hänge ich hier nicht "/edit" hinten dran, sondern ändere den 1. Pfadteil auf "s-edit".
+        form("/s/:branch/:book/:id/html", EditHtmlPage.class);
         post("/s/:branch/:book/:id/post-contents", PostContentsAction.class);
         get("/s/:branch/:book/:id/cancel", CancelEditingAction.class);
         get("/s/:branch/:book/:id/locked", LockedByPage.class);
