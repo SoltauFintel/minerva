@@ -93,6 +93,32 @@ public class StringService {
 		return text;
 	}
     
+    /**
+     * Limit text to maxlen, but to do not cut text within link "(...)[...]"
+     */
+    public static String cutOutsideLinks(String text, int maxlen) {
+        if (text == null || maxlen < 1 || text.length() < maxlen) {
+            return text;
+        }
+        String ret = "";
+        boolean inside = false;
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (c == '(') {
+                int o = text.indexOf(")[", i);
+                inside = o > i && text.indexOf("]", i) > o;
+            }
+            ret += c;
+            if (i >= maxlen && !inside) {
+                return ret;
+            }
+            if (inside && c == ']') {
+                inside = false;
+            }
+        }
+        return ret;
+    }
+    
     public static String now() {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }

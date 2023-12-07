@@ -1,5 +1,8 @@
 package minerva.task;
 
+import static minerva.base.StringService.cutOutsideLinks;
+import static minerva.base.StringService.makeClickableLinks;
+
 import java.util.List;
 
 import org.pmw.tinylog.Logger;
@@ -44,13 +47,13 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
             map.put("date", esc(task.getDateTime()));
             String text = task.getText();
             if (text.length() > 113) {
-                map.put("text1", StringService.makeClickableLinks(esc(text.substring(0, 110))));
+                map.put("text1", makeClickableLinks(esc(cutOutsideLinks(text, 110))));
                 map.put("hasMoreText", true);
             } else {
-                map.put("text1", StringService.makeClickableLinks(esc(text)));
+                map.put("text1", makeClickableLinks(esc(text)));
                 map.put("hasMoreText", false);
             }
-            map.put("completeText", StringService.makeClickableLinks(esc(text)));
+            map.put("completeText", makeClickableLinks(esc(text)));
             map.put("link", task.getLink());
             map.put("parentLink", task.getParentLink());
             map.put("parentTitle", esc(task.getParentTitle()));
