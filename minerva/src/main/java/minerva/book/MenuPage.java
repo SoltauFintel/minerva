@@ -15,6 +15,7 @@ import minerva.user.UserAccess;
 import minerva.workspace.WPage;
 
 public class MenuPage extends WPage {
+    private int counter = 0;
 
 	@Override
 	protected void execute() {
@@ -71,8 +72,8 @@ public class MenuPage extends WPage {
 
 	private void workspace(DataList list) {
 		if (MinervaWebapp.factory().isGitlab()) {
-			menu(list, "pullWS", "fa-refresh", "/w/:branch/pull");
-			menu(list, "cloneWS", "fa-refresh red", "/w/:branch/pull?force=1");
+			menu(list, "pullWS", "fa-refresh", "/w/:branch/pull", true);
+			menu(list, "cloneWS", "fa-refresh red", "/w/:branch/pull?force=1", true);
 			menu(list, "createWS", "fa-folder", "/create-workspace");
 			menu(list, "deleteWS", "fa-trash-o red", "/w/:branch/delete");
 			menu(list, "createBranch", "fa-code-fork", "/branch/:branch");
@@ -138,11 +139,17 @@ public class MenuPage extends WPage {
 	}
 	
     protected void menu(DataList list, String text, String icon, String link) {
-    	DataMap map = list.add();
-    	map.put("text", esc(n(text)));
-    	map.put("icon", esc(icon));
-    	map.put("link", esc(link.replace(":branch", esc(branch))));
-    	map.put("sep", "-".equals(text));
+    	menu(list, text, icon, link, false);
+    }
+
+    protected void menu(DataList list, String text, String icon, String link, boolean waitDisplay) {
+        DataMap map = list.add();
+        map.put("id", "i" + counter++);
+        map.put("text", esc(n(text)));
+        map.put("icon", esc(icon));
+        map.put("link", esc(link.replace(":branch", esc(branch))));
+        map.put("sep", "-".equals(text));
+        map.put("spin", waitDisplay);
     }
 
     private boolean isMigrationAllowed() {

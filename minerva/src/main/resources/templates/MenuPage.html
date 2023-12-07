@@ -5,56 +5,6 @@ h2 {
 	margin-top: 2em;
 }
 
-.bs-glyphicons {
-	margin: 0 -10px 20px;
-	overflow: hidden
-}
-
-.bs-glyphicons-list {
-	padding-left: 0;
-	list-style: none
-}
-
-.bs-glyphicons li {
-	float: left;
-	width: 25%;
-	height: 115px;
-	padding: 10px;
-	font-size: 10px;
-	line-height: 1.4;
-	text-align: center;
-	background-color: #f9f9f9;
-	border: 1px solid #fff
-}
-
-.bs-glyphicons .glyphicon {
-	margin-top: 5px;
-	margin-bottom: 10px;
-	font-size: 40px;
-}
-
-.bs-glyphicons .glyphicon-class {
-	display: block;
-	text-align: center;
-	word-wrap: break-word
-}
-
-.bs-glyphicons li:hover {
-	color: #fff;
-	background-color: #563d7c
-}
-
-@media ( min-width :768px) {
-	.bs-glyphicons {
-		margin-right: 0;
-		margin-left: 0
-	}
-	.bs-glyphicons li {
-		width: 12.5%;
-		font-size: 12px
-	}
-}
-
 .red {
 	color: #800;
 }
@@ -91,8 +41,8 @@ h2 {
 		<div class="bs-glyphicons">
 			<ul class="bs-glyphicons-list">
 				{{each c in commands}}
-					<li style="cursor: pointer;" onclick="location.href='{{c.link}}';">
-						<span class="glyphicon fa {{c.icon}} fa-fw"></span> <span
+					<li style="cursor: pointer;" onclick="{{if c.spin}}document.getElementById('{{c.id}}').classList.add('fa-spin'); {{/if}}location.href='{{c.link}}';">
+						<span id="{{c.id}}" class="glyphicon fa {{c.icon}} fa-fw"></span> <span
 							class="glypicon-class"><br />{{c.text}}</span>
 					</li>
 				{{/each}}
