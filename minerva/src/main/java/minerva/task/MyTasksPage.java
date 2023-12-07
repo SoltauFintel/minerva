@@ -35,6 +35,7 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
 		fill(tasks, branch, model, user.getLogin());
         putSize("n", tasks);
         put("hasTasks", !tasks.isEmpty());
+        put("showTaskButtons", me);
     }
     
     private void fill(List<Task> tasks, String branch, DataMap model, String login) {

@@ -1,6 +1,8 @@
 <br/>
 <a href="{{n.link}}" class="btn btn-primary btn-sm br">{{n.viewTask}}</a>
 
-<a href="{{n.priolink}}?p=top" class="btn {{if n.prio1}}btn-success{{else}}btn-default{{/if}} btn-sm" title="hohe Prio = oben anzeigen"><i class="fa fa-arrow-up"></i></a>
-<a href="{{n.priolink}}?p=normal" class="btn {{if n.prio2}}btn-success{{else}}btn-default{{/if}} btn-sm" title="normale Prio"><i class="fa fa-arrow-right"></i></a>
-<a href="{{n.priolink}}?p=hide" class="btn {{if n.prio3}}btn-success{{else}}btn-default{{/if}} btn-sm" title="ausblenden"><i class="fa fa-arrow-down"></i></a>
+{{if showTaskButtons}}
+    <a href="{{n.priolink}}?p=top" class="btn {{if n.prio1}}btn-success{{else}}btn-default{{/if}} btn-sm" title="hohe Prio = oben anzeigen"><i class="fa fa-arrow-up"></i></a>
+    <a href="{{n.priolink}}?p=normal" class="btn {{if n.prio2}}btn-success{{else}}btn-default{{/if}} btn-sm" title="normale Prio"><i class="fa fa-arrow-right"></i></a>
+    <a href="{{n.priolink}}?p=hide" class="btn {{if n.prio3}}btn-success{{else}}btn-default{{/if}} btn-sm" title="ausblenden"><i class="fa fa-arrow-down"></i></a>
+{{/if}}
