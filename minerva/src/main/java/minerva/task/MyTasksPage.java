@@ -7,6 +7,7 @@ import org.pmw.tinylog.Logger;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import minerva.base.MinervaPageInitializer;
 import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
 import minerva.user.UserAccess;
@@ -20,11 +21,16 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
 		Logger.info(user.getLogin() + " | " + (login == null || user.getLogin().equals(login) ? "My tasks" : "All tasks for " + login));
         
         List<Task> tasks = new TaskService().getTasks(user, branch, login);
+        if ("master".equals(branch)) {
+            TaskService.openMasterTasks = tasks.size();
+            MinervaPageInitializer.updateOpenMasterTasks(this);
+        }
         
         header(n("myTasks"));
         put("login", esc(UserAccess.login2RealName(StringService.isNullOrEmpty(login) ? user.getLogin() : login)));
 		fill(tasks, branch, model, user.getLogin());
-        model.putSize("n", tasks);
+        putSize("n", tasks);
+        put("hasTasks", !tasks.isEmpty());
     }
     
     private void fill(List<Task> tasks, String branch, DataMap model, String login) {

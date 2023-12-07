@@ -7,6 +7,7 @@ import minerva.model.UserSO;
 
 public class TaskService {
 	public static List<TasksSupplier> tasksSuppliers = new ArrayList<>();
+	public static int openMasterTasks = 0;
 	
 	static {
 		tasksSuppliers.add(new NotesSupplier());
@@ -19,5 +20,17 @@ public class TaskService {
         }
         tasks.sort((a, b) -> b.getDateTime().compareTo(a.getDateTime()));
         return tasks;
+	}
+	
+	public int getNumberOfTasks(UserSO user) {
+	    int n = 0;
+        for (TasksSupplier tasksSupplier : tasksSuppliers) {
+            n += tasksSupplier.getTasks(user, "master", null).size();
+        }
+        return n;
+	}
+	
+	public static void update(UserSO user) {
+	    openMasterTasks = new TaskService().getNumberOfTasks(user);
 	}
 }

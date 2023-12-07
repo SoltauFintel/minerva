@@ -14,6 +14,7 @@ import minerva.config.MinervaConfig;
 import minerva.config.MinervaFactory;
 import minerva.persistence.filesystem.FileSystemDirAccess;
 import minerva.seite.tag.TagNList;
+import minerva.task.TaskService;
 
 public class WorkspaceSO {
     private final UserSO user;
@@ -58,6 +59,9 @@ public class WorkspaceSO {
                 ok = Boolean.TRUE;
                 books = new BooksSO(this);
                 info("$l | $b | User accesses workspace for the first time. Books: $n");
+                if ("master".equals(branch)) {
+                    TaskService.update(user);
+                }
             } catch (Exception e) {
                 userMessage = e.getMessage();
                 if (Boolean.FALSE.equals(ok)) {

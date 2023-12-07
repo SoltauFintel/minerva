@@ -12,6 +12,7 @@ import minerva.MinervaWebapp;
 import minerva.config.MinervaConfig;
 import minerva.model.BookSO;
 import minerva.model.BooksSO;
+import minerva.task.TaskService;
 import minerva.user.UserAccess;
 
 public class MinervaPageInitializer extends PageInitializer {
@@ -80,6 +81,7 @@ public class MinervaPageInitializer extends PageInitializer {
         if (m.hasUser()) {
             hasUserVars(page, m);
         }
+        updateOpenMasterTasks(page);
         
 //        DataList list = page.list("menus");
 //		String b = esc(m.getBranch());
@@ -101,6 +103,11 @@ public class MinervaPageInitializer extends PageInitializer {
 //    	map.put("link", esc(link.replace(":branch", branch)));
 //    	map.put("sep", "-".equals(text));
 //    }
+    
+    public static void updateOpenMasterTasks(Page page) {
+        page.put("hasOpenMasterTasks", TaskService.openMasterTasks > 0);
+        page.putInt("numberOfOpenMasterTasks", TaskService.openMasterTasks);
+    }
 
     private void booksForMenu(boolean hasUser, String userLang, BooksSO books, Page page) {
         DataList list = page.list("booksForMenu");

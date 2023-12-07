@@ -4,7 +4,7 @@
     <div class="col-lg-12">
         <h1 class="page-header">{{header}}</h1>
 
-        <p>Branch: {{branch}} | {{N.user}}: {{login}} | {{N.anzahl}}: {{n}}</p>
+        <p>Branch: {{branch}} | {{N.user}}: {{login}} | {{N.anzahl}}: <span class="label {{if hasTasks}}label-danger{{else}}label-success{{/if}}">{{n}}</span></p>
 
         {{each n in tasks}}
             <div class="mt2" style="border-top: 1pt #ccc solid;">
