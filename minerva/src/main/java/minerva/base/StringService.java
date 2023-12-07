@@ -97,6 +97,7 @@ public class StringService {
      * Limit text to maxlen, but to do not cut text within link "(...)[...]"
      */
     public static String cutOutsideLinks(String text, int maxlen) {
+        // TODO man sollte auch http:.... Links unterstützen
         if (text == null || maxlen < 1 || text.length() < maxlen) {
             return text;
         }
