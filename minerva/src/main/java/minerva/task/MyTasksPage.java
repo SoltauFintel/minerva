@@ -39,7 +39,16 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
     
     private void fill(List<Task> tasks, String branch, DataMap model, String login) {
         DataList list = model.list("tasks");
+        fill2(tasks, branch, login, TaskPriority.TOP, list);
+        fill2(tasks, branch, login, TaskPriority.NORMAL, list);
+        fill2(tasks, branch, login, TaskPriority.HIDE, list);
+    }
+
+    private void fill2(List<Task> tasks, String branch, String login, TaskPriority showOnlyPrio, DataList list) {
         for (Task task : tasks) {
+            if (!user.getTaskPriority(task.getId()).equals(showOnlyPrio)) {
+                continue;
+            }
             DataMap map = list.add();
             map.put("id", task.getId());
             map.put("me", task.getLogin().equals(login));
@@ -55,10 +64,16 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
             }
             map.put("completeText", makeClickableLinks(esc(text)));
             map.put("link", task.getLink());
+            map.put("priolink", "/w/" + esc(branch) + "/my-tasks/" + esc(task.getId()));
             map.put("parentLink", task.getParentLink());
             map.put("parentTitle", esc(task.getParentTitle()));
             map.put("viewTask", esc(n("viewTask").replace("$t", task.getTypeName())));
             map.put("color", esc(task.getColor()));
+            TaskPriority taskPrio = user.getTaskPriority(task.getId());
+            map.put("prio", taskPrio.name());
+            map.put("prio1", TaskPriority.TOP.equals(taskPrio));
+            map.put("prio2", TaskPriority.NORMAL.equals(taskPrio));
+            map.put("prio3", TaskPriority.HIDE.equals(taskPrio));
         }
     }
 }

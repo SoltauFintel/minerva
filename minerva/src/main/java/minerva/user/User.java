@@ -21,6 +21,7 @@ public class User {
     /** only used with Gitlab backend: all branch names where file-system mode is temporarily active */
     private final List<String> delayedPush = new ArrayList<>();
     private String lastEditedPage;
+    private List<String> taskPriorities;
     
     public String getLogin() {
         return login;
@@ -96,5 +97,13 @@ public class User {
 
     public List<String> getDelayedPush() {
         return delayedPush;
+    }
+
+    public List<String> getTaskPriorities() {
+        return taskPriorities;
+    }
+
+    public void setTaskPriorities(List<String> taskPriorities) {
+        this.taskPriorities = taskPriorities;
     }
 }

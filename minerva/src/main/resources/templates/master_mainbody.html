@@ -79,7 +79,7 @@
 	
 				<ul class="nav navbar-nav navbar-right">
 				    {{if hasOpenMasterTasks}}
-				        <li><span class="label label-danger" style="position: relative; top: 14px;" title="unerledigte Aufgaben">{{numberOfOpenMasterTasks}}</span></li>
+				        <li><a href="/w/master/my-tasks"><span class="label label-danger" title="unerledigte Aufgaben">{{numberOfOpenMasterTasks}}</span></a></li>
 			        {{/if}}
 					<li><a href="/auth/logout" class="logoutBtn navbtn">{{abmelden}} ({{user}}){{if isAdmin}}*{{/if}}</a></li>
                     <li><a href="/w/{{branch}}/language?m=toggle" class="navbtn"><img src="/{{guiLanguage}}.svg" style="width: 18px;"/></a></li>

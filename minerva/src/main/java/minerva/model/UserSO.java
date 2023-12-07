@@ -8,8 +8,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.pmw.tinylog.Logger;
@@ -24,6 +27,7 @@ import minerva.base.Tosmap;
 import minerva.export.ExportUserSettings;
 import minerva.seite.link.InvalidLinksModel;
 import minerva.seite.note.NoteWithSeite;
+import minerva.task.TaskPriority;
 import minerva.user.User;
 import minerva.user.UserAccess;
 
@@ -39,6 +43,7 @@ public class UserSO {
     /** branch list */
     private final Set<String> hasToPull = new HashSet<>();
     private String lastSelectedBranch;
+    private Map<String, TaskPriority> taskPriorities;
     
     public UserSO(User user) {
         if (user == null) {
@@ -380,5 +385,43 @@ public class UserSO {
     
     public WorkspaceSO masterWorkspace() {
         return getWorkspaces().byBranch(this, "master");
+    }
+    
+    public void setTaskPriority(String taskId, TaskPriority priority) {
+        if (taskPriorities == null) {
+            taskPriorities = loadTaskPriorities();
+        }
+        taskPriorities.put(taskId, priority);
+        saveTaskPriorities(taskPriorities);
+    }
+    
+    public TaskPriority getTaskPriority(String taskId) {
+        if (taskPriorities == null) {
+            taskPriorities = loadTaskPriorities();
+        }
+        TaskPriority ret = taskPriorities.get(taskId);
+        return ret == null ? TaskPriority.NORMAL : ret;
+    }
+    
+    private Map<String, TaskPriority> loadTaskPriorities() {
+        Map<String, TaskPriority> map = new HashMap<>();
+        load();
+        if (user.getTaskPriorities() != null) {
+            for (String line : user.getTaskPriorities()) {
+                int o = line.indexOf("=");
+                map.put(line.substring(0, o), TaskPriority.valueOf(line.substring(o + 1)));
+            }
+        }
+        return map;
+    }
+    
+    private void saveTaskPriorities(Map<String, TaskPriority> map) {
+        List<String> list = new ArrayList<>();
+        for (Entry<String, TaskPriority> e : map.entrySet()) {
+            list.add(e.getKey() + "=" + e.getValue().name());
+        }
+        load();
+        user.setTaskPriorities(list);
+        save();
     }
 }

@@ -12,12 +12,13 @@
                		<a href="{{n.parentLink}}"><i class="fa fa-file-text" style="color: {{n.color}};"></i></a>
                		<b>{{n.parentTitle}}</b>
                	</div>
-                <div id="na{{n.id}}" class="noteTextNC" style="margin-bottom: 0;">{{n.text1}}{{if n.hasMoreText}}<a
-                    onclick="moreText('{{n.id}}');" class="noteMehr">mehr...</a>{{/if}}<br><a
-                    href="{{n.link}}" class="btn btn-primary btn-sm">{{n.viewTask}}</a></div>
+                <div id="na{{n.id}}" class="noteTextNC" style="margin-bottom: 0;"><span style="white-space: break-spaces;">{{n.text1}}{{if n.hasMoreText}}<a onclick="moreText('{{n.id}}');" class="noteMehr">mehr...</a>{{/if}}</span>
+                    {{include: taskbuttons}}
+                </div>
                 
-                <div id="nb{{n.id}}" class="noteTextNC" style="margin-bottom: 0;" hidden>{{n.completeText}}<br/><a
-                    href="{{n.link}}" class="btn btn-primary btn-sm">{{n.viewTask}}</a></div>
+                <div id="nb{{n.id}}" class="noteTextNC" style="margin-bottom: 0;" hidden><span style="white-space: break-spaces;">{{n.completeText}}</span>
+                    {{include: taskbuttons}}
+                </div>
                 
                 <span style="font-size: 8pt; color: #999; margin-left: 3em;">{{n.date}} &ndash;
                 <span{{if n.me}} class="noteByMe"{{/if}}>{{n.user}}</span>

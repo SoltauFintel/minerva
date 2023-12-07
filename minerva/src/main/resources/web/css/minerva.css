@@ -194,7 +194,7 @@ body {
 }
 
 .noteTextNC {
-    white-space: break-spaces;
+    /* white-space: break-spaces; darf hier nicht angegeben werden! */
     padding: 5px;
     margin-left: 1em;
     margin-bottom: 5px;
@@ -210,7 +210,10 @@ body {
 }
 
 .noteMehr {
-    padding-left: 8px; cursor: pointer; font-family: 'Courier New', monospace; color: #c0c;
+    padding-left: 8px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    color: #c0c;
 }
 
 .notePersons {
