@@ -127,7 +127,7 @@ public class MenuPage extends WPage {
 			}
 			menu(list, "manageUsers", "fa-users", "/users");
 			if (booksOk) {
-				menu(list, "reindex", "fa-refresh", "/w/:branch/index");
+				menu(list, "reindex", "fa-refresh", "/w/:branch/index", true);
 			}
 			menu(list, "serverlog", "fa-paw", "/serverlog");
 			if (isMigrationAllowed()) {
