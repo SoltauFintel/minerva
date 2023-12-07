@@ -32,12 +32,11 @@ public class MenuPage extends WPage {
                 DataMap map = list.add();
                 
                 map.put("link", "/w/" + esc(workspace.getBranch()) + "/menu");
+                map.put("text", esc(workspace.getBranch()));
                 if (branch.equals(workspace.getBranch())) {
-                	map.put("text", esc(workspace.getBranch()));
                 	map.put("icon", "fa-folder-open-o currentBranchIcon");
                 	map.put("isCurrent", true);
                 } else {
-                	map.put("text", esc(workspace.getBranch()));
                 	map.put("icon", "fa-folder-o");
                     map.put("isCurrent", false);
                 }
@@ -48,61 +47,74 @@ public class MenuPage extends WPage {
     private void menu() {
 		MinervaFactory fac = MinervaWebapp.factory();
 		boolean isAdmin = "1".equals(ctx.req.session().attribute("admin"));
+		boolean booksOk = !workspace.getBooks().isEmpty();
 		DataList list = list("commands");
-//        if (MinervaWebapp.factory().isGitlab()) {
-//        	menu(list, "Workspaces", "fa-folder-open-o", "/");
-//        }
 		menu(list, "myTasks", "fa-inbox", "/w/:branch/my-tasks");
 		menu(list, "preview", "fa-thumbs-o-up bluebook", "/p/:branch");
 		menu(list, "formulaEditor", "fa-superscript", "/math");
 		if (fac.isGitlab()) {
 			menu(list, "workspaceHistory", "fa-clock-o", "/w/:branch/history");
 		}
-		menu(list, "tagCloud", "fa-cloud", "/w/:branch/tag-cloud?m=n");
+		if (booksOk) {
+			menu(list, "tagCloud", "fa-cloud", "/w/:branch/tag-cloud?m=n");
+		}
 		menu(list, "allHelpKeys", "fa-question-circle", "/w/:branch/help-keys");
 		if (fac.isCustomerVersion()) {
 			menu(list, "Broken Mappings", "fa-chain-broken", "/w/:branch/broken-mappings");
 		}
-		export(list);
+		export(booksOk, list);
 		workspace(list);
 		additionalMenuItems(list);
-		onlinehelp(fac, list);
-		admin(fac, isAdmin, list);
+		onlinehelp(fac, booksOk, list);
+		admin(fac, isAdmin, booksOk, list);
 	}
 
 	private void workspace(DataList list) {
-		menu(list, "pullWS", "fa-refresh", "/w/:branch/pull");
-		menu(list, "cloneWS", "fa-refresh red", "/w/:branch/pull?force=1");
-    	menu(list, "createWS", "fa-folder", "/create-workspace");
-		menu(list, "deleteWS", "fa-trash-o red", "/w/:branch/delete");
-		menu(list, "createBranch", "fa-code-fork", "/branch/:branch");
-		menu(list, "mergeBranch", "fa-code-fork", "/merge/:branch");
-		if (user.getUser().getDelayedPush().contains(branch)) {
-			menu(list, "endFSMode", "fa-flag-checkered fsmode", "/w/:branch/deactivate-f-s-mode");
-		} else {
-			menu(list, "beginFSMode", "fa-flag-checkered", "/w/:branch/activate-f-s-mode");
+		if (MinervaWebapp.factory().isGitlab()) {
+			menu(list, "pullWS", "fa-refresh", "/w/:branch/pull");
+			menu(list, "cloneWS", "fa-refresh red", "/w/:branch/pull?force=1");
+			menu(list, "createWS", "fa-folder", "/create-workspace");
+			menu(list, "deleteWS", "fa-trash-o red", "/w/:branch/delete");
+			menu(list, "createBranch", "fa-code-fork", "/branch/:branch");
+			menu(list, "mergeBranch", "fa-code-fork", "/merge/:branch");
+			if (isDelayedPushAllowed()) {
+				if (user.getUser().getDelayedPush().contains(branch)) {
+					menu(list, "endFSMode", "fa-flag-checkered fsmode", "/w/:branch/deactivate-f-s-mode");
+				} else {
+					menu(list, "beginFSMode", "fa-flag-checkered", "/w/:branch/activate-f-s-mode");
+				}
+			}
 		}
+	}
+	
+	private boolean isDelayedPushAllowed() {
+		return MinervaWebapp.factory().isGitlab()
+                && !"master".equals(branch)
+                && !(branch.length() >= 1 && branch.charAt(0) >= '0' && branch.charAt(0) <= '9');
 	}
 
 	protected void additionalMenuItems(DataList list) { // template method
 	}
 
-	private void onlinehelp(MinervaFactory fac, DataList list) {
-		if (fac.isCustomerVersion()
+	private void onlinehelp(MinervaFactory fac, boolean booksOk, DataList list) {
+		if (booksOk
+				&& fac.isCustomerVersion()
 		        && !fac.isGitlab()
 		        && !fac.getConfig().getSubscribers().isEmpty()) {
 			menu(list, "updateOnlineHelp", "fa-upload", "/w/:branch/push-data");
 		}
 	}
 
-	private void export(DataList list) {
-		menu(list, "export", "fa-upload", "/w/:branch/export");
-		if (UserAccess.hasExportRight(user.getLogin())) {
-			menu(list, "exportTemplates", "fa-file-text-o", "/ets/:branch");
+	private void export(boolean booksOk, DataList list) {
+		if (booksOk) {
+			menu(list, "export", "fa-upload", "/w/:branch/export");
+			if (UserAccess.hasExportRight(user.getLogin())) {
+				menu(list, "exportTemplates", "fa-file-text-o", "/ets/:branch");
+			}
 		}
 	}
 
-	private void admin(MinervaFactory fac, boolean isAdmin, DataList list) {
+	private void admin(MinervaFactory fac, boolean isAdmin, boolean booksOk, DataList list) {
 		if (!MinervaWebapp.factory().getAdmins().contains(user.getLogin())) {
 			return;
 		}
@@ -113,7 +125,9 @@ public class MenuPage extends WPage {
 				menu(list, "exclusions", "fa-bank", "/w/:branch/exclusions/edit");
 			}
 			menu(list, "manageUsers", "fa-users", "/users");
-			menu(list, "reindex", "fa-refresh", "/w/:branch/index");
+			if (booksOk) {
+				menu(list, "reindex", "fa-refresh", "/w/:branch/index");
+			}
 			menu(list, "serverlog", "fa-paw", "/serverlog");
 			if (isMigrationAllowed()) {
 				menu(list, "Confluence Import", "fa-cloud-download", "/migration/:branch");

@@ -14,11 +14,9 @@ public abstract class WPage extends UPage {
     @Override
     public void init(Context ctx) {
         super.init(ctx);
+
         branch = ctx.pathParam("branch");
-        workspace = user.getWorkspace(branch);
-        
-        // TODO experimentell
-        user.setCurrentWorkspace(user.getWorkspace(ctx.pathParam("branch")));
+    	user.setCurrentWorkspace(workspace = user.getWorkspace(branch));
 
         put("branch", branch);
         put("isMasterBranch", "master".equals(branch));

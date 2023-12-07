@@ -38,9 +38,6 @@ public class WorkspacesSO extends MList<WorkspaceSO> {
     }
 
     public WorkspaceSO byBranch(UserSO user, String branch) {
-        if (isEmpty()) {
-            throw new RuntimeException("There are no workspaces.");
-        }
         for (WorkspaceSO w : this) {
             if (w.getBranch().equals(branch)) {
                 return w;

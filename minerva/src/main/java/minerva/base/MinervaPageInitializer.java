@@ -15,7 +15,8 @@ import minerva.model.BooksSO;
 import minerva.user.UserAccess;
 
 public class MinervaPageInitializer extends PageInitializer {
-    
+    // TODO hier kann einiges raus
+	
     @Override
     public void initPage(Context ctx, Page page) {
         MinervaPageInitModel m = new MinervaPageInitModel(ctx);
