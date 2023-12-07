@@ -25,7 +25,9 @@ public class TaskService {
 	public int getNumberOfTasks(UserSO user) {
 	    int n = 0;
         for (TasksSupplier tasksSupplier : tasksSuppliers) {
-            n += tasksSupplier.getTasks(user, "master", null).size();
+            n += tasksSupplier.getTasks(user, "master", null).stream()
+                    .filter(i -> !TaskPriority.HIDE.equals(user.getTaskPriority(i.getId())))
+                    .count();
         }
         return n;
 	}

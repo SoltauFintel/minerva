@@ -24,26 +24,45 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
     	String login = ctx.queryParam("login");
     	boolean me = login == null || user.getLogin().equals(login);
 		Logger.info(user.getLogin() + " | " + (me ? "My tasks" : "All tasks for " + login));
-        
+        boolean showAll = "a".equals(ctx.queryParam("m"));
+		
         List<Task> tasks = new TaskService().getTasks(user, branch, login);
+        int n = (int) tasks.stream().filter(i -> !TaskPriority.HIDE.equals(user.getTaskPriority(i.getId()))).count();
         if ("master".equals(branch) && me) {
-            TaskService.openMasterTasks = tasks.size();
+            TaskService.openMasterTasks = n;
             MinervaPageInitializer.updateOpenMasterTasks(this);
         }
         
         header(n("myTasks"));
+        putInt("n", n);
+        if (tasks.size() != n) {
+            putInt("weitere", tasks.size() - n);
+            put("hasWeitere", true);
+        } else {
+            put("hasWeitere", false);
+        }
         put("login", esc(UserAccess.login2RealName(StringService.isNullOrEmpty(login) ? user.getLogin() : login)));
-		fill(tasks, branch, model, user.getLogin());
-        putSize("n", tasks);
+		fill(tasks, branch, model, user.getLogin(), showAll);
         put("hasTasks", !tasks.isEmpty());
         put("showTaskButtons", me);
+        put("showAll", showAll);
+        put("hasHiddenTasks", tasks.stream().anyMatch(i -> TaskPriority.HIDE.equals(user.getTaskPriority(i.getId()))));
+        if (showAll) {
+            put("showHideLink", "/w/" + esc(branch) + "/my-tasks" + (me ? "" : "?login" + u(login)));
+            put("showHideText", esc(n("hideUnimportantTasks")));
+        } else {
+            put("showHideLink", "/w/" + esc(branch) + "/my-tasks?m=a" + (me ? "" : "&login" + u(login)));
+            put("showHideText", esc(n("showAllTasks")));
+        }
     }
     
-    private void fill(List<Task> tasks, String branch, DataMap model, String login) {
+    private void fill(List<Task> tasks, String branch, DataMap model, String login, boolean showAll) {
         DataList list = model.list("tasks");
         fill2(tasks, branch, login, TaskPriority.TOP, list);
         fill2(tasks, branch, login, TaskPriority.NORMAL, list);
-        fill2(tasks, branch, login, TaskPriority.HIDE, list);
+        if (showAll) {
+            fill2(tasks, branch, login, TaskPriority.HIDE, list);
+        }
     }
 
     private void fill2(List<Task> tasks, String branch, String login, TaskPriority showOnlyPrio, DataList list) {

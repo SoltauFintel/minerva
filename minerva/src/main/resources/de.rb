@@ -255,3 +255,5 @@ exportPage=Seite exportieren
 loggedOut=Sie sind abgemeldet.
 relogin=Wieder anmelden
 editHTML=HTML bearbeiten
+showAllTasks=Zeige alle Aufgaben
+hideUnimportantTasks=Verstecke unwichtige Aufgaben

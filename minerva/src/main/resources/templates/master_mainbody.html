@@ -36,6 +36,11 @@
 .page-header {
 	margin-top: 20px;
 }
+
+.noLRPadding {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+}
 </style>
 
 <nav class="navbar navbar-default" style="margin-bottom: 0;">
@@ -79,10 +84,10 @@
 	
 				<ul class="nav navbar-nav navbar-right">
 				    {{if hasOpenMasterTasks}}
-				        <li><a href="/w/master/my-tasks"><span class="label label-danger" title="unerledigte Aufgaben">{{numberOfOpenMasterTasks}}</span></a></li>
+				        <li><a href="/w/master/my-tasks" class="navbtn noLRPadding"><span class="label label-danger" title="unerledigte Aufgaben">{{numberOfOpenMasterTasks}}</span></a></li>
 			        {{/if}}
 					<li><a href="/auth/logout" class="logoutBtn navbtn">{{abmelden}} ({{user}}){{if isAdmin}}*{{/if}}</a></li>
-                    <li><a href="/w/{{branch}}/language?m=toggle" class="navbtn"><img src="/{{guiLanguage}}.svg" style="width: 18px;"/></a></li>
+                    <li><a href="/w/{{branch}}/language?m=toggle" class="navbtn noLRPadding"><img src="/{{guiLanguage}}.svg" style="width: 18px;"/></a></li>
 				</ul>
 				<form action="/w/{{branch}}/search" class="navbar-form navbar-right">
 					<div class="input-group">
