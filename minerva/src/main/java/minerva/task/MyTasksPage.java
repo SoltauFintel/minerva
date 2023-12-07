@@ -18,10 +18,11 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
     @Override
     protected void execute() {
     	String login = ctx.queryParam("login");
-		Logger.info(user.getLogin() + " | " + (login == null || user.getLogin().equals(login) ? "My tasks" : "All tasks for " + login));
+    	boolean me = login == null || user.getLogin().equals(login);
+		Logger.info(user.getLogin() + " | " + (me ? "My tasks" : "All tasks for " + login));
         
         List<Task> tasks = new TaskService().getTasks(user, branch, login);
-        if ("master".equals(branch)) {
+        if ("master".equals(branch) && me) {
             TaskService.openMasterTasks = tasks.size();
             MinervaPageInitializer.updateOpenMasterTasks(this);
         }
