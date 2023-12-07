@@ -78,17 +78,19 @@ h2 {
 
 <div class="row">
 	<div class="col-lg-12">
-		<h1 class="page-header">Workspaces</h1>
-		<div class="bs-glyphicons">
-			<ul class="bs-glyphicons-list">
-				{{each c in workspaces}}
-					<li style="cursor: pointer;"{{if c.isCurrent}} class="currentBranch"{{/if}} onclick="location.href='{{c.link}}';">
-						<span class="glyphicon fa {{c.icon}} fa-fw"></span>
-						<span class="glypicon-class"><br />{{c.text}}</span>
-					</li>
-				{{/each}}
-			</ul>
-		</div>
+		{{if gitlab}}
+			<h1 class="page-header">Workspaces</h1>
+			<div class="bs-glyphicons">
+				<ul class="bs-glyphicons-list">
+					{{each c in workspaces}}
+						<li style="cursor: pointer;"{{if c.isCurrent}} class="currentBranch"{{/if}} onclick="location.href='{{c.link}}';">
+							<span class="glyphicon fa {{c.icon}} fa-fw"></span>
+							<span class="glypicon-class"><br />{{c.text}}</span>
+						</li>
+					{{/each}}
+				</ul>
+			</div>
+		{{/if}}
 		<h1 class="page-header">{{header}}</h1>
 		<div class="bs-glyphicons">
 			<ul class="bs-glyphicons-list">
