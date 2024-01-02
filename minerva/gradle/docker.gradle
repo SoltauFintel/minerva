@@ -2,7 +2,7 @@ docker {
     javaApplication {
         ports = [ 8080 ]
         baseImage = 'eclipse-temurin:17.0.7_7-jre-alpine'
-        images = [ findProperty('dockerhub') + project.name ]
+        images = [ findProperty('dockerhub') + (findProperty('image') ?: project.name) ]
         maintainer = 'SoltauFintel'
         mainClassName = application.mainClass
     }

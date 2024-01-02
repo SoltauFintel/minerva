@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.pmw.tinylog.Logger;
+
 import minerva.MinervaWebapp;
 import minerva.base.FileService;
 import minerva.base.StringService;
@@ -32,6 +34,7 @@ public class UserAccess {
         if (file.isFile()) {
             return FileService.loadJsonFile(file, User.class);
         }
+		Logger.warn("UserAccess.loadUser(" + login + "): null, missing file: " + file.getAbsolutePath());
         return null;
     }
     
