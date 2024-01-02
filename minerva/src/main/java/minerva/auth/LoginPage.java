@@ -18,7 +18,7 @@ public class LoginPage extends Page {
             Logger.info("LoginPage POST " + login);
 
             // Kann User angemeldet werden?
-            User user = loginService.login(login, password);
+            User user = loginService.login(login, password, null);
             if (user == null) { // Nein...
                 ctx.redirect(errorUrl());
                 return;

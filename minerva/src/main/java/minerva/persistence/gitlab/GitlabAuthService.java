@@ -58,14 +58,8 @@ public class GitlabAuthService {
         String login = currentUser.getUsername();
         String mail = currentUser.getEmail();
         
-        minerva.user.User user = UserAccess.loadUser(login);
-        if (user == null) {
-        	user = new minerva.user.User();
-        	user.setLogin(login);
-        	user.setMailAddress(mail);
-        	user.setRealName(currentUser.getName());
-        	UserAccess.saveUser(user);
-        } else if (!user.getMailAddress().equals(mail)) {
+        minerva.user.User user = UserAccess.loadUser(login, true, mail);
+        if (!user.getMailAddress().equals(mail)) {
 			Logger.warn("Gitlab user " + login + " mail mismatch: " + user.getMailAddress() + " <> " + mail);
         }
         GitlabDataStore xu = new GitlabDataStore(user);

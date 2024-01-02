@@ -30,11 +30,22 @@ public class UserAccess {
     }
 
     public static User loadUser(String login) {
+        return loadUser(login, false, null);
+    }
+    
+    public static User loadUser(String login, boolean create, String mail) {
         File file = file(login);
         if (file.isFile()) {
             return FileService.loadJsonFile(file, User.class);
+        } else if (create) {
+            Logger.info(login + " | User file does not exist. Create it.");
+            User user = new User();
+            user.setLogin(login);
+            user.setRealName(login);
+            user.setMailAddress(mail);
+            saveUser(user);
+            return user;
         }
-		Logger.warn("UserAccess.loadUser(" + login + "): null, missing file: " + file.getAbsolutePath());
         return null;
     }
     

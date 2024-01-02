@@ -49,7 +49,7 @@ public class GitlabBackendService implements BackendService {
     }
 
     @Override
-    public User login(String login, String password) {
+    public User login(String login, String password, String pMail) {
         if (StringService.isNullOrEmpty(login) || StringService.isNullOrEmpty(password)) {
             return null;
         }
@@ -59,6 +59,9 @@ public class GitlabBackendService implements BackendService {
         GitlabDataStore xu = new GitlabDataStore(user);
         xu.setPassword(password);
         String mail = gitlabSystem.login(user);
+        if (mail == null) {
+            mail = pMail;
+        }
         if (mail == null) {
             return null;
         }

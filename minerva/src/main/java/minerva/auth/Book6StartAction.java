@@ -26,7 +26,7 @@ public class Book6StartAction extends Action {
             ctx.redirect("/message?m=4");
             return;
         }
-        MinervaAuth.login1(ctx, UserAccess.loadUser(login));
+        MinervaAuth.login1(ctx, UserAccess.loadUser(login, true, null));
         
         ctx.redirect("/");
     }

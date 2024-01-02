@@ -21,9 +21,10 @@ public interface BackendService {
     /**
      * @param login -
      * @param password -
+     * @param emailAddress -
      * @return null if login failed
      */
-    User login(String login, String password);
+    User login(String login, String password, String emailAddress);
     
     /**
      * @param user -

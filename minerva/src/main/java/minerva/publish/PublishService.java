@@ -32,7 +32,7 @@ public class PublishService {
     }
 
     public File loginAndPublish(String login, String password, String branch) {
-        UserSO userSO = new UserSO(MinervaWebapp.factory().getBackendService().login(login, password));
+        UserSO userSO = new UserSO(MinervaWebapp.factory().getBackendService().login(login, password, null));
         WorkspaceSO workspace = userSO.getWorkspace(branch);
         return publish(workspace);
     }

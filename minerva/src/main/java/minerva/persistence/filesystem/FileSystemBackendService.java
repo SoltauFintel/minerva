@@ -45,22 +45,14 @@ public class FileSystemBackendService implements BackendService {
     }
 
     @Override
-    public User login(String login, String password) {
+    public User login(String login, String password, String mail) {
         if (StringService.isNullOrEmpty(login)) {
             return null;
         }
         if (!MinervaWebapp.factory().getConfig().getEditorPassword().equals(password)) {
             return null;
         }
-        User user = UserAccess.loadUser(login);
-        if (user == null) {
-        	Logger.info(login + " | User file does not exist. Create it.");
-        	user = new User();
-        	user.setLogin(login);
-        	user.setRealName(login);
-        	UserAccess.saveUser(user);
-        }
-		return user;
+        return UserAccess.loadUser(login, true, mail);
     }
     
     @Override
