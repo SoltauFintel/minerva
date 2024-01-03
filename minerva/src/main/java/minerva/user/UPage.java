@@ -41,7 +41,4 @@ public abstract class UPage extends Page {
     protected String n(String key) {
         return NLS.get(user.getGuiLanguage(), key);
     }
-    
-// TODO                .submit(" onclick=\"document.querySelector('#s1').style='';\"",
-//                        "<i id=\"s1\" class=\"fa fa-delicious fa-spin\" style=\"display: none;\"></i>");
 }
