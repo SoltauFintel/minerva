@@ -1,5 +1,7 @@
 package minerva.user;
 
+import java.util.stream.Stream;
+
 import org.pmw.tinylog.Logger;
 
 import com.github.template72.data.DataList;
@@ -13,9 +15,11 @@ public class UsersPage extends UPage {
         Logger.info("Users");
         user.log("Users");
         
+        Stream<User> users = UserAccess.loadUsers().stream().sorted((a, b) -> a.getRealName().compareToIgnoreCase(b.getRealName()));
+
         header(n("manageUsers"));
         DataList list = list("users");
-		UserAccess.loadUsers().stream().sorted((a, b) -> a.getRealName().compareToIgnoreCase(b.getRealName())).forEach(u -> {
+        users.forEach(u -> {
 		    DataMap map = list.add();
             map.put("login", esc(u.getLogin()));
             map.put("link", esc("/user/" + u.getLogin()));
