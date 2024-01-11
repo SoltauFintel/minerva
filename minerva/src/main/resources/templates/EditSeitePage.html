@@ -23,6 +23,10 @@
     font-size: 16px;
     color: #b28;
 }
+
+.editbox:not(:focus) {
+    border: 1px #ccc solid;
+}
 </style>
 
 <div class="row" style="margin-right: 1em;">
@@ -48,7 +52,7 @@
                             </div>
                             <div class="form-group">
                                 <div id="toolbar-container{{L.LANG}}"></div>
-                                <div id="editor{{L.LANG}}"
+                                <div id="editor{{L.LANG}}" class="editbox"
                                     style="max-height: calc(100vh - 320px);">{{L.content}}</div>
                             </div>
                         </div>
