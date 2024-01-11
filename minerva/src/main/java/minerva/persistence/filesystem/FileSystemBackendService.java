@@ -31,7 +31,7 @@ public class FileSystemBackendService implements BackendService {
 
     @Override
     public String getInfo(String lang) {
-        return "Dateisystem (" + new File(config.getWorkspacesFolder()).getAbsolutePath() + ")";
+        return "Dateisystem (" + new File(config.getWorkspacesFolder()).getAbsolutePath() + ")"; // TODO NLS
     }
 
     @Override

@@ -7,6 +7,6 @@ public class PushDataAction extends Action {
     @Override
     protected void execute() {
         new SubscriptionService().pagesChanged();
-        ctx.redirect("/w/" + esc(ctx.pathParam("branch")));
+        ctx.redirect("/w/" + esc(ctx.pathParam("branch")) + "/menu");
     }
 }
