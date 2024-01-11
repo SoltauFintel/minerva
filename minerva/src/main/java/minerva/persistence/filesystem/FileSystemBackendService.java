@@ -11,6 +11,7 @@ import minerva.MinervaWebapp;
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.access.MultiPurposeDirAccess;
+import minerva.base.NLS;
 import minerva.base.StringService;
 import minerva.config.BackendService;
 import minerva.config.ICommit;
@@ -31,7 +32,7 @@ public class FileSystemBackendService implements BackendService {
 
     @Override
     public String getInfo(String lang) {
-        return "Dateisystem (" + new File(config.getWorkspacesFolder()).getAbsolutePath() + ")"; // TODO NLS
+        return NLS.get(lang, "filesystem") + " (" + new File(config.getWorkspacesFolder()).getAbsolutePath() + ")";
     }
 
     @Override

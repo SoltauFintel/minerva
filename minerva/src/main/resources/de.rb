@@ -257,3 +257,4 @@ relogin=Wieder anmelden
 editHTML=HTML bearbeiten
 showAllTasks=Zeige alle Aufgaben
 hideUnimportantTasks=Verstecke unwichtige Aufgaben
+filesystem=Dateisystem
