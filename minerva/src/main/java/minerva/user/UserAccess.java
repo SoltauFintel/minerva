@@ -35,8 +35,14 @@ public class UserAccess {
     
     public static User loadUser(String login, boolean create, String mail) {
         File file = file(login);
+System.out.println("UserAccess.loadUser | " + file.getAbsolutePath() + ", " + file.exists() + " | create=" + create + " | login=" + login); // XXX DEBUG
         if (file.isFile()) {
-            return FileService.loadJsonFile(file, User.class);
+            User user = FileService.loadJsonFile(file, User.class);
+            Logger.info("... user: " + user);
+            if (user != null) {
+                Logger.info("...login: " + user.getLogin());
+            }
+            return user;
         } else if (create) {
             Logger.info(login + " | User file does not exist. Create it.");
             User user = new User();

@@ -106,4 +106,9 @@ public class User {
     public void setTaskPriorities(List<String> taskPriorities) {
         this.taskPriorities = taskPriorities;
     }
+    
+    @Override
+    public String toString() {
+        return "User "  + login;
+    }
 }

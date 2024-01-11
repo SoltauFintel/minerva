@@ -21,6 +21,7 @@ public class Book6StartAction extends Action {
             return;
         }
         String login = (String) Tosmap.get(a);
+System.out.println("login=" + login + " | a=" + a); // XXX DEBUG
         if (login == null) { // wrong or expired key
             Logger.error("Book6StartAction: wrong or expired key: " + a);
             ctx.redirect("/message?m=4");
