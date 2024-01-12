@@ -5,14 +5,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.pmw.tinylog.Logger;
-
-import com.google.gson.Gson;
-
-import github.soltaufintel.amalia.rest.REST;
-import github.soltaufintel.amalia.rest.RestResponse;
 import minerva.MinervaWebapp;
 import minerva.base.FileService;
 import minerva.base.NlsString;
@@ -24,24 +18,11 @@ import minerva.user.User;
 
 public class SubscriptionService {
     private static final String LOGIN = "SubscriptionService";
-
-    public void subscribe(String url) {
-        checkIfValid(url);
-        pagesChanged(url);
-    }
+    private final SubscribersAccess subscribersAccess = new SubscribersAccess();
     
-    private void checkIfValid(String url) {
-        String valid = getSubscribers();
-        if (!valid.isEmpty()) {
-            String[] w = valid.split(",");
-            for (String i : w) {
-                if (i.trim().equals(url)) {
-                    return; // is valid
-                }
-            }
-        }
-        Logger.error("Unknown subscriber: " + url + "\nMINERVA_SUBSCRIBERS=" + valid);
-        throw new RuntimeException("Unknown subscriber");
+    public void subscribe(String url) {
+        subscribersAccess.checkIfValid(url);
+        uploadZip(zipFile -> subscribersAccess.uploadZip(zipFile, url)); // pagesChanged for 1 subscriber
     }
     
     private File createZipFile() {
@@ -71,11 +52,6 @@ public class SubscriptionService {
         }
     }
 
-    private void upload(File zipFile, String url) {
-        new REST(url).uploadZip(zipFile);
-        Logger.info("Upload of " + zipFile.getAbsolutePath() + " to " + url + " completed.");
-    }
-
     public TPage createTPage(SeiteSO seite, NlsString content, List<String> langs) {
         TPage p = new TPage();
         Seite s = seite.getSeite();
@@ -94,25 +70,9 @@ public class SubscriptionService {
     }
     
     public void pageModified(TPage page) {
-        String subscribers = getSubscribers();
-        if (!subscribers.isEmpty()) {
+        if (subscribersAccess.hasSubscribers()) {
             checkMode();
-            new Thread(() -> {
-                for (String host : subscribers.split(",")) {
-                    String url = host + "/book6/page/" + page.getId();
-                    Logger.info("PUT " + url);
-                    new REST(url) {
-                        @Override
-                        protected RestResponse request(HttpEntityEnclosingRequestBase request, Object data) {
-                            try {
-                                return request(request, new Gson().toJson(data), "application/json; charset=cp1252");
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    }.put(page).close();
-                }
-            }).start();
+            new Thread(() -> subscribersAccess.put(page)).start();
         }
     }
     
@@ -121,16 +81,9 @@ public class SubscriptionService {
      * @param id page ID
      */
     public void pageDeleted(String id) {
-        String subscribers = getSubscribers();
-        if (!subscribers.isEmpty()) {
+        if (subscribersAccess.hasSubscribers()) {
             checkMode();
-            new Thread(() -> {
-                for (String host : subscribers.split(",")) {
-                    String url = host + "/book6/page/" + id;
-                    Logger.info("DELETE " + url);
-                    new REST(url).delete().close();
-                }
-            }).start();
+            new Thread(() -> subscribersAccess.delete(id)).start();
         }
     }
 
@@ -139,24 +92,22 @@ public class SubscriptionService {
      * Those changes are so massive that all data will be pushed to all subscribers.
      */
     public void pagesChanged() {
-        pagesChanged(getSubscribers());
+        // ** pagesChanged for all subscribers **
+        uploadZip(zipFile -> subscribersAccess.uploadZip(zipFile));
     }
 
-    private void pagesChanged(String subscribers) {
-        if (subscribers.isEmpty()) {
-            return;
-        }
-        checkMode();
-        new Thread(() -> {
-            File zipFile = createZipFile();
-            try {
-                for (String host : subscribers.split(",")) {
-                    upload(zipFile, host + "/upload");
+    private void uploadZip(Consumer<File> action) {
+        if (subscribersAccess.hasSubscribers()) {
+            checkMode();
+            new Thread(() -> {
+                File zipFile = createZipFile();
+                try {
+                    action.accept(zipFile);
+                } finally {
+                    zipFile.delete();
                 }
-            } finally {
-                zipFile.delete();
-            }
-        }).start();
+            }).start();
+        }
     }
     
     private void checkMode() {
@@ -187,16 +138,13 @@ public class SubscriptionService {
             ret.getLang().put("de", z);
             return ret;
         }*/
-        String subscribers = getSubscribers();
-        if (subscribers.isEmpty()) {
+        if (!subscribersAccess.hasSubscribers()) {
             return new PageTitles();
         }
         checkMode();
+        List<PageTitles> pageTitlesList = subscribersAccess.loadPageTitles();
         PageTitles ret = null;
-        for (String subscriber : subscribers.split(",")) {
-            String url = subscriber + "/rest/page-titles";
-            Logger.info(url);
-            PageTitles titles = new REST(url).get().fromJson(PageTitles.class);
+        for (PageTitles titles : pageTitlesList) {
             if (ret == null) {
                 ret = titles;
             } else {
@@ -226,9 +174,5 @@ public class SubscriptionService {
             }
         }
         return false;
-    }
-
-    private String getSubscribers() {
-        return MinervaWebapp.factory().getConfig().getSubscribers();
     }
 }
