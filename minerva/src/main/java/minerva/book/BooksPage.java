@@ -43,7 +43,7 @@ public class BooksPage extends UPage {
         put("updateOnlineHelpAllowed",
                     fac.isCustomerVersion()
                 && !fac.isGitlab()
-                && !fac.getConfig().getSubscribers().isEmpty());
+                && fac.getConfig().hasSubscribers());
         put("addBookAllowed", !fac.isCustomerVersion() || books.isEmpty());
         DataList list = list("books");
         if (books != null) {

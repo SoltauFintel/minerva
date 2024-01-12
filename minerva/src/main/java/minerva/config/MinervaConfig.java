@@ -224,6 +224,10 @@ public class MinervaConfig {
         return env("MINERVA_SUBSCRIBERS");
     }
     
+    public boolean hasSubscribers() {
+        return !getSubscribers().isEmpty();
+    }
+    
     public String getKunde() {
         return env("MINERVA_KUNDE");
     }

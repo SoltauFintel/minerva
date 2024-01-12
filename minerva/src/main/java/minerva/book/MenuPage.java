@@ -101,7 +101,7 @@ public class MenuPage extends WPage {
 		if (booksOk
 				&& fac.isCustomerVersion()
 		        && !fac.isGitlab()
-		        && !fac.getConfig().getSubscribers().isEmpty()) {
+		        && fac.getConfig().hasSubscribers()) {
 			menu(list, "updateOnlineHelp", "fa-upload", "/w/:branch/push-data");
 		}
 	}

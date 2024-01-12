@@ -98,8 +98,7 @@ public class SubscriptionService {
         if (!subscribers.isEmpty()) {
             checkMode();
             new Thread(() -> {
-                String[] w = subscribers.split(",");
-                for (String host : w) {
+                for (String host : subscribers.split(",")) {
                     String url = host + "/book6/page/" + page.getId();
                     Logger.info("PUT " + url);
                     new REST(url) {
