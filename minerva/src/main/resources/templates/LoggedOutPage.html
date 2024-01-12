@@ -3,6 +3,8 @@
 <div class="row"> 
     <div class="col-lg-12" style="text-align: center;">
         <p class="mt3">{{title}}</p>
-        <p class="mt2"><a href="{{link}}" class="btn btn-default">{{relogin}}</a></p>
+        {{if withRelogin}}
+            <p class="mt2"><a href="{{link}}" class="btn btn-default">{{relogin}}</a></p>
+        {{/if}}
     </div>
 </div>
