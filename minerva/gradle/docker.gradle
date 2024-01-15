@@ -7,3 +7,11 @@ docker {
         mainClassName = application.mainClass
     }
 }
+
+dockerBuildImage {
+	doFirst {
+		if (!findProperty('dockerreg')) {
+			throw new GradleException('Please specify -Pdockerreg=...')
+		}
+	}
+}
