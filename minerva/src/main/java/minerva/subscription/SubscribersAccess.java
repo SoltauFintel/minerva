@@ -61,7 +61,7 @@ public class SubscribersAccess {
 
     public void uploadZip(File zipFile, String subscriber) {
         if (available(subscriber)) {
-            String url = subscriber + "/upload";
+            String url = subscriber + "/book6/upload";
             new REST(url).uploadZip(zipFile);
             Logger.info("Upload of " + zipFile.getAbsolutePath() + " to " + url + " completed.");
         }
