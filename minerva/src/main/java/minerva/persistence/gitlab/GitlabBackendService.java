@@ -53,7 +53,7 @@ public class GitlabBackendService implements BackendService {
         if (StringService.isNullOrEmpty(login) || StringService.isNullOrEmpty(password)) {
             return null;
         }
-        Logger.info("GitlabBackendService.login(" + login + ",***)");
+        Logger.info(login + " | GitlabBackendService.login");
         User user = new User();
         user.setLogin(login);
         GitlabDataStore xu = new GitlabDataStore(user);

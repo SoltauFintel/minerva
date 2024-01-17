@@ -43,7 +43,7 @@ public class PublishService {
         targetFolder.mkdirs();
         String login = workspace.getUser().getLogin();
         String prefix = login + " | " + workspace.getBranch() + " | ";
-        Logger.info(prefix + "Publishing to " + targetFolder.getAbsolutePath() + " ...");
+        Logger.debug(prefix + "Publishing to " + targetFolder.getAbsolutePath() + " ...");
         // root level
         TocEntry root = new TocEntry();
         root.setTitle("root");
@@ -73,11 +73,11 @@ public class PublishService {
         // save table of contents file
         File tocJson = new File(targetFolder, "toc.json");
         FileService.savePlainTextFile(tocJson, new Gson().toJson(root)); // no pretty print
-        Logger.info(prefix + "saved to " + tocJson.getAbsolutePath());
+        Logger.debug(prefix + "saved to " + tocJson.getAbsolutePath());
         // save exclusions file
         File exclusionsFile = new File(targetFolder, "exclusions.txt");
         FileService.savePlainTextFile(exclusionsFile, workspace.getExclusions().get());
-        Logger.info(prefix + "saved to " + exclusionsFile.getAbsolutePath());
+        Logger.debug(prefix + "saved to " + exclusionsFile.getAbsolutePath());
         return targetFolder;
     }
     
