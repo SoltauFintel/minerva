@@ -95,7 +95,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("editorsNoteBR", esc(seite.getEditorsNote()).replace("\n", "<br/>"));
         put("hasEditorsNote", !StringService.isNullOrEmpty(seite.getEditorsNote()));
         put("hasLeftArea", true);
-        put("leftAreaContent", tree(seiteSO.getBook().getSeiten(), user.getPageLanguage(), seite.getId()));
+        put("leftAreaContent", getTreeHTML(seiteSO));
         header(modifyHeader(seiteSO.getTitle()));
 
         fillLinks(branch, bookFolder, id, seiteSO, seite, u.getPageLanguage());
@@ -105,6 +105,16 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         
         Logger.info(u.getLogin() + " | " + seiteSO.getBook().getWorkspace().getBranch() + " | "
                 + seiteSO.getTitle() + " | " + u.getPageLanguage());
+    }
+    
+    private String getTreeHTML(SeiteSO seiteSO) {
+        String html = "";
+        for (String lang : langs) {
+        	String hidden = lang.equals(user.getPageLanguage()) ? "" : " hidden";
+        	String tree = tree(seiteSO.getBook().getSeiten(), lang, seite.getId());
+			html += "<div id=\"tree_" + lang + "\"" + hidden + ">" + tree + "</div>";
+        }
+        return html;
     }
     
     private void levellist(String listId, int levels) {
@@ -225,6 +235,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             ret += "  $(\"#prev2\").attr(\"href\", \"" + link + "\")\n";
             ret += "}\n";
             ret2 += "$(\"#subpages_" + lang + "\").attr(\"hidden\", lang != \"" + lang + "\")\n";
+            ret2 += "$(\"#tree_" + lang + "\").attr(\"hidden\", lang != \"" + lang + "\")\n";
         }
         for (String lang : langs) {
             NavigateService nav = new NavigateService(true, lang, null);
