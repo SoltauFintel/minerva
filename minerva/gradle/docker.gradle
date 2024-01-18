@@ -9,9 +9,17 @@ docker {
 }
 
 dockerBuildImage {
-	doFirst {
-		if (!findProperty('dockerreg')) {
-			throw new GradleException('Please specify -Pdockerreg=...')
-		}
-	}
+    doFirst {
+        if (!findProperty('dockerreg')) {
+            throw new GradleException('Please specify -Pdockerreg=...')
+        }
+    }
+}
+
+dockerCreateDockerfile {
+    outputs.upToDateWhen { false }
+    doLast {
+        def dockerfile = destFile.get().asFile
+        dockerfile.text = dockerfile.text.replace('WORKDIR', 'RUN apk add bash\nWORKDIR')
+    }
 }
