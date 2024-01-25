@@ -48,7 +48,9 @@ public class SeiteHistoryPage extends SPage {
 		map.put("hash7", Escaper.esc(commit.getHash7()));
 		map.put("gitlabCommitLink", backend.getCommitLink(commit.getHash()));
 		String author = UserAccess.login2RealName(commit.getAuthor());
-		authors.add(author);
+		if (authors != null) {
+			authors.add(author);
+		}
 		map.put("author", Escaper.esc(author));
 		map.put("date", Escaper.esc(commit.getCommitDateTime()));
 		map.put("message", Escaper.esc(commit.getMessage()));
