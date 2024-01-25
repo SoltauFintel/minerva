@@ -37,16 +37,20 @@ public class SeiteHistoryPage extends SPage {
         DataList list = model.list("commits");
         for (ICommit commit : commits) {
             DataMap map = list.add();
-            map.put("hash", Escaper.esc(commit.getHash()));
-            map.put("hash7", Escaper.esc(commit.getHash7()));
-            map.put("gitlabCommitLink", backend.getCommitLink(commit.getHash()));
-            String author = UserAccess.login2RealName(commit.getAuthor());
-            authors.add(author);
-            map.put("author", Escaper.esc(author));
-            map.put("date", Escaper.esc(commit.getCommitDateTime()));
-            map.put("message", Escaper.esc(commit.getMessage()));
+            putCommit(commit, backend, authors, map);
         }
         model.put("authors", Escaper.esc(authors.stream().collect(Collectors.joining(", "))));
         model.putSize("n", commits);
     }
+
+	public static void putCommit(ICommit commit, BackendService backend, Set<String> authors, DataMap map) {
+		map.put("hash", Escaper.esc(commit.getHash()));
+		map.put("hash7", Escaper.esc(commit.getHash7()));
+		map.put("gitlabCommitLink", backend.getCommitLink(commit.getHash()));
+		String author = UserAccess.login2RealName(commit.getAuthor());
+		authors.add(author);
+		map.put("author", Escaper.esc(author));
+		map.put("date", Escaper.esc(commit.getCommitDateTime()));
+		map.put("message", Escaper.esc(commit.getMessage()));
+	}
 }
