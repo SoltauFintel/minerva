@@ -102,6 +102,7 @@ addMoreTags=Add tags
 noTags=no tags
 noNotes=no comments
 allPages=Show all pages
+allPagesOff=Show all pages OFF
 done=Done
 doneNote=set comment as done
 undoneNote=set comment as not done

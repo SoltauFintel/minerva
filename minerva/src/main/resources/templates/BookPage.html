@@ -69,7 +69,7 @@
             {{Sortierung}}
         </p>
         <p class="mt2">
-            <a href="{{booklink}}?m=all" class="btn btn-default mw">{{N.allPages}}</a>
+            <a href="{{booklink}}{{if not allPages}}?m=all{{/if}}" class="btn btn-default mw">{{if allPages}}{{N.allPagesOff}}{{else}}{{N.allPages}}{{/if}}</a>
         </p>
         <p>
             <a href="{{booklink}}/validate" class="btn btn-default mw">{{N.validate}}</a>

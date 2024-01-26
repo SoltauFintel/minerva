@@ -101,6 +101,7 @@ addMoreTags=Weitere tags hinzufügen
 noTags=keine tags vorhanden
 noNotes=keine Kommentare vorhanden
 allPages=Alle Seiten anzeigen
+allPagesOff=Alle Seiten anzeigen AUS
 done=Erledigt
 doneNote=Kommentar als erledigt kennzeichnen
 undoneNote=Kommentar als unerledigt kennzeichnen
