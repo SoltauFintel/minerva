@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import org.pmw.tinylog.Logger;
 
@@ -253,10 +254,11 @@ public class SeitenSO extends MList<SeiteSO> {
         return test != null && (max == null || test.getDate().compareTo(max.getDate()) > 0);
     }
 
-    public List<SeiteSO> findLink(String href, List<String> langs) {
-        List<SeiteSO> ret = new ArrayList<>();
+    public TreeSet<SeiteSO> findLink(String href, List<String> langs) {
+        TreeSet<SeiteSO> ret = new TreeSet<>();
         for (SeiteSO seite : this) {
             for (String lang : langs) {
+                Logger.debug("extracting links: " + seite.getId() + " " + lang);
                 if (LinkService.extractLinks(seite.getContent().getString(lang), false).stream()
                         .anyMatch(link -> link.getHref().equals(href))) {
                     ret.add(seite);
@@ -268,6 +270,19 @@ public class SeitenSO extends MList<SeiteSO> {
         return ret;
     }
     
+    /**
+     * @param langs -
+     * @param book -
+     * @param results -
+     * @see SeiteSO#linksTo(List)
+     */
+    public void linksTo(List<String> langs, BookSO book, TreeSet<SeiteSO> results) {
+        forEach(seite -> {
+            results.addAll(book.getSeiten().findLink(seite.getId(), langs));
+            seite.getSeiten().linksTo(langs, book, results); // recursive
+        });
+    }
+
     public List<TreeItem> getTreeItems(String lang, String currentPageId, TreeItem parent) {
         List<TreeItem> ret = new ArrayList<>();
         for (SeiteSO seite : this) {

@@ -116,8 +116,8 @@ editTags=Edit tags
 whatChanged=What did you change?
 lastChangeInfo=last change from $d by $u$c
 lastChangeInfoForBook=last change of page "<a href="$h">$p</a>" from $d by $u$c
-pageLinkToThisPage=The page below links to this page. It is recommended to correct the links first so that no broken links are created.
-pagesLinkToThisPage=The pages below link to this page. It is recommended to correct the links first so that no broken links are created.
+pageLinkToThisPage=The page below links to this page (or subpage(s)). It is recommended to correct the links first so that no broken links are created.
+pagesLinkToThisPage=The pages below link to this page (or subpage(s)). It is recommended to correct the links first so that no broken links are created.
 helpKeys=Help keys
 allHelpKeys=All help keys
 updateOnlineHelp=Update online help

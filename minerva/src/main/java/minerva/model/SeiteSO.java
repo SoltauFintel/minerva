@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.jsoup.Jsoup;
@@ -37,7 +39,7 @@ import minerva.seite.move.MoveFile;
 import minerva.subscription.SubscriptionService;
 import minerva.subscription.TPage;
 
-public class SeiteSO implements ISeite {
+public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     public static final String META_SUFFIX = ".meta";
     public static final String ROOT_ID = "root";
     private final BookSO book;
@@ -495,10 +497,12 @@ public class SeiteSO implements ISeite {
 
     /**
      * @param langs -
-     * @return all pages that contain a link to this page
+     * @return all pages that contain a link to this page (or subpage(s))
      */
-    public List<SeiteSO> linksTo(List<String> langs) {
-        return book.getSeiten().findLink(getId(), langs);
+    public TreeSet<SeiteSO> linksTo(List<String> langs) {
+        TreeSet<SeiteSO> ret = book.getSeiten().findLink(getId(), langs);
+        seiten.linksTo(langs, book, ret);
+        return ret;
     }
     
     /**
@@ -634,5 +638,27 @@ public class SeiteSO implements ISeite {
                 return ret;
             }
         };
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        SeiteSO other = (SeiteSO) obj;
+        return Objects.equals(getId(), other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
+
+    @Override
+    public int compareTo(SeiteSO b) {
+        return getTitle().compareToIgnoreCase(b.getTitle());
     }
 }

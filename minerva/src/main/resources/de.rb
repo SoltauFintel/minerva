@@ -115,8 +115,8 @@ editTags=tags bearbeiten
 whatChanged=Was haben Sie geändert?
 lastChangeInfo=letzte Änderung am $d durch $u$c
 lastChangeInfoForBook=letzte Änderung von Seite "<a href="$h">$p</a>" am $d durch $u$c
-pageLinkToThisPage=Die unten stehende Seite verlinkt auf die zu löschende Seite. Es wird empfohlen erst die Links zu korrigieren, damit keine Broken Links entstehen.
-pagesLinkToThisPage=Die unten stehenden Seiten verlinken auf die zu löschende Seite. Es wird empfohlen erst die Links zu korrigieren, damit keine Broken Links entstehen.
+pageLinkToThisPage=Die unten stehende Seite verlinkt auf die zu löschende Seite (oder Unterseite(n)). Es wird empfohlen erst die Links zu korrigieren, damit keine Broken Links entstehen.
+pagesLinkToThisPage=Die unten stehenden Seiten verlinken auf die zu löschende Seite (oder Unterseite(n)). Es wird empfohlen erst die Links zu korrigieren, damit keine Broken Links entstehen.
 helpKeys=Hilfe-Keys
 allHelpKeys=Alle Hilfe-Keys
 updateOnlineHelp=Online-Hilfe aktualisieren
