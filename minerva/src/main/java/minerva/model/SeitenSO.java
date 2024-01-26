@@ -19,7 +19,7 @@ import minerva.seite.Note;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
 import minerva.seite.TreeItem;
-import minerva.seite.link.LinkService;
+import minerva.seite.link.ExtractLinksContext;
 import minerva.seite.note.NoteWithSeite;
 
 public class SeitenSO extends MList<SeiteSO> {
@@ -254,18 +254,16 @@ public class SeitenSO extends MList<SeiteSO> {
         return test != null && (max == null || test.getDate().compareTo(max.getDate()) > 0);
     }
 
-    public TreeSet<SeiteSO> findLink(String href, List<String> langs) {
+    public TreeSet<SeiteSO> findLink(String href, List<String> langs, ExtractLinksContext xlctx) {
         TreeSet<SeiteSO> ret = new TreeSet<>();
         for (SeiteSO seite : this) {
             for (String lang : langs) {
-                Logger.debug("extracting links: " + seite.getId() + " " + lang);
-                if (LinkService.extractLinks(seite.getContent().getString(lang), false).stream()
-                        .anyMatch(link -> link.getHref().equals(href))) {
+                if (xlctx.extractLinks(seite, lang).stream().anyMatch(link -> link.getHref().equals(href))) {
                     ret.add(seite);
                     break;
                 }
             }
-            ret.addAll(seite.getSeiten().findLink(href, langs)); // recursive
+            ret.addAll(seite.getSeiten().findLink(href, langs, xlctx)); // recursive
         }
         return ret;
     }
@@ -276,10 +274,10 @@ public class SeitenSO extends MList<SeiteSO> {
      * @param results -
      * @see SeiteSO#linksTo(List)
      */
-    public void linksTo(List<String> langs, BookSO book, TreeSet<SeiteSO> results) {
+    public void linksTo(List<String> langs, BookSO book, ExtractLinksContext xlctx, TreeSet<SeiteSO> results) {
         forEach(seite -> {
-            results.addAll(book.getSeiten().findLink(seite.getId(), langs));
-            seite.getSeiten().linksTo(langs, book, results); // recursive
+            results.addAll(book.getSeiten().findLink(seite.getId(), langs, xlctx));
+            seite.getSeiten().linksTo(langs, book, xlctx, results); // recursive
         });
     }
 

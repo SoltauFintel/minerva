@@ -33,6 +33,7 @@ import minerva.seite.NotifyWatchers;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
 import minerva.seite.TocMacroPage;
+import minerva.seite.link.ExtractLinksContext;
 import minerva.seite.move.ChangeFile;
 import minerva.seite.move.IMoveFile;
 import minerva.seite.move.MoveFile;
@@ -500,8 +501,9 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
      * @return all pages that contain a link to this page (or subpage(s))
      */
     public TreeSet<SeiteSO> linksTo(List<String> langs) {
-        TreeSet<SeiteSO> ret = book.getSeiten().findLink(getId(), langs);
-        seiten.linksTo(langs, book, ret);
+        ExtractLinksContext xlctx = new ExtractLinksContext();
+        TreeSet<SeiteSO> ret = book.getSeiten().findLink(getId(), langs, xlctx);
+        seiten.linksTo(langs, book, xlctx, ret);
         return ret;
     }
     
