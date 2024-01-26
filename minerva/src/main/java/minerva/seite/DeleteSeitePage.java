@@ -18,6 +18,7 @@ public class DeleteSeitePage extends SPage {
         header(n("deletePage"));
 
         if ("d".equals(ctx.queryParam("m"))) {
+            workspace.getPapierkorb().push(seite);
             seite.remove();
             seite.log("page deleted");
 

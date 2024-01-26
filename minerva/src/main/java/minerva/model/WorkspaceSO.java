@@ -146,4 +146,8 @@ public class WorkspaceSO {
     public void save(CommitMessage commitMessage) {
         MinervaWebapp.factory().getBackendService().saveAll(commitMessage, this);
     }
+    
+    public PapierkorbSO getPapierkorb() {
+        return new PapierkorbSO(this);
+    }
 }

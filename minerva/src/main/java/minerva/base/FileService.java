@@ -144,6 +144,26 @@ public class FileService {
         }
     }
 
+    public static void moveFiles(File fromDir, File toDir) {
+        File[] files = fromDir.listFiles();
+        if (files == null) {
+            return;
+        }
+        for (File file : files) {
+            if (file.isFile()) {
+                toDir.mkdirs();
+                try {
+                    Files.move(file.toPath(), new File(toDir, file.getName()).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    Logger.error(e);
+                    throw new RuntimeException("Can't move file. See log.");
+                }
+            } else if (file.isDirectory()) {
+                moveFiles(file, new File(toDir, file.getName()));
+            }
+        }
+    }
+
     public static void zip(File folder, File zipFile) {
     	zipFile.delete();
         int startOfFilenameWithRelativePath = folder.getAbsolutePath().length() + 1;

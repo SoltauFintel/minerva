@@ -64,6 +64,9 @@ public class MenuPage extends WPage {
 			menu(list, "Broken Mappings", "fa-chain-broken", "/w/:branch/broken-mappings");
 		}
 		export(booksOk, list);
+        if (fac.isCustomerVersion()) {
+            menu(list, "papierkorb", "fa-recycle", "/w/:branch/recycle");
+        }
 		workspace(list);
 		additionalMenuItems(list);
 		onlinehelp(fac, booksOk, list);
