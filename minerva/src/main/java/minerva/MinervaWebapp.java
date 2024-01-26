@@ -146,7 +146,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/help-keys", AllHelpKeysPage.class);
         get("/w/:branch/history", WorkspaceHistoryPage.class);
         get("/w/:branch/index", IndexWorkspaceAction.class);
-        get("/w/:branch/search", SearchPage.class);
+        form("/w/:branch/search", SearchPage.class);
         get("/w/:branch/push-data", PushDataAction.class);
         get("/w/:branch/language", SelectLanguageAction.class);
         get("/w/:branch/broken-mappings", BrokenMappingsPage.class);

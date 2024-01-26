@@ -2,11 +2,9 @@
 
 <div class="row"> 
     <div class="col-lg-12">
-        <h1 class="page-header">{{N.volltextsuche}}</h1>
+        <h1 class="page-header">{{N.volltextsuche}}: {{q}}</h1>
 
-        {{if hasq}}
-            <p>{{N.treffer}}: {{n}}</p>
-        {{/if}}
+        <p>{{N.treffer}}: {{n}}</p>
         
         <ul>
             {{each L in langs}}

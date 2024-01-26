@@ -87,9 +87,9 @@
 					<li><a href="/auth/logout" class="logoutBtn navbtn">{{abmelden}} ({{user}}){{if isAdmin}}*{{/if}}</a></li>
                     <li><a href="/w/{{branch}}/language?m=toggle" class="navbtn noLRPadding"><img src="/{{guiLanguage}}.svg" style="width: 18px;"/></a></li>
 				</ul>
-				<form action="/w/{{branch}}/search" class="navbar-form navbar-right">
+				<form action="/w/{{branch}}/search" class="navbar-form navbar-right" method="post">
 					<div class="input-group">
-						<input type="text" class="form-control" id="q" name="q" placeholder="{{searchPlaceholder}}" style="width: 180px;"/>
+						<input type="text" class="form-control" style="width: 180px;" id="q" name="q" value="{{q}}" placeholder="{{searchPlaceholder}}"/>
 						<span class="input-group-btn">
 							<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
 						</span>
