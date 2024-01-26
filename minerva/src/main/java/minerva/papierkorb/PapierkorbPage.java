@@ -17,28 +17,26 @@ public class PapierkorbPage extends WPage {
 
         header(n("papierkorb"));
         DataList list = list("objects");
+        String pageLanguage = workspace.getUser().getPageLanguage();
         for (WeggeworfeneSeite ws : objects) {
-            String bookTitle = "?";
-            try {
-                bookTitle = workspace.getBooks().byFolder(ws.getBookFolder()).getTitle();
-            } catch (Exception ignore) {
-            }
-            
+            String title = ws.getTitle().getString(pageLanguage);
             DataMap map = list.add();
             map.put("id", esc(ws.getId()));
-            map.put("bookFolder", esc(ws.getBookFolder()));
-            map.put("bookTitle", esc(bookTitle));
             map.put("date", esc(ws.getDeleteDate()));
             map.put("by", esc(ws.getDeletedBy()));
-            map.put("title", esc(ws.getTitle().getString(workspace.getUser().getPageLanguage())));
-            map.put("parentTitle", esc(ws.getParentId() == null ? "" : ws.getParentTitle().getString(workspace.getUser().getPageLanguage())));
+            map.put("title", esc(title));
+            map.put("parentTitle", esc(ws.getParentId() == null ? "" : ws.getParentTitle().getString(pageLanguage)));
             int n = pso.countSubpages(ws);
             map.putInt("n", n);
             map.put("hasSubpages", n > 0);
             map.put("subpageslink", "/w/" + branch + "/recycle/subpages/" + ws.getId());
             map.put("poplink", "/w/" + branch + "/recycle/pop/" + ws.getId());
             map.put("deletelink", "/w/" + branch + "/recycle/delete/" + ws.getId());
+            String s = n == 0 ? "" : ".subpages";
+            map.put("confirmpop", esc(n("recycle.confirm.pop" + s).replace("$t", title)));
+            map.put("confirmdelete", esc(n("recycle.confirm.delete" + s).replace("$t", title)));
         }
         putSize("n", objects);
+        put("empty", objects.isEmpty());
     }
 }

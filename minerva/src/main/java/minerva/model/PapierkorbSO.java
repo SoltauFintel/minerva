@@ -15,6 +15,7 @@ import minerva.base.StringService;
 import minerva.config.MinervaFactory;
 import minerva.papierkorb.WSeite;
 import minerva.papierkorb.WeggeworfeneSeite;
+import minerva.seite.Seite;
 
 public class PapierkorbSO {
     private final WorkspaceSO workspace;
@@ -115,13 +116,61 @@ public class PapierkorbSO {
         }
     }
     
-    public void pop(WeggeworfeneSeite ws, SeitenSO parent, BookSO bookSO) {
+    public String pop(String id) {
+        WeggeworfeneSeite ws = byId(id);
+        BookSO book = getBook(ws);
+        String parentId = getParentId(book, ws);
+        pop(ws, parentId, book);
+        
+        String pl = workspace.getUser().getPageLanguage();
+        String title = ws.getTitle().getString(pl);
+        Logger.info(workspace.getUser().getLogin() + " | " + workspace.getBranch() + " | Restored page " + ws.getId() + " \"" + title + "\"");
+        return "/s/" + workspace.getBranch() + "/" + book.getBook().getFolder() + "/" + ws.getId();
+    }
+    
+    private BookSO getBook(WeggeworfeneSeite ws) {
+        try {
+            return workspace.getBooks().byFolder(ws.getBookFolder());
+        } catch (Exception e) {
+            BookSO book = workspace.getBooks().get(0);
+            Logger.warn("RecycleAction (" + ws.getId() + "): Book " + ws.getBookFolder()
+                    + " does not exist. Take other book: " + book.getBook().getFolder());
+            return book;
+        }
+    }
+
+    private String getParentId(BookSO book, WeggeworfeneSeite ws) {
+        if (ws.getParentId() != null) {
+            SeiteSO seite = book._seiteById(ws.getParentId());
+            if (seite != null) {
+                return seite.getId();
+            } else {
+                String pl = workspace.getUser().getPageLanguage();
+                Logger.warn("pop(" + ws.getId() + ").getParent: Parent page \"" + ws.getParentTitle().getString(pl)
+                        + "\" does not exist anymore. The restored page is inserted at the top book level.");
+            }
+        }
+        return SeiteSO.ROOT_ID; // take book
+    }
+
+    public void pop(WeggeworfeneSeite ws, String parentId, BookSO bookSO) {
         String id = ws.getId();
         Logger.info(workspace.getUser().getLogin() + " | Papierkorb pop " + id + " \"" + ws.getTitle().getString(langs.get(0)) + "\"");
         moveFiles(new File(folder + "/" + id + "/seite"), new File(bookSO.getFolder()));
         File f = new File(dnPapierkorbJson(id));
         f.delete();
         FileService.deleteFolder(f.getParentFile());
+        // TODO position
+        
+        File meta = new File(bookSO.getFolder() + "/" + id + ".meta");
+        Seite seite = FileService.loadJsonFile(meta, Seite.class);
+        if (!parentId.equals(seite.getParentId())) {
+            Logger.info("pop(): change parent ID from " + seite.getParentId() + " to " + parentId);
+            seite.setParentId(parentId);
+            FileService.saveJsonFile(meta, seite);
+        }
+        
+        workspace.pull();
     }
     
     public void delete(String id) {
@@ -132,5 +181,10 @@ public class PapierkorbSO {
     
     private String dnPapierkorbJson(String dir) {
         return folder + "/" + dir + "/papierkorb.json";
+    }
+
+    public WeggeworfeneSeite byId(String id) {
+        // TODO optimierbar
+        return list().stream().filter(i -> i.getId().equals(id)).findFirst().orElseThrow(() -> new RuntimeException("Recycle bin entry does not exist!"));
     }
 }

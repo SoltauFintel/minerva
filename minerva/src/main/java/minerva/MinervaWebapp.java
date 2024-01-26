@@ -45,7 +45,10 @@ import minerva.export.template.ExportTemplateSetsPage;
 import minerva.image.ImageDownloadAction;
 import minerva.image.ImageUploadAction;
 import minerva.migration.MigrationPage;
+import minerva.papierkorb.DeleteWeggeworfeneSeiteAction;
 import minerva.papierkorb.PapierkorbPage;
+import minerva.papierkorb.PapierkorbUnterseitenPage;
+import minerva.papierkorb.RecycleAction;
 import minerva.persistence.gitlab.GitlabAuthAction;
 import minerva.persistence.gitlab.GitlabAuthCallbackAction;
 import minerva.preview.PreviewBookPage;
@@ -149,6 +152,9 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/broken-mappings", BrokenMappingsPage.class);
         get("/w/:branch/activate-f-s-mode", ActivateFSModeAction.class);
         form("/w/:branch/deactivate-f-s-mode", DeactivateFSModePage.class);
+        get("/w/:branch/recycle/pop/:id", RecycleAction.class);
+        get("/w/:branch/recycle/delete/:id", DeleteWeggeworfeneSeiteAction.class);
+        get("/w/:branch/recycle/subpages/:id", PapierkorbUnterseitenPage.class);
         get("/w/:branch/recycle", PapierkorbPage.class);
         get("/w/:branch/menu", MenuPage.class);
 

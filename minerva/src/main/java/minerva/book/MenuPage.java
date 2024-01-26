@@ -48,7 +48,7 @@ public class MenuPage extends WPage {
     private void menu() {
 		MinervaFactory fac = MinervaWebapp.factory();
 		boolean isAdmin = "1".equals(ctx.req.session().attribute("admin"));
-		boolean booksOk = !workspace.getBooks().isEmpty();
+		boolean booksOk = workspace.getBooks() != null && !workspace.getBooks().isEmpty();
 		DataList list = list("commands");
 		menu(list, "myTasks", "fa-inbox", "/w/:branch/my-tasks");
 		menu(list, "preview", "fa-thumbs-o-up bluebook", "/p/:branch");
