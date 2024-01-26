@@ -38,6 +38,8 @@
                 {{/each}}
             </table>
             <p>{{N.anzahl}}: {{n}}</p>
+            <p class="mt2" style="text-align: right;"><a href="/w/{{branch}}/recycle/delete/_all" class="btn btn-xs btn-danger"
+                onclick="return confirm('{{N.ConfirmPapierkorbLeeren}}')"><i class="fa fa-trash-o"></i> {{N.PapierkorbLeeren}}</a>
         {{/if}}
     </div>
 </div>

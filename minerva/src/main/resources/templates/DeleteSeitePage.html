@@ -6,7 +6,7 @@
         
         <h3 class="h3max">{{N.deletePage1}} "{{pageTitle}}".</h3>
         
-        <p>{{N.deletePage2}}</p>
+        <p>{{N.deletePage2}}{{if not gitlab}}<br/>{{N.deletePage3}}{{/if}}</p>
         
         {{if hasLinkingPages}}
             <p>{{pagesLinkToThisPage}}</p>

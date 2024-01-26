@@ -160,7 +160,7 @@ public class PapierkorbSO {
         File f = new File(dnPapierkorbJson(id));
         f.delete();
         FileService.deleteFolder(f.getParentFile());
-        // TODO position
+        // Position müsste eigentlich ggf. korrigiert werden. Ich lass das erstmal.
         
         File meta = new File(bookSO.getFolder() + "/" + id + ".meta");
         Seite seite = FileService.loadJsonFile(meta, Seite.class);
@@ -175,8 +175,15 @@ public class PapierkorbSO {
     
     public void delete(String id) {
         Logger.info(workspace.getUser().getLogin() + " | Papierkorb delete " + id);
-        File f = new File(dnPapierkorbJson(id));
-        FileService.deleteFolder(f.getParentFile());
+        File dir = new File(dnPapierkorbJson(id)).getParentFile();
+        if ("_all".equals(id)) { // Papierkorb leeren
+            dir = dir.getParentFile();
+        }
+        if (dir.isDirectory()) {
+            FileService.deleteFolder(dir);
+        } else {
+            Logger.error("Recycle bin entry #" + id + " does not exist! dir: " + dir.getAbsolutePath());
+        }
     }
     
     private String dnPapierkorbJson(String dir) {

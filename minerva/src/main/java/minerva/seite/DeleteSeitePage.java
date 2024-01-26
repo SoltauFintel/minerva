@@ -40,6 +40,7 @@ public class DeleteSeitePage extends SPage {
             put("hasLinkingPages", !list.isEmpty());
             put("pagesLinkToThisPage", list.size() == 1 ? n("pageLinkToThisPage") : n("pagesLinkToThisPage"));
             render = true;
+            // TODO Im Gitlab-delayedPush Modus ist das Löschen endgültig, sofern am Ende nicht alles verworfen wird.
         }
     }
 }
