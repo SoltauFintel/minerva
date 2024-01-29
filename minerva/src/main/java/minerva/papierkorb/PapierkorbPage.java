@@ -6,6 +6,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.model.PapierkorbSO;
+import minerva.user.UserAccess;
 import minerva.workspace.WPage;
 
 public class PapierkorbPage extends WPage {
@@ -23,7 +24,7 @@ public class PapierkorbPage extends WPage {
             DataMap map = list.add();
             map.put("id", esc(ws.getId()));
             map.put("date", esc(ws.getDeleteDate()));
-            map.put("by", esc(ws.getDeletedBy()));
+            map.put("by", esc(UserAccess.login2RealName(ws.getDeletedBy())));
             map.put("title", esc(title));
             map.put("parentTitle", esc(ws.getParentId() == null ? "" : ws.getParentTitle().getString(pageLanguage)));
             int n = pso.countSubpages(ws);
