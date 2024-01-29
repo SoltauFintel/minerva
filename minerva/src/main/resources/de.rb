@@ -278,3 +278,4 @@ ConfirmPapierkorbLeeren=Papierkorb leeren?
 PapierkorbLeeren=Papierkorb leeren
 titleSearch=Titelsuche
 exitPreview=Vorschau beenden
+toBooks=zu den Büchern

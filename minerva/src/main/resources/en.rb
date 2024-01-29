@@ -278,3 +278,4 @@ ConfirmPapierkorbLeeren=Clear recycle bin? This can not be undone.
 PapierkorbLeeren=Clear recycle bin
 titleSearch=title search
 exitPreview=Exit preview
+toBooks=to books

@@ -61,13 +61,11 @@
         			<li><a href="/w/{{branch}}/menu" class="navbtn"><i class="fa fa-navicon"></i> {{Menu}}</a></li>
 					{{if hasBook}}
 						<li class="line-vertical"/>
-		        
 		      			{{each b in booksForMenu}}
 		        			<li><a href="/b/{{branch}}/{{b.folder}}" class="navbtn"><i class="fa fa-book greenbook"></i> {{b.title}}</a></li>
 		        		{{/each}}
 		        	{{else if hasPreviewBooks}}
 						<li class="line-vertical"/>
-		        
                         <li><a href="/" class="navbtn"><i class="fa fa-times-circle greenbook" title="{{N.exitPreview}}"></i></a></li>
 		      			<li><a href="/p/{{branch}}" class="navbtn"><i class="fa fa-thumbs-o-up bluebook" title="{{N.preview}}"></i></a></li>
 		      			{{each b in previewBooks}}
@@ -75,6 +73,7 @@
 		        		{{/each}}
 		        	{{else if hasMenuItems}}
 						<li class="line-vertical"/>
+                        <li><a href="/" class="navbtn"><i class="fa fa-times-circle greenbook" title="{{N.toBooks}}"></i></a></li>
 		        		{{each m in menuItems}}
 		        			<li><a href="{{m.link}}" class="navbtn">{{m.title}}</a></li>
 		        		{{/each}}
