@@ -155,7 +155,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/recycle/pop/:id", RecycleAction.class);
         get("/w/:branch/recycle/delete/:id", DeleteWeggeworfeneSeiteAction.class);
         get("/w/:branch/recycle/subpages/:id", PapierkorbUnterseitenPage.class);
-        get("/w/:branch/recycle", PapierkorbPage.class);
+        form("/w/:branch/recycle", PapierkorbPage.class);
         get("/w/:branch/menu", MenuPage.class);
 
         // Export

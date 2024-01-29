@@ -1,6 +1,7 @@
 package minerva.papierkorb;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
@@ -13,8 +14,18 @@ public class PapierkorbPage extends WPage {
 
     @Override
     protected void execute() {
+        String q = ctx.formParam("qr");
+        if (isPOST()) {
+            ctx.redirect("/w/" + branch + "/recycle?qr=" + u(q));
+            return;
+        }
+        
         PapierkorbSO pso = workspace.getPapierkorb();
         List<WeggeworfeneSeite> objects = pso.list();
+        
+        if (q != null && !q.isBlank()) {
+            objects = objects.stream().filter(s -> s.contains(q)).collect(Collectors.toList());
+        }
 
         header(n("papierkorb"));
         DataList list = list("objects");
@@ -39,5 +50,6 @@ public class PapierkorbPage extends WPage {
         }
         putSize("n", objects);
         put("empty", objects.isEmpty());
+        put("qr", esc(q));
     }
 }

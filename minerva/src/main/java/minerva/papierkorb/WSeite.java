@@ -25,4 +25,8 @@ public class WSeite {
     public List<WSeite> getUnterseiten() {
         return unterseiten;
     }
+
+    public boolean contains(String q) {
+        return getTitle().contains(q) || getUnterseiten().stream().anyMatch(ws -> ws.contains(q));
+    }
 }

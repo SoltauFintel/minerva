@@ -276,3 +276,4 @@ recycle.confirm.delete.subpages=Endgültiges Löschen der Seite \'$t\' inkl. Unt
 PapierkorbLeer=Der Papierkorb ist leer.
 ConfirmPapierkorbLeeren=Papierkorb leeren?
 PapierkorbLeeren=Papierkorb leeren
+titleSearch=Titelsuche

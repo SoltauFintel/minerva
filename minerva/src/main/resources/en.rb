@@ -276,3 +276,4 @@ PapierkorbLeer=No entries.
 PapierkorbLeeren=Clear recycle bin? This can not be undone.
 ConfirmPapierkorbLeeren=Clear recycle bin? This can not be undone.
 PapierkorbLeeren=Clear recycle bin
+titleSearch=title search

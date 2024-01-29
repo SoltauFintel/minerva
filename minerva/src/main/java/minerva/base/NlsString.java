@@ -22,4 +22,18 @@ public class NlsString {
         nls.clear();
         nls.putAll(title.nls);
     }
+    
+    public boolean contains(String q) {
+        try {
+            q = q.toLowerCase();
+            for (String t : nls.values()) {
+                if (t.toLowerCase().contains(q)) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

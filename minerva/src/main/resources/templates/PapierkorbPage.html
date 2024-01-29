@@ -7,6 +7,14 @@
         {{if empty}}
             <p>{{N.PapierkorbLeer}}</p>
         {{else}}
+            <form action="/w/{{branch}}/recycle" method="post">
+                <div class="input-group" style="display: block;">
+                    <input type="text" class="form-control" style="width: 180px;" id="qr" name="qr" value="{{qr}}" placeholder="{{N.titleSearch}}"/>
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </form>
             <table class="table table-striped table-hover ntabelle mt2">
                 <tr>
                     <th>{{N.deleteDate}}</th>
@@ -38,8 +46,10 @@
                 {{/each}}
             </table>
             <p>{{N.anzahl}}: {{n}}</p>
-            <p class="mt2" style="text-align: right;"><a href="/w/{{branch}}/recycle/delete/_all" class="btn btn-xs btn-danger"
-                onclick="return confirm('{{N.ConfirmPapierkorbLeeren}}')"><i class="fa fa-trash-o"></i> {{N.PapierkorbLeeren}}</a>
+            <p class="mt2" style="text-align: right;">
+                <a href="/w/{{branch}}/recycle/delete/_all" class="btn btn-xs btn-danger"
+                    onclick="return confirm('{{N.ConfirmPapierkorbLeeren}}')"><i class="fa fa-trash-o"></i> {{N.PapierkorbLeeren}}</a>
+            </p>
         {{/if}}
     </div>
 </div>
