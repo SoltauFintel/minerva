@@ -63,6 +63,7 @@ public class BookPage extends BPage implements Uptodatecheck {
         // Wegen der Rekursion ist eine Template-Datei nicht sinnvoll.
         gliederung.append("<ul>\n");
         String hasNote = " <i class=\"fa fa-comment-o has-note\" title=\"" + n("hasNote") + "\"></i>";
+        String hasNoteForMe = " <i class=\"fa fa-comment has-note\" title=\"" + n("hasNote") + "\"></i>";
         for (SeiteSO seite : seiten) {
             int hasContent = seite.hasContent(lang);
             if (hasContent > 0 || allPages) {
@@ -80,7 +81,7 @@ public class BookPage extends BPage implements Uptodatecheck {
                 gliederung.append(title);
                 gliederung.append("</a>");
                 if (!seite.getSeite().getNotes().isEmpty()) {
-                    gliederung.append(hasNote);
+                	gliederung.append(notesForMe(seite) ? hasNoteForMe : hasNote);
                 }
                 gliederung.append("</li>\n");
                 
@@ -89,6 +90,12 @@ public class BookPage extends BPage implements Uptodatecheck {
         }
         gliederung.append("</ul>\n");
     }
+
+	private boolean notesForMe(SeiteSO seite) {
+		String login = user.getLogin();
+		return seite.getSeite().getNotes().stream()
+				.anyMatch(note -> !note.isDone() && note.getPersons().contains(login));
+	}
     
     private boolean hasReleaseNotesBtn() {
         if (!MinervaWebapp.factory().isGitlab()) {
