@@ -11,9 +11,9 @@ public class LoggedOutPage extends Page {
     
     @Override
     protected void execute() {
-        String al = ctx.req.headers("Accept-Language");
-        Logger.debug("LoggedOutPage Accept-Language: " + al);
-        if (al.startsWith("de")) {
+        String al = MinervaAuth.browserLanguage;
+        Logger.info("LoggedOutPage browser language: " + al); // XXX -> .debug
+        if (al != null && al.startsWith("de")) {
             lang = "de";
         } else {
             lang = "en";

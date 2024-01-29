@@ -17,6 +17,7 @@ import minerva.model.UserSO;
 import minerva.user.User;
 
 public class MinervaAuth extends AbstractAuth {
+    public static String browserLanguage = null;
     
     public MinervaAuth() {
         super(new NoOpRememberMe(), new MinervaAuthRoutes());
@@ -25,6 +26,13 @@ public class MinervaAuth extends AbstractAuth {
     @Override
     public void filter(WebContext ctx) {
         super.filter(ctx);
+        
+        if (browserLanguage == null) {
+            browserLanguage = ctx.req().headers("Accept-Language");
+            if (browserLanguage != null) {
+                browserLanguage = browserLanguage.toLowerCase();
+            }
+        }
 
         StateSO stateSO = StatesSO.get(ctx.req().session().id());
         if (stateSO != null) {

@@ -12,9 +12,9 @@ public class User {
     private String mailAddress;
     private boolean exportAllowed;
     /** The user has a preferred language. That will be used for the GUI. */
-    private String guiLanguage = MinervaWebapp.factory().getLanguages().get(0);
+    private String guiLanguage = MinervaWebapp.factory().getInitialLanguage();
     /** The current language tab for a page. */
-    private String pageLanguage = MinervaWebapp.factory().getLanguages().get(0);
+    private String pageLanguage = MinervaWebapp.factory().getInitialLanguage();
     private ExportUserSettings export;
     private final List<String> favorites = new ArrayList<>();
     private final List<String> watchlist = new ArrayList<>();
