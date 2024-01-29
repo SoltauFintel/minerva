@@ -1,4 +1,4 @@
-{{master: master}}
+{{master: master_jqueryoben}}
 
 <div class="row"> 
     <div class="col-lg-12">
@@ -12,7 +12,7 @@
             </div>
         {{/if}}
 
-        <form action="{{viewlink}}/add-note?parent={{parentId}}" class="form-horizontal mt3" method="post">
+        <form action="{{viewlink}}/add-note?parent={{parentId}}" class="editorform form-horizontal mt3" method="post">
             <fieldset>
                 <div class="form-group">
                     <label for="text1" class="col-lg-1 control-label">{{N.note}}</label>
@@ -43,3 +43,13 @@
         </form>
     </div>
 </div>
+
+<script>
+$(window).on('beforeunload', function() {
+    return 'Any changes will be lost';  {{-- // browser shows its own text --}}
+});
+
+$(document).on('submit', 'form.editorform', function(event) {  {{-- // allow Save button to leave without above question --}}
+    $(window).off('beforeunload');
+});
+</script>

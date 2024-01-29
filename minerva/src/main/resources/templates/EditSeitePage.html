@@ -36,7 +36,7 @@
                 class="{{L.LANG}}">{{N.language}} {{L.LANG}}</a></li>
         {{/each}}
     </ul>
-    <form class="form-horizontal" action="{{editlink}}" method="POST">
+    <form class="editorform form-horizontal" action="{{editlink}}" method="POST">
         <fieldset>
             <input type="hidden" id="version" name="version" value="{{version}}">
             <div class="tab-content">
@@ -143,4 +143,12 @@ $('#langTabs a').click(function (e) {
     
     $.get("/w/{{branch}}/language?m=page&lang=" + e.target.hash.substring(1));
 })
+
+$(window).on('beforeunload', function() {
+    return 'Any changes will be lost';  {{-- // browser shows its own text --}}
+});
+
+$(document).on('submit', 'form.editorform', function(event) {  {{-- // allow Save button to leave without above question --}}
+    $(window).off('beforeunload');
+});
 </script>
