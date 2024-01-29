@@ -66,6 +66,7 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
     }
 
     private void fill2(List<Task> tasks, String branch, String login, TaskPriority showOnlyPrio, DataList list) {
+    	int maxlen = 220;
         for (Task task : tasks) {
             if (!user.getTaskPriority(task.getId()).equals(showOnlyPrio)) {
                 continue;
@@ -75,8 +76,8 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
             map.put("user", esc(UserAccess.login2RealName(task.getLogin())));
             map.put("date", esc(task.getDateTime()));
             String text = task.getText();
-            if (text.length() > 113) {
-                map.put("text1", makeClickableLinks(esc(cutOutsideLinks(text, 110))));
+            if (text.length() > maxlen + 3) {
+                map.put("text1", makeClickableLinks(esc(cutOutsideLinks(text, maxlen))));
                 map.put("hasMoreText", true);
             } else {
                 map.put("text1", makeClickableLinks(esc(text)));
