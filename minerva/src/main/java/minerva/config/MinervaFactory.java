@@ -3,8 +3,6 @@ package minerva.config;
 import java.io.File;
 import java.util.List;
 
-import org.pmw.tinylog.Logger;
-
 import minerva.access.CommitMessage;
 import minerva.auth.MinervaAuth;
 import minerva.base.FileService;
@@ -71,13 +69,7 @@ public class MinervaFactory {
     }
     
     public String getInitialLanguage() {
-        if (MinervaAuth.browserLanguage == null) {
-            Logger.info("getInitialLanguage (0) " + languages.get(0)); // XXX
-            return languages.get(0);
-        } else {
-            Logger.info("getInitialLanguage (BL) " + MinervaAuth.browserLanguage); // XXX
-            return MinervaAuth.browserLanguage;
-        }
+        return MinervaAuth.browserLanguage == null ? languages.get(0) : MinervaAuth.browserLanguage;
     }
 
     public BackendService getBackendService() {
