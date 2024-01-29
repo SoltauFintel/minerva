@@ -151,4 +151,33 @@ $(window).on('beforeunload', function() {
 $(document).on('submit', 'form.editorform', function(event) {  {{-- // allow Save button to leave without above question --}}
     $(window).off('beforeunload');
 });
+
+$(window).on('unload', function() {
+    {{each L in languages}}
+        localStorage.removeItem('editor{{L.LANG}}.{{id}}');
+    {{/each}}
+});
+
+window.onload = function() {
+    let vorh = false
+    {{each L in languages}}
+        let oldEditor{{L.LANG}} = localStorage.getItem('editor{{L.LANG}}.{{id}}')
+        if (oldEditor{{L.LANG}}) {
+            vorh = true
+        }
+    {{/each}}
+    if (vorh) {
+        if (confirm('{{N.keepOldInput}}')) {
+            {{each L in languages}}
+                editor{{L.LANG}}.setData( oldEditor{{L.LANG}} );
+            {{/each}}
+        }
+    }
+}
+
+setInterval(function() {
+    {{each L in languages}}
+        localStorage.setItem('editor{{L.LANG}}.{{id}}', editor{{L.LANG}}.getData());
+    {{/each}}
+}, 3000);
 </script>

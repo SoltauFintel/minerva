@@ -279,3 +279,4 @@ PapierkorbLeeren=Clear recycle bin
 titleSearch=title search
 exitPreview=Exit preview
 toBooks=to books
+keepOldInput=There are unsaved inputs for this page. Should the unsaved inputs be loaded?

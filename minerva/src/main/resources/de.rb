@@ -279,3 +279,4 @@ PapierkorbLeeren=Papierkorb leeren
 titleSearch=Titelsuche
 exitPreview=Vorschau beenden
 toBooks=zu den Büchern
+keepOldInput=Es gibt ungespeicherte Eingaben für diese Seite. Sollen die ungespeicherten Eingaben geladen werden?
