@@ -21,6 +21,8 @@ public class EditBookPage extends BPage {
             ctx.redirect("/w/" + branch);
         } else {
             header(n("editBook"));
+            put("bookTitlede", book.getBook().getFolder()); // for the case that language "de" isn't configured
+            put("bookTitleen", book.getBook().getFolder());
             langs.forEach(lang -> put("bookTitle" + lang, book.getBook().getTitle().getString(lang)));
             putInt("position", book.getBook().getPosition());
         }
