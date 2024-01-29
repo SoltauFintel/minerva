@@ -70,7 +70,10 @@ public class MenuPage extends WPage {
 		workspace(list);
 		additionalMenuItems(list);
 		onlinehelp(fac, booksOk, list);
-		admin(fac, isAdmin, booksOk, list);
+        admin(fac, isAdmin, booksOk, list);
+        if (booksOk && fac.isCustomerVersion() && !MinervaWebapp.factory().getAdmins().contains(user.getLogin())) {
+            menu(list, "reindex", "fa-refresh", "/w/:branch/index", true);
+        }
 	}
 
 	private void workspace(DataList list) {
