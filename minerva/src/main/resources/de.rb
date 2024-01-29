@@ -277,3 +277,4 @@ PapierkorbLeer=Der Papierkorb ist leer.
 ConfirmPapierkorbLeeren=Papierkorb leeren?
 PapierkorbLeeren=Papierkorb leeren
 titleSearch=Titelsuche
+exitPreview=Vorschau beenden
