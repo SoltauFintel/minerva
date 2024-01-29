@@ -66,7 +66,7 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
     }
 
     private void fill2(List<Task> tasks, String branch, String login, TaskPriority showOnlyPrio, DataList list) {
-    	int maxlen = 220;
+    	int maxlen = 500;
         for (Task task : tasks) {
             if (!user.getTaskPriority(task.getId()).equals(showOnlyPrio)) {
                 continue;
