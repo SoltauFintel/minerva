@@ -12,12 +12,11 @@ public class LoggedOutPage extends Page {
     @Override
     protected void execute() {
         String al = MinervaAuth.browserLanguage;
-        Logger.info("LoggedOutPage browser language: " + al); // XXX -> .debug
-        if (al != null && al.startsWith("de")) {
-            lang = "de";
-        } else {
-            lang = "en";
+        if (!"de".equals(al) && !"en".equals(al)) {
+            al = "en";
         }
+        lang = al;
+        Logger.info(MinervaAuth.browserLanguage + " | LoggedOutPage browser language: " + lang); // XXX -> .debug
         
         put("title", n("loggedOut"));
         put("withRelogin", MinervaWebapp.factory().getConfig().isGitlab());

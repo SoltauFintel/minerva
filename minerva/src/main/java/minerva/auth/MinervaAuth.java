@@ -28,9 +28,11 @@ public class MinervaAuth extends AbstractAuth {
         super.filter(ctx);
         
         if (browserLanguage == null) {
-            browserLanguage = ctx.req().headers("Accept-Language");
-            if (browserLanguage != null) {
-                browserLanguage = browserLanguage.toLowerCase();
+            String bl = ctx.req().headers("Accept-Language");
+            if (bl != null && bl.toLowerCase().startsWith("de")) {
+                browserLanguage = "de";
+            } else {
+                browserLanguage = "en";
             }
         }
 
