@@ -4,13 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.pmw.tinylog.Logger;
 
-import com.google.gson.Gson;
-
 import github.soltaufintel.amalia.rest.REST;
-import github.soltaufintel.amalia.rest.RestResponse;
 import minerva.MinervaWebapp;
 
 public class SubscribersAccess {
@@ -72,16 +68,7 @@ public class SubscribersAccess {
             if (available(subscriber)) {
                 String url = subscriber + "/book6/page/" + page.getId();
                 Logger.info("PUT " + url);
-                new REST(url) {
-                    @Override
-                    protected RestResponse request(HttpEntityEnclosingRequestBase request, Object data) {
-                        try {
-                            return request(request, new Gson().toJson(data), "application/json; charset=cp1252");
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                }.put(page).close();
+                REST.put_cp1252(url, page);
             }
         }
     }
@@ -91,7 +78,7 @@ public class SubscribersAccess {
             if (available(subscriber)) {
                 String url = subscriber + "/book6/page/" + id;
                 Logger.info("DELETE " + url);
-                new REST(url).delete().close();
+                REST.delete(url);
             }
         }
     }
@@ -99,7 +86,7 @@ public class SubscribersAccess {
     private boolean available(String subscriber) {
         String r;
         try {
-            r = new REST(subscriber + "/rest/_ping").get().response();
+            r = REST.get(subscriber + "/rest/_ping");
             if ("pong".equals(r)) {
                 Logger.debug("Subscriber " + subscriber + " is available.");
                 return true;

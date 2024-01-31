@@ -1,17 +1,16 @@
 package minerva.model;
 
+import static github.soltaufintel.amalia.web.action.Escaper.urlEncode;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.pmw.tinylog.Logger;
 
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import github.soltaufintel.amalia.rest.REST;
-import github.soltaufintel.amalia.rest.RestResponse;
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.base.StringService;
 import minerva.search.CreatePageRequest;
@@ -76,8 +75,8 @@ public class SearchSO {
     public void unindex(SeiteSO seite) {
         if (host != null) {
             for (String lang : langs) {
-                String url = "/indexing/" + getSiteName(lang) + "/page?path=" + Escaper.urlEncode(getPath(seite), "");
-                new REST(host + url).delete().close();
+                String path = "/indexing/" + getSiteName(lang) + "/page?path=" + urlEncode(getPath(seite), "");
+                REST.delete(host + path);
             }
         }
     }
@@ -92,18 +91,7 @@ public class SearchSO {
     
     private void post(String url, Object data) {
         if (host != null) {
-            new REST(host + url) {
-                @Override
-                protected RestResponse request(HttpEntityEnclosingRequestBase request, Object data) {
-                    try {
-                        return request(request, new Gson().toJson(data), "application/json; charset=cp1252");
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-            }
-            .post(data)
-            .close();
+            REST.post_cp1252(host + url, data);
         }
     }
     
