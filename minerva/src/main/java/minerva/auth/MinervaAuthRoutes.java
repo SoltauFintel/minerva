@@ -19,6 +19,6 @@ public class MinervaAuthRoutes extends RouteDefinitions implements IAuthRoutes {
 
     @Override
     public RouteHandler getLoginPageRouteHandler() {
-        return getRouteHandler(LoginPage.class);
+        return getRouteHandler(LoginPage.class); // TODO Das ist so nicht gewollt.
     }
 }

@@ -7,6 +7,7 @@ import minerva.MinervaWebapp;
 import minerva.config.BackendService;
 import minerva.user.User;
 
+// TODO Brauch ich das hier eigentlich?
 public class LoginPage extends Page {
 
     @Override
@@ -36,7 +37,7 @@ public class LoginPage extends Page {
         }
     }
     
-    protected String errorUrl() {
+    protected String errorUrl() { // TODO Wer ruft das hier auf?
         return "/login?m=f";
     }
 }
