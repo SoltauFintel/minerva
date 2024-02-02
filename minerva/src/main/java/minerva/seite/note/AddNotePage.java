@@ -41,9 +41,11 @@ public class AddNotePage extends SPage {
     public static List<String> toPersons(Context ctx) {
         List<String> ret = new ArrayList<>();
         String[] persons = ctx.req.queryParamsValues("person");
-        for (int i = 0; i < persons.length; i++) {
-            if (!persons[i].isBlank()) {
-                ret.add(UserAccess.realName2Login(persons[i]));
+        if (persons != null) {
+            for (int i = 0; i < persons.length; i++) {
+                if (!persons[i].isBlank()) {
+                    ret.add(UserAccess.realName2Login(persons[i]));
+                }
             }
         }
         return ret;
