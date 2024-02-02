@@ -20,7 +20,7 @@ public class NotesPage extends SPage implements Uptodatecheck {
     @Override
     protected void execute() {
 		String highlight = ctx.queryParam("highlight");
-        Logger.info(user.getLogin() + " | Notes page for \"" + seite.getTitle() + "\"");
+        Logger.info(user.getLogin() + " | " + branch + " | Notes page for \"" + seite.getTitle() + "\"");
         header(n("notes") + " - " + seite.getTitle());
         put("noteHTML", noteHTML(seite.getSeite().getNotes(), highlight, 1));
         put("hasNotes", !seite.getSeite().getNotes().isEmpty());
