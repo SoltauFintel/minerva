@@ -3,7 +3,6 @@ package minerva.seite;
 import org.pmw.tinylog.Logger;
 
 import minerva.MinervaWebapp;
-import minerva.base.NlsString;
 import minerva.model.SeiteSO;
 import minerva.model.UserSO.LoginAndEndTime;
 import minerva.seite.link.InvalidLinksModel;
@@ -44,16 +43,9 @@ public class EditSeitePage extends ViewSeitePage {
     private void save(String branch, String bookFolder, String id, SeiteSO seiteSO) {
         long start = System.currentTimeMillis();
         int version = Integer.parseInt(ctx.formParam("version"));
-        String comment = getComment();
-        NlsString title = new NlsString();
-        for (String lang : langs) {
-            String LANG = lang.toUpperCase();
-            title.setString(lang, ctx.formParam("titel" + LANG).trim());
-        }
-        
         IPostContentsData data = waitForContent(branch, bookFolder, id, version);
         
-        seiteSO.saveAll(title, data.getContent(), version, comment, langs, start);
+        seiteSO.saveAll(data.getTitle(), data.getContent(), version, data.getComment(), langs, start);
         data.setDone(true);
         
         user.setLastEditedPage(seite.getId());
@@ -69,20 +61,10 @@ public class EditSeitePage extends ViewSeitePage {
         }
     }
 
-    protected String getComment() {
-        String comment = ctx.formParam("comment");
-        if (comment == null) {
-            comment = "";
-        } else {
-            comment = comment.trim();
-        }
-        return comment;
-    }
-
     protected IPostContentsData waitForContent(String branch, String bookFolder, String id, int version) {
         PostContentsData data = null;
+        long max = 1000 * 60 * 2;
         long start = System.currentTimeMillis();
-        long max = 1000 * 60 * 5;
         do {
             data = PostContentsService.get(branch, bookFolder, id, version);
             if (data != null) {

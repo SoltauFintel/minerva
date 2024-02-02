@@ -9,13 +9,16 @@ public class PostContentsData implements IPostContentsData {
     private final String id;
     private final int version;
     private final NlsString content = new NlsString();
+    private final NlsString title = new NlsString();
+    private final String comment;
     private PostContentsData parent;
     private boolean done = false;
     
-    public PostContentsData(String branch, String bookFolder, String id, int version) {
+    public PostContentsData(String branch, String bookFolder, String id, String comment, int version) {
         this.branch = branch;
         this.bookFolder = bookFolder;
         this.id = id;
+        this.comment = comment == null ? "" : comment.trim();
         this.version = version;
     }
 
@@ -31,6 +34,11 @@ public class PostContentsData implements IPostContentsData {
         return id;
     }
 
+    @Override
+    public String getComment() {
+        return comment;
+    }
+
     public int getVersion() {
         return version;
     }
@@ -38,6 +46,11 @@ public class PostContentsData implements IPostContentsData {
     @Override
     public NlsString getContent() {
         return content;
+    }
+
+    @Override
+    public NlsString getTitle() {
+        return title;
     }
 
     public PostContentsData getParent() {

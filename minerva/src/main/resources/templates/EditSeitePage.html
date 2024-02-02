@@ -46,7 +46,6 @@
                             <div class="form-group mt1">
                                 <div>
                                     <input class="form-control titelfeld{{L.LANG}}" type="text" id="titel{{L.LANG}}"
-                                        name="titel{{L.LANG}}"
                                         value="{{L.titel}}" style="font-size: 24pt; height: 50px;" autofocus>
                                 </div>
                             </div>
@@ -61,7 +60,7 @@
             </div>
             <div class="col-lg-12">
                 <div class="form-group" style="text-align: right;">
-                    <input type="text" name="comment" placeholder="{{N.whatChanged}}"
+                    <input type="text" id="comment" placeholder="{{N.whatChanged}}"
                         style="width: 300px; display: inline;" class="form-control">
                     
                     <button id="submit" type="submit" class="btn btn-primary br" style="margin-left: 1em;"
@@ -118,8 +117,16 @@ document.querySelector('#submit').addEventListener('click', () => {
         $.post("{{postcontentslink}}", {
             {{each L in languages}}
                 content{{L.LANG}}: editor{{L.LANG}}.getData(),
+                titel{{L.LANG}}: document.getElementById('titel{{L.LANG}}').value,
             {{/each}}
-            version: document.querySelector('#version').value
+            comment: document.getElementById('comment').value,
+            version: document.getElementById('version').value
+        }).fail(e => {
+            {{each L in languages}}
+                localStorage.setItem('error_editor{{L.LANG}}.{{id}}', editor{{L.LANG}}.getData());
+            {{/each}}
+            console.error('{{N.saveError}}');
+            alert('{{N.saveError}}');
         });
     }, 0);
 } );
@@ -135,6 +142,7 @@ $('#langTabs a').click(function (e) {
     e.preventDefault()
     $(this).tab('show')
     
+    {{-- // TODO schlecht wenns mehr als 2 Sprachen gibt --}}
     if (e.target.href.endsWith('#en')) {
         document.querySelector('.titelfeldEN').focus()
     } else {
@@ -164,12 +172,18 @@ window.onload = function() {
         let oldEditor{{L.LANG}} = localStorage.getItem('editor{{L.LANG}}.{{id}}')
         if (oldEditor{{L.LANG}}) {
             vorh = true
+        } else {
+            oldEditor{{L.LANG}} = localStorage.getItem('error_editor{{L.LANG}}.{{id}}')
+            if (oldEditor{{L.LANG}}) {
+                vorh = true
+            }
         }
     {{/each}}
     if (vorh) {
         if (confirm('{{N.keepOldInput}}')) {
             {{each L in languages}}
                 editor{{L.LANG}}.setData( oldEditor{{L.LANG}} );
+                localStorage.removeItem('error_editor{{L.LANG}}.{{id}}');
             {{/each}}
         }
     }

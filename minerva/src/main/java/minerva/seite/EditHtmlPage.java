@@ -24,22 +24,8 @@ public class EditHtmlPage extends EditSeitePage {
     }
     
     @Override
-    protected String getComment() {
-        String comment = super.getComment();
-        // give hint of HTML editing in commit message
-        if (!comment.toUpperCase().contains("HTML")) {
-            if (comment.isEmpty()) {
-                comment = "(HTML)";
-            } else {
-                comment += " (HTML)";
-            }
-        }
-        return comment;
-    }
-    
-    @Override
     protected IPostContentsData waitForContent(String branch, String bookFolder, String id, int version) {
-        IPostContentsData ret = new IPostContentsData() {
+        return new IPostContentsData() {
             @Override
             public NlsString getContent() {
                 NlsString ret = new NlsString();
@@ -52,9 +38,32 @@ public class EditHtmlPage extends EditSeitePage {
             }
 
             @Override
+            public NlsString getTitle() {
+                NlsString ret = new NlsString();
+                for (String lang : langs) {
+                    ret.setString(lang, ctx.formParam("titel" + lang.toUpperCase()));
+                }
+                return ret;
+            }
+
+            @Override
+            public String getComment() {
+                String comment = ctx.formParam("comment");
+                comment = comment == null ? "" : comment.trim();
+                // give hint of HTML editing in commit message
+                if (!comment.toUpperCase().contains("HTML")) {
+                    if (comment.isEmpty()) {
+                        comment = "(HTML)";
+                    } else {
+                        comment += " (HTML)";
+                    }
+                }
+                return comment;
+            }
+
+            @Override
             public void setDone(boolean done) { //
             }
         };
-        return ret;
     }
 }
