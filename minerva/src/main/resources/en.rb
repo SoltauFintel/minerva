@@ -285,3 +285,4 @@ showThread=Show done thread
 hideNote=Hide done comment
 hideThread=Hide done thread
 saveError=Error saving page! Contents are saved to browser. Log-in again and start editing again.
+savedContent=There is unsaved content for this page. Please start editing the page!

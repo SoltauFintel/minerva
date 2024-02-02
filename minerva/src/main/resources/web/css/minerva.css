@@ -578,6 +578,14 @@ ul.pagetree {
     color: #0a0;
 }
 
+.savedContent {
+    background-color: #f99;
+    padding: 4px;
+    border-radius: 5px;
+    font-style: italic;
+    text-align: center;
+}
+
 /* MenuPage: */
 
 .bs-glyphicons {

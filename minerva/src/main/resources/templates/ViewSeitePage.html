@@ -26,8 +26,9 @@
 	            	</li>
 	            </ul>
             </div>
-            
         </div>
+        
+        <p id="savedContent" class="savedContent" style="display: none;">{{N.savedContent}}</p>
         
         <ul class="nav nav-tabs hidden-print" id="langTabs">
             {{each L in languages}}
@@ -242,5 +243,23 @@
         }
         return ret;
     }
+
+    window.onload = function() {
+        let vorh = false
+        {{each L in languages}}
+            let oldEditor{{L.LANG}} = localStorage.getItem('editor{{L.LANG}}.{{id}}')
+            if (oldEditor{{L.LANG}}) {
+                vorh = true
+            } else {
+                oldEditor{{L.LANG}} = localStorage.getItem('error_editor{{L.LANG}}.{{id}}')
+                if (oldEditor{{L.LANG}}) {
+                    vorh = true
+                }
+            }
+        {{/each}}
+        if (vorh) {
+            document.getElementById('savedContent').style = '';
+        }
+    }    
 </script>
 <script src="/js/treeclick.js"></script>

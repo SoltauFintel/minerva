@@ -285,3 +285,4 @@ showThread=Erledigten Thread anzeigen
 hideNote=Erledigten Kommentar ausblenden
 hideThread=Erledigten Thread ausblenden
 saveError=Fehler beim Speichern der Seite! Inhalte werden im Browser gespeichert. Melden Sie sich erneut an und beginnen Sie erneut mit der Bearbeitung.
+savedContent=Für diese Seite gibt es noch ungespeicherten Inhalt. Bitte starte die Seitenbearbeitung!
