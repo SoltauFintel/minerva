@@ -280,3 +280,7 @@ titleSearch=Titelsuche
 exitPreview=Vorschau beenden
 toBooks=zu den Büchern
 keepOldInput=Es gibt ungespeicherte Eingaben für diese Seite. Sollen die ungespeicherten Eingaben geladen werden?
+showNote=Erledigten Kommentar anzeigen
+showThread=Erledigten Thread anzeigen
+hideNote=Erledigten Kommentar ausblenden
+hideThread=Erledigten Thread ausblenden

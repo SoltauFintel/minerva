@@ -280,3 +280,7 @@ titleSearch=title search
 exitPreview=Exit preview
 toBooks=to books
 keepOldInput=There are unsaved inputs for this page. Should the unsaved inputs be loaded?
+showNote=Show comment
+showThread=Show done thread
+hideNote=Hide comment
+hideThread=Hide done thread

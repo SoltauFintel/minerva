@@ -42,6 +42,11 @@ public class NotesPage extends SPage implements Uptodatecheck {
             m.put("text", StringService.makeClickableLinks(esc(note.getText())));
             fillPersons(note, m);
             m.put("done", note.isDone());
+            m.put("allDone", ebene == 1 && allDone(note));
+            m.put("ebene1", ebene == 1);
+            boolean hasNoSubnotes = note.getNotes().isEmpty();
+            m.put("showThreadLabel", hasNoSubnotes ? n("showNote") : n("showThread"));
+            m.put("hideThreadLabel", hasNoSubnotes ? n("hideNote") : n("hideThread"));
             m.put("doneDate", esc(note.getDoneDate()));
             m.put("doneBy", esc(UserAccess.login2RealName(note.getDoneBy())));
             m.put("notes", noteHTML(note.getNotes(), highlight, ebene + 1)); // recursive
@@ -56,7 +61,11 @@ public class NotesPage extends SPage implements Uptodatecheck {
         return sb.toString();
     }
 
-	private void fillPersons(Note note, DataMap m) {
+	private boolean allDone(Note note) {
+        return note.isDone() && !note.getNotes().stream().anyMatch(n -> !n.isDone());
+    }
+
+    private void fillPersons(Note note, DataMap m) {
         DataList list = m.list("persons");
         String login = user.getLogin();
         int max = note.getPersons().size() - 1;
