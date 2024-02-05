@@ -144,12 +144,11 @@ $('#langTabs a').click(function (e) {
     e.preventDefault()
     $(this).tab('show')
     
-    {{-- // TODO schlecht wenns mehr als 2 Sprachen gibt --}}
-    if (e.target.href.endsWith('#en')) {
-        document.querySelector('.titelfeldEN').focus()
-    } else {
-        document.querySelector('.titelfeldDE').focus()
-    }
+    {{each L in languages}}
+        if (e.target.href.endsWith('#{{L.lang}}')) {
+            document.querySelector('.titelfeld{{L.LANG}}').focus()
+        }
+    {{/each}}
     
     $.get("/w/{{branch}}/language?m=page&lang=" + e.target.hash.substring(1));
 })
