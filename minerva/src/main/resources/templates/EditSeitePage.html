@@ -124,7 +124,9 @@ document.querySelector('#submit').addEventListener('click', () => {
         }).fail(e => {
             {{each L in languages}}
                 localStorage.setItem('error_editor{{L.LANG}}.{{id}}', editor{{L.LANG}}.getData());
+                localStorage.setItem('error_titel{{L.LANG}}.{{id}}', document.getElementById('titel{{L.LANG}}').value);
             {{/each}}
+            localStorage.setItem('error_comment.{{id}}', document.getElementById('comment').value);
             console.error('{{N.saveError}}');
             alert('{{N.saveError}}');
         });
@@ -168,6 +170,7 @@ $(window).on('unload', function() {
 
 window.onload = function() {
     let vorh = false
+    let vorhError = false
     {{each L in languages}}
         let oldEditor{{L.LANG}} = localStorage.getItem('editor{{L.LANG}}.{{id}}')
         if (oldEditor{{L.LANG}}) {
@@ -176,6 +179,7 @@ window.onload = function() {
             oldEditor{{L.LANG}} = localStorage.getItem('error_editor{{L.LANG}}.{{id}}')
             if (oldEditor{{L.LANG}}) {
                 vorh = true
+                vorhError = true
             }
         }
     {{/each}}
@@ -184,7 +188,15 @@ window.onload = function() {
             {{each L in languages}}
                 editor{{L.LANG}}.setData( oldEditor{{L.LANG}} );
                 localStorage.removeItem('error_editor{{L.LANG}}.{{id}}');
+                if (vorhError) {
+                    document.getElementById('titel{{L.LANG}}').value = localStorage.getItem('error_titel{{L.LANG}}.{{id}}');
+                    localStorage.removeItem('error_titel{{L.LANG}}.{{id}}');
+                }
             {{/each}}
+            if (vorhError) {
+                document.getElementById('comment').value = localStorage.getItem('error_comment.{{id}}');
+                localStorage.removeItem('error_comment.{{id}}');
+            }
         }
     }
 }
