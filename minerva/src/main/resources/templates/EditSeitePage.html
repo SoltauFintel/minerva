@@ -112,7 +112,7 @@ function MyCustomUploadAdapterPlugin( editor ) {
         } );
 {{/each}}
 
-document.querySelector('#submit').addEventListener('click', () => {
+$('#submit').click(function (e) {
     setTimeout(function() { // Firefox problem NS_BINDING_ABORTED
         $.post("{{postcontentslink}}", {
             {{each L in languages}}
@@ -131,7 +131,7 @@ document.querySelector('#submit').addEventListener('click', () => {
             alert('{{N.saveError}}');
         });
     }, 0);
-} );
+});
 
 document.addEventListener('keydown', e => {   {{-- // https://stackoverflow.com/a/60279187 --}}
     if (e.ctrlKey && e.key === 's') {
