@@ -1,0 +1,50 @@
+<div class="note" id="{{commentId}}">
+    {{if allDone}}<p id="c0_{{commentId}}" class="noteInfoNC"><a style="min-width: 240px;"
+        onclick="aufklappen('{{commentId}}', true)" class="btn btn-default btn-xs">{{if hasComments}}{{N.showThread}}{{else}}{{N.showNote}}{{/if}}</a></p>{{/if}}
+    <p class="noteInfoNC" id="c1_{{commentId}}"{{if allDone}} style="display: none;"{{/if}}>
+        {{if allDone}}
+            {{if ebene1}}
+                <a onclick="aufklappen('{{commentId}}', false);" class="btn btn-default btn-xs"
+                    style="min-width: 240px; margin-bottom: 5px;">{{if hasComments}}{{N.hideThread}}{{else}}{{N.hideNote}}{{/if}}</a><br/>
+            {{/if}}
+        {{/if}}
+        <span class="noteUser{{if me}} noteByMe{{/if}}">{{user}}</span> -
+        <span class="noteCreated" title="created">{{created}}</span>{{if hasChanged}} -
+        <span class="noteChanged" title="changed">{{changed}}</span>{{/if}}
+        {{if hasPerson}} - {{N.zustaendig}}: <span{{if personIsMe}} style="background-color: #ff3; font-weight: bold;"{{/if}}>{{person}}</span>{{/if}}
+    </p>
+    <div id="c2_{{commentId}}"{{if allDone}} style="display: none;"{{/if}}>
+        <p class="noteTextNC{{if highlight}} noteHighlight{{/if}}">{{text}}</p>
+        <p class="noteCommands">
+            {{if addAllowed}}
+                {{if editAllowed}}
+                    <a href="{{replylink}}" class="btn btn-default btn-xs br"><i
+                        class="fa fa-comments"></i> {{N.reply}}</a>
+                {{else}}
+                    <a href="{{replylink}}" class="btn btn-default btn-xs br" title="{{N.reply}}"><i class="fa fa-comments"></i></a>
+                {{/if}}
+            {{/if}}
+            {{if done}}
+                <a href="{{donelink}}&m=u" title="{{N.undoneNote}}"
+                    onclick="document.querySelector('#nu_{{commentId}}').style='';"
+                    class="btn btn-success btn-xs br"><i class="fa fa-check"></i> {{N.done}}! <i id="nu_{{commentId}}"
+                    class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+            {{else}}
+                <a href="{{donelink}}" title="{{N.doneNote}}"
+                    onclick="document.querySelector('#nd_{{commentId}}').style='';"
+                    class="btn btn-default btn-xs br"><i class="fa fa-check"></i> {{N.done}}! <i id="nd_{{commentId}}"
+                    class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+            {{/if}}
+            {{if editAllowed}}
+                <a href="{{editlink}}" title="{{N.edit}}" class="btn btn-default btn-xs"><i class="fa fa-pencil"></i></a>
+                <a href="{{deletelink}}" title="{{N.delete}}" class="btn btn-danger btn-xs"
+                    onclick="return loeschen('{{commentId}}');"><i class="fa fa-trash"></i> <i id="n_{{commentId}}"
+                    class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+            {{/if}}
+            <span class="copybtn">(Notiz)[N{{commentId}}]</span>
+        </p>
+        <div class="subnotes">
+            {{comments}}
+        </div>
+    </div>
+</div>

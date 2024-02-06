@@ -29,6 +29,13 @@ import minerva.book.MenuPage;
 import minerva.book.OrderTopLevelSeitePage;
 import minerva.book.SelectLanguageAction;
 import minerva.book.SortTopLevelSeiteAction;
+import minerva.comment.CommentDoneAction;
+import minerva.comment.CommentService;
+import minerva.comment.CommentsPage;
+import minerva.comment.DeleteCommentAction;
+import minerva.comment.EditCommentPage;
+import minerva.comment.PostCommentDataAction;
+import minerva.comment.SeiteCommentService;
 import minerva.config.InfoAction;
 import minerva.config.MinervaConfig;
 import minerva.config.MinervaFactory;
@@ -232,11 +239,19 @@ public class MinervaWebapp extends RouteDefinitions {
     }
 
     private void notes() {
+        // old
         get("/s/:branch/:book/:id/notes", NotesPage.class);
         form("/s/:branch/:book/:id/add-note", AddNotePage.class);
         form("/s/:branch/:book/:id/edit-note", EditNotePage.class);
-        form("/s/:branch/:book/:id/delete-note", DeleteNoteAction.class);
-        form("/s/:branch/:book/:id/note-done", NoteDoneAction.class);
+        get("/s/:branch/:book/:id/delete-note", DeleteNoteAction.class);
+        get("/s/:branch/:book/:id/note-done", NoteDoneAction.class);
+        
+        // new
+        get("/sc/:branch/:book/:id/comments", CommentsPage.class);
+        form("/sc/:branch/:book/:id/comment", EditCommentPage.class);
+        post("/sc/:branch/:book/:id/comment-data", PostCommentDataAction.class);
+        get("/sc/:branch/:book/:id/delete-comment", DeleteCommentAction.class);
+        get("/sc/:branch/:book/:id/comment-done", CommentDoneAction.class);
     }
 
     private void preview() {
@@ -297,6 +312,7 @@ public class MinervaWebapp extends RouteDefinitions {
                 .withTemplatesFolders(MinervaWebapp.class, "/templates")
                 .withErrorPage(MinervaErrorPage.class, MinervaError404Page.class)
                 .withInitializer(config -> factory = new MinervaFactory(new MinervaConfig(config)))
+                .withInitializer(config -> CommentService.services.put(ctx -> ctx.path().startsWith("/sc/"), SeiteCommentService.class))
                 .withAuth(new MinervaAuth());
     }
     
