@@ -5,6 +5,7 @@ import org.pmw.tinylog.Logger;
 import minerva.MinervaWebapp;
 import minerva.model.SeiteSO;
 import minerva.model.UserSO.LoginAndEndTime;
+import minerva.postcontents.PostContentsService;
 import minerva.seite.link.InvalidLinksModel;
 
 public class EditSeitePage extends ViewSeitePage {
@@ -28,6 +29,7 @@ public class EditSeitePage extends ViewSeitePage {
             workspace.onEditing(seite, false); // editing started
             
             super.execute2(branch, bookFolder, id, seiteSO);
+            put("postcontentslink", "/post-contents/seite?key=" + u(getKey()));
         }
     }
     
@@ -43,10 +45,9 @@ public class EditSeitePage extends ViewSeitePage {
     private void save(String branch, String bookFolder, String id, SeiteSO seiteSO) {
         long start = System.currentTimeMillis();
         int version = Integer.parseInt(ctx.formParam("version"));
-        IPostContentsData data = waitForContent(branch, bookFolder, id, version);
+        ISeitePCD data = waitForContent(version);
         
         seiteSO.saveAll(data.getTitle(), data.getContent(), version, data.getComment(), langs, start);
-        data.setDone(true);
         
         user.setLastEditedPage(seite.getId());
 
@@ -61,22 +62,11 @@ public class EditSeitePage extends ViewSeitePage {
         }
     }
 
-    protected IPostContentsData waitForContent(String branch, String bookFolder, String id, int version) {
-        PostContentsData data = null;
-        long max = 1000 * 60 * 2;
-        long start = System.currentTimeMillis();
-        do {
-            data = PostContentsService.get(branch, bookFolder, id, version);
-            if (data != null) {
-                return data;
-            }
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                throw new RuntimeException("Interrupt while waiting for the save to complete. Page ID: " + id, e);
-            }
-        } while (System.currentTimeMillis() - start < max);
-        throw new RuntimeException("Timeout while waiting for the save to complete."
-                + " Please update workspace. Page ID: " + id);
+    protected ISeitePCD waitForContent(int version) {
+        return (ISeitePCD) new PostContentsService().waitForContents(getKey(), version);
+    }
+    
+    private String getKey() {
+        return seite.getId() + ":" + branch + ":" + bookFolder + ":seite";
     }
 }

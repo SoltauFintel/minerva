@@ -13,6 +13,9 @@ import minerva.model.StatesSO;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
 
+/**
+ * Seite-specific comments
+ */
 public class SeiteCommentService extends CommentService {
     private static final String FOLDER = "comments";
     private final Context ctx;
@@ -25,6 +28,7 @@ public class SeiteCommentService extends CommentService {
     private final String title;
     private final String commentsPagePath;
     private final String bbi;
+    private final String key;
     
     public SeiteCommentService(Context ctx) {
         this.ctx = ctx;
@@ -40,6 +44,7 @@ public class SeiteCommentService extends CommentService {
         seite = workspace.getBooks().byFolder(bookFolder).seiteById(seiteId);
         dir = seite.getBook().getFolder() + "/" + FOLDER + "/" + seite.getId();
         bbi = branch + "/" + bookFolder + "/" + seite.getId();
+        key = ":" + branch + ":" + bookFolder + ":" + seite.getId() + ":comment";
         parentEntityPath = "/s/" + bbi;
         commentsPagePath = "/sc/" + bbi + "/comments";
         title = seite.getTitle();
@@ -71,6 +76,9 @@ public class SeiteCommentService extends CommentService {
         m.put("parentEntityTitle", Escaper.esc(title));
         m.put("parentEntityPath", parentEntityPath);
         m.put("addlink", "/sc/" + bbi + "/comment");
+        m.put("imageuploadlink", "/s-image-upload/" + bbi);
+        String id = m.get("id").toString();
+        m.put("postcontentslink", "/post-contents/comment?key=" + Escaper.urlEncode(getKey(id), "")); 
     }
     
     @Override
@@ -91,5 +99,20 @@ public class SeiteCommentService extends CommentService {
     @Override
     public String getLogin() {
         return seite.getLogin();
+    }
+    
+    @Override
+    public String getLanguage() {
+        return lang;
+    }
+
+    @Override
+    public String getKey(String commentId) {
+        return commentId + key;
+    }
+
+    @Override
+    public String getParentShortId() {
+        return seite.getId();
     }
 }

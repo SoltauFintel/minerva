@@ -1,18 +1,25 @@
-{{master: master_jqueryoben}}
+{{master: master_ck}}
+
+<style>
+.editbox:not(:focus) {
+    border: 1px #ccc solid;
+}
+</style>
 
 <div class="row"> 
     <div class="col-lg-12">
-        <h1 class="page-header">{{header}}</h1>
+        <h1 class="page-header">{{if add}}{{N.addNote}}{{else}}{{N.editNote}}{{/if}}</h1>
 
         <h2><a href="{{parentEntityPath}}">{{parentEntityTitle}}</a></h2>
 
         <form action="{{action}}" class="editorform form-horizontal mt3" method="post">
             <fieldset>
+                <input type="hidden" id="version" name="version" value="{{version}}">
                 <div class="form-group">
-                    <label for="text1" class="col-lg-1 control-label">{{N.note}}</label>
-                    <div class="col-lg-5">
-                        <textarea class="form-control noteTextarea" id="text1" name="text1" rows="8"
-                            autofocus>{{text1}}</textarea>
+                    <label for="editor" class="col-lg-1 control-label">{{N.note}}</label>
+                    <div class="col-lg-7">
+                        <div id="toolbar-container"></div>
+                        <div id="editor" class="editbox" style="min-height: 150px; max-height: calc(100vh - 320px);">{{content}}</div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -27,7 +34,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-lg-offset-1 col-lg-5">
-                        <button type="submit" class="btn btn-primary br"
+                        <button id="submit" type="submit" class="btn btn-primary br"
                             onclick="document.querySelector('#s1').style='';">{{N.save}}
                             <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
                         <a href="{{backlink}}" class="btn btn-default">{{N.cancel}}</a>
@@ -39,6 +46,60 @@
 </div>
 
 <script>
+function MyCustomUploadAdapterPlugin( editor ) {
+    editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
+        return new MyUploadAdapter(loader, '{{imageuploadlink}}');
+    };
+}
+
+let editor;
+DecoupledEditor
+    .create(document.querySelector('#editor'), {
+        extraPlugins: [ MyCustomUploadAdapterPlugin ],
+        language: '{{lang}}',
+        toolbar: {
+            removeItems: ['fontfamily', 'mediaEmbed', 'indent', 'outdent']
+        },
+        heading: {
+            options: [
+                { model: 'paragraph', title: 'Paragraph' },
+                { model: 'heading2', view: 'h3', title: 'Heading 2', class: 'ck-heading_heading2' },
+                { model: 'pre', view: 'pre', title: 'Code' },
+            ]
+        }
+    })
+    .then( it => {
+        editor = it;
+        const toolbarContainer = document.querySelector('#toolbar-container');
+        toolbarContainer.appendChild(editor.ui.view.toolbar.element);
+    } )
+    .catch( error => {
+        console.error(error);
+    } );
+
+$('#submit').click(function (e) {
+    setTimeout(function() { // Firefox problem NS_BINDING_ABORTED
+        console.log("post contents...");
+        $.post("{{postcontentslink}}", {
+            content: editor.getData(),
+            person: document.getElementById('person').value,
+            version: document.getElementById('version').value
+        }).fail(e => {
+            localStorage.setItem('error_editor.{{id}}', editor.getData());
+            console.error('{{N.saveError}}');
+            alert('{{N.saveError}}');
+        });
+    }, 0);
+});
+
+document.addEventListener('keydown', e => {   {{-- // https://stackoverflow.com/a/60279187 --}}
+    if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        $('#submit').click();
+    }
+});
+
+/*
 $(window).on('beforeunload', function() {
     return 'Any changes will be lost';  {{-- // browser shows its own text --}}
 });
@@ -46,4 +107,34 @@ $(window).on('beforeunload', function() {
 $(document).on('submit', 'form.editorform', function(event) {  {{-- // allow Save button to leave without above question --}}
     $(window).off('beforeunload');
 });
+
+$(window).on('unload', function() {
+    localStorage.removeItem('editor.{{id}}');
+});
+
+window.onload = function() {
+    let vorh = false
+    let vorhError = false
+    let oldEditor = localStorage.getItem('editor.{{id}}')
+    if (oldEditor) {
+        vorh = true
+    } else {
+        oldEditor = localStorage.getItem('error_editor.{{id}}')
+        if (oldEditor) {
+            vorh = true
+            vorhError = true
+        }
+    }
+    if (vorh) {
+        if (confirm('{{N.keepOldInput}}')) {
+            editor.setData( oldEditor );
+            localStorage.removeItem('error_editor.{{id}}');
+        }
+    }
+}
+
+setInterval(function() {
+    localStorage.setItem('editor.{{id}}', editor.getData());
+}, 3000);
+*/
 </script>

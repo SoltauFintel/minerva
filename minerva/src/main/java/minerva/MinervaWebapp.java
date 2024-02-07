@@ -34,7 +34,6 @@ import minerva.comment.CommentService;
 import minerva.comment.CommentsPage;
 import minerva.comment.DeleteCommentAction;
 import minerva.comment.EditCommentPage;
-import minerva.comment.PostCommentDataAction;
 import minerva.comment.SeiteCommentService;
 import minerva.config.InfoAction;
 import minerva.config.MinervaConfig;
@@ -58,6 +57,7 @@ import minerva.papierkorb.PapierkorbUnterseitenPage;
 import minerva.papierkorb.RecycleAction;
 import minerva.persistence.gitlab.GitlabAuthAction;
 import minerva.persistence.gitlab.GitlabAuthCallbackAction;
+import minerva.postcontents.PostContentsAction;
 import minerva.preview.PreviewBookPage;
 import minerva.preview.PreviewCustomerPage;
 import minerva.preview.PreviewPage;
@@ -75,7 +75,6 @@ import minerva.seite.EditSeitePage;
 import minerva.seite.HelpKeysPage;
 import minerva.seite.LockedByPage;
 import minerva.seite.OrderSeitePage;
-import minerva.seite.PostContentsAction;
 import minerva.seite.PullSeiteAction;
 import minerva.seite.SaveEditorsNoteAction;
 import minerva.seite.SeiteHistoryPage;
@@ -196,7 +195,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/s/:branch/:book/:id", ViewSeitePage.class);
         form("/s-edit/:branch/:book/:id", EditSeitePage.class); // Wegen den Images hänge ich hier nicht "/edit" hinten dran, sondern ändere den 1. Pfadteil auf "s-edit".
         form("/s/:branch/:book/:id/html", EditHtmlPage.class);
-        post("/s/:branch/:book/:id/post-contents", PostContentsAction.class);
+        post("/post-contents/:type", PostContentsAction.class);
         get("/s/:branch/:book/:id/cancel", CancelEditingAction.class);
         get("/s/:branch/:book/:id/locked", LockedByPage.class);
         get("/s/:branch/:book/:id/pull", PullSeiteAction.class);
@@ -249,7 +248,6 @@ public class MinervaWebapp extends RouteDefinitions {
         // new
         get("/sc/:branch/:book/:id/comments", CommentsPage.class);
         form("/sc/:branch/:book/:id/comment", EditCommentPage.class);
-        post("/sc/:branch/:book/:id/comment-data", PostCommentDataAction.class);
         get("/sc/:branch/:book/:id/delete-comment", DeleteCommentAction.class);
         get("/sc/:branch/:book/:id/comment-done", CommentDoneAction.class);
     }

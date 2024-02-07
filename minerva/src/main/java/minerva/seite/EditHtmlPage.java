@@ -24,8 +24,8 @@ public class EditHtmlPage extends EditSeitePage {
     }
     
     @Override
-    protected IPostContentsData waitForContent(String branch, String bookFolder, String id, int version) {
-        return new IPostContentsData() {
+    protected ISeitePCD waitForContent(int version) {
+        return new ISeitePCD() {
             @Override
             public NlsString getContent() {
                 NlsString ret = new NlsString();
@@ -59,10 +59,6 @@ public class EditHtmlPage extends EditSeitePage {
                     }
                 }
                 return comment;
-            }
-
-            @Override
-            public void setDone(boolean done) { //
             }
         };
     }

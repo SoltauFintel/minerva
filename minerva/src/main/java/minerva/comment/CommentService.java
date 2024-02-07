@@ -33,10 +33,6 @@ public abstract class CommentService {
         throw new RuntimeException("There's no CommentService für this request.");
     }
 
-    protected abstract SimpleDirAccess dao();
-    
-    protected abstract String dir();
-
     public List<Comment> getComments() {
         Map<String, String> files = dao().dao().loadAllFiles(dir());
         
@@ -79,7 +75,23 @@ public abstract class CommentService {
 
     public abstract void initModel(Comment comment, DataMap model);
 
+    protected abstract SimpleDirAccess dao();
+    
+    /**
+     * @return folder where to save the data
+     */
+    protected abstract String dir();
+
+    /**
+     * @return link for redirect
+     */
     public abstract String getCommentsPagePath();
     
     public abstract String getLogin();
+    
+    public abstract String getLanguage();
+
+    public abstract String getKey(String id);
+    
+    public abstract String getParentShortId(); // Seite Id
 }

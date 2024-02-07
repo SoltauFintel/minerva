@@ -14,7 +14,7 @@
         {{if hasPerson}} - {{N.zustaendig}}: <span{{if personIsMe}} style="background-color: #ff3; font-weight: bold;"{{/if}}>{{person}}</span>{{/if}}
     </p>
     <div id="c2_{{commentId}}"{{if allDone}} style="display: none;"{{/if}}>
-        <p class="noteTextNC{{if highlight}} noteHighlight{{/if}}">{{text}}</p>
+        <div class="noteTextNC{{if highlight}} noteHighlight{{/if}}">{{text}}</div>
         <p class="noteCommands">
             {{if addAllowed}}
                 {{if editAllowed}}
@@ -43,8 +43,10 @@
             {{/if}}
             <span class="copybtn">(Notiz)[N{{commentId}}]</span>
         </p>
-        <div class="subnotes">
-            {{comments}}
-        </div>
+        {{if hasComments}}
+            <div class="subnotes">
+                {{comments}}
+            </div>
+        {{/if}}
     </div>
 </div>

@@ -18,6 +18,7 @@ public class Comment {
     private String doneDate = "";
     /** null or empty for top level comments, if parent comment is missing this comment is displayed as a top level comment */
     private String parentId = "";
+    private int version = 1;
     private final transient List<Comment> comments = new ArrayList<>();
     
     public String getId() {
@@ -90,6 +91,14 @@ public class Comment {
 
     public void setParentId(String parentId) {
         this.parentId = parentId;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
     }
 
     public List<Comment> getComments() {

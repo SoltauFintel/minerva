@@ -195,7 +195,6 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         
         // Edit
         put("editlink", "/s-edit/" + branch + "/" + bookFolder + "/" + id);
-        put("postcontentslink", withSeiteId + "/post-contents");
         put("imageuploadlink", "/s-image-upload/" + branch + "/" + bookFolder + "/" + id);
         
         put("hasPositionlink", seiteSO.getSeiten().size() > 1);
