@@ -1,6 +1,5 @@
 package minerva.image;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -10,29 +9,15 @@ import javax.servlet.http.Part;
 
 import org.pmw.tinylog.Logger;
 
-import github.soltaufintel.amalia.base.IdGenerator;
 import github.soltaufintel.amalia.web.action.JsonAction;
-import minerva.base.UserMessage;
 import minerva.image.ImageUploadAction.Success;
-import minerva.model.BookSO;
-import minerva.model.SeiteSO;
-import minerva.model.StatesSO;
-import minerva.model.UserSO;
-import minerva.model.WorkspaceSO;
 import spark.utils.IOUtils;
 
 public class ImageUploadAction extends JsonAction<Success> {
 
     @Override
     protected void execute() {
-        String branch = ctx.pathParam("branch");
-        String bookFolder = ctx.pathParam("book");
-        String id = ctx.pathParam("id");
-
-        UserSO user = StatesSO.get(ctx).getUser();
-        WorkspaceSO workspace = user.getWorkspace(branch);
-        BookSO book = workspace.getBooks().byFolder(bookFolder);
-        SeiteSO seite = book.seiteById(id);
+        ImageUploadService sv = ImageUploadService.get(ctx);
 
         ctx.req.attribute("org.eclipse.jetty.multipartConfig", new MultipartConfigElement("upload"));
         ctx.res.type("application/json");
@@ -43,40 +28,23 @@ public class ImageUploadAction extends JsonAction<Success> {
             Logger.error(e);
             throw new RuntimeException("Error uploading image!");
         }
-        String submittedFilename = part.getSubmittedFileName();
-        if (part.getSize() > 1024l * 1024 * 1024 * 10) { // 10 MB
-            throw new UserMessage("error.imageTooBig", workspace);
+        if (part.getSize() > 1024l * 1024 * 10) { // 10 MB
+            sv.error("error.imageTooBig");
         }
+        sv.setSubmittedFileName(part.getSubmittedFileName());
 
-        String filename = "img/" + seite.getId() + "/" + submittedFilename;
-        File file = new File(book.getFolder(), filename);
-        if (file.isFile()) { // Name schon vergeben
-            int o = filename.lastIndexOf(".");
-            if (o >= 0) {
-                filename = filename.substring(0, o) + "-" + IdGenerator.createId6() + filename.substring(o);
-            } else {
-                filename += "-" + IdGenerator.createId6();
-            }
-            Logger.info("[ImageUploadAction] File name already taken. Changed to " + filename);
-            file = new File(book.getFolder(), filename);
-            if (file.isFile()) { // Das sollte doch niemals passieren.
-                Logger.error("File already exists: " + file.getAbsolutePath());
-                throw new RuntimeException("Error uploading image! Try another filename.");
-            }
-        }
-        file.getParentFile().mkdirs();
-        try (FileOutputStream fos = new FileOutputStream(file)) {
+        try (FileOutputStream fos = new FileOutputStream(sv.getFile())) {
             IOUtils.copy(part.getInputStream(), fos);
         } catch (IOException e) {
             Logger.error(e);
             throw new RuntimeException("Error uploading image!");
         }
         
-        seite.getImages().add(filename);
+        sv.success();
 
         // Response must be JSON, containing url field.
         Success ret = new Success();
-        ret.setUrl(filename); // relative filename (e.g. branch name cannot be saved!)
+        ret.setUrl(sv.getFilename()); // relative filename (e.g. branch name cannot be saved!)
         result = ret;
     }
 

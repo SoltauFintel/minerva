@@ -62,7 +62,8 @@ public class SeiteCommentService extends CommentService {
     
     @Override
     public void save(Comment comment, String commitMessage) {
-        simpledao.save(comment.getId(), comment, new CommitMessage(seite, commitMessage), dir);
+        simpledao.save(comment.getId(), comment, CommentImageUploadService.popImages(comment.getId()),
+                new CommitMessage(seite, commitMessage), dir);
     }
 
     @Override
@@ -76,9 +77,9 @@ public class SeiteCommentService extends CommentService {
         m.put("parentEntityTitle", Escaper.esc(title));
         m.put("parentEntityPath", parentEntityPath);
         m.put("addlink", "/sc/" + bbi + "/comment");
-        m.put("imageuploadlink", "/s-image-upload/" + bbi + "/comment");
         String id = m.get("id").toString();
-        m.put("postcontentslink", "/post-contents/comment?key=" + Escaper.urlEncode(getKey(id), "")); 
+        m.put("postcontentslink", "/post-contents/comment?key=" + u(getKey(id))); 
+        m.put("imageuploadlink", "/image-upload/" + bbi + "/comment?id=" + u(id));
     }
     
     @Override
@@ -114,5 +115,9 @@ public class SeiteCommentService extends CommentService {
     @Override
     public String getParentShortId() {
         return seite.getId();
+    }
+    
+    private String u(String text) {
+        return Escaper.urlEncode(text, "");
     }
 }

@@ -223,12 +223,15 @@ public class MinervaWebapp extends RouteDefinitions {
     private void images() {
         // upload
         post("/s-image-upload/:branch/:book/:id", ImageUploadAction.class);
-        post("/s-image-upload/:branch/:book/:id/comment", ImageUploadAction.class);
+        post("/image-upload/:branch/:book/:id/comment", ImageUploadAction.class);
         
         // download
         get("/s/:branch/:book/img/:id/:dn", ImageDownloadAction.class);
         get("/s-edit/:branch/:book/img/:id/:dn", ImageDownloadAction.class); // Image download must also work in edit mode.
         get("/p/:branch/:customer/:book/:lang/img/:id/:dn", ImageDownloadAction.class); // Image download must also work in preview mode.
+
+        get("/sc/:branch/:book/:id/img/:commentId/:dn", ImageDownloadAction.class); // view mode
+        get("/sc/:branch/:book/:id/img/:commentId/:dn", ImageDownloadAction.class); // edit mode
     }
 
     private void tags() {

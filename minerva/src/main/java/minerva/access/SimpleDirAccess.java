@@ -1,9 +1,13 @@
 package minerva.access;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import com.google.gson.Gson;
 
 import minerva.model.WorkspaceSO;
 
@@ -20,8 +24,11 @@ public class SimpleDirAccess {
         return dao;
     }
 
-    public <T> void save(String id, T data, CommitMessage commitMessage, String dir) {
-        new MultiPurposeDirAccess(dao).save(dir + "/" + id + ".json", data, commitMessage, workspace);
+    public <T> void save(String id, T data, Set<String> images, CommitMessage commitMessage, String dir) {
+        Map<String, String> files = new HashMap<>();
+        files.put(dir + "/" + id + ".json", new Gson().toJson(data));
+        images.forEach(dn -> files.put(dir + "/img/" + id + "/" + dn, DirAccess.IMAGE));
+        dao.saveFiles(files, commitMessage, workspace);
     }
 
     public void delete(String id, CommitMessage commitMessage, String dir) {
