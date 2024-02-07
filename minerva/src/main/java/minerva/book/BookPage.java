@@ -6,6 +6,7 @@ import com.github.template72.data.DataMap;
 import minerva.MinervaWebapp;
 import minerva.base.DeliverHtmlContent;
 import minerva.base.Uptodatecheck;
+import minerva.comment.SeiteCommentService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -80,8 +81,8 @@ public class BookPage extends BPage implements Uptodatecheck {
                 gliederung.append("\"" + nc + ">");
                 gliederung.append(title);
                 gliederung.append("</a>");
-                if (!seite.getSeite().getNotes().isEmpty()) {
-                	gliederung.append(notesForMe(seite) ? hasNoteForMe : hasNote);
+                if (new SeiteCommentService(seite).getCommentsSize() > 0) {
+                	gliederung.append(/*notesForMe(seite) ? hasNoteForMe :*/ hasNote); // TODO Baustelle
                 }
                 gliederung.append("</li>\n");
                 
@@ -91,6 +92,7 @@ public class BookPage extends BPage implements Uptodatecheck {
         gliederung.append("</ul>\n");
     }
 
+    // TODO Baustelle
 	private boolean notesForMe(SeiteSO seite) {
 		String login = user.getLogin();
 		return seite.getSeite().getNotes().stream()
