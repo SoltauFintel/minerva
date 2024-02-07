@@ -71,6 +71,7 @@ public class EditCommentPage extends Page {
             sv.save(c, "comment added");
         } else {
             c.setChanged(StringService.now());
+            c.setVersion(c.getVersion() + 1);
             sv.save(c, "comment modified");
         }
     }
