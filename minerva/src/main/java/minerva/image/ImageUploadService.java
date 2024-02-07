@@ -70,7 +70,6 @@ public abstract class ImageUploadService {
             }
         }
         file.getParentFile().mkdirs();
-        Logger.info("image upload: " + file.getAbsolutePath());
         return file;
     }
     
