@@ -1,6 +1,5 @@
 package minerva.task;
 
-import static minerva.base.StringService.cutOutsideLinks;
 import static minerva.base.StringService.makeClickableLinks;
 
 import java.util.List;
@@ -75,19 +74,19 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
             map.put("me", task.getLogin().equals(login));
             map.put("user", esc(UserAccess.login2RealName(task.getLogin())));
             map.put("date", esc(task.getDateTime()));
-            String text = task.getText();
-            if (text.length() > maxlen + 3) {
-                map.put("text1", makeClickableLinks(esc(cutOutsideLinks(text, maxlen))));
-                map.put("hasMoreText", true);
-            } else {
-                map.put("text1", makeClickableLinks(esc(text)));
+            String text = StringService.onlyBody(task.getText());
+//            if (text.length() > maxlen + 3) {
+//                map.put("text1", makeClickableLinks(cutOutsideLinks(text, maxlen)));
+//                map.put("hasMoreText", true);
+//            } else {
+                map.put("text1", makeClickableLinks(text));
                 map.put("hasMoreText", false);
-            }
-            map.put("completeText", makeClickableLinks(esc(text)));
-            map.put("link", task.getLink());
+//            }
+            map.put("completeText", makeClickableLinks(text));
+            map.put("link", task.getLink()); // Kommentar anzeigen Link
+            map.put("viewTask", esc(n("viewTask").replace("$t", task.getTypeName()))); // TODO NLS! // Kommentar anzeigen Label
             map.put("parentLink", task.getParentLink());
             map.put("parentTitle", esc(task.getParentTitle()));
-            map.put("viewTask", esc(n("viewTask").replace("$t", task.getTypeName())));
             map.put("color", esc(task.getColor()));
             TaskPriority taskPrio = user.getTaskPriority(task.getId());
             fillTask(task.getId(), branch, taskPrio, map);

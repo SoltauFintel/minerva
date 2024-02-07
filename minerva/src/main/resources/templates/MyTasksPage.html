@@ -19,11 +19,9 @@
                		<a href="{{n.parentLink}}"><i class="fa fa-file-text" style="color: {{n.color}};"></i></a>
                		<b>{{n.parentTitle}}</b>
                	</div>
-                <div id="na{{n.id}}" class="noteTextNC" style="margin-bottom: 0;"><span style="white-space: break-spaces;">{{n.text1}}{{if n.hasMoreText}}<a onclick="moreText('{{n.id}}');" class="noteMehr">mehr...</a>{{/if}}</span>
-                    {{include: taskbuttons}}
-                </div>
                 
-                <div id="nb{{n.id}}" class="noteTextNC" style="margin-bottom: 0;" hidden><span style="white-space: break-spaces;">{{n.completeText}}</span>
+                <div id="nb{{n.id}}" class="noteTextNC" style="margin-bottom: 0;">
+                    {{n.completeText}}
                     {{include: taskbuttons}}
                 </div>
                 

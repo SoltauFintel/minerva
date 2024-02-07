@@ -332,7 +332,7 @@ public class UserSO {
         List<NoteWithSeite> notes = new ArrayList<>();
         for (BookSO book : getWorkspace(branch).getBooks()) {
             for (NoteWithSeite n : book.getSeiten().getAllNotes()) {
-                if (!n.getNote().isDone() && n.getNote().getPersons().contains(login)) {
+                if (!n.getNote().isDone() && login.equals(n.getNote().getPerson())) {
                     notes.add(n);
                 }
             }

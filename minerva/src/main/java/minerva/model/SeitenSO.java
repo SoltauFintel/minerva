@@ -13,9 +13,10 @@ import minerva.MinervaWebapp;
 import minerva.access.DirAccess;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.base.MList;
+import minerva.comment.Comment;
+import minerva.comment.SeiteCommentService;
 import minerva.seite.Breadcrumb;
 import minerva.seite.IBreadcrumbLinkBuilder;
-import minerva.seite.Note;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
 import minerva.seite.TreeItem;
@@ -218,16 +219,16 @@ public class SeitenSO extends MList<SeiteSO> {
     public List<NoteWithSeite> getAllNotes() {
         List<NoteWithSeite> ret = new ArrayList<>();
         for (SeiteSO seite : this) {
-            findAllNotes(seite, seite.getSeite().getNotes(), ret);
+            findAllNotes(seite, new SeiteCommentService(seite).getComments(), ret);
             ret.addAll(seite.getSeiten().getAllNotes());
         }
         return ret;
     }
     
-    private void findAllNotes(SeiteSO seite, List<Note> notes, List<NoteWithSeite> result) {
-        for (Note note : notes) {
+    private void findAllNotes(SeiteSO seite, List<Comment> notes, List<NoteWithSeite> result) {
+        for (Comment note : notes) {
             result.add(new NoteWithSeite(note, seite));
-            findAllNotes(seite, note.getNotes(), result); // recursive
+            findAllNotes(seite, note.getComments(), result); // recursive
         }
     }
 

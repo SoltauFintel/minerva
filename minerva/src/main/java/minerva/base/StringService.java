@@ -123,4 +123,19 @@ public class StringService {
     public static String now() {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
+
+    public static String onlyBody(String html) {
+        if (html == null) {
+            return "";
+        }
+        int o = html.indexOf("<body>");
+        if (o >= 0) {
+            String ret = html.substring(o + "<body>".length());
+            o = ret.lastIndexOf("</body>");
+            if (o >= 0) {
+                return ret.substring(0, o);
+            }
+        }
+        return html;
+    }
 }

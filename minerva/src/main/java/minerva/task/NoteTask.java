@@ -1,6 +1,6 @@
 package minerva.task;
 
-import minerva.seite.Note;
+import minerva.comment.Comment;
 import minerva.seite.note.NoteWithSeite;
 
 /**
@@ -8,7 +8,7 @@ import minerva.seite.note.NoteWithSeite;
  */
 public class NoteTask implements Task {
 	private final NoteWithSeite n;
-	private final Note note;
+	private final Comment note;
 	private final String link;
 	
 	public NoteTask(NoteWithSeite n, String branch) {
@@ -39,7 +39,7 @@ public class NoteTask implements Task {
 
 	@Override
 	public String getLink() {
-		return link + "/notes?highlight=" + note.getId() + "#" + note.getId();
+		return link.replace("/s/","/sc/")/*TODO Krücke*/ + "/comments?highlight=" + note.getId() + "#" + note.getId();
 	}
 
 	@Override
