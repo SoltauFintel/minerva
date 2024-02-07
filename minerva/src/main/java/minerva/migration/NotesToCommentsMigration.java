@@ -108,7 +108,7 @@ public class NotesToCommentsMigration extends WAction {
         if (persons != null) {
             for (int i = 1/*omit first*/; i < persons.size(); i++) {
                 String zust = persons.get(i);
-                mignotes.add("außerdem zuständig: [@" + UserAccess.login2RealName(zust) + "]");
+                mignotes.add("außerdem zuständig: @[" + UserAccess.login2RealName(zust) + "]");
             }
         }
         
