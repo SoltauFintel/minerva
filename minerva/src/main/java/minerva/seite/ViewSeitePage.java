@@ -11,6 +11,7 @@ import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
+import minerva.comment.SeiteCommentService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -72,6 +73,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("isSorted", seite.isSorted());
         int n = seiteSO.notes().getNotesSize();
         putInt("notesSize", n);
+        putInt("commentsSize", new SeiteCommentService(seiteSO).getCommentsSize());
         put("hasNotes", n > 0);
         PageChange change = seiteSO.getLastChange();
         put("hasLastChange", change != null);
@@ -318,6 +320,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
 		    menuitem(i, viewlink + "/html", "fa-code", n("editHTML"));
 		}
     	menuitem(i, "/w/" + esc(branch) + "/export?seite=" + u(seite.getId()), "fa-upload", n("exportPage"));
+    	menuitem(i, viewlink + "/notes", "fa-comment", n("notes") + " (alt)"); // TODO später ausbauen
     	menuitem(i, model.get("movelink").toString(), "fa-arrow-circle-right", n("movePage"));
     	menuitem(i, model.get("deletelink").toString(), "fa-trash", n("deletePage") + "...");
     	return i;

@@ -51,6 +51,7 @@ import minerva.export.template.ExportTemplateSetsPage;
 import minerva.image.ImageDownloadAction;
 import minerva.image.ImageUploadAction;
 import minerva.migration.MigrationPage;
+import minerva.migration.NotesToCommentsMigration;
 import minerva.papierkorb.DeleteWeggeworfeneSeiteAction;
 import minerva.papierkorb.PapierkorbPage;
 import minerva.papierkorb.PapierkorbUnterseitenPage;
@@ -122,7 +123,7 @@ import minerva.workspace.WorkspaceHistoryPage;
 import minerva.workspace.WorkspacesPage;
 
 public class MinervaWebapp extends RouteDefinitions {
-    public static final String VERSION = "1.2.0";
+    public static final String VERSION = "2.0.0";
     private static MinervaFactory factory;
     
     @Override
@@ -286,6 +287,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/branch/:branch", CreateBranchPage.class);
         form("/merge/:branch", MergeBranchPage.class);
         get("/rest/ping", PingAction.class);
+        get("/notes-migration/:branch", NotesToCommentsMigration.class);
     }
 
     private void restApi() {

@@ -1,5 +1,7 @@
 package minerva.comment;
 
+import java.io.File;
+
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.spark.Context;
@@ -17,7 +19,7 @@ import minerva.model.WorkspaceSO;
  * Seite-specific comments
  */
 public class SeiteCommentService extends CommentService {
-    private static final String FOLDER = "comments";
+    public static final String FOLDER = "comments";
     private final Context ctx;
     private final String lang;
     private final DirAccess dao;
@@ -49,7 +51,25 @@ public class SeiteCommentService extends CommentService {
         commentsPagePath = "/sc/" + bbi + "/comments";
         title = seite.getTitle();
     }
-    
+
+    public SeiteCommentService(SeiteSO seite) {
+        this.seite = seite;
+        ctx = null;
+        WorkspaceSO workspace = seite.getBook().getWorkspace();
+        lang = workspace.getUser().getGuiLanguage();
+        dao = seite.getBook().dao();
+        String branch = workspace.getBranch();
+        String bookFolder = seite.getBook().getBook().getFolder();
+        
+        simpledao = new SimpleDirAccess(dao, workspace);
+        dir = seite.getBook().getFolder() + "/" + FOLDER + "/" + seite.getId();
+        bbi = branch + "/" + bookFolder + "/" + seite.getId();
+        key = ":" + branch + ":" + bookFolder + ":" + seite.getId() + ":comment";
+        parentEntityPath = "/s/" + bbi;
+        commentsPagePath = "/sc/" + bbi + "/comments";
+        title = seite.getTitle();
+    }
+
     @Override
     protected SimpleDirAccess dao() {
         return simpledao;
@@ -59,7 +79,13 @@ public class SeiteCommentService extends CommentService {
     protected String dir() {
         return dir;
     }
-    
+
+    public int getCommentsSize() {
+        // TODO Falls da Schrott im Ordner sein sollte, ist das Ergebnis falsch.
+        File[] m = new File(dir()).listFiles();
+        return m == null ? 0 : m.length;
+    }
+
     @Override
     public void save(Comment comment, String commitMessage) {
         simpledao.save(comment.getId(), comment, CommentImageUploadService.popImages(comment.getId()),

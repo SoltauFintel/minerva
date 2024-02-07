@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.gson.Gson;
-
+import minerva.base.StringService;
 import minerva.model.WorkspaceSO;
 
 public class SimpleDirAccess {
@@ -26,7 +25,7 @@ public class SimpleDirAccess {
 
     public <T> void save(String id, T data, Set<String> images, CommitMessage commitMessage, String dir) {
         Map<String, String> files = new HashMap<>();
-        files.put(dir + "/" + id + ".json", new Gson().toJson(data));
+        files.put(dir + "/" + id + ".json", StringService.prettyJSON(data));
         images.forEach(dn -> files.put(dir + "/img/" + id + "/" + dn, DirAccess.IMAGE));
         dao.saveFiles(files, commitMessage, workspace);
     }
