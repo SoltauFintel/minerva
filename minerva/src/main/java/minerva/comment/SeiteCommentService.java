@@ -76,7 +76,7 @@ public class SeiteCommentService extends CommentService {
         m.put("parentEntityTitle", Escaper.esc(title));
         m.put("parentEntityPath", parentEntityPath);
         m.put("addlink", "/sc/" + bbi + "/comment");
-        m.put("imageuploadlink", "/s-image-upload/" + bbi);
+        m.put("imageuploadlink", "/s-image-upload/" + bbi + "/comment");
         String id = m.get("id").toString();
         m.put("postcontentslink", "/post-contents/comment?key=" + Escaper.urlEncode(getKey(id), "")); 
     }

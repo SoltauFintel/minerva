@@ -223,6 +223,7 @@ public class MinervaWebapp extends RouteDefinitions {
     private void images() {
         // upload
         post("/s-image-upload/:branch/:book/:id", ImageUploadAction.class);
+        post("/s-image-upload/:branch/:book/:id/comment", ImageUploadAction.class);
         
         // download
         get("/s/:branch/:book/img/:id/:dn", ImageDownloadAction.class);
