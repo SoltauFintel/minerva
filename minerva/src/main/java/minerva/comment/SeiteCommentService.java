@@ -8,14 +8,13 @@ import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.access.SimpleDirAccess;
 import minerva.base.NLS;
-import minerva.base.StringService;
 import minerva.model.SeiteSO;
 import minerva.model.StatesSO;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
 
 /**
- * Seite-specific comments
+ * Seite-specific comments, Context-specific service.
  */
 public class SeiteCommentService extends CommentService {
     public static final String FOLDER = "comments";
@@ -43,31 +42,16 @@ public class SeiteCommentService extends CommentService {
         WorkspaceSO workspace = user.getWorkspace(branch);
         simpledao = new SimpleDirAccess(dao, workspace);
         seite = workspace.getBooks().byFolder(bookFolder).seiteById(seiteId);
-        dir = seite.getBook().getFolder() + "/" + FOLDER + "/" + seite.getId();
+        dir = calcDir(seite);
         bbi = branch + "/" + bookFolder + "/" + seite.getId();
         key = ":" + branch + ":" + bookFolder + ":" + seite.getId() + ":comment";
         parentEntityPath = "/s/" + bbi;
         commentsPagePath = "/sc/" + bbi + "/comments";
         title = seite.getTitle();
     }
-
-    // TODO zu teuer
-    public SeiteCommentService(SeiteSO seite) {
-        this.seite = seite;
-        ctx = null;
-        WorkspaceSO workspace = seite.getBook().getWorkspace();
-        lang = workspace.getUser().getGuiLanguage();
-        dao = seite.getBook().dao();
-        String branch = workspace.getBranch();
-        String bookFolder = seite.getBook().getBook().getFolder();
-        
-        simpledao = new SimpleDirAccess(dao, workspace);
-        dir = seite.getBook().getFolder() + "/" + FOLDER + "/" + seite.getId();
-        bbi = branch + "/" + bookFolder + "/" + seite.getId();
-        key = ":" + branch + ":" + bookFolder + ":" + seite.getId() + ":comment";
-        parentEntityPath = "/s/" + bbi;
-        commentsPagePath = "/sc/" + bbi + "/comments";
-        title = seite.getTitle();
+    
+    public static String calcDir(SeiteSO seite) {
+        return seite.getBook().getFolder() + "/" + FOLDER + "/" + seite.getId();
     }
 
     @Override
@@ -78,62 +62,6 @@ public class SeiteCommentService extends CommentService {
     @Override
     public String dir() {
         return dir;
-    }
-
-    /*public int getCommentsSize() {
-        int ret = 0;
-        File[] m = new File(dir()).listFiles();
-        if (m != null) {
-            for (File file : m) {
-                if (file.isFile() && file.getName().endsWith(".json")) {
-                    ret++;
-                }
-            }
-        }
-        return ret;
-    }*/
-
-    public String getCommentsSizeText(String login) {
-        if (StringService.isNullOrEmpty(login)) {
-            throw new IllegalArgumentException("login must not be null");
-        }
-        int open = 0;
-        int done = 0;
-        String forMe = "";
-        for (Comment c : getComments()) {
-            if (c.isDone()) {
-                done++;
-            } else {
-                open++;
-                if (login.equals(c.getPerson())) {
-                    forMe = "*";
-                }
-            }
-        }
-        if (open == 0 && done == 0) {
-            return "0";
-        }
-        return forMe + open + "/" + done;
-    }
-
-    /**
-     * @param login -
-     * @return 0: no open comments, 1: there are open comments, 2: there are open comments for me
-     */
-    public int getCommentState(String login) {
-        if (StringService.isNullOrEmpty(login)) {
-            throw new IllegalArgumentException("login must not be null");
-        }
-        int state = 0;
-        for (Comment c : getComments()) {
-            if (!c.isDone()) {
-                if (login.equals(c.getPerson())) {
-                    return 2;
-                }
-                state = 1;
-            }
-        }
-        return state;
     }
 
     @Override

@@ -2,7 +2,6 @@ package minerva.comment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,6 +11,7 @@ import com.github.template72.data.DataMap;
 import com.google.gson.Gson;
 
 import github.soltaufintel.amalia.spark.Context;
+import minerva.access.DirAccess;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.access.SimpleDirAccess;
 
@@ -34,23 +34,23 @@ public abstract class CommentService {
     }
 
     public List<Comment> getComments() {
-        Map<String, String> files = dao().dao().loadAllFiles(dir());
+        return loadComments(dao().dao(), dir());
+    }
+    
+    public static List<Comment> loadComments(DirAccess dao, String dir) {
+        Map<String, String> files = dao.loadAllFiles(dir);
         
         List<Comment> allComments = new ArrayList<>();
         Gson gson = new Gson();
-        for (Entry<String, String> e : files.entrySet()) {
-            allComments.add(gson.fromJson(e.getValue(), Comment.class));
-        }
+        files.values().forEach(value -> allComments.add(gson.fromJson(value, Comment.class)));
 
         List<Comment> ret = new ArrayList<>();
         addLoadedComments("", allComments, ret);
         return ret;
     }
 
-    private void addLoadedComments(String parentId, List<Comment> allComments, List<Comment> result) {
-        Iterator<Comment> iter = allComments.iterator();
-        while (iter.hasNext()) {
-            Comment comment = iter.next();
+    private static void addLoadedComments(String parentId, List<Comment> allComments, List<Comment> result) {
+        for (Comment comment : allComments) {
             if (comment.getParentId().equals(parentId)) {
                 result.add(comment);
                 addLoadedComments(comment.getId(), allComments, comment.getComments()); // recursive

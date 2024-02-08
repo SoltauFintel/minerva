@@ -26,7 +26,7 @@ import minerva.access.DirAccess;
 import minerva.base.NlsString;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
-import minerva.comment.SeiteCommentService;
+import minerva.comment.SeiteCommentService2;
 import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
 import minerva.seite.IPageChangeStrategy;
@@ -289,7 +289,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         filenamesToDelete.add(book.getFolder() + "/img/" + getId() + "/*");
         
         // Kommentare (inkl. Images)
-        filenamesToDelete.add(new SeiteCommentService(this).dir() + "/**");
+        filenamesToDelete.add(new SeiteCommentService2(this).dir() + "/**");
         
         // Seite selbst (.meta, .html)
         filenamesToDelete.add(filenameMeta());

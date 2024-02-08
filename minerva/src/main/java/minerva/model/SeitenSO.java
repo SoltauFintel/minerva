@@ -14,7 +14,7 @@ import minerva.access.DirAccess;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.base.MList;
 import minerva.comment.Comment;
-import minerva.comment.SeiteCommentService;
+import minerva.comment.SeiteCommentService2;
 import minerva.seite.Breadcrumb;
 import minerva.seite.CommentWithSeite;
 import minerva.seite.IBreadcrumbLinkBuilder;
@@ -219,7 +219,7 @@ public class SeitenSO extends MList<SeiteSO> {
     public List<CommentWithSeite> getAllComments() {
         List<CommentWithSeite> ret = new ArrayList<>();
         for (SeiteSO seite : this) {
-            findAllComments(seite, new SeiteCommentService(seite).getComments(), ret);
+            findAllComments(seite, new SeiteCommentService2(seite).getComments(), ret);
             ret.addAll(seite.getSeiten().getAllComments());
         }
         return ret;

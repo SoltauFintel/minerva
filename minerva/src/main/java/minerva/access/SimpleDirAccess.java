@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import minerva.base.StringService;
+import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 
 public class SimpleDirAccess {
@@ -17,6 +18,10 @@ public class SimpleDirAccess {
     public SimpleDirAccess(DirAccess dao, WorkspaceSO workspace) {
         this.dao = dao;
         this.workspace = workspace;
+    }
+    
+    public SimpleDirAccess(SeiteSO seite) {
+        this(seite.getBook().dao(), seite.getBook().getWorkspace());
     }
     
     public DirAccess dao() {

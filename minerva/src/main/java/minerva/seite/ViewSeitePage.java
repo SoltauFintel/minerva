@@ -11,7 +11,7 @@ import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
-import minerva.comment.SeiteCommentService;
+import minerva.comment.SeiteCommentService2;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -72,7 +72,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("Sortierung", n(seite.isSorted() ? "alfaSorted" : "manuSorted"));
         put("isSorted", seite.isSorted());
 
-        String cosi = new SeiteCommentService(seiteSO).getCommentsSizeText(user.getLogin());
+        String cosi = new SeiteCommentService2(seiteSO).getCommentsSizeText(user.getLogin());
         boolean forMe = cosi.startsWith("*");
         if (forMe) {
             cosi = cosi.substring(1);

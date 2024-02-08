@@ -6,7 +6,7 @@ import com.github.template72.data.DataMap;
 import minerva.MinervaWebapp;
 import minerva.base.DeliverHtmlContent;
 import minerva.base.Uptodatecheck;
-import minerva.comment.SeiteCommentService;
+import minerva.comment.SeiteCommentService2;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -81,7 +81,7 @@ public class BookPage extends BPage implements Uptodatecheck {
                 gliederung.append("\"" + nc + ">");
                 gliederung.append(title);
                 gliederung.append("</a>");
-                int state = new SeiteCommentService(seite).getCommentState(user.getLogin());
+                int state = new SeiteCommentService2(seite).getCommentState(user.getLogin());
                 if (state > 0) {
                     gliederung.append(state == 2 ? hasCommentForMe : hasComment);
                 }
