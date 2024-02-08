@@ -5,6 +5,7 @@ import static minerva.base.FileService.moveFiles;
 import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.pmw.tinylog.Logger;
 
@@ -30,9 +31,7 @@ public class PapierkorbSO {
     }
     
     public List<WeggeworfeneSeite> list() {
-        MultiPurposeDirAccess dao = new MultiPurposeDirAccess(workspace.dao());
-        return workspace.dao().getAllFolders(folder).stream()
-                .map(dir -> dao.load(dnPapierkorbJson(dir), WeggeworfeneSeite.class))
+        return rawlist()
                 .filter(s -> s != null)
                 .sorted((a, b) -> b.getDeleteDate().compareTo(a.getDeleteDate()))
                 .collect(Collectors.toList());
@@ -191,7 +190,12 @@ public class PapierkorbSO {
     }
 
     public WeggeworfeneSeite byId(String id) {
-        // TODO optimierbar
-        return list().stream().filter(i -> i.getId().equals(id)).findFirst().orElseThrow(() -> new RuntimeException("Recycle bin entry does not exist!"));
+        return rawlist().filter(i -> i != null && i.getId().equals(id)).findFirst().orElseThrow(() -> new RuntimeException("Recycle bin entry does not exist!"));
+    }
+
+    private Stream<WeggeworfeneSeite> rawlist() {
+        MultiPurposeDirAccess dao = new MultiPurposeDirAccess(workspace.dao());
+        return workspace.dao().getAllFolders(folder).stream()
+                .map(dir -> dao.load(dnPapierkorbJson(dir), WeggeworfeneSeite.class));
     }
 }

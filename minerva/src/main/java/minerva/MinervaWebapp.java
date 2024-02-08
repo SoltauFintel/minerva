@@ -161,7 +161,7 @@ public class MinervaWebapp extends RouteDefinitions {
 
         // Export
         get("/w/:branch/books/export", ExportWorkspaceAction.class);
-        form("/w/:branch/export", ExportPage.class); // TODO mal testen, ob ich das <form action=...> Attribut weglassen kann
+        form("/w/:branch/export", ExportPage.class);
         form("/w/:branch/pages/export", SeitenauswahlPage.class);
         get("/w/:branch/download-export/:id/:dn", DownloadExportPage.class);
 
