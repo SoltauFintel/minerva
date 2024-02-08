@@ -1,17 +1,17 @@
 package minerva.task;
 
 import minerva.comment.Comment;
-import minerva.seite.NoteWithSeite;
+import minerva.seite.CommentWithSeite;
 
 /**
  * Task adapter for Note
  */
 public class NoteTask implements Task {
-	private final NoteWithSeite n;
+	private final CommentWithSeite n;
 	private final Comment note;
 	private final String link;
 	
-	public NoteTask(NoteWithSeite n, String branch) {
+	public NoteTask(CommentWithSeite n, String branch) {
 		this.n = n;
 		this.note = n.getNote();
 		link = "/s/" + branch + "/" + n.getSeite().getBook().getBook().getFolder() + "/" + n.getSeite().getId();

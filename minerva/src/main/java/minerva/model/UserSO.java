@@ -25,7 +25,7 @@ import minerva.base.FileService;
 import minerva.base.StringService;
 import minerva.base.Tosmap;
 import minerva.export.ExportUserSettings;
-import minerva.seite.NoteWithSeite;
+import minerva.seite.CommentWithSeite;
 import minerva.seite.link.InvalidLinksModel;
 import minerva.task.TaskPriority;
 import minerva.user.User;
@@ -325,13 +325,13 @@ public class UserSO {
         }
     }
 
-    public List<NoteWithSeite> getNotes(String branch, String login) {
+    public List<CommentWithSeite> getNotes(String branch, String login) {
     	if (StringService.isNullOrEmpty(login)) {
     		login = user.getLogin();
     	}
-        List<NoteWithSeite> notes = new ArrayList<>();
+        List<CommentWithSeite> notes = new ArrayList<>();
         for (BookSO book : getWorkspace(branch).getBooks()) {
-            for (NoteWithSeite n : book.getSeiten().getAllNotes()) {
+            for (CommentWithSeite n : book.getSeiten().getAllNotes()) {
                 if (!n.getNote().isDone() && login.equals(n.getNote().getPerson())) {
                     notes.add(n);
                 }

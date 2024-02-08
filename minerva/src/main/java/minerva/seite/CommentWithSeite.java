@@ -3,17 +3,17 @@ package minerva.seite;
 import minerva.comment.Comment;
 import minerva.model.SeiteSO;
 
-public class NoteWithSeite {
-    private final Comment note;
+public class CommentWithSeite {
+    private final Comment comment;
     private final SeiteSO seite;
 
-    public NoteWithSeite(Comment note, SeiteSO seite) {
-        this.note = note;
+    public CommentWithSeite(Comment comment, SeiteSO seite) {
+        this.comment = comment;
         this.seite = seite;
     }
 
     public Comment getNote() {
-        return note;
+        return comment;
     }
 
     public SeiteSO getSeite() {
