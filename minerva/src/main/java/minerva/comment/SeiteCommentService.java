@@ -81,9 +81,16 @@ public class SeiteCommentService extends CommentService {
     }
 
     public int getCommentsSize() {
-        // TODO Falls da Schrott im Ordner sein sollte, ist das Ergebnis falsch.
+        int ret = 0;
         File[] m = new File(dir()).listFiles();
-        return m == null ? 0 : m.length;
+        if (m != null) {
+            for (File file : m) {
+                if (file.isFile() && file.getName().endsWith(".json")) {
+                    ret++;
+                }
+            }
+        }
+        return ret;
     }
 
     @Override
