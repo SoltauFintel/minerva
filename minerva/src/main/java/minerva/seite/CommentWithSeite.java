@@ -12,7 +12,7 @@ public class CommentWithSeite {
         this.seite = seite;
     }
 
-    public Comment getNote() {
+    public Comment getComment() {
         return comment;
     }
 

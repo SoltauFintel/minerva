@@ -13,7 +13,7 @@ public class NoteTask implements Task {
 	
 	public NoteTask(CommentWithSeite n, String branch) {
 		this.n = n;
-		this.note = n.getNote();
+		this.note = n.getComment();
 		link = "/s/" + branch + "/" + n.getSeite().getBook().getBook().getFolder() + "/" + n.getSeite().getId();
 	}
 	

@@ -332,7 +332,7 @@ public class UserSO {
         List<CommentWithSeite> notes = new ArrayList<>();
         for (BookSO book : getWorkspace(branch).getBooks()) {
             for (CommentWithSeite n : book.getSeiten().getAllNotes()) {
-                if (!n.getNote().isDone() && login.equals(n.getNote().getPerson())) {
+                if (!n.getComment().isDone() && login.equals(n.getComment().getPerson())) {
                     notes.add(n);
                 }
             }
