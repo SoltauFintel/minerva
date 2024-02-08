@@ -9,12 +9,15 @@ import minerva.seite.CommentWithSeite;
 public class CommentTask implements Task {
 	private final CommentWithSeite cws;
 	private final Comment comment;
+	private final String parentLink;
 	private final String link;
 	
 	public CommentTask(CommentWithSeite cws, String branch) {
 		this.cws = cws;
 		this.comment = cws.getComment();
-		link = "/s/" + branch + "/" + cws.getSeite().getBook().getBook().getFolder() + "/" + cws.getSeite().getId();
+		String zt = branch + "/" + cws.getSeite().getBook().getBook().getFolder() + "/" + cws.getSeite().getId();
+        parentLink = "/s/" + zt;
+        link = "/sc/" + zt + "/comments?highlight=" + comment.getId() + "#" + comment.getId();
 	}
 	
 	@Override
@@ -39,12 +42,12 @@ public class CommentTask implements Task {
 
 	@Override
 	public String getLink() {
-		return link.replace("/s/","/sc/")/*TODO Krücke*/ + "/comments?highlight=" + comment.getId() + "#" + comment.getId();
+		return link;
 	}
 
 	@Override
 	public String getParentLink() {
-		return link;
+		return parentLink;
 	}
 
 	@Override
@@ -54,7 +57,7 @@ public class CommentTask implements Task {
 
 	@Override
 	public String getTypeName() {
-		return "note"; // it's a RB key
+		return "Comment"; // it's a RB key
 	}
 
 	@Override
