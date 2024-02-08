@@ -183,19 +183,18 @@ window.onload = function() {
         }
     {{/each}}
     if (vorh) {
-        if (confirm('{{N.keepOldInput}}')) {
-            {{each L in languages}}
-                editor{{L.LANG}}.setData( oldEditor{{L.LANG}} );
-                localStorage.removeItem('error_editor{{L.LANG}}.{{id}}');
-                if (vorhError) {
-                    document.getElementById('titel{{L.LANG}}').value = localStorage.getItem('error_titel{{L.LANG}}.{{id}}');
-                    localStorage.removeItem('error_titel{{L.LANG}}.{{id}}');
-                }
-            {{/each}}
+        alert('{{N.keepOldInput}}');
+        {{each L in languages}}
+            editor{{L.LANG}}.setData( oldEditor{{L.LANG}} );
+            localStorage.removeItem('error_editor{{L.LANG}}.{{id}}');
             if (vorhError) {
-                document.getElementById('comment').value = localStorage.getItem('error_comment.{{id}}');
-                localStorage.removeItem('error_comment.{{id}}');
+                document.getElementById('titel{{L.LANG}}').value = localStorage.getItem('error_titel{{L.LANG}}.{{id}}');
+                localStorage.removeItem('error_titel{{L.LANG}}.{{id}}');
             }
+        {{/each}}
+        if (vorhError) {
+            document.getElementById('comment').value = localStorage.getItem('error_comment.{{id}}');
+            localStorage.removeItem('error_comment.{{id}}');
         }
     }
 }

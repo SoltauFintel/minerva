@@ -87,7 +87,7 @@ $('#submit').click(function (e) {
         }).fail(e => {
             localStorage.setItem('error_comment.{{id}}', editor.getData());
             console.error('{{N.saveCommentError}}');
-            alert('{{N.saveCommentError}}'); // klappt nicht
+            alert('{{N.saveCommentError}}');  {{-- // klappt nicht im Gitlab-Modus, ist aber nicht tragisch --}}
         });
     }, 0);
 });
@@ -125,10 +125,9 @@ window.onload = function() {
         }
     }
     if (vorh) {
-        if (confirm('{{N.keepOldCommentInput}}')) {
-            editor.setData( oldEditor );
-            localStorage.removeItem('error_comment.{{id}}');
-        }
+        alert('{{N.keepOldInput}}');
+        editor.setData( oldEditor );
+        localStorage.removeItem('error_comment.{{id}}');
     }
 }
 

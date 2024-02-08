@@ -17,21 +17,25 @@ public class EditCommentPage extends Page {
         String parentId = ctx.queryParam("parent");
         CommentService sv = CommentService.service(ctx);
         
+        boolean add = "add".equals(ctx.queryParam("m"));
         if (isPOST()) {
-            boolean add = "add".equals(ctx.queryParam("m"));
 
             save(id, add, parentId, sv);
             
             ctx.redirect(sv.getCommentsPagePath());
         } else {
-            boolean add = StringService.isNullOrEmpty(id);
-
             Comment c;
-            if (add) {
+            if (add /*true in case of server restart*/ && !StringService.isNullOrEmpty(id)) {
                 c = new Comment();
-                c.setId(IdGenerator.createId6());
+                c.setId(id);
             } else {
-                c = sv.get(id);
+                add = StringService.isNullOrEmpty(id);
+                if (add) {
+                    c = new Comment();
+                    c.setId(IdGenerator.createId6());
+                } else {
+                    c = sv.get(id);
+                }
             }
             
             put("id", c.getId());
