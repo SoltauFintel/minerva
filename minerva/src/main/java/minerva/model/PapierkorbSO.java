@@ -80,8 +80,8 @@ public class PapierkorbSO {
         // img/<id>/*
         copyAll(source + "img/" + id, target + "img/" + id);
 
-        // notes/<id>/*.json
-        copyAll(source + "notes/" + id, target + "notes/" + id);
+        // comments/<id>/*.json
+        copyAll(source + "comments/" + id, target + "comments/" + id);
 
         // recursive
         seite.getSeiten().forEach(sub -> pushSeite(sub, target));
