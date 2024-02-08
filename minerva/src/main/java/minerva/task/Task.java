@@ -16,6 +16,9 @@ public interface Task {
 	
 	String getParentTitle();
 	
+	/**
+	 * @return RB key
+	 */
 	String getTypeName();
 	
 	String getColor();

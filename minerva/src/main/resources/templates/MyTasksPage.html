@@ -21,7 +21,9 @@
                	</div>
                 
                 <div id="nb{{n.id}}" class="noteTextNC" style="margin-bottom: 0;">
-                    {{n.completeText}}
+                    <div style="max-height: 25mm; overflow-y: auto;">
+                        {{n.completeText}}
+                    </div>
                     {{include: taskbuttons}}
                 </div>
                 

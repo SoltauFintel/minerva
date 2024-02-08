@@ -54,7 +54,7 @@ public class CommentTask implements Task {
 
 	@Override
 	public String getTypeName() {
-		return "Kommentar"; // TODO NLS!
+		return "note";
 	}
 
 	@Override

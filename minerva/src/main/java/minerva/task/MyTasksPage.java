@@ -65,7 +65,6 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
     }
 
     private void fill2(List<Task> tasks, String branch, String login, TaskPriority showOnlyPrio, DataList list) {
-    	int maxlen = 500;
         for (Task task : tasks) {
             if (!user.getTaskPriority(task.getId()).equals(showOnlyPrio)) {
                 continue;
@@ -75,22 +74,22 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
             map.put("user", esc(UserAccess.login2RealName(task.getLogin())));
             map.put("date", esc(task.getDateTime()));
             String text = StringService.onlyBody(task.getText());
-//            if (text.length() > maxlen + 3) {
-//                map.put("text1", makeClickableLinks(cutOutsideLinks(text, maxlen)));
-//                map.put("hasMoreText", true);
-//            } else {
-                map.put("text1", makeClickableLinks(text));
-                map.put("hasMoreText", false);
-//            }
+            map.put("text1", makeClickableLinks(text));
+            map.put("hasMoreText", false);
             map.put("completeText", makeClickableLinks(text));
             map.put("link", task.getLink()); // Kommentar anzeigen Link
-            map.put("viewTask", esc(n("viewTask").replace("$t", task.getTypeName()))); // TODO NLS! // Kommentar anzeigen Label
+            map.put("viewTask", esc(getShowNoteLabel(task))); // Kommentar anzeigen Label
             map.put("parentLink", task.getParentLink());
             map.put("parentTitle", esc(task.getParentTitle()));
             map.put("color", esc(task.getColor()));
             TaskPriority taskPrio = user.getTaskPriority(task.getId());
             fillTask(task.getId(), branch, taskPrio, map);
         }
+    }
+    
+    private String getShowNoteLabel(Task task) {
+        String typeName = n(task.getTypeName());
+        return n("viewTask").replace("$t", typeName);
     }
     
     public static void fillTask(String id, String branch, TaskPriority taskPrio, DataMap map) {
