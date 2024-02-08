@@ -16,7 +16,6 @@ import minerva.task.TaskService;
 import minerva.user.UserAccess;
 
 public class MinervaPageInitializer extends PageInitializer {
-    // TODO hier kann einiges raus
 	
     @Override
     public void initPage(Context ctx, Page page) {
@@ -57,7 +56,6 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("searchFocus", false);
         page.put("delayedPush", false);
         page.put("delayedPushAllowed", false);
-        page.put("branch0", "");
         page.put("previewTitle", "Preview");
         page.put("previewlink", "/p/master");
         page.put("q", "");
@@ -82,27 +80,7 @@ public class MinervaPageInitializer extends PageInitializer {
             hasUserVars(page, m);
         }
         updateOpenMasterTasks(page);
-        
-//        DataList list = page.list("menus");
-//		String b = esc(m.getBranch());
-//		if (!MinervaWebapp.factory().isCustomerVersion()) {
-//			menu(list, "Workspaces", "fa-code-fork", "/", b);
-//		}
-//        String userLang = m.getUserLang();
-//		menu(list, NLS.get(userLang, "myTasks"), "fa-inbox", "/w/:branch/my-tasks", b);
-//		menu(list, NLS.get(userLang, "preview"), "fa-thumbs-o-up", "/p/:branch", b);
-//		menu(list, NLS.get(userLang, "formulaEditor"), "fa-superscript", "/math", b);
-//		menu(list, "Schnittstellen", "fa-exchange", "#", b); // TODO -> xminerva
-//		menu(list, NLS.get(userLang, "moreCommands"), "fa-briefcase", "/w/:branch/menu", b);
     }
-//    
-//    private void menu(DataList list, String text, String icon, String link, String branch) {
-//    	DataMap map = list.add();
-//    	map.put("text", esc(text));
-//    	map.put("icon", esc(icon));
-//    	map.put("link", esc(link.replace(":branch", branch)));
-//    	map.put("sep", "-".equals(text));
-//    }
     
     public static void updateOpenMasterTasks(Page page) {
         page.put("hasOpenMasterTasks", TaskService.openMasterTasks > 0);
@@ -135,15 +113,9 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("delayedPushAllowed", MinervaWebapp.factory().isGitlab()
                 && !"master".equals(m.getBranch())
                 && !(m.getBranch().length() >= 1 && m.getBranch().charAt(0) >= '0' && m.getBranch().charAt(0) <= '9'));
-        /*DataList list = */page.list("favorites");
+        page.list("favorites");
         if (m.getBooks() == null) {
             return;
-        }
-        boolean isMaster = "master".equals(m.getBranch());
-//        page.put("isMasterBranch", isMaster);
-//System.out.println("isMaster="+isMaster + " | " + m.getBranch());
-        if (!isMaster) {
-            page.put("branch0", esc(m.getBranch())); // TODO brauch ich das noch?
         }
         page.put("previewTitle", NLS.get(userLang, "preview"));
         page.put("previewlink", "/p/" + m.getBranch());

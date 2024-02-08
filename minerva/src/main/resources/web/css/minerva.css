@@ -213,18 +213,6 @@ body {
     background-color: #f5f5f9 !important;
 }
 
-.branch0 {
-    padding-left: 19mm;
-    padding-top: 14px;
-    display: flex;
-    color: #c00;
-    font-weight: bold;
-    font-style: italic;
-}
-
-/*.seite table.confluenceTable {
-}*/
-
 .seite table.confluenceTable td {
     border: 1px solid #BBB;
     padding: 5px;
