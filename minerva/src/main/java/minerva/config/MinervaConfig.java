@@ -175,14 +175,14 @@ public class MinervaConfig {
     }
 
     public String getCommentSubject() {
-        return config.get("mail.note.subject", "new comment");
+        return config.get("mail.comment.subject", "new comment");
     }
     
     /**
      * @return never null
      */
     public String getCommentBody() {
-        return config.get("mail.note.body", "").replace("{host}", config.get("host")).replace("\\n", "\n");
+        return config.get("mail.comment.body", "").replace("{host}", config.get("host")).replace("\\n", "\n");
     }
     
     public boolean readyForCommentNotifications() {

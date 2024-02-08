@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,17 +23,13 @@ import minerva.access.DirAccess;
 import minerva.base.FileService;
 import minerva.base.NlsString;
 import minerva.base.StringService;
-import minerva.confluence.ConfluenceComment;
 import minerva.confluence.ConfluenceComments;
 import minerva.confluence.ConfluencePage;
 import minerva.model.BookSO;
 import minerva.model.ExclusionsSO;
-import minerva.model.NotesSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
-import minerva.seite.Note;
 import minerva.seite.Seite;
-import minerva.user.UserAccess;
 
 /**
  * This migration is based on the Confluence export for the online help (.html files).
@@ -512,8 +507,10 @@ public class ConfluenceToMinervaMigrationService {
 	private void migrateNotes2(String lang, ConfluenceComments cnotes, boolean de_en_Hinweis, SeiteSO seite, Map<String, String> files) {
 		int n = cnotes.getComments().size();
 		if (n > 0) {
-			NotesSO notesSO = seite.notes();
-			migrateNotes3(lang, cnotes.getComments(), null, de_en_Hinweis, notesSO, files);
+// TO-DO missing comments migration	    
+//			NotesSO notesSO = seite.notes();
+//			migrateNotes3(lang, cnotes.getComments(), null, de_en_Hinweis, notesSO, files);
+		    
 			/* Zwischennotiz
 			Note mnote = notesSO.createNote(null,
 					"// Die Kommentare oberhalb stammen aus dem Altsystem und beziehen sich auf die " + lang + " Seite.",
@@ -522,7 +519,8 @@ public class ConfluenceToMinervaMigrationService {
 		}
 	}
 	
-	private void migrateNotes3(String lang, List<ConfluenceComment> cnotes, Note mnote_parent, boolean de_en_Hinweis,
+/* TO-DO missing comments migration
+    private void migrateNotes3(String lang, List<ConfluenceComment> cnotes, Note mnote_parent, boolean de_en_Hinweis,
 			NotesSO notesSO, Map<String, String> files) {
     	for (ConfluenceComment cnote : cnotes) {
     		String text = cnote.getPlainText(); // must be called before getPersons()
@@ -544,5 +542,5 @@ public class ConfluenceToMinervaMigrationService {
 
 	private String transformDate(String date) { // 2022-10-05T14:10:32 -> 2022-10-05 14:10
 		return date.substring(0, 10) + " " + date.substring(11, 16);
-	}
+	}*/
 }

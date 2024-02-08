@@ -63,8 +63,8 @@ public class BookPage extends BPage implements Uptodatecheck {
             boolean sorted, StringBuilder gliederung) {
         // Wegen der Rekursion ist eine Template-Datei nicht sinnvoll.
         gliederung.append("<ul>\n");
-        String hasNote = " <i class=\"fa fa-comment-o has-note\" title=\"" + n("hasNote") + "\"></i>";
-        String hasNoteForMe = " <i class=\"fa fa-comment has-note\" title=\"" + n("hasNote") + "\"></i>";
+        String hasComment    = " <i class=\"fa fa-comment-o has-comment\" title=\"" + n("hasComment") + "\"></i>";
+        String hasCommentForMe = " <i class=\"fa fa-comment has-comment\" title=\"" + n("hasComment") + "\"></i>";
         for (SeiteSO seite : seiten) {
             int hasContent = seite.hasContent(lang);
             if (hasContent > 0 || allPages) {
@@ -82,7 +82,7 @@ public class BookPage extends BPage implements Uptodatecheck {
                 gliederung.append(title);
                 gliederung.append("</a>");
                 if (new SeiteCommentService(seite).getCommentsSize() > 0) {
-                	gliederung.append(/*notesForMe(seite) ? hasNoteForMe :*/ hasNote); // TODO Baustelle
+                	gliederung.append(/*commentsForMe(seite) ? hasCommentForMe :*/ hasComment); // TODO Baustelle
                 }
                 gliederung.append("</li>\n");
                 
@@ -93,10 +93,11 @@ public class BookPage extends BPage implements Uptodatecheck {
     }
 
     // TODO Baustelle
-	private boolean notesForMe(SeiteSO seite) {
-		String login = user.getLogin();
-		return seite.getSeite().getNotes().stream()
-				.anyMatch(note -> !note.isDone() && note.getPersons().contains(login));
+	private boolean commentsForMe(SeiteSO seite) {
+	    return false;
+//		String login = user.getLogin();
+//		return seite.getSeite().getN otes().stream()
+//				.anyMatch(n ote -> !n ote.isDone() && n ote.getPersons().contains(login));
 	}
     
     private boolean hasReleaseNotesBtn() {

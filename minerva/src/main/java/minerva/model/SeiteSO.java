@@ -53,7 +53,6 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
 
     /** null: nicht geladen */
     private NlsString content = null;
-    private final NotesSO notes = new NotesSO(this);
     private final TagsSO tags = new TagsSO(this);
     /** true: it's a new page that has never been saved, false: already existing page */
     private boolean neu = false;
@@ -72,7 +71,6 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         this.book = book;
         this.seite = seite;
         seiten = SeitenSO.findeUnterseiten(this, alleSeiten, book);
-        notes.load(); // TODO Es gibt Anwendungsfälle bei denen die Notizen gar nicht benötigt werden.
     }
     
     /**
@@ -193,7 +191,6 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         }
         seite = s;
         content = null; // force reload
-        notes.load();
     }
 
     /**
@@ -218,7 +215,6 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
             throw new RuntimeException("seite is null after loading .meta file. Error in freshcheck. dn: " + dn);
         }
         setContent(files, langs);
-        notes.load();
     }
     
     private Map<String, String> loadFiles(boolean withSeite, List<String> langs) {
@@ -251,10 +247,6 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
 
     public TagsSO tags() {
         return tags;
-    }
-    
-    public NotesSO notes() {
-        return notes;
     }
     
     public void remove() {

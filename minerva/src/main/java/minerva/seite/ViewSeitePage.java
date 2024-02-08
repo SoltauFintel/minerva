@@ -71,10 +71,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("hasSubPages", !seiteSO.getSeiten().isEmpty());
         put("Sortierung", n(seite.isSorted() ? "alfaSorted" : "manuSorted"));
         put("isSorted", seite.isSorted());
-        int n = seiteSO.notes().getNotesSize();
-        putInt("notesSize", n);
         putInt("commentsSize", new SeiteCommentService(seiteSO).getCommentsSize());
-        put("hasNotes", n > 0);
         PageChange change = seiteSO.getLastChange();
         put("hasLastChange", change != null);
         if (change != null) {
@@ -320,7 +317,6 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
 		    menuitem(i, viewlink + "/html", "fa-code", n("editHTML"));
 		}
     	menuitem(i, "/w/" + esc(branch) + "/export?seite=" + u(seite.getId()), "fa-upload", n("exportPage"));
-    	menuitem(i, viewlink + "/notes", "fa-comment", n("notes") + " (alt)"); // TODO später ausbauen
     	menuitem(i, model.get("movelink").toString(), "fa-arrow-circle-right", n("movePage"));
     	menuitem(i, model.get("deletelink").toString(), "fa-trash", n("deletePage") + "...");
     	return i;

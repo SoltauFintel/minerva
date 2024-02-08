@@ -25,7 +25,6 @@ public class Seite {
      * Commented-out help keys are not planned, but practically possible by prefixing them with characters that break the key.
      */
     private final List<String> helpKeys = new ArrayList<>();
-    private final transient List<Note> notes = new ArrayList<>();
     private final List<PageChange> changes = new ArrayList<>();
     private int tocHeadingsLevels = 0;
     private int tocSubpagesLevels = 0;
@@ -47,7 +46,6 @@ public class Seite {
         this.tags.addAll(c.tags);
         this.version = c.version;
         this.helpKeys.addAll(c.helpKeys);
-        this.notes.addAll(c.notes);
         this.changes.addAll(c.changes);
     }
 
@@ -97,10 +95,6 @@ public class Seite {
 
     public void setVersion(int version) {
         this.version = version;
-    }
-
-    public List<Note> getNotes() {
-        return notes;
     }
 
     public List<PageChange> getChanges() {
