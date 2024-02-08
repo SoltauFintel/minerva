@@ -38,10 +38,11 @@ public class MinervaErrorPage extends Page implements ErrorPage {
         }
         ctx.status(500);
         if (exception instanceof ErrorMessageHolder e) {
-            put("msg", e.getErrorMessage()); // no esc
+            msg = e.getErrorMessage(); // no esc
         } else {
-            put("msg", esc(msg)); // for subclasses
+            msg = esc(msg); // for subclasses
         }
+        put("msg", msg == null ? "(no error message)" : msg.replace("\n", "<br/>").replace("\\n", "<br/>"));
         put("p", "");
         put("title", "Minerva error");
         put("header", exception instanceof UserMessage ? "Message" : "Sorry, this should not happen!");
