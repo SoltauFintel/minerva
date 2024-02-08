@@ -85,9 +85,9 @@ $('#submit').click(function (e) {
             person: document.getElementById('person').value,
             version: document.getElementById('version').value
         }).fail(e => {
-            localStorage.setItem('error_editor.{{id}}', editor.getData());
-            console.error('{{N.saveError}}');
-            alert('{{N.saveError}}');
+            localStorage.setItem('error_comment.{{id}}', editor.getData());
+            console.error('{{N.saveCommentError}}');
+            alert('{{N.saveCommentError}}'); // klappt nicht
         });
     }, 0);
 });
@@ -99,7 +99,6 @@ document.addEventListener('keydown', e => {   {{-- // https://stackoverflow.com/
     }
 });
 
-/*   TODO Schutz aktivieren
 $(window).on('beforeunload', function() {
     return 'Any changes will be lost';  {{-- // browser shows its own text --}}
 });
@@ -109,32 +108,31 @@ $(document).on('submit', 'form.editorform', function(event) {  {{-- // allow Sav
 });
 
 $(window).on('unload', function() {
-    localStorage.removeItem('editor.{{id}}');
+    localStorage.removeItem('comment.{{id}}');
 });
 
 window.onload = function() {
     let vorh = false
     let vorhError = false
-    let oldEditor = localStorage.getItem('editor.{{id}}')
+    let oldEditor = localStorage.getItem('comment.{{id}}')
     if (oldEditor) {
         vorh = true
     } else {
-        oldEditor = localStorage.getItem('error_editor.{{id}}')
+        oldEditor = localStorage.getItem('error_comment.{{id}}')
         if (oldEditor) {
             vorh = true
             vorhError = true
         }
     }
     if (vorh) {
-        if (confirm('{{N.keepOldInput}}')) {
+        if (confirm('{{N.keepOldCommentInput}}')) {
             editor.setData( oldEditor );
-            localStorage.removeItem('error_editor.{{id}}');
+            localStorage.removeItem('error_comment.{{id}}');
         }
     }
 }
 
 setInterval(function() {
-    localStorage.setItem('editor.{{id}}', editor.getData());
+    localStorage.setItem('comment.{{id}}', editor.getData());
 }, 3000);
-*/
 </script>

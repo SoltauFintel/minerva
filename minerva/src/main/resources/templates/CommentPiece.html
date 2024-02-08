@@ -14,6 +14,7 @@
         {{if hasPerson}} - {{N.zustaendig}}: <span{{if not done}}{{if personIsMe}} style="background-color: #ff3; font-weight: bold;"{{/if}}{{/if}}>{{person}}</span>{{/if}}
     </p>
     <div id="c2_{{commentId}}"{{if allDone}} style="display: none;"{{/if}}>
+        <p id="uc_{{commentId}}" class="savedContent" style="display: none;">{{N.savedCommentContent}}</p>
         <div class="noteTextNC{{if highlight}} noteHighlight{{/if}}{{if done}} commentDoneBar{{/if}}">{{text}}</div>
         <p class="noteCommands">
             {{if addAllowed}}

@@ -22,6 +22,28 @@
 </div>
 
 <script>
+function isThereUnsavedContent(commentId) {
+    let vorh = false
+    let oldEditor = localStorage.getItem('comment.' + commentId)
+    if (oldEditor) {
+        vorh = true
+    } else {
+        oldEditor = localStorage.getItem('error_comment.' + commentId)
+        if (oldEditor) {
+            vorh = true
+        }
+    }
+    if (vorh) {
+        document.getElementById('uc_' + commentId).style = '';
+    }
+}
+
+window.onload = function() {
+    {{each c in allCommentsIdList}}
+        isThereUnsavedContent('{{c.commentId}}');
+    {{/each}}
+}    
+
 function loeschen(id) {
     ret = confirm('{{N.deleteQ}}');
     if (ret) {

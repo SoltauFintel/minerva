@@ -2,6 +2,7 @@ package minerva.comment;
 
 import java.util.List;
 
+import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Page;
@@ -15,10 +16,11 @@ public class CommentsPage extends Page {
         CommentService sv = CommentService.service(ctx);
         List<Comment> comments = sv.getComments();
 
+        DataList allCommentsIdList = list("allCommentsIdList");
         put("book", ctx.pathParam("book"));
         put("branch", ctx.pathParam("branch"));
         put("id", ctx.pathParam("id"));
-        put("comments", commentsHTML(comments, sv, 1));
+        put("comments", commentsHTML(comments, sv, 1, allCommentsIdList));
         put("hasComments", !comments.isEmpty());
         put("showTopCreateButton", getOpenCommentsSize(comments) >= 4);
 
@@ -30,12 +32,13 @@ public class CommentsPage extends Page {
         sv.initModel(model);
     }
 
-    private String commentsHTML(List<Comment> comments, CommentService sv, int ebene) {
+    private String commentsHTML(List<Comment> comments, CommentService sv, int ebene, DataList allCommentsIdList) {
         boolean isAdmin = "1".equals(ctx.req.session().attribute("admin"));
         StringBuilder sb = new StringBuilder();
         for (Comment c : comments) {
             DataMap m = new DataMap();
             m.put("commentId", esc(c.getId()));
+            allCommentsIdList.add().put("commentId", esc(c.getId()));
             m.put("text", StringService.makeClickableLinks(c.getText()));
             m.put("person", esc(UserAccess.login2RealName(c.getPerson())));
             m.put("hasPerson", !StringService.isNullOrEmpty(c.getPerson()));
@@ -45,7 +48,7 @@ public class CommentsPage extends Page {
             m.put("user", esc(UserAccess.login2RealName(c.getUser())));
             m.put("doneDate", c.getDoneDate());
             m.put("hasComments", !c.getComments().isEmpty());
-            m.put("comments", commentsHTML(c.getComments(), sv, ebene + 1)); // recursive
+            m.put("comments", commentsHTML(c.getComments(), sv, ebene + 1, allCommentsIdList)); // recursive
             
             m.put("allDone", ebene == 1 && allDone(c));
             m.put("ebene1", ebene == 1);
