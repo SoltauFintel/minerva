@@ -1,7 +1,7 @@
 package minerva.task;
 
 import minerva.comment.Comment;
-import minerva.seite.note.NoteWithSeite;
+import minerva.seite.NoteWithSeite;
 
 /**
  * Task adapter for Note

@@ -1,4 +1,4 @@
-package minerva.seite.note;
+package minerva.seite;
 
 import minerva.comment.Comment;
 import minerva.model.SeiteSO;

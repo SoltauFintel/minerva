@@ -17,11 +17,11 @@ import minerva.comment.Comment;
 import minerva.comment.SeiteCommentService;
 import minerva.seite.Breadcrumb;
 import minerva.seite.IBreadcrumbLinkBuilder;
+import minerva.seite.NoteWithSeite;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
 import minerva.seite.TreeItem;
 import minerva.seite.link.ExtractLinksContext;
-import minerva.seite.note.NoteWithSeite;
 
 public class SeitenSO extends MList<SeiteSO> {
 
