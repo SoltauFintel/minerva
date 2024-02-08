@@ -128,7 +128,7 @@ public class MinervaWebapp extends RouteDefinitions {
         page();
         images();
         tags();
-        notes();
+        comments();
         preview();
         users();
         misc();
@@ -237,7 +237,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/tag-cloud", TagCloudPage.class);
     }
 
-    private void notes() {
+    private void comments() {
         get("/sc/:branch/:book/:id/comments", CommentsPage.class);
         form("/sc/:branch/:book/:id/comment", EditCommentPage.class);
         get("/sc/:branch/:book/:id/delete-comment", DeleteCommentAction.class);

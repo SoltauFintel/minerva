@@ -61,6 +61,7 @@ public class ConfluenceToMinervaMigrationService {
         this.helpKeysFolder = helpKeysFolder;
         this.workspace = workspace;
         this.langs = langs;
+        throw new RuntimeException("Notes migration must be updated in source code!");
     }
 
     public void migrate() throws Exception {

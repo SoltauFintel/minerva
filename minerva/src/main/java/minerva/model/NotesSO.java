@@ -113,12 +113,12 @@ public class NotesSO {
 
     private void sendNotifications(String noteId, List<String> persons) {
         MinervaConfig c = MinervaWebapp.factory().getConfig();
-        if (!c.readyForNoteNotifications()) {
+        if (!c.readyForCommentNotifications()) {
         	Logger.info("send no mails because there's no mail configuration");
         } else if (!persons.isEmpty()) {
             Mail mail = new Mail();
-            mail.setSubject(c.getNoteSubject());
-            mail.setBody(c.getNoteBody()
+            mail.setSubject(c.getCommentSubject());
+            mail.setBody(c.getCommentBody()
                     .replace("{noteId}", noteId)
                     .replace("{pageId}", seite.getId())
                     .replace("{pageTitle}", seite.getTitle()) // no esc!

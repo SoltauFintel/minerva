@@ -174,21 +174,21 @@ public class MinervaConfig {
         new MailSender().send(mail, config);
     }
 
-    public String getNoteSubject() {
+    public String getCommentSubject() {
         return config.get("mail.note.subject", "new comment");
     }
     
     /**
      * @return never null
      */
-    public String getNoteBody() {
+    public String getCommentBody() {
         return config.get("mail.note.body", "").replace("{host}", config.get("host")).replace("\\n", "\n");
     }
     
-    public boolean readyForNoteNotifications() {
+    public boolean readyForCommentNotifications() {
         return !config.get(MailSender.SMTP_SERVER, "").isEmpty()
-                && !getNoteSubject().isEmpty()
-                && !getNoteBody().isEmpty();
+                && !getCommentSubject().isEmpty()
+                && !getCommentBody().isEmpty();
     }
     
     public String getWatchSubject() {

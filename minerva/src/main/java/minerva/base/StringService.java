@@ -81,7 +81,7 @@ public class StringService {
 			if (url.startsWith("http://") || url.startsWith("https://")) {
 				target = " target=\"_blank\"";
 			} else {
-				if (url.startsWith("N")) { // note link
+				if (url.startsWith("N")) { // comment link
 					url = url.substring(1);
 					url = "?highlight=" + url + "#" + url;
 				} else { // page link
