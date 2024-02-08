@@ -4,42 +4,42 @@ import minerva.comment.Comment;
 import minerva.seite.CommentWithSeite;
 
 /**
- * Task adapter for Note
+ * Task adapter for Comment
  */
-public class NoteTask implements Task {
-	private final CommentWithSeite n;
-	private final Comment note;
+public class CommentTask implements Task {
+	private final CommentWithSeite cws;
+	private final Comment comment;
 	private final String link;
 	
-	public NoteTask(CommentWithSeite n, String branch) {
-		this.n = n;
-		this.note = n.getComment();
-		link = "/s/" + branch + "/" + n.getSeite().getBook().getBook().getFolder() + "/" + n.getSeite().getId();
+	public CommentTask(CommentWithSeite cws, String branch) {
+		this.cws = cws;
+		this.comment = cws.getComment();
+		link = "/s/" + branch + "/" + cws.getSeite().getBook().getBook().getFolder() + "/" + cws.getSeite().getId();
 	}
 	
 	@Override
 	public String getId() {
-		return n.getSeite().getId() + "-" + note.getId();
+		return cws.getSeite().getId() + "-" + comment.getId();
 	}
 
 	@Override
 	public String getLogin() {
-		return note.getUser();
+		return comment.getUser();
 	}
 
 	@Override
 	public String getDateTime() {
-		return note.getCreated();
+		return comment.getCreated();
 	}
 
 	@Override
 	public String getText() {
-		return note.getText();
+		return comment.getText();
 	}
 
 	@Override
 	public String getLink() {
-		return link.replace("/s/","/sc/")/*TODO Krücke*/ + "/comments?highlight=" + note.getId() + "#" + note.getId();
+		return link.replace("/s/","/sc/")/*TODO Krücke*/ + "/comments?highlight=" + comment.getId() + "#" + comment.getId();
 	}
 
 	@Override
@@ -49,12 +49,12 @@ public class NoteTask implements Task {
 
 	@Override
 	public String getParentTitle() {
-		return n.getSeite().getTitle();
+		return cws.getSeite().getTitle();
 	}
 
 	@Override
 	public String getTypeName() {
-		return "Kommentar";
+		return "Kommentar"; // TODO NLS!
 	}
 
 	@Override

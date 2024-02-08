@@ -5,13 +5,13 @@ import java.util.stream.Collectors;
 
 import minerva.model.UserSO;
 
-public class NotesSupplier implements TasksSupplier {
+public class CommentsSupplier implements TasksSupplier {
 
 	@Override
 	public List<Task> getTasks(UserSO user, String branch, String login) {
-		return user.getNotes(branch, login)
+		return user.getComments(branch, login)
 				.stream()
-				.map(note -> new NoteTask(note, branch))
+				.map(comment -> new CommentTask(comment, branch))
 				.collect(Collectors.toList());
 	}
 }

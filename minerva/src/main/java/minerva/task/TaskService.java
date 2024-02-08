@@ -10,7 +10,7 @@ public class TaskService {
 	public static int openMasterTasks = 0;
 	
 	static {
-		tasksSuppliers.add(new NotesSupplier());
+		tasksSuppliers.add(new CommentsSupplier());
 	}
 
 	public List<Task> getTasks(UserSO user, String branch, String login) {

@@ -16,8 +16,8 @@ import minerva.base.MList;
 import minerva.comment.Comment;
 import minerva.comment.SeiteCommentService;
 import minerva.seite.Breadcrumb;
-import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.CommentWithSeite;
+import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
 import minerva.seite.TreeItem;
@@ -216,19 +216,19 @@ public class SeitenSO extends MList<SeiteSO> {
         }
     }
 
-    public List<CommentWithSeite> getAllNotes() {
+    public List<CommentWithSeite> getAllComments() {
         List<CommentWithSeite> ret = new ArrayList<>();
         for (SeiteSO seite : this) {
-            findAllNotes(seite, new SeiteCommentService(seite).getComments(), ret);
-            ret.addAll(seite.getSeiten().getAllNotes());
+            findAllComments(seite, new SeiteCommentService(seite).getComments(), ret);
+            ret.addAll(seite.getSeiten().getAllComments());
         }
         return ret;
     }
     
-    private void findAllNotes(SeiteSO seite, List<Comment> notes, List<CommentWithSeite> result) {
-        for (Comment note : notes) {
-            result.add(new CommentWithSeite(note, seite));
-            findAllNotes(seite, note.getComments(), result); // recursive
+    private void findAllComments(SeiteSO seite, List<Comment> comments, List<CommentWithSeite> result) {
+        for (Comment comment : comments) {
+            result.add(new CommentWithSeite(comment, seite));
+            findAllComments(seite, comment.getComments(), result); // recursive
         }
     }
 
