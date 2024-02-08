@@ -1,11 +1,11 @@
 <div id="{{commentId}}">
     {{if allDone}}<p id="c0_{{commentId}}" class="commentInfoNC"><a style="min-width: 240px;"
-        onclick="aufklappen('{{commentId}}', true)" class="btn btn-default btn-xs">{{if hasComments}}{{N.showThread}}{{else}}{{N.showNote}}{{/if}}</a></p>{{/if}}
+        onclick="aufklappen('{{commentId}}', true)" class="btn btn-default btn-xs">{{if hasComments}}{{N.showThread}}{{else}}{{N.showComment}}{{/if}}</a></p>{{/if}}
     <p class="commentInfoNC" id="c1_{{commentId}}"{{if allDone}} style="display: none;"{{/if}}>
         {{if allDone}}
             {{if ebene1}}
                 <a onclick="aufklappen('{{commentId}}', false);" class="btn btn-default btn-xs"
-                    style="min-width: 240px; margin-bottom: 5px;">{{if hasComments}}{{N.hideThread}}{{else}}{{N.hideNote}}{{/if}}</a><br/>
+                    style="min-width: 240px; margin-bottom: 5px;">{{if hasComments}}{{N.hideThread}}{{else}}{{N.hideComment}}{{/if}}</a><br/>
             {{/if}}
         {{/if}}
         <span class="commentUser{{if me}} commentByMe{{/if}}">{{user}}</span> -
@@ -26,12 +26,12 @@
                 {{/if}}
             {{/if}}
             {{if done}}
-                <a href="{{donelink}}&m=u" title="{{N.undoneNote}}"
+                <a href="{{donelink}}&m=u" title="{{N.undoneComment}}"
                     onclick="document.querySelector('#nu_{{commentId}}').style='';"
                     class="btn btn-success btn-xs br"><i class="fa fa-check"></i> {{N.done}}! <i id="nu_{{commentId}}"
                     class="fa fa-delicious fa-spin" style="display: none;"></i></a>
             {{else}}
-                <a href="{{donelink}}" title="{{N.doneNote}}"
+                <a href="{{donelink}}" title="{{N.doneComment}}"
                     onclick="document.querySelector('#nd_{{commentId}}').style='';"
                     class="btn btn-default btn-xs br"><i class="fa fa-check"></i> {{N.done}}! <i id="nd_{{commentId}}"
                     class="fa fa-delicious fa-spin" style="display: none;"></i></a>
