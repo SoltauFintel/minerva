@@ -6,8 +6,8 @@
         
         <h2><a href="{{parentEntityPath}}">{{parentEntityTitle}}</a></h2>
         
-        {{if hasOpenNotes}}
-            <p style="margin-bottom: 26px; font-size: 9pt;">{{openNotes}} {{if oneOpenNote}}{{N.openNote}}{{else}}{{N.openNotes}}{{/if}}</p>
+        {{if hasOpenComments}}
+            <p style="margin-bottom: 26px; font-size: 9pt;">{{openComments}} {{if oneOpenComment}}{{N.openComment}}{{else}}{{N.openComments}}{{/if}}</p>
         {{/if}}
         
         {{if showTopCreateButton}}

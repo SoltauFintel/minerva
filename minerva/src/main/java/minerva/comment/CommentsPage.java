@@ -20,12 +20,12 @@ public class CommentsPage extends Page {
         put("id", ctx.pathParam("id"));
         put("comments", commentsHTML(comments, sv, 1));
         put("hasComments", !comments.isEmpty());
-        put("showTopCreateButton", getOpenNotesSize(comments) >= 4);
+        put("showTopCreateButton", getOpenCommentsSize(comments) >= 4);
 
-        int openNotes = getOpenNotesSize(comments);
-        putInt("openNotes", openNotes);
-        put("hasOpenNotes", openNotes > 0);
-        put("oneOpenNote", openNotes == 1);
+        int openComments = getOpenCommentsSize(comments);
+        putInt("openComments", openComments);
+        put("hasOpenComments", openComments > 0);
+        put("oneOpenComment", openComments == 1);
 
         sv.initModel(model);
     }
@@ -74,13 +74,13 @@ public class CommentsPage extends Page {
         return false;
     }
     
-    private int getOpenNotesSize(List<Comment> comments) {
+    private int getOpenCommentsSize(List<Comment> comments) {
         int ret = 0;
         for (Comment comment : comments) {
             if (!comment.isDone()) {
                 ret++;
             }
-            ret += getOpenNotesSize(comment.getComments()); // recursive
+            ret += getOpenCommentsSize(comment.getComments()); // recursive
         }
         return ret;
     }
