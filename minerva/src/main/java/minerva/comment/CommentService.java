@@ -80,7 +80,7 @@ public abstract class CommentService {
     /**
      * @return folder where to save the data
      */
-    protected abstract String dir();
+    public abstract String dir();
 
     /**
      * @return link for redirect

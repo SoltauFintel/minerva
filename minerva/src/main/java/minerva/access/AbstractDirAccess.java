@@ -78,7 +78,17 @@ public abstract class AbstractDirAccess implements DirAccess {
                 String fn = dn.substring(0, dn.length() - "/*".length());
                 File folder = new File(fn);
                 if (folder.isDirectory()) {
-                    deleteFolder(folder, addList, cantBeDeleted);
+                    deleteFolder(folder, addList, cantBeDeleted, false);
+                    ok = true;
+                    killList.add(dn);
+                } else if (!folder.isFile()) {
+                    ok = true; // Datei/Ordner existiert nicht. Nicht als Fehler werten.
+                }
+            } else if (dn.endsWith("/**")) { // folder and all subfolders
+                String fn = dn.substring(0, dn.length() - "/**".length());
+                File folder = new File(fn);
+                if (folder.isDirectory()) {
+                    deleteFolder(folder, addList, cantBeDeleted, true);
                     ok = true;
                     killList.add(dn);
                 } else if (!folder.isFile()) {
@@ -100,13 +110,17 @@ public abstract class AbstractDirAccess implements DirAccess {
         filenames.addAll(addList);
     }
 
-    private void deleteFolder(File folder, Set<String> addList, List<String> cantBeDeleted) {
+    private void deleteFolder(File folder, Set<String> addList, List<String> cantBeDeleted, boolean deleteSubfolders) {
         File[] files = folder.listFiles();
         if (files != null) {
             for (File file : files) {
                 if (file.isDirectory()) {
-                    Logger.error("[deleteFolder] Unexpected folder: " + file.getAbsolutePath());
-                    cantBeDeleted.add(file.getAbsolutePath());
+                    if (deleteSubfolders) {
+                        deleteFolder(file, addList, cantBeDeleted, deleteSubfolders);
+                    } else {
+                        Logger.error("[deleteFolder] Unexpected folder: " + file.getAbsolutePath());
+                        cantBeDeleted.add(file.getAbsolutePath());
+                    }
                 } else {
                     if (file.delete()) {
                         addList.add(file.getAbsolutePath().replace("\\", "/"));
@@ -116,6 +130,7 @@ public abstract class AbstractDirAccess implements DirAccess {
                 }
             }
         }
+        folder.delete();
     }
     
     @Override

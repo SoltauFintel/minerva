@@ -52,6 +52,7 @@ public class SeiteCommentService extends CommentService {
         title = seite.getTitle();
     }
 
+    // TODO zu teuer
     public SeiteCommentService(SeiteSO seite) {
         this.seite = seite;
         ctx = null;
@@ -76,7 +77,7 @@ public class SeiteCommentService extends CommentService {
     }
     
     @Override
-    protected String dir() {
+    public String dir() {
         return dir;
     }
 
