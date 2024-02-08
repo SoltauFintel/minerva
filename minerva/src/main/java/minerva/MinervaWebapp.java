@@ -90,11 +90,6 @@ import minerva.seite.link.LinkResolverPage;
 import minerva.seite.move.MoveSeiteAckPage;
 import minerva.seite.move.MoveSeiteAction;
 import minerva.seite.move.MoveSeitePage;
-import minerva.seite.note.AddNotePage;
-import minerva.seite.note.DeleteNoteAction;
-import minerva.seite.note.EditNotePage;
-import minerva.seite.note.NoteDoneAction;
-import minerva.seite.note.NotesPage;
 import minerva.seite.tag.DeleteTagAction;
 import minerva.seite.tag.TagCloudPage;
 import minerva.seite.tag.TagWPage;
@@ -243,14 +238,6 @@ public class MinervaWebapp extends RouteDefinitions {
     }
 
     private void notes() {
-        // old
-        get("/s/:branch/:book/:id/notes", NotesPage.class);
-        form("/s/:branch/:book/:id/add-note", AddNotePage.class);
-        form("/s/:branch/:book/:id/edit-note", EditNotePage.class);
-        get("/s/:branch/:book/:id/delete-note", DeleteNoteAction.class);
-        get("/s/:branch/:book/:id/note-done", NoteDoneAction.class);
-        
-        // new
         get("/sc/:branch/:book/:id/comments", CommentsPage.class);
         form("/sc/:branch/:book/:id/comment", EditCommentPage.class);
         get("/sc/:branch/:book/:id/delete-comment", DeleteCommentAction.class);
