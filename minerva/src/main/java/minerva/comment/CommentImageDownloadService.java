@@ -17,6 +17,6 @@ public class CommentImageDownloadService extends ImageDownloadService {
         String dn = dn(ctx);
         
         BookSO book = StatesSO.get(ctx).getUser().getWorkspace(branch).getBooks().byFolder(bookFolder);
-        file = new File(book.getFolder(), "comments/" + seiteId + "/img/" + commentId + "/" + dn);
+        file = new File(book.getFolder(), SeiteCommentService.FOLDER + "/" + seiteId + "/img/" + commentId + "/" + dn);
     }
 }

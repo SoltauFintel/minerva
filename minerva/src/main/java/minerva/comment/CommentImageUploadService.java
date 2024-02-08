@@ -24,7 +24,7 @@ public class CommentImageUploadService extends SeiteImageUploadService {
 
     @Override
     protected String getFolder() {
-        return seite.getBook().getFolder() + "/comments/" + seite.getId(); // = same as SeiteCommentService.dir !
+        return SeiteCommentService.calcDir(seite);
     }
 
     @Override

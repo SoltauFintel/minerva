@@ -13,6 +13,7 @@ import minerva.MinervaWebapp;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.base.FileService;
 import minerva.base.StringService;
+import minerva.comment.SeiteCommentService;
 import minerva.config.MinervaFactory;
 import minerva.papierkorb.WSeite;
 import minerva.papierkorb.WeggeworfeneSeite;
@@ -80,7 +81,7 @@ public class PapierkorbSO {
         copyAll(source + "img/" + id, target + "img/" + id);
 
         // comments/<id>/*.json
-        copyAll(source + "comments/" + id, target + "comments/" + id);
+        copyAll(source + SeiteCommentService.FOLDER + "/" + id, target + SeiteCommentService.FOLDER + "/" + id);
 
         // recursive
         seite.getSeiten().forEach(sub -> pushSeite(sub, target));
