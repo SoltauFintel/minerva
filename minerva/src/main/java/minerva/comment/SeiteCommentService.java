@@ -1,7 +1,5 @@
 package minerva.comment;
 
-import java.io.File;
-
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.spark.Context;
@@ -10,6 +8,7 @@ import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.access.SimpleDirAccess;
 import minerva.base.NLS;
+import minerva.base.StringService;
 import minerva.model.SeiteSO;
 import minerva.model.StatesSO;
 import minerva.model.UserSO;
@@ -81,7 +80,7 @@ public class SeiteCommentService extends CommentService {
         return dir;
     }
 
-    public int getCommentsSize() {
+    /*public int getCommentsSize() {
         int ret = 0;
         File[] m = new File(dir()).listFiles();
         if (m != null) {
@@ -92,6 +91,49 @@ public class SeiteCommentService extends CommentService {
             }
         }
         return ret;
+    }*/
+
+    public String getCommentsSizeText(String login) {
+        if (StringService.isNullOrEmpty(login)) {
+            throw new IllegalArgumentException("login must not be null");
+        }
+        int open = 0;
+        int done = 0;
+        String forMe = "";
+        for (Comment c : getComments()) {
+            if (c.isDone()) {
+                done++;
+            } else {
+                open++;
+                if (login.equals(c.getPerson())) {
+                    forMe = "*";
+                }
+            }
+        }
+        if (open == 0 && done == 0) {
+            return "0";
+        }
+        return forMe + open + "/" + done;
+    }
+
+    /**
+     * @param login -
+     * @return 0: no open comments, 1: there are open comments, 2: there are open comments for me
+     */
+    public int getCommentState(String login) {
+        if (StringService.isNullOrEmpty(login)) {
+            throw new IllegalArgumentException("login must not be null");
+        }
+        int state = 0;
+        for (Comment c : getComments()) {
+            if (!c.isDone()) {
+                if (login.equals(c.getPerson())) {
+                    return 2;
+                }
+                state = 1;
+            }
+        }
+        return state;
     }
 
     @Override

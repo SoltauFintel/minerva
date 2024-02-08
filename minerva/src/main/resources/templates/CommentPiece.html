@@ -11,7 +11,7 @@
         <span class="noteUser{{if me}} noteByMe{{/if}}">{{user}}</span> -
         <span class="noteCreated" title="created">{{created}}</span>{{if hasChanged}} -
         <span class="noteChanged" title="changed">{{changed}}</span>{{/if}}
-        {{if hasPerson}} - {{N.zustaendig}}: <span{{if personIsMe}} style="background-color: #ff3; font-weight: bold;"{{/if}}>{{person}}</span>{{/if}}
+        {{if hasPerson}} - {{N.zustaendig}}: <span{{if not done}}{{if personIsMe}} style="background-color: #ff3; font-weight: bold;"{{/if}}{{/if}}>{{person}}</span>{{/if}}
     </p>
     <div id="c2_{{commentId}}"{{if allDone}} style="display: none;"{{/if}}>
         <div class="noteTextNC{{if highlight}} noteHighlight{{/if}}">{{text}}</div>

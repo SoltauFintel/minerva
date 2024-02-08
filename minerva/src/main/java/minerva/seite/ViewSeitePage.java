@@ -71,7 +71,15 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("hasSubPages", !seiteSO.getSeiten().isEmpty());
         put("Sortierung", n(seite.isSorted() ? "alfaSorted" : "manuSorted"));
         put("isSorted", seite.isSorted());
-        putInt("commentsSize", new SeiteCommentService(seiteSO).getCommentsSize());
+
+        String cosi = new SeiteCommentService(seiteSO).getCommentsSizeText(user.getLogin());
+        boolean forMe = cosi.startsWith("*");
+        if (forMe) {
+            cosi = cosi.substring(1);
+        }
+        put("commentsSize", cosi);
+        put("commentsForMe", forMe);
+        
         PageChange change = seiteSO.getLastChange();
         put("hasLastChange", change != null);
         if (change != null) {

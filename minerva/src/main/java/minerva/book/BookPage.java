@@ -81,8 +81,9 @@ public class BookPage extends BPage implements Uptodatecheck {
                 gliederung.append("\"" + nc + ">");
                 gliederung.append(title);
                 gliederung.append("</a>");
-                if (new SeiteCommentService(seite).getCommentsSize() > 0) {
-                	gliederung.append(/*commentsForMe(seite) ? hasCommentForMe :*/ hasComment); // TODO Baustelle
+                int state = new SeiteCommentService(seite).getCommentState(user.getLogin());
+                if (state > 0) {
+                    gliederung.append(state == 2 ? hasCommentForMe : hasComment);
                 }
                 gliederung.append("</li>\n");
                 
@@ -92,14 +93,6 @@ public class BookPage extends BPage implements Uptodatecheck {
         gliederung.append("</ul>\n");
     }
 
-    // TODO Baustelle
-	private boolean commentsForMe(SeiteSO seite) {
-	    return false;
-//		String login = user.getLogin();
-//		return seite.getSeite().getN otes().stream()
-//				.anyMatch(n ote -> !n ote.isDone() && n ote.getPersons().contains(login));
-	}
-    
     private boolean hasReleaseNotesBtn() {
         if (!MinervaWebapp.factory().isGitlab()) {
             return false;
