@@ -78,7 +78,7 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
             map.put("hasMoreText", false);
             map.put("completeText", makeClickableLinks(text));
             map.put("link", task.getLink()); // Kommentar anzeigen Link
-            map.put("viewTask", esc(getShowNoteLabel(task))); // Kommentar anzeigen Label
+            map.put("viewTask", esc(getShowCommentLabel(task))); // Kommentar anzeigen Label
             map.put("parentLink", task.getParentLink());
             map.put("parentTitle", esc(task.getParentTitle()));
             map.put("color", esc(task.getColor()));
@@ -87,7 +87,7 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
         }
     }
     
-    private String getShowNoteLabel(Task task) {
+    private String getShowCommentLabel(Task task) {
         String typeName = n(task.getTypeName());
         return n("viewTask").replace("$t", typeName);
     }

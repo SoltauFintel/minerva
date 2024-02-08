@@ -1,22 +1,22 @@
-<div class="note" id="{{commentId}}">
-    {{if allDone}}<p id="c0_{{commentId}}" class="noteInfoNC"><a style="min-width: 240px;"
+<div id="{{commentId}}">
+    {{if allDone}}<p id="c0_{{commentId}}" class="commentInfoNC"><a style="min-width: 240px;"
         onclick="aufklappen('{{commentId}}', true)" class="btn btn-default btn-xs">{{if hasComments}}{{N.showThread}}{{else}}{{N.showNote}}{{/if}}</a></p>{{/if}}
-    <p class="noteInfoNC" id="c1_{{commentId}}"{{if allDone}} style="display: none;"{{/if}}>
+    <p class="commentInfoNC" id="c1_{{commentId}}"{{if allDone}} style="display: none;"{{/if}}>
         {{if allDone}}
             {{if ebene1}}
                 <a onclick="aufklappen('{{commentId}}', false);" class="btn btn-default btn-xs"
                     style="min-width: 240px; margin-bottom: 5px;">{{if hasComments}}{{N.hideThread}}{{else}}{{N.hideNote}}{{/if}}</a><br/>
             {{/if}}
         {{/if}}
-        <span class="noteUser{{if me}} noteByMe{{/if}}">{{user}}</span> -
-        <span class="noteCreated" title="created">{{created}}</span>{{if hasChanged}} -
-        <span class="noteChanged" title="changed">{{changed}}</span>{{/if}}
+        <span class="commentUser{{if me}} commentByMe{{/if}}">{{user}}</span> -
+        <span class="commentCreated" title="created">{{created}}</span>{{if hasChanged}} -
+        <span class="commentChanged" title="changed">{{changed}}</span>{{/if}}
         {{if hasPerson}} - {{N.zustaendig}}: <span{{if not done}}{{if personIsMe}} style="background-color: #ff3; font-weight: bold;"{{/if}}{{/if}}>{{person}}</span>{{/if}}
     </p>
     <div id="c2_{{commentId}}"{{if allDone}} style="display: none;"{{/if}}>
         <p id="uc_{{commentId}}" class="savedContent" style="display: none;">{{N.savedCommentContent}}</p>
-        <div class="noteTextNC{{if highlight}} noteHighlight{{/if}}{{if done}} commentDoneBar{{/if}}">{{text}}</div>
-        <p class="noteCommands">
+        <div class="commentTextNC{{if highlight}} commentHighlight{{/if}}{{if done}} commentDoneBar{{/if}}">{{text}}</div>
+        <p class="commentCommands">
             {{if addAllowed}}
                 {{if editAllowed}}
                     <a href="{{replylink}}" class="btn btn-default btn-xs br"><i
@@ -45,7 +45,7 @@
             <span class="copybtn">(Notiz)[N{{commentId}}]</span>
         </p>
         {{if hasComments}}
-            <div class="subnotes">
+            <div class="subcomments">
                 {{comments}}
             </div>
         {{/if}}

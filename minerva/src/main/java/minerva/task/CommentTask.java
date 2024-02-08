@@ -54,7 +54,7 @@ public class CommentTask implements Task {
 
 	@Override
 	public String getTypeName() {
-		return "note";
+		return "note"; // it's a RB key
 	}
 
 	@Override

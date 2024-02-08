@@ -20,7 +20,7 @@
                		<b>{{n.parentTitle}}</b>
                	</div>
                 
-                <div id="nb{{n.id}}" class="noteTextNC" style="margin-bottom: 0;">
+                <div id="nb{{n.id}}" class="commentTextNC" style="margin-bottom: 0;">
                     <div style="max-height: 25mm; overflow-y: auto;">
                         {{n.completeText}}
                     </div>
@@ -28,7 +28,7 @@
                 </div>
                 
                 <span style="font-size: 8pt; color: #999; margin-left: 3em;">{{n.date}} &ndash;
-                <span{{if n.me}} class="noteByMe"{{/if}}>{{n.user}}</span>
+                <span{{if n.me}} class="commentByMe"{{/if}}>{{n.user}}</span>
             </div>
         {{/each}}
         
