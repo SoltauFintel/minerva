@@ -67,7 +67,13 @@ public abstract class CommentService {
         return ret;
     }
     
-    public abstract void save(Comment comment, String commitMessage);
+    /**
+     * @param comment the comment to be saved
+     * @param commitMessage commit message for the case that the backend is Git
+     * @param add true: new comment, false: comment edited
+     * @param changed true: comment is new or is changed (used for sending notification)
+     */
+    public abstract void save(Comment comment, String commitMessage, boolean add, boolean changed);
     
     public abstract void delete();
 

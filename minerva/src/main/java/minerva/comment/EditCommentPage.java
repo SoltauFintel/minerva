@@ -66,17 +66,19 @@ public class EditCommentPage extends Page {
         int version = Integer.parseInt(ctx.formParam("version"));
         CommentPCD data = (CommentPCD) new PostContentsService().waitForContents(sv.getKey(id), version);
         
-        c.setPerson(UserAccess.realName2Login(data.getPerson()));
+        String newPerson = UserAccess.realName2Login(data.getPerson());
+        boolean changed = add || !newPerson.equals(c.getPerson()) || !data.getText().equals(c.getText());
+        c.setPerson(newPerson);
         c.setText(data.getText());
         if (add) {
             c.setUser(sv.getLogin());
             c.setCreated(StringService.now());
             c.setParentId(parentId);
-            sv.save(c, "comment added");
+            sv.save(c, "comment added", add, changed);
         } else {
             c.setChanged(StringService.now());
             c.setVersion(c.getVersion() + 1);
-            sv.save(c, "comment modified");
+            sv.save(c, "comment modified", add, changed);
         }
     }
 }

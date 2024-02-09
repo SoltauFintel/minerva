@@ -14,8 +14,8 @@ public class CommentDoneAction extends Action {
         Comment comment = sv.get(id);
         comment.setDone(done);
         comment.setDoneDate(done ? StringService.now() : "");
-        sv.save(comment, done ? "comment done" : "comment undone");
-        
+        sv.save(comment, done ? "comment done" : "comment undone", false, false);
+
         ctx.redirect(sv.getCommentsPagePath());
     }
 }

@@ -1,17 +1,26 @@
 package minerva.comment;
 
+import org.pmw.tinylog.Logger;
+
 import com.github.template72.data.DataMap;
 
+import github.soltaufintel.amalia.mail.Mail;
 import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.web.action.Escaper;
+import minerva.MinervaWebapp;
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.access.SimpleDirAccess;
 import minerva.base.NLS;
+import minerva.base.StringService;
+import minerva.config.MinervaConfig;
+import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.StatesSO;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
+import minerva.user.User;
+import minerva.user.UserAccess;
 
 /**
  * Seite-specific comments, Context-specific service.
@@ -65,9 +74,43 @@ public class SeiteCommentService extends CommentService {
     }
 
     @Override
-    public void save(Comment comment, String commitMessage) {
+    public void save(Comment comment, String commitMessage, boolean add, boolean changed) {
         simpledao.save(comment.getId(), comment, CommentImageUploadService.popImages(comment.getId()),
                 new CommitMessage(seite, commitMessage), dir);
+        if (changed) {
+            sendNotifications(comment.getId(), comment.getPerson());
+        }
+    }
+
+    private void sendNotifications(String commentId, String person/*login*/) {
+        MinervaConfig c = MinervaWebapp.factory().getConfig();
+        if (!c.readyForCommentNotifications()) {
+            Logger.info("send no mails because there's no mail configuration");
+        } else if (!person.isEmpty()) {
+//TODO            String login = seite.getLogin();
+//            if (person.equals(login)) {
+//                Logger.debug("don't send note notification mail to myself");
+//                return;
+//            }
+            User user = UserAccess.loadUser(person);
+            String ea = user == null ? null : user.getMailAddress();
+            if (StringService.isNullOrEmpty(ea)) {
+                Logger.warn("don't send note notification mail because there's no mail address for " + person);
+            } else {
+                BookSO book = seite.getBook();
+                String branch = book.getWorkspace().getBranch();
+                String path = "/sc/" + branch + "/" + book.getBook().getFolder() + "/" + seite.getId() + "/comments?highlight=" + commentId + "#" + commentId;
+                String myTasksPath = "/w/" + branch + "/my-tasks";
+                Mail mail = new Mail();
+                mail.setSubject(c.getCommentSubject());
+                mail.setBody(c.getCommentBody()
+                        .replace("{pageTitle}", seite.getTitle()) // no esc!
+                        .replace("{commentPath}", path)
+                        .replace("{myTasksPath}", myTasksPath));
+                mail.setToEmailaddress(ea);
+                c.sendMail(mail);
+            }
+        }
     }
 
     @Override
