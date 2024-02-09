@@ -34,23 +34,37 @@ public class SeiteCommentService2 {
         if (StringService.isNullOrEmpty(login)) {
             throw new IllegalArgumentException("login must not be null");
         }
-        int open = 0;
-        int done = 0;
-        String forMe = "";
-        for (Comment c : getComments()) {
-            if (c.isDone()) {
-                done++;
-            } else {
-                open++;
-                if (login.equals(c.getPerson())) {
-                    forMe = "*";
-                }
-            }
-        }
-        if (open == 0 && done == 0) {
+        CommentsSize cs = getCommentsSize(getComments(), login);
+        if (cs.open == 0 && cs.done == 0) {
             return "0";
         }
-        return forMe + open + "/" + done;
+        return (cs.forMe ? "*" : "") + cs.open + "/" + cs.done;
+    }
+    
+    private CommentsSize getCommentsSize(List<Comment> comments, String login) {
+        CommentsSize ret = new CommentsSize();
+        for (Comment c : comments) {
+            if (c.isDone()) {
+                ret.done++;
+            } else {
+                ret.open++;
+                if (login.equals(c.getPerson())) {
+                    ret.forMe = true;
+                }
+            }
+            CommentsSize cs = getCommentsSize(c.getComments(), login); // recursive
+            ret.done += cs.done;
+            ret.open += cs.open;
+            if (cs.forMe) {
+                ret.forMe = true;
+            }
+        }
+        return ret;
+    }
+    
+    private static class CommentsSize {
+        int open = 0, done = 0;
+        boolean forMe = false;
     }
 
     /**
@@ -61,13 +75,23 @@ public class SeiteCommentService2 {
         if (StringService.isNullOrEmpty(login)) {
             throw new IllegalArgumentException("login must not be null");
         }
+        return getCommentState(getComments(), login);
+    }
+    
+    private int getCommentState(List<Comment> comments, String login) {
         int state = 0;
-        for (Comment c : getComments()) {
+        for (Comment c : comments) {
             if (!c.isDone()) {
                 if (login.equals(c.getPerson())) {
                     return 2;
                 }
                 state = 1;
+            }
+            int sub = getCommentState(c.getComments(), login); // recursive
+            if (sub == 2) {
+                return sub;
+            } else if (sub == 1) {
+                state = sub;
             }
         }
         return state;
