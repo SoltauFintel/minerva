@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.codec.binary.Base64;
 import org.pmw.tinylog.Logger;
 
 import com.google.gson.Gson;
@@ -68,14 +69,13 @@ public class SubscribersAccess {
     public void put(TPage page) {
         for (String subscriber : subscribers) {
             if (available(subscriber)) {
-                String url = subscriber + "/book6/page_cp1252/" + page.getId();
+                String url = subscriber + "/book6/page_base64/" + page.getId();
                 Logger.info("PUT " + url);
 System.out.println("page.html: >>" + page.getHtml() + "<<"); // XXX DEBUG                
-//alt                REST.put(url, page);
 				String json = new Gson().toJson(page);
-//				new REST(url).put(json, "application/json; charset=UTF-8").close();
-				new REST(url).put(json, "application/json; charset=cp1252").close();
-System.out.println("PUT >>" + json + "<<"); // XXX DEBUG                
+				json = new String(Base64.encodeBase64(json.getBytes()));
+				System.out.println("sende mittels base64 >>" + json + "<<"); // XXX
+				new REST(url).put(json).close();
             }
         }
     }
