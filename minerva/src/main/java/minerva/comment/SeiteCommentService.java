@@ -87,11 +87,11 @@ public class SeiteCommentService extends CommentService {
         if (!c.readyForCommentNotifications()) {
             Logger.info("send no mails because there's no mail configuration");
         } else if (!person.isEmpty()) {
-//TODO            String login = seite.getLogin();
-//            if (person.equals(login)) {
-//                Logger.debug("don't send note notification mail to myself");
-//                return;
-//            }
+            String login = seite.getLogin();
+            if (person.equals(login)) {
+                Logger.debug("don't send note notification mail to myself");
+                return;
+            }
             User user = UserAccess.loadUser(person);
             String ea = user == null ? null : user.getMailAddress();
             if (StringService.isNullOrEmpty(ea)) {
