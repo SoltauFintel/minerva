@@ -68,12 +68,13 @@ public class SubscribersAccess {
     public void put(TPage page) {
         for (String subscriber : subscribers) {
             if (available(subscriber)) {
-                String url = subscriber + "/book6/page/" + page.getId();
+                String url = subscriber + "/book6/page_cp1252/" + page.getId();
                 Logger.info("PUT " + url);
 System.out.println("page.html: >>" + page.getHtml() + "<<"); // XXX DEBUG                
 //alt                REST.put(url, page);
 				String json = new Gson().toJson(page);
-				new REST(url).put(json, "application/json; charset=UTF-8").close();
+//				new REST(url).put(json, "application/json; charset=UTF-8").close();
+				new REST(url).put(json, "application/json; charset=cp1252").close();
 System.out.println("PUT >>" + json + "<<"); // XXX DEBUG                
             }
         }
