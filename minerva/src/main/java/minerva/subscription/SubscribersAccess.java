@@ -68,7 +68,7 @@ public class SubscribersAccess {
             if (available(subscriber)) {
                 String url = subscriber + "/book6/page/" + page.getId();
                 Logger.info("PUT " + url);
-                REST.put_cp1252(url, page);
+                REST.put(url, page);
             }
         }
     }
