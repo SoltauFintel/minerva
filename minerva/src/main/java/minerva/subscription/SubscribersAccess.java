@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.pmw.tinylog.Logger;
 
+import com.google.gson.Gson;
+
 import github.soltaufintel.amalia.rest.REST;
 import minerva.MinervaWebapp;
 
@@ -68,8 +70,11 @@ public class SubscribersAccess {
             if (available(subscriber)) {
                 String url = subscriber + "/book6/page/" + page.getId();
                 Logger.info("PUT " + url);
-System.out.println("PUT >>" + page.getHtml() + "<<"); // XXX DEBUG                
-                REST.put(url, page);
+System.out.println("page.html: >>" + page.getHtml() + "<<"); // XXX DEBUG                
+//alt                REST.put(url, page);
+				String json = new Gson().toJson(page);
+				new REST(url).put(json, "application/json; charset=UTF-8").close();
+System.out.println("PUT >>" + json + "<<"); // XXX DEBUG                
             }
         }
     }
