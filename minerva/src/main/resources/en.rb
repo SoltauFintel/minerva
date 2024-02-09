@@ -287,3 +287,5 @@ saveError=Error saving page! Contents are saved to browser. Log-in again and sta
 saveCommentError=Error saving comment! Contents are saved to browser. Log-in again and start editing again.
 savedContent=There is unsaved content for this page. Please start editing the page!
 savedCommentContent=There is unsaved content for this comment. Please start editing the comment!
+checkAllLinks=Check all links
+checkLink=Link to "$h" is broken and can be found on page <a href="$v">$t</a> with link label "$l".

@@ -287,3 +287,5 @@ saveError=Fehler beim Speichern der Seite! Inhalte werden im Browser gespeichert
 saveCommentError=Fehler beim Speichern des Kommentars! Inhalte werden im Browser gespeichert. Melden Sie sich erneut an und beginnen Sie erneut mit der Bearbeitung.
 savedContent=Für diese Seite gibt es noch ungespeicherten Inhalt. Bitte starte die Seitenbearbeitung!
 savedCommentContent=Für diesen Kommentar gibt es noch ungespeicherten Inhalt. Bitte starte die Kommentarbearbeitung!
+checkAllLinks=Alle Links überprüfen
+checkLink=Der Link zu "$h" funktioniert nicht und befindet sich auf der Seite <a href="$v">$t</a> mit dem Linktitel "$l".

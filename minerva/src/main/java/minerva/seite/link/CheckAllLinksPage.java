@@ -3,7 +3,6 @@ package minerva.seite.link;
 import java.util.List;
 
 import com.github.template72.data.DataList;
-import com.github.template72.data.DataMap;
 
 import minerva.book.BPage;
 
@@ -14,15 +13,17 @@ public class CheckAllLinksPage extends BPage {
         user.onlyAdmin();
         
         List<CALBrokenLink> links = new CheckAllLinksService(book, langs).getBrokenLinks();
+
+        header(n("checkAllLinks"));
+        put("bookTitle", esc(book.getTitle()));
         DataList list = list("links");
         for (CALBrokenLink link : links) {
-            DataMap map = list.add();
-            map.put("href", esc(link.getLink().getHref()));
-            map.put("aTitle", esc(link.getLink().getTitle()));
-            map.put("pageTitle", esc(link.getSeite().getTitle()));
-            map.put("viewlink", esc("/s/" + branch + "/" + bookFolder + "/" + link.getSeite().getId()));
+            list.add().put("text", n("checkLink")
+                    .replace("$h", esc(link.getLink().getHref()))
+                    .replace("$v", esc("/s/" + branch + "/" + bookFolder + "/" + link.getSeite().getId()))
+                    .replace("$t", esc(link.getSeite().getTitle()))
+                    .replace("$l", esc(link.getLink().getTitle())));
+            
         }
-        header("Check all links");
-        put("bookTitle", esc(book.getTitle()));
     }
 }

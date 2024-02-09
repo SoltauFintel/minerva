@@ -6,12 +6,10 @@
         
         <p>{{N.book}}: {{bookTitle}}</p>
 
-        {{each l in links}}
-            <h2>{{l.href}}</h2>
-            <p>
-                title: {{l.aTitle}}<br/>
-                page: <a href="{{l.viewlink}}">{{l.pageTitle}}</a>
-            </p>
-        {{/each}}
+        <ul>
+            {{each l in links}}
+                <li>{{l.text}}</li>
+            {{/each}}
+        </ul>
     </div>
 </div>
