@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.codec.binary.Base64;
 import org.pmw.tinylog.Logger;
 
 import com.google.gson.Gson;
@@ -71,11 +70,7 @@ public class SubscribersAccess {
             if (available(subscriber)) {
                 String url = subscriber + "/book6/page_base64/" + page.getId();
                 Logger.info("PUT " + url);
-System.out.println("page.html: >>" + page.getHtml() + "<<"); // XXX DEBUG                
-				String json = new Gson().toJson(page);
-				json = new String(Base64.encodeBase64(json.getBytes()));
-				System.out.println("sende mittels base64 >>" + json + "<<"); // XXX
-				new REST(url).put(json).close();
+				new REST(url).put(new Gson().toJson(page), REST.json_utf8()).close();
             }
         }
     }
