@@ -295,11 +295,9 @@ public class UserSO {
         String keyBegin = "editing:" + branch + "/" + seiteId + "/";
         List<String> keys = Tosmap.search(keyBegin);
         for (String key : keys) {
-            if (!key.endsWith("/" + user.getLogin())) { // it's not me
-                String endTime = (String) Tosmap.get(key);
-                if (endTime != null) {
-                    return new LoginAndEndTime(key.substring(key.lastIndexOf("/") + 1), endTime);
-                }
+            String endTime = (String) Tosmap.get(key);
+            if (endTime != null) {
+                return new LoginAndEndTime(key.substring(key.lastIndexOf("/") + 1), endTime);
             }
         }
         return null;

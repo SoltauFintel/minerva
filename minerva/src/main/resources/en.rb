@@ -169,6 +169,7 @@ workspaceHistory=All changes
 noMoreCommits=no more commits
 locked.header=Page locked
 locked.info=The page "$t" is currently being edited by $u.
+locked.info.self=You are already editing the page "$t"!?
 locked.time=Locked until $o o'clock
 locked.edit=Edit page anyway
 locked.no-edit=OK, don't edit

@@ -20,7 +20,8 @@ public class LockedByPage extends SPage {
         }
         
         header(n("locked.header"));
-        put("msg", esc(n("locked.info").replace("$t", seite.getTitle()).replace("$u", UserAccess.login2RealName(lockedBy.getLogin()))));
+        String key = user.getLogin().equals(lockedBy.getLogin()) ? "locked.info.self" : "locked.info";
+        put("msg", esc(n(key).replace("$t", seite.getTitle()).replace("$u", UserAccess.login2RealName(lockedBy.getLogin()))));
         put("msg2", esc(n("locked.time").replace("$o", lockedBy.getEndTime())));
         put("editlink", editlink + "?m=cl");
         put("edit", n("locked.edit"));

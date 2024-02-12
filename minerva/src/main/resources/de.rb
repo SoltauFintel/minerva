@@ -169,6 +169,7 @@ workspaceHistory=Alle Änderungen
 noMoreCommits=keine weiteren Commits
 locked.header=Seite gesperrt
 locked.info=Die Seite "$t" wird derzeit von $u bearbeitet.
+locked.info.self=Die Seite "$t" wird bereits von Ihnen bearbeitet!?
 locked.time=Sperre bis $o Uhr
 locked.edit=Seite trotzdem bearbeiten
 locked.no-edit=OK, nicht bearbeiten
