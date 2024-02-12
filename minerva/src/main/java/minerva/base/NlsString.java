@@ -2,6 +2,7 @@ package minerva.base;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Holds texts for different languages
@@ -34,6 +35,12 @@ public class NlsString {
             return false;
         } catch (Exception e) {
             return false;
+        }
+    }
+
+    public void putTo(String prefix, Map<String, String> target) {
+        for (Entry<String, String> entry : nls.entrySet()) {
+            target.put(prefix + entry.getKey(), entry.getValue());
         }
     }
 }

@@ -1,0 +1,118 @@
+package minerva.model;
+
+import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.pmw.tinylog.Logger;
+import org.quartz.JobExecutionContext;
+import org.quartz.SchedulerException;
+
+import github.soltaufintel.amalia.timer.BaseTimer;
+import github.soltaufintel.amalia.web.config.AppConfig;
+import minerva.MinervaWebapp;
+import minerva.base.FileService;
+import minerva.base.NlsString;
+
+public class JournalSO {
+    private static final String handle = "journal";
+    private final String userFolder;
+    
+    public JournalSO(String userFolder) {
+        this.userFolder = userFolder;
+    }
+
+    public void save(String branch, String id, NlsString title, NlsString content) {
+        synchronized (handle) {
+            String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HHmmss"));
+            File file = new File(userFolder + "/journal/" + branch + "/" + now + "_" + id + ".json");
+            Map<String, String> data = new HashMap<>();
+            if (title != null) {
+                title.putTo("title_", data);
+            }
+            content.putTo("content_", data);
+            FileService.saveJsonFile(file, data);
+            Logger.debug("Journal entry saved: " + file.getAbsolutePath());
+        }
+    }
+
+    public static String cleanupAllJournals() {
+        int ret = 0;
+        final LocalDate now = LocalDate.now();
+        File[] files = new File(MinervaWebapp.factory().getConfig().getWorkspacesFolder()).listFiles();
+        if (files != null) {
+            for (File userFolder : files) {
+                File journalDir = new File(userFolder, "journal");
+                if (journalDir.isDirectory()) {
+                    ret += processBranchDirs(journalDir, now);
+                }
+            }
+        }
+        Logger.info("Cleanup journals. deleted=" + ret);
+        return "deleted=" + ret;
+    }
+
+    private static int processBranchDirs(File journalDir, LocalDate now) {
+        int ret = 0;
+        File[] branchDirs = journalDir.listFiles();
+        if (branchDirs != null) {
+            for (File branchDir : branchDirs) {
+                if (branchDir.isDirectory()) {
+                    ret += processJournalFiles(branchDir, now);
+                }
+            }
+        }
+        return ret;
+    }
+
+    private static int processJournalFiles(File branchDir, LocalDate now) {
+        int ret = 0;
+        File[] journalFiles = branchDir.listFiles();
+        if (journalFiles != null) {
+            for (File journalFile : journalFiles) {
+                if (journalFile.isFile() && journalFile.getName().endsWith(".json")) {
+                    if (processJournalFile(journalFile, now)) {
+                        ret++;
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+
+    private static boolean processJournalFile(File journalFile, LocalDate now) {
+        try {
+            final String pattern = "yyyy-MM-dd";
+            String dateStr = journalFile.getName().substring(0, pattern.length());
+            LocalDate date = LocalDate.parse(dateStr, DateTimeFormatter.ofPattern(pattern));
+            long days = ChronoUnit.DAYS.between(date, now);
+            if (days > 30 && journalFile.delete()) {
+                Logger.debug("old journal file deleted: " + journalFile.getAbsolutePath());
+                return true;
+            }
+        } catch (Exception e) {
+            Logger.error("ignore journal file: " + journalFile.getAbsolutePath() + " => " + e.getMessage());
+        }
+        return false;
+    }
+    
+    /**
+     * Cleanup journal once a month
+     */
+    public static class JournalTimer extends BaseTimer {
+
+        @Override
+        protected void config() throws SchedulerException {
+            start(new AppConfig().get("JournalTimer.cron", "0 0 6 1 * ?"));
+        }
+
+        @Override
+        protected void timerEvent(JobExecutionContext context) throws Exception {
+            cleanupAllJournals();
+        }
+    }
+}

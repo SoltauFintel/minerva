@@ -34,6 +34,7 @@ import minerva.user.UserAccess;
 public class UserSO {
     private User user;
     private final String folder;
+    private final JournalSO journal;
     private final WorkspacesSO workspaces;
     private WorkspaceSO currentWorkspace;
     private DirAccess dao;
@@ -53,7 +54,8 @@ public class UserSO {
         this.user = user;
         folder = MinervaWebapp.factory().getBackendService().getUserFolder(user);
         dao = MinervaWebapp.factory().getBackendService().getDirAccess();
-        this.workspaces = new WorkspacesSO(this, getWorkspacesFolder() + "/" + folder);
+        journal = new JournalSO(getWorkspacesFolder() + "/" + folder);
+        workspaces = new WorkspacesSO(this, getWorkspacesFolder() + "/" + folder);
     }
 
     public User getUser() {
@@ -62,6 +64,10 @@ public class UserSO {
     
     public String getLogin() {
         return user.getLogin();
+    }
+    
+    public JournalSO getJournal() {
+        return journal;
     }
 
     public WorkspacesSO getWorkspaces() {

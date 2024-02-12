@@ -51,6 +51,8 @@ import minerva.export.template.ExportTemplateSetsPage;
 import minerva.image.ImageDownloadAction;
 import minerva.image.ImageUploadAction;
 import minerva.migration.MigrationPage;
+import minerva.model.JournalSO;
+import minerva.model.JournalSO.JournalTimer;
 import minerva.papierkorb.DeleteWeggeworfeneSeiteAction;
 import minerva.papierkorb.PapierkorbPage;
 import minerva.papierkorb.PapierkorbUnterseitenPage;
@@ -115,6 +117,7 @@ import minerva.workspace.MergeBranchPage;
 import minerva.workspace.PullWorkspaceAction;
 import minerva.workspace.WorkspaceHistoryPage;
 import minerva.workspace.WorkspacesPage;
+import spark.Spark;
 
 public class MinervaWebapp extends RouteDefinitions {
     public static final String VERSION = "2.0.0";
@@ -273,6 +276,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/branch/:branch", CreateBranchPage.class);
         form("/merge/:branch", MergeBranchPage.class);
         get("/rest/ping", PingAction.class);
+        Spark.get("/rest/cleanup-journals", (req, res) -> JournalSO.cleanupAllJournals());
     }
 
     private void restApi() {
@@ -302,6 +306,7 @@ public class MinervaWebapp extends RouteDefinitions {
                 .withErrorPage(MinervaErrorPage.class, MinervaError404Page.class)
                 .withInitializer(config -> factory = new MinervaFactory(new MinervaConfig(config)))
                 .withInitializer(config -> CommentService.services.put(ctx -> ctx.path().startsWith("/sc/"), SeiteCommentService.class))
+                .withInitializer(config -> new JournalTimer().start())
                 .withAuth(new MinervaAuth());
     }
     

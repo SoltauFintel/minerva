@@ -359,7 +359,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     }
 
     public void saveAll(NlsString newTitle, NlsString newContent, int version, String comment, List<String> langs, long start) {
-        validate(newTitle, version, langs);
+        validate(newTitle, newContent, version, langs);
         if (content == null) {
             content = new NlsString();
         }
@@ -397,8 +397,9 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
                 + " -> Page #" + getId() + " saved. " + (System.currentTimeMillis() - start) + "ms");
     }
 
-    private void validate(NlsString newTitle, int version, List<String> langs) {
+    private void validate(NlsString newTitle, NlsString newContent, int version, List<String> langs) {
         if (getSeite().getVersion() != version) {
+            book.getUser().getJournal().save(book.getWorkspace().getBranch(), getId(), newTitle, newContent);
             throw new UserMessage("error.simultaneousEditing", book.getWorkspace());
         }
         for (String lang : langs) {
