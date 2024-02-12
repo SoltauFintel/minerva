@@ -54,7 +54,7 @@ public class UserSO {
         this.user = user;
         folder = MinervaWebapp.factory().getBackendService().getUserFolder(user);
         dao = MinervaWebapp.factory().getBackendService().getDirAccess();
-        journal = new JournalSO(getWorkspacesFolder() + "/" + folder);
+        journal = new JournalSO(this);
         workspaces = new WorkspacesSO(this, getWorkspacesFolder() + "/" + folder);
     }
 
@@ -64,6 +64,10 @@ public class UserSO {
     
     public String getLogin() {
         return user.getLogin();
+    }
+    
+    public String getUserFolder() {
+        return getWorkspacesFolder() + "/" + folder;
     }
     
     public JournalSO getJournal() {

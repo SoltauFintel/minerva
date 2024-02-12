@@ -20,16 +20,16 @@ import minerva.base.NlsString;
 
 public class JournalSO {
     private static final String handle = "journal";
-    private final String userFolder;
+    private final UserSO user;
     
-    public JournalSO(String userFolder) {
-        this.userFolder = userFolder;
+    public JournalSO(UserSO user) {
+        this.user = user;
     }
 
     public void save(String branch, String id, NlsString title, NlsString content) {
         synchronized (handle) {
             String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HHmmss"));
-            File file = new File(userFolder + "/journal/" + branch + "/" + now + "_" + id + ".json");
+            File file = new File(user.getUserFolder() + "/journal/" + branch + "/" + now + "_" + id + ".json");
             Map<String, String> data = new HashMap<>();
             if (title != null) {
                 title.putTo("title_", data);
@@ -37,6 +37,7 @@ public class JournalSO {
             content.putTo("content_", data);
             FileService.saveJsonFile(file, data);
             Logger.debug("Journal entry saved: " + file.getAbsolutePath());
+            user.log("Journal entry saved: " + file.toString());
         }
     }
 
