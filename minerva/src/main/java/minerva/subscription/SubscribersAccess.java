@@ -68,7 +68,7 @@ public class SubscribersAccess {
     public void put(TPage page) {
         for (String subscriber : subscribers) {
             if (available(subscriber)) {
-                String url = subscriber + "/book6/page_base64/" + page.getId();
+                String url = subscriber + "/book6/page/" + page.getId();
                 Logger.info("PUT " + url);
 				new REST(url).put(new Gson().toJson(page), REST.json_utf8()).close();
             }
