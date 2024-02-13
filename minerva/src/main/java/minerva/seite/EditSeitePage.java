@@ -32,21 +32,26 @@ public class EditSeitePage extends ViewSeitePage {
             put("postcontentslink", "/post-contents/seite?key=" + u(getKey()));
         }
     }
-    
-    protected String saveinfo() {
-        return "";
-    }
-    
-    @Override
-    protected String modifyHeader(String header) {
-        return "edit: " + header;
-    }
 
     private void save(String branch, String bookFolder, String id, SeiteSO seiteSO) {
         long start = System.currentTimeMillis();
+        
         int version = Integer.parseInt(ctx.formParam("version"));
         ISeitePCD data = waitForContent(version);
         
+        saveSeite(branch, bookFolder, id, seiteSO, start, version, data);
+    }
+
+    protected ISeitePCD waitForContent(int version) {
+        return (ISeitePCD) new PostContentsService().waitForContents(getKey(), version);
+    }
+    
+    private String getKey() {
+        return seite.getId() + ":" + branch + ":" + bookFolder + ":seite";
+    }
+
+    private void saveSeite(String branch, String bookFolder, String id, SeiteSO seiteSO, long start, int version,
+            ISeitePCD data) {
         seiteSO.saveAll(data.getTitle(), data.getContent(), version, data.getComment(), langs, start);
         
         user.setLastEditedPage(seite.getId());
@@ -61,12 +66,13 @@ public class EditSeitePage extends ViewSeitePage {
             ctx.redirect("/s/" + branch + "/" + bookFolder + "/" + id);
         }
     }
-
-    protected ISeitePCD waitForContent(int version) {
-        return (ISeitePCD) new PostContentsService().waitForContents(getKey(), version);
+    
+    protected String saveinfo() {
+        return "";
     }
     
-    private String getKey() {
-        return seite.getId() + ":" + branch + ":" + bookFolder + ":seite";
+    @Override
+    protected String modifyHeader(String header) {
+        return "edit: " + header;
     }
 }
