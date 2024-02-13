@@ -127,6 +127,14 @@ public class SeiteCommentService extends CommentService {
         String id = m.get("id").toString();
         m.put("postcontentslink", "/post-contents/comment?key=" + u(getKey(id)));
         m.put("imageuploadlink", "/image-upload/" + bbi + "/comment?id=" + u(id));
+        m.put("bigEditor", false);
+        m.put("saveError", NLS.get(lang, "saveCommentError"));
+        
+        DataMap map = m.list("languages").add();
+        map.put("LANG", "");
+        map.put("lang", "");
+        map.put("editorLanguage", lang);
+        map.put("onloadExtra", "");
     }
     
     @Override

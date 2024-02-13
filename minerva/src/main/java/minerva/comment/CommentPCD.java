@@ -9,7 +9,7 @@ public class CommentPCD extends PostContentsData {
     
     public CommentPCD(Context ctx) {
         super(ctx.queryParam("key"), Integer.parseInt(ctx.formParam("version")));
-        text = ctx.formParam("content");
+        text = ctx.formParam("content"); // TODO contentLANG
         person = ctx.formParam("person");
     }
 

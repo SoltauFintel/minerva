@@ -18,8 +18,10 @@
                 <div class="form-group">
                     <label for="editor" class="col-lg-1 control-label">{{N.Comment}}</label>
                     <div class="col-lg-7">
-                        <div id="toolbar-container"></div>
-                        <div id="editor" class="editbox" style="min-height: 150px; max-height: calc(100vh - 380px);">{{content}}</div>
+                        {{each L in languages}}
+                            <div id="toolbar-container{{L.LANG}}"></div>
+                            <div id="editor{{L.LANG}}" class="editbox" style="min-height: 150px; max-height: calc(100vh - 380px);">{{content}}</div>
+                        {{/each}}
                     </div>
                 </div>
                 <div class="form-group">
@@ -46,92 +48,5 @@
 </div>
 
 <script>
-function MyCustomUploadAdapterPlugin( editor ) {
-    editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
-        return new MyUploadAdapter(loader, '{{imageuploadlink}}');
-    };
-}
-
-let editor;
-DecoupledEditor
-    .create(document.querySelector('#editor'), {
-        extraPlugins: [ MyCustomUploadAdapterPlugin ],
-        language: '{{lang}}',
-        toolbar: {
-            removeItems: ['fontfamily', 'mediaEmbed', 'indent', 'outdent']
-        },
-        heading: {
-            options: [
-                { model: 'paragraph', title: 'Paragraph' },
-                { model: 'heading2', view: 'h3', title: 'Heading 2', class: 'ck-heading_heading2' },
-                { model: 'pre', view: 'pre', title: 'Code' },
-            ]
-        }
-    })
-    .then( it => {
-        editor = it;
-        const toolbarContainer = document.querySelector('#toolbar-container');
-        toolbarContainer.appendChild(editor.ui.view.toolbar.element);
-    } )
-    .catch( error => {
-        console.error(error);
-    } );
-
-$('#submit').click(function (e) {
-    setTimeout(function() { // Firefox problem NS_BINDING_ABORTED
-        console.log("post contents...");
-        $.post("{{postcontentslink}}", {
-            content: editor.getData(),
-            person: document.getElementById('person').value,
-            version: document.getElementById('version').value
-        }).fail(e => {
-            localStorage.setItem('error_comment.{{id}}', editor.getData());
-            console.error('{{N.saveCommentError}}');
-            alert('{{N.saveCommentError}}');  {{-- // klappt nicht im Gitlab-Modus, ist aber nicht tragisch --}}
-        });
-    }, 0);
-});
-
-document.addEventListener('keydown', e => {   {{-- // https://stackoverflow.com/a/60279187 --}}
-    if (e.ctrlKey && e.key === 's') {
-        e.preventDefault();
-        $('#submit').click();
-    }
-});
-
-$(window).on('beforeunload', function() {
-    return 'Any changes will be lost';  {{-- // browser shows its own text --}}
-});
-
-$(document).on('submit', 'form.editorform', function(event) {  {{-- // allow Save button to leave without above question --}}
-    $(window).off('beforeunload');
-});
-
-$(window).on('unload', function() {
-    localStorage.removeItem('comment.{{id}}');
-});
-
-window.onload = function() {
-    let vorh = false
-    let vorhError = false
-    let oldEditor = localStorage.getItem('comment.{{id}}')
-    if (oldEditor) {
-        vorh = true
-    } else {
-        oldEditor = localStorage.getItem('error_comment.{{id}}')
-        if (oldEditor) {
-            vorh = true
-            vorhError = true
-        }
-    }
-    if (vorh) {
-        alert('{{N.keepOldInput}}');
-        editor.setData( oldEditor );
-        localStorage.removeItem('error_comment.{{id}}');
-    }
-}
-
-setInterval(function() {
-    localStorage.setItem('comment.{{id}}', editor.getData());
-}, 3000);
+{{include: editor}}
 </script>

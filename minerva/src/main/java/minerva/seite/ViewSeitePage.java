@@ -49,6 +49,11 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             DataMap map = list.add();
             map.put("LANG", lang.toUpperCase());
             map.put("lang", lang);
+            map.put("editorLanguage", lang);
+            map.put("onloadExtra",
+                    "document.getElementById('titel" + lang.toUpperCase()
+                            + "').value = localStorage.getItem('error_titel" + lang.toUpperCase() + "." + id + "');\r\n"
+                            + "localStorage.removeItem('error_titel" + lang.toUpperCase() + "." + id + "');\r\n");
             map.put("titel", esc(seite.getTitle().getString(lang)));
             TocMacro macro = new TocMacro(seiteSO.getTocMacroPage(), "-", lang, "");
             map.put("content", macro.transform(seiteSO.getContent().getString(lang)));
@@ -103,6 +108,8 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("hasEditorsNote", !StringService.isNullOrEmpty(seite.getEditorsNote()));
         put("hasLeftArea", true);
         put("leftAreaContent", getTreeHTML(seiteSO));
+        editorComponent();
+        
         header(modifyHeader(seiteSO.getTitle()));
 
         fillLinks(branch, bookFolder, id, seiteSO, seite, u.getPageLanguage());
@@ -112,6 +119,30 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         
         Logger.info(u.getLogin() + " | " + seiteSO.getBook().getWorkspace().getBranch() + " | "
                 + seiteSO.getTitle() + " | " + u.getPageLanguage());
+    }
+
+    private void editorComponent() {
+        put("bigEditor", true);
+        
+        String postExtra = "";
+        for (String lang : langs) {
+            postExtra += "titel" + lang.toUpperCase() + ": document.getElementById('titel" + lang.toUpperCase() + "').value,\r\n";
+        }
+        postExtra += "comment: document.getElementById('comment').value,\r\n";
+        put("postExtra", postExtra);
+
+        String postFailExtra = "";
+        for (String lang : langs) {
+            postFailExtra += "localStorage.setItem('error_titel" + lang.toUpperCase() + "." + id
+                    + "', document.getElementById('titel" + lang.toUpperCase() + "').value);\r\n";
+        }
+        postFailExtra += "localStorage.setItem('error_delta." + id + "', document.getElementById('comment').value);\r\n";
+        put("postFailExtra", postFailExtra);
+        
+        put("errorName", "editor");
+        put("saveError", n("saveError"));
+        put("onloadExtra", "document.getElementById('comment').value = localStorage.getItem('error_delta." + id
+                + "');\r\n" + "localStorage.removeItem('error_delta." + id + "');\r\n");
     }
     
     private String getTreeHTML(SeiteSO seiteSO) {

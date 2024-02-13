@@ -50,6 +50,7 @@ public class EditCommentPage extends Page {
             String teil3 = add ? "&m=add" : "";
             String action = ctx.path() + "?id=" + c.getId() + teil2 + teil3;
             put("action", action);
+            editorComponent(sv.getLanguage());
             sv.initModel(model);
         }
     }
@@ -80,5 +81,12 @@ public class EditCommentPage extends Page {
             c.setVersion(c.getVersion() + 1);
             sv.save(c, "comment modified", add, changed);
         }
+    }
+    
+    private void editorComponent(String lang) { // TODO lang raus
+        put("postExtra", "person: document.getElementById('person').value,");
+        put("postFailExtra", "");
+        put("errorName", "comment");
+        put("onloadExtra", "");
     }
 }
