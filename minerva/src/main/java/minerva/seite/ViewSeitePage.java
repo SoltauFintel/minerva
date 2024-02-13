@@ -412,7 +412,8 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
                 if (subpage.hasContent() > 0) {
                     hasVisibleSubpages = true;
                     icon = "<a onclick=\"treeclick('P_" + seite.getId() + "')\" class=\"tci\"><i id=\"iP_" +
-                            seite.getId() + "\" class=\"fa " + (seite.isExpanded() ? "fa-caret-down" : "fa-caret-right") + "\" style=\"font-size: 15pt;\"></i></a> ";
+                            seite.getId() + "\" class=\"fa " + (seite.isExpanded() ? "fa-caret-down" : "fa-caret-right") + "\" style=\"font-size: 15pt;"
+                            + (seite.isExpanded() ? "" : " padding-right: 4px;") + "\"></i></a> ";
                     break;
                 }
             }

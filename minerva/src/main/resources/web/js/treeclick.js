@@ -6,9 +6,11 @@ function treeclick(id) {
         c.style.display = 'block';
         i.classList.remove('fa-caret-right');
         i.classList.add('fa-caret-down');
+        i.style.paddingRight = '0';
     } else {
         c.style.display = 'none';
         i.classList.remove('fa-caret-down');
         i.classList.add('fa-caret-right');
+        i.style.paddingRight = '4px';
     }
 }
