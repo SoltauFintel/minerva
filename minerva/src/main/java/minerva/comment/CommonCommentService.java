@@ -112,7 +112,7 @@ public abstract class CommonCommentService extends CommentService {
         m.put("N", "en".equals(lang) ? NLS.dataMap_en : NLS.dataMap_de); // RB texts
         m.put("parentEntityTitle", Escaper.esc(title));
         m.put("parentEntityPath", parentEntityPath);
-        m.put("addlink", getPathPrefix() + bbi + "/comment");
+        m.put("addlink", "/" + getPathPrefix() + "/" + bbi + "/comment");
         String id = m.get("id").toString();
         m.put("postcontentslink", "/post-contents/comment?key=" + u(getKey(id)));
         m.put("imageuploadlink", "/image-upload/" + bbi + "/comment?id=" + u(id));
