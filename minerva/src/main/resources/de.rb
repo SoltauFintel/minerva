@@ -189,9 +189,9 @@ user=Benutzer
 moveToBookInfo=Bitte beachte, dass die Links beim Verschieben in ein anderes Buch nicht mehr funktionieren werden.
 
 v._ok=OK. Keine Fehler.
-v._emptyHTML=Page is empty.
-v.noBody=Page has no body tag.
-v.illegalHeading=Heading of that level is not allowed. $0
+v._emptyHTML=Seite ist leer.
+v.noBody=Seite hat kein body tag.
+v.illegalHeading=Überschrift ist für diese Ebene nicht erlaubt. $0
 v.firstHeadingMustBe1=Seite muss mit Überschrift 1 beginnen.
 v.headingGap=Es gibt eine Überschriften Lücke zwischen $0 und $1.
 v.emptyLinesAtBegin=Es gibt $0 Leerzeilen am Anfang.
