@@ -4,9 +4,7 @@
     <div class="col-lg-12">
         <h1 class="page-header">{{header}}</h1>
         
-        <p><a href="tag-cloud?m=n">{{N.orderBySize}}</a> | <a href="tag-cloud">{{N.orderByName}}</a></p>
-        
-        <p class="mt2">        
+        <p class="mt2" style="text-align: center;">        
             {{each tag in tags}}
                 <span style="font-size: {{tag.size}}pt; margin-top: 10px; margin-right: 5px; display: inline-block;"><a
                     href="{{tag.link}}" class="label label-tag"><i class="fa fa-tag"></i> {{tag.tag}} ({{tag.n}})</a></span>
