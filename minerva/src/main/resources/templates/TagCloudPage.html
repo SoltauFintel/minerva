@@ -8,8 +8,8 @@
         
         <p class="mt2">        
             {{each tag in tags}}
-                <span class="label label-tag" style="font-size: {{tag.size}}pt;"><a
-                    href="{{tag.link}}"><i class="fa fa-tag"></i> {{tag.tag}} ({{tag.n}})</a></span>
+                <span style="font-size: {{tag.size}}pt; margin-top: 10px; margin-right: 5px; display: inline-block;"><a
+                    href="{{tag.link}}" class="label label-tag"><i class="fa fa-tag"></i> {{tag.tag}} ({{tag.n}})</a></span>
             {{/each}}
         </p>
     </div>

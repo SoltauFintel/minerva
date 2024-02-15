@@ -25,13 +25,13 @@ public class TagCloudPage extends UPage {
             map2.put("link", "/w/" + branch + "/tag/" + esc(tag.getTag()));
             int size;
             if (tag.getAnzahl() >= 30) {
-            	size = 21;
+            	size = 28;
             } else if (tag.getAnzahl() >= 10) {
-            	size = 16;
+            	size = 22;
             } else if (tag.getAnzahl() >= 3) {
-            	size = 12;
+            	size = 16;
             } else {
-            	size = 8;
+            	size = 12;
         	}
             map2.putInt("size", size);
         }
