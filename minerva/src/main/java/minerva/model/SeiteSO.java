@@ -29,6 +29,7 @@ import minerva.base.UserMessage;
 import minerva.comment.SeiteCommentService2;
 import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
+import minerva.image.FixHttpImage;
 import minerva.seite.IPageChangeStrategy;
 import minerva.seite.NotifyWatchers;
 import minerva.seite.PageChange;
@@ -363,6 +364,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         if (content == null) {
             content = new NlsString();
         }
+        new FixHttpImage().process(newContent, langs, images, book, seite.getId());
         for (String lang : langs) {
             seite.getTitle().setString(lang, newTitle.getString(lang));
             content.setString(lang, newContent.getString(lang));
