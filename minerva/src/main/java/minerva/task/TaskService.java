@@ -18,7 +18,7 @@ public class TaskService {
         for (TasksSupplier tasksSupplier : tasksSuppliers) {
             tasks.addAll(tasksSupplier.getTasks(user, branch, login));
         }
-        tasks.sort((a, b) -> b.getDateTime().compareTo(a.getDateTime()));
+        tasks.sort((a, b) -> b.getDateTime().compareTo(a.getDateTime())); // newest first
         return tasks;
     }
     
@@ -41,7 +41,7 @@ public class TaskService {
         for (TasksSupplier tasksSupplier : tasksSuppliers) {
             tasks.addAll(tasksSupplier.getTasksCreatedByMe(user, branch, login));
         }
-        tasks.sort((a, b) -> b.getDateTime().compareTo(a.getDateTime()));
+        tasks.sort((a, b) -> a.getDateTime().compareTo(b.getDateTime())); // oldest first
         return tasks;
     }
 }
