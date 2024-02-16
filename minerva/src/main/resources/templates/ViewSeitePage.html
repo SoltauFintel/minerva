@@ -10,28 +10,28 @@
             <div style="float: right;" class="hidden-print">
                 <a href="/sc/{{branch}}/{{book}}/{{id}}/comments" class="btn btn-default"><i class="fa fa-comment{{if not commentsForMe}}-o{{/if}}"></i>
                     {{N.comments}} ({{commentsSize}})</a>
-	            <ul class="nav navbar-nav" style="float: right; margin-left: 19px;">
-	            	<li>
-		                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-		                    aria-expanded="false" title="{{N.Menu}}"><i class="fa fa-navicon"></i></button>
-		                <ul class="dropdown-menu in">
-		                	{{each m in menuitems}}
-		                		{{if m.line}}
-		                			<hr style="margin: 0;"/>
-		                		{{else}}
-			                    	<li{{m.liArgs}}><a href="{{m.link}}"{{m.attrs}}><i class="fa {{m.icon}}"></i> {{m.label}}</a></li>
-			                    {{/if}}
-			                {{/each}}        
-		                </ul>
-	            	</li>
-	            </ul>
+                <ul class="nav navbar-nav" style="float: right; margin-left: 19px;">
+                    <li>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false" title="{{N.Menu}}"><i class="fa fa-navicon"></i></button>
+                        <ul class="dropdown-menu in">
+                            {{each m in menuitems}}
+                                {{if m.line}}
+                                    <hr style="margin: 0;"/>
+                                {{else}}
+                                    <li{{m.liArgs}}><a href="{{m.link}}"{{m.attrs}}><i class="fa {{m.icon}}"></i> {{m.label}}</a></li>
+                                {{/if}}
+                            {{/each}}        
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
         
         <p id="savedContent" class="savedContent" style="display: none;">{{N.savedContent}}</p>
         
         {{if hasAbsoluteUrlImage}}
-        	<p class="savedContent">{{N.hasAbsoluteUrlImage}}</p>
+            <p class="savedContent">{{N.hasAbsoluteUrlImage}}</p>
         {{/if}}
         
         <ul class="nav nav-tabs hidden-print" id="langTabs">

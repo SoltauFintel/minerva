@@ -1,28 +1,28 @@
 <style>
 .pagetable {
-	width: 100%;
+    width: 100%;
 }
 
 .leftarea {
-	width: 360px;
+    width: 360px;
     max-width: 360px;
-	vertical-align: top;
-	padding-left: 1em;
-	padding-right: 1em;
-	padding-top: 20px;
-	overflow: auto;
+    vertical-align: top;
+    padding-left: 1em;
+    padding-right: 1em;
+    padding-top: 20px;
+    overflow: auto;
 }
 
 .mainarea {
-	vertical-align: top;
+    vertical-align: top;
 }
 
 .navbtn:hover {
-	background-color: #eee !important;
+    background-color: #eee !important;
 }
 
 .logoutBtn {
-	color: #900 !important;
+    color: #900 !important;
 }
 
 .line-vertical {
@@ -34,7 +34,7 @@
 }
 
 .page-header {
-	margin-top: 20px;
+    margin-top: 20px;
 }
 
 .noLRPadding {
@@ -44,88 +44,88 @@
 </style>
 
 <nav class="navbar navbar-default" style="margin-bottom: 0;">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav_c1" aria-expanded="false">
-				<span class="sr-only">Show/hide navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<img src="/logo.png" title="Minerva" style="padding-top: 8px; padding-right: 8px;"/>
-		</div>
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav_c1" aria-expanded="false">
+                <span class="sr-only">Show/hide navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <img src="/logo.png" title="Minerva" style="padding-top: 8px; padding-right: 8px;"/>
+        </div>
 
-		<div class="collapse navbar-collapse" id="nav_c1">
-			{{if hasUser}}
-				<ul class="nav navbar-nav">
-        			<li><a href="/w/{{branch}}/menu" class="navbtn"><i class="fa fa-navicon"></i> {{Menu}}</a></li>
-					{{if hasBook}}
-						<li class="line-vertical"/>
-		      			{{each b in booksForMenu}}
-		        			<li><a href="/b/{{branch}}/{{b.folder}}" class="navbtn"><i class="fa fa-book greenbook"></i> {{b.title}}</a></li>
-		        		{{/each}}
-		        	{{else if hasPreviewBooks}}
-						<li class="line-vertical"/>
+        <div class="collapse navbar-collapse" id="nav_c1">
+            {{if hasUser}}
+                <ul class="nav navbar-nav">
+                    <li><a href="/w/{{branch}}/menu" class="navbtn"><i class="fa fa-navicon"></i> {{Menu}}</a></li>
+                    {{if hasBook}}
+                        <li class="line-vertical"/>
+                          {{each b in booksForMenu}}
+                            <li><a href="/b/{{branch}}/{{b.folder}}" class="navbtn"><i class="fa fa-book greenbook"></i> {{b.title}}</a></li>
+                        {{/each}}
+                    {{else if hasPreviewBooks}}
+                        <li class="line-vertical"/>
                         <li><a href="/" class="navbtn"><i class="fa fa-times-circle greenbook" title="{{N.exitPreview}}"></i></a></li>
-		      			<li><a href="/p/{{branch}}" class="navbtn"><i class="fa fa-thumbs-o-up bluebook" title="{{N.preview}}"></i></a></li>
-		      			{{each b in previewBooks}}
-		        			<li><a href="{{b.link}}" class="navbtn"><i class="fa fa-book bluebook"></i> {{b.title}}</a></li>
-		        		{{/each}}
-		        	{{else if hasMenuItems}}
-						<li class="line-vertical"/>
+                          <li><a href="/p/{{branch}}" class="navbtn"><i class="fa fa-thumbs-o-up bluebook" title="{{N.preview}}"></i></a></li>
+                          {{each b in previewBooks}}
+                            <li><a href="{{b.link}}" class="navbtn"><i class="fa fa-book bluebook"></i> {{b.title}}</a></li>
+                        {{/each}}
+                    {{else if hasMenuItems}}
+                        <li class="line-vertical"/>
                         <li><a href="/" class="navbtn"><i class="fa fa-times-circle greenbook" title="{{N.toBooks}}"></i></a></li>
-		        		{{each m in menuItems}}
-		        			<li><a href="{{m.link}}" class="navbtn">{{m.title}}</a></li>
-		        		{{/each}}
-	        		{{/if}}
-	      		</ul>
-	
-				<ul class="nav navbar-nav navbar-right">
-				    {{if hasOpenMasterTasks}}
-				        <li><a href="/w/master/my-tasks" class="navbtn noLRPadding"><span class="label label-danger" title="unerledigte Aufgaben">{{numberOfOpenMasterTasks}}</span></a></li>
-			        {{/if}}
-					<li><a href="/auth/logout" class="logoutBtn navbtn">{{abmelden}} ({{user}}){{if isAdmin}}*{{/if}}</a></li>
+                        {{each m in menuItems}}
+                            <li><a href="{{m.link}}" class="navbtn">{{m.title}}</a></li>
+                        {{/each}}
+                    {{/if}}
+                  </ul>
+    
+                <ul class="nav navbar-nav navbar-right">
+                    {{if hasOpenMasterTasks}}
+                        <li><a href="/w/master/my-tasks" class="navbtn noLRPadding"><span class="label label-danger" title="unerledigte Aufgaben">{{numberOfOpenMasterTasks}}</span></a></li>
+                    {{/if}}
+                    <li><a href="/auth/logout" class="logoutBtn navbtn">{{abmelden}} ({{user}}){{if isAdmin}}*{{/if}}</a></li>
                     <li><a href="/w/{{branch}}/language?m=toggle" class="navbtn noLRPadding"><img src="/{{guiLanguage}}.svg" style="width: 18px;"/></a></li>
-				</ul>
-				<form action="/w/{{branch}}/search" class="navbar-form navbar-right" method="post">
-					<div class="input-group">
-						<input type="text" class="form-control" style="width: 180px;" id="q" name="q" value="{{q}}" placeholder="{{searchPlaceholder}}"/>
-						<span class="input-group-btn">
-							<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-						</span>
-					</div>
-				</form>
-			</div>
-		{{/if}}
-	</div>
+                </ul>
+                <form action="/w/{{branch}}/search" class="navbar-form navbar-right" method="post">
+                    <div class="input-group">
+                        <input type="text" class="form-control" style="width: 180px;" id="q" name="q" value="{{q}}" placeholder="{{searchPlaceholder}}"/>
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        {{/if}}
+    </div>
 </nav>
 
 <table class="pagetable">
-	{{if not isMasterBranch}}
-		<tr>
-			<td{{if hasLeftArea}} colspan="2"{{/if}} style="background-color: #e9f3fc; padding: 4px 8px; font-size: 9pt; text-align: center;">
-				{{BranchLabel}}: {{branch}}
-				{{if delayedPush}}
-			        &nbsp; | &nbsp;
-			        <i class="fa fa-flag-checkered fsmode"></i>
-			        <a href="/w/{{branch}}/deactivate-f-s-mode" class="fsmode">{{N.endFSMode}}</a>
-				{{/if}}
-			</td>
-		</tr>
-	{{/if}}
-	<tr>
-		{{if hasLeftArea}}
-			<td class="leftarea">
-				{{leftAreaContent}}
-			</td>
-		{{/if}}
-		<td class="mainarea"{{if not hasLeftArea}} style="padding-left: 2em; padding-right: 2em;"{{/if}}>
+    {{if not isMasterBranch}}
+        <tr>
+            <td{{if hasLeftArea}} colspan="2"{{/if}} style="background-color: #e9f3fc; padding: 4px 8px; font-size: 9pt; text-align: center;">
+                {{BranchLabel}}: {{branch}}
+                {{if delayedPush}}
+                    &nbsp; | &nbsp;
+                    <i class="fa fa-flag-checkered fsmode"></i>
+                    <a href="/w/{{branch}}/deactivate-f-s-mode" class="fsmode">{{N.endFSMode}}</a>
+                {{/if}}
+            </td>
+        </tr>
+    {{/if}}
+    <tr>
+        {{if hasLeftArea}}
+            <td class="leftarea">
+                {{leftAreaContent}}
+            </td>
+        {{/if}}
+        <td class="mainarea"{{if not hasLeftArea}} style="padding-left: 2em; padding-right: 2em;"{{/if}}>
             <div class="container-fluid" style="padding-bottom: 15mm;">
-            	<!-- CONTENT -->
+                <!-- CONTENT -->
                 {{content}}
             </div>
-		</td>
-	</tr>
+        </td>
+    </tr>
 </table>
     
 

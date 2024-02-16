@@ -2,11 +2,11 @@
 
 <style>
 h2 {
-	margin-top: 2em;
+    margin-top: 2em;
 }
 
 .red {
-	color: #800;
+    color: #800;
 }
 
 .currentBranch {
@@ -23,50 +23,50 @@ h2 {
 </style>
 
 <div class="row">
-	<div class="col-lg-12">
-		{{if gitlab}}
-			<h1 class="page-header">Workspaces</h1>
-			<div class="bs-glyphicons">
-				<ul class="bs-glyphicons-list">
-					{{each c in workspaces}}
-						<li style="cursor: pointer;"{{if c.isCurrent}} class="currentBranch"{{/if}} onclick="location.href='{{c.link}}';">
-							<span class="glyphicon fa {{c.icon}} fa-fw"></span>
-							<span class="glypicon-class"><br />{{c.text}}</span>
-						</li>
-					{{/each}}
-				</ul>
-			</div>
-		{{/if}}
-		<h1 class="page-header">{{header}}</h1>
-		<div class="bs-glyphicons">
-			<ul class="bs-glyphicons-list">
-				{{each c in commands}}
-					<li style="cursor: pointer;" onclick="{{if c.spin}}document.getElementById('{{c.id}}').classList.add('fa-spin'); {{/if}}location.href='{{c.link}}';">
-						<span id="{{c.id}}" class="glyphicon fa {{c.icon}} fa-fw"></span> <span
-							class="glypicon-class"><br />{{c.text}}</span>
-					</li>
-				{{/each}}
-			</ul>
-		</div>
-		{{if hasFavorites}}
-			<h1 class="page-header">{{N.Favorites}}</h1>
-			<div class="bs-glyphicons">
-				<ul class="bs-glyphicons-list">
-					{{each c in favorites}}
-						<li style="cursor: pointer;" onclick="location.href='{{c.link}}';">
-							<span class="glyphicon fa fa-star-o fav fa-fw"></span> <span
-								class="glypicon-class"><br />{{c.title}}</span>
-						</li>
-					{{/each}}
-					{{if hasLastEditedPage}}
-						<li style="cursor: pointer;" onclick="location.href='{{lastEditedPage_link}}';">
-							<span class="glyphicon fa fa-pencil fav fa-fw"></span> <span
-								class="glypicon-class"><br />{{lastEditedPage_title}}</span>
-						</li>
-					{{/if}}				
-				</ul>
-			</div>
-		{{/if}}
-		<p>{{N.persistence}}: {{persistenceInfo}}</p>
-	</div>
+    <div class="col-lg-12">
+        {{if gitlab}}
+            <h1 class="page-header">Workspaces</h1>
+            <div class="bs-glyphicons">
+                <ul class="bs-glyphicons-list">
+                    {{each c in workspaces}}
+                        <li style="cursor: pointer;"{{if c.isCurrent}} class="currentBranch"{{/if}} onclick="location.href='{{c.link}}';">
+                            <span class="glyphicon fa {{c.icon}} fa-fw"></span>
+                            <span class="glypicon-class"><br />{{c.text}}</span>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        {{/if}}
+        <h1 class="page-header">{{header}}</h1>
+        <div class="bs-glyphicons">
+            <ul class="bs-glyphicons-list">
+                {{each c in commands}}
+                    <li style="cursor: pointer;" onclick="{{if c.spin}}document.getElementById('{{c.id}}').classList.add('fa-spin'); {{/if}}location.href='{{c.link}}';">
+                        <span id="{{c.id}}" class="glyphicon fa {{c.icon}} fa-fw"></span> <span
+                            class="glypicon-class"><br />{{c.text}}</span>
+                    </li>
+                {{/each}}
+            </ul>
+        </div>
+        {{if hasFavorites}}
+            <h1 class="page-header">{{N.Favorites}}</h1>
+            <div class="bs-glyphicons">
+                <ul class="bs-glyphicons-list">
+                    {{each c in favorites}}
+                        <li style="cursor: pointer;" onclick="location.href='{{c.link}}';">
+                            <span class="glyphicon fa fa-star-o fav fa-fw"></span> <span
+                                class="glypicon-class"><br />{{c.title}}</span>
+                        </li>
+                    {{/each}}
+                    {{if hasLastEditedPage}}
+                        <li style="cursor: pointer;" onclick="location.href='{{lastEditedPage_link}}';">
+                            <span class="glyphicon fa fa-pencil fav fa-fw"></span> <span
+                                class="glypicon-class"><br />{{lastEditedPage_title}}</span>
+                        </li>
+                    {{/if}}                
+                </ul>
+            </div>
+        {{/if}}
+        <p>{{N.persistence}}: {{persistenceInfo}}</p>
+    </div>
 </div>

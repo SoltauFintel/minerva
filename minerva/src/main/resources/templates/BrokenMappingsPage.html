@@ -5,22 +5,22 @@
         <h1 class="page-header">{{header}}</h1>
         
         {{if empty}}
-			<p>{{N.brokenMappingsInfo}}</p>
-		{{else}}
-	        <table class="table table-striped table-hover mt2" style="width: auto;">
-	            <tr>
-	                <th>{{N.page}}</th>
-	                <th>key</th>
-	            </tr>
-	            {{each m in brokenMappings}}
-	                <tr>
-	                    <td><a href="/s/{{branch}}/{{m.bookFolder}}/{{m.pageId}}">{{m.pageTitle}}</a></td>
-	                    <td>{{m.key}}</td>
-	                </tr>
-	            {{/each}}
-	        </table>
-	        <p>{{N.anzahl}}: {{n}}</p>
-		{{/if}}
+            <p>{{N.brokenMappingsInfo}}</p>
+        {{else}}
+            <table class="table table-striped table-hover mt2" style="width: auto;">
+                <tr>
+                    <th>{{N.page}}</th>
+                    <th>key</th>
+                </tr>
+                {{each m in brokenMappings}}
+                    <tr>
+                        <td><a href="/s/{{branch}}/{{m.bookFolder}}/{{m.pageId}}">{{m.pageTitle}}</a></td>
+                        <td>{{m.key}}</td>
+                    </tr>
+                {{/each}}
+            </table>
+            <p>{{N.anzahl}}: {{n}}</p>
+        {{/if}}
     </div>
 </div>
 
