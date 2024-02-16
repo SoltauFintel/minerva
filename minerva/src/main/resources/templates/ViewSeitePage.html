@@ -30,6 +30,10 @@
         
         <p id="savedContent" class="savedContent" style="display: none;">{{N.savedContent}}</p>
         
+        {{if hasAbsoluteUrlImage}}
+        	<p class="savedContent">{{N.hasAbsoluteUrlImage}}</p>
+        {{/if}}
+        
         <ul class="nav nav-tabs hidden-print" id="langTabs">
             {{each L in languages}}
                 <li role="presentation"{{if L.active}} class="active"{{/if}}><a href="#{{L.lang}}"

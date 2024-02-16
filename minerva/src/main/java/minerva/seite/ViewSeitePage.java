@@ -76,6 +76,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("hasSubPages", !seiteSO.getSeiten().isEmpty());
         put("Sortierung", n(seite.isSorted() ? "alfaSorted" : "manuSorted"));
         put("isSorted", seite.isSorted());
+        put("hasAbsoluteUrlImage", hasAbsoluteUrlImage(seiteSO));
 
         String cosi = new SeiteCommentService2(seiteSO).getCommentsSizeText(user.getLogin());
         boolean forMe = cosi.startsWith("*");
@@ -121,7 +122,33 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
                 + seiteSO.getTitle() + " | " + u.getPageLanguage());
     }
 
-    private void editorComponent() {
+	private boolean hasAbsoluteUrlImage(SeiteSO seite) {
+		for (String lang : langs) {
+			String html = seite.getContent().getString(lang);
+			int o = html.indexOf("<img");
+			while (o >= 0) {
+				o += "<img".length();
+				int oo = html.indexOf(">", o);
+				if (oo >= 0) {
+					int z = html.indexOf("src=\"", o);
+					if (z >= o && z < oo) {
+						z += "src=\"".length();
+						int zz = html.indexOf("\"", z);
+						if (zz >= z && zz < oo) {
+							String src = html.substring(z, zz);
+							if (src.startsWith("http://") || src.startsWith("https://")) {
+								return true;
+							}
+						}
+					}
+				}
+				o = html.indexOf("<img", o);
+			}
+		}
+		return false;
+	}
+
+	private void editorComponent() {
         put("bigEditor", true);
         
         String postExtra = "";

@@ -290,3 +290,4 @@ savedContent=There is unsaved content for this page. Please start editing the pa
 savedCommentContent=There is unsaved content for this comment. Please start editing the comment!
 checkAllLinks=Check all links
 checkLink=Link to "$h" is broken and can be found on page <a href="$v">$t</a> with link label "$l".
+hasAbsoluteUrlImage=Page contains a http image! Please fix that!
