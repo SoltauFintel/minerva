@@ -10,11 +10,11 @@ public abstract class AbstractCommentService2 {
     private final String dir;
     
     public AbstractCommentService2(SimpleDirAccess simpledao, String dir) {
-		this.simpledao = simpledao;
-		this.dir = dir;
-	}
+        this.simpledao = simpledao;
+        this.dir = dir;
+    }
 
-	public List<Comment> getComments() {
+    public List<Comment> getComments() {
         return CommentService.loadComments(dao().dao(), dir());
     }
 
@@ -23,7 +23,7 @@ public abstract class AbstractCommentService2 {
     }
 
     public String dir() {
-    	return dir;
+        return dir;
     }
     
     public String getCommentsSizeText(String login) {

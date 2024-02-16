@@ -70,28 +70,28 @@ public class StringService {
      * @return HTML link
      */
     public static String makeClickableLinks(String text) {
-		Pattern regex = Pattern.compile("\\(([^\\)]+)\\)\\[([^\\]]+)\\]");
-		Matcher matcher = regex.matcher(text);
-		while (matcher.find()) {
-			String url = matcher.group(2);
-			if (url.contains("createpage.action")) {
-				continue;
-			}
-			String target = "";
-			if (url.startsWith("http://") || url.startsWith("https://")) {
-				target = " target=\"_blank\"";
-			} else {
-				if (url.startsWith("N")) { // comment link
-					url = url.substring(1);
-					url = "?highlight=" + url + "#" + url;
-				} else { // page link
-					url = "../" + url;
-				}
-			}
-			text = text.replace(matcher.group(0), "<a href=\"" + url + "\"" + target + ">" + matcher.group(1) + "</a>");
-		}
-		return text;
-	}
+        Pattern regex = Pattern.compile("\\(([^\\)]+)\\)\\[([^\\]]+)\\]");
+        Matcher matcher = regex.matcher(text);
+        while (matcher.find()) {
+            String url = matcher.group(2);
+            if (url.contains("createpage.action")) {
+                continue;
+            }
+            String target = "";
+            if (url.startsWith("http://") || url.startsWith("https://")) {
+                target = " target=\"_blank\"";
+            } else {
+                if (url.startsWith("N")) { // comment link
+                    url = url.substring(1);
+                    url = "?highlight=" + url + "#" + url;
+                } else { // page link
+                    url = "../" + url;
+                }
+            }
+            text = text.replace(matcher.group(0), "<a href=\"" + url + "\"" + target + ">" + matcher.group(1) + "</a>");
+        }
+        return text;
+    }
     
     /**
      * Limit text to maxlen, but to do not cut text within link "(...)[...]"

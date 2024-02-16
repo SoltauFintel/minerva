@@ -165,7 +165,7 @@ public class FileService {
     }
 
     public static void zip(File folder, File zipFile) {
-    	zipFile.delete();
+        zipFile.delete();
         int startOfFilenameWithRelativePath = folder.getAbsolutePath().length() + 1;
         try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))) {
             Files.walkFileTree(folder.toPath(), new SimpleFileVisitor<Path>() {
@@ -189,13 +189,13 @@ public class FileService {
      * @param zipFile -
      */
     public static void zip(List<File> files, File zipFile) {
-    	zipFile.delete();
+        zipFile.delete();
         try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile))) {
-        	for (File file : files) {
+            for (File file : files) {
                 out.putNextEntry(new ZipEntry(file.getName()));
                 Files.copy(file.toPath(), out);
                 out.closeEntry();
-        	}
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -83,24 +83,24 @@ public class UserAccess {
     }
     
     public static List<String> getUserNames() {
-    	return loadUsers().stream().map(u -> u.getRealName()).sorted().collect(Collectors.toList());
+        return loadUsers().stream().map(u -> u.getRealName()).sorted().collect(Collectors.toList());
     }
     
     public static boolean hasExportRight(String login) {
-    	if (MinervaWebapp.factory().getConfig().getAdmins().contains(login)) {
-    		return true;
-    	}
-    	User u = loadUser(login);
-    	return u == null || u.isExportAllowed();
+        if (MinervaWebapp.factory().getConfig().getAdmins().contains(login)) {
+            return true;
+        }
+        User u = loadUser(login);
+        return u == null || u.isExportAllowed();
     }
 
     public static String login2RealName(String login) {
-    	User u = loadUser(login);
-		return u == null || StringService.isNullOrEmpty(u.getRealName()) ? login : u.getRealName();
+        User u = loadUser(login);
+        return u == null || StringService.isNullOrEmpty(u.getRealName()) ? login : u.getRealName();
     }
     
     public static String realName2Login(String realName) {
-    	return loadUsers().stream().filter(u -> u.getRealName().equals(realName))
-    			.map(u -> u.getLogin()).findFirst().orElse(realName);
+        return loadUsers().stream().filter(u -> u.getRealName().equals(realName))
+                .map(u -> u.getLogin()).findFirst().orElse(realName);
     }
 }

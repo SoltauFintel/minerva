@@ -24,7 +24,7 @@ public class SeiteHistoryPage extends SPage {
         MinervaFactory fac = MinervaWebapp.factory();
         fac.gitlabOnlyPage();
         BackendService backend = fac.getBackendService();
-		List<ICommit> commits = backend.getSeiteMetaHistory(seite, followRenames);
+        List<ICommit> commits = backend.getSeiteMetaHistory(seite, followRenames);
 
         header(seite.getTitle() + " - " + n("history"));
         putCommits(commits, backend, model);
@@ -43,16 +43,16 @@ public class SeiteHistoryPage extends SPage {
         model.putSize("n", commits);
     }
 
-	public static void putCommit(ICommit commit, BackendService backend, Set<String> authors, DataMap map) {
-		map.put("hash", Escaper.esc(commit.getHash()));
-		map.put("hash7", Escaper.esc(commit.getHash7()));
-		map.put("gitlabCommitLink", backend.getCommitLink(commit.getHash()));
-		String author = UserAccess.login2RealName(commit.getAuthor());
-		if (authors != null) {
-			authors.add(author);
-		}
-		map.put("author", Escaper.esc(author));
-		map.put("date", Escaper.esc(commit.getCommitDateTime()));
-		map.put("message", Escaper.esc(commit.getMessage()));
-	}
+    public static void putCommit(ICommit commit, BackendService backend, Set<String> authors, DataMap map) {
+        map.put("hash", Escaper.esc(commit.getHash()));
+        map.put("hash7", Escaper.esc(commit.getHash7()));
+        map.put("gitlabCommitLink", backend.getCommitLink(commit.getHash()));
+        String author = UserAccess.login2RealName(commit.getAuthor());
+        if (authors != null) {
+            authors.add(author);
+        }
+        map.put("author", Escaper.esc(author));
+        map.put("date", Escaper.esc(commit.getCommitDateTime()));
+        map.put("message", Escaper.esc(commit.getMessage()));
+    }
 }

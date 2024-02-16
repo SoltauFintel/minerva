@@ -38,7 +38,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
     public MultiPageHtmlExportService(ExportRequest req) {
         super(req);
         req.getWorkspace().getUser().onlyWithExportRight();
-		exclusionsService.setContext("Multi-page-HTML-export");
+        exclusionsService.setContext("Multi-page-HTML-export");
     }
     
     @Override
@@ -142,7 +142,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
             Files.copy(src.toPath(), dest.toPath());
         } catch (IOException e) {
             Logger.error(e, "Error creating index.html for " + seite.getId() + ".html\nsrc : "
-            		+ src.getAbsolutePath() + "\ndest: " + dest.getAbsolutePath());
+                    + src.getAbsolutePath() + "\ndest: " + dest.getAbsolutePath());
         }
     }
     
@@ -163,7 +163,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
         navigation(seite, parent, model);
         html = render(exportTemplateSet.getPage(), model);
         html = addDotHtml(html);
-		html = formulas2images(html, seite, outputFolder, title);
+        html = formulas2images(html, seite, outputFolder, title);
         
         // HTML file
         FileService.savePlainTextFile(new File(outputFolder, seite.getId() + ".html"), html);
@@ -277,20 +277,20 @@ public class MultiPageHtmlExportService extends GenericExportService {
         }
     }
     
-	protected final String formulas2images(String html, SeiteSO seite, File outputFolder, String title) {
-		Formula2Image c = new Formula2Image();
-		c.setCounter(counter);
-		c.setPath("img/" + seite.getId() + "/");
-		TransformPath tp = getTransformPath();
-		html = c.processHTML(html, "\\[", "\\]", outputFolder, seite, "<p class=\"math\">", "</p>", title, tp);
-		html = c.processHTML(html, "\\(", "\\)", outputFolder, seite, "", "", title, tp);
-		counter = c.getCounter();
-		return html;
-	}
-	
-	protected TransformPath getTransformPath() {
-		return (path, file) -> path + file.getName();
-	}
+    protected final String formulas2images(String html, SeiteSO seite, File outputFolder, String title) {
+        Formula2Image c = new Formula2Image();
+        c.setCounter(counter);
+        c.setPath("img/" + seite.getId() + "/");
+        TransformPath tp = getTransformPath();
+        html = c.processHTML(html, "\\[", "\\]", outputFolder, seite, "<p class=\"math\">", "</p>", title, tp);
+        html = c.processHTML(html, "\\(", "\\)", outputFolder, seite, "", "", title, tp);
+        counter = c.getCounter();
+        return html;
+    }
+    
+    protected TransformPath getTransformPath() {
+        return (path, file) -> path + file.getName();
+    }
     
     protected void saveIndex(File outputFolder, String aTemplate, DataMap model) {
         FileService.savePlainTextFile(new File(outputFolder, "index.html"), render(aTemplate, model));

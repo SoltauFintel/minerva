@@ -70,7 +70,7 @@ public class SubscribersAccess {
             if (available(subscriber)) {
                 String url = subscriber + "/book6/page/" + page.getId();
                 Logger.info("PUT " + url);
-				new REST(url).put(new Gson().toJson(page), REST.json_utf8()).close();
+                new REST(url).put(new Gson().toJson(page), REST.json_utf8()).close();
             }
         }
     }

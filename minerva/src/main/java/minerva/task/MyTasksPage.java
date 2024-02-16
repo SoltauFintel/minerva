@@ -17,14 +17,14 @@ import minerva.user.UserAccess;
 import minerva.workspace.WPage;
 
 public class MyTasksPage extends WPage implements Uptodatecheck {
-	
+    
     @Override
     protected void execute() {
-    	String login = ctx.queryParam("login");
-    	boolean me = login == null || user.getLogin().equals(login);
-		Logger.info(user.getLogin() + " | " + (me ? "My tasks" : "All tasks for " + login));
+        String login = ctx.queryParam("login");
+        boolean me = login == null || user.getLogin().equals(login);
+        Logger.info(user.getLogin() + " | " + (me ? "My tasks" : "All tasks for " + login));
         boolean showAll = "a".equals(ctx.queryParam("m"));
-		
+        
         List<Task> tasks = new TaskService().getTasks(user, branch, login);
         int n = (int) tasks.stream().filter(i -> !TaskPriority.HIDE.equals(user.getTaskPriority(i.getId()))).count();
         if ("master".equals(branch) && me) {
@@ -41,7 +41,7 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
             put("hasWeitere", false);
         }
         put("login", esc(UserAccess.login2RealName(StringService.isNullOrEmpty(login) ? user.getLogin() : login)));
-		fill(tasks, branch, model, user.getLogin(), showAll);
+        fill(tasks, branch, model, user.getLogin(), showAll);
         put("hasTasks", !tasks.isEmpty());
         put("showTaskButtons", me);
         put("showAll", showAll);

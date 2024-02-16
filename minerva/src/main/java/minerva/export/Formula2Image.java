@@ -48,7 +48,7 @@ public class Formula2Image {
                 File file = expression2ImageFile(expression, outputFolder, title);
                 
                 String img = "<img src=\"" + tp.transform(path, file) + "\" class=\"math\"/>";
-				replaceMap.put(key, prefixHtml + img + postfixHtml);
+                replaceMap.put(key, prefixHtml + img + postfixHtml);
             }
 
             o = html.indexOf(prefix, oo + postfix.length());
@@ -99,6 +99,6 @@ public class Formula2Image {
     }
     
     public interface TransformPath {
-    	String transform(String path, File file);
+        String transform(String path, File file);
     }
 }

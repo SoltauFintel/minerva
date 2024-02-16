@@ -13,7 +13,7 @@ public class ExportBookAction extends BAction {
         String customer = ctx.queryParam("customer");
 
         String info = branch + " | exporting book \"" + bookFolder + "\" for customer \"" + customer + "\" and language \"" + lang + "\"";
-		Logger.info(user.getLogin() + " | " + info);
+        Logger.info(user.getLogin() + " | " + info);
         user.log(info);
 
         String id = GenericExportService.getService(new ExportRequest(book.getWorkspace(), ctx)).getBookExportDownloadId(book);

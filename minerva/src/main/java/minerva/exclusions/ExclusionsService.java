@@ -64,12 +64,12 @@ public class ExclusionsService {
         boolean voteForON = false;
         boolean pdfMode = "PDF".equalsIgnoreCase(context);
         for (String tag : tags) {
-        	LabelClass v;
-        	if (pdfMode && isPdfTag(tag, pdf_tags)) {
-        		v = LabelClass.OFF;
-        	} else {
-        		v = exclusions.contains(tag, pCustomer);
-        	}
+            LabelClass v;
+            if (pdfMode && isPdfTag(tag, pdf_tags)) {
+                v = LabelClass.OFF;
+            } else {
+                v = exclusions.contains(tag, pCustomer);
+            }
             if (v == LabelClass.ON) {
                 voteForON = true;
             } else if (v == LabelClass.OFF) {
@@ -82,19 +82,19 @@ public class ExclusionsService {
     }
     
     private static boolean isPdfTag(String tag, String[] pdf_tags) {
-		for (String i : pdf_tags) {
-			if (i.equals(tag)) {
-				return true;
-			}
-		}
-		return false;
+        for (String i : pdf_tags) {
+            if (i.equals(tag)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-	public String getContext() {
-		return context;
-	}
+    public String getContext() {
+        return context;
+    }
 
-	public void setContext(String context) {
-		this.context = context;
-	}
+    public void setContext(String context) {
+        this.context = context;
+    }
 }

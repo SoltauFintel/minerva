@@ -11,18 +11,18 @@ import minerva.book.BPage;
  */
 public class SelectRNCustomerPage extends BPage {
 
-	@Override
-	protected void execute() {
-	    if (!MinervaWebapp.factory().getConfig().isDevelopment()) {
-	        MinervaWebapp.factory().gitlabOnlyPage();
-	    }
-    	header(n("loadReleaseNotes"));
-    	DataList list = list("configs");
-    	for (ReleaseNotesConfig c : MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs()) {
+    @Override
+    protected void execute() {
+        if (!MinervaWebapp.factory().getConfig().isDevelopment()) {
+            MinervaWebapp.factory().gitlabOnlyPage();
+        }
+        header(n("loadReleaseNotes"));
+        DataList list = list("configs");
+        for (ReleaseNotesConfig c : MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs()) {
             DataMap map = list.add();
             map.put("customer", esc(c.getCustomer()));
             map.put("spaceKey", esc(c.getSpaceKey()));
             map.put("link", esc(booklink + "/rn-select-release?s=" + u(c.getSpaceKey())));
         }
-	}
+    }
 }

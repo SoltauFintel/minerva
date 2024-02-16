@@ -60,7 +60,7 @@ public class GitlabAuthService {
         
         minerva.user.User user = UserAccess.loadUser(login, true, mail);
         if (!user.getMailAddress().equals(mail)) {
-			Logger.warn("Gitlab user " + login + " mail mismatch: " + user.getMailAddress() + " <> " + mail);
+            Logger.warn("Gitlab user " + login + " mail mismatch: " + user.getMailAddress() + " <> " + mail);
         }
         GitlabDataStore xu = new GitlabDataStore(user);
         xu.setPassword("");
@@ -84,11 +84,11 @@ public class GitlabAuthService {
         GitlabDataStore xu = new GitlabDataStore(user);
         String param = getParam() + "&grant_type=refresh_token&refresh_token=" + u(xu.getRefreshToken());
         Answer answer;
-		try {
-			answer = new REST(cfg().getGitlabUrl() + "/oauth/token").post(param).fromJson(Answer.class);
-		} catch (RestStatusException e) { // Status is 401
-			throw new RuntimeException(e.getMessage() + "\nTry to log out and log in.", e);
-		}
+        try {
+            answer = new REST(cfg().getGitlabUrl() + "/oauth/token").post(param).fromJson(Answer.class);
+        } catch (RestStatusException e) { // Status is 401
+            throw new RuntimeException(e.getMessage() + "\nTry to log out and log in.", e);
+        }
         
         xu.setAccessToken(answer.getAccess_token());
         xu.setRefreshToken(answer.getRefresh_token());

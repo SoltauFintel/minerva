@@ -33,16 +33,16 @@ public class PublishAction extends Action {
     }
     
     public static void downloadFolderAsZip(File sourceFolder, Context ctx) {
-    	File pdfFile = new File(sourceFolder, sourceFolder.getName() + ".pdf");
-    	if (pdfFile.isFile()) {
-	        ctx.res.type("application/pdf");
-	        downloadFile(pdfFile, ctx);
-    	} else {
-	        File zipFile = new File(sourceFolder.getParentFile(), sourceFolder.getName() + ".zip");
-	        FileService.zip(sourceFolder, zipFile);
-	        ctx.res.type("application/zip");
-	        downloadFile(zipFile, ctx);
-    	}
+        File pdfFile = new File(sourceFolder, sourceFolder.getName() + ".pdf");
+        if (pdfFile.isFile()) {
+            ctx.res.type("application/pdf");
+            downloadFile(pdfFile, ctx);
+        } else {
+            File zipFile = new File(sourceFolder.getParentFile(), sourceFolder.getName() + ".zip");
+            FileService.zip(sourceFolder, zipFile);
+            ctx.res.type("application/zip");
+            downloadFile(zipFile, ctx);
+        }
         FileService.deleteFolder(sourceFolder);
     }
     

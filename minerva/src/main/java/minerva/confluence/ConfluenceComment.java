@@ -57,7 +57,7 @@ public class ConfluenceComment {
     }
     
     public String getPlainText() {
-    	persons.clear();
+        persons.clear();
         if (StringService.isNullOrEmpty(html)) {
             return "";
         }
@@ -66,7 +66,7 @@ public class ConfluenceComment {
         // mentions
         for (Element e : doc.selectXpath("//a[@class='confluence-userlink user-mention']")) {
             String personName = e.text();
-			html2 = html2.replace(from(e), "@[" + personName + "]");
+            html2 = html2.replace(from(e), "@[" + personName + "]");
             persons.add(personName);
         }
         // links
@@ -84,12 +84,12 @@ public class ConfluenceComment {
             ret = ret.substring(1);
         }
         while (ret.endsWith("\n")) { // remove empty lines at end
-        	ret = ret.substring(0, ret.length() - 1);
+            ret = ret.substring(0, ret.length() - 1);
         }
-		int ni = doc.selectXpath("//img").size();
-		if (ni > 0) {
-			ret = "(Kommentar enthielt " + (ni == 1 ? "eine Grafik" : "Grafiken") + ".)\n" + ret;
-		}
+        int ni = doc.selectXpath("//img").size();
+        if (ni > 0) {
+            ret = "(Kommentar enthielt " + (ni == 1 ? "eine Grafik" : "Grafiken") + ".)\n" + ret;
+        }
         return ret;
     }
     
@@ -98,12 +98,12 @@ public class ConfluenceComment {
     }
     
     public static String umlaute4html(String text) {
-    	return text.replace("ü", "&uuml;").replace("ä", "&auml;").replace("ö", "&ouml;") //
+        return text.replace("ü", "&uuml;").replace("ä", "&auml;").replace("ö", "&ouml;") //
                    .replace("Ü", "&Uuml;").replace("Ä", "&Auml;").replace("Ö", "&Ouml;") //
                    .replace("ß", "&szlig;");
     }
 
-	public List<String> getPersons() {
-		return persons;
-	}
+    public List<String> getPersons() {
+        return persons;
+    }
 }

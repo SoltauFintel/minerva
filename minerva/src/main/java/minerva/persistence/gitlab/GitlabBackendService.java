@@ -71,9 +71,9 @@ public class GitlabBackendService implements BackendService {
     
     @Override
     public String getUserFolder(User user) {
-    	String folder = user.getLogin();
+        String folder = user.getLogin();
         Logger.debug(user.getLogin() + " | folder: " + folder);
-    	return folder;
+        return folder;
     }
 
     @Override
@@ -123,11 +123,11 @@ public class GitlabBackendService implements BackendService {
 
     @Override
     public List<ICommit> getSeiteMetaHistory(SeiteSO seite, boolean followRenames) {
-		return getHistory(seite.gitFilenameMeta(), seite.getBook(), followRenames);
-	}
+        return getHistory(seite.gitFilenameMeta(), seite.getBook(), followRenames);
+    }
 
-	protected final List<ICommit> getHistory(String filename, BookSO book, boolean followRenames) {
-    	return repo.getFileHistory(filename, followRenames, book.getWorkspace());
+    protected final List<ICommit> getHistory(String filename, BookSO book, boolean followRenames) {
+        return repo.getFileHistory(filename, followRenames, book.getWorkspace());
     }
 
     @Override

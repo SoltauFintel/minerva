@@ -97,11 +97,11 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("oneHelpKey", esc(oneHelpKey));
         put("hasOneHelpKey", !oneHelpKey.isEmpty());
         boolean isFavorite = u.getFavorites().contains(id);
-		put("isFavorite", isFavorite);
+        put("isFavorite", isFavorite);
         boolean pageWatched = u.getWatchlist().contains(id);
-		put("pageWatched", pageWatched);
+        put("pageWatched", pageWatched);
         boolean subpagesWatched = u.getWatchlist().contains(id + "+");
-		put("subpagesWatched", subpagesWatched);
+        put("subpagesWatched", subpagesWatched);
         put("ctrlS", n("ctrlS"));
         levellist("levellist", seite.getTocHeadingsLevels());
         levellist("levellist2", seite.getTocSubpagesLevels());
@@ -117,13 +117,13 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         fillLinks(branch, bookFolder, id, seiteSO, seite, u.getPageLanguage());
         
         menu(isFavorite, pageWatched, subpagesWatched,
-        		MinervaWebapp.factory().getConfig().isGitlab(), MinervaWebapp.factory().isCustomerVersion()); // möglichst spät aufrufen
+                MinervaWebapp.factory().getConfig().isGitlab(), MinervaWebapp.factory().isCustomerVersion()); // möglichst spät aufrufen
         
         Logger.info(u.getLogin() + " | " + seiteSO.getBook().getWorkspace().getBranch() + " | "
                 + seiteSO.getTitle() + " | " + u.getPageLanguage());
     }
 
-	private void editorComponent() {
+    private void editorComponent() {
         put("bigEditor", true);
         
         String postExtra = "";
@@ -150,9 +150,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     private String getTreeHTML(SeiteSO seiteSO) {
         String html = "";
         for (String lang : langs) {
-        	String hidden = lang.equals(user.getPageLanguage()) ? "" : " hidden";
-        	String tree = tree(seiteSO.getBook().getSeiten(), lang, seite.getId());
-			html += "<div id=\"tree_" + lang + "\"" + hidden + ">" + tree + "</div>";
+            String hidden = lang.equals(user.getPageLanguage()) ? "" : " hidden";
+            String tree = tree(seiteSO.getBook().getSeiten(), lang, seite.getId());
+            html += "<div id=\"tree_" + lang + "\"" + hidden + ">" + tree + "</div>";
         }
         return html;
     }
@@ -320,95 +320,95 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         return "";
     }
     
-	protected DataList menu(boolean isFavorite, boolean pageWatched, boolean subpagesWatched, boolean gitlab, boolean isCustomerVersion) {
-    	DataList i = model.list("menuitems");
-		String viewLink = model.get("viewlink").toString();
-		menuitem(i, viewLink + "/toggle-favorite",
-				"fav fa-star" + (isFavorite ? "" : "-o"),
-				n("favorite") + (isFavorite ? " <i class=\"fa fa-check greenbook\"></i>" : ""));
-		menuitem(i, viewLink + "/toggle-watch",
-				"fa-bell" + (pageWatched ? "" : "-o"),
-				n("watchPage") + (pageWatched ? " <i class=\"fa fa-check greenbook\"></i>" : ""));
-    	menuitem(i, viewLink + "/toggle-watch?m=s",
-    			"fa-sitemap",
-    			n("watchSubpages") + (subpagesWatched ? " <i class=\"fa fa-check greenbook\"></i>" : ""));
-    	menuitem(i, " data-toggle=\"modal\" data-target=\"#tocModal\"", "fa-list-ul", n("TOC"));
-		menuitem(i, "", "", "-");
-		
-		if (gitlab) {
-	    	menuitem(i, viewLink + "/history", "fa-clock-o", n("history"));
-		}
-		if (isAdmin) {
-			//  li  style="background-color: #ff9;"
-	    	menuitem(i, " data-toggle=\"modal\" data-target=\"#editorsnoteModal\"",
-	    			"fa-thumb-tack",
-	    			n("editorsNote"));
-	    	
-		}
-		if (isCustomerVersion) {
-	    	menuitem(i, viewLink + "/help-keys",
-	    			"fa-question-circle",
-	    			n("helpKeys") + " (" + model.get("helpKeysSize").toString() + ")");
-		}
-    	menuitem(i, viewLink + "/links", "fa-link", n("linkAnalysis"));
-    	additionalMenuItems(i);
-		menuitem(i, "", "", "-");
-		
-		if (isAdmin) {
-		    menuitem(i, viewlink + "/html", "fa-code", n("editHTML"));
-		}
-    	menuitem(i, "/w/" + esc(branch) + "/export?seite=" + u(seite.getId()), "fa-upload", n("exportPage"));
-    	menuitem(i, model.get("movelink").toString(), "fa-arrow-circle-right", n("movePage"));
-    	menuitem(i, model.get("deletelink").toString(), "fa-trash", n("deletePage") + "...");
-    	return i;
+    protected DataList menu(boolean isFavorite, boolean pageWatched, boolean subpagesWatched, boolean gitlab, boolean isCustomerVersion) {
+        DataList i = model.list("menuitems");
+        String viewLink = model.get("viewlink").toString();
+        menuitem(i, viewLink + "/toggle-favorite",
+                "fav fa-star" + (isFavorite ? "" : "-o"),
+                n("favorite") + (isFavorite ? " <i class=\"fa fa-check greenbook\"></i>" : ""));
+        menuitem(i, viewLink + "/toggle-watch",
+                "fa-bell" + (pageWatched ? "" : "-o"),
+                n("watchPage") + (pageWatched ? " <i class=\"fa fa-check greenbook\"></i>" : ""));
+        menuitem(i, viewLink + "/toggle-watch?m=s",
+                "fa-sitemap",
+                n("watchSubpages") + (subpagesWatched ? " <i class=\"fa fa-check greenbook\"></i>" : ""));
+        menuitem(i, " data-toggle=\"modal\" data-target=\"#tocModal\"", "fa-list-ul", n("TOC"));
+        menuitem(i, "", "", "-");
+        
+        if (gitlab) {
+            menuitem(i, viewLink + "/history", "fa-clock-o", n("history"));
+        }
+        if (isAdmin) {
+            //  li  style="background-color: #ff9;"
+            menuitem(i, " data-toggle=\"modal\" data-target=\"#editorsnoteModal\"",
+                    "fa-thumb-tack",
+                    n("editorsNote"));
+            
+        }
+        if (isCustomerVersion) {
+            menuitem(i, viewLink + "/help-keys",
+                    "fa-question-circle",
+                    n("helpKeys") + " (" + model.get("helpKeysSize").toString() + ")");
+        }
+        menuitem(i, viewLink + "/links", "fa-link", n("linkAnalysis"));
+        additionalMenuItems(i);
+        menuitem(i, "", "", "-");
+        
+        if (isAdmin) {
+            menuitem(i, viewlink + "/html", "fa-code", n("editHTML"));
+        }
+        menuitem(i, "/w/" + esc(branch) + "/export?seite=" + u(seite.getId()), "fa-upload", n("exportPage"));
+        menuitem(i, model.get("movelink").toString(), "fa-arrow-circle-right", n("movePage"));
+        menuitem(i, model.get("deletelink").toString(), "fa-trash", n("deletePage") + "...");
+        return i;
     }
     
     protected void additionalMenuItems(DataList i) { //
-	}
-
-	protected void menuitem(DataList menuitems, String link, String icon, String label) {
-    	DataMap map = menuitems.add();
-    	map.put("link", link);
-    	map.put("icon", icon);
-    	map.put("label", label);
-    	map.put("line", "-".equals(label));
-    	map.put("attrs", "");
-		map.put("liArgs", "");
-    	if (link.startsWith(" ")) {
-    		map.put("link", "#");
-    		map.put("attrs", link);
-    	} else if (link.contains("/delete")) {
-    		map.put("attrs", " style=\"color: #900;\"");
-    	} else if (link.contains("editorsnote")) {
-    		map.put("liArgs", " style=\"background-color: #ff9;\"");
-    	}
     }
-	
-	public static String tree(SeitenSO seiten, String lang, String currentSeiteId) {
+
+    protected void menuitem(DataList menuitems, String link, String icon, String label) {
+        DataMap map = menuitems.add();
+        map.put("link", link);
+        map.put("icon", icon);
+        map.put("label", label);
+        map.put("line", "-".equals(label));
+        map.put("attrs", "");
+        map.put("liArgs", "");
+        if (link.startsWith(" ")) {
+            map.put("link", "#");
+            map.put("attrs", link);
+        } else if (link.contains("/delete")) {
+            map.put("attrs", " style=\"color: #900;\"");
+        } else if (link.contains("editorsnote")) {
+            map.put("liArgs", " style=\"background-color: #ff9;\"");
+        }
+    }
+    
+    public static String tree(SeitenSO seiten, String lang, String currentSeiteId) {
         List<TreeItem> treeItems = seiten.getTreeItems(lang, currentSeiteId, null);
         return tree2(treeItems, "", true);
-	}
-	
-	private static String tree2(List<TreeItem> treeItems, String id, boolean expanded) {
-		String ret = "<ul id=\"P_" + id + "\" class=\"pagetree\"";
+    }
+    
+    private static String tree2(List<TreeItem> treeItems, String id, boolean expanded) {
+        String ret = "<ul id=\"P_" + id + "\" class=\"pagetree\"";
         if (id.isEmpty() || expanded) {
             ret += ">";
         } else {
             ret += " style=\"display:none;\">";
         }
-		for (TreeItem seite : treeItems) {
-			String aClass = "";
-			if (seite.hasContent() == 2) {
-				aClass = " class=\"noContent\"";
-			}
-			if (seite.isCurrent()) {
-				if (aClass.isEmpty()) {
-					aClass = " class=\"treeActivePage\"";
-				} else {
-					aClass = " class=\"noContent treeActivePage\"";
-				}
-			}
-			String icon = "<i class=\"fa fa-file-o\" style=\"color: #666;\"></i> ";
+        for (TreeItem seite : treeItems) {
+            String aClass = "";
+            if (seite.hasContent() == 2) {
+                aClass = " class=\"noContent\"";
+            }
+            if (seite.isCurrent()) {
+                if (aClass.isEmpty()) {
+                    aClass = " class=\"treeActivePage\"";
+                } else {
+                    aClass = " class=\"noContent treeActivePage\"";
+                }
+            }
+            String icon = "<i class=\"fa fa-file-o\" style=\"color: #666;\"></i> ";
             boolean hasVisibleSubpages = false;
             for (TreeItem subpage : seite.getSubitems()) {
                 if (subpage.hasContent() > 0) {
@@ -419,14 +419,14 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
                     break;
                 }
             }
-			ret += "<li><nobr>" + icon + "<a" + aClass + " href=\"" + seite.getLink() + "\">" + seite.getTitle() + "</a></nobr></li>\n";
+            ret += "<li><nobr>" + icon + "<a" + aClass + " href=\"" + seite.getLink() + "\">" + seite.getTitle() + "</a></nobr></li>\n";
             if (hasVisibleSubpages) {
                 ret += tree2(seite.getSubitems(), seite.getId(), seite.isExpanded()); // recursive
-			}
-		}
-		ret += "</ul>\n";
-		return ret;
-	}
+            }
+        }
+        ret += "</ul>\n";
+        return ret;
+    }
     
     private boolean foundInOtherBook() {
         for (BookSO book : workspace.getBooks()) {

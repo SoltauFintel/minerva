@@ -16,7 +16,7 @@ import minerva.task.TaskService;
 import minerva.user.UserAccess;
 
 public class MinervaPageInitializer extends PageInitializer {
-	
+    
     @Override
     public void initPage(Context ctx, Page page) {
         MinervaPageInitModel m = new MinervaPageInitModel(ctx);
@@ -38,9 +38,9 @@ public class MinervaPageInitializer extends PageInitializer {
         
         String qq = ctx.pathParam("branch");
         if (StringService.isNullOrEmpty(qq)) {
-        	page.put("isMasterBranch", true);
+            page.put("isMasterBranch", true);
         } else {
-        	page.put("isMasterBranch", "master".equals(qq));
+            page.put("isMasterBranch", "master".equals(qq));
         }
         
         page.put("hasUser", hasUser);
@@ -65,7 +65,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("exclusionsTitle", "Exclusions");
         page.put("hasBook", false);
         page.put("hasPreviewBooks", false);
-		page.put("hasMenuItems", false);
+        page.put("hasMenuItems", false);
         page.list("menuItems");
         page.list("previewBooks");
         page.put("book0Title", "");

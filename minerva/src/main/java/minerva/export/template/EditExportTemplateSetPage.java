@@ -12,38 +12,38 @@ public class EditExportTemplateSetPage extends WPage {
     
     @Override
     protected void execute() {
-    	String id = ctx.pathParam("id");
-    	
+        String id = ctx.pathParam("id");
+        
         x = new ExportTemplatesService(workspace);
         List<ExportTemplateSet> all = x.loadAll();
         ExportTemplateSet set = x.load(id);
         
         if (isPOST()) {
-        	set.setName(ctx.formParam("etsname"));
-			if (StringService.isNullOrEmpty(set.getName())) {
-				throw new RuntimeException("Name must not be empty!");
-			}
-			for (ExportTemplateSet i : all) {
-				if (!i.getId().equals(set.getId()) && i.getName().equalsIgnoreCase(set.getName())) {
-					throw new RuntimeException("Please enter an unique name!");
-				}
-			}
-        	set.setCustomer(ctx.formParam("customer"));
-        	set.setBooks(ctx.formParam("books"));
-        	set.setBook(ctx.formParam("book"));
-        	set.setPage(ctx.formParam("page"));
-        	set.setTemplate(ctx.formParam("template"));
-        	set.setStyles(ctx.formParam("templateCss"));
-        	set.setPdfToc(ctx.formParam("pdfToc"));
-        	set.setPdfStyles(ctx.formParam("pdfCss"));
-        	x.save(set);
+            set.setName(ctx.formParam("etsname"));
+            if (StringService.isNullOrEmpty(set.getName())) {
+                throw new RuntimeException("Name must not be empty!");
+            }
+            for (ExportTemplateSet i : all) {
+                if (!i.getId().equals(set.getId()) && i.getName().equalsIgnoreCase(set.getName())) {
+                    throw new RuntimeException("Please enter an unique name!");
+                }
+            }
+            set.setCustomer(ctx.formParam("customer"));
+            set.setBooks(ctx.formParam("books"));
+            set.setBook(ctx.formParam("book"));
+            set.setPage(ctx.formParam("page"));
+            set.setTemplate(ctx.formParam("template"));
+            set.setStyles(ctx.formParam("templateCss"));
+            set.setPdfToc(ctx.formParam("pdfToc"));
+            set.setPdfStyles(ctx.formParam("pdfCss"));
+            x.save(set);
 
             Logger.info(user.getLogin() + " | saved export template set: " + set.getName());
             user.log("saved export template set " + set.getName());
             
             ctx.redirect("/ets/" + esc(branch));
         } else {
-			header(n("exportTemplates"));
+            header(n("exportTemplates"));
             put("id", esc(set.getId()));
             put("etsname", esc(set.getName()));
             put("customer", esc(set.getCustomer()));

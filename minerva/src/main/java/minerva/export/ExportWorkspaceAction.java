@@ -14,7 +14,7 @@ public class ExportWorkspaceAction extends WAction {
         String customer = ctx.queryParam("customer");
 
         String info = branch + " | exporting all books for customer \"" + customer + "\" and language \"" + lang + "\"";
-		Logger.info(user.getLogin() + " | " + info);
+        Logger.info(user.getLogin() + " | " + info);
         user.log(info);
 
         WorkspaceSO workspace = user.getWorkspace(branch);

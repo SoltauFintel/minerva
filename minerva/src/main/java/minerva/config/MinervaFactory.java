@@ -17,7 +17,7 @@ import minerva.seite.PageChange;
  * diese Factory diejeweilige richtige Klasse zurück.
  */
 public class MinervaFactory {
-	public static BackendServiceFactory backendServiceFactory = new BackendServiceFactory();
+    public static BackendServiceFactory backendServiceFactory = new BackendServiceFactory();
     private final MinervaConfig config;
     private final boolean gitlab;
     private final List<String> languages;

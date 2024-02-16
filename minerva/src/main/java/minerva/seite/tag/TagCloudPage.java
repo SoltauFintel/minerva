@@ -24,20 +24,20 @@ public class TagCloudPage extends WPage {
         }
     }
 
-	private int size(TagN tag) {
-		int size;
-		final int n = tag.getAnzahl();
-		if (n >= 70) {
-			size = 35;
-		} else if (n >= 30) {
-			size = 27;
-		} else if (n >= 10) {
-			size = 22;
-		} else if (n >= 3) {
-			size = 16;
-		} else {
-			size = 11;
-		}
-		return size;
-	}
+    private int size(TagN tag) {
+        int size;
+        final int n = tag.getAnzahl();
+        if (n >= 70) {
+            size = 35;
+        } else if (n >= 30) {
+            size = 27;
+        } else if (n >= 10) {
+            size = 22;
+        } else if (n >= 3) {
+            size = 16;
+        } else {
+            size = 11;
+        }
+        return size;
+    }
 }

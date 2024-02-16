@@ -30,9 +30,9 @@ import minerva.model.WorkspaceSO;
  * for a customer and one language.
  */
 public abstract class GenericExportService {
-	private static final Map<String, File> downloads = new HashMap<>();
-	protected final ExportRequest req;
-	protected final String lang;
+    private static final Map<String, File> downloads = new HashMap<>();
+    protected final ExportRequest req;
+    protected final String lang;
     protected final ExportTemplateSet exportTemplateSet;
     protected final ExclusionsService exclusionsService;
     protected BookSO currentBook = null;
@@ -55,7 +55,7 @@ public abstract class GenericExportService {
     }
 
     public String getBooksExportDownloadId(WorkspaceSO workspace) {
-    	return prepareDownload(saveWorkspace(workspace));
+        return prepareDownload(saveWorkspace(workspace));
     }
     
     /**
@@ -76,7 +76,7 @@ public abstract class GenericExportService {
     }
 
     public String getBookExportDownloadId(BookSO book) {
-    	return prepareDownload(saveBook(book));
+        return prepareDownload(saveBook(book));
     }
 
     public File saveBook(BookSO book) {
@@ -101,48 +101,48 @@ public abstract class GenericExportService {
     }
     
     public void saveSeitenTo(Iterable<SeiteSO> seiten, SeiteSO parent, Chapter chapter, SubpagesSelector ss, File outputFolder) {
-    	chapter = chapter.child();
+        chapter = chapter.child();
         for (SeiteSO seite : seiten) {
             if (_saveSeiteTo(seite, parent, chapter, ss, outputFolder)) {
-            	chapter = chapter.inc();
+                chapter = chapter.inc();
             }
         }
     }
 
     public String getSeitenExportDownloadId(List<SeiteSO> seiten) {
-    	return prepareDownload(saveSeiten(seiten));
+        return prepareDownload(saveSeiten(seiten));
     }
 
     public File saveSeiten(List<SeiteSO> seiten) {
-		File outputFolder = getFolder(seiten.get(0).getSeite().getTitle().getString(lang));
+        File outputFolder = getFolder(seiten.get(0).getSeite().getTitle().getString(lang));
         init(outputFolder);
         SomeSubpages subpagesSelector = new SomeSubpages(seiten);
-		if (req.withChapters()) {
-			Chapter chapter = new Chapter().child();
-			for (SeiteAndDone sd : subpagesSelector.getAllPages()) {
-				if (!sd.isDone()) {
-					_saveSeiteTo(sd.getSeite(), null, chapter, subpagesSelector, outputFolder);
-					chapter = chapter.inc();
-				}
-			}
-		} else {
-			for (SeiteAndDone sd : subpagesSelector.getAllPages()) {
-				if (!sd.isDone()) {
-					_saveSeiteTo(sd.getSeite(), null, Chapter.withoutChapters(), subpagesSelector, outputFolder);
-				}
-			}
-		}
+        if (req.withChapters()) {
+            Chapter chapter = new Chapter().child();
+            for (SeiteAndDone sd : subpagesSelector.getAllPages()) {
+                if (!sd.isDone()) {
+                    _saveSeiteTo(sd.getSeite(), null, chapter, subpagesSelector, outputFolder);
+                    chapter = chapter.inc();
+                }
+            }
+        } else {
+            for (SeiteAndDone sd : subpagesSelector.getAllPages()) {
+                if (!sd.isDone()) {
+                    _saveSeiteTo(sd.getSeite(), null, Chapter.withoutChapters(), subpagesSelector, outputFolder);
+                }
+            }
+        }
         return outputFolder;
     }
     
     private boolean _saveSeiteTo(SeiteSO seite, SeiteSO parent, Chapter chapter, SubpagesSelector ss, File outputFolder) {
         if (seite.isVisible(exclusionsService, lang).isVisible()) {
-        	saveSeiteTo(seite, parent, chapter, outputFolder);
+            saveSeiteTo(seite, parent, chapter, outputFolder);
 
             Bookmark keep = cb; // remember
-    		keep.getBookmarks().add(cb = new Bookmark(seite, lang, chapter, req.withChapters()));
-        	
-		    saveSeitenTo(ss.getSubpages(seite), seite, chapter, ss, outputFolder);
+            keep.getBookmarks().add(cb = new Bookmark(seite, lang, chapter, req.withChapters()));
+            
+            saveSeitenTo(ss.getSubpages(seite), seite, chapter, ss, outputFolder);
             
             cb = keep; // restore
             return true;
@@ -172,35 +172,35 @@ public abstract class GenericExportService {
         }
     }
     
-	private String prepareDownload(File sourceFolder) {
-		String id;
-		File pdfFile = new File(sourceFolder, sourceFolder.getName() + ".pdf");
-		if (pdfFile.isFile()) {
-			id = register(pdfFile);
-			Logger.info(pdfFile.getAbsolutePath() + " => " + id);
-		} else {
-			File zipFile = new File(sourceFolder.getParentFile(), sourceFolder.getName() + ".zip");
-			FileService.zip(sourceFolder, zipFile);
-			id = register(zipFile);
-			Logger.info(zipFile.getAbsolutePath() + " => " + id);
-		}
-		return id;
-	}
+    private String prepareDownload(File sourceFolder) {
+        String id;
+        File pdfFile = new File(sourceFolder, sourceFolder.getName() + ".pdf");
+        if (pdfFile.isFile()) {
+            id = register(pdfFile);
+            Logger.info(pdfFile.getAbsolutePath() + " => " + id);
+        } else {
+            File zipFile = new File(sourceFolder.getParentFile(), sourceFolder.getName() + ".zip");
+            FileService.zip(sourceFolder, zipFile);
+            id = register(zipFile);
+            Logger.info(zipFile.getAbsolutePath() + " => " + id);
+        }
+        return id;
+    }
 
-	public static String register(File file) {
-		String id = IdGenerator.createId6();
-		downloads.put(id, file);
-		return id;
-	}
-	
-	public static String getFilename(String id) {
-		File file = downloads.get(id);
-		return file == null ? null : file.getName();
-	}
-	
-	public static File pop(String id) {
-		File ret = downloads.get(id);
-		downloads.remove(id);
-		return ret;
-	}
+    public static String register(File file) {
+        String id = IdGenerator.createId6();
+        downloads.put(id, file);
+        return id;
+    }
+    
+    public static String getFilename(String id) {
+        File file = downloads.get(id);
+        return file == null ? null : file.getName();
+    }
+    
+    public static File pop(String id) {
+        File ret = downloads.get(id);
+        downloads.remove(id);
+        return ret;
+    }
 }

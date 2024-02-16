@@ -23,23 +23,23 @@ import minerva.model.SeiteSO;
 import minerva.validate.ValidatorService;
 
 public class ReleaseNotesService {
-	private ConfluenceAccess access;
-	private ReleaseNotesContext ctx;
-	
-	public ReleaseNotesService(ReleaseNotesContext ctx) {
-	    this.ctx = ctx;
-	}
-	
-	public ConfluencePage2 loadReleaseNotesPage(String spaceKey, String rootTitle) {
-	    // ctx is null
-		MinervaFactory fac = MinervaWebapp.factory();
-		File imagesFolder = fac.getWorkFolder("release-notes-images");
-		String baseUrl = fac.getConfig().getReleaseNotesBaseUrl();
-		String token = fac.getConfig().getReleaseNotesToken();
-		access = new ConfluenceAccess(baseUrl, token, spaceKey, imagesFolder, baseUrl);
-		List<ConfluencePage2> pages = access.searchPages();
-		return access.byTitle(rootTitle, pages); // The sub-pages are the Release pages, the sub-sub-pages are the ticket pages.
-	}
+    private ConfluenceAccess access;
+    private ReleaseNotesContext ctx;
+    
+    public ReleaseNotesService(ReleaseNotesContext ctx) {
+        this.ctx = ctx;
+    }
+    
+    public ConfluencePage2 loadReleaseNotesPage(String spaceKey, String rootTitle) {
+        // ctx is null
+        MinervaFactory fac = MinervaWebapp.factory();
+        File imagesFolder = fac.getWorkFolder("release-notes-images");
+        String baseUrl = fac.getConfig().getReleaseNotesBaseUrl();
+        String token = fac.getConfig().getReleaseNotesToken();
+        access = new ConfluenceAccess(baseUrl, token, spaceKey, imagesFolder, baseUrl);
+        List<ConfluencePage2> pages = access.searchPages();
+        return access.byTitle(rootTitle, pages); // The sub-pages are the Release pages, the sub-sub-pages are the ticket pages.
+    }
 
     public void importAllNonExistingReleases() {
         ConfluencePage2 root = loadReleaseNotesPage(ctx.getSpaceKey(), ctx.getRootTitle());
@@ -51,37 +51,37 @@ public class ReleaseNotesService {
         }
     }
 
-	public String importRelease() {
-		ConfluencePage2 root = loadReleaseNotesPage(ctx.getSpaceKey(), ctx.getRootTitle());
-		ConfluencePage2 release = root.getSubpages().stream().filter(i -> i.getId().equals(ctx.getReleaseId())).findFirst().orElse(null);
-		if (release == null) {
+    public String importRelease() {
+        ConfluencePage2 root = loadReleaseNotesPage(ctx.getSpaceKey(), ctx.getRootTitle());
+        ConfluencePage2 release = root.getSubpages().stream().filter(i -> i.getId().equals(ctx.getReleaseId())).findFirst().orElse(null);
+        if (release == null) {
             Logger.info("Can't import release notes because release page is not found. Release ID: " + ctx.getReleaseId());
             return null;
-		} else if (release.getSubpages().isEmpty()) {
-		    Logger.info(release.getTitle() + " | No import because there are no ticket pages.");
-		    return null;
-		}
-		return importRelease2(release);
-	}
+        } else if (release.getSubpages().isEmpty()) {
+            Logger.info(release.getTitle() + " | No import because there are no ticket pages.");
+            return null;
+        }
+        return importRelease2(release);
+    }
 
     private String importRelease2(ConfluencePage2 release) {
         Logger.info("importing releaste notes... | " + release.getTitle());
         ctx.setReleasePage(release);
-		for (ConfluencePage2 sub : release.getSubpages()) {
-			access.loadPage(sub);
-			for (ConfluencePage2 details : sub.getSubpages()) {
-				access.loadPage(details);
-			}
-		}
-		createReleasePages();
-		return ctx.getResultingReleasePage().getId();
+        for (ConfluencePage2 sub : release.getSubpages()) {
+            access.loadPage(sub);
+            for (ConfluencePage2 details : sub.getSubpages()) {
+                access.loadPage(details);
+            }
+        }
+        createReleasePages();
+        return ctx.getResultingReleasePage().getId();
     }
-	
-	private void createReleasePages() {
-	    createCustomerPage();
-	    String releaseNumber = getReleaseNumber(ctx.getReleasePage().getTitle());
+    
+    private void createReleasePages() {
+        createCustomerPage();
+        String releaseNumber = getReleaseNumber(ctx.getReleasePage().getTitle());
         createSectionPage(releaseNumber);
-	    SeiteSO seite = createReleasePage(releaseNumber);
+        SeiteSO seite = createReleasePage(releaseNumber);
         ctx.getBook().dao().saveFiles(ctx.getFiles(),
                 new CommitMessage("Release Notes " + ctx.getSpaceKey() + " " + releaseNumber),
                 ctx.getBook().getWorkspace());
@@ -89,7 +89,7 @@ public class ReleaseNotesService {
         seite.reindex();
     }
 
-	private void createCustomerPage() {
+    private void createCustomerPage() {
         SeiteSO customerPage = findCustomerPage();
         if (customerPage == null) {
             customerPage = createSeite(ctx.getBook());

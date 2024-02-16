@@ -7,11 +7,11 @@ import minerva.model.UserSO;
 
 public class CommentsSupplier implements TasksSupplier {
 
-	@Override
-	public List<Task> getTasks(UserSO user, String branch, String login) {
-		return user.getComments(branch, login)
-				.stream()
-				.map(comment -> new CommentTask(comment, branch))
-				.collect(Collectors.toList());
-	}
+    @Override
+    public List<Task> getTasks(UserSO user, String branch, String login) {
+        return user.getComments(branch, login)
+                .stream()
+                .map(comment -> new CommentTask(comment, branch))
+                .collect(Collectors.toList());
+    }
 }

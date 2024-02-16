@@ -21,8 +21,8 @@ import minerva.user.User;
 import minerva.user.UserAccess;
 
 public abstract class CommonCommentService extends CommentService {
-	protected final Context ctx;
-	protected final String branch;
+    protected final Context ctx;
+    protected final String branch;
     protected final String lang;
     protected final DirAccess dao;
     protected final SimpleDirAccess simpledao;
@@ -32,7 +32,7 @@ public abstract class CommonCommentService extends CommentService {
     protected String commentsPagePath;
     protected String bbi;
     protected String key;
-	
+    
     public CommonCommentService(Context ctx) {
         this.ctx = ctx;
         branch = ctx.pathParam("branch");
@@ -50,15 +50,15 @@ public abstract class CommonCommentService extends CommentService {
     
     protected abstract void init(WorkspaceSO workspace, String bookFolder, String id);
     
-	@Override
-	protected SimpleDirAccess dao() {
-		return simpledao;
-	}
+    @Override
+    protected SimpleDirAccess dao() {
+        return simpledao;
+    }
 
-	@Override
-	public String dir() {
-		return dir;
-	}
+    @Override
+    public String dir() {
+        return dir;
+    }
 
     @Override
     public void save(Comment comment, String commitMessage, boolean add, boolean changed) {
@@ -128,20 +128,20 @@ public abstract class CommonCommentService extends CommentService {
 
     @Override
     public void initModel(Comment c, DataMap m) {
-		m.put("N", "en".equals(lang) ? NLS.dataMap_en : NLS.dataMap_de); // RB texts
-		String path = "/" + getPathPrefix() + "/" + bbi + "/comment";
-		m.put("replylink", path + "?parent=" + c.getId());
-		m.put("editlink", path + "?id=" + c.getId());
-		m.put("donelink", path + "-done?id=" + c.getId());
-		m.put("deletelink", "/" + getPathPrefix() + "/" + bbi + "/delete-comment?id=" + c.getId());
+        m.put("N", "en".equals(lang) ? NLS.dataMap_en : NLS.dataMap_de); // RB texts
+        String path = "/" + getPathPrefix() + "/" + bbi + "/comment";
+        m.put("replylink", path + "?parent=" + c.getId());
+        m.put("editlink", path + "?id=" + c.getId());
+        m.put("donelink", path + "-done?id=" + c.getId());
+        m.put("deletelink", "/" + getPathPrefix() + "/" + bbi + "/delete-comment?id=" + c.getId());
     }
     
     protected abstract String getPathPrefix();
     
-	@Override
-	public String getCommentsPagePath() {
-		return commentsPagePath;
-	}
+    @Override
+    public String getCommentsPagePath() {
+        return commentsPagePath;
+    }
 
     @Override
     public String getLanguage() {

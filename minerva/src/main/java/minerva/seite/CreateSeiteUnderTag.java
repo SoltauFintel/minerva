@@ -101,16 +101,16 @@ public class CreateSeiteUnderTag {
         seite.getSeite().getTitle().setString("en", title);
         seite.saveMetaTo(files);
         
-		seite.getContent().setString(lang, body("TODO"));
-		List<String> langs = new ArrayList<>();
-		langs.add(lang);
-		if ("de".equals(lang)) {
-			seite.getContent().setString("en", body("::"));
-			langs.add("en");
-		} else {
-			seite.getContent().setString("de", body("::"));
-			langs.add("de");
-		}
+        seite.getContent().setString(lang, body("TODO"));
+        List<String> langs = new ArrayList<>();
+        langs.add(lang);
+        if ("de".equals(lang)) {
+            seite.getContent().setString("en", body("::"));
+            langs.add("en");
+        } else {
+            seite.getContent().setString("de", body("::"));
+            langs.add("de");
+        }
         seite.saveHtmlTo(files, langs);
         
         Logger.info(book.getUser().getLogin() + " | created interface page: " + title);
@@ -118,6 +118,6 @@ public class CreateSeiteUnderTag {
     }
     
     private String body(String text) {
-    	return "<html><body><p>" + text + "</p></body></html>";
+        return "<html><body><p>" + text + "</p></body></html>";
     }
 }

@@ -20,8 +20,8 @@ public class MinervaConfig {
     public MinervaConfig(AppConfig config) {
         this.config = config;
         WebContext.setCookieName(this.config);
-    	
-    	// gitlab?
+        
+        // gitlab?
         String backend = env("MINERVA_BACKEND"); // for setting backend to file-system in IDE mode
         if (StringService.isNullOrEmpty(backend)) {
             backend = config.get("backend");
@@ -252,14 +252,14 @@ public class MinervaConfig {
         String ret = System.getenv(name);
         return ret == null ? "" : ret;
     }
-	
-	public String getReleaseNotesBaseUrl() {
-		return config.get("release-notes.base-url");
-	}
-	
-	public String getReleaseNotesToken() {
-		return config.get("release-notes.token");
-	}
+    
+    public String getReleaseNotesBaseUrl() {
+        return config.get("release-notes.base-url");
+    }
+    
+    public String getReleaseNotesToken() {
+        return config.get("release-notes.token");
+    }
     
     public String[] getReleaseNotesBookTitles() {
         String c = config.get("release-notes.book-titles");
@@ -269,36 +269,36 @@ public class MinervaConfig {
             return c.split(",");
         }
     }
-	
-	public List<ReleaseNotesConfig> loadReleaseNotesConfigs() {
-	    List<ReleaseNotesConfig> ret = new ArrayList<>();
-	    int i = 0;
-	    while (true) {
-	        String c = config.get("release-notes.config" + ++i);
-	        if (c == null) {
-	            break;
-	        }
-	        String[] w = c.split(",");
-	        if (w.length < 5 || w[4].isEmpty()) {
-	            throw new RuntimeException("release-notes.config" + (i - 1) + " entry is not ok! Format is: root title, de|en, ticket prefix, space key, customer");
-	        }
-	        ReleaseNotesConfig e = new ReleaseNotesConfig();
-	        e.setRootTitle(w[0]);
-	        e.setLanguage(w[1]);
-	        e.setTicketPrefix(w[2]);
-	        e.setSpaceKey(w[3]);
-	        e.setCustomer(w[4]);
-	        ret.add(e);
-	    }
+    
+    public List<ReleaseNotesConfig> loadReleaseNotesConfigs() {
+        List<ReleaseNotesConfig> ret = new ArrayList<>();
+        int i = 0;
+        while (true) {
+            String c = config.get("release-notes.config" + ++i);
+            if (c == null) {
+                break;
+            }
+            String[] w = c.split(",");
+            if (w.length < 5 || w[4].isEmpty()) {
+                throw new RuntimeException("release-notes.config" + (i - 1) + " entry is not ok! Format is: root title, de|en, ticket prefix, space key, customer");
+            }
+            ReleaseNotesConfig e = new ReleaseNotesConfig();
+            e.setRootTitle(w[0]);
+            e.setLanguage(w[1]);
+            e.setTicketPrefix(w[2]);
+            e.setSpaceKey(w[3]);
+            e.setCustomer(w[4]);
+            ret.add(e);
+        }
         ret.sort((a, b) -> a.getCustomer().compareToIgnoreCase(b.getCustomer()));
-	    return ret;
-	}
-	
-	public String[] getPDF_tags() {
-		return config.get("pdf-tags", "").split(","); // nicht_drucken
-	}
-	
-	public String getOldHelpKeysReaderJiraUrl() {
-	    return config.get("OldHelpKeysReader.jira-url");
-	}
+        return ret;
+    }
+    
+    public String[] getPDF_tags() {
+        return config.get("pdf-tags", "").split(","); // nicht_drucken
+    }
+    
+    public String getOldHelpKeysReaderJiraUrl() {
+        return config.get("OldHelpKeysReader.jira-url");
+    }
 }

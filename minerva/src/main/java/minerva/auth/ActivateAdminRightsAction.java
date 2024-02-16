@@ -25,6 +25,6 @@ public class ActivateAdminRightsAction extends UAction {
                 user.log("-- Admin rights activated.");
             }
         }
-		ctx.redirectToReferer();
+        ctx.redirectToReferer();
     }
 }

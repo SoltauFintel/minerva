@@ -36,7 +36,7 @@ public interface BackendService {
      * @param user -
      * @return user folder
      */
-	String getUserFolder(User user);
+    String getUserFolder(User user);
 
     /**
      * @param lang language

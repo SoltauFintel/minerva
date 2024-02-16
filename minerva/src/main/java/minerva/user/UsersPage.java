@@ -20,7 +20,7 @@ public class UsersPage extends UPage {
         header(n("manageUsers"));
         DataList list = list("users");
         users.forEach(u -> {
-		    DataMap map = list.add();
+            DataMap map = list.add();
             map.put("login", esc(u.getLogin()));
             map.put("link", esc("/user/" + u.getLogin()));
             map.put("deletelink", esc("/user/" + u.getLogin() + "/delete"));

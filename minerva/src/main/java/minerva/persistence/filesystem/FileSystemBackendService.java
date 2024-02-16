@@ -60,7 +60,7 @@ public class FileSystemBackendService implements BackendService {
     public String getUserFolder(User user) {
         String folder = config.getUserFolder();
         Logger.debug(user.getLogin() + " | folder: " + folder);
-    	return folder;
+        return folder;
     }
 
     @Override

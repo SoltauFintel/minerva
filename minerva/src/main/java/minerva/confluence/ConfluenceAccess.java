@@ -34,9 +34,9 @@ public class ConfluenceAccess {
         final int limit = 500;
         int n;
         do {
-			String url = "/rest/api/content/search?expand=ancestors&cql=space=" + Escaper.urlEncode(spaceKey, spaceKey)
-					+ "+and+type=page+order+by+id&limit=" + limit + "&start=" + start;
-			ConfluenceSearchResults p = request(url).fromJson(ConfluenceSearchResults.class);
+            String url = "/rest/api/content/search?expand=ancestors&cql=space=" + Escaper.urlEncode(spaceKey, spaceKey)
+                    + "+and+type=page+order+by+id&limit=" + limit + "&start=" + start;
+            ConfluenceSearchResults p = request(url).fromJson(ConfluenceSearchResults.class);
             n = p.getResults().size();
             for (ConfluenceResult r : p.getResults()) {
                 ConfluencePage2 page = new ConfluencePage2();
@@ -152,7 +152,7 @@ public class ConfluenceAccess {
             req.getHttpResponse().getEntity().writeTo(fos);
             req.close();
         } catch (Exception e) {
-        	e.printStackTrace();
+            e.printStackTrace();
             error("[SE-3] Can not download file: " + img + " | " + e.getMessage() + " | " + pageId);
         }
     }

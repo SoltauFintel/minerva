@@ -61,14 +61,14 @@ public class ExportPage extends WPage {
             combobox("formats", formats, us.getFormat(), false);
             
             List<String> exportTemplateSetNames = new ExportTemplatesService(workspace).loadAll()
-            		.stream().map(i -> i.getName()).collect(Collectors.toList());
+                    .stream().map(i -> i.getName()).collect(Collectors.toList());
             if (exportTemplateSetNames.isEmpty()) {
-            	throw new UserMessage("no-export-template-sets", user);
+                throw new UserMessage("no-export-template-sets", user);
             }
-			combobox("templates", exportTemplateSetNames, us.getTemplate(), false);
-			put("withCover", us.isCover());
-			put("withTOC", us.isToc());
-			put("withChapters", us.isChapters());
+            combobox("templates", exportTemplateSetNames, us.getTemplate(), false);
+            put("withCover", us.isCover());
+            put("withTOC", us.isToc());
+            put("withChapters", us.isChapters());
         }
     }
 
@@ -96,11 +96,11 @@ public class ExportPage extends WPage {
         user.saveExportSettings(item, customer, lang, format, template, withCover, withTOC, withChapters);
         
         String q = "/export?lang=" + u(lang.toLowerCase())
-        			+ "&customer=" + u(customer.toLowerCase())
-        			+ "&template=" + u(templateName2Id(template))
-        			+ "&o=" + (withCover ? "c" : "") + (withTOC ? "i" : "") + (withChapters ? "k" : "");
+                    + "&customer=" + u(customer.toLowerCase())
+                    + "&template=" + u(templateName2Id(template))
+                    + "&o=" + (withCover ? "c" : "") + (withTOC ? "i" : "") + (withChapters ? "k" : "");
         if ("PDF".equals(format)) {
-        	q += "&w=pdf";
+            q += "&w=pdf";
         }
         if (!StringService.isNullOrEmpty(seite)) {
             q += "&seite=" + u(seite);
@@ -116,11 +116,11 @@ public class ExportPage extends WPage {
     }
 
     private String templateName2Id(String name) {
-    	for (ExportTemplateSet template : new ExportTemplatesService(workspace).loadAll()) {
-			if (template.getName().equals(name)) {
-				return template.getId();
-			}
-		}
-    	throw new RuntimeException("Template with name \"" + name + "\" does not exist!");
-	}
+        for (ExportTemplateSet template : new ExportTemplatesService(workspace).loadAll()) {
+            if (template.getName().equals(name)) {
+                return template.getId();
+            }
+        }
+        throw new RuntimeException("Template with name \"" + name + "\" does not exist!");
+    }
 }

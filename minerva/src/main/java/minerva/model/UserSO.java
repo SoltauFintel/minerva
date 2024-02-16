@@ -168,17 +168,17 @@ public class UserSO {
         save();
     }
 
-	public void toggleGuiLanguage() {
-		load();
-		String lang = user.getGuiLanguage();
-		if ("en".equals(lang)) {
-			lang = "de";
-		} else {
-			lang = "en";
-		}
-		user.setGuiLanguage(lang);
-		save();
-	}
+    public void toggleGuiLanguage() {
+        load();
+        String lang = user.getGuiLanguage();
+        if ("en".equals(lang)) {
+            lang = "de";
+        } else {
+            lang = "en";
+        }
+        user.setGuiLanguage(lang);
+        save();
+    }
 
     public void toggleFavorite(String id) {
         load();
@@ -218,7 +218,7 @@ public class UserSO {
             user.setExport(new ExportUserSettings());
         }
         ExportUserSettings ex = user.getExport();
-		ex.setItem(item);
+        ex.setItem(item);
         ex.setCustomer(customer);
         ex.setLang(lang);
         ex.setFormat(format);
@@ -236,7 +236,7 @@ public class UserSO {
     }
 
     public void onlyWithExportRight() {
-    	if (!UserAccess.hasExportRight(user.getLogin())) {
+        if (!UserAccess.hasExportRight(user.getLogin())) {
             throw new RuntimeException("User " + user.getLogin() + " has no export right!");
         }
     }
@@ -334,9 +334,9 @@ public class UserSO {
     }
 
     public List<CommentWithSeite> getComments(String branch, String login) {
-    	if (StringService.isNullOrEmpty(login)) {
-    		login = user.getLogin();
-    	}
+        if (StringService.isNullOrEmpty(login)) {
+            login = user.getLogin();
+        }
         List<CommentWithSeite> cwsList = new ArrayList<>();
         for (BookSO book : getWorkspace(branch).getBooks()) {
             for (CommentWithSeite n : book.getSeiten().getAllComments()) {

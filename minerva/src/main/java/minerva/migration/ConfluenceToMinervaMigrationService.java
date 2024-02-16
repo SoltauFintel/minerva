@@ -130,8 +130,8 @@ public class ConfluenceToMinervaMigrationService {
     }
 
     private String loadHtmlFile(String id) {
-		return FileService.loadPlainTextFile(new File(htmlSourceFolder, id + ".html"));
-	}
+        return FileService.loadPlainTextFile(new File(htmlSourceFolder, id + ".html"));
+    }
 
     private void migrateBook(ConfluencePage sp, int position) {
         Map<String, String> files = new HashMap<>();
@@ -243,7 +243,7 @@ public class ConfluenceToMinervaMigrationService {
         }
     }
 
-	private String removeUnderscores(String title) {
+    private String removeUnderscores(String title) {
         if (title == null) {
             return "//null";
         }
@@ -302,14 +302,14 @@ public class ConfluenceToMinervaMigrationService {
         for (String img : imgList) {
             int o = img.indexOf("/");
             if (o < 0) {
-            	Logger.error("'/' unexpected not found in image filename: " + img + " | skip | " + tp.getTitle());
-            	imgErrors++;
-            	continue;
+                Logger.error("'/' unexpected not found in image filename: " + img + " | skip | " + tp.getTitle());
+                imgErrors++;
+                continue;
             }
             int oo = img.indexOf("/", o + 1);
             if (oo < 0) {
                 Logger.error("2nd '/' unexpected not found in image filename: " + img + " | skip | " + tp.getTitle());
-            	imgErrors++;
+                imgErrors++;
                 continue;
             }
             String dnSource = img.substring(0, o) + img.substring(oo);
@@ -323,11 +323,11 @@ public class ConfluenceToMinervaMigrationService {
                     files.put(targetImg.getAbsolutePath().replace("\\", "/"), DirAccess.IMAGE);
                 } else {
                     Logger.error("src img ('" + img + "') not found: " + srcImg.toString());
-                	imgErrors++;
+                    imgErrors++;
                 }
             } catch (IOException e) {
                 Logger.error(e, "copy error for file: " + img);
-            	imgErrors++;
+                imgErrors++;
             }
         }
         return html;
@@ -477,70 +477,70 @@ public class ConfluenceToMinervaMigrationService {
     }
 
     private void migrateNotes(String deId, String enId, SeiteSO seite, Map<String, String> files) {
-    	ConfluenceComments deNotes = loadNotes(deId);
-    	ConfluenceComments enNotes = loadNotes(enId);
-    	if (deId.equals(enId)) {
-    		throw new RuntimeException("deId is = enId! " + deId);
-    	}
-    	boolean de_en_Hinweis = !deNotes.getComments().isEmpty() && !enNotes.getComments().isEmpty();
-    	migrateNotes2("deutsche",  deNotes, de_en_Hinweis, seite, files);
-    	migrateNotes2("englische", enNotes, de_en_Hinweis, seite, files);
+        ConfluenceComments deNotes = loadNotes(deId);
+        ConfluenceComments enNotes = loadNotes(enId);
+        if (deId.equals(enId)) {
+            throw new RuntimeException("deId is = enId! " + deId);
+        }
+        boolean de_en_Hinweis = !deNotes.getComments().isEmpty() && !enNotes.getComments().isEmpty();
+        migrateNotes2("deutsche",  deNotes, de_en_Hinweis, seite, files);
+        migrateNotes2("englische", enNotes, de_en_Hinweis, seite, files);
     }
     
-	private ConfluenceComments loadNotes(String id) {
-		ConfluenceComments ret = null;
-		if (!StringService.isNullOrEmpty(id)) {
-			File file = new File(sourceFolder, "html/notes/" + id + ".json");
-			if (file.isFile()) {
-				ret = FileService.loadJsonFile(file, ConfluenceComments.class);
-			}
-		}
-		if (ret == null) {
-			ret = new ConfluenceComments();
-		}
-		if (ret.getComments() == null) {
-			ret.setComments(new ArrayList<>());
-		}
-		return ret;
-	}
-	
-	private void migrateNotes2(String lang, ConfluenceComments cnotes, boolean de_en_Hinweis, SeiteSO seite, Map<String, String> files) {
-		int n = cnotes.getComments().size();
-		if (n > 0) {
-// TO-DO missing comments migration	    
-//			NotesSO notesSO = seite.notes();
-//			migrateNotes3(lang, cnotes.getComments(), null, de_en_Hinweis, notesSO, files);
-		    
-			/* Zwischennotiz
-			Note mnote = notesSO.createNote(null,
-					"// Die Kommentare oberhalb stammen aus dem Altsystem und beziehen sich auf die " + lang + " Seite.",
-					"Minerva", notesSO.now(), new ArrayList<>());
-    		notesSO.saveTo(mnote, files);*/
-		}
-	}
-	
+    private ConfluenceComments loadNotes(String id) {
+        ConfluenceComments ret = null;
+        if (!StringService.isNullOrEmpty(id)) {
+            File file = new File(sourceFolder, "html/notes/" + id + ".json");
+            if (file.isFile()) {
+                ret = FileService.loadJsonFile(file, ConfluenceComments.class);
+            }
+        }
+        if (ret == null) {
+            ret = new ConfluenceComments();
+        }
+        if (ret.getComments() == null) {
+            ret.setComments(new ArrayList<>());
+        }
+        return ret;
+    }
+    
+    private void migrateNotes2(String lang, ConfluenceComments cnotes, boolean de_en_Hinweis, SeiteSO seite, Map<String, String> files) {
+        int n = cnotes.getComments().size();
+        if (n > 0) {
+// TO-DO missing comments migration        
+//            NotesSO notesSO = seite.notes();
+//            migrateNotes3(lang, cnotes.getComments(), null, de_en_Hinweis, notesSO, files);
+            
+            /* Zwischennotiz
+            Note mnote = notesSO.createNote(null,
+                    "// Die Kommentare oberhalb stammen aus dem Altsystem und beziehen sich auf die " + lang + " Seite.",
+                    "Minerva", notesSO.now(), new ArrayList<>());
+            notesSO.saveTo(mnote, files);*/
+        }
+    }
+    
 /* TO-DO missing comments migration
     private void migrateNotes3(String lang, List<ConfluenceComment> cnotes, Note mnote_parent, boolean de_en_Hinweis,
-			NotesSO notesSO, Map<String, String> files) {
-    	for (ConfluenceComment cnote : cnotes) {
-    		String text = cnote.getPlainText(); // must be called before getPersons()
-			Note mnote = notesSO.createNote(mnote_parent,
-					(de_en_Hinweis ? "(Diese Notiz bezieht sich auf die " + lang + " Seite.)\n" : "") +
-					text,
-					realName2Login(cnote.getAuthor()),
-					transformDate(cnote.getCreated()),
-					cnote.getPersons().stream().map(p -> realName2Login(p)).collect(Collectors.toList()));
-    		notesSO.saveTo(mnote, files);
-    		migrateNotes3(lang, cnote.getComments(), mnote, de_en_Hinweis, notesSO, files); // recursive
-		}
-	}
-	
-	private String realName2Login(String realname) {
-		String login = UserAccess.realName2Login(realname);
-		return login == null ? realname : login;
-	}
+            NotesSO notesSO, Map<String, String> files) {
+        for (ConfluenceComment cnote : cnotes) {
+            String text = cnote.getPlainText(); // must be called before getPersons()
+            Note mnote = notesSO.createNote(mnote_parent,
+                    (de_en_Hinweis ? "(Diese Notiz bezieht sich auf die " + lang + " Seite.)\n" : "") +
+                    text,
+                    realName2Login(cnote.getAuthor()),
+                    transformDate(cnote.getCreated()),
+                    cnote.getPersons().stream().map(p -> realName2Login(p)).collect(Collectors.toList()));
+            notesSO.saveTo(mnote, files);
+            migrateNotes3(lang, cnote.getComments(), mnote, de_en_Hinweis, notesSO, files); // recursive
+        }
+    }
+    
+    private String realName2Login(String realname) {
+        String login = UserAccess.realName2Login(realname);
+        return login == null ? realname : login;
+    }
 
-	private String transformDate(String date) { // 2022-10-05T14:10:32 -> 2022-10-05 14:10
-		return date.substring(0, 10) + " " + date.substring(11, 16);
-	}*/
+    private String transformDate(String date) { // 2022-10-05T14:10:32 -> 2022-10-05 14:10
+        return date.substring(0, 10) + " " + date.substring(11, 16);
+    }*/
 }

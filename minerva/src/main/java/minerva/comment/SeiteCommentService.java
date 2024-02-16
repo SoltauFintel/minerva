@@ -13,11 +13,11 @@ public class SeiteCommentService extends CommonCommentService {
     private SeiteSO seite;
     
     public SeiteCommentService(Context ctx) {
-    	super(ctx);
+        super(ctx);
     }
     
-	@Override
-	protected void init(WorkspaceSO workspace, String bookFolder, String id) {
+    @Override
+    protected void init(WorkspaceSO workspace, String bookFolder, String id) {
         seite = workspace.getBooks().byFolder(bookFolder).seiteById(id);
         title = seite.getTitle();
         dir = calcDir(seite);
@@ -26,25 +26,25 @@ public class SeiteCommentService extends CommonCommentService {
         key = ":" + branch + ":" + bookFolder + ":" + id + ":comment";
         parentEntityPath = "/s/" + bbi;
         commentsPagePath = "/" + getPathPrefix() + "/" + bbi + "/comments";
-	}
-	
+    }
+    
     public static String calcDir(SeiteSO seite) {
         return seite.getBook().getFolder() + "/" + FOLDER + "/" + seite.getId();
     }
 
-	@Override
-	protected CommitMessage getSaveCommitMessage(String commitMessage) {
-		return new CommitMessage(seite, commitMessage);
-	}
+    @Override
+    protected CommitMessage getSaveCommitMessage(String commitMessage) {
+        return new CommitMessage(seite, commitMessage);
+    }
     
     @Override
     protected CommitMessage getDeleteCommitMessage() {
-    	return new CommitMessage(seite, "comment deleted");
+        return new CommitMessage(seite, "comment deleted");
     }
 
     @Override
     protected String getPathPrefix() {
-    	return "sc";
+        return "sc";
     }
     
     @Override

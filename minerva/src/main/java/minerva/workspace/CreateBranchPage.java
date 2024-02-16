@@ -31,12 +31,12 @@ public class CreateBranchPage extends UPage {
             user.getWorkspace(branch).createBranch(newBranch, null);
             WorkspaceSO newWS = user.getWorkspaces().addWorkspace(newBranch, user);
             
-			if (newWS.getBooks().isEmpty()) {
-				ctx.redirect("/w/" + esc(newBranch) + "/menu");
-			} else {
-				// show new branch
-				ctx.redirect("/b/" + esc(newBranch) + "/" + newWS.getBooks().get(0).getBook().getFolder());
-			}
+            if (newWS.getBooks().isEmpty()) {
+                ctx.redirect("/w/" + esc(newBranch) + "/menu");
+            } else {
+                // show new branch
+                ctx.redirect("/b/" + esc(newBranch) + "/" + newWS.getBooks().get(0).getBook().getFolder());
+            }
         } else {
             header(n("createBranch"));
             put("branch", esc(branch));

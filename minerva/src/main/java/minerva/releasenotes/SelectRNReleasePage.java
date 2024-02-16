@@ -18,33 +18,33 @@ import minerva.confluence.ConfluencePage2;
 public class SelectRNReleasePage extends BPage {
     private static final String ALL = "!all";
     
-	@Override
-	protected void execute() {
+    @Override
+    protected void execute() {
         if (!MinervaWebapp.factory().getConfig().isDevelopment()) {
             MinervaWebapp.factory().gitlabOnlyPage();
         }
-		String spaceKey = ctx.queryParam("s");
-		if (StringService.isNullOrEmpty(spaceKey)) {
-			throw new RuntimeException("Missing parameter");
-		}
-		ReleaseNotesConfig config = MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs().stream()
-		        .filter(c -> c.getSpaceKey().equals(spaceKey)).findFirst().orElse(null);
-		if (config == null) {
-		    throw new RuntimeException("Unknown space key: " + esc(spaceKey));
-		}
-		String rootTitle = config.getRootTitle();
-		String language = config.getLanguage();
-		if (isPOST()) {
-			importRelease(config, spaceKey, rootTitle, language);
-		} else {
-			displayFormular(config, spaceKey, rootTitle, language);
-		}
-	}
+        String spaceKey = ctx.queryParam("s");
+        if (StringService.isNullOrEmpty(spaceKey)) {
+            throw new RuntimeException("Missing parameter");
+        }
+        ReleaseNotesConfig config = MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs().stream()
+                .filter(c -> c.getSpaceKey().equals(spaceKey)).findFirst().orElse(null);
+        if (config == null) {
+            throw new RuntimeException("Unknown space key: " + esc(spaceKey));
+        }
+        String rootTitle = config.getRootTitle();
+        String language = config.getLanguage();
+        if (isPOST()) {
+            importRelease(config, spaceKey, rootTitle, language);
+        } else {
+            displayFormular(config, spaceKey, rootTitle, language);
+        }
+    }
 
     private void displayFormular(ReleaseNotesConfig config, String spaceKey, String rootTitle, String lang) {
         ConfluencePage2 rnpage = new ReleaseNotesService(null).loadReleaseNotesPage(spaceKey, rootTitle);
         if (rnpage == null) {
-        	throw new UserMessage("pageDoesntExist", user, s -> s.replace("$t", rootTitle));
+            throw new UserMessage("pageDoesntExist", user, s -> s.replace("$t", rootTitle));
         }
 
         List<IdAndLabel> releases = rnpage.getSubpages().stream().map(i -> new IdAndLabel() {
@@ -90,11 +90,11 @@ public class SelectRNReleasePage extends BPage {
             ctx.redirect(booklink);
         } else {
             String msg = "Importing release notes: " + spaceKey + " > " + release;
-        	Logger.info(msg);
-        	user.log(msg);
-        	String seiteId = service(config, release).importRelease();
-        	user.getUser().setPageLanguage(lang);
-        	ctx.redirect(seiteId == null ? booklink : (booklink.replace("/b/", "/s/") + "/" + seiteId));
+            Logger.info(msg);
+            user.log(msg);
+            String seiteId = service(config, release).importRelease();
+            user.getUser().setPageLanguage(lang);
+            ctx.redirect(seiteId == null ? booklink : (booklink.replace("/b/", "/s/") + "/" + seiteId));
         }
     }
     
