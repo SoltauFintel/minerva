@@ -291,3 +291,4 @@ savedCommentContent=Für diesen Kommentar gibt es noch ungespeicherten Inhalt. B
 checkAllLinks=Alle Links überprüfen
 checkLink=Der Link zu "$h" funktioniert nicht und befindet sich auf der Seite <a href="$v">$t</a> mit dem Linktitel "$l".
 hasAbsoluteUrlImage=Seite enthält eine http-Grafik. Bitte korrigieren!
+enterTitle=Bitte Titel eingeben!

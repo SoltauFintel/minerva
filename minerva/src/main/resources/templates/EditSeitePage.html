@@ -63,8 +63,7 @@
                     <input type="text" id="comment" placeholder="{{N.whatChanged}}"
                         style="width: 300px; display: inline;" class="form-control">
                     
-                    <button id="submit" type="submit" class="btn btn-primary br" style="margin-left: 1em;"
-                        onclick="document.getElementById('s1').style='';" title="{{ctrlS}}">
+                    <button id="submit" type="submit" class="btn btn-primary br" style="margin-left: 1em;" onclick="return _onSubmit();" title="{{ctrlS}}">
                         {{N.save}} <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
                     
                     <a href="{{viewlink}}/cancel" class="btn btn-default">{{N.cancel}}</a>
@@ -76,6 +75,16 @@
 
 <script>
 {{include: editor}}
+
+function _onSubmit() {
+    {{each L in languages}}
+        if (document.getElementById('titel{{L.LANG}}').value.trim() == '') {
+            alert('{{N.enterTitle}} ({{L.LANG}})');
+            return false;
+        }
+    {{/each}}
+    document.getElementById('s1').style = ''
+}
 
 $('#langTabs a').click(function (e) {
     e.preventDefault()

@@ -291,3 +291,4 @@ savedCommentContent=There is unsaved content for this comment. Please start edit
 checkAllLinks=Check all links
 checkLink=Link to "$h" is broken and can be found on page <a href="$v">$t</a> with link label "$l".
 hasAbsoluteUrlImage=Page contains a http image! Please fix that!
+enterTitle=Please enter title!
