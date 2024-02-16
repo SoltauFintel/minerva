@@ -292,3 +292,5 @@ checkAllLinks=Check all links
 checkLink=Link to "$h" is broken and can be found on page <a href="$v">$t</a> with link label "$l".
 hasAbsoluteUrlImage=Page contains a http image! Please fix that!
 enterTitle=Please enter title!
+tasksCreatedByMe=Tasks created by me
+tasksCreatedByMeInfo=All tasks I have created that are assigned to someone else and have not yet been completed are listed here.

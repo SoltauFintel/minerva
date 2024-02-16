@@ -35,4 +35,13 @@ public class TaskService {
     public static void update(UserSO user) {
         openMasterTasks = new TaskService().getNumberOfTasks(user);
     }
+
+    public List<Task> getTasksCreatedByMe(UserSO user, String branch, String login) {
+        List<Task> tasks = new ArrayList<>();
+        for (TasksSupplier tasksSupplier : tasksSuppliers) {
+            tasks.addAll(tasksSupplier.getTasksCreatedByMe(user, branch, login));
+        }
+        tasks.sort((a, b) -> b.getDateTime().compareTo(a.getDateTime()));
+        return tasks;
+    }
 }

@@ -29,6 +29,11 @@ public class CommentTask implements Task {
     public String getLogin() {
         return comment.getUser();
     }
+    
+    @Override
+    public String getPerson() {
+        return comment.getPerson() == null ? "" : comment.getPerson();
+    }
 
     @Override
     public String getDateTime() {

@@ -1,6 +1,4 @@
-{{master: master_jqueryoben}}
-
-<script src="/js/intercooler-1.2.3.min.js"></script>
+{{master: master}}
 
 <div class="row">
     <div class="col-lg-12">
@@ -9,9 +7,8 @@
         <p>
             Branch: {{branch}}
             | {{N.user}}: {{login}}
-            | {{N.anzahl}}: <span class="label {{if hasTasks}}label-danger{{else}}label-success{{/if}}">{{n}}</span>
-            {{if hasWeitere}}(+{{weitere}}){{/if}}
-            | <a href="/w/{{branch}}/tasks-created-by-me">{{N.tasksCreatedByMe}}
+            | {{N.anzahl}}: {{n}}
+            | <a href="/w/{{branch}}/my-tasks">{{N.myTasks}}</a>
         </p>
 
         {{each n in tasks}}
@@ -25,18 +22,12 @@
                     <div style="max-height: 24mm; overflow-y: auto;">
                         {{n.completeText}}
                     </div>
-                    {{include: taskbuttons}}
+                    <a href="{{n.link}}" class="btn btn-primary btn-sm br" style="margin-top: 4px;">{{n.viewTask}}</a>
                 </div>
                 
-                <span style="font-size: 8pt; color: #999; margin-left: 3em;">
-                    {{n.date}} &ndash;
-                    <span{{if n.me}} class="commentByMe"{{/if}}>{{n.user}}</span>
-                </span>
+                <span style="font-size: 8pt; color: #999; margin-left: 3em;">{{n.date}} &ndash; {{N.zustaendig}}: {{n.person}}</span>
             </div>
         {{/each}}
-        
-        {{if hasHiddenTasks}}
-            <p class="mt3"><a href="{{showHideLink}}" class="btn btn-default">{{showHideText}}</a></p>
-        {{/if}}
+        <p class="mt2">{{N.tasksCreatedByMeInfo}}</p>
     </div>
 </div>

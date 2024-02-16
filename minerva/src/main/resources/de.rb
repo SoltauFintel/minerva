@@ -292,3 +292,5 @@ checkAllLinks=Alle Links überprüfen
 checkLink=Der Link zu "$h" funktioniert nicht und befindet sich auf der Seite <a href="$v">$t</a> mit dem Linktitel "$l".
 hasAbsoluteUrlImage=Seite enthält eine http-Grafik. Bitte korrigieren!
 enterTitle=Bitte Titel eingeben!
+tasksCreatedByMe=Von mir erstellte Aufgaben
+tasksCreatedByMeInfo=Hier werden alle von mir erstellte Aufgaben gelistet, die jemand anderem zugewiesen sind und noch nicht erledigt sind.

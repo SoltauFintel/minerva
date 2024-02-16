@@ -6,6 +6,8 @@ public interface Task {
     
     String getLogin();
     
+    String getPerson();
+    
     String getDateTime();
     
     String getText();

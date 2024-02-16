@@ -15,4 +15,6 @@ public interface TasksSupplier {
      * @return tasks of given branch and given user-or-login
      */
     List<Task> getTasks(UserSO user, String branch, String login);
+
+    List<Task> getTasksCreatedByMe(UserSO user, String branch, String login);
 }

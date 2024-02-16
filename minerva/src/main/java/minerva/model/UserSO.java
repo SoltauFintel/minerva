@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import org.pmw.tinylog.Logger;
 
@@ -333,21 +334,37 @@ public class UserSO {
         }
     }
 
-    public List<CommentWithSeite> getComments(String branch, String login) {
+    public List<CommentWithSeite> getUndoneCommentsToBeCompletedByMe(String branch, String login) {
         if (StringService.isNullOrEmpty(login)) {
             login = user.getLogin();
         }
+        final String x = login;
+        return comments(branch, login, cws -> !cws.getComment().isDone() && x.equals(cws.getComment().getPerson()));
+    }
+
+    public List<CommentWithSeite> getUndoneCommentsCreatedByMe(String branch, String login) {
+        if (StringService.isNullOrEmpty(login)) {
+            login = user.getLogin();
+        }
+        final String x = login;
+        return comments(branch, login, cws -> !cws.getComment().isDone() // undone
+                && !StringService.isNullOrEmpty(cws.getComment().getPerson()) // has person
+                && !x.equals(cws.getComment().getPerson()) // not for myself
+                && x.equals(cws.getComment().getUser())); // created by me
+    }
+
+    private List<CommentWithSeite> comments(String branch, String login, Predicate<CommentWithSeite> filter) {
         List<CommentWithSeite> cwsList = new ArrayList<>();
         for (BookSO book : getWorkspace(branch).getBooks()) {
             for (CommentWithSeite n : book.getSeiten().getAllComments()) {
-                if (!n.getComment().isDone() && login.equals(n.getComment().getPerson())) {
+                if (filter.test(n)) {
                     cwsList.add(n);
                 }
             }
         }
         return cwsList;
     }
-    
+
     public void activateDelayedPush(String branch) {
         load();
         if (!user.getDelayedPush().contains(branch)) {

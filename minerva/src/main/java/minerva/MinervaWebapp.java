@@ -102,6 +102,7 @@ import minerva.subscription.PushDataAction;
 import minerva.subscription.SubscribeAction;
 import minerva.task.MyTasksPage;
 import minerva.task.TaskPrioAction;
+import minerva.task.TasksCreatedByMePage;
 import minerva.user.AddUserPage;
 import minerva.user.DeleteUserAction;
 import minerva.user.EditUserPage;
@@ -146,6 +147,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/delete", DeleteWorkspacePage.class);
         get("/w/:branch/my-tasks/:id", TaskPrioAction.class);
         get("/w/:branch/my-tasks", MyTasksPage.class);
+        get("/w/:branch/tasks-created-by-me", TasksCreatedByMePage.class);
         form("/create-workspace", AddWorkspacePage.class);
         get("/w/:branch/help-keys", AllHelpKeysPage.class);
         get("/w/:branch/history", WorkspaceHistoryPage.class);
