@@ -23,6 +23,7 @@ public class WorkspacesSO extends MList<WorkspaceSO> {
         this.userFolder = userFolder;
         DirAccess dao = user.dao();
         List<String> workspaceFolders = dao.getAllFolders(userFolder);
+        workspaceFolders.remove(JournalSO.FOLDER);
         if (workspaceFolders.isEmpty() || !workspaceFolders.contains("master")) {
             workspaceFolders.add(0, "master");
         }

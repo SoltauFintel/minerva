@@ -20,6 +20,7 @@ import minerva.base.NlsString;
 
 public class JournalSO {
     private static final String handle = "journal";
+    public static final String FOLDER = "_journal";
     private final UserSO user;
     
     public JournalSO(UserSO user) {
@@ -29,7 +30,7 @@ public class JournalSO {
     public void save(String branch, String id, NlsString title, NlsString content) {
         synchronized (handle) {
             String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HHmmss"));
-            File file = new File(user.getUserFolder() + "/journal/" + branch + "/" + now + "_" + id + ".json");
+            File file = new File(user.getUserFolder() + "/" + FOLDER + "/" + branch + "/" + now + "_" + id + ".json");
             Map<String, String> data = new HashMap<>();
             if (title != null) {
                 title.putTo("title_", data);
@@ -47,9 +48,9 @@ public class JournalSO {
         File[] files = new File(MinervaWebapp.factory().getConfig().getWorkspacesFolder()).listFiles();
         if (files != null) {
             for (File userFolder : files) {
-                File journalDir = new File(userFolder, "journal");
+                File journalDir = new File(userFolder, FOLDER);
                 if (journalDir.isDirectory()) {
-                    ret += processBranchDirs(journalDir, now);
+                    ret += processBranchDirs(journalDir, now); // under journal folder are branch dirs
                 }
             }
         }
