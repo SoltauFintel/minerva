@@ -16,28 +16,35 @@ public class MoveSeitePage extends SPage {
         header(n("movePage"));
         put("pageTitle", esc(seite.getTitle()));
 
+        boolean topLevelPage = seite.getSeite().getParentId().equals(SeiteSO.ROOT_ID);
         StringBuilder gliederung = new StringBuilder();
         gliederung.append("<ul>");
-        book(book, viewlink + "/move-ack?parentid=root", gliederung);
+        book(book, topLevelPage, viewlink + "/move-ack?parentid=root", gliederung);
         
         fillSeiten(branch, bookFolder, book.getSeiten(), user.getGuiLanguage(), gliederung, false);
         
         for (BookSO otherBook : book.getWorkspace().getBooks()) {
             String bf = otherBook.getBook().getFolder();
             if (!bf.equals(bookFolder)) {
-                book(otherBook, viewlink + "/move-ack?folder=" + Escaper.urlEncode(bf, ""), gliederung);
+                book(otherBook, false, viewlink + "/move-ack?folder=" + Escaper.urlEncode(bf, ""), gliederung);
             }
         }
         gliederung.append("</ul>");
         put("gliederung", gliederung.toString());
     }
     
-    private void book(BookSO book, String href, StringBuilder gliederung) {
-        gliederung.append("<li class=\"mt1\"><i class=\"fa fa-book greenbook\"></i> <a class=\"movelink\" href=\"");
-        gliederung.append(href);
-        gliederung.append("\">");
+    private void book(BookSO book, boolean topLevelPage, String href, StringBuilder gliederung) {
+        gliederung.append("<li class=\"mt1\"><i class=\"fa fa-book greenbook\"></i> ");
+        if (!topLevelPage) {
+            gliederung.append("<a class=\"movelink\" href=\"");
+            gliederung.append(href);
+            gliederung.append("\">");
+        }
         gliederung.append(esc(book.getTitle()));
-        gliederung.append("</a></li>");
+        if (!topLevelPage) {
+            gliederung.append("</a>");
+        }
+        gliederung.append("</li>");
     }
 
     private void fillSeiten(String branch, String bookFolder, SeitenSO seiten, String lang,
