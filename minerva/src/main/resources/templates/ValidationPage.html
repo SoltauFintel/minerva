@@ -6,7 +6,7 @@
         
         {{each h in hauptliste}}
             {{if h.hasEntries}}
-                <h2>{{h.lang}}</h2>
+                <h2>{{N.validation}}: {{h.lang}}</h2>
                 
                 <ul>
                     {{each s in h.seiten}}
@@ -26,5 +26,18 @@
         
         <p>{{N.nMessages}}: {{nMessages}} 
         <br>{{N.nPages}}: {{nPages}}</p>
+        
+        <hr/>
+
+        {{each h in hauptliste}}
+            {{if h.hasLinks}}
+                <h2>{{N.externalLinks}}: {{h.lang}}</h2>
+                <ul>
+                    {{each l in h.links}}
+                        <li><a href="{{l.pagelink}}">{{l.pagetitle}}</a><ul><li><a href="{{l.href}}" target="_blank">{{l.href}}</a> "{{l.title}}"</li></ul></li>
+                    {{/each}}
+                </ul>
+            {{/if}}
+        {{/each}}
     </div>
 </div>

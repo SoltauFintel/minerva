@@ -294,3 +294,5 @@ hasAbsoluteUrlImage=Seite enthält eine http-Grafik. Bitte korrigieren!
 enterTitle=Bitte Titel eingeben!
 tasksCreatedByMe=Von mir erstellte Aufgaben
 tasksCreatedByMeInfo=Hier werden alle von mir erstellte Aufgaben gelistet, die jemand anderem zugewiesen sind und noch nicht erledigt sind.
+validation=Validierung
+externalLinks=Externe Links
