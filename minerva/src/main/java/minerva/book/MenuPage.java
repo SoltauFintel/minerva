@@ -57,7 +57,7 @@ public class MenuPage extends WPage {
             menu(list, "workspaceHistory", "fa-clock-o", "/w/:branch/history");
         }
         if (booksOk) {
-            menu(list, "tagCloud", "fa-cloud", "/w/:branch/tag-cloud?m=n");
+            menu(list, "tagCloud", "fa-cloud", "/w/:branch/tag-cloud");
         }
         menu(list, "allHelpKeys", "fa-question-circle", "/w/:branch/help-keys");
         if (fac.isCustomerVersion()) {

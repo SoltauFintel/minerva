@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.TreeSet;
 
 import minerva.base.StringService;
 
@@ -33,8 +33,8 @@ public class Exclusions {
         }
     }
     
-    public Set<String> getCustomers() {
-        return customers.keySet();
+    public TreeSet<String> getCustomers() {
+        return new TreeSet<>(customers.keySet());
     }
     
     public List<String> getTags(String customer) {
