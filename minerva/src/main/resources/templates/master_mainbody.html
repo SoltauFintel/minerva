@@ -89,7 +89,10 @@
                 </ul>
                 <form action="/w/{{branch}}/search" class="navbar-form navbar-right" method="post">
                     <div class="input-group">
-                        <input type="text" class="form-control" style="width: 180px;" id="q" name="q" value="{{q}}" placeholder="{{searchPlaceholder}}"/>
+                        
+                        {{-- id="q" muss 1. Attribut sein! --}}
+                        <input id="q" name="q" value="{{q}}" type="text" class="form-control" style="width: 180px;" placeholder="{{searchPlaceholder}}"/>
+                        
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                         </span>
