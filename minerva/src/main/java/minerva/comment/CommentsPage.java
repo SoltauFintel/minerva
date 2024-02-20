@@ -6,7 +6,9 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Page;
+import minerva.base.NLS;
 import minerva.base.StringService;
+import minerva.user.UPage;
 import minerva.user.UserAccess;
 
 public class CommentsPage extends Page {
@@ -30,6 +32,8 @@ public class CommentsPage extends Page {
         put("oneOpenComment", openComments == 1);
 
         sv.initModel(model);
+        put("title", NLS.get(sv.getLanguage(), "comments") + " - " + model.get("parentEntityTitle").toString() // after initModel!
+                + UPage.TITLE_POSTFIX);
     }
 
     private String commentsHTML(List<Comment> comments, CommentService sv, int ebene, DataList allCommentsIdList) {

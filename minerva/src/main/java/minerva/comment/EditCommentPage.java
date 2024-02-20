@@ -2,8 +2,10 @@ package minerva.comment;
 
 import github.soltaufintel.amalia.base.IdGenerator;
 import github.soltaufintel.amalia.web.action.Page;
+import minerva.base.NLS;
 import minerva.base.StringService;
 import minerva.postcontents.PostContentsService;
+import minerva.user.UPage;
 import minerva.user.UserAccess;
 
 /**
@@ -60,6 +62,8 @@ public class EditCommentPage extends Page {
         put("onloadExtra", "");
         // <<
         sv.initModel(model);
+        put("title", NLS.get(sv.getLanguage(), add ? "addComment" : "editComment") + " - " + model.get("parentEntityTitle").toString() // after initModel!
+                + UPage.TITLE_POSTFIX);
     }
     
     private void save(String id, boolean add, String parentId, CommentService sv) {
