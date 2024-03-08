@@ -10,6 +10,7 @@ import com.github.template72.data.DataMap;
 
 import minerva.MinervaWebapp;
 import minerva.model.ExclusionsSO;
+import minerva.seite.tag.TagN;
 import minerva.user.UPage;
 
 public class ExclusionsEditPage extends UPage {
@@ -48,6 +49,21 @@ public class ExclusionsEditPage extends UPage {
             DataList list2 = list("rows");
             addTableRows(ex, tags, customers, list2, true);
             addTableRows(ex, tags, customers, list2, false);
+            
+            // alle verwendeten tags finden
+            Set<String> unused = new TreeSet<>();
+            for (TagN tag : user.getWorkspace(branch).getAllTags().sortedByTag()) {
+				if (!tags.contains(tag.getTag())) {
+					unused.add(tag.getTag());
+				}
+			}
+            DataList list3 = list("unusedTags");
+            int i = 0, max = unused.size() - 1;
+            for (String tag : unused) {
+            	DataMap map3 = list3.add();
+				map3.put("tag", esc(tag));
+				map3.put("last", i++ == max);
+            }
         }
     }
 
