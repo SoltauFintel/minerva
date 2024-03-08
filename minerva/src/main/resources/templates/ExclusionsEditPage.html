@@ -67,11 +67,11 @@
                 </tr>
             {{/each}}
         </table>
-        <small>Spalten: Kunden, Reihen: <a href="/w/{{branch}}/tag-cloud">tags</a></small>
+        <small>{{N.colsCustomerRows}}: <a href="/w/{{branch}}/tag-cloud">tags</a></small>
         
-        <p>weitere tags:
+        <p class="mt2">{{N.moreTags}}:
             {{each tag in unusedTags}}
-                <a href="/w/{{branch}}/tag/{{r.tag}}">{{tag.tag}}</a>{{if not tag.last}}, {{/if}}
+                <a href="/w/{{branch}}/tag/{{tag.tag}}">{{tag.tag}}</a>{{if not tag.last}}, {{/if}}
             {{/each}}
         </p>
     </div>

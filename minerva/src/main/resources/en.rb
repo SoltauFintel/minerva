@@ -296,3 +296,5 @@ tasksCreatedByMe=Tasks created by me
 tasksCreatedByMeInfo=All tasks I have created that are assigned to someone else and have not yet been completed are listed here.
 validation=Validation
 externalLinks=External links
+moreTags=more tags
+colsCustomerRows=Columns: customers, rows

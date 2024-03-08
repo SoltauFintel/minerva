@@ -296,3 +296,5 @@ tasksCreatedByMe=Von mir erstellte Aufgaben
 tasksCreatedByMeInfo=Hier werden alle von mir erstellte Aufgaben gelistet, die jemand anderem zugewiesen sind und noch nicht erledigt sind.
 validation=Validierung
 externalLinks=Externe Links
+moreTags=weitere tags
+colsCustomerRows=Spalten: Kunden, Reihen
