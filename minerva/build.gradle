@@ -25,6 +25,7 @@ dependencies {
     implementation 'com.openhtmltopdf:openhtmltopdf-java2d:1.0.10'
     implementation 'com.openhtmltopdf:openhtmltopdf-mathml-support:1.0.10'
     implementation 'com.openhtmltopdf:openhtmltopdf-slf4j:1.0.10'
+    implementation 'com.github.gastendonk:jiracloudrestapi:0.2.0'
     
     testImplementation 'junit:junit:4.13.2'
 }
