@@ -301,4 +301,16 @@ public class MinervaConfig {
     public String getOldHelpKeysReaderJiraUrl() {
         return config.get("OldHelpKeysReader.jira-url");
     }
+    
+    public String getJiraCustomer() {
+        return config.get("jira.customer");
+    }
+    
+    public String getJiraMail() {
+        return config.get("jira.mail"); // user login
+    }
+    
+    public String getJiraToken() {
+        return config.get("jira.token");
+    }
 }

@@ -16,7 +16,7 @@ public class JiraCloudTest {
             if (rt.isRelevant()) {
                 System.out.println(rt.getKey() + " / " + rt.getTargetVersion() + " / " + rt.getPageId());
                 
-                List<ReleaseNoteTicket> releaseNoteTickets = ReleaseNoteTicket.load(jira, rt);
+                List<ReleaseNoteTicket> releaseNoteTickets = ReleaseNoteTicket.load(jira, rt.getPageId());
                 for (ReleaseNoteTicket rnt : releaseNoteTickets) {
                     System.out.println("\t" + rnt.getKey() + ": " + rnt.getRNT_de());
                     System.out.println("\t\t" + rnt.getRNS_de());

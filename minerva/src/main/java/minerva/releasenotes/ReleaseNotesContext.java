@@ -16,6 +16,7 @@ public class ReleaseNotesContext {
     private SeiteSO customerPage;
     private SeiteSO sectionPage;
     private SeiteSO resultingReleasePage;
+    private String releaseNumber;
     
     public ReleaseNotesContext(ReleaseNotesConfig config, String releaseId, BookSO book) {
         this.config = config;
@@ -81,5 +82,17 @@ public class ReleaseNotesContext {
 
     public void setResultingReleasePage(SeiteSO resultingReleasePage) {
         this.resultingReleasePage = resultingReleasePage;
+    }
+    
+    public String getPageId() {
+        return releaseId;
+    }
+
+    public String getReleaseNumber() {
+        return releaseNumber;
+    }
+
+    public void setReleaseNumber(String releaseNumber) {
+        this.releaseNumber = releaseNumber;
     }
 }
