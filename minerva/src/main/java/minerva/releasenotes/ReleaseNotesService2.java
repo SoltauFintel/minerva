@@ -84,16 +84,7 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
             StringBuilder html = ctn.contains(project) ? html1 : html2;
             getReleasePageContent2(ctn, t.getRNT(lang), t.getRNS().get(lang), t.getRND().get(lang), html);
         }
-        String ret = "";
-        if (!html1.toString().isEmpty()) {
-            ret += "<h2>" + project + "</h2>";
-            ret += html1.toString();
-        }
-        if (!html2.toString().isEmpty()) {
-            ret += "<h2>" + NLS.get(lang, "generalChanges") + "</h2>";
-            ret += html2.toString();
-        }
-        return ret;
+        return part(html1, project) + part(html2, NLS.get(lang, "generalChanges"));
     }
     
     private String getCustomerTicketNumber(ReleaseNoteTicket rnt) {
@@ -145,6 +136,13 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+    }
+    
+    private String part(StringBuilder sb, String title) {
+        if (sb.toString().isEmpty()) {
+            return "";
+        }
+        return "<h2>" + title + "</h2>" + sb.toString();
     }
     
     private JiraCloudAccess jira() {
