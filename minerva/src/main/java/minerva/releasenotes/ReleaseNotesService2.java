@@ -4,12 +4,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
+import de.xmap.jiracloud.DocField;
 import de.xmap.jiracloud.JiraCloudAccess;
 import de.xmap.jiracloud.JiraCloudAccess.IssueAccess;
 import de.xmap.jiracloud.ReleaseNoteTicket;
@@ -82,11 +82,7 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
         for (ReleaseNoteTicket t : releaseNoteTickets) {
             String ctn = getCustomerTicketNumber(t);
             StringBuilder html = ctn.contains(project) ? html1 : html2;
-            if ("de".equals(lang)) {
-                getReleasePageContent2(ctn, t.getRNT_de(), t.getRNS_de(), t.getRND_de(), t.getRND_de_images(), html);
-            } else {
-                getReleasePageContent2(ctn, t.getRNT_en(), t.getRNS_en(), t.getRND_en(), t.getRND_en_images(), html);
-            }
+            getReleasePageContent2(ctn, t.getRNT(lang), t.getRNS().get(lang), t.getRND().get(lang), html);
         }
         String ret = "";
         if (!html1.toString().isEmpty()) {
@@ -113,23 +109,31 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
         return ret == null ? rnt.getKey() : ret;
     }
     
-    private void getReleasePageContent2(String key, String rnt, String rns, String rnd, Map<String, byte[]> rnd_images,
-            StringBuilder html) {
-        html.append("<h3>" + key + ": " + rnt + "</h3>");
-        if (!"Blindtext".equals(rns)) {
-            html.append("<p>" + rns + "</p>");
-        }
-        if (!"Blindtext".equals(rnd)) {
+    private void getReleasePageContent2(String key, String rnt, DocField rns, DocField rnd, StringBuilder html) {
+        html.append("<h3>" + key + ": " + rnt.trim() + "</h3>");
+        append(rns, html);
+        append(rnd, html);
+    }
+    
+    private void append(DocField d, StringBuilder html) {
+        String text = d.getText();
+        if (d.isPlainText()) {
+            if (!"Blindtext".equals(text)) {
+                html.append("<p>");
+                html.append(text.trim());
+                html.append("</p>");
+            }
+        } else { // text is HTML
             SeiteSO seite = ctx.getResultingReleasePage();
             String seiteId = seite.getId();
-            for (Entry<String, byte[]> e : rnd_images.entrySet()) {
+            for (Entry<String, byte[]> e : d.getImages().entrySet()) {
                 String src = e.getKey();
                 String dn = "img/" + seiteId + "/" + IdGenerator.createId6() + ".png"; // .png is guessed
-                rnd = rnd.replace(src, dn);
+                text = text.replace("\"" + src + "\"", "\"" + dn + "\"");
                 seite.getImages().add(dn);
                 saveImage(dn, e.getValue());
             }
-            html.append(rnd);
+            html.append(text);
         }
     }
 
