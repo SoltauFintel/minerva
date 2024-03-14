@@ -51,7 +51,7 @@ public class SelectRNRelease2Page extends BPage {
 
                 @Override
                 public String getLabel() {
-                    return i.getTargetVersion();
+                    return "Release Notes " + i.getTargetVersion();
                 }
             }).collect(Collectors.toList());
         List<String> existingReleasePageTitles = new ReleaseNotesService2(new ReleaseNotesContext(config, null, book)).getExistingReleasePages();
