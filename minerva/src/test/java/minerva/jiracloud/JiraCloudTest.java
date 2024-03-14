@@ -18,10 +18,10 @@ public class JiraCloudTest {
                 
                 List<ReleaseNoteTicket> releaseNoteTickets = ReleaseNoteTicket.load(jira, rt.getPageId());
                 for (ReleaseNoteTicket rnt : releaseNoteTickets) {
-                    System.out.println("\t" + rnt.getKey() + ": " + rnt.getRNT_de());
-                    System.out.println("\t\t" + rnt.getRNS_de());
-                    System.out.println("\t\t" + rnt.getRND_de());
-                    System.out.println("\t\t- images: " + rnt.getRND_de_images().size());
+                    System.out.println("\t" + rnt.getKey() + ": " + rnt.getRNT("en"));
+                    System.out.println("\t\t" + rnt.getRNS().get("en").getText());
+                    System.out.println("\t\t" + rnt.getRND().get("en").getText());
+                    System.out.println("\t\t- images: " + rnt.getRND().get("en").getImages().size());
                 }
             }
         }
