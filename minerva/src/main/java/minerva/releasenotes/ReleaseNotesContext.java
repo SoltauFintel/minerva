@@ -9,7 +9,7 @@ import minerva.model.SeiteSO;
 
 public class ReleaseNotesContext {
     private final ReleaseNotesConfig config;
-    private final String releaseId;
+    private String releaseId;
     private final BookSO book;
     private final Map<String, String> files = new HashMap<>();
     private ConfluencePage2 releasePage;
@@ -17,6 +17,7 @@ public class ReleaseNotesContext {
     private SeiteSO sectionPage;
     private SeiteSO resultingReleasePage;
     private String releaseNumber;
+    private String project;
     
     public ReleaseNotesContext(ReleaseNotesConfig config, String releaseId, BookSO book) {
         this.config = config;
@@ -87,6 +88,10 @@ public class ReleaseNotesContext {
     public String getPageId() {
         return releaseId;
     }
+    
+    public void setPageId(String pageId) {
+        releaseId = pageId;
+    }
 
     public String getReleaseNumber() {
         return releaseNumber;
@@ -94,5 +99,13 @@ public class ReleaseNotesContext {
 
     public void setReleaseNumber(String releaseNumber) {
         this.releaseNumber = releaseNumber;
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
     }
 }

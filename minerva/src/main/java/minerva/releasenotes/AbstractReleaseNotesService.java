@@ -12,6 +12,10 @@ import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 
 public abstract class AbstractReleaseNotesService {
+    // Wenn Jira-server nicht mehr benutzt wird, kann diese Klasse mit ReleaseNotesService2 vereinigt werden.
+    // ReleaseNotesContext muss dann aufgeräumt werden. SelectRNCustomerPage und SelectRNReleasePage können dann weg.
+    
+    public static final String TITLE_PREFIX = "Release Notes ";
     protected final ReleaseNotesContext ctx;
     
     public AbstractReleaseNotesService(ReleaseNotesContext ctx) {

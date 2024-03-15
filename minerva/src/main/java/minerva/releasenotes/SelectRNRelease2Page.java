@@ -42,7 +42,7 @@ public class SelectRNRelease2Page extends BPage {
     }
 
     private void displayFormular(ReleaseNotesConfig config, String project, String rootTitle, String lang) {
-        List<ReleaseTicket> releaseTickets = new ReleaseNotesService2(null).loadReleaseNotesPage(project);
+        List<ReleaseTicket> releaseTickets = new ReleaseNotesService2(null).loadReleases(project);
         List<IdAndLabel> releases = releaseTickets.stream().map(i -> new IdAndLabel() {
                 @Override
                 public String getId() {
@@ -51,12 +51,12 @@ public class SelectRNRelease2Page extends BPage {
 
                 @Override
                 public String getLabel() {
-                    return "Release Notes " + i.getTargetVersion();
+                    return AbstractReleaseNotesService.TITLE_PREFIX + i.getTargetVersion();
                 }
             }).collect(Collectors.toList());
         List<String> existingReleasePageTitles = new ReleaseNotesService2(new ReleaseNotesContext(config, null, book)).getExistingReleasePages();
         releases.removeIf(title -> existingReleasePageTitles.contains(title.getLabel()));
-        /* TODO releases.add(new IdAndLabel() {
+        releases.add(new IdAndLabel() {
             @Override
             public String getId() {
                 return ALL;
@@ -66,7 +66,7 @@ public class SelectRNRelease2Page extends BPage {
             public String getLabel() {
                 return n("alleNochNichtVorhandenen");
             }
-        });*/
+        });
 
         header(n("loadReleaseNotes") + " (" + config.getCustomer() + ")");
         put("project", esc(project));
@@ -81,7 +81,7 @@ public class SelectRNRelease2Page extends BPage {
             String msg = "Importing release notes: " + project + " > all non-existing";
             Logger.info(msg);
             user.log(msg);
-            service(config, null, null).importAllNonExistingReleases();
+            service(config, null, null, project).importAllNonExistingReleases();
             user.getUser().setPageLanguage(lang);
             ctx.redirect(booklink);
         } else {
@@ -89,7 +89,7 @@ public class SelectRNRelease2Page extends BPage {
             String msg = "Importing release notes: " + project + " > " + releaseNumber + " (" + pageId + ")";
             Logger.info(msg);
             user.log(msg);
-            String seiteId = service(config, pageId, releaseNumber).importRelease();
+            String seiteId = service(config, pageId, releaseNumber, project).importRelease();
             user.getUser().setPageLanguage(lang);
             ctx.redirect(seiteId == null ? booklink : (booklink.replace("/b/", "/s/") + "/" + seiteId));
         }
@@ -97,7 +97,7 @@ public class SelectRNRelease2Page extends BPage {
     
     private String getReleaseNumber(String project, String pageId) {
         // Irgendwie doof, dass ich das nochmal laden muss. Vielleicht das besser über URL-parametern übergeben!?
-        List<ReleaseTicket> releaseTickets = new ReleaseNotesService2(null).loadReleaseNotesPage(project);
+        List<ReleaseTicket> releaseTickets = new ReleaseNotesService2(null).loadReleases(project);
         for (ReleaseTicket rt : releaseTickets) {
             if (rt.getPageId().equals(pageId)) {
                 return rt.getTargetVersion();
@@ -106,9 +106,10 @@ public class SelectRNRelease2Page extends BPage {
         throw new RuntimeException("Can't find project/pageId pair in release tickets!");
     }
     
-    private ReleaseNotesService2 service(ReleaseNotesConfig config, String pageId, String releaseNumber) {
+    private ReleaseNotesService2 service(ReleaseNotesConfig config, String pageId, String releaseNumber, String project) {
         ReleaseNotesContext c = new ReleaseNotesContext(config, pageId, book);
         c.setReleaseNumber(releaseNumber);
+        c.setProject(project);
         return new ReleaseNotesService2(c);
     }
 }

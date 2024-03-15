@@ -30,7 +30,7 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
         super(ctx);
     }
 
-    public List<ReleaseTicket> loadReleaseNotesPage(String project) {
+    public List<ReleaseTicket> loadReleases(String project) {
         // ctx is null
         return ReleaseTicket.load(jira(), project).stream()
                 .filter(rt -> rt.isRelevant())
@@ -38,8 +38,18 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
     }
 
     public void importAllNonExistingReleases() {
-        // TODO
-        throw new RuntimeException("importAllNonExistingReleases() noch nicht implementiert");
+        List<ReleaseTicket> releaseTickets = loadReleases(ctx.getProject());
+        List<String> existingReleasePageTitles = getExistingReleasePages();
+        releaseTickets.removeIf(rt -> existingReleasePageTitles.contains(TITLE_PREFIX + rt.getTargetVersion()));
+        if (releaseTickets.isEmpty()) {
+            Logger.info("importAllNonExistingReleases: No releases. Nothing to do.");
+            return;
+        }
+        for (ReleaseTicket rt : releaseTickets) {
+            ctx.setPageId(rt.getPageId());
+            ctx.setReleaseNumber(rt.getTargetVersion());
+            importRelease();
+        }
     }
 
     public String importRelease() {
@@ -62,8 +72,8 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
         SeiteSO parent = ctx.getSectionPage() == null ? ctx.getCustomerPage() : ctx.getSectionPage();
         SeiteSO releasePage = createSeite(parent);
         ctx.setResultingReleasePage(releasePage);
-        releasePage.getSeite().getTitle().setString("de", "Release Notes " + releaseNumber);
-        releasePage.getSeite().getTitle().setString("en", "Release Notes " + releaseNumber);
+        releasePage.getSeite().getTitle().setString("de", TITLE_PREFIX + releaseNumber);
+        releasePage.getSeite().getTitle().setString("en", TITLE_PREFIX + releaseNumber);
         releasePage.getContent().setString(ctx.getLang(), getReleasePageContent());
         releasePage.getSeite().setTocHeadingsLevels(2);
         releasePage.getSeite().getHelpKeys().add(releaseNumber);
