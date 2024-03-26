@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import org.pmw.tinylog.Logger;
+
 import minerva.base.StringService;
 
 public class Exclusions {
@@ -28,7 +30,11 @@ public class Exclusions {
                 exList = new ArrayList<>();
                 customers.put(line.substring(1, line.length() - 1).trim().toLowerCase(), exList);
             } else if (!line.isEmpty()) {
-                exList.add(line);
+                if (exList == null) {
+                    Logger.error("Syntax error in exclusions. Ignoring line because a [section] is missing: " + line);
+                } else {
+                    exList.add(line);
+                }
             }
         }
     }
