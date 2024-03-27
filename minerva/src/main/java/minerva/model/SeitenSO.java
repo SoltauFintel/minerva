@@ -13,8 +13,10 @@ import minerva.MinervaWebapp;
 import minerva.access.DirAccess;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.base.MList;
+import minerva.base.StringService;
 import minerva.comment.Comment;
 import minerva.comment.SeiteCommentService2;
+import minerva.config.MinervaConfig;
 import minerva.seite.Breadcrumb;
 import minerva.seite.CommentWithSeite;
 import minerva.seite.IBreadcrumbLinkBuilder;
@@ -121,7 +123,8 @@ public class SeitenSO extends MList<SeiteSO> {
             Logger.error("createSeite error: file already exists: " + neueSeite.filenameMeta());
             throw new RuntimeException("File already exists! Please try again.");
         }
-        
+
+        tagNewPage(neueSeite);
         return neueSeite.getId();
     }
 
@@ -154,6 +157,45 @@ public class SeitenSO extends MList<SeiteSO> {
             }
         }
         return max + 1;
+    }
+    
+    private void tagNewPage(SeiteSO seite) {
+        MinervaConfig config = MinervaWebapp.factory().getConfig();
+        String tag = config.getTagNewPage_tag();
+        if (!StringService.isNullOrEmpty(tag)) {
+            // tag only if user isn't specified
+            String exceptUsers = config.getTagNewPage_exceptUsers();
+            if (!StringService.isNullOrEmpty(exceptUsers)) {
+                String me = seite.getLogin();
+                for (String user : exceptUsers.split(",")) {
+                    if (user.trim().equalsIgnoreCase(me)) {
+                        Logger.debug("New page " + seite.getId() + " is not tagged with " + tag + " because user " + me
+                                + " is in exceptUsers list. (" + exceptUsers + ")");
+                        return;
+                    }
+                }
+            }
+
+            // tag only for given books
+            String books = config.getTagNewPage_books();
+            if (!StringService.isNullOrEmpty(books)) {
+                boolean found = false;
+                String folder = seite.getBook().getBook().getFolder();
+                for (String bookFolder : books.split(",")) {
+                    if (bookFolder.trim().equalsIgnoreCase(folder)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    Logger.debug("New page " + seite.getId() + " is not tagged with " + tag + " because book " + folder
+                            + " is not in books list. (" + books + ")");
+                    return;
+                }
+            }
+            
+            seite.getSeite().getTags().add(tag);
+        }
     }
     
     public void setPositionsAndSaveTo(Map<String, String> files) {

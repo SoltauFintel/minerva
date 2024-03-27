@@ -301,4 +301,27 @@ public class MinervaConfig {
     public String getOldHelpKeysReaderJiraUrl() {
         return config.get("OldHelpKeysReader.jira-url");
     }
+    
+    /**
+     * @return tag text. New pages will get this tag. Can be null or empty.
+     */
+    public String getTagNewPage_tag() {
+        return config.get("tag-new-page.tag");
+    }
+    
+    /**
+     * see getTagNewPage_tag
+     * @return comma separated user list. If an user of this list creates a new page no tag will be created.
+     */
+    public String getTagNewPage_exceptUsers() {
+        return config.get("tag-new-page.except-users");
+    }
+
+    /**
+     * see getTagNewPage_tag
+     * @return comma separated book folders. Tags will only be created for given books. If list is null or empty tags will be created for all books.
+     */
+    public String getTagNewPage_books() {
+        return config.get("tag-new-page.books");
+    }
 }
