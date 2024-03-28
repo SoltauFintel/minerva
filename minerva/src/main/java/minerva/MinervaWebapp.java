@@ -48,6 +48,7 @@ import minerva.export.template.AddExportTemplateSetAction;
 import minerva.export.template.DeleteExportTemplateSetAction;
 import minerva.export.template.EditExportTemplateSetPage;
 import minerva.export.template.ExportTemplateSetsPage;
+import minerva.featuretree.MindMapPage;
 import minerva.image.ImageDownloadAction;
 import minerva.image.ImageUploadAction;
 import minerva.migration.MigrationPage;
@@ -139,6 +140,8 @@ public class MinervaWebapp extends RouteDefinitions {
     }
 
     private void workspacesAndBooks() { // Workspaces, 1 workspace == n books
+        get("/f/mindmap", MindMapPage.class);
+        
         get("/", WorkspacesPage.class);
         get("/w", CurrentWorkspaceAction.class);
         get("/w/:branch", BooksPage.class);

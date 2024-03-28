@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>MindMap</title>
+<style>
+  body {
+      font-family: system-ui, sans-serif;
+    }
+
+    .f-col {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      justify-content: space-around;
+    }
+
+    #container {
+      display: flex;
+      justify-content: space-between;
+      padding: 1em;
+      min-width: 500px;
+      border: 1pt dotted grey;
+    }
+
+    #container p {
+      padding: 0.25em 0.5em;
+      background: #f0f0ff;
+      border: 1px solid #666;
+      border-radius: 0.5em;
+      text-align: center;
+      max-width: 300px;
+    }
+    
+    #container p a {
+        text-decoration: none;
+    }
+
+    #container p a:hover {
+        background-color: #ff3;
+    }
+    
+    .type-a {
+        background-color: #fcc !important;
+    }
+    .type-b {
+        background-color: #cfc !important;
+    }
+    .type-c {
+        background-color: #fcf !important;
+    }
+
+    svg {
+      position: absolute;
+      z-index: -1
+    }
+
+    .path {
+      stroke: silver;
+      fill: none;
+      stroke-width: 2;
+    }
+</style>
+</head>
+<body>
+  <h1>MindMap</h1>
+
+    <div style="margin-bottom: 1em;">
+   <small><a href=/foo">aaaa</a> > <a href=/foo">bbbb</a> > Mind Map</small>
+   </div>
+  <div id="container" style="max-width: 60%;"/>
+
+<script>
+var mindMapBaseUrl = '/f/mindmap/4711?id='
+</script>
+<script type="text/javascript" src="/js/mindmap.js"></script>
+<script>
+    const data = [ {{data}} ];
+    createMap(data)
+    resizeObserver.observe($('#container').n)
+</script>
+</body>
+</html>
