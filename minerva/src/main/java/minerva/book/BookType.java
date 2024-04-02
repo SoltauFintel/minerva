@@ -3,7 +3,7 @@ package minerva.book;
 public enum BookType {
 
     PUBLIC,
-    CUSTOMER,
+//    CUSTOMER,
     INTERNAL,
     FEATURE_TREE;
 }

@@ -93,8 +93,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("bookslinkForMenu", "/w");
         if (hasUser && books != null) {
             for (BookSO book : books) {
-                if (BookType.PUBLIC.equals(book.getBook().getType())
-                        || BookType.CUSTOMER.equals(book.getBook().getType())) {
+                if (BookType.PUBLIC.equals(book.getBook().getType())) {
                     DataMap map = list.add();
                     map.put("folder", esc(book.getBook().getFolder()));
                     map.put("title", esc(book.getBook().getTitle().getString(userLang)));

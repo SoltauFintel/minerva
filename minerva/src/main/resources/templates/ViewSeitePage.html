@@ -132,20 +132,22 @@
                     href="{{tag.link}}"><i class="fa fa-tag"></i> {{tag.tag}}</a></span>
             {{/each}}
         </p>
-        <hr/>
         
-        {{if isCustomerVersion}}
-            <p>
-                <a href="{{viewlink}}/mapping" class="btn btn-default"><i class="fa fa-question-circle"></i>
-                    {{N.customerMapping}}{{if hasOneHelpKey}} <i class="fa fa-check greenbook"></i>{{/if}}</a>
-            </p>
-        {{else}}
-            <p>
-                <a href="{{viewlink}}/help-keys" class="btn btn-default"><i class="fa fa-question-circle"></i>
-                    {{N.helpKeys}} ({{helpKeysSize}})</a>
-                {{if hasOneHelpKey}}<br/><span
-                    style="font-family: 'Courier New'; font-size: 9pt;">{{oneHelpKey}}</span>{{/if}}
-            </p>
+        {{if isPublicBook}}
+            <hr/>
+            {{if isCustomerVersion}}
+                <p>
+                    <a href="{{viewlink}}/mapping" class="btn btn-default"><i class="fa fa-question-circle"></i>
+                        {{N.customerMapping}}{{if hasOneHelpKey}} <i class="fa fa-check greenbook"></i>{{/if}}</a>
+                </p>
+            {{else}}
+                <p>
+                    <a href="{{viewlink}}/help-keys" class="btn btn-default"><i class="fa fa-question-circle"></i>
+                        {{N.helpKeys}} ({{helpKeysSize}})</a>
+                    {{if hasOneHelpKey}}<br/><span
+                        style="font-family: 'Courier New'; font-size: 9pt;">{{oneHelpKey}}</span>{{/if}}
+                </p>
+            {{/if}}
         {{/if}}
     </div>
 </div>

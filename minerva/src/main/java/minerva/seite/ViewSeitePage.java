@@ -11,6 +11,7 @@ import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
+import minerva.book.BookType;
 import minerva.comment.SeiteCommentService2;
 import minerva.image.FixHttpImage;
 import minerva.model.BookSO;
@@ -74,6 +75,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         putInt("position", seite.getPosition());
         putInt("version", seite.getVersion());
         put("bookTitle", esc(seiteSO.getBook().getBook().getTitle().getString(u.getPageLanguage()))); // bin usicher
+        put("isPublicBook", BookType.PUBLIC.equals(seiteSO.getBook().getBook().getType()));
+        put("isInternalBook", BookType.INTERNAL.equals(seiteSO.getBook().getBook().getType()));
+        put("isFeatureTree", BookType.FEATURE_TREE.equals(seiteSO.getBook().getBook().getType()));
         put("hasSubPages", !seiteSO.getSeiten().isEmpty());
         put("Sortierung", n(seite.isSorted() ? "alfaSorted" : "manuSorted"));
         put("isSorted", seite.isSorted());
