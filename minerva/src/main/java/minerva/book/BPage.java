@@ -26,4 +26,8 @@ public abstract class BPage extends WPage {
         put("bookFolder", bookFolder);
         put("booklink", booklink);
     }
+    
+    protected boolean isOneLang() {
+        return BookType.FEATURE_TREE.equals(book.getBook().getType());
+    }
 }

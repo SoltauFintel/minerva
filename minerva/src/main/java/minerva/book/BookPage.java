@@ -26,6 +26,9 @@ public class BookPage extends BPage implements Uptodatecheck {
         put("allPages", allPages);
         put("hasLeftArea", true);
         put("leftAreaContent", ViewSeitePage.tree(book.getSeiten(), user.getPageLanguage(), ""));
+        if (isOneLang()) {
+            langs = MinervaWebapp.factory().getConfig().getOneLang();
+        }
         put("positionlink", booklink + "/order");
         put("sortlink", booklink + "/sort");
         put("hasPositionlink", book.getSeiten().size() > 1);

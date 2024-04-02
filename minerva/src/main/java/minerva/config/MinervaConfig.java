@@ -324,4 +324,10 @@ public class MinervaConfig {
     public String getTagNewPage_books() {
         return config.get("tag-new-page.books");
     }
+    
+    public List<String> getOneLang() {
+        List<String> langs = new ArrayList<>();
+        langs.add(config.get("one.lang", "de"));
+        return langs;
+    }
 }

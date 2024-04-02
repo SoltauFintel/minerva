@@ -39,6 +39,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             ctx.redirect("/message?m=1");
             return;
         }
+        if (isOneLang()) {
+            langs = MinervaWebapp.factory().getConfig().getOneLang();
+        }
         execute2(branch, bookFolder, id, seite);
     }
 
