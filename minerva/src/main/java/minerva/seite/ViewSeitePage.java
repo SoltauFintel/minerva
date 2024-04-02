@@ -11,6 +11,7 @@ import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
+import minerva.book.BookPage;
 import minerva.book.BookType;
 import minerva.comment.SeiteCommentService2;
 import minerva.image.FixHttpImage;
@@ -40,7 +41,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             return;
         }
         if (isOneLang()) {
-            langs = MinervaWebapp.factory().getConfig().getOneLang();
+            langs = BookPage.oneLang(model, book);
         }
         execute2(branch, bookFolder, id, seite);
     }

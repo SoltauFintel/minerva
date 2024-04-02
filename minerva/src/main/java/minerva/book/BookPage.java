@@ -1,8 +1,11 @@
 package minerva.book;
 
+import java.util.List;
+
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
 import minerva.base.DeliverHtmlContent;
 import minerva.base.Uptodatecheck;
@@ -27,7 +30,7 @@ public class BookPage extends BPage implements Uptodatecheck {
         put("hasLeftArea", true);
         put("leftAreaContent", ViewSeitePage.tree(book.getSeiten(), user.getPageLanguage(), ""));
         if (isOneLang()) {
-            langs = MinervaWebapp.factory().getConfig().getOneLang();
+            langs = oneLang(model, book);
         }
         put("positionlink", booklink + "/order");
         put("sortlink", booklink + "/sort");
@@ -60,6 +63,17 @@ public class BookPage extends BPage implements Uptodatecheck {
             map.put("active", user.getPageLanguage().equals(lang));
             map.put("bookTitle", esc(book.getBook().getTitle().getString(lang)));
         }
+    }
+    
+    public static List<String> oneLang(DataMap model, BookSO book) {
+        model.put("hasBook", false);
+        model.put("hasMenuItems", true);
+        DataList menuItems = model.list("menuItems");
+        DataMap map = menuItems.add();
+        map.put("link", "/b/" + book.getWorkspace().getBranch() + "/" + book.getBook().getFolder());
+        map.put("title", Escaper.esc(book.getTitle()));
+
+        return MinervaWebapp.factory().getConfig().getOneLang();
     }
 
     private void fillSeiten(String branch, String bookFolder, SeitenSO seiten, String lang, boolean allPages,
