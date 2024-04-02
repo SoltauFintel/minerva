@@ -68,6 +68,7 @@ public class MenuPage extends WPage {
             menu(list, "papierkorb", "fa-recycle", "/w/:branch/recycle");
         }
         workspace(list);
+        menu(list, "Schlüsselverwaltung", "fa-key", "/values/:branch");
         additionalMenuItems(list);
         onlinehelp(fac, booksOk, list);
         admin(fac, isAdmin, booksOk, list);

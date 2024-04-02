@@ -50,6 +50,10 @@ import minerva.export.template.EditExportTemplateSetPage;
 import minerva.export.template.ExportTemplateSetsPage;
 import minerva.image.ImageDownloadAction;
 import minerva.image.ImageUploadAction;
+import minerva.keyvalue.AddValuesPage;
+import minerva.keyvalue.DeleteValuesAction;
+import minerva.keyvalue.EditValuesPage;
+import minerva.keyvalue.ValuesListPage;
 import minerva.migration.MigrationPage;
 import minerva.model.JournalSO;
 import minerva.model.JournalSO.JournalTimer;
@@ -134,6 +138,7 @@ public class MinervaWebapp extends RouteDefinitions {
         comments();
         preview();
         users();
+        values();
         misc();
         restApi();
     }
@@ -265,6 +270,13 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/backdoor", Login2Page.class);
         addNotProtected("/backdoor");
         get("/activate-admin-rights", ActivateAdminRightsAction.class);
+    }
+
+    private void values() {
+        form("/values/:branch/add", AddValuesPage.class);
+        form("/values/:branch/edit/:key", EditValuesPage.class);
+        get("/values/:branch/delete/:key", DeleteValuesAction.class);
+        get("/values/:branch", ValuesListPage.class);
     }
 
     private void misc() {
