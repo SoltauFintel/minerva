@@ -51,6 +51,7 @@ public class BooksPage extends UPage {
                 DataMap map = list.add();
                 map.put("title", esc(book.getBook().getTitle().getString(userLang)));
                 map.put("folder", esc(book.getBook().getFolder()));
+                map.put("type", n("bookType_" + book.getBook().getType().name()));
             }
         }
         put("booksOk", books != null);

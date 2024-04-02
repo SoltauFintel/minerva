@@ -23,6 +23,7 @@ import minerva.access.DirAccess;
 import minerva.base.FileService;
 import minerva.base.NlsString;
 import minerva.base.StringService;
+import minerva.book.BookType;
 import minerva.confluence.ConfluenceComments;
 import minerva.confluence.ConfluencePage;
 import minerva.model.BookSO;
@@ -157,7 +158,7 @@ public class ConfluenceToMinervaMigrationService {
             }
         }
         titles.setString("en", title_en);
-        workspace.getBooks().createBook(folder, titles, langs, position);
+        workspace.getBooks().createBook(folder, titles, langs, BookType.PUBLIC, position);
         BookSO book = workspace.getBooks().byFolder(folder);
 
         // migrate pages ----

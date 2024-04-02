@@ -14,6 +14,7 @@ import minerva.base.NlsString;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.book.Book;
+import minerva.book.BookType;
 import minerva.book.Books;
 
 public class BooksSO extends MList<BookSO> {
@@ -37,7 +38,7 @@ public class BooksSO extends MList<BookSO> {
         }
     }
     
-    public void createBook(String bookFolder, NlsString title, List<String> langs, int position) {
+    public void createBook(String bookFolder, NlsString title, List<String> langs, BookType type, int position) {
         if (!(MinervaWebapp.factory().isGitlab() || isEmpty())) {
             throw new RuntimeException("It is not allowed to create another book.");
         }
@@ -62,6 +63,7 @@ public class BooksSO extends MList<BookSO> {
         Book book = new Book();
         book.setFolder(bookFolder);
         book.setTitle(title);
+        book.setType(type);
         book.setPosition(position);
 
         new File(workspace.getFolder() + "/" + bookFolder).mkdirs();

@@ -11,7 +11,8 @@ public class Book {
     private String folder;
     private int position;
     private boolean sorted = false;
-
+    private BookType type = BookType.PUBLIC;
+    
     public NlsString getTitle() {
         return title;
     }
@@ -42,5 +43,13 @@ public class Book {
 
     public void setSorted(boolean sorted) {
         this.sorted = sorted;
+    }
+
+    public BookType getType() {
+        return type;
+    }
+
+    public void setType(BookType type) {
+        this.type = type;
     }
 }
