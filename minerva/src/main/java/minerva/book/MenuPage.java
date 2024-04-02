@@ -52,14 +52,21 @@ public class MenuPage extends WPage {
         DataList list = list("commands");
         menu(list, "myTasks", "fa-inbox", "/w/:branch/my-tasks");
         menu(list, "preview", "fa-thumbs-o-up bluebook", "/p/:branch");
-        menu(list, "formulaEditor", "fa-superscript", "/math");
         if (fac.isGitlab()) {
             menu(list, "workspaceHistory", "fa-clock-o", "/w/:branch/history");
         }
         if (booksOk) {
             menu(list, "tagCloud", "fa-cloud", "/w/:branch/tag-cloud");
         }
+        for (BookSO bookSO : workspace.getBooks()) {
+            if (BookType.INTERNAL.equals(bookSO.getBook().getType())) {
+                menu(list, bookSO.getBook().getTitle().getString(user.getGuiLanguage()), "fa-book fa-internal", "/b/:branch/" + bookSO.getBook().getFolder());
+            } else if (BookType.FEATURE_TREE.equals(bookSO.getBook().getType())) {
+                menu(list, bookSO.getBook().getTitle().getString(user.getGuiLanguage()), "fa-sitemap", "/b/:branch/" + bookSO.getBook().getFolder());
+            }
+        }
         menu(list, "allHelpKeys", "fa-question-circle", "/w/:branch/help-keys");
+        menu(list, "formulaEditor", "fa-superscript", "/math");
         if (fac.isCustomerVersion()) {
             menu(list, "Broken Mappings", "fa-chain-broken", "/w/:branch/broken-mappings");
         }
