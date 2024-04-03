@@ -7,7 +7,11 @@ import minerva.book.BookType;
 import minerva.mask.field.MaskField;
 import minerva.mask.field.MaskFieldType;
 import minerva.model.SeiteSO;
+import minerva.user.UserAccess;
 
+/**
+ * Generate feature fields mask (HTML)
+ */
 public class FeatureFieldsHtml {
     private final SeiteSO seite;
     private final boolean editMode;
@@ -33,6 +37,9 @@ public class FeatureFieldsHtml {
             String st = getFieldHtml(f, ff);
             if (first && st.contains("<input ")) {
                 st = st.replace("<input ", "<input autofocus ");
+                first = false;
+            } else if (first && st.contains("<select ")) {
+                st = st.replace("<select ", "<select autofocus ");
                 first = false;
             }
             ret += st
@@ -93,6 +100,23 @@ public class FeatureFieldsHtml {
                      """
                     .replace("{disabled}", !editMode || f.isImportField() ? " disabled" : "")
                     .replace("{value}", ff.get(f.getId()));
+        } else if (MaskFieldType.USER.equals(f.getType())) {
+            String options = "";
+            String val = ff.get(f.getId());
+            for (String user : UserAccess.getUserNames()) {
+                options += "<option" + (user.equals(val) ? " selected" : "") + ">" + user + "</option>\n";
+            }
+            st = """
+                <div class="form-group">
+                    <label for="{id}" class="col-lg-2 control-label">{label}</label>
+                    <div class="col-lg-8">
+                        <select class="form-control" id="{id}" name="{id}"{disabled}>{options}</select>
+                    </div>
+                </div>
+                 """
+                    .replace("{disabled}", !editMode || f.isImportField() ? " disabled" : "")
+                    .replace("{options}", options);
+        // TODO customers multi-select
         } else {
             st = """
                 <div class="form-group">
