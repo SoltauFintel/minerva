@@ -15,6 +15,7 @@ import minerva.book.BookPage;
 import minerva.book.BookType;
 import minerva.comment.SeiteCommentService2;
 import minerva.image.FixHttpImage;
+import minerva.mask.FeatureFieldsHtml;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -86,6 +87,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("Sortierung", n(seite.isSorted() ? "alfaSorted" : "manuSorted"));
         put("isSorted", seite.isSorted());
         put("hasAbsoluteUrlImage", new FixHttpImage().hasAbsoluteUrlImage(seiteSO, langs));
+        put("featureFields", new FeatureFieldsHtml(seiteSO, false).html());
 
         String cosi = new SeiteCommentService2(seiteSO).getCommentsSizeText(user.getLogin());
         boolean forMe = cosi.startsWith("*");

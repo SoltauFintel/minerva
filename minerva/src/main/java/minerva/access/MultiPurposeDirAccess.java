@@ -1,7 +1,10 @@
 package minerva.access;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -40,6 +43,9 @@ public class MultiPurposeDirAccess {
     }
     
     public <T> T load(String dn, Class<T> type) {
+        if (!new File(dn).isFile()) {
+            return null;
+        }
         Set<String> filenames = new HashSet<>();
         filenames.add(dn);
         Map<String, String> files = access.loadFiles(filenames);
@@ -49,5 +55,17 @@ public class MultiPurposeDirAccess {
             return null;
         }
         return new Gson().fromJson(json, type);
+    }
+
+    /**
+     * @param filename full filename
+     * @param commitMessage -
+     * @param workspace -
+     * @return true: success, false: error deleting that file
+     */
+    public boolean delete(String filename, CommitMessage commitMessage, WorkspaceSO workspace) {
+        List<String> cantBeDeleted = new ArrayList<>();
+        workspace.dao().deleteFiles(Set.of(filename), commitMessage, workspace, cantBeDeleted);
+        return cantBeDeleted.isEmpty();
     }
 }

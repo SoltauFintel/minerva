@@ -328,3 +328,4 @@ up=up
 down=down
 addMaskField=Create new mask field
 editMaskField=Edit mask field
+editFeatureFields=Feature-Felder bearbeiten

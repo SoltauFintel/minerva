@@ -18,6 +18,7 @@ encoding//src/main/resources/templates/DeleteWorkspacePage.html=UTF-8
 encoding//src/main/resources/templates/DownloadExportPage.html=UTF-8
 encoding//src/main/resources/templates/EditBookPage.html=UTF-8
 encoding//src/main/resources/templates/EditExportTemplateSetPage.html=UTF-8
+encoding//src/main/resources/templates/EditFeatureFieldsPage.html=UTF-8
 encoding//src/main/resources/templates/EditHtmlPage.html=UTF-8
 encoding//src/main/resources/templates/EditSeitePage.html=UTF-8
 encoding//src/main/resources/templates/EditUserPage.html=UTF-8

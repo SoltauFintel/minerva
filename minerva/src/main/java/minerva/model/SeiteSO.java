@@ -640,6 +640,23 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
             }
         };
     }
+    
+    public String getFeatureTag() {
+        return getFeatureTagR(this);
+    }
+        
+    private String getFeatureTagR(SeiteSO seite) {
+        for (String tag : seite.getSeite().getTags()) {
+            if (tag.startsWith("ft_")) {
+                return tag;
+            }
+        }
+        if (seite.hasParent()) {
+            return seite.getParent().getFeatureTag(); // recursive
+        } else {
+            return "ft";
+        }
+    }
 
     @Override
     public boolean equals(Object obj) {

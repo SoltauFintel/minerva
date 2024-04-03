@@ -1,17 +1,14 @@
 package minerva.mask;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import com.google.gson.Gson;
 
 import minerva.access.CommitMessage;
-import minerva.base.StringService;
+import minerva.access.MultiPurposeDirAccess;
 import minerva.mask.field.MaskField;
 import minerva.model.WorkspaceSO;
 
@@ -38,27 +35,21 @@ public class MasksService {
     }
     
     public Mask getMask(String tag) {
-        Set<String> filenames = new HashSet<>();
-        String dn = folder + "/" + tag + ".json";
-        filenames.add(dn);
-        Map<String, String> files = workspace.dao().loadFiles(filenames);
-        String json = files.get(dn);
-        return json == null ? null : new Gson().fromJson(json, Mask.class);
+        return new MultiPurposeDirAccess(workspace.dao()).load(dn(tag), Mask.class);
     }
     
     public void saveMask(Mask mask) {
-        Map<String, String> files = new HashMap<>();
-        files.put(folder + "/" + mask.getTag() + ".json", StringService.prettyJSON(mask));
-        workspace.dao().saveFiles(files, new CommitMessage("Mask " + mask.getTag()), workspace);
+        new MultiPurposeDirAccess(workspace.dao()).save(dn(mask.getTag()), mask,
+                new CommitMessage("Mask " + mask.getTag()), workspace);
+    }
+    
+    private String dn(String tag) {
+        return folder + "/" + tag + ".json";
     }
     
     public void deleteMask(String tag) {
-        Set<String> filenames = new HashSet<>();
-        filenames.add(folder + "/" + tag + ".json");
-        List<String> cantBeDeleted = new ArrayList<>();
-        workspace.dao().deleteFiles(filenames, new CommitMessage("Delete mask " + tag), workspace, cantBeDeleted);
-        if (!cantBeDeleted.isEmpty()) {
-            throw new RuntimeException("Deleting mask " + tag + " wasn't successfully!");
+        if (!new MultiPurposeDirAccess(workspace.dao()).delete(dn(tag), new CommitMessage("Delete mask " + tag), workspace)) {
+            throw new RuntimeException("Error deleting mask " + tag + "!");
         }
         // TODO Nutzdaten auch löschen?
     }

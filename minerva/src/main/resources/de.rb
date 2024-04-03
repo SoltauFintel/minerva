@@ -328,3 +328,4 @@ up=hoch
 down=runter
 addMaskField=Neues Maskenfeld anlegen
 editMaskField=Maskenfeld bearbeiten
+editFeatureFields=Feature-Felder bearbeiten
