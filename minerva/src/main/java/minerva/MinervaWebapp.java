@@ -54,6 +54,14 @@ import minerva.keyvalue.AddValuesPage;
 import minerva.keyvalue.DeleteValuesAction;
 import minerva.keyvalue.EditValuesPage;
 import minerva.keyvalue.ValuesListPage;
+import minerva.mask.AddMaskPage;
+import minerva.mask.DeleteMaskAction;
+import minerva.mask.MasksPage;
+import minerva.mask.ViewMaskPage;
+import minerva.mask.field.AddMaskFieldPage;
+import minerva.mask.field.DeleteMaskFieldAction;
+import minerva.mask.field.EditMaskFieldPage;
+import minerva.mask.field.SortMaskFieldAction;
 import minerva.migration.MigrationPage;
 import minerva.model.JournalSO;
 import minerva.model.JournalSO.JournalTimer;
@@ -139,6 +147,7 @@ public class MinervaWebapp extends RouteDefinitions {
         preview();
         users();
         values();
+        masks();
         misc();
         restApi();
     }
@@ -279,6 +288,17 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/values/:branch", ValuesListPage.class);
     }
 
+    private void masks() {
+        get("/mask/:branch", MasksPage.class);
+        form("/mask/:branch/add", AddMaskPage.class);
+        get("/mask/:branch/:tag", ViewMaskPage.class);
+        get("/mask/:branch/:tag/delete", DeleteMaskAction.class);
+        form("/mask/:branch/:tag/add-field", AddMaskFieldPage.class);
+        form("/mask/:branch/:tag/:id/edit-field", EditMaskFieldPage.class);
+        get("/mask/:branch/:tag/:id/delete-field", DeleteMaskFieldAction.class);
+        get("/mask/:branch/:tag/:id/sort-field", SortMaskFieldAction.class);
+    }
+    
     private void misc() {
         get("/logged-out", LoggedOutPage.class);
         addNotProtected("/logged-out");

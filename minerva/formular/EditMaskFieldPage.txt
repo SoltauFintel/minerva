@@ -1,0 +1,6 @@
+t: id
+t: label
+c: type
+k: importField
+ok: /mask/{{branch}}/{{tag}}/{{id}}/edit-field
+cancel: /mask/{{branch}}/{{tag}}

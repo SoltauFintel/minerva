@@ -1,0 +1,3 @@
+t: tag
+ok: /mask/{{branch}}/add
+cancel: /mask/{{branch}}
