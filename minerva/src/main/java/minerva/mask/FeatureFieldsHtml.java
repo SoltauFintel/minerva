@@ -145,6 +145,17 @@ public class FeatureFieldsHtml {
                  """
                     .replace("{disabled}", !editMode || f.isImportField() ? " disabled" : "")
                     .replace("{options}", options);
+        } else if (MaskFieldType.TEXTAREA.equals(f.getType())) {
+            st = """
+                    <div class="form-group">
+                        <label for="{id}" class="col-lg-2 control-label">{label}</label>
+                        <div class="col-lg-8">
+                            <textarea class="form-control" id="{id}" name="{id}" rows="4"{disabled}>{value}</textarea>
+                        </div>
+                    </div>
+                     """
+                    .replace("{disabled}", !editMode || f.isImportField() ? " disabled" : "")
+                    .replace("{value}", ff.get(f.getId()));
         } else {
             st = """
                 <div class="form-group">

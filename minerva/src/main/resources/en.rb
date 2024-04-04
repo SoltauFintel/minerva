@@ -319,6 +319,7 @@ deleteMaskField1=Delete mask field
 deleteMaskField2=?
 addNewMaskField=Create new mask field
 maskFieldType_TEXT=Text
+maskFieldType_TEXTAREA=Text (multi line)
 maskFieldType_INTEGER=Integer
 maskFieldType_BOOL=Bool
 maskFieldType_UNIQUE=unique
