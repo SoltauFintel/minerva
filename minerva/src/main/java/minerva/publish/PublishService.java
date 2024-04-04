@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 
 import minerva.MinervaWebapp;
 import minerva.base.FileService;
+import minerva.book.BookType;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -59,16 +60,18 @@ public class PublishService {
         }
         // book level
         for (BookSO book : workspace.getBooks()) {
-            Map<String, TocEntry> bookPages = new HashMap<>();
-            for (String lang : langs) {
-                TocEntry bookPage = new TocEntry();
-                bookPage.setId(book.getBook().getFolder());
-                bookPage.setTitle(book.getBook().getTitle().getString(lang));
-                langRoot.get(lang).getSubpages().add(bookPage);
-                bookPages.put(lang, bookPage);
+            if (BookType.PUBLIC.equals(book.getBook().getType())) {
+                Map<String, TocEntry> bookPages = new HashMap<>();
+                for (String lang : langs) {
+                    TocEntry bookPage = new TocEntry();
+                    bookPage.setId(book.getBook().getFolder());
+                    bookPage.setTitle(book.getBook().getTitle().getString(lang));
+                    langRoot.get(lang).getSubpages().add(bookPage);
+                    bookPages.put(lang, bookPage);
+                }
+                // page level
+                copyHtmlAndImg(book.getSeiten(), bookPages, targetFolder);
             }
-            // page level
-            copyHtmlAndImg(book.getSeiten(), bookPages, targetFolder);
         }
         // save table of contents file
         File tocJson = new File(targetFolder, "toc.json");
