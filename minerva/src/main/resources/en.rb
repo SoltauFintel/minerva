@@ -330,3 +330,4 @@ down=down
 addMaskField=Create new mask field
 editMaskField=Edit mask field
 editFeatureFields=Feature-Felder bearbeiten
+valueIsntUnique=$l value "$v" isn't unique. Please change value!

@@ -35,6 +35,8 @@ public interface DirAccess {
      * @return map with key=filename, value=content
      */
     Map<String,String> loadAllFiles(String folder);
+
+    Map<String,String> loadAllFiles(String folder, String postfix);
     
     /**
      * Load many plain text files

@@ -1,6 +1,14 @@
 package minerva.mask;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.pmw.tinylog.Logger;
+
+import com.google.gson.Gson;
+
 import minerva.access.CommitMessage;
+import minerva.access.DirAccess;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.base.StringService;
 import minerva.model.BookSO;
@@ -37,5 +45,29 @@ public class FeatureFieldsService {
     
     private String dn(SeiteSO seite) {
         return seite.getBook().getFolder() + "/" + seite.getId() + ".ff";
+    }
+    
+    public boolean findValue(SeiteSO excludeSeite, String id, String value) {
+        if (value == null) {
+            throw new IllegalArgumentException("value must not be null");
+        }
+        DirAccess dao = excludeSeite.getBook().dao();
+        long start = System.currentTimeMillis();
+        Map<String, String> files = dao.loadAllFiles(excludeSeite.getBook().getFolder(), ".ff");
+        Gson gson = new Gson();
+        boolean ret = false;
+        for (Entry<String, String> e : files.entrySet()) {
+            if (!e.getKey().endsWith("/" + excludeSeite.getId() + ".ff")) {
+                FeatureFields ff = gson.fromJson(e.getValue(), FeatureFields.class);
+                String cv = ff.get(id);
+                if (cv != null && cv.equals(value)) {
+                    ret = true;
+                    break;
+                }
+            }
+        }
+        long end = System.currentTimeMillis();
+        Logger.info("find value \"" + value + "\" in field " + id + ": " + (ret ? "found" : "not found") + " | " + (end - start) + "ms");
+        return ret;
     }
 }

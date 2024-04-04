@@ -52,4 +52,8 @@ public class MaskAndDataFields {
     public void save() {
         sv2.set(seite, dataFields);
     }
+    
+    public boolean findValue(SeiteSO excludeSeite, String id, String value) {
+        return sv2.findValue(excludeSeite, id, value);
+    }
 }

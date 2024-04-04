@@ -3,6 +3,7 @@ package minerva.mask;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import minerva.base.UserMessage;
 import minerva.book.BookPage;
 import minerva.mask.field.MaskField;
 import minerva.mask.field.MaskFieldType;
@@ -16,7 +17,11 @@ public class EditFeatureFieldsPage extends SPage {
         if (isPOST()) {
             for (MaskField maskField : mad.getMaskFields()) {
                 if (!maskField.isImportField()) {
-                    mad.getDataFields().set(maskField.getId(), getValue(maskField));
+                    String id = maskField.getId();
+                    String oldValue = mad.getDataFields().get(id);
+                    String value = getValue(maskField);
+                    uniqueness(maskField, value, oldValue, mad);
+                    mad.getDataFields().set(id, value);
                 }
             }
             mad.save();
@@ -59,5 +64,13 @@ public class EditFeatureFieldsPage extends SPage {
             }
         }
         return num;
+    }
+    
+    private void uniqueness(MaskField maskField, String value, String oldValue, MaskAndDataFields mad) {
+        boolean mustBeUnique = MaskFieldType.UNIQUE.equals(maskField.getType());
+        boolean dirty = !value.isBlank() && !value.equals(oldValue);
+        if (mustBeUnique && dirty && mad.findValue(seite, maskField.getId(), value)) {
+            throw new UserMessage("valueIsntUnique", seite.getBook().getWorkspace(), s -> s.replace("$v", value).replace("$l", maskField.getLabel()));
+        }
     }
 }

@@ -330,3 +330,4 @@ down=runter
 addMaskField=Neues Maskenfeld anlegen
 editMaskField=Maskenfeld bearbeiten
 editFeatureFields=Feature-Felder bearbeiten
+valueIsntUnique=$l Wert "$v" ist nicht eindeutig. Bitte den Wert so ändern, dass dieser nur einmalig vorkommt!

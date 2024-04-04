@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import org.apache.commons.io.FileUtils;
 import org.pmw.tinylog.Logger;
@@ -39,11 +40,20 @@ public abstract class AbstractDirAccess implements DirAccess {
 
     @Override
     public Map<String, String> loadAllFiles(String folder) {
+        return loadAllFiles(folder, file -> file.isFile() && !file.getName().startsWith("."));
+    }
+
+    @Override
+    public Map<String, String> loadAllFiles(String folder, String postfix) {
+        return loadAllFiles(folder, file -> file.isFile() && !file.getName().startsWith(".") && file.getName().endsWith(postfix));
+    }
+    
+    private Map<String, String> loadAllFiles(String folder, Predicate<File> checkFile) {
         Map<String, String> ret = new HashMap<>();
         File[] files = new File(folder).listFiles();
         if (files != null) {
             for (File file : files) {
-                if (file.isFile() && !file.getName().startsWith(".")) {
+                if (checkFile.test(file)) {
                     ret.put(file.getName(), FileService.loadPlainTextFile(new File(folder + "/" + file.getName())));
                 }
             }
