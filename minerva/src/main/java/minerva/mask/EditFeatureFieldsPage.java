@@ -1,5 +1,8 @@
 package minerva.mask;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 import minerva.book.BookPage;
 import minerva.mask.field.MaskField;
 import minerva.mask.field.MaskFieldType;
@@ -9,8 +12,8 @@ public class EditFeatureFieldsPage extends SPage {
 
     @Override
     protected void execute() {
+        MaskAndDataFields mad = new MaskAndDataFields(seite);
         if (isPOST()) {
-            MaskAndDataFields mad = new MaskAndDataFields(seite);
             for (MaskField maskField : mad.getMaskFields()) {
                 if (!maskField.isImportField()) {
                     mad.getDataFields().set(maskField.getId(), getValue(maskField));
@@ -24,10 +27,15 @@ public class EditFeatureFieldsPage extends SPage {
             header(seite.getTitle() + " (" + n("editFeatureFields") + ")");
             put("titel", esc(seite.getTitle()));
             put("featureFields", new FeatureFieldsHtml(seite, true).html());
+            mad.customersMultiselect(model);
         }
     }
 
     private String getValue(MaskField maskField) {
+        if (MaskFieldType.CUSTOMERS.equals(maskField.getType())) {
+            String[] a = ctx.req.queryParamsValues(maskField.getId());
+            return a == null ? "" : Arrays.asList(a).stream().collect(Collectors.joining(","));
+        }
         String value = ctx.formParam(maskField.getId());
         if (value != null) {
             value = value.trim();

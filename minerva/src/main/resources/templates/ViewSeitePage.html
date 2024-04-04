@@ -1,4 +1,4 @@
-{{master: master_math}}
+{{master: master_mms}}
 
 <div class="row">
     <div class="col-lg-9">
@@ -21,7 +21,7 @@
                                 {{else}}
                                     <li{{m.liArgs}}><a href="{{m.link}}"{{m.attrs}}><i class="fa {{m.icon}}"></i> {{m.label}}</a></li>
                                 {{/if}}
-                            {{/each}}        
+                            {{/each}}
                         </ul>
                     </li>
                 </ul>
@@ -266,6 +266,13 @@
         if (vorh) {
             document.getElementById('savedContent').style = '';
         }
-    }    
+    }
+    
+    $(document).ready(function() {
+        a = { maxHeight: 300, nonSelectedText: 'nichts ausgewählt', nSelectedText: 'ausgewählt', allSelectedText: 'alle ausgewählt' };
+        {{each c in customersMultiselect}}
+            $('#{{c.id}}').multiselect(a);
+        {{/each}}
+    });
 </script>
 <script src="/js/treeclick.js"></script>

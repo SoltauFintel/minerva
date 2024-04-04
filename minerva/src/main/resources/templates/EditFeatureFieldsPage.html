@@ -1,4 +1,4 @@
-{{master: master_math}}
+{{master: master_multiselect}}
 
 <div class="row">
     <div class="col-lg-12">
@@ -6,3 +6,12 @@
         {{featureFields}}
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        a = { maxHeight: 300, nonSelectedText: 'nichts ausgewählt', nSelectedText: 'ausgewählt', allSelectedText: 'alle ausgewählt' };
+        {{each c in customersMultiselect}}
+            $('#{{c.id}}').multiselect(a);
+        {{/each}}
+    });
+</script>

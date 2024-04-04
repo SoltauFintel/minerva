@@ -4,6 +4,8 @@ import java.util.List;
 
 import minerva.base.NLS;
 import minerva.book.BookType;
+import minerva.keyvalue.Values;
+import minerva.keyvalue.ValuesSO;
 import minerva.mask.field.MaskField;
 import minerva.mask.field.MaskFieldType;
 import minerva.model.SeiteSO;
@@ -116,7 +118,33 @@ public class FeatureFieldsHtml {
                  """
                     .replace("{disabled}", !editMode || f.isImportField() ? " disabled" : "")
                     .replace("{options}", options);
-        // TODO customers multi-select
+        } else if (MaskFieldType.CUSTOMERS.equals(f.getType())) {
+            String options = "";
+            String[] val = ff.get(f.getId()).split(",");
+            ValuesSO valuesSO = new ValuesSO(seite.getBook().getWorkspace());
+            Values values = valuesSO.find("CUSTOMERS");
+            if (values != null) {
+                for (String customer : values.getValues()) {
+                    boolean enth = false;
+                    for (String i : val) {
+                        if (customer.equals(i)) {
+                            enth = true;
+                            break;
+                        }
+                    }
+                    options += "<option" + (enth ? " selected" : "") + ">" + customer + "</option>\n";
+                }
+            }
+            st = """
+                <div class="form-group">
+                    <label for="{id}" class="col-lg-2 control-label">{label}</label>
+                    <div class="col-lg-8">
+                        <select class="form-control" id="{id}" name="{id}" multiple="multiple"{disabled}>{options}</select>
+                    </div>
+                </div>
+                 """
+                    .replace("{disabled}", !editMode || f.isImportField() ? " disabled" : "")
+                    .replace("{options}", options);
         } else {
             st = """
                 <div class="form-group">
