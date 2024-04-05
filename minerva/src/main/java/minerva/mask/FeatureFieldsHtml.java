@@ -65,7 +65,9 @@ public class FeatureFieldsHtml {
                         ;
             } else {
                 String st = "<div class=\"form-group\"><div class=\"col-lg-8 col-lg-offset-2\">"
-                        + "<a href=\"/ff/{branch}/{bookFolder}/{seiteId}\" class=\"btn btn-primary btn-sm\">{editFeatureFields}</a></div></div>";
+                        + "<a href=\"/ff/{branch}/{bookFolder}/{seiteId}\" class=\"btn btn-primary btn-sm br\">{editFeatureFields}</a>"
+                        + "<a href=\"/f/{branch}/{bookFolder}/{seiteId}\" class=\"btn btn-primary btn-sm br\">Features</a>"
+                        + "</div></div>";
                 ret += st.replace("{editFeatureFields}", n("editFeatureFields"));
             }
         }

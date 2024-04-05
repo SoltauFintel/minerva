@@ -68,7 +68,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             map.put("toc", macro.getTOC()); // no esc, after transform()
             map.put("active", lang.equals(u.getPageLanguage()));
             fillBreadcrumbs(lang, map.list("breadcrumbs"));
-            map.putInt("subpagesSize", fillSubpages(seiteSO.getSeiten(), lang, map.list("subpages"),
+            map.putInt("subpagesSize", fillSubpages(seiteSO, seiteSO.getSeiten(), lang, map.list("subpages"),
                     branch, bookFolder, false));
         }
         
@@ -84,7 +84,16 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("isPublicBook", BookType.PUBLIC.equals(seiteSO.getBook().getBook().getType()));
         put("isInternalBook", BookType.INTERNAL.equals(seiteSO.getBook().getBook().getType()));
         put("isFeatureTree", BookType.FEATURE_TREE.equals(seiteSO.getBook().getBook().getType()));
-        put("hasSubPages", !seiteSO.getSeiten().isEmpty());
+        
+        if (BookType.FEATURE_TREE.equals(seiteSO.getBook().getBook().getType())
+                && seiteSO.getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
+            put("hasSubPages", false);
+            put("hasPositionlink", false);
+        } else {
+            put("hasSubPages", !seiteSO.getSeiten().isEmpty());
+            put("hasPositionlink", seiteSO.getSeiten().size() > 1);
+        }
+
         put("Sortierung", n(seite.isSorted() ? "alfaSorted" : "manuSorted"));
         put("isSorted", seite.isSorted());
         put("hasAbsoluteUrlImage", new FixHttpImage().hasAbsoluteUrlImage(seiteSO, langs));
@@ -191,18 +200,22 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         model.put("lastChangeUser", Escaper.esc(change.getUser()));
     }
     
-    static int fillSubpages(SeitenSO seiten, String lang, DataList subpages, String branch, String bookFolder,
+    static int fillSubpages(SeiteSO seite, SeitenSO seiten, String lang, DataList subpages, String branch, String bookFolder,
             boolean showAllPages) {
         int n = 0;
-        seiten.sort(lang);
-        for (SeiteSO sub : seiten) {
-            if (showAllPages || sub.hasContent(lang) > 0) {
-                DataMap map = subpages.add();
-                map.put("id", Escaper.esc(sub.getId()));
-                map.put("titel", Escaper.esc(sub.getSeite().getTitle().getString(lang)));
-                map.put("viewlink", "/s/" + branch + "/" + bookFolder + "/" + Escaper.esc(sub.getId()));
-                map.putInt("position", sub.getSeite().getPosition());
-                n++;
+        if (seite == null
+                || !BookType.FEATURE_TREE.equals(seite.getBook().getBook().getType())
+                || seite.getSeiten().size() <= MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
+            seiten.sort(lang);
+            for (SeiteSO sub : seiten) {
+                if (showAllPages || sub.hasContent(lang) > 0) {
+                    DataMap map = subpages.add();
+                    map.put("id", Escaper.esc(sub.getId()));
+                    map.put("titel", Escaper.esc(sub.getSeite().getTitle().getString(lang)));
+                    map.put("viewlink", "/s/" + branch + "/" + bookFolder + "/" + Escaper.esc(sub.getId()));
+                    map.putInt("position", sub.getSeite().getPosition());
+                    n++;
+                }
             }
         }
         return n;
@@ -248,8 +261,6 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         // Edit
         put("editlink", "/s-edit/" + branch + "/" + bookFolder + "/" + id);
         put("imageuploadlink", "/s-image-upload/" + branch + "/" + bookFolder + "/" + id);
-        
-        put("hasPositionlink", seiteSO.getSeiten().size() > 1);
     }
     
     private void navlink(String name, SeiteSO nav, String seiteId, String onlyBookFolder, String booklink) {

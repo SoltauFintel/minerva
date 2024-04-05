@@ -339,4 +339,11 @@ public class MinervaConfig {
         }
         return url;
     }
+    
+    /**
+     * @return if there are more subpages than this the will be hidden and instead a table will be displayed
+     */
+    public int getMaxSubfeatures() {
+        return 20;
+    }
 }

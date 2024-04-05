@@ -350,7 +350,12 @@ public class SeitenSO extends MList<SeiteSO> {
                     }
                 }
                 ret.add(treeItem);
-                treeItem.setSubitems(seite.getSeiten().getTreeItems(lang, currentPageId, treeItem));
+                if (!BookType.FEATURE_TREE.equals(seite.getBook().getBook().getType())
+                        || seite.getSeiten().size() <= MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
+                    treeItem.setSubitems(seite.getSeiten().getTreeItems(lang, currentPageId, treeItem)); // resursive
+                } else {
+                    treeItem.setSubitems(List.of());
+                }
             }
         }
         return ret;
