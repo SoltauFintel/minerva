@@ -18,12 +18,7 @@ public class FeatureFieldsService {
 
     public FeatureFields get(SeiteSO seite) {
         FeatureFields ff = new MultiPurposeDirAccess(seite.getBook().dao()).load(dn(seite), FeatureFields.class);
-        if (ff == null) {
-            ff = new FeatureFields();
-            ff.setSeiteId(seite.getId());
-            ff.setMaskTag(seite.getFeatureTag());
-        }
-        return ff;
+        return ff == null ? FeatureFields.create(seite) : ff;
     }
     
     public void set(SeiteSO seite, FeatureFields featureFields) {
@@ -43,8 +38,8 @@ public class FeatureFieldsService {
         }
     }
     
-    private String dn(SeiteSO seite) {
-        return seite.getBook().getFolder() + "/" + seite.getId() + ".ff";
+    public static String dn(SeiteSO seite) {
+        return seite.getBook().getFolder() + "/feature-fields/" + seite.getId() + ".ff";
     }
     
     public boolean findValue(SeiteSO excludeSeite, String id, String value) {
@@ -53,11 +48,11 @@ public class FeatureFieldsService {
         }
         DirAccess dao = excludeSeite.getBook().dao();
         long start = System.currentTimeMillis();
-        Map<String, String> files = dao.loadAllFiles(excludeSeite.getBook().getFolder(), ".ff");
+        Map<String, String> files = dao.loadAllFiles(excludeSeite.getBook().getFolder() + "/feature-fields", ".ff");
         Gson gson = new Gson();
         boolean ret = false;
         for (Entry<String, String> e : files.entrySet()) {
-            if (!e.getKey().endsWith("/" + excludeSeite.getId() + ".ff")) {
+            if (!e.getKey().endsWith("/feature-fields/" + excludeSeite.getId() + ".ff")) {
                 FeatureFields ff = gson.fromJson(e.getValue(), FeatureFields.class);
                 String cv = ff.get(id);
                 if (cv != null && cv.equals(value)) {

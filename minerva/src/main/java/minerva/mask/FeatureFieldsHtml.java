@@ -3,6 +3,7 @@ package minerva.mask;
 import java.util.List;
 
 import minerva.base.NLS;
+import minerva.base.StringService;
 import minerva.book.BookType;
 import minerva.keyvalue.Values;
 import minerva.keyvalue.ValuesSO;
@@ -105,6 +106,11 @@ public class FeatureFieldsHtml {
         } else if (MaskFieldType.USER.equals(f.getType())) {
             String options = "";
             String val = ff.get(f.getId());
+            if (StringService.isNullOrEmpty(val)) {
+                options += "<option selected></option>\n";
+            } else {
+                options += "<option></option>\n";
+            }
             for (String user : UserAccess.getUserNames()) {
                 options += "<option" + (user.equals(val) ? " selected" : "") + ">" + user + "</option>\n";
             }

@@ -67,8 +67,13 @@ public class GitlabPushTransaction {
             git.commit(commitMessage, name, user.getMailAddress(), user, filesToAdd, filesToRemove);
             workspace.onPush();
         } catch (MinervaEmptyCommitException ex) {
-            Logger.info("no changes -> no commit and no merge request needed\nadd: "
-                    + addFilenames + "\nremove: " + removeFilenames);
+            if (addFilenames.size() > 5 || removeFilenames.size() > 5) { // prevent ultra long log message output
+                Logger.info("no changes -> no commit and no merge request needed. add: "
+                        + addFilenames.size() + ", remove: " + removeFilenames.size());
+            } else {
+                Logger.info("no changes -> no commit and no merge request needed\nadd: "
+                        + addFilenames + "\nremove: " + removeFilenames);
+            }
             return false;
         } catch (Exception ex) {
             throw new RuntimeException(ex);

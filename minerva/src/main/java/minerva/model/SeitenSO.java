@@ -14,6 +14,7 @@ import minerva.access.DirAccess;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.base.MList;
 import minerva.base.StringService;
+import minerva.book.BookType;
 import minerva.comment.Comment;
 import minerva.comment.SeiteCommentService2;
 import minerva.config.MinervaConfig;
@@ -160,6 +161,9 @@ public class SeitenSO extends MList<SeiteSO> {
     }
     
     private void tagNewPage(SeiteSO seite) {
+        if (!BookType.PUBLIC.equals(seite.getBook().getBook().getType())) {
+            return;
+        }
         MinervaConfig config = MinervaWebapp.factory().getConfig();
         String tag = config.getTagNewPage_tag();
         if (!StringService.isNullOrEmpty(tag)) {

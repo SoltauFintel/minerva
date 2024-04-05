@@ -25,6 +25,7 @@ public class EditFeatureFieldsPage extends SPage {
                 }
             }
             mad.save();
+            // TODO Update search index
             
             ctx.redirect(viewlink);
         } else {

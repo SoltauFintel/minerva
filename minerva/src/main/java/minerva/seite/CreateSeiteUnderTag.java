@@ -117,7 +117,7 @@ public class CreateSeiteUnderTag {
         return seite;
     }
     
-    private String body(String text) {
+    public static String body(String text) {
         return "<html><body><p>" + text + "</p></body></html>";
     }
 }

@@ -22,7 +22,7 @@ public class MaskAndDataFields {
     
     public MaskAndDataFields(SeiteSO seite) {
         this.seite = seite;
-        String tag = seite.getFeatureTag();
+        String tag = seite.hasParent() ? seite.getParent().getFeatureTag() : "ft"; // Die Parent-Seite ist maßgeblich!!
         MasksService sv = new MasksService(seite.getBook().getWorkspace());
         maskFields = new ArrayList<>();
         maskFields.addAll(sv.getMask("ft").getFields());

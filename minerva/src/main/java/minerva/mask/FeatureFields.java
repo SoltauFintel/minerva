@@ -3,6 +3,8 @@ package minerva.mask;
 import java.util.HashMap;
 import java.util.Map;
 
+import minerva.model.SeiteSO;
+
 public class FeatureFields {
     // TODO FeatureFields löschen, wenn Seite gelöscht wird
     private String seiteId;
@@ -10,7 +12,15 @@ public class FeatureFields {
     private String maskTag;
     private final Map<String, String> fields = new HashMap<>();
     
-    public FeatureFields() { // Must only be called by FeatureFieldsService.get()!
+    /** Must only be called by FeatureFields.create(feature)! */
+    public FeatureFields() {
+    }
+    
+    public static FeatureFields create(SeiteSO feature) {
+        FeatureFields ff = new FeatureFields();
+        ff.setSeiteId(feature.getId());
+        ff.setMaskTag(feature.getFeatureTag());
+        return ff;
     }
     
     public String getSeiteId() {

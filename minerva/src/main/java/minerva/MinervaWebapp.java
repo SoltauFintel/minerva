@@ -63,6 +63,7 @@ import minerva.mask.field.AddMaskFieldPage;
 import minerva.mask.field.DeleteMaskFieldAction;
 import minerva.mask.field.EditMaskFieldPage;
 import minerva.mask.field.SortMaskFieldAction;
+import minerva.mask.reportinfos.UpdateReportInfosAction;
 import minerva.migration.MigrationPage;
 import minerva.model.JournalSO;
 import minerva.model.JournalSO.JournalTimer;
@@ -298,7 +299,10 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/mask/:branch/:tag/:id/edit-field", EditMaskFieldPage.class);
         get("/mask/:branch/:tag/:id/delete-field", DeleteMaskFieldAction.class);
         get("/mask/:branch/:tag/:id/sort-field", SortMaskFieldAction.class);
+        
         form("/ff/:branch/:book/:id", EditFeatureFieldsPage.class);
+        
+        get("/mask/:branch/:book/update-report-infos", UpdateReportInfosAction.class);
     }
     
     private void misc() {

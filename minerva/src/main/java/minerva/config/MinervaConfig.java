@@ -330,4 +330,13 @@ public class MinervaConfig {
         langs.add(config.get("one.lang", "de"));
         return langs;
     }
+    
+    // ~XMinerva
+    public String getReportInfosDownloadUrl() {
+        String url = config.get("report-infos.url");
+        if (StringService.isNullOrEmpty(url)) {
+            throw new RuntimeException("report-infos.url is not set in AppConfig.properties");
+        }
+        return url;
+    }
 }
