@@ -61,13 +61,14 @@ public class FeatureFieldsHtml {
                         </div>
                         """
                         .replace("{save}", n("save"))
-                        .replace("{cancel}", n("cancel"))
-                        ;
+                        .replace("{cancel}", n("cancel"));
             } else {
                 String st = "<div class=\"form-group\"><div class=\"col-lg-8 col-lg-offset-2\">"
-                        + "<a href=\"/ff/{branch}/{bookFolder}/{seiteId}\" class=\"btn btn-primary btn-sm br\">{editFeatureFields}</a>"
-                        + "<a href=\"/f/{branch}/{bookFolder}/{seiteId}\" class=\"btn btn-primary btn-sm br\">Features</a>"
-                        + "</div></div>";
+                        + "<a href=\"/ff/{branch}/{bookFolder}/{seiteId}\" class=\"btn btn-primary btn-sm br\">{editFeatureFields}</a>";
+                if (hasFt_tag()) {
+                    st += "<a href=\"/f/{branch}/{bookFolder}/{seiteId}\" class=\"btn btn-success btn-lg br\"><i class=\"fa fa-table\"></i> Features</a>";
+                }
+                st += "</div></div>\n";
                 ret += st.replace("{editFeatureFields}", n("editFeatureFields"));
             }
         }
@@ -75,6 +76,15 @@ public class FeatureFieldsHtml {
                 .replace("{bookFolder}", seite.getBook().getBook().getFolder())
                 .replace("{seiteId}", seite.getId());
         return ret + "</fieldset>\n</form>\n" + (editMode ? "" : "<hr/>");
+    }
+
+    private boolean hasFt_tag() {
+        for (String tag : seite.getSeite().getTags()) {
+            if (tag.startsWith("ft_")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String getFieldHtml(MaskField f, FeatureFields ff) {

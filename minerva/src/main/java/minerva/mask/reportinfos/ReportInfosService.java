@@ -33,7 +33,6 @@ import minerva.mask.FeatureFieldsService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
-import minerva.seite.CreateSeiteUnderTag;
 
 // ~XMinerva
 public class ReportInfosService {
@@ -213,7 +212,7 @@ public class ReportInfosService {
         if (firstImport || newMode) {
             feature.getSeite().getTitle().setString("de", title);
             feature.saveMetaTo(files);
-            feature.getContent().setString("de", CreateSeiteUnderTag.body("::"));
+            feature.getContent().setString("de", "");
             feature.saveHtmlTo(files, List.of("de"));
             
             ff = FeatureFields.create(feature);

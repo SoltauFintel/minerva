@@ -502,7 +502,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             if (func.test(i)) {
                 mindmapJson += "{id: " + a(i.id) //
                         + ", parentId: " + a(i.parentId) //
-                        + ", text: \"" + i.text + "\"" //
+                        + ", text: " + a(i.text) //
                         + (i.type == null ? "" : (", type: \"" + i.type + "\"")) //
                         + "},\n";
                 if (addSub) {
@@ -513,6 +513,6 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     }
     
     private String a(String a) {
-        return a == null ? "null" : "\"" + a + "\"";
+        return a == null ? "null" : "\"" + a.replace("\"", "\\\"") + "\"";
     }
 }
