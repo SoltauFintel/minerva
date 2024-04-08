@@ -129,8 +129,15 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("editorsNote", esc(seite.getEditorsNote()));
         put("editorsNoteBR", esc(seite.getEditorsNote()).replace("\n", "<br/>"));
         put("hasEditorsNote", !StringService.isNullOrEmpty(seite.getEditorsNote()));
-        put("hasLeftArea", true);
-        put("leftAreaContent", getTreeHTML(seiteSO));
+        if (BookType.FEATURE_TREE.equals(book.getBook().getType())) {
+            put("hasLeftArea", false);
+            put("leftAreaContent", "");
+            mindmap();
+        } else {
+            put("hasLeftArea", true);
+            put("leftAreaContent", getTreeHTML(seiteSO));
+            put("mindmapData", "");
+        }
         editorComponent();
         
         header(modifyHeader(seiteSO.getTitle()));
@@ -465,5 +472,14 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             }
         }
         return false;
+    }
+    
+    private void mindmap() {
+        put("mindmapData", "{id: null, parentId: null, text: 'MindMap'},"
+                + "{id: '2', parentId: null, text: 'Hey ho!'},"
+                + "{id: '3', parentId: null, text: 'Kammiq', type: 'type-a'},"
+                + "{id: '20', parentId: '2', text: 'Yo Yo Yo', type: 'type-a'},"
+                + "{id: '21', parentId: '2', text: 'Schneemann<br>Gartenmann<br>Gartentisch', type: 'type-b'}"
+                );
     }
 }
