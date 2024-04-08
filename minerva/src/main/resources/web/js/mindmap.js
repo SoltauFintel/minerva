@@ -55,7 +55,7 @@ function createMap(data) {
   data.filter(x => x.parentId == null)
     .forEach(x => {
       x.div = aktDiv;
-      aktDiv *= -1
+      aktDiv *= 1      // -1
     })
   // set root Elements div = 0
   data.find(x => x.id == null).div = 0

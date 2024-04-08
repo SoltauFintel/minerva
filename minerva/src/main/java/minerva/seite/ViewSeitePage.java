@@ -1,6 +1,8 @@
 package minerva.seite;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import org.pmw.tinylog.Logger;
 
@@ -24,6 +26,7 @@ import minerva.user.User;
 import minerva.user.UserAccess;
 
 public class ViewSeitePage extends SPage implements Uptodatecheck {
+    private String mindmapJson;
     
     @Override
     protected SeiteSO getSeite() {
@@ -475,11 +478,41 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     }
     
     private void mindmap() {
-        put("mindmapData", "{id: null, parentId: null, text: 'MindMap'},"
-                + "{id: '2', parentId: null, text: 'Hey ho!'},"
-                + "{id: '3', parentId: null, text: 'Kammiq', type: 'type-a'},"
-                + "{id: '20', parentId: '2', text: 'Yo Yo Yo', type: 'type-a'},"
-                + "{id: '21', parentId: '2', text: 'Schneemann<br>Gartenmann<br>Gartentisch', type: 'type-b'}"
-                );
+        List<MME> list = new ArrayList<>();
+        MME root, parent;
+        list.add(root = new MME(seite.getTitle(), "type-a"));
+        if (seite.getSeiten().size() <= MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
+            for (SeiteSO sub : seite.getSeiten()) {
+                list.add(parent = new MME(sub.getId(), root, sub.getTitle()));
+                if (sub.getSeiten().size() < 10) {
+                    for (SeiteSO sub2 : sub.getSeiten()) {
+                        list.add(new MME(sub2.getId(), parent, sub2.getTitle()));
+                    }
+                }
+            }
+        }
+        mindmapJson = "";
+        add(list, i -> i.id == null, false);
+        add(list, i -> i.id != null && i.parentId == null, true);
+        put("mindmapData", mindmapJson);
+    }
+    
+    private void add(List<MME> list, Predicate<MME> func, boolean addSub) {
+        for (MME i : list) {
+            if (func.test(i)) {
+                mindmapJson += "{id: " + a(i.id) //
+                        + ", parentId: " + a(i.parentId) //
+                        + ", text: \"" + i.text + "\"" //
+                        + (i.type == null ? "" : (", type: \"" + i.type + "\"")) //
+                        + "},\n";
+                if (addSub) {
+                    add(list, j -> j.parentId != null && j.parentId.equals(i.id), true);
+                }
+            }
+        }
+    }
+    
+    private String a(String a) {
+        return a == null ? "null" : "\"" + a + "\"";
     }
 }

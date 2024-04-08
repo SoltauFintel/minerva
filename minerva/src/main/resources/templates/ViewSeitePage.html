@@ -1,78 +1,82 @@
 {{master: master_mms}}
 
-<div id="mindmaproot"></div>
-<div class="row">
-    <div class="col-lg-12">
-        <style>
-            .f-col {
-              display: flex;
-              flex-direction: column;
-              flex-wrap: nowrap;
-              justify-content: space-around;
-            }
-        
-            #mindmapc {
-              display: flex;
-              justify-content: space-between;
-              padding: 1em;
-              min-width: 500px;
-              border: 1pt dotted grey;
-              margin-top: 1em;
-            }
+{{if not hasLeftArea}}
+    <!-- MindMap -->
+    <div id="mindmaproot"></div>
+    <div class="row">
+        <div class="col-lg-9">
+            <style>
+                .f-col {
+                  display: flex;
+                  flex-direction: column;
+                  flex-wrap: nowrap;
+                  justify-content: space-around;
+                }
             
-            #mindmapc p {
-              padding: 0.25em 0.5em;
-              background: #f0f0ff;
-              border: 1px solid #666;
-              border-radius: 0.5em;
-              text-align: center;
-              max-width: 300px;
-            }
+                #mindmapc {
+                  display: flex;
+                  justify-content: space-between;
+                  padding: 1em;
+                  min-width: 500px;
+                  border: 1pt dotted grey;
+                  margin-top: 1em;
+                }
+                
+                #mindmapc p {
+                  padding: 0.25em 0.5em;
+                  background: #f0f0ff;
+                  border: 1px solid #666;
+                  border-radius: 0.5em;
+                  text-align: center;
+                  max-width: 300px;
+                }
+                
+                #mindmapc p a {
+                    text-decoration: none;
+                }
             
-            #mindmapc p a {
-                text-decoration: none;
-            }
-        
-            #mindmapc p a:hover {
-                background-color: #ff3;
-            }
+                #mindmapc p a:hover {
+                    background-color: #ff3;
+                }
+                
+                .type-a {
+                    background-color: #fcc !important;
+                }
+                .type-b {
+                    background-color: #cfc !important;
+                }
+                .type-c {
+                    background-color: #fcf !important;
+                }
             
-            .type-a {
-                background-color: #fcc !important;
-            }
-            .type-b {
-                background-color: #cfc !important;
-            }
-            .type-c {
-                background-color: #fcf !important;
-            }
-        
-            svg {
-              position: absolute;
-              z-index: -1
-            }
-        
-            .path {
-              stroke: silver;
-              fill: none;
-              stroke-width: 2;
-            }
-        </style>
-
-        <script>
-            var mindMapBaseUrl = '/f/mindmap/4711?id='
-        </script>
-        
-        <div id="mindmapc"></div>
-        
-        <script src="/js/mindmap.js"></script>
-        <script>
-            const data = [ {{mindmapData}} ];
-            createMap(data);
-            resizeObserver.observe(document.getElementById('mindmapc'));
-        </script>
+                svg {
+                  position: absolute;
+                  z-index: -1
+                }
+            
+                .path {
+                  stroke: silver;
+                  fill: none;
+                  stroke-width: 2;
+                }
+            </style>
+    
+            <script>
+                var mindMapBaseUrl = '/s/{{branch}}/{{bookFolder}}/'
+            </script>
+            
+            <div id="mindmapc"></div>
+            
+            <script src="/js/mindmap.js"></script>
+            <script>
+                const data = [ {{mindmapData}} ];
+                createMap(data);
+                resizeObserver.observe(document.getElementById('mindmapc'));
+            </script>
+        </div>
     </div>
-</div>
+    <!-- End of mindmap -->
+{{/if}}
 
 <div class="row">
     <div class="col-lg-9">
