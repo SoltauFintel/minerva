@@ -2,6 +2,7 @@ package minerva.seite.move;
 
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
+import minerva.book.BookType;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -56,12 +57,16 @@ public class MoveSeitePage extends SPage {
                 gliederung.append("\t<li>");
                 gliederung.append(esc(seite.getSeite().getTitle().getString(lang)));
                 gliederung.append("</li>\n");
-                fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, true);
+                if (sub(seite)) {
+                    fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, true);
+                }
             } else if (seite.getId().equals(id)) {
                 gliederung.append("\t<li class=\"movePageCurrent\">");
                 gliederung.append(esc(seite.getSeite().getTitle().getString(lang)));
                 gliederung.append("</li>\n");
-                fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, true);
+                if (sub(seite)) {
+                    fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, true);
+                }
             } else if (this.seite.getSeite().getParentId().equals(seite.getId())) {
                 // current parent page
                 gliederung.append("\t<li>");
@@ -69,7 +74,9 @@ public class MoveSeitePage extends SPage {
                 gliederung.append(" <i>(");
                 gliederung.append(n("currentParentPage"));
                 gliederung.append(")</i></li>\n");
-                fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, false);
+                if (sub(seite)) {
+                    fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, false);
+                }
             } else {
                 String link = viewlink + "/move-ack?parentid=" + Escaper.urlEncode(seite.getId(), "");
                 gliederung.append("\t<li><a class=\"movelink\" href=\"");
@@ -77,10 +84,18 @@ public class MoveSeitePage extends SPage {
                 gliederung.append("\">");
                 gliederung.append(esc(seite.getSeite().getTitle().getString(lang)));
                 gliederung.append("</a></li>\n");
-                fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, false);
+                if (sub(seite)) {
+                    fillSeiten(branch, bookFolder, seite.getSeiten(), lang, gliederung, false);
+                }
             }
         }
         gliederung.append("</ul>\n");
     }
 
+    private boolean sub(SeiteSO seite) {
+        if (BookType.FEATURE_TREE.equals(seite.getBook().getBook().getType())) {
+            return seite.getSeiten().size() <= MinervaWebapp.factory().getConfig().getMaxSubfeatures();
+        }
+        return true;
+    }
 }
