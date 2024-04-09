@@ -6,6 +6,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.base.StringService;
+import minerva.comment.SeiteCommentService2;
 import minerva.mask.field.MaskField;
 import minerva.model.SeiteSO;
 import minerva.seite.SPage;
@@ -114,6 +115,7 @@ public class FeaturesTablePage extends SPage {
             row.put("columns", columns);
             row.put("eins", ++k % 4 == 1);
             row.put("hasText", ft.hasContentR("de") != 0);
+            row.put("hasOpenComments", new SeiteCommentService2(ft).getCommentState(ft.getLogin()) > 0);
             n++;
         }
         putInt("n", n);

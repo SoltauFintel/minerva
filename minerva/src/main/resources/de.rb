@@ -93,6 +93,7 @@ treffer=Treffer
 reindex-complete=Der Suchindex wurde für alle Bücher aktualisiert.
 viewBook=Buch im Bearbeitungsbereich anzeigen
 viewPage=Seite im Bearbeitungsbereich anzeigen
+hasText=Text vorhanden
 hasComment=Kommentar(e) vorhanden
 exclusions=Ausschlüsse
 noSpecificCustomer=kein Kunde

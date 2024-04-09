@@ -94,6 +94,7 @@ treffer=Search hits
 reindex-complete=The search index has been updated for all books.
 viewBook=View book in editing area
 viewPage=View page in editing area
+hasText=text available
 hasComment=comment(s) available
 exclusions=Exclusions
 noSpecificCustomer=no specific customer
