@@ -96,6 +96,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             put("hasPositionlink", seiteSO.getSeiten().size() > 1);
         }
 
+        put("newPage", n(book.isFeatureTrue() ? "newFeature" : "newPage"));
         put("Sortierung", n(seite.isSorted() ? "alfaSorted" : "manuSorted"));
         put("isSorted", seite.isSorted());
         put("hasAbsoluteUrlImage", new FixHttpImage().hasAbsoluteUrlImage(seiteSO, langs));

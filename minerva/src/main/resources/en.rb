@@ -3,6 +3,7 @@ subpages=Subpages
 sort=Sort
 edit=Edit
 newPage=New page
+newFeature=New feature
 pullT=Reload page from server
 none=none
 move=Move

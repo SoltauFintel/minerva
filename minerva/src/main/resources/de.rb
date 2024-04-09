@@ -3,6 +3,7 @@ reorder=Umordnen
 sort=Sortieren
 edit=Bearbeiten
 newPage=Neue Seite
+newFeature=Neues Feature
 pullT=Seite erneut vom Server laden
 none=keine
 move=Verschieben
