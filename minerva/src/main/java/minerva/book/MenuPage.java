@@ -62,7 +62,7 @@ public class MenuPage extends WPage {
             if (BookType.INTERNAL.equals(bookSO.getBook().getType())) {
                 menu(list, bookSO.getBook().getTitle().getString(user.getGuiLanguage()), "fa-book fa-internal", "/b/:branch/" + bookSO.getBook().getFolder());
             } else if (BookType.FEATURE_TREE.equals(bookSO.getBook().getType())) {
-                menu(list, bookSO.getBook().getTitle().getString(user.getGuiLanguage()), "fa-sitemap", "/b/:branch/" + bookSO.getBook().getFolder());
+                menu(list, bookSO.getBook().getTitle().getString(user.getGuiLanguage()), "fa-sitemap fa-sitemap-color", "/b/:branch/" + bookSO.getBook().getFolder());
             }
         }
         menu(list, "allHelpKeys", "fa-question-circle", "/w/:branch/help-keys");
