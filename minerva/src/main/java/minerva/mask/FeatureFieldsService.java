@@ -1,5 +1,7 @@
 package minerva.mask;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -11,14 +13,19 @@ import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.base.StringService;
+import minerva.book.BookType;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 
 public class FeatureFieldsService {
 
     public FeatureFields get(SeiteSO seite) {
-        FeatureFields ff = new MultiPurposeDirAccess(seite.getBook().dao()).load(dn(seite), FeatureFields.class);
+        FeatureFields ff = load(seite);
         return ff == null ? FeatureFields.create(seite) : ff;
+    }
+
+    private FeatureFields load(SeiteSO seite) {
+        return new MultiPurposeDirAccess(seite.getBook().dao()).load(dn(seite), FeatureFields.class);
     }
     
     public void set(SeiteSO seite, FeatureFields featureFields) {
@@ -64,5 +71,53 @@ public class FeatureFieldsService {
         long end = System.currentTimeMillis();
         Logger.info("find value \"" + value + "\" in field " + id + ": " + (ret ? "found" : "not found") + " | " + (end - start) + "ms");
         return ret;
+    }
+    
+    public List<Responsible> responsibles(BookSO book) {
+        if (!BookType.FEATURE_TREE.equals(book.getBook().getType())) {
+            throw new RuntimeException("It's not a feature tree");
+        }
+        List<Responsible> ret = new ArrayList<>();
+        for (SeiteSO seite : book.getAlleSeiten()) {
+            FeatureFields dataFields = load(seite);
+            if (dataFields != null) {
+                String key = dataFields.get("responsible");
+                if (!StringService.isNullOrEmpty(key)) {
+                    find(key, ret).add(seite);
+                }
+            }
+        }
+        ret.sort((a, b) -> b.seiten.size() - a.seiten.size());
+        return ret;
+    }
+
+    private Responsible find(String name, List<Responsible> list) {
+        for (Responsible r : list) {
+            if (r.name.equalsIgnoreCase(name)) {
+                return r;
+            }
+        }
+        Responsible r = new Responsible();
+        r.name = name;
+        list.add(r);
+        return r;
+    }
+    
+    public static class Responsible {
+        public String name;
+        public final List<RSeite> seiten = new ArrayList<>();
+        
+        public void add(SeiteSO seite) {
+            RSeite rs = new RSeite();
+            rs.seiteId = seite.getId();
+            rs.title = seite.getTitle();
+            seiten.add(rs);
+            seiten.sort((a, b) -> a.title.compareToIgnoreCase(b.title));
+        }
+    }
+    
+    public static class RSeite {
+        public String seiteId;
+        public String title;
     }
 }

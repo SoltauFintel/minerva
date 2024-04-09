@@ -59,6 +59,7 @@ import minerva.mask.DeleteMaskAction;
 import minerva.mask.EditFeatureFieldsPage;
 import minerva.mask.FeaturesTablePage;
 import minerva.mask.MasksPage;
+import minerva.mask.ResponsibilitiesPage;
 import minerva.mask.ViewMaskPage;
 import minerva.mask.field.AddMaskFieldPage;
 import minerva.mask.field.DeleteMaskFieldAction;
@@ -304,6 +305,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/ff/:branch/:book/:id", EditFeatureFieldsPage.class);
 
         form("/f/:branch/:book/:id", FeaturesTablePage.class);
+        get("/responsibilities/:branch/:book", ResponsibilitiesPage.class);
 
         get("/mask/:branch/:book/update-report-infos", UpdateReportInfosAction.class);
     }

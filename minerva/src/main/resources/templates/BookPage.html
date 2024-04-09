@@ -65,10 +65,15 @@
                     <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
             {{/if}}
         </p>
-        <p style="font-size: 8pt; color: #888;">
+        <p style="font-size: 8pt; color: #888;" class="mb2">
             {{Sortierung}}
         </p>
-        <p class="mt2">
+        {{if isFeatureTree}}
+            <p>
+                <a href="/responsibilities/{{branch}}/{{bookFolder}}" class="btn btn-default mw">{{N.Responsibilities}}</a>
+            </p>
+        {{/if}}
+        <p>
             <a href="{{booklink}}{{if not allPages}}?m=all{{/if}}" class="btn btn-default mw">{{if allPages}}{{N.allPagesOff}}{{else}}{{N.allPages}}{{/if}}</a>
         </p>
         <p>

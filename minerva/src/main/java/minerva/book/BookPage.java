@@ -32,6 +32,7 @@ public class BookPage extends BPage implements Uptodatecheck {
         if (isOneLang()) {
             langs = oneLang(model, book);
         }
+        put("isFeatureTree", BookType.FEATURE_TREE.equals(book.getBook().getType()));
         put("positionlink", booklink + "/order");
         put("sortlink", booklink + "/sort");
         put("hasPositionlink", book.getSeiten().size() > 1);

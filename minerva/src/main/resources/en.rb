@@ -333,3 +333,4 @@ editFeatureFields=Feature-Felder bearbeiten
 valueIsntUnique=$l value "$v" isn't unique. Please change value!
 search=Search
 empty=empty
+Responsibilities=Responsibilities
