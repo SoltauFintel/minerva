@@ -27,7 +27,6 @@ import github.soltaufintel.amalia.rest.RestResponse;
 import minerva.MinervaWebapp;
 import minerva.access.CommitMessage;
 import minerva.base.StringService;
-import minerva.book.BookType;
 import minerva.mask.FeatureFields;
 import minerva.mask.FeatureFieldsService;
 import minerva.model.BookSO;
@@ -47,7 +46,7 @@ public class ReportInfosService {
     }
     
     public void firstImport(BookSO book, boolean force) {
-        if (!BookType.FEATURE_TREE.equals(book.getBook().getType())) {
+        if (!book.isFeatureTrue()) {
             throw new RuntimeException("Book must be of type 'Feature Tree'");
         }
         int subpages = 0;
@@ -70,7 +69,7 @@ public class ReportInfosService {
     }
     
     public void update(BookSO book) {
-        if (!BookType.FEATURE_TREE.equals(book.getBook().getType())) {
+        if (!book.isFeatureTrue()) {
             throw new RuntimeException("Book must be of type 'Feature Tree'");
         }
         for (String rt : reportTypes) {

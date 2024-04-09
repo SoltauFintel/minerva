@@ -51,7 +51,10 @@ public class ReportFeature {
     }
 
     public String getTemplate() {
-        return template;
+        if (template == null) {
+            return "";
+        }
+        return template.substring(template.lastIndexOf("/") + 1);
     }
 
     public void setTemplate(String template) {

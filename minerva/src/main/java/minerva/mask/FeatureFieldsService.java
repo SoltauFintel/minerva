@@ -13,7 +13,6 @@ import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.base.StringService;
-import minerva.book.BookType;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
@@ -76,7 +75,7 @@ public class FeatureFieldsService {
     }
     
     public List<Responsible> responsibles(BookSO book) {
-        if (!BookType.FEATURE_TREE.equals(book.getBook().getType())) {
+        if (!book.isFeatureTrue()) {
             throw new RuntimeException("It's not a feature tree");
         }
         List<Responsible> ret = new ArrayList<>();
@@ -129,7 +128,7 @@ public class FeatureFieldsService {
         }
         final String x = q.toLowerCase();
         for (BookSO book : workspace.getBooks()) {
-            if (!BookType.FEATURE_TREE.equals(book.getBook().getType())) {
+            if (!book.isFeatureTrue()) {
                 continue;
             }
             int n = 0;

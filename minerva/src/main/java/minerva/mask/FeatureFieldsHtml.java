@@ -4,7 +4,6 @@ import java.util.List;
 
 import minerva.base.NLS;
 import minerva.base.StringService;
-import minerva.book.BookType;
 import minerva.keyvalue.Values;
 import minerva.keyvalue.ValuesSO;
 import minerva.mask.field.MaskField;
@@ -25,7 +24,7 @@ public class FeatureFieldsHtml {
     }
 
     public String html() {
-        if (!BookType.FEATURE_TREE.equals(seite.getBook().getBook().getType())) {
+        if (!seite.isFeatureTree()) {
             return ""; // feature fields only for feature tree item
         }
         MaskAndDataFields mad = new MaskAndDataFields(seite);

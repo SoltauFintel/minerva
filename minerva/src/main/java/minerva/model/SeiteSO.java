@@ -26,7 +26,6 @@ import minerva.access.DirAccess;
 import minerva.base.NlsString;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
-import minerva.book.BookType;
 import minerva.comment.SeiteCommentService2;
 import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
@@ -565,7 +564,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
      * to be on the safe side)
      */
     public int hasContent(String lang) {
-        if (BookType.FEATURE_TREE.equals(getBook().getBook().getType())) {
+        if (book.isFeatureTrue()) {
             return 1;
         }
         return hasContentR(lang);
@@ -664,6 +663,10 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         } else {
             return "ft";
         }
+    }
+    
+    public boolean isFeatureTree() {
+        return book.isFeatureTrue();
     }
 
     @Override

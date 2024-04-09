@@ -21,11 +21,15 @@ public class ValidatorService {
         List<String> msg = new ArrayList<>();
         String html = seite.getContent().getString(pageLang);
         if (html == null || html.isBlank()) {
-            msg.add("v._emptyHTML");
+            if (!seite.isFeatureTree()) {
+                msg.add("v._emptyHTML");
+            }
         } else {
             Document doc = Jsoup.parse(html);
             if (doc.select("body").isEmpty()) {
-                msg.add("v.noBody");
+                if (!seite.isFeatureTree()) {
+                    msg.add("v.noBody");
+                }
             } else {
                 Element body = doc.select("body").get(0);
                 emptyLinesAtBegin(body, msg);

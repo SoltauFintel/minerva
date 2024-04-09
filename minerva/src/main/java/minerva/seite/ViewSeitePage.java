@@ -86,10 +86,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("bookTitle", esc(seiteSO.getBook().getBook().getTitle().getString(u.getPageLanguage()))); // bin usicher
         put("isPublicBook", BookType.PUBLIC.equals(seiteSO.getBook().getBook().getType()));
         put("isInternalBook", BookType.INTERNAL.equals(seiteSO.getBook().getBook().getType()));
-        put("isFeatureTree", BookType.FEATURE_TREE.equals(seiteSO.getBook().getBook().getType()));
+        put("isFeatureTree", seiteSO.isFeatureTree());
         
-        if (BookType.FEATURE_TREE.equals(seiteSO.getBook().getBook().getType())
-                && seiteSO.getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
+        if (seiteSO.isFeatureTree() && seiteSO.getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
             put("hasSubPages", false);
             put("hasPositionlink", false);
         } else {
@@ -132,7 +131,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("editorsNote", esc(seite.getEditorsNote()));
         put("editorsNoteBR", esc(seite.getEditorsNote()).replace("\n", "<br/>"));
         put("hasEditorsNote", !StringService.isNullOrEmpty(seite.getEditorsNote()));
-        if (BookType.FEATURE_TREE.equals(book.getBook().getType())) {
+        if (book.isFeatureTrue()) {
             put("hasLeftArea", false);
             put("leftAreaContent", "");
             mindmap();
@@ -214,7 +213,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             boolean showAllPages) {
         int n = 0;
         if (seite == null
-                || !BookType.FEATURE_TREE.equals(seite.getBook().getBook().getType())
+                || !seite.isFeatureTree()
                 || seite.getSeiten().size() <= MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
             seiten.sort(lang);
             for (SeiteSO sub : seiten) {

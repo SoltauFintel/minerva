@@ -105,9 +105,6 @@ public class FeaturesTablePage extends SPage {
                             + ft.getId() + "\"><b>" + v + "</b></a>";
                     first = false;
                 } else if (!v.isBlank() && !"SQLJasperReportInformation".equals(v)) {
-                    if (f.getId().equalsIgnoreCase("template")) {
-                        v = v.substring(v.lastIndexOf("/") + 1);
-                    }
                     columns += "<br/><small>" + f.getLabel() + ": </small><b>" + v+"</b>";
                 }
             }

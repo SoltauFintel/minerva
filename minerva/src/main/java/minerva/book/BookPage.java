@@ -32,7 +32,7 @@ public class BookPage extends BPage implements Uptodatecheck {
         if (isOneLang()) {
             langs = oneLang(model, book);
         }
-        put("isFeatureTree", BookType.FEATURE_TREE.equals(book.getBook().getType()));
+        put("isFeatureTree", book.isFeatureTrue());
         put("positionlink", booklink + "/order");
         put("sortlink", booklink + "/sort");
         put("hasPositionlink", book.getSeiten().size() > 1);
@@ -105,10 +105,8 @@ public class BookPage extends BPage implements Uptodatecheck {
                 }
                 gliederung.append("</li>\n");
                 
-                if (BookType.FEATURE_TREE.equals(seite.getBook().getBook().getType())) {
-                    if (seite.getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
-                        continue;
-                    }
+                if (seite.isFeatureTree() && seite.getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
+                    continue;
                 }
                 fillSeiten(branch, bookFolder, seite.getSeiten(), lang, allPages, true, gliederung); // recursive
             }

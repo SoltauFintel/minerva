@@ -2,7 +2,6 @@ package minerva.seite.move;
 
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
-import minerva.book.BookType;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -93,7 +92,7 @@ public class MoveSeitePage extends SPage {
     }
 
     private boolean sub(SeiteSO seite) {
-        if (BookType.FEATURE_TREE.equals(seite.getBook().getBook().getType())) {
+        if (seite.isFeatureTree()) {
             return seite.getSeiten().size() <= MinervaWebapp.factory().getConfig().getMaxSubfeatures();
         }
         return true;

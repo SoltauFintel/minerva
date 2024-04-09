@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.book.Book;
+import minerva.book.BookType;
 import minerva.exclusions.ExclusionsService;
 import minerva.seite.Breadcrumb;
 import minerva.seite.IBreadcrumbLinkBuilder;
@@ -132,6 +133,10 @@ public class BookSO {
     
     public String getTitle() {
         return book.getTitle().getString(getUser().getGuiLanguage());
+    }
+    
+    public boolean isFeatureTrue() {
+        return BookType.FEATURE_TREE.equals(book.getType());
     }
 
     public void activateSorted() {
