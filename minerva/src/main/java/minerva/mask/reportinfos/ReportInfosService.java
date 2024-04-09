@@ -63,8 +63,9 @@ public class ReportInfosService {
         for (String rt : reportTypes) {
             Logger.info("- importing report type " + rt + " ...");
             ncreated = 0;
+            nupdated = 0;
             doFirstImport(book, rt, reportInfos.stream().filter(i -> i.getTyp().equals(rt)));
-            Logger.info("  saved features: " + ncreated);
+            Logger.info("  updated features: " + nupdated + ", created features: " + ncreated);
         }
     }
     

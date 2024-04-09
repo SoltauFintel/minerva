@@ -132,6 +132,7 @@ public class FeatureFieldsService {
             if (!BookType.FEATURE_TREE.equals(book.getBook().getType())) {
                 continue;
             }
+            int n = 0;
             for (SeiteSO seite : book.getAlleSeiten()) {
                 String path = seite.getBook().getBook().getFolder() + "/" + seite.getId();
                 if (!exist(path, result)) {
@@ -146,8 +147,12 @@ public class FeatureFieldsService {
                         sr.setPath(path);
                         sr.setContent(lv);
                         result.add(sr);
+                        n++;
                     }
                 }
+            }
+            if (n > 0) {
+                Logger.info("Search \"" + q + "\" in " + book.getTitle() + " fields: " + n + " hit" + (n == 1 ? "" : "s"));
             }
         }
     }
