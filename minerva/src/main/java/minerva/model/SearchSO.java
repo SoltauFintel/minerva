@@ -13,6 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import github.soltaufintel.amalia.rest.REST;
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.base.StringService;
+import minerva.mask.FeatureFieldsService;
 import minerva.search.CreatePageRequest;
 import minerva.search.CreateSiteRequest;
 import minerva.search.SearchResult;
@@ -96,11 +97,15 @@ public class SearchSO {
     }
     
     public List<SearchResult> search(String x, String lang) {
+        List<SearchResult> ret;
         if (StringService.isNullOrEmpty(x) || host == null) {
-            return new ArrayList<>();
+            ret = new ArrayList<>();
+        } else {
+            String url = host + "/search/" + getSiteName(lang) + "?q=" + Escaper.urlEncode(x, "");
+            Type type = new TypeToken<ArrayList<SearchResult>>() {}.getType();
+            ret = new REST(url).get().fromJson(type);
         }
-        String url = host + "/search/" + getSiteName(lang) + "?q=" + Escaper.urlEncode(x, "");
-        Type type = new TypeToken<ArrayList<SearchResult>>() {}.getType();
-        return new REST(url).get().fromJson(type);
+        new FeatureFieldsService().search(workspace, x, lang, ret);
+        return ret;
     }
 }

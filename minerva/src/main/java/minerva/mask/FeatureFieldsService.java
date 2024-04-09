@@ -16,6 +16,8 @@ import minerva.base.StringService;
 import minerva.book.BookType;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
+import minerva.model.WorkspaceSO;
+import minerva.search.SearchResult;
 
 public class FeatureFieldsService {
 
@@ -119,5 +121,43 @@ public class FeatureFieldsService {
     public static class RSeite {
         public String seiteId;
         public String title;
+    }
+
+    public void search(WorkspaceSO workspace, String q, String lang, List<SearchResult> result) {
+        if (!"de".equals(lang)) {
+            return;
+        }
+        final String x = q.toLowerCase();
+        for (BookSO book : workspace.getBooks()) {
+            if (!BookType.FEATURE_TREE.equals(book.getBook().getType())) {
+                continue;
+            }
+            for (SeiteSO seite : book.getAlleSeiten()) {
+                String path = seite.getBook().getBook().getFolder() + "/" + seite.getId();
+                if (!exist(path, result)) {
+                    FeatureFields dataFields = load(seite);
+                    if (dataFields == null) {
+                        continue;
+                    }
+                    String lv = dataFields.search(x, workspace);
+                    if (lv != null) {
+                        SearchResult sr = new SearchResult();
+                        sr.setTitle(seite.getTitle());
+                        sr.setPath(path);
+                        sr.setContent(lv);
+                        result.add(sr);
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean exist(String path, List<SearchResult> result) {
+        for (SearchResult sr : result) {
+            if (sr.getPath().equals(path)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

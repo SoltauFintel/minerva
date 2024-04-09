@@ -2,14 +2,19 @@ package minerva.mask;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import minerva.base.StringService;
+import minerva.mask.field.MaskField;
 import minerva.model.SeiteSO;
+import minerva.model.WorkspaceSO;
 
 public class FeatureFields {
     // TODO FeatureFields löschen, wenn Seite gelöscht wird
     private String seiteId;
     /** special mask tag or "ft" */
     private String maskTag;
+    /** key: field id, value: field content */
     private final Map<String, String> fields = new HashMap<>();
     
     /** Must only be called by FeatureFields.create(feature)! */
@@ -46,5 +51,30 @@ public class FeatureFields {
     
     public void set(String id, String value) {
         fields.put(id, value);
+    }
+    
+    /**
+     * @param x search expression, must be lowercase
+     * @param workspace -
+     * @return null: not found, otherwise label and field content
+     */
+    public String search(String x, WorkspaceSO workspace) {
+        for (Entry<String, String> e : fields.entrySet()) {
+            if (e.getValue().toLowerCase().contains(x)) {
+                MasksService sv = new MasksService(workspace);
+                if (!StringService.isNullOrEmpty(maskTag)) {
+                    Mask mask = sv.getMask(maskTag);
+                    MaskField f = mask.get(e.getKey());
+                    if (f == null && !"ft".equals(maskTag)) {
+                        f = mask.get("ft");
+                    }
+                    if (f != null) {
+                        return f.getLabel() + ": " + e.getValue();
+                    }
+                }
+                return e.getKey() + ": " + e.getValue();
+            }
+        }
+        return null;
     }
 }
