@@ -303,7 +303,7 @@ public class MinervaWebapp extends RouteDefinitions {
         
         form("/ff/:branch/:book/:id", EditFeatureFieldsPage.class);
 
-        get("/f/:branch/:book/:id", FeaturesTablePage.class);
+        form("/f/:branch/:book/:id", FeaturesTablePage.class);
 
         get("/mask/:branch/:book/update-report-infos", UpdateReportInfosAction.class);
     }
