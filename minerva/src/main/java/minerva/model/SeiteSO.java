@@ -568,6 +568,10 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         if (BookType.FEATURE_TREE.equals(getBook().getBook().getType())) {
             return 1;
         }
+        return hasContentR(lang);
+    }
+    
+    public int hasContentR(String lang) {
         // In theory, this approach is a bit expensive since all content must be loaded and must be parsed.
         // However in practice it takes less than 0.4 seconds on the first call.
         try {

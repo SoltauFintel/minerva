@@ -44,7 +44,7 @@ public class FeaturesTablePage extends SPage {
             final String st = """
                     <label for="{id}" class="col-lg-1 control-label">{label}</label>
                     <div class="col-lg-2">
-                        <input class="form-control" type="text" id="{id}" name="{id}">
+                        <input class="form-control" type="text" id="{id}" name="{id}" value="{value}">
                     </div>
                      """;
             List<MaskField> fields = mad0.getMaskFields();
@@ -53,7 +53,10 @@ public class FeaturesTablePage extends SPage {
                 String html = "";
                 for (int j = 0; j <= 2; j++) {
                     MaskField f = fields.get(i + j);
-                    html += st.replace("{label}", f.getLabel()).replace("{id}", f.getId());
+                    String val = ctx.formParam(f.getId());
+                    html += st.replace("{label}", f.getLabel()) //
+                            .replace("{id}", f.getId()) //
+                            .replace("{value}", val == null ? "" : val);
                 }
                 list.add().put("html", html);
             }
@@ -72,6 +75,7 @@ public class FeaturesTablePage extends SPage {
     
     private void rows() {
         DataList list = list("features");
+        int k = 0, n = 0;
         for (SeiteSO ft : seite.getSeiten()) {
             String columns = "";
             MaskAndDataFields mad = new MaskAndDataFields(ft);
@@ -88,21 +92,31 @@ public class FeaturesTablePage extends SPage {
             if (!drin) {
                 continue;
             }
-            
+
             boolean first = true;
             for (MaskField f : mad.getMaskFields()) {
+                String v = mad.getDataFields().get(f.getId());
                 if (first) {
-                    columns += "<td><a href=\"/s/" + branch + "/" + book.getBook().getFolder() + "/" + ft.getId()
-                            + "\">" + mad.getDataFields().get(f.getId()) + "</a></td>";
-                } else {
-                    columns += "<td>" + mad.getDataFields().get(f.getId()) + "</td>";
+                    if (v.isBlank()) {
+                        v = "("  + n("empty") + ")";
+                    }
+                    columns += "<small>" + f.getLabel() + ": </small><a href=\"/s/" + branch + "/" + book.getBook().getFolder() + "/"
+                            + ft.getId() + "\"><b>" + v + "</b></a>";
+                    first = false;
+                } else if (!v.isBlank() && !"SQLJasperReportInformation".equals(v)) {
+                    if (f.getId().equalsIgnoreCase("template")) {
+                        v = v.substring(v.lastIndexOf("/") + 1);
+                    }
+                    columns += "<br/><small>" + f.getLabel() + ": </small><b>" + v+"</b>";
                 }
-                first = false;
             }
             DataMap row = list.add();
             row.put("columns", columns);
+            row.put("eins", ++k % 4 == 1);
+            row.put("hasText", ft.hasContentR("de") != 0);
+            n++;
         }
-        putInt("n", seite.getSeiten().size());
+        putInt("n", n);
     }
 
     private void filter() {
