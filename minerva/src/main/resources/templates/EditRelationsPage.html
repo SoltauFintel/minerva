@@ -1,0 +1,54 @@
+{{master: master}}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">{{header}}</h1>
+        
+        <h2><a href="{{viewlink}}">{{featureTitle}}</a></h2>
+        
+        <p class="mt2">Mit welchen Features/Seiten/Tickets/Webseiten soll dieses Feature verknüpft werden?
+        Bitte jeweils einen Eintrag pro Zeile machen. Es müssen nicht alle Felder gefüllt werden.</p>
+    
+        <form action="/fr/{{branch}}/{{bookFolder}}/{{id}}" class="form-horizontal mt2" method="POST">
+            <fieldset>
+                <div class="form-group">
+                    <label for="pages" class="col-lg-1 control-label">Feature- oder Seite-ID</label>
+                    <div class="col-lg-2">
+                        <textarea class="form-control" rows="4" id="pages" name="pages" autofocus></textarea>
+                    </div>
+                    <label for="tickets" class="col-lg-1 control-label">Tickets</label>
+                    <div class="col-lg-2">
+                        <textarea class="form-control" rows="4" id="tickets" name="tickets"></textarea>
+                    </div>
+                    <label for="links" class="col-lg-1 control-label">Links</label>
+                    <div class="col-lg-4">
+                        <textarea class="form-control" rows="4" id="links" name="links"></textarea>
+                    </div>
+                </div>
+                
+                {{if hasSeiten}}
+                    <div class="form-group">
+                        <div class="col-lg-offset-1 col-lg-9">
+                            <hr/>
+                            <b>{{N.zuLoeschendeBeziehungenAnhaken}}:</b>
+                            {{each s in seiten}}
+                                <div class="checkbox">
+                                    <label><input type="checkbox" name="{{s.id}}"> {{s.title}}</label>
+                                </div>
+                            {{/each}}
+                        </div>
+                    </div>
+                {{/if}}
+
+                <div class="form-group">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        {{if hasSeiten}}<hr/>{{/if}}
+                        <button type="submit" class="btn btn-primary br" onclick="document.querySelector('#s1').style='';">{{N.save}}
+                            <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
+                        <a href="{{viewlink}}" class="btn btn-default">{{N.cancel}}</a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

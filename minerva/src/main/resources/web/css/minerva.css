@@ -530,6 +530,10 @@ ul.pagetree {
     text-align: center;
 }
 
+.fa-sitemap-color {
+    color: #909;
+}
+
 /* MenuPage: */
 
 .bs-glyphicons {

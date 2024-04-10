@@ -57,6 +57,7 @@ import minerva.keyvalue.ValuesListPage;
 import minerva.mask.AddMaskPage;
 import minerva.mask.DeleteMaskAction;
 import minerva.mask.EditFeatureFieldsPage;
+import minerva.mask.EditRelationsPage;
 import minerva.mask.FeaturesTablePage;
 import minerva.mask.MasksPage;
 import minerva.mask.ResponsibilitiesPage;
@@ -303,7 +304,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/mask/:branch/:tag/:id/sort-field", SortMaskFieldAction.class);
         
         form("/ff/:branch/:book/:id", EditFeatureFieldsPage.class);
-
+        form("/fr/:branch/:book/:id", EditRelationsPage.class);
         form("/f/:branch/:book/:id", FeaturesTablePage.class);
         get("/responsibilities/:branch/:book", ResponsibilitiesPage.class);
 

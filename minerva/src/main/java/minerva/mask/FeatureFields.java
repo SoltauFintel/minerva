@@ -1,8 +1,10 @@
 package minerva.mask;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import minerva.base.StringService;
 import minerva.mask.field.MaskField;
@@ -16,6 +18,9 @@ public class FeatureFields {
     private String maskTag;
     /** key: field id, value: field content */
     private final Map<String, String> fields = new HashMap<>();
+    private final Set<String> pages = new HashSet<>();
+    private final Set<String> tickets = new HashSet<>();
+    private final Set<String> links = new HashSet<>();
     
     /** Must only be called by FeatureFields.create(feature)! */
     public FeatureFields() {
@@ -76,5 +81,17 @@ public class FeatureFields {
             }
         }
         return null;
+    }
+
+    public Set<String> getPages() {
+        return pages;
+    }
+
+    public Set<String> getTickets() {
+        return tickets;
+    }
+
+    public Set<String> getLinks() {
+        return links;
     }
 }
