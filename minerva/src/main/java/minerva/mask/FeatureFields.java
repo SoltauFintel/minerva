@@ -69,12 +69,14 @@ public class FeatureFields {
                 MasksService sv = new MasksService(workspace);
                 if (!StringService.isNullOrEmpty(maskTag)) {
                     Mask mask = sv.getMask(maskTag);
-                    MaskField f = mask.get(e.getKey());
-                    if (f == null && !"ft".equals(maskTag)) {
-                        f = mask.get("ft");
-                    }
-                    if (f != null) {
-                        return f.getLabel() + ": " + e.getValue();
+                    if (mask != null) {
+                        MaskField f = mask.get(e.getKey());
+                        if (f == null && !"ft".equals(maskTag)) {
+                            f = mask.get("ft");
+                        }
+                        if (f != null) {
+                            return f.getLabel() + ": " + e.getValue();
+                        }
                     }
                 }
                 return e.getKey() + ": " + e.getValue();

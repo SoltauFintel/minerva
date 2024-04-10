@@ -18,7 +18,7 @@ public class ViewMaskPage extends WPage {
         
         Mask mask = new MasksService(workspace).getMask(tag);
         if (mask == null) {
-            throw new RuntimeException("Mask not found!");
+            throw new RuntimeException("Mask " + tag + " doesn't exist!");
         }
         
         header(n("mask") + " " + tag);

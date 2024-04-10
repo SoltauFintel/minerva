@@ -14,6 +14,9 @@ public class EditMaskFieldPage extends WPage {
         
         MasksService sv = new MasksService(workspace);
         Mask mask = sv.getMask(tag);
+        if (mask == null) {
+            throw new RuntimeException("Mask " + tag + " doesn't exist!");
+        }
         MaskField f = mask.get(id);
         
         if (isPOST()) {

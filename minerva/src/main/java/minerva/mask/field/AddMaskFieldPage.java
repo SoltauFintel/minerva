@@ -24,6 +24,9 @@ public class AddMaskFieldPage extends WPage {
             }
             MasksService sv = new MasksService(workspace);
             Mask mask = sv.getMask(tag);
+            if (mask == null) {
+                throw new RuntimeException("Mask " + tag + " doesn't exist!");
+            }
             MaskField f = new MaskField();
             f.setId(ctx.formParam("id"));
             f.setLabel(ctx.formParam("label"));
