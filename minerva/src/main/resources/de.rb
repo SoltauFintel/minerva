@@ -341,3 +341,4 @@ Responsibilities=Zuständigkeiten
 createRelations=Beziehungen erstellen/löschen
 relations=Beziehungen
 zuLoeschendeBeziehungenAnhaken=Bitte zu löschende Beziehungen anhaken
+Features=Features

@@ -25,14 +25,13 @@ public class EditFeatureFieldsPage extends SPage {
                 }
             }
             mad.save();
-            // TODO Update search index
             
             ctx.redirect(viewlink);
         } else {
             BookPage.oneLang(model, book);
             header(seite.getTitle() + " (" + n("editFeatureFields") + ")");
             put("titel", esc(seite.getTitle()));
-            put("featureFields", new FeatureFieldsHtml(seite, true).html());
+            put("featureFields", FeatureFieldsHtmlFactory.FACTORY.build(seite, true).html());
             mad.customersMultiselect(model);
         }
     }

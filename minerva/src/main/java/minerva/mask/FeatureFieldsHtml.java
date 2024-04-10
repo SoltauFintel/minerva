@@ -84,11 +84,15 @@ public class FeatureFieldsHtml {
                 + "<a href=\"/ff" + li + "\" class=\"btn btn-primary btn-sm br\">{editFeatureFields}</a>"
                 + "<a href=\"/fr" + li + "\" class=\"btn btn-default btn-sm br\">{createRelations}</a>";
         if (hasFt_tag()) {
-            st += "<a href=\"/f" + li + "\" class=\"btn btn-success btn-lg br\"><i class=\"fa fa-table\"></i> Features</a>";
+            st += "<a href=\"/f" + li + "\" class=\"btn btn-success btn-lg br\"><i class=\"fa fa-table\"></i> " + n("Features") + "</a>";
         }
-        st += "\n</div></div>\n" + relations(ff);
+        st += getAdditionalButtons(seite, ff) + "\n</div></div>\n" + relations(ff);
         return st.replace("{editFeatureFields}", n("editFeatureFields")) //
                 .replace("{createRelations}", n("createRelations"));
+    }
+    
+    protected String getAdditionalButtons(SeiteSO seite, FeatureFields ff) {
+    	return "";
     }
 
     private String getFieldHtml(MaskField f, FeatureFields ff) {
