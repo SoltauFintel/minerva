@@ -27,6 +27,9 @@ public class ReportInfo {
     public ReportInfo(Row r) {
         try {
             kunde = s(r.getCell(0));
+            if ("KSPG".equalsIgnoreCase(kunde)) {
+                kunde = "RHA";
+            }
             typ = s(r.getCell(1));
             nummer = s(r.getCell(2));
             name = s(r.getCell(3));
