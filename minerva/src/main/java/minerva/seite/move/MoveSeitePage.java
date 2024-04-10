@@ -2,6 +2,7 @@ package minerva.seite.move;
 
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
+import minerva.book.BookPage;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -31,6 +32,10 @@ public class MoveSeitePage extends SPage {
         }
         gliederung.append("</ul>");
         put("gliederung", gliederung.toString());
+
+        if (book.isNotPublic()) {
+            BookPage.oneLang(model, book);
+        }
     }
     
     private void book(BookSO book, boolean topLevelPage, String href, StringBuilder gliederung) {

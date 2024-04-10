@@ -139,6 +139,14 @@ public class BookSO {
         return BookType.FEATURE_TREE.equals(book.getType());
     }
 
+    public boolean isInternal() {
+        return BookType.INTERNAL.equals(book.getType());
+    }
+
+    public boolean isNotPublic() {
+        return !BookType.PUBLIC.equals(book.getType());
+    }
+
     public void activateSorted() {
         book.setSorted(true);
         saveBook();

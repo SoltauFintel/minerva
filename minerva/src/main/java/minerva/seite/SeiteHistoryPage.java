@@ -10,6 +10,7 @@ import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
+import minerva.book.BookPage;
 import minerva.config.BackendService;
 import minerva.config.ICommit;
 import minerva.config.MinervaFactory;
@@ -30,6 +31,10 @@ public class SeiteHistoryPage extends SPage {
         putCommits(commits, backend, model);
         put("filename", esc(seite.gitFilenameMeta()));
         put("followRenames", followRenames);
+
+        if (book.isNotPublic()) {
+            BookPage.oneLang(model, book);
+        }
     }
     
     public static void putCommits(List<ICommit> commits, BackendService backend, DataMap model) {

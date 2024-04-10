@@ -14,7 +14,6 @@ import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
 import minerva.book.BookPage;
-import minerva.book.BookType;
 import minerva.comment.SeiteCommentService2;
 import minerva.image.FixHttpImage;
 import minerva.mask.FeatureFieldsHtmlFactory;
@@ -84,8 +83,8 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         putInt("position", seite.getPosition());
         putInt("version", seite.getVersion());
         put("bookTitle", esc(seiteSO.getBook().getBook().getTitle().getString(u.getPageLanguage()))); // bin usicher
-        put("isPublicBook", BookType.PUBLIC.equals(seiteSO.getBook().getBook().getType()));
-        put("isInternalBook", BookType.INTERNAL.equals(seiteSO.getBook().getBook().getType()));
+        put("isPublicBook", !seiteSO.isNotPublic());
+        put("isInternalBook", seiteSO.isInternal());
         put("isFeatureTree", seiteSO.isFeatureTree());
         
         if (seiteSO.isFeatureTree() && seiteSO.getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {

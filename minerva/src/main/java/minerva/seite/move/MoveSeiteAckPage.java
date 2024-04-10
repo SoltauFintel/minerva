@@ -1,5 +1,6 @@
 package minerva.seite.move;
 
+import minerva.book.BookPage;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.seite.SPage;
@@ -35,6 +36,9 @@ public class MoveSeiteAckPage extends SPage {
             put("folder", esc(folder));
             BookSO targetBook = books.byFolder(folder);
             text = n("movePage2").replace("$b", esc(targetBook.getTitle())).replace("$t", esc(seite.getTitle()));
+            if (book.isNotPublic()) {
+                BookPage.oneLang(model, book);
+            }
         }
         put("movePageText", text);
     }

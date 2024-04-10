@@ -4,6 +4,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Escaper;
+import minerva.book.BookPage;
 import minerva.seite.SPage;
 
 public class TagsPage extends SPage {
@@ -33,6 +34,9 @@ public class TagsPage extends SPage {
             }
             put("hasSuggestedTags", !list2.isEmpty());
             put("hasTags", !list.isEmpty());
+            if (book.isNotPublic()) {
+                BookPage.oneLang(model, book);
+            }
         }
     }
 }

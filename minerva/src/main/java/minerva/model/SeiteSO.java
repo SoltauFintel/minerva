@@ -669,6 +669,14 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         return book.isFeatureTrue();
     }
 
+    public boolean isInternal() {
+        return book.isInternal();
+    }
+    
+    public boolean isNotPublic() {
+        return book.isNotPublic();
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

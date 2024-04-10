@@ -5,6 +5,7 @@ import java.util.List;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import minerva.book.BookPage;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.seite.SPage;
@@ -34,6 +35,10 @@ public class LinkAnalysisPage extends SPage {
         // incoming links
         analyze(book, list);
         put("hasLinks", !list.isEmpty());
+
+        if (book.isNotPublic()) {
+            BookPage.oneLang(model, book);
+        }
     }
 
     private String getPageTitle(Link link, boolean external, String lang) {
