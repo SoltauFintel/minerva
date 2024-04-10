@@ -25,9 +25,15 @@ public class MaskAndDataFields {
         String tag = seite.hasParent() ? seite.getParent().getFeatureTag() : "ft"; // Die Parent-Seite ist maßgeblich!!
         MasksService sv = new MasksService(seite.getBook().getWorkspace());
         maskFields = new ArrayList<>();
-        maskFields.addAll(sv.getMask("ft").getFields());
+        Mask mask = sv.getMask("ft");
+        if (mask != null) {
+        	maskFields.addAll(mask.getFields());
+        }
         if (!"ft".equals(tag)) {
-            maskFields.addAll(sv.getMask(tag).getFields());
+            mask = sv.getMask(tag);
+            if (mask != null) {
+            	maskFields.addAll(mask.getFields());
+            }
         }
         dataFields = sv2.get(seite);
     }
