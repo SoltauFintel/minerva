@@ -348,13 +348,10 @@ public class GitService {
             }
             List<ICommit> ret = new ArrayList<>();
             for (RevCommit commit : commits) {
-//                if (commit.getParentCount() == 1) {
+                //if (commit.getParentCount() == 1) {      auskommentiert damit Erst-Commit sichtbar wird
                     ret.add(new HCommit(commit));
-//System.out.println(commit.getId().name());
-//                }
-//else System.out.println(commit.getId().name() + " ist nicht dabei");
+                //}
             }
-//System.out.println("------------------");
             return ret;
         } catch (Exception e) {
             throw new RuntimeException(e);
