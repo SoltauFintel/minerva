@@ -80,12 +80,17 @@ public class MinervaPageInitializer extends PageInitializer {
         if (m.hasUser()) {
             hasUserVars(page, m);
         }
-        updateOpenMasterTasks(page);
+        updateOpenMasterTasks(m, page);
     }
     
-    public static void updateOpenMasterTasks(Page page) {
-        page.put("hasOpenMasterTasks", TaskService.openMasterTasks > 0);
-        page.putInt("numberOfOpenMasterTasks", TaskService.openMasterTasks);
+    public static void updateOpenMasterTasks(MinervaPageInitModel m, Page page) {
+    	Integer omt = m.getUser() == null ? null : TaskService.openMasterTasks.get(m.getUser().getLogin());
+    	updateOpenMasterTasks(omt == null ? 0 : omt.intValue(), page);
+    }
+
+    public static void updateOpenMasterTasks(int omt, Page page) {
+        page.put("hasOpenMasterTasks", omt > 0);
+        page.putInt("numberOfOpenMasterTasks", omt);
     }
 
     private void booksForMenu(boolean hasUser, String userLang, BooksSO books, Page page) {

@@ -1,13 +1,15 @@
 package minerva.task;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import minerva.model.UserSO;
 
 public class TaskService {
     public static List<TasksSupplier> tasksSuppliers = new ArrayList<>();
-    public static int openMasterTasks = 0;
+    public static final Map<String, Integer> openMasterTasks = new HashMap<>();
     
     static {
         tasksSuppliers.add(new CommentsSupplier());
@@ -33,7 +35,8 @@ public class TaskService {
     }
     
     public static void update(UserSO user) {
-        openMasterTasks = new TaskService().getNumberOfTasks(user);
+        int omt = new TaskService().getNumberOfTasks(user);
+        openMasterTasks.put(user.getLogin(), Integer.valueOf(omt));
     }
 
     public List<Task> getTasksCreatedByMe(UserSO user, String branch, String login) {
