@@ -6,11 +6,11 @@ import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.auth.webcontext.WebContext;
 import github.soltaufintel.amalia.spark.Context;
-import minerva.model.BookSO;
 import minerva.model.BooksSO;
 import minerva.model.SeiteSO;
 import minerva.model.StatesSO;
 import minerva.model.UserSO;
+import minerva.model.WorkspaceSO;
 
 public class MinervaPageInitModel {
     private final String login;
@@ -35,21 +35,18 @@ public class MinervaPageInitModel {
             user = StatesSO.get(ctx).getUser();
             userLang = user.getGuiLanguage();
             favorites = user.getFavorites();
-            if (user.getCurrentWorkspace() != null) {
-                branch = user.getCurrentWorkspace().getBranch();
+            WorkspaceSO workspace = user.getCurrentWorkspace();
+            if (workspace != null) {
+                branch = workspace.getBranch();
                 try {
-                    if (user.getCurrentWorkspace().getBooks() != null //
-                            && !user.getCurrentWorkspace().getBooks().isEmpty()) {
-                        books = user.getCurrentWorkspace().getBooks();
+                    if (workspace.getBooks() != null && !workspace.getBooks().isEmpty()) {
+                        books = workspace.getBooks();
                         String id = user.getUser().getLastEditedPage();
                         if (!StringService.isNullOrEmpty(id)) {
-                            for (BookSO book : books) {
-                                SeiteSO les = book._seiteById(id);
-                                if (les != null) {
-                                    lastEditedPage_title = les.getTitle();
-                                    lastEditedPage_link = "/s/" + branch + "/" + book.getBook().getFolder() + "/" + id;
-                                    break;
-                                }
+                            SeiteSO les = workspace.findPage(id);
+                            if (les != null) {
+                                lastEditedPage_title = les.getTitle();
+                                lastEditedPage_link = "/s/" + branch + "/" + les.getBook().getBook().getFolder() + "/" + id;
                             }
                         }
                     }

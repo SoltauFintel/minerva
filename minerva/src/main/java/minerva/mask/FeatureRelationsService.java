@@ -40,7 +40,7 @@ public class FeatureRelationsService {
         
         private PageRelation(String id, BookSO book) {
             this.id = id;
-            SeiteSO seite = findPage(book, id);
+            SeiteSO seite = book.getWorkspace().findPage(id);
             link = seite == null ? "" : "/s/{branch}/" + seite.getBook().getBook().getFolder() + "/" + id;
             title = seite == null ? id : seite.getTitle();
             icon = seite.isFeatureTree() ? "fa-file fa-sitemap-color" : "fa-file-text greenbook";
@@ -64,16 +64,6 @@ public class FeatureRelationsService {
         @Override
         public String getIcon() {
             return icon;
-        }
-
-        private SeiteSO findPage(BookSO pBook, String id) {
-            for (BookSO book : pBook.getWorkspace().getBooks()) {
-                SeiteSO s = book._seiteById(id);
-                if (s != null) {
-                    return s;
-                }
-            }
-            return null;
         }
 
         @Override

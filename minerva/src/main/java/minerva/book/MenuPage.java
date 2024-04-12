@@ -186,15 +186,14 @@ public class MenuPage extends WPage {
         boolean hasFavorites = ((DataCondition) model.get("hasLastEditedPage")).isTrue();
         DataList list = list("favorites");
         String linkPrefix = "/s/" + branch + "/";
+        WorkspaceSO _workspace = user.getWorkspace(branch);
         for (String id : user.getFavorites()) {
-            for (BookSO book : user.getWorkspace(branch).getBooks()) {
-                SeiteSO seite = book._seiteById(id);
-                if (seite != null) {
-                    DataMap map = list.add();
-                    map.put("link", esc(linkPrefix + book.getBook().getFolder() + "/" + seite.getId()));
-                    map.put("title", esc(seite.getTitle()));
-                    hasFavorites = true;
-                }
+            SeiteSO seite = _workspace.findPage(id);
+            if (seite != null) {
+                DataMap map = list.add();
+                map.put("link", esc(linkPrefix + seite.getBook().getBook().getFolder() + "/" + seite.getId()));
+                map.put("title", esc(seite.getTitle()));
+                hasFavorites = true;
             }
         }
         list.sort((a, b) -> umlaute(a.get("title").toString()).compareTo(umlaute(b.get("title").toString())));

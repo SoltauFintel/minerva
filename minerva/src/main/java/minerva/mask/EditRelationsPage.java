@@ -10,7 +10,6 @@ import com.github.template72.data.DataMap;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.mask.FeatureRelationsService.Relation;
-import minerva.model.BookSO;
 import minerva.seite.SPage;
 
 /**
@@ -85,11 +84,6 @@ public class EditRelationsPage extends SPage {
     }
     
     private boolean findPage(String id) {
-        for (BookSO book : workspace.getBooks()) {
-            if (book._seiteById(id) != null) {
-                return true;
-            }
-        }
-        return false;
+        return workspace.findPage(id) != null;
     }
 }

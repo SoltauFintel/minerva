@@ -77,12 +77,10 @@ public class SeitenauswahlPage extends WPage {
         if (!StringService.isNullOrEmpty(auswahlliste)) {
             for (String id : auswahlliste.split(",")) {
                 if (!id.isEmpty()) {
-                    for (BookSO book : workspace.getBooks()) {
-                        SeiteSO seite = book._seiteById(id);
-                        if (seite != null) {
-                            Logger.debug(id + " => " + seite.getSeite().getTitle().getString(lang));
-                            seiten.add(seite);
-                        }
+                    SeiteSO seite = workspace.findPage(id);
+                    if (seite != null) {
+                        Logger.debug(id + " => " + seite.getSeite().getTitle().getString(lang));
+                        seiten.add(seite);
                     }
                 }
             }
@@ -116,12 +114,7 @@ public class SeitenauswahlPage extends WPage {
     }
     
     private String getPageTitle(String seiteId) {
-        for (BookSO book : workspace.getBooks()) {
-            SeiteSO seite = book._seiteById(seiteId);
-            if (seite != null) {
-                return seite.getSeite().getTitle().getString(user.getGuiLanguage());
-            }
-        }
-        return "";
+        SeiteSO seite = workspace.findPage(seiteId);
+        return seite == null ? "" : seite.getSeite().getTitle().getString(user.getGuiLanguage());
     }
 }

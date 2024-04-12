@@ -74,6 +74,16 @@ public class WorkspaceSO {
         }
         return books;
     }
+    
+    public SeiteSO findPage(String id) {
+        for (BookSO book : getBooks()) {
+            SeiteSO seite = book._seiteById(id);
+            if (seite != null) {
+                return seite;
+            }
+        }
+        return null;
+    }
 
     public String getUserMessage() {
         return userMessage;
