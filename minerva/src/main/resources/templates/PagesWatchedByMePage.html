@@ -1,0 +1,15 @@
+{{master: master}}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">{{header}}</h1>
+
+        <ul>
+            {{each s in watched}}
+                <li>
+                    {{if s.hasSubpages}}{{N.alleUnterseitenVon}} {{/if}}<a href="/s/{{branch}}/{{s.bookFolder}}/{{s.id}}">{{s.title}}</a>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+</div>

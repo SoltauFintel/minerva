@@ -11,7 +11,8 @@
             | {{N.user}}: {{login}}
             | {{N.anzahl}}: <span class="label {{if hasTasks}}label-danger{{else}}label-success{{/if}}">{{n}}</span>
             {{if hasWeitere}}(+{{weitere}}){{/if}}
-            | <a href="/w/{{branch}}/tasks-created-by-me">{{N.tasksCreatedByMe}}
+            | <a href="/w/{{branch}}/tasks-created-by-me">{{N.tasksCreatedByMe}}</a>
+            | <a href="/w/{{branch}}/pages-watched-by-me">{{N.vonMirBeobachteteSeiten}}</a>
         </p>
 
         {{each n in tasks}}

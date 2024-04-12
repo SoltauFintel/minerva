@@ -94,6 +94,7 @@ import minerva.seite.EditSeitePage;
 import minerva.seite.HelpKeysPage;
 import minerva.seite.LockedByPage;
 import minerva.seite.OrderSeitePage;
+import minerva.seite.PagesWatchedByMePage;
 import minerva.seite.PullSeiteAction;
 import minerva.seite.SaveEditorsNoteAction;
 import minerva.seite.SeiteHistoryPage;
@@ -167,6 +168,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/my-tasks/:id", TaskPrioAction.class);
         get("/w/:branch/my-tasks", MyTasksPage.class);
         get("/w/:branch/tasks-created-by-me", TasksCreatedByMePage.class);
+        get("/w/:branch/pages-watched-by-me", PagesWatchedByMePage.class);
         form("/create-workspace", AddWorkspacePage.class);
         get("/w/:branch/help-keys", AllHelpKeysPage.class);
         get("/w/:branch/history", WorkspaceHistoryPage.class);

@@ -342,3 +342,5 @@ createRelations=Beziehungen erstellen/löschen
 relations=Beziehungen
 zuLoeschendeBeziehungenAnhaken=Bitte zu löschende Beziehungen anhaken
 Features=Features
+vonMirBeobachteteSeiten=Von mir beobachtete Seiten
+alleUnterseitenVon=Alle Unterseiten von

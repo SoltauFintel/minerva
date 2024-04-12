@@ -3,6 +3,8 @@ package minerva.mask;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import org.pmw.tinylog.Logger;
+
 import minerva.base.UserMessage;
 import minerva.book.BookPage;
 import minerva.mask.field.MaskField;
@@ -28,6 +30,7 @@ public class EditFeatureFieldsPage extends SPage {
             
             ctx.redirect(viewlink);
         } else {
+            Logger.info(branch + " | " + user.getLogin() + " | Edit feature fields " + id + " " + seite.getTitle());
             BookPage.oneLang(model, book);
             header(seite.getTitle() + " (" + n("editFeatureFields") + ")");
             put("titel", esc(seite.getTitle()));

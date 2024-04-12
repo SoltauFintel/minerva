@@ -3,6 +3,8 @@ package minerva.mask;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pmw.tinylog.Logger;
+
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
@@ -20,6 +22,7 @@ public class FeaturesTablePage extends SPage {
         if (isPOST()) {
             filterValues();
         } else {
+            Logger.info(branch + " | " + user.getLogin() + " | Features table " + id + " " + seite.getTitle());
             header(seite.getTitle());
             menu();
             if (!seite.getSeiten().isEmpty()) {

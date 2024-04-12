@@ -1,5 +1,7 @@
 package minerva.mask;
 
+import org.pmw.tinylog.Logger;
+
 import minerva.base.StringService;
 import minerva.workspace.WPage;
 
@@ -19,6 +21,7 @@ public class AddMaskPage extends WPage {
             Mask mask = new Mask();
             mask.setTag(tag);
             sv.saveMask(mask);
+            Logger.info(branch + " | " + user.getLogin() + " | Added mask " + tag);
 
             ctx.redirect("/mask/" + branch + "/" + tag);
         }
