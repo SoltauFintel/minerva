@@ -16,7 +16,7 @@ public class Book6LoginAction extends Action {
     
     @Override
     protected void execute() {
-        String body = ctx.req.body(); // "password=...;user=..."
+        String body = ctx.body(); // "password=...;user=..."
         if (body == null || body.isBlank()) {
             throw new RuntimeException("No access granted.");
         }
