@@ -106,10 +106,16 @@ public class JournalSO {
      * Cleanup journal once a month
      */
     public static class JournalTimer extends BaseTimer {
-
+        private static String cron;
+        
+        public static void start(AppConfig config) {
+            cron = config.get("JournalTimer.cron", "0 0 6 1 * ?");
+            new JournalTimer().start();
+        }
+        
         @Override
         protected void config() throws SchedulerException {
-            start(new AppConfig().get("JournalTimer.cron", "0 0 6 1 * ?"));
+            start(cron);
         }
 
         @Override

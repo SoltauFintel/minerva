@@ -354,7 +354,7 @@ public class MinervaWebapp extends RouteDefinitions {
                 .withErrorPage(MinervaErrorPage.class, MinervaError404Page.class)
                 .withInitializer(config -> factory = new MinervaFactory(new MinervaConfig(config)))
                 .withInitializer(config -> CommentService.services.put(ctx -> ctx.path().startsWith("/sc/"), SeiteCommentService.class))
-                .withInitializer(config -> new JournalTimer().start())
+                .withInitializer(config -> JournalTimer.start(config))
                 .withAuth(new MinervaAuth());
     }
     

@@ -346,4 +346,8 @@ public class MinervaConfig {
     public int getMaxSubfeatures() {
         return 20;
     }
+    
+    public int getIndexLimit() {
+        return config.getInt("index.limit", 60);
+    }
 }

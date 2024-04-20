@@ -2,7 +2,6 @@ package minerva.search;
 
 import org.pmw.tinylog.Logger;
 
-import github.soltaufintel.amalia.web.config.AppConfig;
 import minerva.MinervaWebapp;
 import minerva.user.UAction;
 
@@ -16,7 +15,7 @@ public class IndexWorkspaceAction extends UAction {
         if (MinervaWebapp.factory().isCustomerVersion()) {
             long now = System.currentTimeMillis();
             long diff = now - lastCall;
-            int limit = new AppConfig().getInt("index.limit", 60) * 1000;
+            int limit = MinervaWebapp.factory().getConfig().getIndexLimit() * 1000;
             Logger.info("IndexWorkspaceAction lastCall: " + lastCall + ", now: " + now + ", diff: " + diff + ", limit: " + limit);
             if (limit > 0 && lastCall != 0 && diff <= limit) {
                 throw new RuntimeException("Reindexing can not be performed that often. Please try again later.");
