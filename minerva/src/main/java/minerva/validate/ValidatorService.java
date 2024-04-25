@@ -36,6 +36,7 @@ public class ValidatorService {
                 emptyLinesAtEnd(body, msg);
                 doubleEmptyLines(body, msg);
                 headings(body, msg);
+                missingImageFiles(body, msg);
             }
         }
         return msg.stream().map(key -> translate(key, guiLang)).collect(Collectors.toList());
@@ -160,6 +161,15 @@ public class ValidatorService {
                 }
             }
         }
+    }
+
+    private void missingImageFiles(Element body, List<String> msg) {
+        // TODO Algo suchen, der <img src=> extrahiert.
+        // - minerva.export.pdf.HtmlForPdf.images(String, String, String, List<String>)
+        // - minerva.migration.ConfluenceToMinervaMigrationService.migrateImages(SeiteSO, Seite, String, Map<String, String>)
+        // - minerva.image.FixHttpImage.getAbsoluteUrlImages(NlsString, List<String>, boolean)
+        
+        // TODO Dann gucken, ob die Datei existiert.
     }
 
     private String translate(String key, String lang) {
