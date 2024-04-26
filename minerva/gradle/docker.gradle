@@ -20,6 +20,6 @@ dockerCreateDockerfile {
     outputs.upToDateWhen { false }
     doLast {
         def dockerfile = destFile.get().asFile
-        dockerfile.text = dockerfile.text.replace('WORKDIR', 'RUN apk add bash\nWORKDIR')
+        dockerfile.text = dockerfile.text.replace('WORKDIR', 'RUN apk add bash\nENV TZ=Europe/Berlin\nWORKDIR')
     }
 }
