@@ -206,7 +206,7 @@ v.emptyLinesAtEnd1=There is $0 empty line at the end.
 v.doubleEmptyLines=There are $0 double empty lines pairs.
 v.doubleEmptyLines1=There is $0 double empty lines pairs.
 v.illegalTagsInHeading=Heading must not contain formatting: $0
-v.missingImageFile=Missing image file
+v.missingImageFile=Missing image file: $0
 validate=Validate pages
 nMessages=Number of errors
 nPages=Number of pages with errors
@@ -298,6 +298,7 @@ savedCommentContent=There is unsaved content for this comment. Please start edit
 checkAllLinks=Check all links
 checkLink=Link to "$h" is broken and can be found on page <a href="$v">$t</a> with link label "$l".
 hasAbsoluteUrlImage=Page contains a http image! Please fix that!
+v.hasAbsoluteUrlImage=Page contains a http image! Please fix that! $0
 enterTitle=Please enter title!
 tasksCreatedByMe=Tasks created by me
 tasksCreatedByMeInfo=All tasks I have created that are assigned to someone else and have not yet been completed are listed here.

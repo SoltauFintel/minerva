@@ -207,7 +207,7 @@ v.emptyLinesAtEnd1=Es gibt $0 Leerzeile am Ende.
 v.doubleEmptyLines=Es gibt $0 Doppel-Leerzeilen.
 v.doubleEmptyLines1=Es gibt $0 Doppel-Leerzeile.
 v.illegalTagsInHeading=Überschrift darf keine weitere Formatierung enthalten: $0
-v.missingImageFile=Grafikdatei fehlt
+v.missingImageFile=Grafikdatei fehlt: $0
 validate=Prüfe Seiten
 nMessages=Anzahl Fehler
 nPages=Anzahl Seiten mit Fehlern
@@ -298,6 +298,7 @@ savedCommentContent=Für diesen Kommentar gibt es noch ungespeicherten Inhalt. B
 checkAllLinks=Alle Links überprüfen
 checkLink=Der Link zu "$h" funktioniert nicht und befindet sich auf der Seite <a href="$v">$t</a> mit dem Linktitel "$l".
 hasAbsoluteUrlImage=Seite enthält eine http-Grafik. Bitte korrigieren!
+v.hasAbsoluteUrlImage=Seite enthält eine http-Grafik. Bitte korrigieren! $0
 enterTitle=Bitte Titel eingeben!
 tasksCreatedByMe=Von mir erstellte Aufgaben
 tasksCreatedByMeInfo=Hier werden alle von mir erstellte Aufgaben gelistet, die jemand anderem zugewiesen sind und noch nicht erledigt sind.
