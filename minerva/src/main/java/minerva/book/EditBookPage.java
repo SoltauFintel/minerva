@@ -29,7 +29,11 @@ public class EditBookPage extends BPage {
             header(n("editBook"));
             put("bookTitlede", book.getBook().getFolder()); // for the case that language "de" isn't configured
             put("bookTitleen", book.getBook().getFolder());
-            langs.forEach(lang -> put("bookTitle" + lang, book.getBook().getTitle().getString(lang)));
+            langs.forEach(lang -> {
+                if (!book.getBook().getTitle().getString(lang).isBlank()) {
+                    put("bookTitle" + lang, book.getBook().getTitle().getString(lang));
+                }
+            });
             putInt("position", book.getBook().getPosition());
 
             List<IdAndLabel> bookTypes = new ArrayList<>();

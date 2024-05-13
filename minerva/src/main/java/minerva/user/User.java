@@ -40,31 +40,37 @@ public class User {
     }
 
     public String getGuiLanguage() {
-        List<String> validLangs = MinervaWebapp.factory().getConfig().getLanguages();
-        for (String i : validLangs) {
-            if (i.equals(guiLanguage)) {
-                return guiLanguage;
-            }
-        }
-        return validLangs.get(0);
+        return validLang(guiLanguage);
     }
 
     public void setGuiLanguage(String guiLanguage) {
-        this.guiLanguage = guiLanguage;
+        if (getLanguages().contains(guiLanguage)) {
+            this.guiLanguage = guiLanguage;
+        }
     }
 
     public String getPageLanguage() {
-        List<String> validLangs = MinervaWebapp.factory().getConfig().getLanguages();
+        return validLang(pageLanguage);
+    }
+
+    public void setPageLanguage(String pageLanguage) {
+        if (getLanguages().contains(pageLanguage)) {
+            this.pageLanguage = pageLanguage;
+        }
+    }
+    
+    private String validLang(String theLanguage) {
+        List<String> validLangs = getLanguages();
         for (String i : validLangs) {
-            if (i.equals(pageLanguage)) {
-                return pageLanguage;
+            if (i.equals(theLanguage)) {
+                return theLanguage;
             }
         }
         return validLangs.get(0);
     }
 
-    public void setPageLanguage(String pageLanguage) {
-        this.pageLanguage = pageLanguage;
+    private List<String> getLanguages() {
+        return MinervaWebapp.factory().getConfig().getLanguages();
     }
 
     public ExportUserSettings getExport() {

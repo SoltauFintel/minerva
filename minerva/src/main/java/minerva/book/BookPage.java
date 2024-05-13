@@ -63,7 +63,11 @@ public class BookPage extends BPage implements Uptodatecheck {
             map.put("LANG", lang.toUpperCase());
             map.put("gliederung", gliederung.toString());
             map.put("active", user.getPageLanguage().equals(lang));
-            map.put("bookTitle", esc(book.getBook().getTitle().getString(lang)));
+            String bookTitle = book.getBook().getTitle().getString(lang);
+            if (bookTitle.isBlank()) {
+                bookTitle = book.getBook().getFolder();
+            }
+            map.put("bookTitle", esc(bookTitle));
         }
     }
     
@@ -87,7 +91,10 @@ public class BookPage extends BPage implements Uptodatecheck {
         for (SeiteSO seite : seiten) {
             int hasContent = seite.hasContent(lang);
             if (hasContent > 0 || allPages) {
-                String title = esc(seite.getSeite().getTitle().getString(lang));
+                String title = seite.getSeite().getTitle().getString(lang);
+                if (title.isBlank()) {
+                    title = "without title #" + seite.getId();
+                }
                 String link = "/s/" + branch + "/" + bookFolder + "/" + esc(seite.getSeite().getId());
                 String nc = hasContent == 2 ? " class=\"noContent\"" : "";
                 if (allPages && hasContent == 0) {
@@ -98,7 +105,7 @@ public class BookPage extends BPage implements Uptodatecheck {
                 gliederung.append("\"><a href=\"");
                 gliederung.append(link);
                 gliederung.append("\"" + nc + ">");
-                gliederung.append(title);
+                gliederung.append(esc(title));
                 gliederung.append("</a>");
                 int state = new SeiteCommentService2(seite).getCommentState(user.getLogin());
                 if (state > 0) {

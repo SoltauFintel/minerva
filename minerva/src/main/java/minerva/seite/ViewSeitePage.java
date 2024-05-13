@@ -64,7 +64,11 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
                     "document.getElementById('titel" + lang.toUpperCase()
                             + "').value = localStorage.getItem('error_titel" + lang.toUpperCase() + "." + id + "');\r\n"
                             + "localStorage.removeItem('error_titel" + lang.toUpperCase() + "." + id + "');\r\n");
-            map.put("titel", esc(seite.getTitle().getString(lang)));
+            String titel = seite.getTitle().getString(lang);
+            if (titel.isBlank()) {
+                titel = "without title #" + seite.getId();
+            }
+            map.put("titel", esc(titel));
             TocMacro macro = new TocMacro(seiteSO.getTocMacroPage(), "-", lang, "");
             map.put("content", macro.transform(seiteSO.getContent().getString(lang)));
             map.put("toc", macro.getTOC()); // no esc, after transform()
@@ -335,7 +339,11 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         for (int i = breadcrumbs.size() - 1; i >= 0; i--) {
             Breadcrumb b = breadcrumbs.get(i);
             DataMap map = list.add();
-            map.put("title", esc(b.getTitle().getString(lang)));
+            String title = b.getTitle().getString(lang);
+            if (title.isBlank()) {
+                title = "without title";
+            }
+            map.put("title", esc(title));
             map.put("link", b.getLink());
             map.put("first", i == breadcrumbs.size() - 1);
             map.put("last", i == 0);

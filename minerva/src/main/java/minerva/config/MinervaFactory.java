@@ -69,7 +69,9 @@ public class MinervaFactory {
     }
     
     public String getInitialLanguage() {
-        return MinervaAuth.browserLanguage == null ? languages.get(0) : MinervaAuth.browserLanguage;
+        return (MinervaAuth.browserLanguage != null && languages.contains(MinervaAuth.browserLanguage))
+                ? MinervaAuth.browserLanguage
+                : languages.get(0);
     }
 
     public BackendService getBackendService() {
