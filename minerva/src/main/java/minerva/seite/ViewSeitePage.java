@@ -57,32 +57,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         Seite _seite = seite.getSeite();
         fillTags(_seite);
         putSize("tagsSize", seite.getSeite().getTags());
-        
-        put("book", bookFolder);
-        put("id", id);
-        put("parentId", esc(_seite.getParentId()));
-        putInt("position", _seite.getPosition());
-        putInt("version", _seite.getVersion());
-        put("bookTitle", esc(seite.getBook().getBook().getTitle().getString(u.getPageLanguage()))); // bin usicher
-        put("isPublicBook", !seite.isNotPublic());
-        put("isInternalBook", seite.isInternal());
-        put("isFeatureTree", seite.isFeatureTree());
-        
-        if (seite.isFeatureTree() && seite.getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
-            put("hasSubPages", false);
-            put("hasPositionlink", false);
-        } else {
-            put("hasSubPages", !seite.getSeiten().isEmpty());
-            put("hasPositionlink", seite.getSeiten().size() > 1);
-        }
-
-        put("newPage", n(book.isFeatureTrue() ? "newFeature" : "newPage"));
-        put("Sortierung", n(_seite.isSorted() ? "alfaSorted" : "manuSorted"));
-        put("isSorted", _seite.isSorted());
-        put("hasAbsoluteUrlImage", new FixHttpImage().hasAbsoluteUrlImage(seite, langs));
-        put("featureFields", FeatureFieldsHtmlFactory.FACTORY.build(seite, false).html());
+        simpleVars(u, _seite);
+        subpages();
         new MaskAndDataFields(seite).customersMultiselect(model);
-
         String cosi = new SeiteCommentService2(seite).getCommentsSizeText(user.getLogin());
         boolean forMe = cosi.startsWith("*");
         if (forMe) {
@@ -90,7 +67,6 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         }
         put("commentsSize", cosi);
         put("commentsForMe", forMe);
-        
         PageChange change = seite.getLastChange();
         put("hasLastChange", change != null);
         if (change != null) {
@@ -122,14 +98,10 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             put("mindmapData", "");
         }
         editorComponent();
-        
         header(modifyHeader(seite.getTitle()));
-
         fillLinks(branch, bookFolder, id, seite, _seite, u.getPageLanguage());
-        
         menu(isFavorite, pageWatched, subpagesWatched,
                 MinervaWebapp.factory().getConfig().isGitlab(), MinervaWebapp.factory().isCustomerVersion()); // möglichst spät aufrufen
-        
         Logger.info(u.getLogin() + " | " + seite.getBook().getWorkspace().getBranch() + " | "
                 + seite.getTitle() + " | " + u.getPageLanguage());
     }
@@ -161,6 +133,33 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         }
     }
     
+    private void simpleVars(User u, Seite _seite) {
+        put("book", bookFolder);
+        put("id", id);
+        put("parentId", esc(_seite.getParentId()));
+        putInt("position", _seite.getPosition());
+        putInt("version", _seite.getVersion());
+        put("bookTitle", esc(seite.getBook().getBook().getTitle().getString(u.getPageLanguage()))); // bin usicher
+        put("isPublicBook", !seite.isNotPublic());
+        put("isInternalBook", seite.isInternal());
+        put("isFeatureTree", seite.isFeatureTree());
+        put("newPage", n(book.isFeatureTrue() ? "newFeature" : "newPage"));
+        put("Sortierung", n(_seite.isSorted() ? "alfaSorted" : "manuSorted"));
+        put("isSorted", _seite.isSorted());
+        put("hasAbsoluteUrlImage", new FixHttpImage().hasAbsoluteUrlImage(seite, langs));
+        put("featureFields", FeatureFieldsHtmlFactory.FACTORY.build(seite, false).html());
+    }
+
+    private void subpages() {
+        if (seite.isFeatureTree() && seite.getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
+            put("hasSubPages", false);
+            put("hasPositionlink", false);
+        } else {
+            put("hasSubPages", !seite.getSeiten().isEmpty());
+            put("hasPositionlink", seite.getSeiten().size() > 1);
+        }
+    }
+
     private void editorComponent() {
         put("bigEditor", true);
         
