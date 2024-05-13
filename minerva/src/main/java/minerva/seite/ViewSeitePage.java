@@ -545,11 +545,12 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         Set<String> names = new TreeSet<>();
         List<User> users = UserAccess.loadUsers();
         watch(id, users, names);
-        SeiteSO parent = seite;
-        while (parent.hasParent()) {
-            parent = seite.getParent();
-            watch(parent.getId() + "+", users, names);
-        }
+// TODO ConcurrentModificationException problem        
+//        SeiteSO parent = seite;
+//        while (parent.hasParent()) {
+//            parent = seite.getParent();
+//            watch(parent.getId() + "+", users, names);
+//        }
         return names.stream().collect(Collectors.joining(", "));
     }
 
