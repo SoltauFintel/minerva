@@ -3,6 +3,9 @@ package minerva.base;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -137,5 +140,52 @@ public class StringService {
             }
         }
         return html;
+    }
+    
+    /**
+     * @param html the whole HTML string
+     * @param tag tag name
+     * @param attr attribute name
+     * @return set of attribute values
+     */
+    public static Set<String> findHtmlTags(String html, String tag, String attr) {
+        return findHtmlTags(html, tag, attr, all -> true, false);
+    }
+    
+    /**
+     * @param html the whole HTML string
+     * @param tag tag name
+     * @param attr attribute name
+     * @param filter attribute value filter
+     * @param returnOne return first occurence
+     * @return set of attribute values
+     */
+    public static Set<String> findHtmlTags(String html, String tag, String attr, Predicate<String> filter, boolean returnOne) {
+        Set<String> ret = new TreeSet<>();
+        String x1 = "<" + tag;
+        String x2 = attr + "=\"";
+        int o = html.indexOf(x1);
+        while (o >= 0) {
+            o += x1.length();
+            int oo = html.indexOf(">", o); // end of tag
+            if (oo >= 0) {
+                int z = html.indexOf(x2, o);
+                if (z >= o && z < oo) {
+                    z += x2.length();
+                    int zz = html.indexOf("\"", z); // end of attr val
+                    if (zz >= z && zz < oo) {
+                        String val = html.substring(z, zz);
+                        if (filter.test(val)) {
+                            ret.add(val);
+                            if (returnOne) {
+                                return ret;
+                            }
+                        }
+                    }
+                }
+            }
+            o = html.indexOf(x1, o);
+        }
+        return ret;
     }
 }

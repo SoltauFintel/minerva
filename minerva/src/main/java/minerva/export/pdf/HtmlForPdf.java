@@ -3,9 +3,11 @@ package minerva.export.pdf;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Set;
 
 import org.pmw.tinylog.Logger;
 
+import minerva.base.StringService;
 import minerva.seite.link.Link;
 import minerva.seite.link.LinkService;
 
@@ -93,27 +95,15 @@ public class HtmlForPdf {
      * Replace img src to absolute paths.
      */
     private static String images(String html, String info, String imageBaseDir, List<String> errorMessages) {
-        int o = html.indexOf("<img");
-        while (o >= 0) {
-            int diff = 0;
-            int o1 = html.indexOf("src=\"", o);
-            if (o1 > o) {
-                o1 += "src=\"".length();
-                int o2 = html.indexOf("\"", o1);
-                if (o2 > o1) {
-                    String src = html.substring(o1, o2);
-                    if (!src.startsWith("http")) {
-                        File f = new File(imageBaseDir, src);
-                        String newSrc = "file:///" + f.getAbsolutePath().replace("\\", "/");
-                        html = html.substring(0, o1) + newSrc + html.substring(o2);
-                        diff = newSrc.length() - src.length();
-                    } else {
-                        errorMessages.add(info + " has an image with http URL: " + src);
-                    }
-                }
+        Set<String> imgSources = StringService.findHtmlTags(html, "img", "src");
+        for (String src : imgSources) {
+            if (src.startsWith("http")) {
+                errorMessages.add(info + " has an image with http URL: " + src);
+            } else {
+                File f = new File(imageBaseDir, src);
+                String newSrc = "file:///" + f.getAbsolutePath().replace("\\", "/");
+                html = html.replace("src=\"" + src + "\"", "src=\"" + newSrc + "\"");
             }
-
-            o = html.indexOf("<img", o + "<img".length() + diff);
         }
         return html;
     }

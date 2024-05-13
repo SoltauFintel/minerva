@@ -299,7 +299,7 @@ public class ConfluenceToMinervaMigrationService {
 
     private String migrateImages(SeiteSO tp, Seite seite, String html, Map<String,String> files) {
         html = html.replace("img/", "img/" + seite.getId() + "/");
-        Set<String> imgList = extract(html, "src=\"");
+        Set<String> imgList = extract(html, "img", "src");
         for (String img : imgList) {
             int o = img.indexOf("/");
             if (o < 0) {
@@ -349,7 +349,7 @@ public class ConfluenceToMinervaMigrationService {
             html = html.replace("<h" + h, "<h" + n).replace("</h" + h + ">", "</h" + n + ">");
         }
         // Links
-        Set<String> href = extract(html, "href=\"");
+        Set<String> href = extract(html, "a", "href");
         for (String h : href) {
             if (h.contains("/pages/createpage.action")) {
                 html = html.replace(h, "#"); // kill it
@@ -368,19 +368,8 @@ public class ConfluenceToMinervaMigrationService {
         return ret == null ? href : ret;
     }
 
-    private Set<String> extract(String html, final String x1) {
-        final String x2 = "\"";
-        Set<String> set = new HashSet<>();
-        int o = html.indexOf(x1);
-        while (o >= 0) {
-            o += x1.length();
-            int oo = html.indexOf(x2, o);
-            if (oo > o) {
-                set.add(html.substring(o, oo));
-            }
-            o = html.indexOf(x1, oo + x2.length());
-        }
-        return set;
+    private Set<String> extract(String html, String tag, final String x1) {
+        return StringService.findHtmlTags(html, tag, x1);
     }
     
     private Map<String, String> loadMappings(File csvFile) {
