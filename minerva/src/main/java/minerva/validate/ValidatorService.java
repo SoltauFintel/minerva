@@ -1,15 +1,19 @@
 package minerva.validate;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.base.NLS;
+import minerva.base.StringService;
 import minerva.model.SeiteSO;
 
 /**
@@ -36,7 +40,7 @@ public class ValidatorService {
                 emptyLinesAtEnd(body, msg);
                 doubleEmptyLines(body, msg);
                 headings(body, msg);
-                missingImageFiles(body, msg);
+                missingImageFiles(seite, html, msg);
             }
         }
         return msg.stream().map(key -> translate(key, guiLang)).collect(Collectors.toList());
@@ -163,13 +167,16 @@ public class ValidatorService {
         }
     }
 
-    private void missingImageFiles(Element body, List<String> msg) {
-        // TODO Algo suchen, der <img src=> extrahiert.
-        // - minerva.export.pdf.HtmlForPdf.images(String, String, String, List<String>)
-        // - minerva.migration.ConfluenceToMinervaMigrationService.migrateImages(SeiteSO, Seite, String, Map<String, String>)
-        // - minerva.image.FixHttpImage.getAbsoluteUrlImages(NlsString, List<String>, boolean)
-        
-        // TODO Dann gucken, ob die Datei existiert.
+    private void missingImageFiles(SeiteSO seite, String html, List<String> msg) {
+        String bookFolder = seite.getBook().getFolder();
+        Set<String> imgSources = StringService.findHtmlTags(html, "img", "src");
+        for (String src : imgSources) {
+            File file = new File(bookFolder, src);
+            if (!file.isFile()) {
+                Logger.debug("Missing image file: " + file.getAbsolutePath());
+                msg.add("v.missingImageFile");
+            }
+        }
     }
 
     private String translate(String key, String lang) {
