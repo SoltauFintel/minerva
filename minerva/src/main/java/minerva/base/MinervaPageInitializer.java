@@ -101,7 +101,11 @@ public class MinervaPageInitializer extends PageInitializer {
                 if (BookType.PUBLIC.equals(book.getBook().getType())) {
                     DataMap map = list.add();
                     map.put("folder", esc(book.getBook().getFolder()));
-                    map.put("title", esc(book.getBook().getTitle().getString(userLang)));
+                    String title = book.getBook().getTitle().getString(userLang);
+                    if (title.isBlank()) {
+                        title = "without title";
+                    }
+                    map.put("title", esc(title));
                 }
             }
         }

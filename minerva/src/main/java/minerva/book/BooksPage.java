@@ -49,7 +49,11 @@ public class BooksPage extends UPage {
         if (books != null) {
             for (BookSO book : books) {
                 DataMap map = list.add();
-                map.put("title", esc(book.getBook().getTitle().getString(userLang)));
+                String title = book.getBook().getTitle().getString(userLang);
+                if (title.isBlank()) {
+                    title = "without title";
+                }
+                map.put("title", esc(title));
                 map.put("folder", esc(book.getBook().getFolder()));
                 map.put("type", n("bookType_" + book.getBook().getType().name()));
             }
