@@ -40,7 +40,13 @@ public class User {
     }
 
     public String getGuiLanguage() {
-        return guiLanguage;
+        List<String> validLangs = MinervaWebapp.factory().getConfig().getLanguages();
+        for (String i : validLangs) {
+            if (i.equals(guiLanguage)) {
+                return guiLanguage;
+            }
+        }
+        return validLangs.get(0);
     }
 
     public void setGuiLanguage(String guiLanguage) {
@@ -48,7 +54,13 @@ public class User {
     }
 
     public String getPageLanguage() {
-        return pageLanguage;
+        List<String> validLangs = MinervaWebapp.factory().getConfig().getLanguages();
+        for (String i : validLangs) {
+            if (i.equals(pageLanguage)) {
+                return pageLanguage;
+            }
+        }
+        return validLangs.get(0);
     }
 
     public void setPageLanguage(String pageLanguage) {
