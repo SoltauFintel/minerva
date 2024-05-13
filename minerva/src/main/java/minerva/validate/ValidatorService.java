@@ -171,10 +171,15 @@ public class ValidatorService {
         String bookFolder = seite.getBook().getFolder();
         Set<String> imgSources = StringService.findHtmlTags(html, "img", "src");
         for (String src : imgSources) {
-            File file = new File(bookFolder, src);
-            if (!file.isFile()) {
-                Logger.debug("Missing image file: " + file.getAbsolutePath());
-                msg.add("v.missingImageFile");
+            if (src.startsWith("http://") || src.startsWith("https://")) {
+                Logger.debug("Image starts with 'http://' or 'https://': " + src);
+                msg.add("hasAbsoluteUrlImage");
+            } else {
+                File file = new File(bookFolder, src);
+                if (!file.isFile()) {
+                    Logger.debug("Missing image file: " + file.getAbsolutePath());
+                    msg.add("v.missingImageFile");
+                }
             }
         }
     }
