@@ -55,18 +55,10 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         seite.forceReloadIfCheap();
         fillLanguageSpecifics(u);
         Seite _seite = seite.getSeite();
-        fillTags(_seite);
-        putSize("tagsSize", seite.getSeite().getTags());
         simpleVars(u, _seite);
         subpages();
         new MaskAndDataFields(seite).customersMultiselect(model);
-        String cosi = new SeiteCommentService2(seite).getCommentsSizeText(user.getLogin());
-        boolean forMe = cosi.startsWith("*");
-        if (forMe) {
-            cosi = cosi.substring(1);
-        }
-        put("commentsSize", cosi);
-        put("commentsForMe", forMe);
+        commentsSize();
         PageChange change = seite.getLastChange();
         put("hasLastChange", change != null);
         if (change != null) {
@@ -85,9 +77,41 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("ctrlS", n("ctrlS"));
         levellist("levellist", _seite.getTocHeadingsLevels());
         levellist("levellist2", _seite.getTocSubpagesLevels());
+        featureTreeMindmap();
+        editorComponent();
+        header(modifyHeader(seite.getTitle()));
+        fillLinks(branch, bookFolder, id, seite, _seite, u.getPageLanguage());
+        menu(isFavorite, pageWatched, subpagesWatched,
+                MinervaWebapp.factory().getConfig().isGitlab(), MinervaWebapp.factory().isCustomerVersion()); // möglichst spät aufrufen
+        Logger.info(u.getLogin() + " | " + seite.getBook().getWorkspace().getBranch() + " | "
+                + seite.getTitle() + " | " + u.getPageLanguage());
+    }
+
+    private void simpleVars(User u, Seite _seite) {
+        fillTags(_seite);
+        putSize("tagsSize", seite.getSeite().getTags());
+        put("book", bookFolder);
+        put("id", id);
+        put("parentId", esc(_seite.getParentId()));
+        putInt("position", _seite.getPosition());
+        putInt("version", _seite.getVersion());
+        put("bookTitle", esc(seite.getBook().getBook().getTitle().getString(u.getPageLanguage()))); // bin usicher
+        put("isPublicBook", !seite.isNotPublic());
+        put("isInternalBook", seite.isInternal());
+        put("isFeatureTree", seite.isFeatureTree());
+        put("newPage", n(book.isFeatureTrue() ? "newFeature" : "newPage"));
+        put("Sortierung", n(_seite.isSorted() ? "alfaSorted" : "manuSorted"));
+        put("isSorted", _seite.isSorted());
+        put("hasAbsoluteUrlImage", new FixHttpImage().hasAbsoluteUrlImage(seite, langs));
+        put("featureFields", FeatureFieldsHtmlFactory.FACTORY.build(seite, false).html());
         put("editorsNote", esc(_seite.getEditorsNote()));
         put("editorsNoteBR", esc(_seite.getEditorsNote()).replace("\n", "<br/>"));
         put("hasEditorsNote", !StringService.isNullOrEmpty(_seite.getEditorsNote()));
+//        put("watchers", "Florian, Sebastian, Ruth, Moschi");
+//        put("hasWatchers", true); // TODO Baustelle
+    }
+
+    private void featureTreeMindmap() {
         if (book.isFeatureTrue()) {
             put("hasLeftArea", false);
             put("leftAreaContent", "");
@@ -97,13 +121,16 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             put("leftAreaContent", getTreeHTML(seite));
             put("mindmapData", "");
         }
-        editorComponent();
-        header(modifyHeader(seite.getTitle()));
-        fillLinks(branch, bookFolder, id, seite, _seite, u.getPageLanguage());
-        menu(isFavorite, pageWatched, subpagesWatched,
-                MinervaWebapp.factory().getConfig().isGitlab(), MinervaWebapp.factory().isCustomerVersion()); // möglichst spät aufrufen
-        Logger.info(u.getLogin() + " | " + seite.getBook().getWorkspace().getBranch() + " | "
-                + seite.getTitle() + " | " + u.getPageLanguage());
+    }
+
+    private void commentsSize() {
+        String cosi = new SeiteCommentService2(seite).getCommentsSizeText(user.getLogin());
+        boolean forMe = cosi.startsWith("*");
+        if (forMe) {
+            cosi = cosi.substring(1);
+        }
+        put("commentsSize", cosi);
+        put("commentsForMe", forMe);
     }
 
     private void fillLanguageSpecifics(User user) {
@@ -121,6 +148,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             String titel = _seite.getTitle().getString(lang);
             if (titel.isBlank()) {
                 titel = "without title #" + _seite.getId();
+                // TODO Unterscheidung hier zwischen ViewSeite und EditSeite!
             }
             map.put("titel", esc(titel));
             TocMacro macro = new TocMacro(seite.getTocMacroPage(), "-", lang, "");
@@ -133,23 +161,6 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         }
     }
     
-    private void simpleVars(User u, Seite _seite) {
-        put("book", bookFolder);
-        put("id", id);
-        put("parentId", esc(_seite.getParentId()));
-        putInt("position", _seite.getPosition());
-        putInt("version", _seite.getVersion());
-        put("bookTitle", esc(seite.getBook().getBook().getTitle().getString(u.getPageLanguage()))); // bin usicher
-        put("isPublicBook", !seite.isNotPublic());
-        put("isInternalBook", seite.isInternal());
-        put("isFeatureTree", seite.isFeatureTree());
-        put("newPage", n(book.isFeatureTrue() ? "newFeature" : "newPage"));
-        put("Sortierung", n(_seite.isSorted() ? "alfaSorted" : "manuSorted"));
-        put("isSorted", _seite.isSorted());
-        put("hasAbsoluteUrlImage", new FixHttpImage().hasAbsoluteUrlImage(seite, langs));
-        put("featureFields", FeatureFieldsHtmlFactory.FACTORY.build(seite, false).html());
-    }
-
     private void subpages() {
         if (seite.isFeatureTree() && seite.getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
             put("hasSubPages", false);
