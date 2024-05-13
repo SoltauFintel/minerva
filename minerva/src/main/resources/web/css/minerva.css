@@ -534,6 +534,12 @@ ul.pagetree {
     color: #909;
 }
 
+.reply {
+    margin-top: 2em;
+    border: 1pt dashed grey;
+    padding: 11px;
+}
+
 /* MenuPage: */
 
 .bs-glyphicons {

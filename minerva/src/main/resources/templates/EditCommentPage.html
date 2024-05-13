@@ -8,9 +8,11 @@
 
 <div class="row"> 
     <div class="col-lg-12">
-        <h1 class="page-header">{{if add}}{{N.addComment}}{{else}}{{N.editComment}}{{/if}}</h1>
+        <h1 class="page-header">{{header}}</h1>
 
         <h2><a href="{{parentEntityPath}}">{{parentEntityTitle}}</a></h2>
+        
+        {{parentText}}
 
         <form action="{{action}}" class="editorform form-horizontal mt3" method="post">
             <fieldset>

@@ -12,7 +12,7 @@ import minerva.user.UserAccess;
  * Edit or add comment
  */
 public class EditCommentPage extends Page {
-
+    
     @Override
     protected void execute() {
         String id = ctx.queryParam("id"); // GET: id is missing id add case, POST: id is always set
@@ -62,7 +62,20 @@ public class EditCommentPage extends Page {
         put("onloadExtra", "");
         // <<
         sv.initModel(model);
-        put("title", NLS.get(sv.getLanguage(), add ? "addComment" : "editComment") + " - " + model.get("parentEntityTitle").toString() // after initModel!
+        
+        String headerId = add ? "addComment" : "editComment";
+        if (StringService.isNullOrEmpty(parentId)) {
+            put("parentText", "");
+        } else {
+            headerId = "answerComment";
+            Comment parent = sv.get(parentId);
+            put("parentText", "<div class=\"reply\">" //
+                    + "<p>" + NLS.get(sv.getLanguage(), "comment-by") + " " + UserAccess.login2RealName(parent.getUser()) + ":</p>" //
+                    + parent.getText() + "</div>");
+        }
+        String header = NLS.get(sv.getLanguage(), headerId);
+        put("header", header);
+        put("title", header + " - " + model.get("parentEntityTitle").toString() // after initModel!
                 + UPage.TITLE_POSTFIX);
     }
     
