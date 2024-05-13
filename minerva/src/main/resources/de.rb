@@ -347,3 +347,4 @@ zuLoeschendeBeziehungenAnhaken=Bitte zu löschende Beziehungen anhaken
 Features=Features
 vonMirBeobachteteSeiten=Von mir beobachtete Seiten
 alleUnterseitenVon=Alle Unterseiten von
+watchers=Beobachter

@@ -347,3 +347,4 @@ zuLoeschendeBeziehungenAnhaken=Please tick relations to be deleted
 Features=Features
 vonMirBeobachteteSeiten=Pages watched by me
 alleUnterseitenVon=All subpages of
+watchers=Watchers

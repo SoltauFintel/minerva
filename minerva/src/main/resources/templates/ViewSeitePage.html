@@ -199,7 +199,7 @@
                     <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
             {{/if}}
         </p>
-        <p style="font-size: 8pt; color: #888;">
+        <p class="rightSideGreyText">
             Position: {{position}} | {{Sortierung}}
         </p>
         <hr/>
@@ -226,6 +226,11 @@
                         style="font-family: 'Courier New'; font-size: 9pt;">{{oneHelpKey}}</span>{{/if}}
                 </p>
             {{/if}}
+        {{/if}}
+        
+        {{if hasWatchers}}
+            <hr/>
+            <p class="rightSideGreyText"><i class="fa fa-bell"></i> {{N.watchers}}: {{watchers}}</p>
         {{/if}}
     </div>
 </div>

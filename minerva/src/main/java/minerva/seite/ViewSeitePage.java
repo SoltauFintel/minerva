@@ -2,7 +2,10 @@ package minerva.seite;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
@@ -107,8 +110,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("editorsNote", esc(_seite.getEditorsNote()));
         put("editorsNoteBR", esc(_seite.getEditorsNote()).replace("\n", "<br/>"));
         put("hasEditorsNote", !StringService.isNullOrEmpty(_seite.getEditorsNote()));
-//        put("watchers", "Florian, Sebastian, Ruth, Moschi");
-//        put("hasWatchers", true); // TODO Baustelle
+        String watchers = getWatchers();
+        put("watchers", esc(watchers));
+        put("hasWatchers", !watchers.isEmpty());
     }
 
     private void featureTreeMindmap() {
@@ -535,5 +539,25 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     
     private String a(String a) {
         return a == null ? "null" : "\"" + a.replace("\"", "\\\"") + "\"";
+    }
+
+    private String getWatchers() {
+        Set<String> names = new TreeSet<>();
+        List<User> users = UserAccess.loadUsers();
+        watch(id, users, names);
+        SeiteSO parent = seite;
+        while (parent.hasParent()) {
+            parent = seite.getParent();
+            watch(parent.getId() + "+", users, names);
+        }
+        return names.stream().collect(Collectors.joining(", "));
+    }
+
+    private void watch(String x, List<User> users, Set<String> names) {
+        for (User user : users) {
+            if (user.getWatchlist().contains(x)) {
+                names.add(user.getRealName());
+            }
+        }
     }
 }

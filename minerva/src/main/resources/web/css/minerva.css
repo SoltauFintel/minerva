@@ -540,6 +540,11 @@ ul.pagetree {
     padding: 11px;
 }
 
+.rightSideGreyText {
+    color: #888;
+    font-size: 8pt;
+}
+
 /* MenuPage: */
 
 .bs-glyphicons {
