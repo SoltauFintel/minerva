@@ -2,14 +2,13 @@ package minerva.seite;
 
 import minerva.base.NlsString;
 import minerva.base.StringService;
-import minerva.model.SeiteSO;
 
 public class EditHtmlPage extends EditSeitePage {
 
     @Override
-    protected void execute2(String branch, String bookFolder, String id, SeiteSO seiteSO) {
+    protected void execute2() {
         user.onlyAdmin();
-        super.execute2(branch, bookFolder, id, seiteSO);
+        super.execute2();
         put("editlink", "/s/" + branch + "/" + bookFolder + "/" + id + "/html");
     }
     

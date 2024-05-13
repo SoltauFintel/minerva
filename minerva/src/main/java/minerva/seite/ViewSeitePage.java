@@ -47,66 +47,43 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         if (isOneLang()) {
             langs = BookPage.oneLang(model, book);
         }
-        execute2(branch, bookFolder, id, seite);
+        execute2();
     }
 
-    protected void execute2(String branch, String bookFolder, String id, SeiteSO seiteSO) {
+    protected void execute2() {
         User u = user.getFreshUser();
-        seiteSO.forceReloadIfCheap();
-        Seite seite = seiteSO.getSeite();
-        DataList list = list("languages");
-        for (String lang : langs) {
-            DataMap map = list.add();
-            map.put("LANG", lang.toUpperCase());
-            map.put("lang", lang);
-            map.put("editorLanguage", lang);
-            map.put("onloadExtra",
-                    "document.getElementById('titel" + lang.toUpperCase()
-                            + "').value = localStorage.getItem('error_titel" + lang.toUpperCase() + "." + id + "');\r\n"
-                            + "localStorage.removeItem('error_titel" + lang.toUpperCase() + "." + id + "');\r\n");
-            String titel = seite.getTitle().getString(lang);
-            if (titel.isBlank()) {
-                titel = "without title #" + seite.getId();
-            }
-            map.put("titel", esc(titel));
-            TocMacro macro = new TocMacro(seiteSO.getTocMacroPage(), "-", lang, "");
-            map.put("content", macro.transform(seiteSO.getContent().getString(lang)));
-            map.put("toc", macro.getTOC()); // no esc, after transform()
-            map.put("active", lang.equals(u.getPageLanguage()));
-            fillBreadcrumbs(lang, map.list("breadcrumbs"));
-            map.putInt("subpagesSize", fillSubpages(seiteSO, seiteSO.getSeiten(), lang, map.list("subpages"),
-                    branch, bookFolder, false));
-        }
-        
-        fillTags(seite);
-        putSize("tagsSize", seiteSO.getSeite().getTags());
+        seite.forceReloadIfCheap();
+        fillLanguageSpecifics(u);
+        Seite _seite = seite.getSeite();
+        fillTags(_seite);
+        putSize("tagsSize", seite.getSeite().getTags());
         
         put("book", bookFolder);
         put("id", id);
-        put("parentId", esc(seite.getParentId()));
-        putInt("position", seite.getPosition());
-        putInt("version", seite.getVersion());
-        put("bookTitle", esc(seiteSO.getBook().getBook().getTitle().getString(u.getPageLanguage()))); // bin usicher
-        put("isPublicBook", !seiteSO.isNotPublic());
-        put("isInternalBook", seiteSO.isInternal());
-        put("isFeatureTree", seiteSO.isFeatureTree());
+        put("parentId", esc(_seite.getParentId()));
+        putInt("position", _seite.getPosition());
+        putInt("version", _seite.getVersion());
+        put("bookTitle", esc(seite.getBook().getBook().getTitle().getString(u.getPageLanguage()))); // bin usicher
+        put("isPublicBook", !seite.isNotPublic());
+        put("isInternalBook", seite.isInternal());
+        put("isFeatureTree", seite.isFeatureTree());
         
-        if (seiteSO.isFeatureTree() && seiteSO.getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
+        if (seite.isFeatureTree() && seite.getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
             put("hasSubPages", false);
             put("hasPositionlink", false);
         } else {
-            put("hasSubPages", !seiteSO.getSeiten().isEmpty());
-            put("hasPositionlink", seiteSO.getSeiten().size() > 1);
+            put("hasSubPages", !seite.getSeiten().isEmpty());
+            put("hasPositionlink", seite.getSeiten().size() > 1);
         }
 
         put("newPage", n(book.isFeatureTrue() ? "newFeature" : "newPage"));
-        put("Sortierung", n(seite.isSorted() ? "alfaSorted" : "manuSorted"));
-        put("isSorted", seite.isSorted());
-        put("hasAbsoluteUrlImage", new FixHttpImage().hasAbsoluteUrlImage(seiteSO, langs));
-        put("featureFields", FeatureFieldsHtmlFactory.FACTORY.build(seiteSO, false).html());
-        new MaskAndDataFields(seiteSO).customersMultiselect(model);
+        put("Sortierung", n(_seite.isSorted() ? "alfaSorted" : "manuSorted"));
+        put("isSorted", _seite.isSorted());
+        put("hasAbsoluteUrlImage", new FixHttpImage().hasAbsoluteUrlImage(seite, langs));
+        put("featureFields", FeatureFieldsHtmlFactory.FACTORY.build(seite, false).html());
+        new MaskAndDataFields(seite).customersMultiselect(model);
 
-        String cosi = new SeiteCommentService2(seiteSO).getCommentsSizeText(user.getLogin());
+        String cosi = new SeiteCommentService2(seite).getCommentsSizeText(user.getLogin());
         boolean forMe = cosi.startsWith("*");
         if (forMe) {
             cosi = cosi.substring(1);
@@ -114,13 +91,13 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("commentsSize", cosi);
         put("commentsForMe", forMe);
         
-        PageChange change = seiteSO.getLastChange();
+        PageChange change = seite.getLastChange();
         put("hasLastChange", change != null);
         if (change != null) {
-            fillLastChange(seiteSO, change, esc(n("lastChangeInfo")), model);
+            fillLastChange(seite, change, esc(n("lastChangeInfo")), model);
         }
-        putSize("helpKeysSize", seite.getHelpKeys());
-        String oneHelpKey = getOneHelpKey(seite.getHelpKeys());
+        putSize("helpKeysSize", _seite.getHelpKeys());
+        String oneHelpKey = getOneHelpKey(_seite.getHelpKeys());
         put("oneHelpKey", esc(oneHelpKey));
         put("hasOneHelpKey", !oneHelpKey.isEmpty());
         boolean isFavorite = u.getFavorites().contains(id);
@@ -130,33 +107,60 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         boolean subpagesWatched = u.getWatchlist().contains(id + "+");
         put("subpagesWatched", subpagesWatched);
         put("ctrlS", n("ctrlS"));
-        levellist("levellist", seite.getTocHeadingsLevels());
-        levellist("levellist2", seite.getTocSubpagesLevels());
-        put("editorsNote", esc(seite.getEditorsNote()));
-        put("editorsNoteBR", esc(seite.getEditorsNote()).replace("\n", "<br/>"));
-        put("hasEditorsNote", !StringService.isNullOrEmpty(seite.getEditorsNote()));
+        levellist("levellist", _seite.getTocHeadingsLevels());
+        levellist("levellist2", _seite.getTocSubpagesLevels());
+        put("editorsNote", esc(_seite.getEditorsNote()));
+        put("editorsNoteBR", esc(_seite.getEditorsNote()).replace("\n", "<br/>"));
+        put("hasEditorsNote", !StringService.isNullOrEmpty(_seite.getEditorsNote()));
         if (book.isFeatureTrue()) {
             put("hasLeftArea", false);
             put("leftAreaContent", "");
             mindmap();
         } else {
             put("hasLeftArea", true);
-            put("leftAreaContent", getTreeHTML(seiteSO));
+            put("leftAreaContent", getTreeHTML(seite));
             put("mindmapData", "");
         }
         editorComponent();
         
-        header(modifyHeader(seiteSO.getTitle()));
+        header(modifyHeader(seite.getTitle()));
 
-        fillLinks(branch, bookFolder, id, seiteSO, seite, u.getPageLanguage());
+        fillLinks(branch, bookFolder, id, seite, _seite, u.getPageLanguage());
         
         menu(isFavorite, pageWatched, subpagesWatched,
                 MinervaWebapp.factory().getConfig().isGitlab(), MinervaWebapp.factory().isCustomerVersion()); // möglichst spät aufrufen
         
-        Logger.info(u.getLogin() + " | " + seiteSO.getBook().getWorkspace().getBranch() + " | "
-                + seiteSO.getTitle() + " | " + u.getPageLanguage());
+        Logger.info(u.getLogin() + " | " + seite.getBook().getWorkspace().getBranch() + " | "
+                + seite.getTitle() + " | " + u.getPageLanguage());
     }
 
+    private void fillLanguageSpecifics(User user) {
+        Seite _seite = seite.getSeite();
+        DataList list = list("languages");
+        for (String lang : langs) {
+            DataMap map = list.add();
+            map.put("LANG", lang.toUpperCase());
+            map.put("lang", lang);
+            map.put("editorLanguage", lang);
+            map.put("onloadExtra",
+                    "document.getElementById('titel" + lang.toUpperCase()
+                            + "').value = localStorage.getItem('error_titel" + lang.toUpperCase() + "." + _seite.getId() + "');\r\n"
+                            + "localStorage.removeItem('error_titel" + lang.toUpperCase() + "." + _seite.getId() + "');\r\n");
+            String titel = _seite.getTitle().getString(lang);
+            if (titel.isBlank()) {
+                titel = "without title #" + _seite.getId();
+            }
+            map.put("titel", esc(titel));
+            TocMacro macro = new TocMacro(seite.getTocMacroPage(), "-", lang, "");
+            map.put("content", macro.transform(seite.getContent().getString(lang)));
+            map.put("toc", macro.getTOC()); // no esc, after transform()
+            map.put("active", lang.equals(user.getPageLanguage()));
+            fillBreadcrumbs(lang, map.list("breadcrumbs"));
+            map.putInt("subpagesSize", fillSubpages(seite, seite.getSeiten(), lang, map.list("subpages"),
+                    branch, bookFolder, false));
+        }
+    }
+    
     private void editorComponent() {
         put("bigEditor", true);
         

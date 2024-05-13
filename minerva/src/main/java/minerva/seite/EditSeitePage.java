@@ -11,10 +11,10 @@ import minerva.seite.link.InvalidLinksModel;
 public class EditSeitePage extends ViewSeitePage {
 
     @Override
-    protected void execute2(String branch, String bookFolder, String id, SeiteSO seiteSO) {
+    protected void execute2() {
         if (isPOST()) {
-            Logger.info(user.getLogin() + " | " + branch + " | saving page #" + id + " \"" + seiteSO.getTitle() + "\" ..." + saveinfo());
-            save(branch, bookFolder, id, seiteSO);
+            Logger.info(user.getLogin() + " | " + branch + " | saving page #" + id + " \"" + seite.getTitle() + "\" ..." + saveinfo());
+            save(branch, bookFolder, id, seite);
             workspace.onEditing(seite, true); // editing finished
         } else { // edit
             if (!"cl".equals(ctx.queryParam("m"))) {
@@ -25,10 +25,10 @@ public class EditSeitePage extends ViewSeitePage {
                     return;
                 }
             }
-            MinervaWebapp.factory().getBackendService().uptodatecheck(workspace, () -> seiteSO.freshcheck(langs));
+            MinervaWebapp.factory().getBackendService().uptodatecheck(workspace, () -> seite.freshcheck(langs));
             workspace.onEditing(seite, false); // editing started
             
-            super.execute2(branch, bookFolder, id, seiteSO);
+            super.execute2();
             put("postcontentslink", "/post-contents/seite?key=" + u(getKey()));
         }
     }
