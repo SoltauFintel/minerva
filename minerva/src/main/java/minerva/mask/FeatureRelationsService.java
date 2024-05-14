@@ -12,26 +12,34 @@ public class FeatureRelationsService {
     public List<Relation> getRelations(SeiteSO feature, FeatureFields ff) {
         List<Relation> relations = new ArrayList<>();
         BookSO book = feature.getBook();
-        final String id = feature.getId();
-        FeatureFieldsService sv2 = new FeatureFieldsService();
-        
-        // wegführende Beziehungen
-        ff.getPages().forEach(_id -> relations.add(new PageRelation(_id, book)));
+        wegfuehrendeBeziehungen(ff, relations, book);
+        ankommendeBeziehungen(feature, relations, book);
+        relations.sort((a, b) -> a.getTitle().compareToIgnoreCase(b.getTitle()));
+        return relations;
+    }
+
+    private void wegfuehrendeBeziehungen(FeatureFields ff, List<Relation> relations, BookSO book) {
+        ff.getPages().forEach(_id -> relations.add(new PageRelation(_id, book, i -> i.getPages().remove(_id))));
         ff.getTickets().forEach(ticket -> relations.add(new TicketRelation(ticket)));
         ff.getLinks().forEach(link -> relations.add(new LinkRelation(link)));
-        
-        // ankommende Beziehungen
+    }
+
+    private void ankommendeBeziehungen(SeiteSO feature, List<Relation> relations, BookSO book) {
+        final String id = feature.getId();
+        FeatureFieldsService sv2 = new FeatureFieldsService();
         for (SeiteSO as : book.getAlleSeiten()) {
             if (!id.equals(as.getId())) {
                 FeatureFields ff2 = sv2.get(as);
                 if (ff2.getPages().contains(id)) {
-                    relations.add(new PageRelation(as.getId(), book));
+                    relations.add(new PageRelation(as.getId(), book, unused -> sv2.removeEntryAndSave(ff2, id, as)));
                 }
             }
         }
+    }
 
-        relations.sort((a, b) -> a.getTitle().compareToIgnoreCase(b.getTitle()));
-        return relations;
+    public interface DeleteRoutine {
+    
+        void delete(FeatureFields ff);
     }
     
     public interface Relation {
@@ -52,13 +60,15 @@ public class FeatureRelationsService {
         private final String title;
         private final String link;
         private final String icon;
+        private final DeleteRoutine deleteRoutine;
         
-        private PageRelation(String id, BookSO book) {
+        private PageRelation(String id, BookSO book, DeleteRoutine deleteRoutine) {
             this.id = id;
             SeiteSO seite = book.getWorkspace().findPage(id);
             link = seite == null ? "" : "/s/{branch}/" + seite.getBook().getBook().getFolder() + "/" + id;
             title = seite == null ? id : seite.getTitle();
             icon = seite.isFeatureTree() ? "fa-file fa-sitemap-color" : "fa-file-text greenbook";
+            this.deleteRoutine = deleteRoutine;
         }
 
         @Override
@@ -83,7 +93,7 @@ public class FeatureRelationsService {
 
         @Override
         public void deleteFrom(FeatureFields ff) {
-            ff.getPages().remove(id);
+            deleteRoutine.delete(ff);
         }
     }
     

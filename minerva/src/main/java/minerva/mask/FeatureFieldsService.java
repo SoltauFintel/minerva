@@ -38,6 +38,11 @@ public class FeatureFieldsService {
         new MultiPurposeDirAccess(book.dao()).save(dn(seite), featureFields, new CommitMessage(seite, "feature fields"), book.getWorkspace());
     }
     
+    public void removeEntryAndSave(FeatureFields ff, String id, SeiteSO seite) {
+        ff.getPages().remove(id);
+        set(seite, ff);
+    }
+    
     public void delete(SeiteSO seite) {
         BookSO book = seite.getBook();
         if (!new MultiPurposeDirAccess(book.dao()).delete(dn(seite), new CommitMessage(seite, "feature fields deleted"),
