@@ -10,6 +10,9 @@ import minerva.book.BookPage;
 import minerva.mask.FeatureFieldsService.RSeite;
 import minerva.mask.FeatureFieldsService.Responsible;
 
+/**
+ * Listet auf welche Mitarbeiter für welche Features verantwortlich sind
+ */
 public class ResponsibilitiesPage extends BPage {
 
     @Override

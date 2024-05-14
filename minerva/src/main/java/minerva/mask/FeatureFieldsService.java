@@ -79,6 +79,11 @@ public class FeatureFieldsService {
         return ret;
     }
     
+    /**
+     * Listet auf welche Mitarbeiter für welche Features verantwortlich sind
+     * @param book -
+     * @return -
+     */
     public List<Responsible> responsibles(BookSO book) {
         if (!book.isFeatureTrue()) {
             throw new RuntimeException("It's not a feature tree");
@@ -110,6 +115,7 @@ public class FeatureFieldsService {
     }
     
     public static class Responsible {
+        /** user name */
         public String name;
         public final List<RSeite> seiten = new ArrayList<>();
         
@@ -122,6 +128,9 @@ public class FeatureFieldsService {
         }
     }
     
+    /**
+     * Responsible: seiteId + title pair
+     */
     public static class RSeite {
         public String seiteId;
         public String title;
