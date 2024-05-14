@@ -3,6 +3,8 @@ package minerva.mask;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pmw.tinylog.Logger;
+
 import github.soltaufintel.amalia.base.IdGenerator;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
@@ -10,6 +12,7 @@ import minerva.model.SeiteSO;
 public class FeatureRelationsService {
     
     public List<Relation> getRelations(SeiteSO feature, FeatureFields ff) {
+long start = System.currentTimeMillis();
         List<Relation> relations = new ArrayList<>();
         BookSO book = feature.getBook();
         final String id = feature.getId();
@@ -31,6 +34,7 @@ public class FeatureRelationsService {
         }
 
         relations.sort((a, b) -> a.getTitle().compareToIgnoreCase(b.getTitle()));
+Logger.info("relations: " + (System.currentTimeMillis() - start) + "ms");
         return relations;
     }
     
