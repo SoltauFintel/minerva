@@ -12,9 +12,24 @@ public class FeatureRelationsService {
     public List<Relation> getRelations(SeiteSO feature, FeatureFields ff) {
         List<Relation> relations = new ArrayList<>();
         BookSO book = feature.getBook();
-        ff.getPages().forEach(id -> relations.add(new PageRelation(id, book)));
+        final String id = feature.getId();
+        FeatureFieldsService sv2 = new FeatureFieldsService();
+        
+        // wegführende Beziehungen
+        ff.getPages().forEach(_id -> relations.add(new PageRelation(_id, book)));
         ff.getTickets().forEach(ticket -> relations.add(new TicketRelation(ticket)));
         ff.getLinks().forEach(link -> relations.add(new LinkRelation(link)));
+        
+        // ankommende Beziehungen
+        for (SeiteSO as : book.getAlleSeiten()) {
+            if (!id.equals(as.getId())) {
+                FeatureFields ff2 = sv2.get(as);
+                if (ff2.getPages().contains(id)) {
+                    relations.add(new PageRelation(as.getId(), book));
+                }
+            }
+        }
+
         relations.sort((a, b) -> a.getTitle().compareToIgnoreCase(b.getTitle()));
         return relations;
     }
