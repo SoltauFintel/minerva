@@ -17,6 +17,7 @@ import minerva.book.BookPage;
 import minerva.comment.SeiteCommentService2;
 import minerva.image.FixHttpImage;
 import minerva.mask.FeatureFieldsHtmlFactory;
+import minerva.mask.FeatureFieldsService;
 import minerva.mask.MaskAndDataFields;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
@@ -77,7 +78,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("ctrlS", n("ctrlS"));
         levellist("levellist", _seite.getTocHeadingsLevels());
         levellist("levellist2", _seite.getTocSubpagesLevels());
-        featureTreeMindmap();
+        featureTree();
         editorComponent();
         header(modifyHeader(seite.getTitle()));
         fillLinks(branch, bookFolder, id, seite, _seite, u.getPageLanguage());
@@ -112,7 +113,8 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("hasWatchers", !watchers.isEmpty());
     }
 
-    private void featureTreeMindmap() {
+    private void featureTree() {
+        DataList list = list("features");
         if (book.isFeatureTrue()) {
             put("hasLeftArea", false);
             put("leftAreaContent", "");
@@ -121,7 +123,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             put("hasLeftArea", true);
             put("leftAreaContent", getTreeHTML(seite));
             put("mindmapData", "");
+            new FeatureFieldsService().getFeaturesForSeite(id, workspace).forEach(f -> list.add().put("id", esc(f.seiteId)).put("title", esc(f.title)));
         }
+        put("showFeatures", !list.isEmpty());
     }
 
     private void commentsSize() {

@@ -181,4 +181,24 @@ public class FeatureFieldsService {
         }
         return false;
     }
+
+    public List<RSeite> getFeaturesForSeite(String seiteId, WorkspaceSO workspace) {
+        List<RSeite> features = new ArrayList<>();
+        FeatureFieldsService sv = new FeatureFieldsService();
+        for (BookSO book : workspace.getBooks()) {
+            if (book.isFeatureTrue()) {
+                for (SeiteSO seite : book.getAlleSeiten()) {
+                    FeatureFields ff = sv.get(seite);
+                    if (ff.getPages().contains(seiteId)) {
+                        RSeite feature = new RSeite();
+                        feature.seiteId = seite.getId();
+                        feature.title = seite.getTitle();
+                        features.add(feature);
+                    }
+                }
+            }
+        }
+        features.sort((a, b) -> a.title.compareToIgnoreCase(b.title));
+        return features;
+    }
 }
