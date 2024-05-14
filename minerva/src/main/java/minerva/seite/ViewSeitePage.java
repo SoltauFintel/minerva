@@ -147,9 +147,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
                             + "').value = localStorage.getItem('error_titel" + lang.toUpperCase() + "." + _seite.getId() + "');\r\n"
                             + "localStorage.removeItem('error_titel" + lang.toUpperCase() + "." + _seite.getId() + "');\r\n");
             String titel = _seite.getTitle().getString(lang);
+            map.put("realtitel", esc(titel));
             if (titel.isBlank()) {
                 titel = "without title #" + _seite.getId();
-                // TODO Unterscheidung hier zwischen ViewSeite und EditSeite!
             }
             map.put("titel", esc(titel));
             TocMacro macro = new TocMacro(seite.getTocMacroPage(), "-", lang, "");
