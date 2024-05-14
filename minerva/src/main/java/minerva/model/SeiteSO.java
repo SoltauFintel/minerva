@@ -564,7 +564,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
      * to be on the safe side)
      */
     public int hasContent(String lang) {
-        if (book.isFeatureTrue()) {
+        if (book.isFeatureTree()) {
             return 1;
         }
         return hasContentR(lang);
@@ -666,7 +666,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     }
     
     public boolean isFeatureTree() {
-        return book.isFeatureTrue();
+        return book.isFeatureTree();
     }
 
     public boolean isInternal() {

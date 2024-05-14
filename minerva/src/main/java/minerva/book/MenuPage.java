@@ -61,7 +61,7 @@ public class MenuPage extends WPage {
         for (BookSO bookSO : workspace.getBooks()) {
             if (bookSO.isInternal()) {
                 menu(list, bookSO.getBook().getTitle().getString(user.getGuiLanguage()), "fa-book fa-internal", "/b/:branch/" + bookSO.getBook().getFolder());
-            } else if (bookSO.isFeatureTrue()) {
+            } else if (bookSO.isFeatureTree()) {
                 menu(list, bookSO.getBook().getTitle().getString(user.getGuiLanguage()), "fa-sitemap fa-sitemap-color", "/b/:branch/" + bookSO.getBook().getFolder());
             }
         }

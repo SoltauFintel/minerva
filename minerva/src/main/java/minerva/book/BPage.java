@@ -28,6 +28,6 @@ public abstract class BPage extends WPage {
     }
     
     protected boolean isOneLang() {
-        return book.isFeatureTrue() || book.isInternal();
+        return book.isFeatureTree() || book.isInternal();
     }
 }

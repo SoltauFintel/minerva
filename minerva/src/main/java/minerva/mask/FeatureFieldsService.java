@@ -85,7 +85,7 @@ public class FeatureFieldsService {
      * @return -
      */
     public List<Responsible> responsibles(BookSO book) {
-        if (!book.isFeatureTrue()) {
+        if (!book.isFeatureTree()) {
             throw new RuntimeException("It's not a feature tree");
         }
         List<Responsible> ret = new ArrayList<>();
@@ -145,7 +145,7 @@ public class FeatureFieldsService {
         }
         final String x = q.toLowerCase();
         for (BookSO book : workspace.getBooks()) {
-            if (!book.isFeatureTrue()) {
+            if (!book.isFeatureTree()) {
                 continue;
             }
             int n = 0;
@@ -186,7 +186,7 @@ public class FeatureFieldsService {
         List<RSeite> features = new ArrayList<>();
         FeatureFieldsService sv = new FeatureFieldsService();
         for (BookSO book : workspace.getBooks()) {
-            if (book.isFeatureTrue()) {
+            if (book.isFeatureTree()) {
                 for (SeiteSO seite : book.getAlleSeiten()) {
                     FeatureFields ff = sv.get(seite);
                     if (ff.getPages().contains(seiteId)) {

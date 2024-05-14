@@ -135,7 +135,7 @@ public class BookSO {
         return book.getTitle().getString(getUser().getGuiLanguage());
     }
     
-    public boolean isFeatureTrue() {
+    public boolean isFeatureTree() {
         return BookType.FEATURE_TREE.equals(book.getType());
     }
 

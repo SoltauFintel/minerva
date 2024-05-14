@@ -46,7 +46,7 @@ public class ReportInfosService {
     }
     
     public void firstImport(BookSO book, boolean force) {
-        if (!book.isFeatureTrue()) {
+        if (!book.isFeatureTree()) {
             throw new RuntimeException("Book must be of type 'Feature Tree'");
         }
         int subpages = 0;
@@ -69,7 +69,7 @@ public class ReportInfosService {
     }
     
     public void update(BookSO book) {
-        if (!book.isFeatureTrue()) {
+        if (!book.isFeatureTree()) {
             throw new RuntimeException("Book must be of type 'Feature Tree'");
         }
         for (String rt : reportTypes) {

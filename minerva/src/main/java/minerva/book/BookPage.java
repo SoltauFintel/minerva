@@ -32,14 +32,14 @@ public class BookPage extends BPage implements Uptodatecheck {
         if (isOneLang()) {
             langs = oneLang(model, book);
         }
-        put("isFeatureTree", book.isFeatureTrue());
+        put("isFeatureTree", book.isFeatureTree());
         put("positionlink", booklink + "/order");
         put("sortlink", booklink + "/sort");
         put("hasPositionlink", book.getSeiten().size() > 1);
         boolean sorted = book.getBook().isSorted();
         put("isSorted", sorted);
         put("Sortierung", n(sorted ? "alfaSorted" : "manuSorted"));
-        put("newPage", n(book.isFeatureTrue() ? "newFeature" : "newPage"));
+        put("newPage", n(book.isFeatureTree() ? "newFeature" : "newPage"));
         put("hasReleaseNotesBtn", hasReleaseNotesBtn());
         put("additionalButtons", additionalButtons.getHTML(book));
         put("hasPrevlink", false);

@@ -100,7 +100,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("isPublicBook", !seite.isNotPublic());
         put("isInternalBook", seite.isInternal());
         put("isFeatureTree", seite.isFeatureTree());
-        put("newPage", n(book.isFeatureTrue() ? "newFeature" : "newPage"));
+        put("newPage", n(book.isFeatureTree() ? "newFeature" : "newPage"));
         put("Sortierung", n(_seite.isSorted() ? "alfaSorted" : "manuSorted"));
         put("isSorted", _seite.isSorted());
         put("hasAbsoluteUrlImage", new FixHttpImage().hasAbsoluteUrlImage(seite, langs));
@@ -115,7 +115,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
 
     private void featureTree() {
         DataList list = list("features");
-        if (book.isFeatureTrue()) {
+        if (book.isFeatureTree()) {
             put("hasLeftArea", false);
             put("leftAreaContent", "");
             mindmap();
