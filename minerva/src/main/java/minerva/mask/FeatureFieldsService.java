@@ -98,7 +98,10 @@ public class FeatureFieldsService {
                 }
             }
         }
-        ret.sort((a, b) -> b.seiten.size() - a.seiten.size());
+        ret.sort((a, b) -> {
+            int r = b.seiten.size() - a.seiten.size();
+            return r == 0 ? a.name.compareToIgnoreCase(b.name) : r;
+        });
         return ret;
     }
 
