@@ -1,6 +1,8 @@
 package minerva.seite;
 
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import github.soltaufintel.amalia.mail.Mail;
@@ -9,6 +11,7 @@ import minerva.base.StringService;
 import minerva.config.MinervaConfig;
 import minerva.model.SeiteSO;
 import minerva.model.UserSO;
+import minerva.user.User;
 import minerva.user.UserAccess;
 
 public class WatchersService {
@@ -102,5 +105,25 @@ public class WatchersService {
                 .replace("{branch}", editedSeite.getBook().getWorkspace().getBranch())
                 .replace("{notifiedPage}", user.getNotifiedBecauseOfPage().getTitle()));
         c.sendMail(mail);
+    }
+    
+    public String getWatchers() {
+        Set<String> names = new TreeSet<>();
+        List<User> users = UserAccess.loadUsers();
+        watch(editedSeite.getId(), users, names);
+        SeiteSO parent = editedSeite;
+        while (parent.hasParent()) {
+            parent = parent.getParent();
+            watch(parent.getId() + "+", users, names);
+        }
+        return names.stream().collect(Collectors.joining(", "));
+    }
+
+    private void watch(String x, List<User> users, Set<String> names) {
+        for (User user : users) {
+            if (user.getWatchlist().contains(x)) {
+                names.add(user.getRealName());
+            }
+        }
     }
 }
