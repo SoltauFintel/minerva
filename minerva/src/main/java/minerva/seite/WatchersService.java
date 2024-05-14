@@ -11,12 +11,12 @@ import minerva.model.SeiteSO;
 import minerva.model.UserSO;
 import minerva.user.UserAccess;
 
-public class NotifyWatchers {
+public class WatchersService {
     private final MinervaConfig c = MinervaWebapp.factory().getConfig();
     private final SeiteSO editedSeite;
     private final UserSO me;
     
-    public NotifyWatchers(SeiteSO editedSeite) {
+    public WatchersService(SeiteSO editedSeite) {
         this.editedSeite = editedSeite;
         me = editedSeite.getBook().getWorkspace().getUser();
     }

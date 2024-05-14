@@ -31,7 +31,7 @@ import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
 import minerva.image.FixHttpImage;
 import minerva.seite.IPageChangeStrategy;
-import minerva.seite.NotifyWatchers;
+import minerva.seite.WatchersService;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
 import minerva.seite.TocMacroPage;
@@ -392,7 +392,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
 
         reindex();
         
-        new Thread(() -> new NotifyWatchers(this).notifyWatchers()).start();
+        new Thread(() -> new WatchersService(this).notifyWatchers()).start();
 
         Logger.info(book.getWorkspace().getUser().getLogin() + " | " + book.getWorkspace().getBranch() + " | "
                 + newTitle.getString(langs.get(0))
