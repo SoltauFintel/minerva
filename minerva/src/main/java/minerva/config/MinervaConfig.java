@@ -331,15 +331,6 @@ public class MinervaConfig {
         return langs;
     }
     
-    // ~XMinerva
-    public String getReportInfosDownloadUrl() {
-        String url = config.get("report-infos.url");
-        if (StringService.isNullOrEmpty(url)) {
-            throw new RuntimeException("report-infos.url is not set in AppConfig.properties");
-        }
-        return url;
-    }
-    
     /**
      * @return if there are more subpages than this the will be hidden and instead a table will be displayed
      */
