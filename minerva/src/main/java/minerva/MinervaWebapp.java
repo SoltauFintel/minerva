@@ -66,7 +66,6 @@ import minerva.mask.field.AddMaskFieldPage;
 import minerva.mask.field.DeleteMaskFieldAction;
 import minerva.mask.field.EditMaskFieldPage;
 import minerva.mask.field.SortMaskFieldAction;
-import minerva.mask.reportinfos.UpdateReportInfosAction;
 import minerva.migration.MigrationPage;
 import minerva.model.JournalSO;
 import minerva.model.JournalSO.JournalTimer;
@@ -309,8 +308,6 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/fr/:branch/:book/:id", EditRelationsPage.class);
         form("/f/:branch/:book/:id", FeaturesTablePage.class);
         get("/responsibilities/:branch/:book", ResponsibilitiesPage.class);
-
-        get("/mask/:branch/:book/update-report-infos", UpdateReportInfosAction.class);
     }
     
     private void misc() {
