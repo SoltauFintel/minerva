@@ -171,6 +171,7 @@ public class MinervaConfig {
     
     public void sendMail(Mail mail) {
         mail.setSendername("Minerva");
+        // TODO prüfen, ob Config da ist, wenn nicht kein Mail versenden!
         new MailSender().send(mail, config);
     }
 
