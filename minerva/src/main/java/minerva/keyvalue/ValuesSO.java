@@ -14,13 +14,6 @@ import minerva.base.MList;
 import minerva.model.WorkspaceSO;
 
 public class ValuesSO extends MList<Values> {
-    public static final String KEYTYPE_REGIMES = "REGIMES";
-    public static final String KEYTYPE_SYNCHRON = "SYNCHRON";
-    public static final String KEYTYPE_INSTRUMENTS = "INSTRUMENTS";
-    public static final String KEYTYPE_BUSINESSTRANSACTIONS = "BUSINESS_TRANSACTIONS";
-    public static final String KEYTYPE_USAGES = "USAGES";
-    public static final String KEYTYPE_CUSTOMERS = "CUSTOMERS";
-    
     private static final String DN_PREFIX = "values_";
     private final WorkspaceSO workspace;
     
