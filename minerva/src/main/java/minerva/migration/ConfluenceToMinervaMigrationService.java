@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -48,7 +47,6 @@ public class ConfluenceToMinervaMigrationService {
     /** key: English page ID, value: German page ID */
     private Map<String, String> enDeMap;
     private List<EnglishSoloPage> englishSoloPages;
-    private OldHelpKeysReader helpKeysCollection;
     private int imgErrors;
     
     public ConfluenceToMinervaMigrationService(File sourceFolder, File helpKeysFolder,
@@ -70,9 +68,7 @@ public class ConfluenceToMinervaMigrationService {
         workspace.pull(); // nochmal, um Objektstruktur neu aufzubauen
         Logger.info("Migration init phase completed");
         
-        // Schritt 2: Hilfe-Keys laden
-        helpKeysCollection = new OldHelpKeysReader();
-        helpKeysCollection.readMappings(helpKeysFolder);
+        // Schritt 2: Hilfe-Keys laden => entfernt
 
         // Schritt 3: Confluence Daten laden
         File csvFile = new File(sourceFolder, "html/mapping-tabelle-csv.csv");
@@ -230,7 +226,6 @@ public class ConfluenceToMinervaMigrationService {
             html_en = processHTML(html_en);
         }
         tp.getContent().setString("en", html_en);
-        migrateHelpKeys(sp, en, tp);
         MinervaWebapp.factory().getPageChangeStrategy().set("Migration", tp);
         
         migrateNotes(sp.getId(), en == null ? null : en.getId(), tp, files);
@@ -441,18 +436,6 @@ public class ConfluenceToMinervaMigrationService {
                 }
             }
         }
-    }
-
-    private void migrateHelpKeys(ConfluencePage de, ConfluencePage en, SeiteSO tp) {
-        List<String> helpKeysTarget = tp.getSeite().getHelpKeys();
-        helpKeysTarget.clear();
-        if (de != null) {
-            addHelpKeys(helpKeysCollection.getHelpKeys(de.getId()), helpKeysTarget);
-        }
-        if (en != null) {
-            addHelpKeys(helpKeysCollection.getHelpKeys(en.getId()), helpKeysTarget);
-        }
-        Collections.sort(helpKeysTarget);
     }
 
     private void addHelpKeys(List<String> source, List<String> target) {
