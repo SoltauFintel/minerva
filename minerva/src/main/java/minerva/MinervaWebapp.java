@@ -35,9 +35,11 @@ import minerva.comment.CommentsPage;
 import minerva.comment.DeleteCommentAction;
 import minerva.comment.EditCommentPage;
 import minerva.comment.SeiteCommentService;
+import minerva.config.EditConfigPage;
 import minerva.config.InfoAction;
 import minerva.config.MinervaConfig;
 import minerva.config.MinervaFactory;
+import minerva.config.MinervaOptions;
 import minerva.exclusions.ExclusionsEditPage;
 import minerva.export.DownloadExportPage;
 import minerva.export.ExportBookAction;
@@ -322,6 +324,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/merge/:branch", MergeBranchPage.class);
         get("/rest/ping", PingAction.class);
         Spark.get("/rest/cleanup-journals", (req, res) -> JournalSO.cleanupAllJournals());
+        form("/config", EditConfigPage.class);
     }
 
     private void restApi() {
@@ -349,6 +352,7 @@ public class MinervaWebapp extends RouteDefinitions {
                 .withLogging(new LoggingInitializer(Level.INFO, "{date} {level}  {message}"))
                 .withTemplatesFolders(MinervaWebapp.class, "/templates")
                 .withErrorPage(MinervaErrorPage.class, MinervaError404Page.class)
+                .withInitializer(config -> MinervaOptions.options = new MinervaOptions(MinervaOptions.getConfigFile(MinervaOptions.MAIN_CONFIG, config)))
                 .withInitializer(config -> factory = new MinervaFactory(new MinervaConfig(config)))
                 .withInitializer(config -> CommentService.services.put(ctx -> ctx.path().startsWith("/sc/"), SeiteCommentService.class))
                 .withInitializer(config -> JournalTimer.start(config))

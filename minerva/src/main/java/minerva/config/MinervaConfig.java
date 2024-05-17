@@ -1,6 +1,5 @@
 package minerva.config;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -57,21 +56,7 @@ public class MinervaConfig {
     }
     
     public String getWorkspacesFolder() {
-        String ret = get("workspaces");
-        if (ret == null || ret.trim().length() <= 3) {
-            throw new ConfigurationException("Setting 'workspaces' not ok!");
-        }
-        ret = ret.trim().replace("\\", "/");
-        if (ret.endsWith("/")) {
-            ret = ret.substring(0, ret.length() - 1);
-        }
-        File f = new File(ret);
-        f.mkdirs();
-        if (!f.isDirectory()) {
-            throw new ConfigurationException("Folder for setting 'workspaces' can not be created! "
-                    + f.getAbsolutePath());
-        }
-        return ret;
+    	return MinervaOptions.getWorkspacesFolder(config);
     }
     
     public String getGitlabUrl() {
@@ -133,14 +118,6 @@ public class MinervaConfig {
 
     public String getGitlabMergeRequestPath() {
         return config.get("gitlab.merge-request-path", "/merge_requests/");
-    }
-
-    public String getSearchUrl() {
-        return config.get("search.url");
-    }
-    
-    public String getSearchSitePrefix() {
-        return config.get("search.site-prefix", "minerva-");
     }
 
     public String getMathJaxConverterURL(String expression) {

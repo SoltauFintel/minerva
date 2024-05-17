@@ -136,6 +136,7 @@ public class MenuPage extends WPage {
         }
         if (isAdmin) {
             menu(list, "dropAdminRights", "fa-trophy", "/activate-admin-rights?m=0");
+            menu(list, "Configuration", "fa-cogs", "/config");
             menu(list, "books", "fa-book", "/w/:branch");
             if (fac.isGitlab()) {
                 menu(list, "exclusions", "fa-bank", "/w/:branch/exclusions/edit");

@@ -10,8 +10,7 @@ import minerva.MinervaWebapp;
 import minerva.access.CommitHash;
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
-import minerva.config.MinervaConfig;
-import minerva.config.MinervaFactory;
+import minerva.config.MinervaOptions;
 import minerva.persistence.filesystem.FileSystemDirAccess;
 import minerva.seite.tag.TagNList;
 import minerva.task.TaskService;
@@ -128,9 +127,8 @@ public class WorkspaceSO {
     }
     
     public SearchSO getSearch() {
-        MinervaFactory fac = MinervaWebapp.factory();
-        MinervaConfig cfg = fac.getConfig();
-        return new SearchSO(cfg.getSearchUrl(), cfg.getSearchSitePrefix(), this, fac.getLanguages());
+		return new SearchSO(MinervaOptions.SEARCH_URL.get(), MinervaOptions.SEARCH_SITE_PREFIX.get(), this,
+				MinervaWebapp.factory().getLanguages());
     }
     
     public ExclusionsSO getExclusions() {
