@@ -45,14 +45,7 @@ public class EditConfigPage extends UPage {
 		MinervaOptions options = MinervaOptions.options;
 		for (OptionCategory cat : options.getCategories()) {
 			for (Option o : cat.getOptions()) {
-				String backup = o.get();
 				o.set(ctx.formParam(o.getKey()));
-				try {
-					o.validate();
-				} catch (Exception up) {
-					o.set(backup); // restore
-					throw up;
-				}
 			}
 		}
 		options.save();

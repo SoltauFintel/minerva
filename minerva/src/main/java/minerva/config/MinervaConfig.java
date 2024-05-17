@@ -315,4 +315,8 @@ public class MinervaConfig {
     public int getIndexLimit() {
         return config.getInt("index.limit", 60);
     }
+
+	public String getHost() {
+		return config.get("host");
+	}
 }

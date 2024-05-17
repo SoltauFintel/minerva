@@ -1,9 +1,8 @@
 package minerva.config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import org.pmw.tinylog.Logger;
+
+import minerva.base.StringService;
 
 public class Option {
 	private String key;
@@ -63,35 +62,52 @@ public class Option {
 		return this;
 	}
 
-	public void validate() {
-	}
-	
 	public String get() {
 		String val = MinervaOptions.options.optionValues.get(key);
 		return val == null ? defaultValue : val;
 	}
+	
+	/**
+	 * @return same as get(), but if value is null or empty throw an Exception
+	 */
+	public String notEmpty() {
+		String ret = get();
+		if (StringService.isNullOrEmpty(ret)) {
+			Logger.error("Option \"" + key + "\" is not set");
+			throw new RuntimeException("This function is not available due to a configuration problem. Please contact the administrator.");
+		}
+		return ret;
+	}
 
+	/**
+	 * Call save() to persist change.
+	 * @param value -
+	 */
 	public void set(String value) {
 		MinervaOptions.options.optionValues.put(key, value);
 	}
 
-	public boolean bool() {
-		return "true".equals(get());
-	}
-
-	public void bool(boolean value) {
-		set(value ? "true" : "false");
-	}
-	
-	public List<String> list() {
-		String list = get();
-		if (list == null) {
-			return new ArrayList<>();
-		}
-		return Arrays.asList(list.split(","));
-	}
-	
-	public void list(List<String> values) {
-		set(values == null ? null : values.stream().collect(Collectors.joining(",")));
-	}
+//	public boolean bool() {
+//		return "true".equals(get());
+//	}
+//
+//	/**
+//	 * Call save() to persist change.
+//	 * @param value -
+//	 */
+//	public void bool(boolean value) {
+//		set(value ? "true" : "false");
+//	}
+//	
+//	public List<String> list() {
+//		String list = get();
+//		if (list == null) {
+//			return new ArrayList<>();
+//		}
+//		return Arrays.asList(list.split(","));
+//	}
+//	
+//	public void list(List<String> values) {
+//		set(values == null ? null : values.stream().collect(Collectors.joining(",")));
+//	}
 }
