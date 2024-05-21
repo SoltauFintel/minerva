@@ -36,7 +36,6 @@ import minerva.seite.Seite;
  */
 public class ConfluenceToMinervaMigrationService {
     private final File sourceFolder;
-    private final File helpKeysFolder;
     private final WorkspaceSO workspace;
     private final List<String> langs;
     private ConfluencePage root_de;
@@ -49,10 +48,8 @@ public class ConfluenceToMinervaMigrationService {
     private List<EnglishSoloPage> englishSoloPages;
     private int imgErrors;
     
-    public ConfluenceToMinervaMigrationService(File sourceFolder, File helpKeysFolder,
-            WorkspaceSO workspace, List<String> langs) {
+    public ConfluenceToMinervaMigrationService(File sourceFolder, WorkspaceSO workspace, List<String> langs) {
         this.sourceFolder = sourceFolder;
-        this.helpKeysFolder = helpKeysFolder;
         this.workspace = workspace;
         this.langs = langs;
         throw new RuntimeException("Notes migration must be updated in source code!");
@@ -434,17 +431,6 @@ public class ConfluenceToMinervaMigrationService {
                     SeiteSO subTp = theParent.getSeiten().createSeite(theParent, theParent.getBook(), englishSoloPage.getId());
                     migrateEnglishPage(page, subTp, files);
                 }
-            }
-        }
-    }
-
-    private void addHelpKeys(List<String> source, List<String> target) {
-        if (source == null) {
-            return;
-        }
-        for (String helpKey : source) {
-            if (!target.contains(helpKey)) {
-                target.add(helpKey);
             }
         }
     }

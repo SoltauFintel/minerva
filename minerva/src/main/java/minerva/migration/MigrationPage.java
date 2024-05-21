@@ -25,17 +25,10 @@ public class MigrationPage extends UPage {
         }
         Logger.info("source folder   : " + sourceFolder);
         
-        String helpKeysFolder = MinervaWebapp.factory().getConfig().getMigrationHelpKeysFolder();
-        if (StringService.isNullOrEmpty(helpKeysFolder)) {
-            helpKeysFolder = "/html/mappings2";
-        }
-        Logger.info("help keys folder: " + helpKeysFolder);
-
         if ("1".equals(ctx.queryParam("m"))) {
             WorkspaceSO workspace = user.getWorkspace(branch);
             try {
-                new ConfluenceToMinervaMigrationService(new File(sourceFolder), new File(helpKeysFolder),
-                        workspace, langs).migrate();
+                new ConfluenceToMinervaMigrationService(new File(sourceFolder), workspace, langs).migrate();
             } catch (Exception e) {
                 Logger.error(e);
                 throw new RuntimeException("Migration error. See log.");
@@ -45,6 +38,5 @@ public class MigrationPage extends UPage {
         
         put("branch", esc(branch));
         put("sourceFolder", new File(sourceFolder).getAbsolutePath());
-        put("helpKeysFolder", new File(helpKeysFolder).getAbsolutePath());
     }
 }
