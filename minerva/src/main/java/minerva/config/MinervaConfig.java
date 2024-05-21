@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.pmw.tinylog.Logger;
+
 import github.soltaufintel.amalia.auth.webcontext.WebContext;
 import github.soltaufintel.amalia.mail.Mail;
 import github.soltaufintel.amalia.mail.MailSender;
@@ -131,9 +133,12 @@ public class MinervaConfig {
     }
     
     public void sendMail(Mail mail) {
-        mail.setSendername("Minerva");
-        // TODO prüfen, ob Config da ist, wenn nicht kein Mail versenden!
-        new MailSender().send(mail, config);
+        if (StringService.isNullOrEmpty(config.get("mail.smtp-server-port"))) {
+        	Logger.info("mail.smtp-server-port is not set -> don't send mail \"" + mail.getSubject() + "\" to " + mail.getToEmailaddress());
+        } else {
+        	mail.setSendername("Minerva");
+        	new MailSender().send(mail, config);
+        }
     }
 
     public String getCommentSubject() {
