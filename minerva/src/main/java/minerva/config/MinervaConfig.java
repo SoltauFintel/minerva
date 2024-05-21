@@ -23,7 +23,7 @@ public class MinervaConfig {
         // gitlab?
         String backend = env("MINERVA_BACKEND"); // for setting backend to file-system in IDE mode
         if (StringService.isNullOrEmpty(backend)) {
-            backend = config.get("backend");
+            backend = config.get(StartRelevantOption.BACKEND);
         }
         gitlab = "gitlab".equalsIgnoreCase(backend);
     }
@@ -34,7 +34,7 @@ public class MinervaConfig {
     
     public List<String> getLanguages() {
         List<String> languages = new ArrayList<>();
-        for (String lang : config.get("languages", "de,en").split(",")) {
+        for (String lang : config.get(StartRelevantOption.LANGUAGES, "de,en").split(",")) {
             String a = lang.trim().toLowerCase();
             if (languages.contains(a)) {
                 throw new ConfigurationException("Duplicate key in setting 'languages'!");
@@ -60,7 +60,7 @@ public class MinervaConfig {
     }
     
     public String getGitlabUrl() {
-        String ret = get("gitlab.url");
+        String ret = get(StartRelevantOption.GITLAB_URL);
         if (isGitlab() && StringService.isNullOrEmpty(ret)) {
             throw new ConfigurationException("Missing setting 'gitlab.url'!");
         }
@@ -68,12 +68,12 @@ public class MinervaConfig {
     }
     
     public String getGitlabProject() {
-        String ret = get("gitlab.project");
+        String ret = get(StartRelevantOption.GITLAB_PROJECT);
         if (isGitlab()) {
-            if (StringService.isNullOrEmpty(ret)) {
-                throw new ConfigurationException("Missing setting 'gitlab.project'!");
-            } else if (!ret.contains("/")) {
-                throw new ConfigurationException("Setting 'gitlab.project' must contain '/'!");
+			if (StringService.isNullOrEmpty(ret)) {
+				throw new ConfigurationException("Missing setting '" + StartRelevantOption.GITLAB_PROJECT + "'!");
+			} else if (!ret.contains("/")) {
+				throw new ConfigurationException("Setting '" + StartRelevantOption.GITLAB_PROJECT + "' must contain '/'!");
             }
         }
         return ret;
@@ -84,7 +84,7 @@ public class MinervaConfig {
     }
 
     public List<String> getAdmins() {
-        return splitPersons(get("admins"));
+        return splitPersons(get(StartRelevantOption.ADMINS));
     }
 
     private List<String> splitPersons(String persons) {
@@ -101,23 +101,23 @@ public class MinervaConfig {
     }
 
     public String getGitlabAppId() {
-        return config.get("gitlab.appid");
+        return config.get(StartRelevantOption.GITLAB_APPID);
     }
     
     public String getGitlabSecret() {
-        return config.get("gitlab.secret");
+        return config.get(StartRelevantOption.GITLAB_SECRET);
     }
     
     public String getGitlabAuthCallback() {
-        return config.get("gitlab.auth-callback");
+        return config.get(StartRelevantOption.GITLAB_AUTH_CALLBACK);
     }
 
     public String getGitlabCommitPath() {
-        return config.get("gitlab.commit-path", "/commit/");
+        return config.get(StartRelevantOption.GITLAB_COMMIT_PATH, "/commit/");
     }
 
     public String getGitlabMergeRequestPath() {
-        return config.get("gitlab.merge-request-path", "/merge_requests/");
+        return config.get(StartRelevantOption.GITLAB_MERGE_REQUEST_PATH, "/merge_requests/");
     }
 
     public String getMathJaxConverterURL(String expression) {
@@ -125,25 +125,9 @@ public class MinervaConfig {
         // https://latex.codecogs.com/
         // https://math.vercel.app/home
         
-        String url = config.get("mathjax-converter-url", "https://latex.codecogs.com/png.image?$p");
+        String url = MinervaOptions.MATHJAX_CONVERTER_URL.get();
         String p = Escaper.urlEncode(expression, "0").replace("+", "%20");
-        return url.replace("$p", p);
-    }
-    
-    public String getMailHost() {
-        return config.get("mail.host");
-    }
-    
-    public String getMailLogin() {
-        return config.get("mail.login");
-    }
-    
-    public String getMailPassword() {
-        return config.get("mail.password");
-    }
-    
-    public String getMailFromAddress() {
-        return config.get("mail.from-address");
+        return url.replace("{p}", p);
     }
     
     public void sendMail(Mail mail) {
@@ -153,38 +137,46 @@ public class MinervaConfig {
     }
 
     public String getCommentSubject() {
-        return config.get("mail.comment.subject", "new comment");
+    	return MinervaOptions.MAIL_COMMENT_SUBJECT.get();
     }
     
     /**
      * @return never null
      */
     public String getCommentBody() {
-        return config.get("mail.comment.body", "").replace("{host}", config.get("host")).replace("\\n", "\n");
+    	return replaceHost(MinervaOptions.MAIL_COMMENT_BODY.get());
     }
     
     public boolean readyForCommentNotifications() {
-        return !config.get(MailSender.SMTP_SERVER, "").isEmpty()
-                && !getCommentSubject().isEmpty()
-                && !getCommentBody().isEmpty();
+        return hasMailServer()
+                && MinervaOptions.MAIL_COMMENT_SUBJECT.isSet()
+                && MinervaOptions.MAIL_COMMENT_BODY.isSet();
     }
     
     public String getWatchSubject() {
-        return config.get("mail.watch.subject", "watched page modified");
+    	return MinervaOptions.MAIL_WATCH_SUBJECT.get();
     }
     
     public String getWatchBody() {
-        return config.get("mail.watch.body", "").replace("{host}", config.get("host")).replace("\\n", "\n");
+        return replaceHost(MinervaOptions.MAIL_WATCH_BODY.get());
+    }
+    
+    private String replaceHost(String body) {
+		return body == null ? null : body.replace("{host}", getHost());
     }
 
     public boolean readyForWatchNotifications() {
-        return !config.get(MailSender.SMTP_SERVER, "").isEmpty()
-                && !getWatchSubject().isEmpty()
-                && !getWatchBody().isEmpty();
+        return hasMailServer()
+            && MinervaOptions.MAIL_WATCH_SUBJECT.isSet()
+            && MinervaOptions.MAIL_WATCH_BODY.isSet();
+    }
+    
+    private boolean hasMailServer() {
+    	return !StringService.isNullOrEmpty(config.get(MailSender.SMTP_SERVER));
     }
     
     public String getWorkFolder() {
-        return config.get("work-folder", "");
+        return config.get(StartRelevantOption.WORK_FOLDER, "");
     }
     
     /**
@@ -231,14 +223,17 @@ public class MinervaConfig {
         return ret == null ? "" : ret;
     }
     
+    // TODO erst nach Wechsel auf Jira Cloud umstellen
     public String getReleaseNotesBaseUrl() {
         return config.get("release-notes.base-url");
     }
     
+    // TODO erst nach Wechsel auf Jira Cloud umstellen
     public String getReleaseNotesToken() {
         return config.get("release-notes.token");
     }
     
+    // TODO erst nach Wechsel auf Jira Cloud umstellen
     public String[] getReleaseNotesBookTitles() {
         String c = config.get("release-notes.book-titles");
         if (StringService.isNullOrEmpty(c)) {
@@ -248,6 +243,7 @@ public class MinervaConfig {
         }
     }
     
+    // TODO erst nach Wechsel auf Jira Cloud umstellen
     public List<ReleaseNotesConfig> loadReleaseNotesConfigs() {
         List<ReleaseNotesConfig> ret = new ArrayList<>();
         int i = 0;
@@ -273,14 +269,14 @@ public class MinervaConfig {
     }
     
     public String[] getPDF_tags() {
-        return config.get("pdf-tags", "").split(","); // nicht_drucken
+    	return MinervaOptions.PDF_TAGS.get().split(","); // nicht_drucken
     }
     
     /**
      * @return tag text. New pages will get this tag. Can be null or empty.
      */
     public String getTagNewPage_tag() {
-        return config.get("tag-new-page.tag");
+    	return MinervaOptions.TNP_TAG.get();
     }
     
     /**
@@ -288,7 +284,7 @@ public class MinervaConfig {
      * @return comma separated user list. If an user of this list creates a new page no tag will be created.
      */
     public String getTagNewPage_exceptUsers() {
-        return config.get("tag-new-page.except-users");
+    	return MinervaOptions.TNP_EXCEPT_USERS.get();
     }
 
     /**
@@ -296,12 +292,12 @@ public class MinervaConfig {
      * @return comma separated book folders. Tags will only be created for given books. If list is null or empty tags will be created for all books.
      */
     public String getTagNewPage_books() {
-        return config.get("tag-new-page.books");
+    	return MinervaOptions.TNP_BOOKS.get();
     }
     
     public List<String> getOneLang() {
         List<String> langs = new ArrayList<>();
-        langs.add(config.get("one.lang", "de"));
+        langs.add(config.get(StartRelevantOption.ONE_LANG, "de"));
         return langs;
     }
     
@@ -313,10 +309,10 @@ public class MinervaConfig {
     }
     
     public int getIndexLimit() {
-        return config.getInt("index.limit", 60);
+        return config.getInt(StartRelevantOption.INDEX_LIMIT, 60);
     }
 
 	public String getHost() {
-		return config.get("host");
+		return config.get(StartRelevantOption.HOST);
 	}
 }

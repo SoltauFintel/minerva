@@ -49,6 +49,11 @@ public class EditConfigPage extends UPage {
 			}
 		}
 		options.save();
-		ctx.redirect("/");
+
+		if (user.getCurrentWorkspace() == null) {
+			ctx.redirect("/");
+		} else {
+			ctx.redirect("/w/" + user.getCurrentWorkspace().getBranch() + "/menu");
+		}
 	}
 }

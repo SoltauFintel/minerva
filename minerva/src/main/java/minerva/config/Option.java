@@ -78,6 +78,10 @@ public class Option {
 		}
 		return ret;
 	}
+	
+	public boolean isSet() {
+		return !StringService.isNullOrEmpty(MinervaOptions.options.optionValues.get(key));
+	}
 
 	/**
 	 * Call save() to persist change.

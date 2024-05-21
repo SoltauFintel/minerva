@@ -18,6 +18,8 @@ public class MinervaOptions {
 	
 	public static final OptionCategory CAT_GENERAL = new OptionCategory("General");
 	public static final Option PDF_TAGS = add(CAT_GENERAL, "pdf-tags", "PDF tags"); 
+	public static final Option MATHJAX_CONVERTER_URL = add(CAT_GENERAL, "mathjax-converter-url", "MathJax converter URL")
+			.setDefaultValue("https://latex.codecogs.com/png.image?{p}").setHint("vars: {p}"); // TODO war vorher $p 
 	
 	private static final OptionCategory CAT_SEARCH = new OptionCategory("Search");
 	public static final Option SEARCH_URL = add(CAT_SEARCH, "search.url", "Search URL")
@@ -26,25 +28,22 @@ public class MinervaOptions {
 			.setDefaultValue("minerva-")
 			.setHint("usually ends with '-'");
 
-	private static final OptionCategory CAT_MAIL = new OptionCategory("Mail server");
-	public static final Option MAIL_SMTP_SERVER = add(CAT_MAIL, "mail.smtp-server", "SMTP server")
-			.setHint("protocol + host name + port");
-	public static final Option MAIL_FROM_MAIL_ADDRESS = add(CAT_MAIL, "mail.from.mail-address", "Sender mail address");
-
 	private static final OptionCategory CAT_WATCH = new OptionCategory("Changed page notification (watch)");
-	public static final Option MAIL_WATCH_SUBJECT = add(CAT_WATCH, "mail.watch.subject", "Subject");
+	public static final Option MAIL_WATCH_SUBJECT = add(CAT_WATCH, "mail.watch.subject", "Subject")
+			.setDefaultValue("watched page modified");
 	public static final Option MAIL_WATCH_BODY = add(CAT_WATCH, "mail.watch.body", "Mail text", OptionType.TEXTAREA)
 			.setHint("vars: {pageTitle}, {host}, {branch}, {bookFolder}, {pageId}"); // TODO fertige URLs wären besser
 	
 	private static final OptionCategory CAT_COMMENT = new OptionCategory("New comment notification");
-	public static final Option MAIL_COMMENT_SUBJECT = add(CAT_COMMENT, "mail.comment.subject", "Subject");
+	public static final Option MAIL_COMMENT_SUBJECT = add(CAT_COMMENT, "mail.comment.subject", "Subject")
+			.setDefaultValue("new comment");
 	public static final Option MAIL_COMMENT_BODY = add(CAT_COMMENT, "mail.comment.body", "Mail text", OptionType.TEXTAREA)
 			.setHint("vars: {pageTitle}, {host}, {commentPath}, {myTasksPath}");
 	
 	private static final OptionCategory CAT_TAG_NEW_PAGE = new OptionCategory("tag new page");
 	public static final Option TNP_TAG = add(CAT_TAG_NEW_PAGE, "tag-new-page.tag", "set tag");
 	public static final Option TNP_EXCEPT_USERS = add(CAT_TAG_NEW_PAGE, "tag-new-page.except-users", "except for users");
-	public static final Option TNP_BOOKS = add(CAT_TAG_NEW_PAGE, "tag-new-page.tag", "for book folders").setHint("empty: for all books");
+	public static final Option TNP_BOOKS = add(CAT_TAG_NEW_PAGE, "tag-new-page.books", "for book folders").setHint("empty: for all books");
 
 	/** global instance, same for all users, must be set at program start */
 	public static MinervaOptions options;
@@ -76,7 +75,6 @@ public class MinervaOptions {
 		cats.add(CAT_GENERAL);
 		cats.add(CAT_TAG_NEW_PAGE);
 		cats.add(CAT_SEARCH);
-		cats.add(CAT_MAIL);
 		cats.add(CAT_WATCH);
 		cats.add(CAT_COMMENT);
 		return cats;
@@ -95,7 +93,7 @@ public class MinervaOptions {
     }
 	
     public static String getWorkspacesFolder(AppConfig config) {
-        String ret = config.get("workspaces");
+        String ret = config.get(StartRelevantOption.WORKSPACES);
         if (ret == null || ret.trim().length() <= 3) {
             throw new ConfigurationException("Setting 'workspaces' not ok!");
         }
