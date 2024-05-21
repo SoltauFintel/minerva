@@ -35,7 +35,7 @@ public abstract class ImageUploadService {
                 }
             }
         }
-        throw new RuntimeException("Now ImageUploadService found for this request!");
+        throw new RuntimeException("No ImageUploadService found for this request!");
     }
     
     public void error(String msg) {
