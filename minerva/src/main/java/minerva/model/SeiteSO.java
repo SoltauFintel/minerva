@@ -2,6 +2,7 @@ package minerva.model;
 
 import static minerva.access.DirAccess.IMAGE;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,10 +32,10 @@ import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
 import minerva.image.FixHttpImage;
 import minerva.seite.IPageChangeStrategy;
-import minerva.seite.WatchersService;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
 import minerva.seite.TocMacroPage;
+import minerva.seite.WatchersService;
 import minerva.seite.link.ExtractLinksContext;
 import minerva.seite.move.ChangeFile;
 import minerva.seite.move.IMoveFile;
@@ -252,8 +253,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     
     public void remove() {
         Set<String> filenamesToDelete = new HashSet<>();
-        List<String> langs = MinervaWebapp.factory().getLanguages();
-        remove(filenamesToDelete, langs);
+        remove(filenamesToDelete);
 
         List<String> cantBeDeleted = new ArrayList<>();
         dao().deleteFiles(filenamesToDelete,
@@ -280,21 +280,34 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         }
     }
     
-    private void remove(Set<String> filenamesToDelete, List<String> langs) {
+    public void remove(Set<String> filenamesToDelete) {
         // Untergeordnete Seiten
         for (SeiteSO unterseite : seiten) {
-            unterseite.remove(filenamesToDelete, langs); // rekursiv
+            unterseite.remove(filenamesToDelete); // rekursiv
         }
         
-        // Images für diese Seite
-        filenamesToDelete.add(book.getFolder() + "/img/" + getId() + "/*");
+        String bookFolder = book.getFolder();
+        String r = getId() + "/*";
         
-        // Kommentare (inkl. Images)
+        // Images für diese Seite
+		filenamesToDelete.add(bookFolder + "/img/" + r);
+
+        // Feature tree Daten für diese Seite
+		filenamesToDelete.add(bookFolder + "/feature-fields/" + r);
+
+        // Kommentare (inkl. Images) dieser Seite
         filenamesToDelete.add(new SeiteCommentService2(this).dir() + "/**");
         
-        // Seite selbst (.meta, .html)
+		// HTML-Seiteninhalte aller Sprachen für diese Seite
+		MinervaWebapp.factory().getLanguages().forEach(lang -> {
+			String dn = filenameHtml(lang);
+			if (new File(dn).isFile()) {
+				filenamesToDelete.add(dn);
+			}
+		});
+        
+        // Metadaten dieser Seite
         filenamesToDelete.add(filenameMeta());
-        langs.forEach(lang -> filenamesToDelete.add(filenameHtml(lang)));
     }
 
     public void move(String parentId) {
