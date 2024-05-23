@@ -1,5 +1,6 @@
 package minerva.mask;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,6 +11,8 @@ import com.github.template72.data.DataMap;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.mask.FeatureRelationsService.Relation;
+import minerva.model.BookSO;
+import minerva.model.SeiteSO;
 import minerva.seite.SPage;
 
 /**
@@ -71,9 +74,16 @@ public class EditRelationsPage extends SPage {
     }
 
     private void validate(List<String> pages, List<String> links) {
-        for (String id : pages) {
+    	for (int i = 0; i < pages.size(); i++) {
+			String id = pages.get(i);
+			
             if (!findPage(id)) {
-                throw new UserMessage("pageNotFound3", workspace, s -> s.replace("$id", id));
+            	String idByTitle = isTitle(id);
+            	if (idByTitle == null) {
+            		throw new UserMessage("pageNotFound3", workspace, s -> s.replace("$id", id));
+            	} else {
+            		pages.set(i, idByTitle);
+            	}
             }
         }
         for (String link : links) {
@@ -83,7 +93,21 @@ public class EditRelationsPage extends SPage {
         }
     }
     
-    private boolean findPage(String id) {
+    private String isTitle(String id) {
+    	List<String> ret = new ArrayList<>();
+    	for (BookSO book : workspace.getBooks()) {
+			SeiteSO x = book.getSeiten()._byTitle(id, "de");
+			if (x != null) {
+				ret.add(x.getId());
+			}
+		}
+    	if (ret.size() == 1) {
+    		return ret.get(0);
+    	}
+		return null;
+	}
+
+	private boolean findPage(String id) {
         return workspace.findPage(id) != null;
     }
 }
