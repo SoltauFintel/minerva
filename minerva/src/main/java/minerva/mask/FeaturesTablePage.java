@@ -90,23 +90,20 @@ public class FeaturesTablePage extends SPage {
         String url0 = "/s/" + branch + "/" + book.getBook().getFolder() + "/";
         int k = 0, n = 0;
         for (TableEntry te : getFilteredSortedFeatures()) {
-            String columns = "";
-            boolean first = true;
+			String columns = "";
             for (MaskField field : te.mad.getMaskFields()) {
                 String value = te.mad.getDataFields().get(field.getId());
-                if (first) {
-                    first = false;
-                    if (value.isBlank()) {
-                        value = "("  + n("empty") + ")";
-                    }
-                    String url = url0 + te.feature.getId();
-                    columns += "<small>" + field.getLabel() + ": </small>"
-                            + "<a href=\"" + url + "\"><b>" + value + "</b></a>";
-                } else if (!value.isBlank() && !"SQLJasperReportInformation".equals(value)) {
-                    columns += "<br/><small>" + field.getLabel() + ": </small><b>" + value + "</b>";
+                if (!value.isBlank() && !"SQLJasperReportInformation".equals(value)) {
+                    columns += "\n<br/><small>" + field.getLabel() + ": </small><b>" + value + "</b>";
                 }
             }
+            String title = te.feature.getTitle();
+            if (title.isBlank()) {
+            	title = "(" + n("empty") + ")";
+            }
             DataMap row = list.add();
+            row.put("title", esc(title));
+            row.put("url", esc(url0 + te.feature.getId()));
             row.put("columns", columns);
             row.put("eins", ++k % 4 == 1);
             row.put("hasText", te.feature.hasContentR("de") != 0);
