@@ -713,6 +713,6 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     }
     
     public boolean checkSubfeaturesLimit() {
-    	return getSeite().getTags().contains("ft_report") && getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures();
+    	return getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures();
     }
 }
