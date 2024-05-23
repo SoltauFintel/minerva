@@ -112,6 +112,9 @@ public class MenuPage extends WPage {
     protected void additionalMenuItems(DataList list) { // template method
     }
 
+    protected void additionalAdminMenuItems(DataList list) { // template method
+    }
+
     private void onlinehelp(MinervaFactory fac, boolean booksOk, DataList list) {
         if (booksOk
                 && fac.isCustomerVersion()
@@ -149,6 +152,7 @@ public class MenuPage extends WPage {
             if (isMigrationAllowed()) {
                 menu(list, "Confluence Import", "fa-cloud-download", "/migration/:branch");
             }
+            additionalAdminMenuItems(list);
         } else {
             menu(list, "giveAdminRights", "fa-trophy", "/activate-admin-rights");
         }
