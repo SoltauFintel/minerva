@@ -74,7 +74,7 @@ public class SearchSO {
     }
 
     public void unindex(SeiteSO seite) {
-        if (host != null) {
+        if (!StringService.isNullOrEmpty(host)) {
             for (String lang : langs) {
                 String path = "/indexing/" + getSiteName(lang) + "/page?path=" + urlEncode(getPath(seite), "");
                 REST.delete(host + path);
