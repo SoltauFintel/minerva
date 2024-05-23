@@ -167,7 +167,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     }
     
     private void subpages() {
-        if (seite.isFeatureTree() && seite.getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
+        if (seite.isFeatureTree() && seite.checkSubfeaturesLimit()) {
             put("hasSubPages", false);
             put("hasPositionlink", false);
         } else {
@@ -237,7 +237,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         int n = 0;
         if (seite == null
                 || !seite.isFeatureTree()
-                || seite.getSeiten().size() <= MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
+                || !seite.checkSubfeaturesLimit()) {
             seiten.sort(lang);
             for (SeiteSO sub : seiten) {
                 if (showAllPages || sub.hasContent(lang) > 0) {
@@ -507,7 +507,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         List<MME> list = new ArrayList<>();
         MME root, parent;
         list.add(root = new MME(seite.getTitle(), "type-a"));
-        if (seite.getSeiten().size() <= MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
+        if (!seite.checkSubfeaturesLimit()) {
             for (SeiteSO sub : seite.getSeiten()) {
                 list.add(parent = new MME(sub.getId(), root, sub.getTitle()));
                 if (sub.getSeiten().size() < 10) {

@@ -113,7 +113,7 @@ public class BookPage extends BPage implements Uptodatecheck {
                 }
                 gliederung.append("</li>\n");
                 
-                if (seite.isFeatureTree() && seite.getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures()) {
+                if (seite.isFeatureTree() && seite.checkSubfeaturesLimit()) {
                     continue;
                 }
                 fillSeiten(branch, bookFolder, seite.getSeiten(), lang, allPages, true, gliederung); // recursive

@@ -98,7 +98,7 @@ public class MoveSeitePage extends SPage {
 
     private boolean sub(SeiteSO seite) {
         if (seite.isFeatureTree()) {
-            return seite.getSeiten().size() <= MinervaWebapp.factory().getConfig().getMaxSubfeatures();
+            return !seite.checkSubfeaturesLimit();
         }
         return true;
     }

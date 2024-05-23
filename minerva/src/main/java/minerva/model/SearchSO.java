@@ -91,7 +91,7 @@ public class SearchSO {
     }
     
     private void post(String url, Object data) {
-        if (host != null) {
+        if (!StringService.isNullOrEmpty(host)) {
             REST.post_cp1252(host + url, data);
         }
     }
