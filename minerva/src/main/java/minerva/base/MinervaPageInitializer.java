@@ -60,6 +60,8 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("previewTitle", "Preview");
         page.put("previewlink", "/p/master");
         page.put("q", "");
+        page.put("showFeatureTree", false);
+        page.put("featuretreeBookFolder", "");
         booksForMenu(hasUser, m.getUserLang(), m.getBooks(), page);
         page.put("isCustomerVersion", MinervaWebapp.factory().isCustomerVersion());
         page.put("branch", esc(m.getBranch()));
@@ -106,7 +108,10 @@ public class MinervaPageInitializer extends PageInitializer {
                         title = "without title";
                     }
                     map.put("title", esc(title));
-                }
+				} else if (BookType.FEATURE_TREE.equals(book.getBook().getType())) {
+					page.put("showFeatureTree", true);
+			        page.put("featuretreeBookFolder", esc(book.getBook().getFolder()));
+				}
             }
         }
     }

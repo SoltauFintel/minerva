@@ -53,6 +53,11 @@
                         </span>
                     </div>
                 </form>
+                {{if showFeatureTree}}
+	                <ul class="nav navbar-nav navbar-right">
+	                    <li><a href="/b/{{branch}}/{{featuretreeBookFolder}}" class="navbtn noLRPadding"><i class="fa fa-sitemap fa-sitemap-color"></i></a></li>
+	                </ul>
+                {{/if}}
             </div>
         {{/if}}
     </div>
