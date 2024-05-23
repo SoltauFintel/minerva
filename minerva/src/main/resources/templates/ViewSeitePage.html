@@ -132,7 +132,7 @@
                         {{/if}}
                         <div class="breadcrumbs">
                             {{each b in L.breadcrumbs}}
-                                {{if b.first}}<i class="fa fa-book greenbook"></i>{{/if}}
+                                {{if b.first}}<i class="fa {{if isFeatureTree}}fa-sitemap fa-sitemap-color{{else}}fa-book greenbook{{/if}}"></i>{{/if}}
                                 <a href="{{b.link}}">{{b.title}}</a> &gt;
                             {{/each}}
                             &nbsp;<i class="fa fa-file-o"></i>&nbsp; {{L.titel}}
