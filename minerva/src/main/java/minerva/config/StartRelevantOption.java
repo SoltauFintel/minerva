@@ -4,7 +4,7 @@ package minerva.config;
  * Start relevant AppConfig options
  */
 public interface StartRelevantOption {
-	// Options needed by Amalia: port, app.name, mail.smtp-server-port, mail.from.mail-address
+	// Options needed by Amalia: port, app.name, mail.smtp-server, mail.from.mail-address
 
 	String WORKSPACES = "workspaces";
 	String WORK_FOLDER = "work-folder";

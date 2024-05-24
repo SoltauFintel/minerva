@@ -133,8 +133,8 @@ public class MinervaConfig {
     }
     
     public void sendMail(Mail mail) {
-        if (StringService.isNullOrEmpty(config.get("mail.smtp-server-port"))) {
-        	Logger.info("mail.smtp-server-port is not set -> don't send mail \"" + mail.getSubject() + "\" to " + mail.getToEmailaddress());
+        if (StringService.isNullOrEmpty(config.get(MailSender.SMTP_SERVER))) {
+        	Logger.info("\"" + MailSender.SMTP_SERVER + "\" is not set -> don't send mail \"" + mail.getSubject() + "\" to " + mail.getToEmailaddress());
         } else {
         	mail.setSendername("Minerva");
         	new MailSender().send(mail, config);
