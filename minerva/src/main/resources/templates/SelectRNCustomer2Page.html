@@ -1,0 +1,17 @@
+{{master: master}}
+
+<div class="row"> 
+    <div class="col-lg-12">
+        <h1 class="page-header">{{header}}</h1>
+
+        <div class="mt2">
+            {{each c in configs}}
+                <a href="{{c.link}}" class="btn btn-primary" style="margin-right: 1em;"
+                    onclick="document.querySelector('#s{{c.customer}}').style='';">{{c.customer}}
+                    <i id="s{{c.customer}}" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+            {{/each}}
+        </div>
+        
+        <p class="mt4"><small>Jira Cloud</small></p>
+    </div>
+</div>

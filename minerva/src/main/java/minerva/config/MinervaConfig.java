@@ -320,4 +320,16 @@ public class MinervaConfig {
 	public String getHost() {
 		return config.get(StartRelevantOption.HOST);
 	}
+    
+    public String getJiraCustomer() {
+        return config.get("jira.customer");
+    }
+    
+    public String getJiraMail() {
+        return config.get("jira.mail"); // user login
+    }
+    
+    public String getJiraToken() {
+        return config.get("jira.token");
+    }
 }

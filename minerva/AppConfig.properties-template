@@ -38,6 +38,8 @@ work-folder=
 release-notes.base-url=
 release-notes.token=
 
-tag-new-page.tag=review
-tag-new-page.except-users=
-tag-new-page.books=
+# Jira Cloud
+jira.customer=
+jira.mail=
+jira.token=
+
