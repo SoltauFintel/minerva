@@ -12,6 +12,7 @@ public class JiraCloudTest {
         JiraCloudAccess jira = new JiraCloudAccess(System.getenv("MAIL"), System.getenv("TOKEN"),
                 System.getenv("CUSTOMER"));
         List<ReleaseTicket> releaseTickets = ReleaseTicket.load(jira, System.getenv("PROJECT"));
+        System.out.println(System.getenv("PROJECT") + ": " + releaseTickets.size());
         for (ReleaseTicket rt : releaseTickets) {
             if (rt.isRelevant()) {
                 System.out.println(rt.getKey() + " / " + rt.getTargetVersion() + " / " + rt.getPageId());
