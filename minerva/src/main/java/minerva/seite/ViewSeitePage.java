@@ -53,6 +53,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
 
     protected void execute2() {
         User u = user.getFreshUser();
+        if (book.isFeatureTree() && !"de".equals(u.getPageLanguage())) {
+        	u.setPageLanguage("de");
+        }
         seite.forceReloadIfCheap();
         fillLanguageSpecifics(u);
         Seite _seite = seite.getSeite();
@@ -123,7 +126,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             put("hasLeftArea", true);
             put("leftAreaContent", getTreeHTML(seite));
             put("mindmapData", "");
-            new FeatureFieldsService().getFeaturesForSeite(id, workspace).forEach(f -> list.add().put("id", esc(f.seiteId)).put("title", esc(f.title)));
+            new FeatureFieldsService().getFeaturesForSeite(id, workspace).forEach(f -> list.add().put("link", esc(f.seiteId)).put("title", esc(f.title)));
         }
         put("showFeatures", !list.isEmpty());
     }

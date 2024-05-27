@@ -23,6 +23,10 @@ public class BookPage extends BPage implements Uptodatecheck {
         boolean allPages = "all".equals(ctx.queryParam("m"));
         String userLang = user.getGuiLanguage();
 
+        if (book.isFeatureTree() && !"de".equals(user.getPageLanguage())) {
+        	user.getUser().setPageLanguage("de");
+        }
+        
         String title = book.getBook().getTitle().getString(userLang);
         put("header", esc(title));
         put("title", esc(title.toLowerCase().contains("buch") ? title : title + " (Buch)"));

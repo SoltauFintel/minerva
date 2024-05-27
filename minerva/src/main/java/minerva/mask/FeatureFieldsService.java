@@ -135,6 +135,7 @@ public class FeatureFieldsService {
      * Responsible: seiteId + title pair
      */
     public static class RSeite {
+    	/** can also be a link */
         public String seiteId;
         public String title;
     }
@@ -191,8 +192,8 @@ public class FeatureFieldsService {
                     FeatureFields ff = sv.get(seite);
                     if (ff.getPages().contains(seiteId)) {
                         RSeite feature = new RSeite();
-                        feature.seiteId = seite.getId();
-                        feature.title = seite.getTitle();
+                        feature.seiteId = "../" + seite.getBook().getBook().getFolder() + "/" + seite.getId();
+                        feature.title = seite.getSeite().getTitle().getString("de");
                         features.add(feature);
                     }
                 }
