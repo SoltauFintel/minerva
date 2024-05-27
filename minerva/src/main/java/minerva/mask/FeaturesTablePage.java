@@ -29,7 +29,6 @@ public class FeaturesTablePage extends SPage {
                 mad0 = new MaskAndDataFields(seite.getSeiten().get(0));
             }
             searchFields();
-            columns();
             rows();
         }
     }
@@ -40,7 +39,7 @@ public class FeaturesTablePage extends SPage {
         DataList list2 = model.list("menuItems");
         DataMap map = list2.add();
         map.put("link", "/b/" + branch + "/" + seite.getBook().getBook().getFolder());
-        map.put("title", seite.getBook().getTitle());
+        map.put("title", esc(seite.getBook().getTitle()));
     }
 
     private void searchFields() {
@@ -54,37 +53,39 @@ public class FeaturesTablePage extends SPage {
                     </div>
                      """;
             List<MaskField> fields = mad0.getMaskFields();
+            String val = ctx.formParam("_titel");
+            String html = st.replace("{label}", "Feature-Titel") //
+                    .replace("{id}", "_titel") //
+                    .replace("{value}", val == null ? "" : val);
+            int sp = 1;
             int n = fields.size();
             for (int i = 0; i < n; i += 3) {
-                String html = "";
                 for (int j = 0; j <= 2; j++) {
                     if (i + j < fields.size()) {
                         MaskField f = fields.get(i + j);
-                        String val = ctx.formParam(f.getId());
+                        val = ctx.formParam(f.getId());
                         html += st.replace("{label}", f.getLabel()) //
                                 .replace("{id}", f.getId()) //
                                 .replace("{value}", val == null ? "" : val);
+                        sp++;
+                        if (sp % 3 == 0) {
+                            list.add().put("html", html);
+                            html = "";
+                            sp = 0;
+                        }
                         
                         String sel = f.getId().equals(ctx.formParam("sort")) ? " selected" : "";
                         options += "<option value=\"" + f.getId() + "\"" + sel + ">" + esc(f.getLabel()) + "</option>";
                     }
                 }
-                list.add().put("html", html);
             }
+			if (!html.isEmpty()) {
+				list.add().put("html", html);
+			}
         }
         put("options", options);
     }
 
-    private void columns() {
-        String columns = "";
-        if (mad0 != null) {
-            for (MaskField f : mad0.getMaskFields()) {
-                columns += "<th>" + f.getLabel() + "</th>";
-            }
-        }
-        put("columns", columns);
-    }
-    
     private void rows() {
         DataList list = list("features");
         String url0 = "/s/" + branch + "/" + book.getBook().getFolder() + "/";
@@ -115,9 +116,11 @@ public class FeaturesTablePage extends SPage {
 
     private List<TableEntry> getFilteredSortedFeatures() {
         List<TableEntry> features = new ArrayList<>();
+		String _titel = ctx.queryParam("_titel");
+		_titel = _titel == null ? "" : _titel.toLowerCase();
         for (SeiteSO ft : seite.getSeiten()) {
             TableEntry te = new TableEntry(ft);
-            if (te.doFilter()) {
+            if (te.doFilter() && (_titel.isBlank() || ft.getTitle().toLowerCase().contains(_titel))) {
                 features.add(te);
             }
         }
@@ -142,7 +145,7 @@ public class FeaturesTablePage extends SPage {
         
         public boolean doFilter() {
             for (MaskField field : mad.getMaskFields()) {
-                String value = ctx.formParam(field.getId());
+                String value = ctx.queryParam(field.getId());
                 if (!StringService.isNullOrEmpty(value)
                         && !mad.getDataFields().get(field.getId()).toLowerCase().contains(value.toLowerCase())) {
                     return false;
@@ -155,18 +158,23 @@ public class FeaturesTablePage extends SPage {
     private void filterValues() {
         String q = "";
         if (!seite.getSeiten().isEmpty()) {
-            String p = "?";
+            String sep = "?";
+            String v = ctx.formParam("_titel");
+            if (!StringService.isNullOrEmpty(v)) {
+                q += sep + "_titel=" + u(v);
+                sep = "&";
+            }
             for (MaskField f : new MaskAndDataFields(seite.getSeiten().get(0)).getMaskFields()) {
-                String v = ctx.formParam(f.getId());
+                v = ctx.formParam(f.getId());
                 if (!StringService.isNullOrEmpty(v)) {
-                    q += p + f.getId() + "=" + u(v);
-                    p = "&";
+                    q += sep + f.getId() + "=" + u(v);
+                    sep = "&";
                 }
             }
             if (!StringService.isNullOrEmpty(ctx.formParam("sort"))) {
-                q += p + "sort=" + u(ctx.formParam("sort"));
+                q += sep + "sort=" + u(ctx.formParam("sort"));
             }
         }
-        ctx.redirect("/f/" + branch + "/" + bookFolder + "/" + seite.getId() + q);
+        ctx.redirect(seite.getId() + q);
     }
 }
