@@ -43,7 +43,7 @@ public class FeaturesTablePage extends SPage {
     }
 
     private void searchFields() {
-        String options = "<option></option>";
+        String options = "";
         DataList list = list("searchFields");
         if (mad0 != null) {
             final String st = """
@@ -57,6 +57,8 @@ public class FeaturesTablePage extends SPage {
             String html = st.replace("{label}", "Feature-Titel") //
                     .replace("{id}", "_titel") //
                     .replace("{value}", val == null ? "" : val);
+            String sel = "_titel".equals(ctx.formParam("sort")) ? " selected" : "";
+            options += "<option value=\"_titel\"" + sel + ">Feature-Titel</option>";
             int sp = 1;
             int n = fields.size();
             for (int i = 0; i < n; i += 3) {
@@ -74,7 +76,7 @@ public class FeaturesTablePage extends SPage {
                             sp = 0;
                         }
                         
-                        String sel = f.getId().equals(ctx.formParam("sort")) ? " selected" : "";
+                        sel = f.getId().equals(ctx.formParam("sort")) ? " selected" : "";
                         options += "<option value=\"" + f.getId() + "\"" + sel + ">" + esc(f.getLabel()) + "</option>";
                     }
                 }
@@ -120,16 +122,18 @@ public class FeaturesTablePage extends SPage {
 		_titel = _titel == null ? "" : _titel.toLowerCase();
         for (SeiteSO ft : seite.getSeiten()) {
             TableEntry te = new TableEntry(ft);
-            if (te.doFilter() && (_titel.isBlank() || ft.getTitle().toLowerCase().contains(_titel))) {
+            if (te.doFilter() && (_titel.isEmpty() || ft.getTitle().toLowerCase().contains(_titel))) {
                 features.add(te);
             }
         }
         
         String sort = ctx.formParam("sort");
-        if (!StringService.isNullOrEmpty(sort)) {
-            features.forEach(te -> te.sort = te.mad.getDataFields().get(sort));
-            features.sort((a, b) -> a.sort.compareToIgnoreCase(b.sort));
-        }
+    	if ("_titel".equals(sort) || StringService.isNullOrEmpty(sort)) {
+    		features.forEach(te -> te.sort = te.feature.getTitle().toLowerCase());
+    	} else {
+    		features.forEach(te -> te.sort = te.mad.getDataFields().get(sort).toLowerCase());
+    	}
+        features.sort((a, b) -> a.sort.compareTo(b.sort));
         return features;
     }
     
