@@ -89,7 +89,10 @@ public abstract class CommonCommentService extends CommentService {
                 String path = commentsPagePath + "?highlight=" + commentId + "#" + commentId;
                 String myTasksPath = "/w/" + branch + "/my-tasks";
                 Mail mail = new Mail();
-                mail.setSubject(c.getCommentSubject());
+                mail.setSubject(c.getCommentSubject()
+                        .replace("{pageTitle}", title) // no esc!
+                        .replace("{commentPath}", path)
+                        .replace("{myTasksPath}", myTasksPath));
                 mail.setBody(c.getCommentBody()
                         .replace("{pageTitle}", title) // no esc!
                         .replace("{commentPath}", path)
