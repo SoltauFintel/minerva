@@ -154,10 +154,6 @@ public class MinervaConfig {
                 && MinervaOptions.MAIL_COMMENT_BODY.isSet();
     }
     
-    public String getWatchSubject() {
-    	return MinervaOptions.MAIL_WATCH_SUBJECT.get();
-    }
-    
     public String getWatchBody() {
         return replaceHost(MinervaOptions.MAIL_WATCH_BODY.get());
     }

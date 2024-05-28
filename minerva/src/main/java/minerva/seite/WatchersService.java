@@ -9,6 +9,7 @@ import github.soltaufintel.amalia.mail.Mail;
 import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.config.MinervaConfig;
+import minerva.config.MinervaOptions;
 import minerva.model.SeiteSO;
 import minerva.model.UserSO;
 import minerva.user.User;
@@ -97,7 +98,8 @@ public class WatchersService {
         }
         Mail mail = new Mail();
         mail.setToEmailaddress(user.getMailAddress());
-        mail.setSubject(c.getWatchSubject());
+        mail.setSubject(MinervaOptions.MAIL_WATCH_SUBJECT.get()
+        		.replace("{pageTitle}", editedSeite.getTitle())); // no esc!
         mail.setBody(c.getWatchBody()
                 .replace("{pageId}", editedSeite.getId())
                 .replace("{pageTitle}", editedSeite.getTitle()) // no esc!
