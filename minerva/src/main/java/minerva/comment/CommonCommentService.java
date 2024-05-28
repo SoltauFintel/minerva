@@ -14,6 +14,7 @@ import minerva.access.SimpleDirAccess;
 import minerva.base.NLS;
 import minerva.base.StringService;
 import minerva.config.MinervaConfig;
+import minerva.config.MinervaOptions;
 import minerva.model.StatesSO;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
@@ -89,10 +90,8 @@ public abstract class CommonCommentService extends CommentService {
                 String path = commentsPagePath + "?highlight=" + commentId + "#" + commentId;
                 String myTasksPath = "/w/" + branch + "/my-tasks";
                 Mail mail = new Mail();
-                mail.setSubject(c.getCommentSubject()
-                        .replace("{pageTitle}", title) // no esc!
-                        .replace("{commentPath}", path)
-                        .replace("{myTasksPath}", myTasksPath));
+                mail.setSubject(MinervaOptions.MAIL_COMMENT_SUBJECT.get()
+                        .replace("{pageTitle}", title)); // no esc!
                 mail.setBody(c.getCommentBody()
                         .replace("{pageTitle}", title) // no esc!
                         .replace("{commentPath}", path)

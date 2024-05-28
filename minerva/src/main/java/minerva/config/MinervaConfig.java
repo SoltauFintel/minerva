@@ -141,10 +141,6 @@ public class MinervaConfig {
         }
     }
 
-    public String getCommentSubject() {
-    	return MinervaOptions.MAIL_COMMENT_SUBJECT.get();
-    }
-    
     /**
      * @return never null
      */
@@ -167,7 +163,7 @@ public class MinervaConfig {
     }
     
     private String replaceHost(String body) {
-		return body == null ? null : body.replace("{host}", getHost());
+		return body == null ? "" : body.replace("{host}", getHost());
     }
 
     public boolean readyForWatchNotifications() {
