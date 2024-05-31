@@ -94,4 +94,13 @@ public interface DirAccess {
      * @return CommitHash of given workspace, not null
      */
     CommitHash getCommitHash(WorkspaceSO workspace);
+    
+    /**
+     * Copy binary files from source folder to target folder
+     * @param bookFolder -
+     * @param source -
+     * @param target -
+     * @return list of target filenames with short path
+     */
+    List<String> copyFiles(String bookFolder, String source, String target);
 }

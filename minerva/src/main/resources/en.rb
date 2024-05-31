@@ -349,3 +349,6 @@ Features=Features
 vonMirBeobachteteSeiten=Pages watched by me
 alleUnterseitenVon=All subpages of
 watchers=Watchers
+copy-of=Copy of
+copy-n-of=Copy $n of
+duplicatePage=Duplicate page

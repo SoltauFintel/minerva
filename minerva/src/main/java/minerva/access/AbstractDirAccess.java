@@ -2,6 +2,7 @@ package minerva.access;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -174,4 +175,19 @@ public abstract class AbstractDirAccess implements DirAccess {
     public CommitHash getCommitHash(WorkspaceSO workspace) {
         return new CommitHash();
     }
+    
+	@Override
+	public List<String> copyFiles(String bookFolder, String source, String target) {
+		List<String> ret = new ArrayList<>();
+		File[] files = new File(bookFolder + source).listFiles();
+		if (files != null) {
+			File targetDir = new File(bookFolder, target);
+			targetDir.mkdirs();
+			for (File file : files) {
+				FileService.copyFile(file, targetDir);
+				ret.add(target + "/" + file.getName());
+			}
+		}
+		return ret;
+	}
 }

@@ -37,6 +37,7 @@ public class Seite {
      * copy constructor
      * @param seite -
      */
+    // needed for reorder action
     public Seite(Seite c) {
         this.id = c.id;
         this.parentId = c.parentId;
@@ -47,6 +48,15 @@ public class Seite {
         this.version = c.version;
         this.helpKeys.addAll(c.helpKeys);
         this.changes.addAll(c.changes);
+    }
+    
+    // needed for duplicate action
+	public void copyFrom(Seite m) {
+		tags.addAll(m.tags);
+		helpKeys.addAll(m.helpKeys);
+		tocHeadingsLevels = m.tocHeadingsLevels;
+		tocSubpagesLevels = m.tocSubpagesLevels;
+		sorted = m.sorted;
     }
 
     public String getId() {

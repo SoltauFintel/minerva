@@ -372,6 +372,40 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         }
     }
 
+    public String duplicate(List<String> langs) {
+    	// create new page
+    	String id;
+    	if (hasParent()) {
+            SeiteSO parent = getParent();
+            id = parent.getSeiten().createSeite(parent, book, book.dao());
+    	} else {
+    		id = book.createTopLevelSeite();
+    	}
+    	Logger.info("Page " + id + " is a copy of page " + getId());
+    	
+    	// copy data
+        SeiteSO copy = book._seiteById(id);
+        copy.getSeite().copyFrom(seite);
+        copy.content = new NlsString();
+        for (String lang : langs) {
+        	// find new title
+    		List<String> allPageTitles = book.getAlleSeiten().stream()
+    				.map(s -> s.getSeite().getTitle().getString(lang))
+    				.collect(Collectors.toList());
+    		String newTitle = StringService.findCopyOfTitle(seite.getTitle().getString(lang), lang, allPageTitles);
+        	copy.getSeite().getTitle().setString(lang, newTitle);
+        	
+        	// copy HTML
+        	copy.content/*not getContent()!*/.setString(lang, content.getString(lang)
+        			.replace("img/" + seite.getId() + "/", "img/" + id + "/")); // adjust image paths
+		}
+
+        // copy images
+		getImages().addAll(book.dao().copyFiles(book.getFolder(), "/img/" + seite.getId(), "/img/" + id));
+        
+    	return id;
+    }
+
     public void saveAll(NlsString newTitle, NlsString newContent, int version, String comment, List<String> langs, long start) {
         validate(newTitle, newContent, version, langs);
         if (content == null) {

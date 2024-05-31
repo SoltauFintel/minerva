@@ -291,6 +291,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("positionlink", withSeiteId + "/order");
         put("sortlink", withSeiteId + "/sort");
         put("edittagslink", withSeiteId + "/tags");
+        put("duplicatelink", withSeiteId + "/duplicate");
         put("movelink", withSeiteId + "/move-select-target");
         put("deletelink", withSeiteId + "/delete");
         
@@ -421,6 +422,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             menuitem(i, viewlink + "/html", "fa-code", n("editHTML"));
         }
         menuitem(i, "/w/" + esc(branch) + "/export?seite=" + u(seite.getId()), "fa-upload", n("exportPage"));
+        menuitem(i, model.get("duplicatelink").toString(), "fa-copy", n("duplicatePage"));
         menuitem(i, model.get("movelink").toString(), "fa-arrow-circle-right", n("movePage"));
         menuitem(i, model.get("deletelink").toString(), "fa-trash", n("deletePage") + "...");
         return i;
