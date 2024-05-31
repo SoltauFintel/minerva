@@ -1,5 +1,6 @@
 package minerva.book;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.github.template72.data.DataList;
@@ -92,10 +93,16 @@ public class BookPage extends BPage implements Uptodatecheck {
         gliederung.append("<ul>\n");
         String hasComment    = " <i class=\"fa fa-comment-o has-comment\" title=\"" + n("hasComment") + "\"></i>";
         String hasCommentForMe = " <i class=\"fa fa-comment has-comment\" title=\"" + n("hasComment") + "\"></i>";
-        for (SeiteSO seite : seiten) {
+        List<SeiteSO> seitenII = new ArrayList<>(); // needed for indexed iteration
+		for (SeiteSO seite : seiten) {
+			seitenII.add(seite);
+		}
+		for (int i = 0; i < seitenII.size(); i++) {
+			SeiteSO seite = seitenII.get(i);
             int hasContent = seite.hasContent(lang);
             if (hasContent > 0 || allPages) {
-                String title = seite.getSeite().getTitle().getString(lang);
+            	String trueTitle = seite.getSeite().getTitle().getString(lang);
+                String title = trueTitle;
                 if (title.isBlank()) {
                     title = "without title #" + seite.getId();
                 }
@@ -111,6 +118,10 @@ public class BookPage extends BPage implements Uptodatecheck {
                 gliederung.append("\"" + nc + ">");
                 gliederung.append(esc(title));
                 gliederung.append("</a>");
+                if (showTags(i, seitenII, lang)) {
+					seite.getSeite().getTags().stream().sorted().forEach(tag ->
+						gliederung.append(" <span class=\"label label-tag\"><i class=\"fa fa-tag\"></i> " + tag + "</span>"));
+                }
                 int state = new SeiteCommentService2(seite).getCommentState(user.getLogin());
                 if (state > 0) {
                     gliederung.append(state == 2 ? hasCommentForMe : hasComment);
@@ -125,6 +136,16 @@ public class BookPage extends BPage implements Uptodatecheck {
         }
         gliederung.append("</ul>\n");
     }
+
+	private boolean showTags(int x, List<SeiteSO> seiten, String lang) {
+		String xt = seiten.get(x).getSeite().getTitle().getString(lang);
+		for (int i = 0; i < seiten.size(); i++) {
+			if (i != x && seiten.get(i).getSeite().getTitle().getString(lang).equals(xt)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
     private boolean hasReleaseNotesBtn() {
         if (!MinervaWebapp.factory().isGitlab()) {

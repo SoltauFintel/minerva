@@ -3,6 +3,7 @@ package minerva.seite;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
@@ -458,7 +459,8 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         } else {
             ret += " style=\"display:none;\">";
         }
-        for (TreeItem seite : treeItems) {
+        for (int i = 0; i < treeItems.size(); i++) {
+			TreeItem seite = treeItems.get(i);
             String aClass = "";
             if (seite.hasContent() == 2) {
                 aClass = " class=\"noContent\"";
@@ -481,7 +483,13 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
                     break;
                 }
             }
-            ret += "<li><nobr>" + icon + "<a" + aClass + " href=\"" + seite.getLink() + "\">" + seite.getTitle() + "</a></nobr></li>\n";
+            ret += "<li><nobr>" + icon + "<a" + aClass + " href=\"" + seite.getLink() + "\">" + seite.getTitle() + "</a>";
+            if (showTags(i, treeItems)) {
+            	ret += seite.getTags().stream().sorted().map(tag ->
+            			" <span class=\"label label-tag\" style=\"padding-left: 1.4em;\"><i class=\"fa fa-tag\"></i> " + tag + "</span>")
+            			.collect(Collectors.joining());
+            }
+            ret += "</nobr></li>\n";
             if (hasVisibleSubpages) {
                 ret += tree2(seite.getSubitems(), seite.getId(), seite.isExpanded()); // recursive
             }
@@ -490,6 +498,16 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         return ret;
     }
     
+	private static boolean showTags(int x, List<TreeItem> seiten) {
+		String xt = seiten.get(x).getTitle();
+		for (int i = 0; i < seiten.size(); i++) {
+			if (i != x && seiten.get(i).getTitle().equals(xt)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
     private boolean foundInOtherBook() {
         for (BookSO book : workspace.getBooks()) {
             if (!book.getBook().getFolder().equals(bookFolder)) {

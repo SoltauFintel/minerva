@@ -336,10 +336,11 @@ public class SeitenSO extends MList<SeiteSO> {
                 BookSO book = seite.getBook();
                 TreeItem treeItem = new TreeItem(seite.getId(),
                         seite.getSeite().getTitle().getString(lang),
-                        hc,
-                        book.getBook().getFolder(),
-                        book.getWorkspace().getBranch(),
+                        seite.getSeite().getTags(),
                         seite.getId().equals(currentPageId),
+                        hc,
+                        book.getWorkspace().getBranch(),
+                        book.getBook().getFolder(),
                         parent);
                 if (treeItem.isCurrent()) {
                     treeItem.setExpanded(true);
