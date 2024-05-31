@@ -11,6 +11,7 @@ import github.soltaufintel.amalia.base.IdGenerator;
 import minerva.MinervaWebapp;
 import minerva.base.FileService;
 import minerva.base.NLS;
+import minerva.book.BookType;
 import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
 import minerva.export.SomeSubpages.SeiteAndDone;
@@ -67,9 +68,11 @@ public abstract class GenericExportService {
         File outputFolder = getFolder(NLS.get(lang, "allBooks"));
         Logger.info("export books output folder: " + outputFolder.getAbsolutePath());
         for (BookSO book : workspace.getBooks()) {
-            if (book.hasContent(lang, exclusionsService)) {
+            if (BookType.PUBLIC.equals(book.getBook().getType()) && book.hasContent(lang, exclusionsService)) {
                 String bookFolder = FileService.getSafeName(book.getBook().getFolder());
                 saveBookTo(book, new File(outputFolder, bookFolder));
+            } else {
+            	Logger.info("omitting non-public book \"" + book.getTitle() + "\"");
             }
         }
         return outputFolder;
