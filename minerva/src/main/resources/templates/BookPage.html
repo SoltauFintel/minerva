@@ -74,7 +74,8 @@
             </p>
         {{/if}}
         <p>
-            <a href="{{booklink}}{{if not allPages}}?m=all{{/if}}" class="btn btn-default mw">{{if allPages}}{{N.allPagesOff}}{{else}}{{N.allPages}}{{/if}}</a>
+            <input onchange="window.location.href='{{booklink}}/show-all-pages'" type="checkbox" style="cursor: pointer;"
+                id="showallpages"{{if allPages}} checked{{/if}}> <label for="showallpages" style="font-weight: normal; cursor: pointer;">{{N.allPages}}</label>
         </p>
         <p>
             <a href="{{booklink}}/validate" class="btn btn-default mw">{{N.validate}}</a>

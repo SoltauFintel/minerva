@@ -22,6 +22,7 @@ public class User {
     private final List<String> delayedPush = new ArrayList<>();
     private String lastEditedPage;
     private List<String> taskPriorities;
+    private boolean showAllPages = false;
     
     public String getLogin() {
         return login;
@@ -129,4 +130,12 @@ public class User {
     public String toString() {
         return "User "  + login;
     }
+
+	public boolean isShowAllPages() {
+		return showAllPages;
+	}
+
+	public void setShowAllPages(boolean showAllPages) {
+		this.showAllPages = showAllPages;
+	}
 }

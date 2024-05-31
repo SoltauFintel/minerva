@@ -203,6 +203,12 @@ public class UserSO {
         save();
     }
     
+    public void toggleShowAllPages() {
+    	load();
+    	user.setShowAllPages(!user.isShowAllPages());
+    	save();
+    }
+    
     public void setLastEditedPage(String id) {
         load();
         user.setLastEditedPage(id);

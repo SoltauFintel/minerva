@@ -29,6 +29,7 @@ import minerva.book.MenuPage;
 import minerva.book.OrderTopLevelSeitePage;
 import minerva.book.SelectLanguageAction;
 import minerva.book.SortTopLevelSeiteAction;
+import minerva.book.ToggleShowAllPagesAction;
 import minerva.comment.CommentDoneAction;
 import minerva.comment.CommentService;
 import minerva.comment.CommentsPage;
@@ -209,6 +210,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/b/:branch/:book/order", OrderTopLevelSeitePage.class);
         get("/b/:branch/:book/sort", SortTopLevelSeiteAction.class);
         get("/b/:branch/:book/cal", CheckAllLinksPage.class);
+        get("/b/:branch/:book/show-all-pages", ToggleShowAllPagesAction.class);
         get("/b/:branch/:book/export", ExportBookAction.class);
         get("/b/:branch/:book/validate", ValidationPage.class);
         get("/b/:branch/:book/rn-select-customer", SelectRNCustomerPage.class);   // Jira Server

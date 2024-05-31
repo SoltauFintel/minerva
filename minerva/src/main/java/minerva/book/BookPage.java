@@ -21,7 +21,7 @@ public class BookPage extends BPage implements Uptodatecheck {
     
     @Override
     protected void execute() {
-        boolean allPages = "all".equals(ctx.queryParam("m"));
+        boolean allPages = user.getUser().isShowAllPages();
         String userLang = user.getGuiLanguage();
 
         if (book.isFeatureTree() && !"de".equals(user.getPageLanguage())) {
