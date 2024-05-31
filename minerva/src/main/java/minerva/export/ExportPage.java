@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.pmw.tinylog.Logger;
+
 import github.soltaufintel.amalia.web.action.IdAndLabel;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
@@ -31,6 +33,7 @@ public class ExportPage extends WPage {
             callExportDownload();
         } else {
             String seite = ctx.queryParam("seite");
+            Logger.info("ExportPage (Auswahl was exportiert werden soll): " + seite);
             
             header(n("export"));
             List<IdAndLabel> items = getItems(workspace);
@@ -106,13 +109,16 @@ public class ExportPage extends WPage {
             q += "&seite=" + u(seite);
         }
 
-        if (ALL.equals(item)) { // all books
-            ctx.redirect("/w/" + branch + "/books" + q);
-        } else if (PAGE.equals(item)) { // Seitenmehrfachauswahl
-            ctx.redirect("/w/" + branch + "/pages" + q);
-        } else { // book
-            ctx.redirect("/b/" + branch + "/" + esc(item) + q);
+        String link;
+        if (ALL.equals(item)) { // all books -> ExportWorkspaceAction
+        	link = "/w/" + branch + "/books" + q;
+        } else if (PAGE.equals(item)) { // -> SeitenauswahlPage
+        	link = "/w/" + branch + "/pages" + q;
+        } else { // book -> ExportBookAction
+        	link = "/b/" + branch + "/" + esc(item) + q;
         }
+        Logger.info("-> " + link);
+        ctx.redirect(link);        
     }
 
     private String templateName2Id(String name) {

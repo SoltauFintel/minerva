@@ -42,6 +42,7 @@ public class SeitenauswahlPage extends WPage {
             DownloadExportPage.redirectToThisPage(ctx, branch, id);
         } else {
             String seiteId = ctx.queryParam("seite");
+            Logger.info("SeitenauswahlPage: " + seiteId);
 
             header(n("seitenauswahl"));
             put("lang", esc(lang));

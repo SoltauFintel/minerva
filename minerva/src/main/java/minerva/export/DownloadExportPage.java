@@ -38,6 +38,7 @@ public class DownloadExportPage extends WPage {
             if (dn == null) {
                 throw new UserMessage("export-already-downloaded", user);
             }
+            Logger.info("DownloadExportPage: " + dn);
             put("id", esc(id));
             put("dn", esc(dn));
             put("dnu", u(dn));

@@ -5,6 +5,9 @@ import org.pmw.tinylog.Logger;
 import minerva.model.WorkspaceSO;
 import minerva.workspace.WAction;
 
+/**
+ * Export all books except feature tree and internal books
+ */
 public class ExportWorkspaceAction extends WAction {
 
     @Override
@@ -13,7 +16,8 @@ public class ExportWorkspaceAction extends WAction {
         String lang = ctx.queryParam("lang");
         String customer = ctx.queryParam("customer");
 
-        String info = branch + " | exporting all books for customer \"" + customer + "\" and language \"" + lang + "\"";
+        String info = branch + " | ExportWorkspaceAction: exporting all books except feature tree and internal books"
+        		+ " for customer \"" + customer + "\" and language \"" + lang + "\"";
         Logger.info(user.getLogin() + " | " + info);
         user.log(info);
 

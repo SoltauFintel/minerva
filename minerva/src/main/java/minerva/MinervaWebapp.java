@@ -189,8 +189,8 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/menu", MenuPage.class);
 
         // Export
-        get("/w/:branch/books/export", ExportWorkspaceAction.class);
-        form("/w/:branch/export", ExportPage.class);
+        get("/w/:branch/books/export", ExportWorkspaceAction.class); // all books
+        form("/w/:branch/export", ExportPage.class); // Export selection page
         form("/w/:branch/pages/export", SeitenauswahlPage.class);
         get("/w/:branch/download-export/:id/:dn", DownloadExportPage.class);
 
