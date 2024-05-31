@@ -42,7 +42,7 @@ public class PreviewBookPage extends BPage {
         
         DataList list = list("previewBooks");
         for (BookSO b : books) {
-            if (b.hasContent(lang, sv)) {
+            if (b.hasContent(lang, sv) && !b.isFeatureTree() && !b.isInternal()) {
                 DataMap map = list.add();
                 map.put("title", esc(b.getBook().getTitle().getString(lang)));
                 map.put("link", linkPrefix + b.getBook().getFolder() + "/" + lang);
