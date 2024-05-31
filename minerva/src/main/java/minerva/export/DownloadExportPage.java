@@ -47,16 +47,19 @@ public class DownloadExportPage extends WPage {
     }
     
     private void download(File file) {
+    	Logger.debug("download: " + file.getAbsolutePath());
         ctx.res.header("Content-Disposition", "inline; filename=\"" + file.getName() + "\""); // inline -> opens PDF in new tab instead of showing it in the browser download list
         try {
             ctx.res.raw().getOutputStream().write(Files.readAllBytes(file.toPath()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Logger.info("delete folder: " + file.getParentFile().getAbsolutePath());
-        if (file.getParentFile().getParentFile().getName().startsWith("export_")) {
-            FileService.deleteFolder(file.getParentFile().getParentFile());
+		if (file.getParentFile().getParentFile() != null
+				&& file.getParentFile().getParentFile().getName().startsWith("export_")) { // PDF export
+			Logger.debug("delete folder: " + file.getParentFile().getParentFile().getAbsolutePath());
+			FileService.deleteFolder(file.getParentFile().getParentFile());
         } else {
+			Logger.debug("delete folder: " + file.getParentFile().getAbsolutePath());
             FileService.deleteFolder(file.getParentFile());
         }
     }

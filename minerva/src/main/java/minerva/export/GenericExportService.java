@@ -192,7 +192,8 @@ public abstract class GenericExportService {
 
     public static String register(File file) {
         String id = IdGenerator.createId6();
-        downloads.put(id, file);
+        File r = new File(file.getAbsolutePath()); // recreate File so that .getParentFile().getParentFile() will work later
+        downloads.put(id, r);
         return id;
     }
     
