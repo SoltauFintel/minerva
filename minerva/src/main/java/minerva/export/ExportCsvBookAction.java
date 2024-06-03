@@ -19,13 +19,16 @@ public class ExportCsvBookAction extends BAction {
 		for (String lang : MinervaWebapp.factory().getLanguages()) {
 			for (SeiteSO kunde : book.getSeiten()) {
 				String title = kunde.getSeite().getTitle().getString(lang);
+				title = title.replace("DEVK ", "DEVK");
 				customer = lastWord(title) + ";" + lang;
 				version = "";
 				for (SeiteSO releaseGroup : kunde.getSeiten()) {
 					for (SeiteSO release : releaseGroup.getSeiten()) {
 						String html = release.getContent().getString(lang);
 						if (release.hasContent(lang) > 0) {
-							version = lastWord(release.getSeite().getTitle().getString(lang));
+							String q = release.getSeite().getTitle().getString(lang);
+							int qq = q.lastIndexOf(" (");
+							version = lastWord(q.substring(0, qq));
 							doLines(html);
 						}
 					}
