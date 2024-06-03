@@ -3,6 +3,7 @@ package minerva.releasenotes;
 public class ReleaseNotesConfig {
     private String customer;
     private String ticketPrefix;
+    @Deprecated
     private String spaceKey;
     private String language;
     private String rootTitle;
@@ -23,10 +24,12 @@ public class ReleaseNotesConfig {
         this.ticketPrefix = ticketPrefix;
     }
 
+    @Deprecated
     public String getSpaceKey() {
         return spaceKey;
     }
 
+    @Deprecated
     public void setSpaceKey(String spaceKey) {
         this.spaceKey = spaceKey;
     }
