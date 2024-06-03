@@ -15,6 +15,7 @@ import minerva.confluence.ConfluencePage2;
 /**
  * Release notes: select release to be imported
  */
+@Deprecated
 public class SelectRNReleasePage extends BPage {
     private static final String ALL = "!all";
     

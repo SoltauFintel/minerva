@@ -21,6 +21,7 @@ import minerva.validate.ValidatorService;
 /**
  * Jira server
  */
+@Deprecated
 public class ReleaseNotesService extends AbstractReleaseNotesService {
     private ConfluenceAccess access;
     

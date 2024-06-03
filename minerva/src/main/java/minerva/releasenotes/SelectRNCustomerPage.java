@@ -9,6 +9,7 @@ import minerva.book.BPage;
 /**
  * Select customer for importing release notes
  */
+@Deprecated
 public class SelectRNCustomerPage extends BPage {
 
     @Override
