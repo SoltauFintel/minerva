@@ -98,17 +98,21 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
         return part(html1, project) + part(html2, NLS.get(lang, "generalChanges"));
     }
     
+    // Für den gewählten Kunden darf die 'Customer project key' Ticketnummer aus dem "release for" verknüpften Ticket verwendet werden.
+    // Ansonsten die RNT Nr..
     private String getCustomerTicketNumber(ReleaseNoteTicket rnt) {
         String ret = null;
-        String releaseFor = rnt.getReleaseFor();
+        String releaseFor = rnt.getReleaseFor(); // Ticketnr. des über "release for" verknüpfte Ticket
         if (releaseFor != null) {
             List<IssueAccess> list = jira().loadIssues("key=\"" + releaseFor + "\"", i -> i);
             if (list.size() >= 1) {
                 IssueAccess ia = list.get(0);
-                ret = ia.text("/fields/customfield_10059");
+                if (ctx.getProject().equals(ia.text("/fields/project/key"))) { // Project übereinstimmend?
+                	ret = ia.text("/fields/customfield_10048"); // Customer project key
+                }
             }
         }
-        return ret == null ? rnt.getKey() : ret;
+    	return ret == null ? rnt.getKey() : ret;
     }
     
     private void getReleasePageContent2(String key, String rnt, DocField rns, DocField rnd, StringBuilder html) {
