@@ -45,6 +45,11 @@ public class MinervaOptions {
 	public static final Option TNP_EXCEPT_USERS = add(CAT_TAG_NEW_PAGE, "tag-new-page.except-users", "except for users");
 	public static final Option TNP_BOOKS = add(CAT_TAG_NEW_PAGE, "tag-new-page.books", "for book folders").setHint("empty: for all books");
 
+	private static final OptionCategory CAT_JIRA = new OptionCategory("Jira Cloud");
+	public static final Option JIRA_CUSTOMER = add(CAT_JIRA, "jira.customer", "Customer");
+	public static final Option JIRA_MAIL = add(CAT_JIRA, "jira.mail", "Mail");
+	public static final Option JIRA_TOKEN = add(CAT_JIRA, "jira.token", "Token", OptionType.SECRET);
+
 	private static final OptionCategory CAT_CLEANUP = new OptionCategory("Cleanup service");
 	public static final Option CLEANUP_CRON = add(CAT_CLEANUP, "cleanup.cron", "cron").setDefaultValue("0 0 23 ? * MON-FRI"); // werktags 23:00 Uhr
 	public static final Option CLEANUP_LOGIN = add(CAT_CLEANUP, "cleanup.login", "Login");
@@ -83,6 +88,8 @@ public class MinervaOptions {
 		cats.add(CAT_SEARCH);
 		cats.add(CAT_WATCH);
 		cats.add(CAT_COMMENT);
+		cats.add(CAT_JIRA);
+		cats.add(CAT_CLEANUP);
 		return cats;
 	}
 	

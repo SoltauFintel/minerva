@@ -15,9 +15,8 @@ import de.xmap.jiracloud.JiraCloudAccess.IssueAccess;
 import de.xmap.jiracloud.ReleaseNoteTicket;
 import de.xmap.jiracloud.ReleaseTicket;
 import github.soltaufintel.amalia.base.IdGenerator;
-import minerva.MinervaWebapp;
 import minerva.base.NLS;
-import minerva.config.MinervaConfig;
+import minerva.config.MinervaOptions;
 import minerva.model.SeiteSO;
 
 /**
@@ -161,7 +160,10 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
     }
     
     private JiraCloudAccess jira() {
-        MinervaConfig c = MinervaWebapp.factory().getConfig();
-        return new JiraCloudAccess(c.getJiraMail(), c.getJiraToken(), c.getJiraCustomer());
+    	if (MinervaOptions.JIRA_MAIL.isSet() && MinervaOptions.JIRA_TOKEN.isSet() && MinervaOptions.JIRA_CUSTOMER.isSet()) {
+			return new JiraCloudAccess(MinervaOptions.JIRA_MAIL.get(), MinervaOptions.JIRA_TOKEN.get(),
+					MinervaOptions.JIRA_CUSTOMER.get());
+    	}
+    	throw new RuntimeException("Jira Cloud access is not possible because options are not set.");
     }
 }
