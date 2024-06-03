@@ -26,6 +26,23 @@
         
         <p>{{N.nMessages}}: {{nMessages}} 
         <br>{{N.nPages}}: {{nPages}}</p>
+
+        {{if hasUnusedImages}}        
+	        <hr/>
+
+            <h2>{{N.unusedImages}}</h2>
+            <ul>	        
+		        {{each i in pagesWithUnusedImages}}
+		            <li><a href="{{i.link}}">{{i.titel}}</a>
+		                <ul>
+		                    {{each ii in i.unusedImages}}
+		                      <li>{{ii.dn}}</li>
+		                    {{/each}}
+		                </ul>
+		            </li>
+		        {{/each}}
+	        </ul>
+        {{/if}}
         
         <hr/>
 

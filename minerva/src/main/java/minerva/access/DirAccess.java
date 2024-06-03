@@ -103,4 +103,10 @@ public interface DirAccess {
      * @return list of target filenames with short path
      */
     List<String> copyFiles(String bookFolder, String source, String target);
+
+    /**
+     * @param folder -
+     * @return null if folder does not exist
+     */
+    Set<String> getFilenames(String folder);
 }

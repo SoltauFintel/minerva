@@ -11,6 +11,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.pmw.tinylog.Logger;
 
+import com.github.template72.data.DataList;
+import com.github.template72.data.DataMap;
+
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.base.NLS;
 import minerva.base.StringService;
@@ -217,4 +220,36 @@ public class ValidatorService {
         }
         return dirty ? doc.toString() : html;
     }
+
+	public void unusedImageFiles(SeiteSO seite, List<String> langs, DataList unusedImages) {
+		Set<String> filenames = seite.getBook().dao()
+				.getFilenames(seite.getBook().getFolder() + "/img/" + seite.getId());
+		if (filenames != null) {
+			boolean first = true;
+			DataList unusedImages2 = null;
+			for (String dn : filenames) {
+				if (!hasImage(seite, langs, dn)) {
+					if (first) {
+						first = false;
+						DataMap map = unusedImages.add();
+						map.put("titel", Escaper.esc(seite.getSeite().getTitle().getString(seite.getBook().getWorkspace().getUser().getGuiLanguage())));
+						map.put("link", "/s/" + seite.getBook().getWorkspace().getBranch() + "/"
+								+ seite.getBook().getBook().getFolder() + "/" + seite.getId());
+						unusedImages2 = map.list("unusedImages");
+					}
+					unusedImages2.add().put("dn", Escaper.esc(dn));
+				}
+			}
+		}
+	}
+	
+	private boolean hasImage(SeiteSO seite, List<String> langs, String dn) {
+		for (String lang : langs) {
+			String html = seite.getContent().getString(lang);
+			if (html.contains("\"img/" + seite.getId() + "/" + dn + "\"")) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

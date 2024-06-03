@@ -32,6 +32,11 @@ public class ValidationPage extends BPage {
             langEintrag.put("hasEntries", !seiten.isEmpty());
             langEintrag.put("hasLinks", !links.isEmpty());
         }
+        DataList unusedImages = list("pagesWithUnusedImages");
+        for (SeiteSO seite : book.getAlleSeiten()) {
+        	new ValidatorService().unusedImageFiles(seite, langs, unusedImages);
+        }
+        put("hasUnusedImages", !unusedImages.isEmpty());
         putInt("nPages", nPages);
         putInt("nMessages", nMessages);
     }

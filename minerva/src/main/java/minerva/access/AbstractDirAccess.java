@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.Predicate;
 
 import org.apache.commons.io.FileUtils;
@@ -187,6 +188,19 @@ public abstract class AbstractDirAccess implements DirAccess {
 				FileService.copyFile(file, targetDir);
 				ret.add(target + "/" + file.getName());
 			}
+		}
+		return ret;
+	}
+
+	@Override
+	public Set<String> getFilenames(String folder) {
+		File[] files = new File(folder).listFiles();
+		if (files == null) {
+			return null;
+		}
+		Set<String> ret = new TreeSet<>();
+		for (File file : files) {
+			ret.add(file.getName());
 		}
 		return ret;
 	}
