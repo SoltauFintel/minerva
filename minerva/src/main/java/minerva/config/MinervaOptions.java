@@ -45,6 +45,12 @@ public class MinervaOptions {
 	public static final Option TNP_EXCEPT_USERS = add(CAT_TAG_NEW_PAGE, "tag-new-page.except-users", "except for users");
 	public static final Option TNP_BOOKS = add(CAT_TAG_NEW_PAGE, "tag-new-page.books", "for book folders").setHint("empty: for all books");
 
+	private static final OptionCategory CAT_RELEASE_NOTES = new OptionCategory("Release Notes");
+	public static final Option RELEASE_NOTES_BOOK_TITLES = add(CAT_RELEASE_NOTES, "release-notes.book-titles", "Book titles")
+			.setDefaultValue("Programmänderungen,Release notes").setHint("separator: ,");
+	public static final Option RELEASE_NOTES_CUSTOMERS = add(CAT_RELEASE_NOTES, "release-notes.customers", "Customers", OptionType.TEXTAREA)
+			.setHint("A line for each customer. Line format: title, language, ticket prefix, space key, customer");
+
 	private static final OptionCategory CAT_JIRA = new OptionCategory("Jira Cloud");
 	public static final Option JIRA_CUSTOMER = add(CAT_JIRA, "jira.customer", "Customer");
 	public static final Option JIRA_MAIL = add(CAT_JIRA, "jira.mail", "Mail");
@@ -88,6 +94,7 @@ public class MinervaOptions {
 		cats.add(CAT_SEARCH);
 		cats.add(CAT_WATCH);
 		cats.add(CAT_COMMENT);
+		cats.add(CAT_RELEASE_NOTES);
 		cats.add(CAT_JIRA);
 		cats.add(CAT_CLEANUP);
 		return cats;

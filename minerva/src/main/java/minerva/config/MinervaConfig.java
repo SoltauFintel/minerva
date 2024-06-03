@@ -219,20 +219,19 @@ public class MinervaConfig {
         String ret = System.getenv(name);
         return ret == null ? "" : ret;
     }
-    
-    // TODO erst nach Wechsel auf Jira Cloud umstellen
+
+    @Deprecated
     public String getReleaseNotesBaseUrl() {
         return config.get("release-notes.base-url");
     }
     
-    // TODO erst nach Wechsel auf Jira Cloud umstellen
+    @Deprecated
     public String getReleaseNotesToken() {
         return config.get("release-notes.token");
     }
     
-    // TODO erst nach Wechsel auf Jira Cloud umstellen
     public String[] getReleaseNotesBookTitles() {
-        String c = config.get("release-notes.book-titles");
+        String c = MinervaOptions.RELEASE_NOTES_BOOK_TITLES.get();
         if (StringService.isNullOrEmpty(c)) {
             return new String[0];
         } else {
@@ -240,29 +239,24 @@ public class MinervaConfig {
         }
     }
     
-    // TODO erst nach Wechsel auf Jira Cloud umstellen
     public List<ReleaseNotesConfig> loadReleaseNotesConfigs() {
-        List<ReleaseNotesConfig> ret = new ArrayList<>();
-        int i = 0;
-        while (true) {
-            String c = config.get("release-notes.config" + ++i);
-            if (c == null) {
-                break;
-            }
-            String[] w = c.split(",");
+    	List<ReleaseNotesConfig> ret = new ArrayList<>();
+    	String lines = MinervaOptions.RELEASE_NOTES_CUSTOMERS.get();
+    	for (String line : lines.split("\n")) {
+    		String[] w = line.split(",");
             if (w.length < 5 || w[4].isEmpty()) {
-                throw new RuntimeException("release-notes.config" + (i - 1) + " entry is not ok! Format is: root title, de|en, ticket prefix, space key, customer");
+                throw new RuntimeException("Release Notes customer line \"" + line + "\" is not valid!");
             }
             ReleaseNotesConfig e = new ReleaseNotesConfig();
-            e.setRootTitle(w[0]);
-            e.setLanguage(w[1]);
-            e.setTicketPrefix(w[2]);
-            e.setSpaceKey(w[3]);
-            e.setCustomer(w[4]);
+            e.setRootTitle(w[0].trim());
+            e.setLanguage(w[1].trim());
+            e.setTicketPrefix(w[2].trim());
+            e.setSpaceKey(w[3].trim());
+            e.setCustomer(w[4].trim());
             ret.add(e);
-        }
-        ret.sort((a, b) -> a.getCustomer().compareToIgnoreCase(b.getCustomer()));
-        return ret;
+    	}
+    	ret.sort((a, b) -> a.getCustomer().compareToIgnoreCase(b.getCustomer()));
+    	return ret;
     }
     
     public String[] getPDF_tags() {
