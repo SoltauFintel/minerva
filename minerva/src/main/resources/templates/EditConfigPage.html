@@ -15,6 +15,8 @@
                             <div class="col-lg-4">
                                 {{if o.isTextarea}}
                                     <textarea class="form-control" rows="6" id="{{o.key}}" name="{{o.key}}">{{o.value}}</textarea>
+                                {{else if o.isSecret}}
+                                    <input class="form-control" type="password" id="{{o.key}}" name="{{o.key}}" value="{{o.value}}">
                                 {{else}}
                                     <input class="form-control" type="text" id="{{o.key}}" name="{{o.key}}" value="{{o.value}}">
                                 {{/if}}

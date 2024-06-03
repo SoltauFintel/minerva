@@ -10,14 +10,23 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.pmw.tinylog.Logger;
+import org.quartz.JobExecutionContext;
+import org.quartz.SchedulerException;
 
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import github.soltaufintel.amalia.timer.BaseTimer;
 import github.soltaufintel.amalia.web.action.Escaper;
+import github.soltaufintel.amalia.web.config.AppConfig;
+import minerva.MinervaWebapp;
 import minerva.base.NLS;
 import minerva.base.StringService;
+import minerva.config.MinervaOptions;
+import minerva.model.BookSO;
 import minerva.model.SeiteSO;
+import minerva.model.UserSO;
+import minerva.model.WorkspaceSO;
 
 /**
  * Check if page formatting is fine
@@ -222,6 +231,7 @@ public class ValidatorService {
     }
 
 	public void unusedImageFiles(SeiteSO seite, List<String> langs, DataList unusedImages) {
+// TODO wenn unusedImages null, dann images löschen
 		Set<String> filenames = seite.getBook().dao()
 				.getFilenames(seite.getBook().getFolder() + "/img/" + seite.getId());
 		if (filenames != null) {
@@ -252,4 +262,49 @@ public class ValidatorService {
 		}
 		return false;
 	}
+    
+    /**
+     * Delete unused images
+     */
+    public static class UnusedImagesTimer extends BaseTimer {
+        private static String cron;
+        
+// TODO Aufruf
+        public static void start(AppConfig config) {
+			if (MinervaOptions.CLEANUP_LOGIN.isSet()
+					&& MinervaOptions.CLEANUP_PASSWORD.isSet()
+					&& MinervaOptions.CLEANUP_BRANCHES.isSet()
+					&& MinervaOptions.CLEANUP_CRON.isSet()) {
+				Logger.info("No UnusedImagesTimer started because 'Cleanup service' options are not set.");
+			} else {
+        		cron = MinervaOptions.CLEANUP_CRON.get();
+        		new UnusedImagesTimer().start();
+        	}
+        }
+        
+        @Override
+        protected void config() throws SchedulerException {
+            start(cron);
+        }
+
+        @Override
+        protected void timerEvent(JobExecutionContext context) throws Exception {
+        	Logger.info("UnusedImagesTimer | user: " + MinervaOptions.CLEANUP_LOGIN.get());
+			UserSO userSO = new UserSO(MinervaWebapp.factory().getBackendService()
+					.login(MinervaOptions.CLEANUP_LOGIN.get(), MinervaOptions.CLEANUP_PASSWORD.get(), null));
+			List<String> langs = MinervaWebapp.factory().getLanguages();
+			for (String branch : MinervaOptions.CLEANUP_BRANCHES.get().split(",")) {
+				branch = branch.trim();
+				WorkspaceSO workspace = userSO.getWorkspace(branch);
+				Logger.info("- branch: " + branch);
+				for (BookSO book : workspace.getBooks()) {
+					Logger.info("-- book folder: " + book.getBook().getFolder());
+					for (SeiteSO seite : book.getAlleSeiten()) {
+						new ValidatorService().unusedImageFiles(seite, langs, null);
+					}
+				}
+			}
+        	Logger.info("UnusedImagesTimer | end");
+        }
+    }
 }

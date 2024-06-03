@@ -5,5 +5,5 @@ public enum OptionType {
 	TEXTAREA,
 //	CHECKBOX,
 //	MAILADDRESS,
-//	SECRET
+	SECRET
 }

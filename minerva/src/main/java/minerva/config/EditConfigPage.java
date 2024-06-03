@@ -37,6 +37,7 @@ public class EditConfigPage extends UPage {
 				m.putHas("hint", o.getHint());
 				m.put("hint", esc(o.getHint()));
 				m.put("isTextarea", OptionType.TEXTAREA.equals(o.getType()));
+				m.put("isSecret", OptionType.SECRET.equals(o.getType()));
 			}
 		}
 	}

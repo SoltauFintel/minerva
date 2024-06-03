@@ -45,6 +45,12 @@ public class MinervaOptions {
 	public static final Option TNP_EXCEPT_USERS = add(CAT_TAG_NEW_PAGE, "tag-new-page.except-users", "except for users");
 	public static final Option TNP_BOOKS = add(CAT_TAG_NEW_PAGE, "tag-new-page.books", "for book folders").setHint("empty: for all books");
 
+	private static final OptionCategory CAT_CLEANUP = new OptionCategory("Cleanup service");
+	public static final Option CLEANUP_CRON = add(CAT_CLEANUP, "cleanup.cron", "cron").setDefaultValue("0 0 23 ? * MON-FRI"); // werktags 23:00 Uhr
+	public static final Option CLEANUP_LOGIN = add(CAT_CLEANUP, "cleanup.login", "Login");
+	public static final Option CLEANUP_PASSWORD = add(CAT_CLEANUP, "cleanup.password", "Password");
+	public static final Option CLEANUP_BRANCHES = add(CAT_CLEANUP, "cleanup.branches", "Branches").setDefaultValue("master");
+
 	/** global instance, same for all users, must be set at program start */
 	public static MinervaOptions options;
 
