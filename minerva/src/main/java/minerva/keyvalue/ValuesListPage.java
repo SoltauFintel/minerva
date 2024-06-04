@@ -11,7 +11,7 @@ public class ValuesListPage extends WPage {
 
     @Override
     protected void execute() {
-        header("Schlüsselverwaltung");
+        header(n("kvmanagevalues"));
         DataList list = list("valuesList");
         ValuesSO so = new ValuesSO(workspace);
         for (Values v : so) {

@@ -3,6 +3,7 @@ package minerva.keyvalue;
 import java.util.ArrayList;
 
 import minerva.base.StringService;
+import minerva.base.UserMessage;
 import minerva.workspace.WPage;
 
 public class AddValuesPage extends WPage {
@@ -15,7 +16,7 @@ public class AddValuesPage extends WPage {
             String values = ctx.formParam("values");
             
             if (StringService.isNullOrEmpty(key) || StringService.isNullOrEmpty(title)) {
-                throw new RuntimeException("Bitte Typ und Titel eingeben!");
+                throw new UserMessage("kverror1", workspace);
             }
             
             Values v = new Values();
@@ -25,7 +26,7 @@ public class AddValuesPage extends WPage {
             new ValuesSO(workspace).saveNew(v);
             ctx.redirect("/values/" + branch);
         } else {
-            header("Neuen Schlüsseltyp anlegen");
+            header(n("kvcreatetype"));
             put("hasBook", false);
         }
     }

@@ -5,15 +5,15 @@
         <h1 class="page-header">{{header}}</h1>
         
         <p>
-            <a href="/values/{{branch}}/add" class="btn btn-primary">Neuen Schlüsseltyp anlegen</a>
+            <a href="/values/{{branch}}/add" class="btn btn-primary">{{N.kvcreatetype}}</a>
         </p>
         
         <table class="table table-striped table-hover mt2">
             <tr>
-                <th>Titel</th>
-                <th>Schlüsselwerte</th>
-                <th style="text-align: right;">Anzahl</th>
-                <th>Schlüsseltyp</th>
+                <th>{{N.title}}</th>
+                <th>{{N.kvvalues}}</th>
+                <th style="text-align: right;">{{N.anzahl}}</th>
+                <th>{{N.kvtype}}</th>
                 <th></th>
             </tr>
             {{each v in valuesList}}
@@ -23,7 +23,7 @@
                     <td style="text-align: right;">{{v.n}}</td>
                     <td>{{v.key}}</td>
                     <td><a href="/values/{{branch}}/delete/{{v.key}}" onclick="return loeschen('{{v.title}}');"
-                        class="btn btn-danger btn-xs" title="Schlüsseltyp löschen"><i class="fa fa-trash"></i><i id="wait_{{v.title}}"
+                        class="btn btn-danger btn-xs" title="{{N.kvdeletekey}}"><i class="fa fa-trash"></i><i id="wait_{{v.title}}"
                         class="fa fa-delicious fa-spin" style="display: none;"></i></a>
                 </tr>
             {{/each}}
@@ -33,7 +33,7 @@
 
 <script>
 function loeschen(title) {
-    ret = confirm('Schlüsseltyp ' + title + ' löschen?');
+    ret = confirm('{{N.kvdeletekeyt}}'.replace('{title}', title));
     if (ret) {
         document.querySelector('#wait_' + title).style='';
     }

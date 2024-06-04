@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import minerva.access.CommitMessage;
 import minerva.access.MultiPurposeDirAccess;
 import minerva.base.MList;
+import minerva.base.UserMessage;
 import minerva.model.WorkspaceSO;
 
 public class ValuesSO extends MList<Values> {
@@ -33,7 +34,7 @@ public class ValuesSO extends MList<Values> {
     public void saveNew(Values v) {
         for (Values i : this) {
             if (i.getKey().equals(v.getKey())) {
-                throw new RuntimeException("Technischer Schlüsseltyp bereits vergeben!");
+                throw new UserMessage("kverror3", workspace);
             }
         }
         add(v);

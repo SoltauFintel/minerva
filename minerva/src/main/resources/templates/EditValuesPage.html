@@ -7,13 +7,13 @@
         <form action="/values/{{branch}}/edit/{{key}}" class="form-horizontal" method="post">
             <fieldset>
                 <div class="form-group">
-                    <label for="title" class="col-lg-2 control-label">Schlüsseltyptitel</label>
+                    <label for="title" class="col-lg-2 control-label">{{N.kvtypetitle}}</label>
                     <div class="col-lg-3">
                         <input class="form-control" type="text" id="title" name="title" value="{{title}}">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="values" class="col-lg-2 control-label">Schlüsselwerte</label>
+                    <label for="values" class="col-lg-2 control-label">{{N.kvvalues}}</label>
                     <div class="col-lg-3">
                         <textarea class="form-control" rows="6" id="values" name="values" autofocus>{{values}}</textarea>
                     </div>
