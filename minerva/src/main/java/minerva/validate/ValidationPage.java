@@ -34,7 +34,7 @@ public class ValidationPage extends BPage {
         }
         DataList unusedImages = list("pagesWithUnusedImages");
         for (SeiteSO seite : book.getAlleSeiten()) {
-        	new ValidatorService().unusedImageFiles(seite, langs, unusedImages);
+        	new ValidatorService().unusedImageFiles(seite, langs, unusedImages, null);
         }
         put("hasUnusedImages", !unusedImages.isEmpty());
         putInt("nPages", nPages);

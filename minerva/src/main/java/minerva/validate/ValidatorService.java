@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.jsoup.Jsoup;
@@ -18,8 +19,8 @@ import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.timer.BaseTimer;
 import github.soltaufintel.amalia.web.action.Escaper;
-import github.soltaufintel.amalia.web.config.AppConfig;
 import minerva.MinervaWebapp;
+import minerva.access.CommitMessage;
 import minerva.base.NLS;
 import minerva.base.StringService;
 import minerva.config.MinervaOptions;
@@ -230,24 +231,27 @@ public class ValidatorService {
         return dirty ? doc.toString() : html;
     }
 
-	public void unusedImageFiles(SeiteSO seite, List<String> langs, DataList unusedImages) {
-// TODO wenn unusedImages null, dann images löschen
-		Set<String> filenames = seite.getBook().dao()
-				.getFilenames(seite.getBook().getFolder() + "/img/" + seite.getId());
+	public void unusedImageFiles(SeiteSO seite, List<String> langs, DataList unusedImages, Set<String> filesToBeDeleted) {
+		String folder = seite.getBook().getFolder() + "/img/" + seite.getId();
+		Set<String> filenames = seite.getBook().dao().getFilenames(folder);
 		if (filenames != null) {
 			boolean first = true;
 			DataList unusedImages2 = null;
 			for (String dn : filenames) {
 				if (!hasImage(seite, langs, dn)) {
-					if (first) {
-						first = false;
-						DataMap map = unusedImages.add();
-						map.put("titel", Escaper.esc(seite.getSeite().getTitle().getString(seite.getBook().getWorkspace().getUser().getGuiLanguage())));
-						map.put("link", "/s/" + seite.getBook().getWorkspace().getBranch() + "/"
-								+ seite.getBook().getBook().getFolder() + "/" + seite.getId());
-						unusedImages2 = map.list("unusedImages");
+					if (unusedImages == null) { // timer mode
+						filesToBeDeleted.add(folder + "/" + dn);
+					} else { // GUI mode
+						if (first) {
+							first = false;
+							DataMap map = unusedImages.add();
+							map.put("titel", Escaper.esc(seite.getSeite().getTitle().getString(seite.getBook().getWorkspace().getUser().getGuiLanguage())));
+							map.put("link", "/s/" + seite.getBook().getWorkspace().getBranch() + "/"
+									+ seite.getBook().getBook().getFolder() + "/" + seite.getId());
+							unusedImages2 = map.list("unusedImages");
+						}
+						unusedImages2.add().put("dn", Escaper.esc(dn));
 					}
-					unusedImages2.add().put("dn", Escaper.esc(dn));
 				}
 			}
 		}
@@ -264,21 +268,18 @@ public class ValidatorService {
 	}
     
     /**
-     * Delete unused images
+     * Delete unused images e.g. every day 23:00
      */
     public static class UnusedImagesTimer extends BaseTimer {
         private static String cron;
         
-// TODO Aufruf
-        public static void start(AppConfig config) {
-			if (MinervaOptions.CLEANUP_LOGIN.isSet()
-					&& MinervaOptions.CLEANUP_PASSWORD.isSet()
-					&& MinervaOptions.CLEANUP_BRANCHES.isSet()
-					&& MinervaOptions.CLEANUP_CRON.isSet()) {
-				Logger.info("No UnusedImagesTimer started because 'Cleanup service' options are not set.");
+        public static void startTimer() {
+			if (MinervaOptions.CLEANUP_LOGIN.isSet() && MinervaOptions.CLEANUP_PASSWORD.isSet()
+					&& MinervaOptions.CLEANUP_BRANCHES.isSet() && MinervaOptions.CLEANUP_CRON.isSet()) {
+				cron = MinervaOptions.CLEANUP_CRON.get();
+				new UnusedImagesTimer().start();
 			} else {
-        		cron = MinervaOptions.CLEANUP_CRON.get();
-        		new UnusedImagesTimer().start();
+				Logger.info("No UnusedImagesTimer started because 'Cleanup service' options are not set.");
         	}
         }
         
@@ -289,22 +290,34 @@ public class ValidatorService {
 
         @Override
         protected void timerEvent(JobExecutionContext context) throws Exception {
-        	Logger.info("UnusedImagesTimer | user: " + MinervaOptions.CLEANUP_LOGIN.get());
+        	Logger.debug("UnusedImagesTimer | user: " + MinervaOptions.CLEANUP_LOGIN.get());
 			UserSO userSO = new UserSO(MinervaWebapp.factory().getBackendService()
 					.login(MinervaOptions.CLEANUP_LOGIN.get(), MinervaOptions.CLEANUP_PASSWORD.get(), null));
 			List<String> langs = MinervaWebapp.factory().getLanguages();
+			Set<String> filesToBeDeleted = new TreeSet<>();
 			for (String branch : MinervaOptions.CLEANUP_BRANCHES.get().split(",")) {
 				branch = branch.trim();
 				WorkspaceSO workspace = userSO.getWorkspace(branch);
-				Logger.info("- branch: " + branch);
+				Logger.debug("- branch: " + branch);
 				for (BookSO book : workspace.getBooks()) {
-					Logger.info("-- book folder: " + book.getBook().getFolder());
+					Logger.debug("-- book folder: " + book.getBook().getFolder());
 					for (SeiteSO seite : book.getAlleSeiten()) {
-						new ValidatorService().unusedImageFiles(seite, langs, null);
+						new ValidatorService().unusedImageFiles(seite, langs, null, filesToBeDeleted);
+					}
+				}
+				if (filesToBeDeleted.isEmpty()) {
+					Logger.info(branch + " | No unused images found.");
+				} else {
+					List<String> cantBeDeleted = new ArrayList<>();
+					userSO.dao().deleteFiles(filesToBeDeleted, new CommitMessage("Delete unused images"), workspace, cantBeDeleted);
+					if (!cantBeDeleted.isEmpty()) {
+						Logger.error(branch + " | Error deleting files: " + cantBeDeleted);
+					} else {
+						Logger.info(branch + " | Deleted unused images: " + filesToBeDeleted.size());
 					}
 				}
 			}
-        	Logger.info("UnusedImagesTimer | end");
+        	Logger.debug("UnusedImagesTimer | end");
         }
     }
 }
