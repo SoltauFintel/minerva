@@ -367,6 +367,7 @@ public class MinervaWebapp extends RouteDefinitions {
                 .withInitializer(config -> CommentService.services.put(ctx -> ctx.path().startsWith("/sc/"), SeiteCommentService.class))
                 .withInitializer(config -> JournalTimer.start(config))
 //                .withInitializer(config -> UnusedImagesTimer.startTimer())
+// TODO Auf der Seite "Übersicht der Icons und ihrer Funktionen" wurden viel zu viele Grafiken gelöscht. Warum?                
                 .withAuth(new MinervaAuth());
     }
     
