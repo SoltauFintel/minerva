@@ -30,7 +30,6 @@ import minerva.base.UserMessage;
 import minerva.comment.SeiteCommentService2;
 import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
-import minerva.image.FixHttpImage;
 import minerva.seite.IPageChangeStrategy;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
@@ -411,7 +410,8 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         if (content == null) {
             content = new NlsString();
         }
-        new FixHttpImage().process(newContent, langs, images, book, seite.getId());
+// TODO temp. entfernt. Verdacht dass das auch was kaputt machen könnte.        
+//        new FixHttpImage().process(newContent, langs, images, book, seite.getId());
         for (String lang : langs) {
             seite.getTitle().setString(lang, newTitle.getString(lang));
             content.setString(lang, newContent.getString(lang));
@@ -606,13 +606,16 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
 
     /**
      * has content: > 0, has no content: 0
-     * @return 1: page is not empty, 2: page is empty, but at least one subpage is not empty,
-     * 0: page and subpages are empty, 3: error (which should be interpreted as "page is not empty"
-     * to be on the safe side)
+     * @return 1: page is not empty,
+     * 2: page is empty, but at least one subpage is not empty,
+     * 3: error (which should be interpreted as "page is not empty" to be on the safe side),
+     * 0: page and subpages are empty.
      */
     public int hasContent(String lang) {
         if (book.isFeatureTree()) {
             return 1;
+        } else if (seite.getTags().contains("autolink")) {
+        	return 0;
         }
         return hasContentR(lang);
     }
