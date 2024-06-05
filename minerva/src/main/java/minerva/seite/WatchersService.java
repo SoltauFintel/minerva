@@ -5,6 +5,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+import org.pmw.tinylog.Logger;
+
 import github.soltaufintel.amalia.mail.Mail;
 import minerva.MinervaWebapp;
 import minerva.base.StringService;
@@ -32,10 +34,14 @@ public class WatchersService {
         }
         
         // get all users
+        if (me == null) {
+        	Logger.error("me is null in WatchersService.notifyWatchers()");
+        }
         List<NotifyUser> nu = UserAccess.loadUsers().stream()
-                .filter(user -> !user.getLogin().equals(me.getLogin()))
+                .filter(user -> user != null && user.getLogin() != null && !user.getLogin().equals(me.getLogin()))
                 .map(user -> new NotifyUser(user.getMailAddress(), user.getWatchlist()))
                 .collect(Collectors.toList());
+        Logger.info("NotifyUser list size: " + nu.size());
         
         // collect all watchers
         findWatchers(editedSeite, nu, false);
