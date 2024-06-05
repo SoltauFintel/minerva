@@ -132,7 +132,6 @@ import minerva.user.DeleteUserAction;
 import minerva.user.EditUserPage;
 import minerva.user.UsersPage;
 import minerva.validate.ValidationPage;
-import minerva.validate.ValidatorService.UnusedImagesTimer;
 import minerva.workspace.ActivateFSModeAction;
 import minerva.workspace.AddWorkspacePage;
 import minerva.workspace.CreateBranchPage;
@@ -367,7 +366,7 @@ public class MinervaWebapp extends RouteDefinitions {
                 .withInitializer(config -> factory = new MinervaFactory(new MinervaConfig(config)))
                 .withInitializer(config -> CommentService.services.put(ctx -> ctx.path().startsWith("/sc/"), SeiteCommentService.class))
                 .withInitializer(config -> JournalTimer.start(config))
-                .withInitializer(config -> UnusedImagesTimer.startTimer())
+//                .withInitializer(config -> UnusedImagesTimer.startTimer())
                 .withAuth(new MinervaAuth());
     }
     

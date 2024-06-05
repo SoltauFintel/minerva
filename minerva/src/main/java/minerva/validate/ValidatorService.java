@@ -4,30 +4,20 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.pmw.tinylog.Logger;
-import org.quartz.JobExecutionContext;
-import org.quartz.SchedulerException;
 
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
-import github.soltaufintel.amalia.timer.BaseTimer;
 import github.soltaufintel.amalia.web.action.Escaper;
-import minerva.MinervaWebapp;
-import minerva.access.CommitMessage;
 import minerva.base.NLS;
 import minerva.base.StringService;
-import minerva.config.MinervaOptions;
-import minerva.model.BookSO;
 import minerva.model.SeiteSO;
-import minerva.model.UserSO;
-import minerva.model.WorkspaceSO;
 
 /**
  * Check if page formatting is fine
@@ -267,57 +257,57 @@ public class ValidatorService {
 		return false;
 	}
     
-    /**
-     * Delete unused images e.g. every day 23:00
-     */
-    public static class UnusedImagesTimer extends BaseTimer {
-        private static String cron;
-        
-        public static void startTimer() {
-			if (MinervaOptions.CLEANUP_LOGIN.isSet() && MinervaOptions.CLEANUP_PASSWORD.isSet()
-					&& MinervaOptions.CLEANUP_BRANCHES.isSet() && MinervaOptions.CLEANUP_CRON.isSet()) {
-				cron = MinervaOptions.CLEANUP_CRON.get();
-				new UnusedImagesTimer().start();
-			} else {
-				Logger.info("No UnusedImagesTimer started because 'Cleanup service' options are not set.");
-        	}
-        }
-        
-        @Override
-        protected void config() throws SchedulerException {
-            start(cron);
-        }
-
-        @Override
-        protected void timerEvent(JobExecutionContext context) throws Exception {
-        	Logger.debug("UnusedImagesTimer | user: " + MinervaOptions.CLEANUP_LOGIN.get());
-			UserSO userSO = new UserSO(MinervaWebapp.factory().getBackendService()
-					.login(MinervaOptions.CLEANUP_LOGIN.get(), MinervaOptions.CLEANUP_PASSWORD.get(), null));
-			List<String> langs = MinervaWebapp.factory().getLanguages();
-			Set<String> filesToBeDeleted = new TreeSet<>();
-			for (String branch : MinervaOptions.CLEANUP_BRANCHES.get().split(",")) {
-				branch = branch.trim();
-				WorkspaceSO workspace = userSO.getWorkspace(branch);
-				Logger.debug("- branch: " + branch);
-				for (BookSO book : workspace.getBooks()) {
-					Logger.debug("-- book folder: " + book.getBook().getFolder());
-					for (SeiteSO seite : book.getAlleSeiten()) {
-						new ValidatorService().unusedImageFiles(seite, langs, null, filesToBeDeleted);
-					}
-				}
-				if (filesToBeDeleted.isEmpty()) {
-					Logger.info(branch + " | No unused images found.");
-				} else {
-					List<String> cantBeDeleted = new ArrayList<>();
-					userSO.dao().deleteFiles(filesToBeDeleted, new CommitMessage("Delete unused images"), workspace, cantBeDeleted);
-					if (!cantBeDeleted.isEmpty()) {
-						Logger.error(branch + " | Error deleting files: " + cantBeDeleted);
-					} else {
-						Logger.info(branch + " | Deleted unused images: " + filesToBeDeleted.size());
-					}
-				}
-			}
-        	Logger.debug("UnusedImagesTimer | end");
-        }
-    }
+//    /**
+//     * Delete unused images e.g. every day 23:00
+//     */
+//    public static class UnusedImagesTimer extends BaseTimer {
+//        private static String cron;
+//        
+//        public static void startTimer() {
+//			if (MinervaOptions.CLEANUP_LOGIN.isSet() && MinervaOptions.CLEANUP_PASSWORD.isSet()
+//					&& MinervaOptions.CLEANUP_BRANCHES.isSet() && MinervaOptions.CLEANUP_CRON.isSet()) {
+//				cron = MinervaOptions.CLEANUP_CRON.get();
+//				new UnusedImagesTimer().start();
+//			} else {
+//				Logger.info("No UnusedImagesTimer started because 'Cleanup service' options are not set.");
+//        	}
+//        }
+//        
+//        @Override
+//        protected void config() throws SchedulerException {
+//            start(cron);
+//        }
+//
+//        @Override
+//        protected void timerEvent(JobExecutionContext context) throws Exception {
+//        	Logger.debug("UnusedImagesTimer | user: " + MinervaOptions.CLEANUP_LOGIN.get());
+//			UserSO userSO = new UserSO(MinervaWebapp.factory().getBackendService()
+//					.login(MinervaOptions.CLEANUP_LOGIN.get(), MinervaOptions.CLEANUP_PASSWORD.get(), null));
+//			List<String> langs = MinervaWebapp.factory().getLanguages();
+//			Set<String> filesToBeDeleted = new TreeSet<>();
+//			for (String branch : MinervaOptions.CLEANUP_BRANCHES.get().split(",")) {
+//				branch = branch.trim();
+//				WorkspaceSO workspace = userSO.getWorkspace(branch);
+//				Logger.debug("- branch: " + branch);
+//				for (BookSO book : workspace.getBooks()) {
+//					Logger.debug("-- book folder: " + book.getBook().getFolder());
+//					for (SeiteSO seite : book.getAlleSeiten()) {
+//						new ValidatorService().unusedImageFiles(seite, langs, null, filesToBeDeleted);
+//					}
+//				}
+//				if (filesToBeDeleted.isEmpty()) {
+//					Logger.info(branch + " | No unused images found.");
+//				} else {
+//					List<String> cantBeDeleted = new ArrayList<>();
+//					userSO.dao().deleteFiles(filesToBeDeleted, new CommitMessage("Delete unused images"), workspace, cantBeDeleted);
+//					if (!cantBeDeleted.isEmpty()) {
+//						Logger.error(branch + " | Error deleting files: " + cantBeDeleted);
+//					} else {
+//						Logger.info(branch + " | Deleted unused images: " + filesToBeDeleted.size());
+//					}
+//				}
+//			}
+//        	Logger.debug("UnusedImagesTimer | end");
+//        }
+//    }
 }
