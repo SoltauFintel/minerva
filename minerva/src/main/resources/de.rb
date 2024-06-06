@@ -208,6 +208,7 @@ v.doubleEmptyLines=Es gibt $0 Doppel-Leerzeilen.
 v.doubleEmptyLines1=Es gibt $0 Doppel-Leerzeile.
 v.illegalTagsInHeading=Überschrift darf keine weitere Formatierung enthalten: $0
 v.missingImageFile=Grafikdatei fehlt: $0
+v.httpImage=Grafikdatei bestehend aus http(s) URL: $0
 unusedImages=Ungenutzte Grafikdateien
 validate=Prüfe Seiten
 nMessages=Anzahl Fehler

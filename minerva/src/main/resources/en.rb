@@ -207,6 +207,7 @@ v.doubleEmptyLines=There are $0 double empty lines pairs.
 v.doubleEmptyLines1=There is $0 double empty lines pairs.
 v.illegalTagsInHeading=Heading must not contain formatting: $0
 v.missingImageFile=Missing image file: $0
+v.httpImage=Image file with http(s) URL: $0
 unusedImages=Unused images
 validate=Validate pages
 nMessages=Number of errors

@@ -68,7 +68,7 @@ public class FixHttpImage {
         return !getAbsoluteUrlImages(seite.getContent(), langs, true).isEmpty();
     }
 
-    private Set<String> getAbsoluteUrlImages(NlsString content, List<String> langs, boolean returnOne) {
+    public Set<String> getAbsoluteUrlImages(NlsString content, List<String> langs, boolean returnOne) {
         Set<String> ret = new HashSet<>();
         for (String lang : langs) {
             String html = content.getString(lang);

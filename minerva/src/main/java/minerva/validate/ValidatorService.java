@@ -15,8 +15,10 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Escaper;
+import minerva.MinervaWebapp;
 import minerva.base.NLS;
 import minerva.base.StringService;
+import minerva.image.FixHttpImage;
 import minerva.model.SeiteSO;
 
 /**
@@ -44,6 +46,9 @@ public class ValidatorService {
                 doubleEmptyLines(body, msg);
                 headings(body, msg);
                 missingImageFiles(seite, html, msg);
+                for (String img : new FixHttpImage().getAbsoluteUrlImages(seite.getContent(), MinervaWebapp.factory().getLanguages(), false)) {
+                	msg.add("v.httpImage;" + img);
+                }
             }
         }
         return msg.stream().map(key -> translate(key, guiLang)).collect(Collectors.toList());
@@ -278,6 +283,8 @@ public class ValidatorService {
 //            start(cron);
 //        }
 //
+	// TODO Idee wäre dass erstmal nur geloggt wird (DRY-RUN)     
+	//      Ich muss die Aktion so starten können.
 //        @Override
 //        protected void timerEvent(JobExecutionContext context) throws Exception {
 //        	Logger.debug("UnusedImagesTimer | user: " + MinervaOptions.CLEANUP_LOGIN.get());
