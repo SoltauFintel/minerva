@@ -5,6 +5,7 @@ docker {
         images = [ findProperty('dockerreg') + (findProperty('image') ?: project.name) ]
         maintainer = 'SoltauFintel'
         mainClassName = application.mainClass
+        jvmArgs = [ '-Xmx950m' ]
     }
 }
 
