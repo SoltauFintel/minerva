@@ -144,7 +144,7 @@ public class FeatureFieldsService {
         if (!"de".equals(lang)) {
             return;
         }
-        final String x = q.toLowerCase();
+        final String x = q == null ? q : q.toLowerCase();
         for (BookSO book : workspace.getBooks()) {
             if (!book.isFeatureTree()) {
                 continue;
