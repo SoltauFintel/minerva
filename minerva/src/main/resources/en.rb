@@ -367,3 +367,5 @@ kverror3=Technical key type already in use!
 kvdeletekeyt=Delete key type {title}?
 kvdeletekey=Delete key type
 sameTitles=Same titles
+erlaeuterungen=Explanations
+validationErlaeuterungen=The "Validation" section lists error messages from some page checks. These errors should be corrected. "Same titles" list identical page titles. Identical titles are (technically) permitted and often do not constitute an error. Sometimes, however, it can happen unintentionally that two or more pages have been created on one topic. "Unused graphics" cannot be corrected by the user and do not cause any further problems. It is Minerva's job to clean this up. "External links": as long as a link is accessible to the readership, everything is fine.

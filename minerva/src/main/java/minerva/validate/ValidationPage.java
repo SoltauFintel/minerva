@@ -8,6 +8,7 @@ import org.pmw.tinylog.Logger;
 
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
+import com.github.template72.data.DataValue;
 
 import minerva.book.BPage;
 import minerva.model.SeiteSO;
@@ -50,7 +51,7 @@ public class ValidationPage extends BPage {
 					fehlerliste.add().put("text", esc(msg));
 				}
 			});
-		langEintrag.put("hasEntries", !result.getSeiten().isEmpty());
+		langEintrag.put("hasEntries", result.getSeiten().stream().anyMatch(s -> s.getLang().equals(lang)));
 	}
 
 	private void fillLinks(ValidationResult result, String lang, DataMap langEintrag) {
@@ -65,7 +66,7 @@ public class ValidationPage extends BPage {
 				map.put("href", link.getHref());
 				map.put("title", esc(link.getTitle()));
 			});
-		langEintrag.put("hasLinks", !result.getLinks().isEmpty());
+		langEintrag.put("hasLinks", result.getLinks().stream().anyMatch(l -> l.getLang().equals(lang)));
 	}
 
 	private void fillSameTitles(ValidationResult result, String lang, DataMap langEintrag) {
@@ -91,6 +92,8 @@ public class ValidationPage extends BPage {
 						list3.add().put("tag", esc(tag));
 					}
 				}
+				seiten.sort((a, b) ->        ((DataValue) a.get("breadcrumbs")).toString()
+						.compareToIgnoreCase(((DataValue) b.get("breadcrumbs")).toString() ));
 			});
 		langEintrag.put("hasSameTitles", entrySet.stream().anyMatch(e -> e.getKey().startsWith(lang + ":")));
 	}
