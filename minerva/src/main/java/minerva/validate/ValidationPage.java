@@ -69,9 +69,7 @@ public class ValidationPage extends BPage {
 	        	map.put("title", esc(page.getTitle()));
 	        	map.put("link", page.getLink());
 	        	DataList list2 = map.list("unusedImages");
-				for (String dn : page.getUnusedImages()) {
-					list2.add().put("dn", esc(dn));
-				}
+	        	page.getUnusedImages().stream().sorted().forEach(dn -> list2.add().put("dn", esc(dn)));
 			});
         put("hasUnusedImages", !unusedImages.isEmpty());
 	}
