@@ -11,22 +11,44 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.pmw.tinylog.Logger;
 
-import com.github.template72.data.DataList;
-import com.github.template72.data.DataMap;
-
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
 import minerva.base.NLS;
 import minerva.base.StringService;
 import minerva.image.FixHttpImage;
+import minerva.model.BookSO;
 import minerva.model.SeiteSO;
+import minerva.seite.link.Link;
+import minerva.seite.link.LinkService;
+import minerva.validate.ValidationResult.VRLink;
+import minerva.validate.ValidationResult.VRSeite;
+import minerva.validate.ValidationResult.VRUnusedImageSeite;
 
 /**
  * Check if page formatting is fine
  */
 public class ValidatorService {
 
-    public List<String> validate(SeiteSO seite, String pageLang, String guiLang) {
+	public ValidationResult start(BookSO book, List<String> langs, String userGuiLanguage) {
+		ValidationResult result = new ValidationResult();
+		List<SeiteSO> alleSeiten = book.getAlleSeiten();
+		for (String lang : langs) {
+			for (SeiteSO seite : alleSeiten) {
+		        List<String> msg = validate(seite, lang, userGuiLanguage);
+		        if (!msg.isEmpty()) {
+		            result.getSeiten().add(new VRSeite(seite, lang, msg));
+		        }
+		        
+				extractLinks(seite, lang, result);
+			}
+		}
+		for (SeiteSO seite : alleSeiten) {
+			unusedImageFiles(seite, langs, result, null);
+		}
+		return result;
+	}
+	
+    private List<String> validate(SeiteSO seite, String pageLang, String guiLang) {
         List<String> msg = new ArrayList<>();
         String html = seite.getContent().getString(pageLang);
         if (html == null || html.isBlank()) {
@@ -226,26 +248,24 @@ public class ValidatorService {
         return dirty ? doc.toString() : html;
     }
 
-	public void unusedImageFiles(SeiteSO seite, List<String> langs, DataList unusedImages, Set<String> filesToBeDeleted) {
+	public void unusedImageFiles(SeiteSO seite, List<String> langs, ValidationResult result, Set<String> filesToBeDeleted) {
 		String folder = seite.getBook().getFolder() + "/img/" + seite.getId();
 		Set<String> filenames = seite.getBook().dao().getFilenames(folder);
+		List<String> unusedImages = null;
 		if (filenames != null) {
 			boolean first = true;
-			DataList unusedImages2 = null;
 			for (String dn : filenames) {
 				if (!hasImage(seite, langs, dn)) {
-					if (unusedImages == null) { // timer mode
+					if (result == null) { // timer mode
 						filesToBeDeleted.add(folder + "/" + dn);
 					} else { // GUI mode
 						if (first) {
 							first = false;
-							DataMap map = unusedImages.add();
-							map.put("titel", Escaper.esc(seite.getSeite().getTitle().getString(seite.getBook().getWorkspace().getUser().getGuiLanguage())));
-							map.put("link", "/s/" + seite.getBook().getWorkspace().getBranch() + "/"
-									+ seite.getBook().getBook().getFolder() + "/" + seite.getId());
-							unusedImages2 = map.list("unusedImages");
+							VRUnusedImageSeite uis = new VRUnusedImageSeite(seite);
+							result.getUnusedImages().add(uis);
+							unusedImages = uis.getUnusedImages();
 						}
-						unusedImages2.add().put("dn", Escaper.esc(dn));
+						unusedImages.add(dn);
 					}
 				}
 			}
@@ -317,4 +337,14 @@ public class ValidatorService {
 //        	Logger.debug("UnusedImagesTimer | end");
 //        }
 //    }
+
+	private void extractLinks(SeiteSO seite, String lang, ValidationResult result) {
+        String html = seite.getContent().getString(lang);
+        List<Link> xlinks = LinkService.extractLinks(html, true);
+        for (Link link : xlinks) {
+            if (link.getHref().startsWith("http://") || link.getHref().startsWith("https://")) {
+            	result.getLinks().add(new VRLink(lang, link, seite));
+            }
+        }
+    }
 }

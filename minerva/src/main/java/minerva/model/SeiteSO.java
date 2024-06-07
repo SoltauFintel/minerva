@@ -21,6 +21,7 @@ import org.pmw.tinylog.Logger;
 
 import com.google.gson.Gson;
 
+import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
@@ -752,4 +753,9 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     public boolean checkSubfeaturesLimit() {
     	return getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures();
     }
+    
+    public String viewlink() {
+		return "/s/" + Escaper.esc(book.getWorkspace().getBranch()) + "/"
+				+ Escaper.esc(book.getBook().getFolder()) + "/" + seite.getId();
+	}
 }
