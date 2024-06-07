@@ -141,10 +141,10 @@ public class FeatureFieldsService {
     }
 
     public void search(WorkspaceSO workspace, String q, String lang, List<SearchResult> result) {
-        if (!"de".equals(lang)) {
+        if (!"de".equals(lang) || q == null || q.isBlank()) {
             return;
         }
-        final String x = q == null ? q : q.toLowerCase();
+        final String x = q.toLowerCase();
         for (BookSO book : workspace.getBooks()) {
             if (!book.isFeatureTree()) {
                 continue;
