@@ -3,6 +3,8 @@ package minerva.validate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import minerva.model.SeiteSO;
 import minerva.seite.link.Link;
@@ -11,7 +13,9 @@ public class ValidationResult {
 	private final List<VRSeite> seiten = new ArrayList<>();
 	private final List<VRLink> links = new ArrayList<>();
 	private final List<VRUnusedImageSeite> unusedImages = new ArrayList<>();
-
+	/** key: language + ":" + title, value: unique SeiteSO list */
+	private final Map<String, List<SeiteSO>> sameTitles = new TreeMap<>();
+	
 	public List<VRSeite> getSeiten() {
 		return seiten;
 	}
@@ -32,6 +36,29 @@ public class ValidationResult {
 
 	public List<VRUnusedImageSeite> getUnusedImages() {
 		return unusedImages;
+	}
+	
+	public void sameTitle(String title, SeiteSO seite1, SeiteSO seite2) {
+		List<SeiteSO> list = sameTitles.get(title);
+		if (list == null) {
+			list = new ArrayList<>();
+			sameTitles.put(title, list);
+		}
+		add(seite1, list);
+		add(seite2, list);
+	}
+
+	private void add(SeiteSO seite, List<SeiteSO> list) {
+		for (SeiteSO s : list) {
+			if (s.getId().equals(seite.getId())) {
+				return;
+			}
+		}
+		list.add(seite);
+	}
+
+	public Map<String, List<SeiteSO>> getSameTitles() {
+		return sameTitles;
 	}
 
 	public static class VRSeite {

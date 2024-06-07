@@ -26,6 +26,27 @@
         
         <p>{{N.nMessages}}: {{nMessages}} 
         <br>{{N.nPages}}: {{nPages}}</p>
+        
+        {{each h in hauptliste}}
+            {{if h.hasSameTitles}}
+                <hr/>
+                <h2>{{N.sameTitles}}: {{h.lang}}</h2>
+                <ul>
+                    {{each s in h.sameTitles}}
+                        <li>{{s.title}}<ul>
+                            {{each ss in s.seiten}}
+                                <li><a href="{{ss.link}}">{{ss.title}}</a> #{{ss.id}}
+                                    {{each tag in ss.tags}}
+                                        <span class="label label-tag"><i class="fa fa-tag"></i> {{tag.tag}}</span>
+                                    {{/each}}
+                                </li>
+                            {{/each}}
+                        </ul></li>
+                    {{/each}}
+                </ul>
+            {{/if}}
+        {{/each}}
+        
 
         {{if hasUnusedImages}}        
 	        <hr/>

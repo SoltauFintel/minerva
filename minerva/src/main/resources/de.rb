@@ -366,3 +366,4 @@ kverror2=Bitte Titel eingeben!
 kverror3=Technischer Schlüsseltyp bereits vergeben!
 kvdeletekeyt=Schlüsseltyp {title} löschen?
 kvdeletekey=Schlüsseltyp löschen
+sameTitles=Gleiche Titel

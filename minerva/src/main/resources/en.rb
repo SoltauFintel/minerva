@@ -366,3 +366,4 @@ kverror2=Please enter title!
 kverror3=Technical key type already in use!
 kvdeletekeyt=Delete key type {title}?
 kvdeletekey=Delete key type
+sameTitles=Same titles

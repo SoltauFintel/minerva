@@ -1,11 +1,16 @@
 package minerva.validate;
 
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import org.pmw.tinylog.Logger;
 
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.book.BPage;
+import minerva.model.SeiteSO;
 
 public class ValidationPage extends BPage {
 
@@ -22,6 +27,7 @@ public class ValidationPage extends BPage {
 			langEintrag.put("lang", lang);
 			fillPages(result, lang, langEintrag);
 			fillLinks(result, lang, langEintrag);
+			fillSameTitles(result, lang, langEintrag);
 		}
 		putInt("nPages", result.getSeitenCount());
 		putInt("nMessages", result.getMessagesCount());
@@ -58,6 +64,31 @@ public class ValidationPage extends BPage {
 				map.put("title", esc(link.getTitle()));
 			});
 		langEintrag.put("hasLinks", !result.getLinks().isEmpty());
+	}
+
+	private void fillSameTitles(ValidationResult result, String lang, DataMap langEintrag) {
+		DataList list = langEintrag.list("sameTitles");
+		Set<Entry<String, List<SeiteSO>>> entrySet = result.getSameTitles().entrySet();
+		entrySet.stream()
+			.filter(e -> e.getKey().startsWith(lang + ":"))
+			.sorted((a, b) -> a.getKey().compareToIgnoreCase(b.getKey()))
+			.forEach(e -> {
+				DataMap map = list.add();
+				int o = e.getKey().indexOf(":");
+				map.put("title", e.getKey().substring(o + 1));
+				DataList seiten = map.list("seiten");
+				for (SeiteSO seite : e.getValue()) {
+					DataMap map2 = seiten.add();
+					map2.put("id", seite.getId());
+					map2.put("title", seite.getSeite().getTitle().getString(e.getKey().substring(0, o)));
+					map2.put("link", seite.viewlink());
+					DataList list3 = map2.list("tags");
+					for (String tag : seite.getSeite().getTags()) {
+						list3.add().put("tag", esc(tag));
+					}
+				}
+			});
+		langEintrag.put("hasSameTitles", entrySet.stream().anyMatch(e -> e.getKey().startsWith(lang + ":")));
 	}
 
 	private void fillUnusedImages(ValidationResult result) {

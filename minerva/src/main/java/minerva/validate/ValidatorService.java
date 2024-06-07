@@ -42,8 +42,21 @@ public class ValidatorService {
 				extractLinks(seite, lang, result);
 			}
 		}
-		for (SeiteSO seite : alleSeiten) {
-			unusedImageFiles(seite, langs, result, null);
+		for (int i = 0; i < alleSeiten.size(); i++) {
+			SeiteSO seite1 = alleSeiten.get(i);
+
+			unusedImageFiles(seite1, langs, result, null);
+
+			for (int j = 0; j < i; j++) {
+				SeiteSO seite2 = alleSeiten.get(j);
+				for (String lang : langs) {
+					String title1 = seite1.getSeite().getTitle().getString(lang);
+					String title2 = seite2.getSeite().getTitle().getString(lang);
+					if (title1.equals(title2)) {
+						result.sameTitle(lang + ":" + title1, seite1, seite2);
+					}
+				}
+			}
 		}
 		return result;
 	}
