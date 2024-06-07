@@ -48,7 +48,7 @@ public class ValidationPage extends BPage {
 				map.put("link", seite.getLink());
 				DataList fehlerliste = map.list("fehlerliste");
 				for (String msg : seite.getFehlerliste()) {
-					fehlerliste.add().put("text", esc(msg));
+					fehlerliste.add().put("text", msg); // no esc()!
 				}
 			});
 		langEintrag.put("hasEntries", result.getSeiten().stream().anyMatch(s -> s.getLang().equals(lang)));
