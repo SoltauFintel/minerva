@@ -251,9 +251,9 @@ public class ValidatorService {
 	public void unusedImageFiles(SeiteSO seite, List<String> langs, ValidationResult result, Set<String> filesToBeDeleted) {
 		String folder = seite.getBook().getFolder() + "/img/" + seite.getId();
 		Set<String> filenames = seite.getBook().dao().getFilenames(folder);
-		List<String> unusedImages = null;
 		if (filenames != null) {
 			boolean first = true;
+			List<String> unusedImages = null;
 			for (String dn : filenames) {
 				if (!hasImage(seite, langs, dn)) {
 					if (result == null) { // timer mode

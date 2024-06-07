@@ -1,17 +1,18 @@
 package minerva.validate;
 
+import org.pmw.tinylog.Logger;
+
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.book.BPage;
-import minerva.validate.ValidationResult.VRLink;
-import minerva.validate.ValidationResult.VRSeite;
-import minerva.validate.ValidationResult.VRUnusedImageSeite;
 
 public class ValidationPage extends BPage {
 
     @Override
     protected void execute() {
+    	Logger.info("Validation of book " + book.getBook().getFolder());
+    	
         ValidationResult result = new ValidatorService().start(book, langs, user.getGuiLanguage());
 
         header(n("validate"));
@@ -29,46 +30,49 @@ public class ValidationPage extends BPage {
 
 	private void fillPages(ValidationResult result, String lang, DataMap langEintrag) {
 		DataList seiten = langEintrag.list("seiten");
-		for (VRSeite seite : result.getSeiten()) {
-			if (seite.getLang().equals(lang)) {
+		result.getSeiten().stream()
+			.filter(s -> s.getLang().equals(lang))
+			.sorted((a, b) -> a.getTitle().compareToIgnoreCase(b.getTitle()))
+			.forEach(seite -> {
 				DataMap map = seiten.add();
 				map.put("title", esc(seite.getTitle()));
 				map.put("link", seite.getLink());
-				DataList list2 = map.list("fehlerliste");
+				DataList fehlerliste = map.list("fehlerliste");
 				for (String msg : seite.getFehlerliste()) {
-					list2.add().put("text", esc(msg));
+					fehlerliste.add().put("text", esc(msg));
 				}
-			}
-		}
+			});
 		langEintrag.put("hasEntries", !result.getSeiten().isEmpty());
 	}
 
 	private void fillLinks(ValidationResult result, String lang, DataMap langEintrag) {
 		DataList links = langEintrag.list("links");
-		for (VRLink link : result.getLinks()) {
-			if (link.getLang().equals(lang)) {
-				DataMap list2 = links.add();
-				list2.put("pagelink", link.getPagelink());
-				list2.put("pagetitle", esc(link.getPagetitle()));
-				list2.put("href", link.getHref());
-				list2.put("title", esc(link.getTitle()));
-			}
-		}
+		result.getLinks().stream()
+			.filter(l -> l.getLang().equals(lang))
+			.sorted((a, b) -> a.getPagetitle().compareToIgnoreCase(b.getPagetitle()))
+			.forEach(link -> {
+				DataMap map = links.add();
+				map.put("pagelink", link.getPagelink());
+				map.put("pagetitle", esc(link.getPagetitle()));
+				map.put("href", link.getHref());
+				map.put("title", esc(link.getTitle()));
+			});
 		langEintrag.put("hasLinks", !result.getLinks().isEmpty());
 	}
 
 	private void fillUnusedImages(ValidationResult result) {
 		DataList unusedImages = list("pagesWithUnusedImages");
-        for (VRUnusedImageSeite page : result.getUnusedImages()) {
-        	DataMap map = unusedImages.add();
-        	map.put("title", esc(page.getTitle()));
-        	map.put("link", page.getLink());
-        	DataList list2 = map.list("unusedImages");
-			for (String dn : page.getUnusedImages()) {
-				list2.add().put("dn", esc(dn));
-			}
-		}
+		result.getUnusedImages().stream()
+			.sorted((a, b) -> a.getTitle().compareToIgnoreCase(b.getTitle()))
+			.forEach(page -> {
+	        	DataMap map = unusedImages.add();
+	        	map.put("title", esc(page.getTitle()));
+	        	map.put("link", page.getLink());
+	        	DataList list2 = map.list("unusedImages");
+				for (String dn : page.getUnusedImages()) {
+					list2.add().put("dn", esc(dn));
+				}
+			});
         put("hasUnusedImages", !unusedImages.isEmpty());
 	}
-
 }
