@@ -35,7 +35,9 @@
                     {{each s in h.sameTitles}}
                         <li>{{s.title}}<ul>
                             {{each ss in s.seiten}}
-                                <li><a href="{{ss.link}}">{{ss.title}}</a> #{{ss.id}}
+                                <li>
+                                    {{if ss.empty}}<span class="label label-danger">{{N.empty}}</span>{{/if}}
+                                    {{ss.breadcrumbs}} &gt; <a href="{{ss.link}}">{{ss.title}}</a>&nbsp;
                                     {{each tag in ss.tags}}
                                         <span class="label label-tag"><i class="fa fa-tag"></i> {{tag.tag}}</span>
                                     {{/each}}

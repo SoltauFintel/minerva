@@ -11,6 +11,8 @@ import com.github.template72.data.DataMap;
 
 import minerva.book.BPage;
 import minerva.model.SeiteSO;
+import minerva.seite.Breadcrumb;
+import minerva.seite.ViewAreaBreadcrumbLinkBuilder;
 
 public class ValidationPage extends BPage {
 
@@ -79,8 +81,10 @@ public class ValidationPage extends BPage {
 				DataList seiten = map.list("seiten");
 				for (SeiteSO seite : e.getValue()) {
 					DataMap map2 = seiten.add();
-					map2.put("id", seite.getId());
-					map2.put("title", seite.getSeite().getTitle().getString(e.getKey().substring(0, o)));
+					map2.put("title", esc(seite.getSeite().getTitle().getString(lang)));
+					map2.put("breadcrumbs", esc(breadcrumbs(seite, lang)));
+					int hc = seite.hasContent(lang);
+					map2.put("empty", hc == 0 || hc == 2);
 					map2.put("link", seite.viewlink());
 					DataList list3 = map2.list("tags");
 					for (String tag : seite.getSeite().getTags()) {
@@ -89,6 +93,19 @@ public class ValidationPage extends BPage {
 				}
 			});
 		langEintrag.put("hasSameTitles", entrySet.stream().anyMatch(e -> e.getKey().startsWith(lang + ":")));
+	}
+	
+	private String breadcrumbs(SeiteSO seite, String lang) {
+		String ret = "";
+        List<Breadcrumb> breadcrumbs = seite.getBook().getBreadcrumbs(seite.getId(), new ViewAreaBreadcrumbLinkBuilder());
+        for (int i = breadcrumbs.size() - 1; i >= 0; i--) {
+            Breadcrumb b = breadcrumbs.get(i);
+            if (!ret.isEmpty()) {
+            	ret += " > ";
+            }
+            ret += b.getTitle().getString(lang);
+        }
+        return ret;
 	}
 
 	private void fillUnusedImages(ValidationResult result) {
