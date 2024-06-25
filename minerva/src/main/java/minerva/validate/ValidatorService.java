@@ -12,10 +12,8 @@ import org.jsoup.nodes.Element;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.action.Escaper;
-import minerva.MinervaWebapp;
 import minerva.base.NLS;
 import minerva.base.StringService;
-import minerva.image.FixHttpImage;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.seite.link.Link;
@@ -81,9 +79,6 @@ public class ValidatorService {
                 doubleEmptyLines(body, msg);
                 headings(body, msg);
                 missingImageFiles(seite, html, msg);
-                for (String img : new FixHttpImage().getAbsoluteUrlImages(seite.getContent(), MinervaWebapp.factory().getLanguages(), false)) {
-                	msg.add("v.httpImage;" + img);
-                }
             }
         }
         return msg.stream().map(key -> translate(key, guiLang)).collect(Collectors.toList());
