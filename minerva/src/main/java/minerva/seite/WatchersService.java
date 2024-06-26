@@ -41,7 +41,7 @@ public class WatchersService {
                 .filter(user -> user != null && user.getLogin() != null && !user.getLogin().equals(me.getLogin()))
                 .map(user -> new NotifyUser(user.getMailAddress(), user.getWatchlist()))
                 .collect(Collectors.toList());
-        Logger.info("NotifyUser list size: " + nu.size());
+        Logger.debug("NotifyUser list size: " + nu.size());
         
         // collect all watchers
         findWatchers(editedSeite, nu, false);
