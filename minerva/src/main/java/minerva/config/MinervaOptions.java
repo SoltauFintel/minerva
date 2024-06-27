@@ -75,7 +75,11 @@ public class MinervaOptions {
 		}
 		this.configFile = configFile;
 		if (configFile.isFile()) {
-			optionValues = new HashMap<>(FileService.loadJsonFile(configFile, Map.class));
+			try {
+                optionValues = new HashMap<>(FileService.loadJsonFile(configFile, Map.class));
+            } catch (Exception e) {
+                throw new RuntimeException("Error loading config file: " + configFile.getAbsolutePath(), e);
+            }
 		} else {
 			Logger.warn("Config file does not exist: " + configFile.getAbsolutePath());
 			optionValues = new HashMap<>();
