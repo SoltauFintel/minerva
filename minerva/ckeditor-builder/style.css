@@ -164,13 +164,13 @@
 }
 
 .ck-content span.spoiler {
-	background: #000;
-	color: #000;
+	background: #009;
+	color: #fff;
 }
 
 .ck-content span.spoiler:hover {
-	background: #000;
-	color: #fff;
+	background: #009;
+	color: #ccc;
 }
 
 .ck-content pre.fancy-code {
