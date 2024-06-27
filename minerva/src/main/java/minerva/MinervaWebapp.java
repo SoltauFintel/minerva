@@ -145,7 +145,7 @@ import minerva.workspace.WorkspacesPage;
 import spark.Spark;
 
 public class MinervaWebapp extends RouteDefinitions {
-    public static final String VERSION = "2.2.0";
+    public static final String VERSION = "3.0.0";
     private static MinervaFactory factory;
     
     @Override
@@ -162,6 +162,9 @@ public class MinervaWebapp extends RouteDefinitions {
         masks();
         misc();
         restApi();
+        get("/eddi", Eddi.class);
+        addNotProtected("/eddi");
+        System.out.println("/eddi ist drin");
     }
 
     private void workspacesAndBooks() { // Workspaces, 1 workspace == n books
