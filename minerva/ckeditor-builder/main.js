@@ -14,10 +14,7 @@ import {
 	Heading,
 	HorizontalLine,
 	ImageBlock,
-	ImageCaption,
 	ImageInline,
-    ImageInsert,
-	ImageToolbar,
 	ImageUpload,
 	Italic,
 	Link,
@@ -88,10 +85,7 @@ const editorConfig = {
 		Heading,
 		HorizontalLine,
 		ImageBlock,
-		ImageCaption,
 		ImageInline,
-		ImageInsert,
-		ImageToolbar,
 		ImageUpload,
 		Italic,
 		Link,
@@ -169,11 +163,8 @@ const editorConfig = {
 			}
 		]
 	},
-	image: {
-		toolbar: ['toggleImageCaption', 'imageTextAlternative']
-	},
 	initialData:
-		'<h2>CKEditor 5</h2>\n<p>Hey, das haben wir hier selbst gebaut. v3.1</p>\n',
+		'<h2>CKEditor 5</h2>\n<p>Hey, das haben wir hier selbst gebaut. v4</p>\n',
 	language: 'de',
 	link: {
 		addTargetToExternalLinks: true,
