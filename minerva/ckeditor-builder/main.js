@@ -13,6 +13,7 @@ import {
 	ImageBlock,
 	ImageInline,
 	ImageUpload,
+	ImageToolbar, ImageStyle, ImageCaption,
 	Italic,
 	Link,
 	List,
@@ -83,6 +84,7 @@ window.minerva.createEditor = function(lang, id, heading, extraPlugins, setter) 
             ImageBlock,
             ImageInline,
             ImageUpload,
+            ImageToolbar, ImageStyle, ImageCaption,
             Italic,
             Link,
             List,
@@ -143,7 +145,18 @@ window.minerva.createEditor = function(lang, id, heading, extraPlugins, setter) 
             contentToolbar: ['tableColumn', 'tableRow', 'mergeTableCells', 'tableProperties', 'tableCellProperties']
         },
         translations: [ lang == 'de' ? translationsDE : translationsEN ],
-        extraPlugins: extraPlugins
+        extraPlugins: extraPlugins,
+        image: {
+            toolbar: [
+                'imageStyle:inline',
+                'imageStyle:wrapText',
+                'imageStyle:breakText',
+                '|',
+                'toggleImageCaption',
+                'imageTextAlternative',
+            ],
+            insert: { type: 'inline' }
+        }
     };
     DecoupledEditor
         .create(document.querySelector('#' + id), editorConfig)
