@@ -14,6 +14,8 @@ In this folder execute `npm install`. I'm using npm version 10.2.4, node version
 
 ## Build for production
 
+Shortcut: execute b.bat
+
 Vite is used as bundler.
 In this folder execute `npm run build`. The result is in dist folder.
 
