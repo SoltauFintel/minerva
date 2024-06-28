@@ -73,9 +73,10 @@
     </form>
 </div>
 
-<script>
+<script type="module">
 {{include: editor}}
-
+</script>
+<script>
 function _onSubmit() {
     {{each L in languages}}
         if (document.getElementById('titel{{L.LANG}}').value.trim() == '') {

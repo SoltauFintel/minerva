@@ -4,17 +4,39 @@
         <meta charset="utf-8">
         <title>CKEditor 5 Sample</title>
         <link rel="stylesheet" type="text/css" href="/css/ckeditor-vite.css">
+        <script type="module" src="/js/ckeditor-vite.js"></script>
     </head>
     <body>
         <h1>CKEditor Test</h1>
         <div class="main-container">
-            <div class="editor-container editor-container_document-editor editor-container_include-style" id="editor-container">
-                <div class="editor-container__toolbar" id="editor-toolbar"></div>
+        
+            <h2>editorEN</h2>
+            <div class="editor-container editor-container_document-editor editor-container_include-style" id="editorEN-container"
+                    style="margin-bottom: 2em;">
+                <div class="editor-container__toolbar" id="editorEN-toolbar"></div>
                 <div class="editor-container__editor-wrapper">
-                    <div class="editor-container__editor"><div id="editor"></div></div>
+                    <div class="editor-container__editor">
+                        <div id="editorEN"></div>
+                    </div>
                 </div>
             </div>
+
+            <h2>editorDE</h2>
+            <div class="editor-container editor-container_document-editor editor-container_include-style" id="editorDE-container"
+                    style="margin-bottom: 2em;">
+                <div class="editor-container__toolbar" id="editorDE-toolbar"></div>
+                <div class="editor-container__editor-wrapper">
+                    <div class="editor-container__editor">
+                        <div id="editorDE"></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <script type="module" src="/js/ckeditor-vite.js"></script>
+        
+        <script type="module">
+            minerva.createEditor('en', 'editorEN', {}, [], k => { return document.querySelector('#editorEN-toolbar'); });
+            minerva.createEditor('de', 'editorDE', {}, [], k => { return document.querySelector('#editorDE-toolbar'); });
+        </script>
     </body>
 </html>

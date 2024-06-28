@@ -162,9 +162,8 @@ public class MinervaWebapp extends RouteDefinitions {
         masks();
         misc();
         restApi();
-        get("/eddi", Eddi.class);
-        addNotProtected("/eddi");
-        System.out.println("/eddi ist drin");
+get("/eddi", Eddi.class); // CKEditor demo
+addNotProtected("/eddi");
     }
 
     private void workspacesAndBooks() { // Workspaces, 1 workspace == n books
