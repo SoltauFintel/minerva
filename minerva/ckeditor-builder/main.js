@@ -101,10 +101,7 @@ window.minerva.createEditor = function(lang, id, heading, extraPlugins, setter) 
             Underline,
             Undo
         ],
-        fontSize: {
-            options: [10, 12, 14, 'default', 18, 20, 22],
-            supportAllValues: true
-        },
+        fontSize: { options: ['tiny', 'small', 'default', 'big', 'huge'] },
         heading: heading,
         htmlSupport: {
             allow: [
@@ -125,17 +122,12 @@ window.minerva.createEditor = function(lang, id, heading, extraPlugins, setter) 
             definitions:
              [
                 {
-                    name: 'Info box',
-                    element: 'p',
-                    classes: ['info-box']
-                },
-                {
-                    name: 'Marker',
+                    name: 'Marker (Demo)',
                     element: 'span',
                     classes: ['marker']
                 },
                 {
-                    name: 'Spoiler',
+                    name: 'Reiter (Demo)',
                     element: 'span',
                     classes: ['spoiler']
                 },
