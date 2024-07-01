@@ -582,6 +582,26 @@ ul.pagetree {
     padding-right: 6px !important;
 }
 
+.xmapbutton {
+    color: #9c0;
+    font-weight: bold;
+}
+
+.xmaptab {
+    text-decoration: underline;
+}
+
+.xmapcollapsible {
+    color: #fff;
+    background-color: #376092;
+    font-weight: bold;
+}
+
+.xmapframe {
+    color: #5469c3;
+    font-weight: bold;
+}
+
 /* MenuPage: */
 
 .bs-glyphicons {

@@ -122,14 +122,24 @@ window.minerva.createEditor = function(lang, id, heading, extraPlugins, setter) 
             definitions:
              [
                 {
-                    name: 'Marker (Demo)',
+                    name: 'Button',
                     element: 'span',
-                    classes: ['marker']
+                    classes: ['xmapbutton']
                 },
                 {
-                    name: 'Reiter (Demo)',
+                    name: 'Register',
                     element: 'span',
-                    classes: ['spoiler']
+                    classes: ['xmaptab']
+                },
+                {
+                    name: 'Abschnitt',
+                    element: 'span',
+                    classes: ['xmapcollapsible']
+                },
+                {
+                    name: 'Frame',
+                    element: 'span',
+                    classes: ['xmapframe']
                 },
             ]
         },
