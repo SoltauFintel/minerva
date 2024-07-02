@@ -9,14 +9,20 @@ public class Bookmark {
     private final String id;
     private final String title;
     private final List<Bookmark> bookmarks = new ArrayList<>();
+    private final boolean noTree;
     
-    public Bookmark(String id, String title) {
+    public Bookmark(String id, String title, boolean noTree) {
         this.id = id;
         this.title = title;
+        this.noTree = noTree;
     }
     
     public Bookmark(SeiteSO seite, String lang, Chapter chapter, boolean withChapters) {
-        this(seite.getId(), (withChapters ? (chapter.toString() + " ") : "") + seite.getSeite().getTitle().getString(lang));
+        this(seite.getId(), (withChapters ? (chapter.toString() + " ") : "") + seite.getSeite().getTitle().getString(lang), seite.isNoTree());
+    }
+
+    public static Bookmark root() {
+        return new Bookmark("root", "book", false);
     }
 
     public String getId() {
@@ -29,5 +35,9 @@ public class Bookmark {
 
     public List<Bookmark> getBookmarks() {
         return bookmarks;
+    }
+
+    public boolean isNoTree() {
+        return noTree;
     }
 }

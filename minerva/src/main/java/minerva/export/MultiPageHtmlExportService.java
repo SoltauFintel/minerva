@@ -107,7 +107,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
         boolean first = true;
         for (SeiteSO seite : seiten) {
             SeiteVisible v = seite.isVisible(exclusionsService, lang);
-            if (v.isVisible()) {
+            if (v.isVisible() && !seite.isNoTree()) {
                 if (first) {
                     html.append("<ul>");
                     first = false;

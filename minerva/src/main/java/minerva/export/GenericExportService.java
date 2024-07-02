@@ -39,7 +39,7 @@ public abstract class GenericExportService {
     protected BookSO currentBook = null;
     protected boolean booksMode = false;
     /** current parent bookmark */
-    protected Bookmark cb = new Bookmark("root", "book");
+    protected Bookmark cb = Bookmark.root();
     protected List<Bookmark> bookmarks = cb.getBookmarks();
 
     public GenericExportService(ExportRequest req) {

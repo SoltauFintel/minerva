@@ -62,7 +62,7 @@ public class PreviewBookPage extends BPage {
         gliederung.append("<ul>\n");
         for (SeiteSO seite : seiten) {
             SeiteVisible v = seite.isVisible(sv, lang);
-            if (v.isVisible()) {
+            if (v.isVisible() && !seite.isNoTree()) {
                 String title = esc(seite.getSeite().getTitle().getString(lang));
                 String link = "/p/" + branch + "/" + esc(customer) + "/" + bookFolder + "/" + lang + "/"
                         + esc(seite.getSeite().getId());

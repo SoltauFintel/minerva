@@ -68,7 +68,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
         if (booksMode) {
             // clear
             sb = new StringBuilder();
-            cb = new Bookmark("root", "book");
+            cb = Bookmark.root();
             bookmarks = cb.getBookmarks();
             firstPage = true;
 
@@ -223,9 +223,11 @@ public class PdfExportService extends MultiPageHtmlExportService {
     private void createTocLines(List<Bookmark> bookmarks, DataMap model) {
         DataList list = model.list("tocLines");
         for (Bookmark b : bookmarks) {
-            DataMap map = list.add();
-            map.put("id", b.getId());
-            map.put("title", b.getTitle().replace("&", "&amp;"));
+            if (!b.isNoTree()) {
+                DataMap map = list.add();
+                map.put("id", b.getId());
+                map.put("title", b.getTitle().replace("&", "&amp;"));
+            }
         }
     }
 
