@@ -46,6 +46,7 @@ public class ImageUploadAction extends JsonAction<Success> {
         Success ret = new Success();
         ret.setUrl(sv.getFilename()); // relative filename (e.g. branch name cannot be saved!)
         result = ret;
+        Logger.info("image saved: " + sv.getFile().toString());
     }
 
     public static class Success {
