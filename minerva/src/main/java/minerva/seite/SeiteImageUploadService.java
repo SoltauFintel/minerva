@@ -6,7 +6,6 @@ import minerva.model.SeiteSO;
 import minerva.model.StatesSO;
 
 public class SeiteImageUploadService extends ImageUploadService {
-	private static final String handle = "images";
     protected final SeiteSO seite;
     
     public SeiteImageUploadService(Context ctx) {
@@ -29,8 +28,5 @@ public class SeiteImageUploadService extends ImageUploadService {
     
     @Override
     public void success() {
-    	synchronized (handle) {
-    		seite.getImages().add(filename);
-    	}
     }
 }

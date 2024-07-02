@@ -50,8 +50,8 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     private Seite seite;
     /** Unterseiten */
     private SeitenSO seiten;
-    /** images for upload by DirAccess */
-    private final List<String> images = new ArrayList<>();
+    /** Snapshot of image files before editing */
+    private final List<String> imagesBefore = new ArrayList<>();
 
     /** null: nicht geladen */
     private NlsString content = null;
@@ -83,7 +83,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         this.book = c.book;
         this.seite = new Seite(c.seite); // copy
         this.seiten = c.seiten;
-        this.images.addAll(c.images);
+        this.imagesBefore.addAll(c.imagesBefore);
         this.content = c.content;
     }
 
@@ -236,8 +236,8 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         }
     }
 
-    public List<String> getImages() {
-        return images;
+    public List<String> getImagesBefore() {
+        return imagesBefore;
     }
 
     public void activateSorted() {
@@ -401,7 +401,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
 		}
 
         // copy images
-		getImages().addAll(book.dao().copyFiles(book.getFolder(), "/img/" + seite.getId(), "/img/" + id));
+        book.dao().copyFiles(book.getFolder(), "/img/" + seite.getId(), "/img/" + id);
         
     	return id;
     }
@@ -411,8 +411,8 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         if (content == null) {
             content = new NlsString();
         }
-// TODO temp. entfernt. Verdacht dass das auch was kaputt machen könnte.        
-//        new FixHttpImage().process(newContent, langs, images, book, seite.getId());
+        Set<String> images = imagesAfterEdit();
+        // Verdacht dass das was kaputt machen könnte. -> new FixHttpImage().process(newContent, langs, images, book, seite.getId());
         for (String lang : langs) {
             seite.getTitle().setString(lang, newTitle.getString(lang));
             content.setString(lang, newContent.getString(lang));
@@ -431,7 +431,6 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         informSubscriptionService(newContent, langs);
         
         neu = false;
-        images.clear();
 
         if (!hasParent()) {
             // Wenn book.sorted=true ist und ein Seitentitel geändert worden ist, muss neu sortiert werden.
@@ -771,5 +770,30 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         } else {
             return false;
         }
+    }
+
+    public void imagesBeforeEdit() {
+        Set<String> filenames = getImageFilenames();
+        imagesBefore.clear();
+        if (filenames != null) {
+            imagesBefore.addAll(filenames);
+        }
+        Logger.debug("images before: " + imagesBefore);
+    }
+
+    public Set<String> imagesAfterEdit() {
+        Set<String> ret = new TreeSet<>();
+        Set<String> filenames = getImageFilenames();
+        filenames.removeAll(imagesBefore);
+        Logger.debug("images delta: " + filenames);
+        String prefix = "img/" + seite.getId() + "/";
+        filenames.forEach(dn -> ret.add(prefix + dn));
+        imagesBefore.clear();
+        return ret;
+    }
+
+    private Set<String> getImageFilenames() {
+        String imageDir = book.getFolder() + "/img/" + seite.getId();
+        return book.dao().getFilenames(imageDir);
     }
 }

@@ -2,6 +2,8 @@ package minerva.releasenotes;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import minerva.confluence.ConfluencePage2;
 import minerva.model.BookSO;
@@ -15,7 +17,7 @@ public class ReleaseNotesContext {
     private ConfluencePage2 releasePage;
     private SeiteSO customerPage;
     private SeiteSO sectionPage;
-    private SeiteSO resultingReleasePage;
+    private ResultingReleasePage resultingReleasePage;
     private String releaseNumber;
     private String project;
     
@@ -77,12 +79,12 @@ public class ReleaseNotesContext {
         this.sectionPage = releaseSectionPage;
     }
 
-    public SeiteSO getResultingReleasePage() {
+    public ResultingReleasePage getResultingReleasePage() {
         return resultingReleasePage;
     }
 
     public void setResultingReleasePage(SeiteSO resultingReleasePage) {
-        this.resultingReleasePage = resultingReleasePage;
+        this.resultingReleasePage = new ResultingReleasePage(resultingReleasePage);
     }
     
     public String getPageId() {
@@ -107,5 +109,26 @@ public class ReleaseNotesContext {
 
     public void setProject(String project) {
         this.project = project;
+    }
+    
+    public static class ResultingReleasePage {
+        private final SeiteSO seite;
+        private final Set<String> images = new TreeSet<>();
+        
+        public ResultingReleasePage(SeiteSO seite) {
+            this.seite = seite;
+        }
+
+        public SeiteSO getSeite() {
+            return seite;
+        }
+        
+        public String getId() {
+            return seite.getId();
+        }
+
+        public Set<String> getImages() {
+            return images;
+        }
     }
 }

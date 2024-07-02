@@ -30,6 +30,7 @@ public class EditSeitePage extends ViewSeitePage {
             
             super.execute2();
             put("postcontentslink", "/post-contents/seite?key=" + u(getKey()));
+            seite.imagesBeforeEdit();
         }
     }
 

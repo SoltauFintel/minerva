@@ -103,7 +103,7 @@ public class ReleaseNotesService extends AbstractReleaseNotesService {
                 body += v.removeEmptyLinesAtEnd(details.getHtml());
             }
             String html = "<h3>" + src.getTitle() + "</h3>"
-                    + processImages(body, ctx.getResultingReleasePage());
+                    + processImages(body, ctx.getResultingReleasePage().getSeite());
             if (src.getTitle().contains(ctx.getConfig().getTicketPrefix())) { // customer-specific
                 part1.add(html);
             } else { // general

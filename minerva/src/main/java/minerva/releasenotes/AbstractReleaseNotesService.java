@@ -2,11 +2,13 @@ package minerva.releasenotes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.IdGenerator;
 import minerva.access.CommitMessage;
+import minerva.access.DirAccess;
 import minerva.base.NlsString;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
@@ -124,10 +126,12 @@ public abstract class AbstractReleaseNotesService {
         }
         createSectionPage(releaseNumber);
         SeiteSO seite = createReleasePage(releaseNumber);
-        ctx.getBook().dao().saveFiles(ctx.getFiles(),
+        Map<String, String> filenames = ctx.getFiles();
+        ctx.getResultingReleasePage().getImages().forEach(dn -> filenames.put(dn, DirAccess.IMAGE));
+        ctx.getBook().dao().saveFiles(filenames,
                 new CommitMessage("Release Notes " + ctx.getSpaceKey() + " " + releaseNumber),
                 ctx.getBook().getWorkspace());
-        Logger.info(releaseNumber +" | Number of saved pages: " + ctx.getFiles().keySet().stream().filter(i -> i.endsWith(".meta")).count());
+        Logger.info(releaseNumber +" | Number of saved pages: " + filenames.keySet().stream().filter(i -> i.endsWith(".meta")).count());
         seite.reindex();
     }
 

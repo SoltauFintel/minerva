@@ -129,13 +129,12 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
                 html.append("</p>");
             }
         } else { // text is HTML
-            SeiteSO seite = ctx.getResultingReleasePage();
-            String seiteId = seite.getId();
+            String prefix = "img/" + ctx.getResultingReleasePage().getSeite().getId() + "/";
             for (Entry<String, byte[]> e : d.getImages().entrySet()) {
                 String src = e.getKey();
-                String dn = "img/" + seiteId + "/" + IdGenerator.createId6() + ".png"; // .png is guessed
+                String dn = prefix + IdGenerator.createId6() + ".png"; // .png is guessed
                 text = text.replace("\"" + src + "\"", "\"" + dn + "\"");
-                seite.getImages().add(dn);
+                ctx.getResultingReleasePage().getImages().add(dn);
                 saveImage(dn, e.getValue());
             }
             html.append(text);
@@ -143,7 +142,7 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
     }
 
     private void saveImage(String dn, byte[] data) {
-        File imageFile = new File(ctx.getResultingReleasePage().filenameImage(dn));
+        File imageFile = new File(ctx.getResultingReleasePage().getSeite().filenameImage(dn));
         imageFile.getParentFile().mkdirs();
         try (FileOutputStream fos = new FileOutputStream(imageFile)) {
             fos.write(data);
