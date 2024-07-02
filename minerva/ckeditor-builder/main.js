@@ -1,5 +1,6 @@
 import {
 	DecoupledEditor,
+	Autoformat,
 	BlockQuote,
 	Bold,
 	Code,
@@ -71,6 +72,7 @@ window.minerva.createEditor = function(lang, id, heading, extraPlugins, setter) 
             shouldNotGroupWhenFull: false
         },
         plugins: [
+            Autoformat,
             BlockQuote,
             Bold,
             Code,
@@ -114,10 +116,6 @@ window.minerva.createEditor = function(lang, id, heading, extraPlugins, setter) 
             ]
         },
         language: lang,
-        link: {
-            addTargetToExternalLinks: true,
-            defaultProtocol: 'https://',
-        },
         style: {
             definitions:
              [
