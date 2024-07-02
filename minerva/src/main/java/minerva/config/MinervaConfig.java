@@ -260,7 +260,11 @@ public class MinervaConfig {
     }
     
     public String[] getPDF_tags() {
-    	return MinervaOptions.PDF_TAGS.get().split(","); // nicht_drucken
+    	String pdfTags = MinervaOptions.PDF_TAGS.get();
+    	if (pdfTags == null) {
+    	    return new String[0];
+    	}
+        return pdfTags.split(","); // nicht_drucken
     }
     
     /**
