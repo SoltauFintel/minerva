@@ -69,6 +69,9 @@ public class RepairImagesAction extends WAction {
                         newImageFiles.add(dn);
                         html = html.replace("src=\"" + src + "\"", "src=\"img/" + seite.getId() + "/" + img.getName() + "\"");
                         dirty2 = true;
+                    } else if (img.isFile() && target.isFile() && img.length() == target.length()) {
+                        html = html.replace("src=\"" + src + "\"", "src=\"img/" + seite.getId() + "/" + img.getName() + "\"");
+                        dirty2 = true;
                     } else {
                         Logger.error("Page " + seite.getId() + " \"" + seite.getTitle() + "\" contains illegal image: "
                                 + src + " | " + img.toString() + " does " + (img.isFile() ? "" : "NOT ")
