@@ -338,6 +338,7 @@ public class SeitenSO extends MList<SeiteSO> {
                         seite.getSeite().getTitle().getString(lang),
                         seite.getSeite().getTags(),
                         seite.getId().equals(currentPageId),
+                        seite.isNoTree(),
                         hc,
                         book.getWorkspace().getBranch(),
                         book.getBook().getFolder(),

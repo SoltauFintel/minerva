@@ -16,8 +16,10 @@ public class TreeItem {
     private List<TreeItem> subitems;
     private boolean expanded = false;
     private final Set<String> tags;
-
-    public TreeItem(String id, String title, Set<String> tags, boolean current, int hasContent, String branch, String bookFolder, TreeItem parent) {
+    private final boolean noTree;
+    
+    public TreeItem(String id, String title, Set<String> tags, boolean current, boolean noTree,
+            int hasContent, String branch, String bookFolder, TreeItem parent) {
         this.id = id;
         this.title = title;
         this.hasContent = hasContent;
@@ -26,6 +28,7 @@ public class TreeItem {
         this.parent = parent;
         this.current = current;
         this.tags = tags;
+        this.noTree = noTree;
     }
 
     public String getId() {
@@ -71,4 +74,8 @@ public class TreeItem {
 	public Set<String> getTags() {
 		return tags;
 	}
+
+    public boolean isNoTree() {
+        return noTree;
+    }
 }

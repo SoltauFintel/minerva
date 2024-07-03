@@ -474,7 +474,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
                     aClass = " class=\"noContent treeActivePage\"";
                 }
             }
-            String icon = "<i class=\"fa fa-file-o\" style=\"color: #666;\"></i> ";
+            String icon = seite.isNoTree() ? "fa-ban" : "fa-file-o";
+            String color = seite.isNoTree() ? "#999" : "#666";
+            icon = "<i class=\"fa " + icon + "\" style=\"color: " + color + ";\"></i> ";
             boolean hasVisibleSubpages = false;
             for (TreeItem subpage : seite.getSubitems()) {
                 if (subpage.hasContent() > 0) {
