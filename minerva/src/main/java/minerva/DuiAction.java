@@ -13,8 +13,7 @@ public class DuiAction extends Action {
         
         DeleteUnusedImages.start();
         
-        Logger.info("DuiAction fertig");
-        
-        ctx.redirect("/b/master/handbuch");
+        Logger.info("DuiAction finished. Going to master menu.");
+        ctx.redirect("/w/master/menu");
     }
 }
