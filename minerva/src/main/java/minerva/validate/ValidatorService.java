@@ -292,7 +292,8 @@ public class ValidatorService {
 	private boolean hasImage(SeiteSO seite, List<String> langs, String dn) {
 		for (String lang : langs) {
 			String html = seite.getContent().getString(lang);
-			if (html.contains("\"img/" + seite.getId() + "/" + dn + "\"")) {
+			// old -> if (html.contains("\"img/" + seite.getId() + "/" + dn + "\"")) {
+			if (html.contains(dn)) {
 				return true;
 			}
 		}
