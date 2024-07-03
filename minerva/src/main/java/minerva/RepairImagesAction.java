@@ -56,8 +56,14 @@ public class RepairImagesAction extends WAction {
             for (String src : imgSrcs) {
                 if (!src.startsWith("img/" + seite.getId() + "/")) { // image from other page?
                     File img = new File(seite.getBook().getFolder() + "/" + src);
+
+                    Logger.debug(seite.getBook().getBook().getFolder() + " " + seite.getId()
+                        + " | image from other page: " + src + " | img.name=" + img.getName());
+                    
                     String dn = seite.getBook().getFolder() + "/img/" + seite.getId() + "/" + img.getName();
+                    
                     File target = new File(dn);
+                    
                     if (img.isFile() && !target.isFile()) {
                         FileService.copyFile(img, target);
                         newImageFiles.add(dn);
