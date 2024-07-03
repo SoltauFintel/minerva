@@ -374,6 +374,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
 
     public String duplicate(List<String> langs) {
     	// create new page
+        long start = System.currentTimeMillis();
     	String id;
     	if (hasParent()) {
             SeiteSO parent = getParent();
@@ -402,6 +403,9 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
 
         // copy images
         book.dao().copyFiles(book.getFolder(), "/img/" + seite.getId(), "/img/" + id);
+        
+        // save page (needed if there are images, but we save it always to have same behaviour)
+        copy.saveAll(copy.getSeite().getTitle(), copy.getContent(), 1, "duplicate", langs, start);
         
     	return id;
     }
@@ -784,10 +788,12 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     public Set<String> imagesAfterEdit() {
         Set<String> ret = new TreeSet<>();
         Set<String> filenames = getImageFilenames();
-        filenames.removeAll(imagesBefore);
-        Logger.debug("images delta: " + filenames);
-        String prefix = "img/" + seite.getId() + "/";
-        filenames.forEach(dn -> ret.add(prefix + dn));
+        if (filenames != null) {
+            filenames.removeAll(imagesBefore);
+            Logger.debug("images delta: " + filenames);
+            String prefix = "img/" + seite.getId() + "/";
+            filenames.forEach(dn -> ret.add(prefix + dn));
+        }
         imagesBefore.clear();
         return ret;
     }
