@@ -163,9 +163,6 @@ public class MinervaWebapp extends RouteDefinitions {
         masks();
         misc();
         restApi();
-        
-        get("/dui", DuiAction.class); // XXX
-        get("/repair/:branch", RepairImagesAction.class); // XXX
     }
 
     private void workspacesAndBooks() { // Workspaces, 1 workspace == n books
