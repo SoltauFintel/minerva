@@ -39,7 +39,7 @@ public class RepairImagesAction extends WAction {
         }
         Logger.info("images to be saved: " + newImageFiles.size());
         if (!files.isEmpty() || !newImageFiles.isEmpty()) {
-            newImageFiles.forEach(dn -> files.put(dn, DirAccess.IMAGE));
+            newImageFiles.forEach(dn ->{ files.put(dn, DirAccess.IMAGE); System.out.println(dn);}); // XXX DEBUG z.T.
             Logger.info("saving " + files.size() + " files ...");
             workspace.dao().saveFiles(files, new CommitMessage("repair images"), workspace);
         }
@@ -65,7 +65,7 @@ public class RepairImagesAction extends WAction {
                     File target = new File(dn);
                     
                     if (img.isFile() && !target.isFile()) {
-                        FileService.copyFile(img, target);
+                        FileService.copyFile(img, target.getParentFile());
                         newImageFiles.add(dn);
                         html = html.replace("src=\"" + src + "\"", "src=\"img/" + seite.getId() + "/" + img.getName() + "\"");
                         dirty2 = true;
