@@ -145,6 +145,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     private void fillLanguageSpecifics(User user) {
         Seite _seite = seite.getSeite();
         DataList list = list("languages");
+        put("guiLanguage", user.getGuiLanguage());
         for (String lang : langs) {
             DataMap map = list.add();
             map.put("LANG", lang.toUpperCase());

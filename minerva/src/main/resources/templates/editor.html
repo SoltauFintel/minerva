@@ -7,7 +7,7 @@ function MyCustomUploadAdapterPlugin( editor ) {
 {{each L in languages}}
     let editor{{L.LANG}};
     window.minerva.createEditor(
-        '{{L.lang}}',
+        '{{guiLanguage}}',
         'editor{{L.LANG}}',
         { options: [
             { model: 'paragraph', title: 'Paragraph' },
