@@ -78,3 +78,39 @@ blockquote {
     margin: 0 0 20px;
     font-style: italic;
 }
+
+.text-tiny {
+    font-size: .7em;
+}
+
+.text-small {
+    font-size: .85em;
+}
+
+.text-big {
+    font-size: .1.4em;
+}
+
+.text-huge {
+    font-size: 1.8em;
+}
+
+.xmapbutton {
+    color: #9c0;
+    font-weight: bold;
+}
+
+.xmaptab {
+    text-decoration: underline;
+}
+
+.xmapcollapsible {
+    color: #fff;
+    background-color: #376092;
+    font-weight: bold;
+}
+
+.xmapframe {
+    color: #5469c3;
+    font-weight: bold;
+}
