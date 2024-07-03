@@ -33,6 +33,7 @@ public class HtmlForPdf {
         }
         html = modifyLinks(html, info, errorMessages);
         html = images(html, info, imageBaseDir, errorMessages);
+        html = colors(html);
         return html;
     }
     
@@ -106,5 +107,34 @@ public class HtmlForPdf {
             }
         }
         return html;
+    }
+
+    /**
+     * PDF needs conversion from hsl color to hex RGB color.
+     */
+    private static String colors(String html) {
+        for (String c : StringService.findHtmlTags(html, "span", "style")) {
+            String result = "";
+            for (String w : c.split(";")) {
+                w = changeColor(w, "background-color:");
+                w = changeColor(w, "color:");
+                result += w + ";";
+            }
+            if (!c.equals(result)) {
+                html = html.replace(c, result);
+            }
+        }
+        return html;
+    }
+
+    private static String changeColor(String c, String attrName) {
+        if (c.startsWith(attrName)) {
+            String value = c.substring(attrName.length()).trim();
+            HslColor hsl = HslColor.fromHSL(value);
+            if (hsl != null) {
+                return attrName + hsl.getHexRGBColor();
+            }
+        }
+        return c;
     }
 }
