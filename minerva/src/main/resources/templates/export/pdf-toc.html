@@ -7,7 +7,7 @@
 {{/if}}
 
 {{if toc}}
-    <div class="toc" style="page-break-before: always;">
+    <div class="toc"{{if cover}} style="page-break-before: always;"{{/if}}>
     <h1>{{if de}}Inhaltsverzeichnis{{else}}Table of contents{{/if}}</h1>
     {{each b in tocLines}}
       <p><a href="#{{b.id}}">{{b.title}}</a></p>
