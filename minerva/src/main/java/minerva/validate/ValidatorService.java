@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import org.jsoup.Jsoup;
@@ -16,15 +15,11 @@ import org.quartz.SchedulerException;
 
 import github.soltaufintel.amalia.timer.BaseTimer;
 import github.soltaufintel.amalia.web.action.Escaper;
-import minerva.MinervaWebapp;
-import minerva.access.CommitMessage;
 import minerva.base.NLS;
 import minerva.base.StringService;
 import minerva.config.MinervaOptions;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
-import minerva.model.UserSO;
-import minerva.model.WorkspaceSO;
 import minerva.seite.link.Link;
 import minerva.seite.link.LinkService;
 import minerva.validate.ValidationResult.VRLink;
@@ -330,45 +325,45 @@ public class ValidatorService {
     public static class DeleteUnusedImages {
         
         public static void start() {
-            if (!MinervaOptions.CLEANUP_LOGIN.isSet() || !MinervaOptions.CLEANUP_PASSWORD.isSet()) {
-                Logger.error("Cleanup options not set in configuration. Go to Menu (in admin mode) > Configuration to enter the needed values.");
-                return;
-            }
-            String login = MinervaOptions.CLEANUP_LOGIN.get();
-            Logger.debug("UnusedImagesTimer | user: " + login);
-            UserSO userSO = new UserSO(MinervaWebapp.factory().getBackendService().login(login, MinervaOptions.CLEANUP_PASSWORD.get(), null));
-            List<String> langs = MinervaWebapp.factory().getLanguages();
-            Set<String> filesToBeDeleted = new TreeSet<>();
-            for (String branch : MinervaOptions.CLEANUP_BRANCHES.get().split(",")) {
-                branch = branch.trim();
-                Logger.debug("- branch: " + branch);
-                WorkspaceSO workspace = userSO.getWorkspace(branch);
-                if (workspace.getBooks() == null) {
-                    Logger.error("workspace.getBooks() is null");
-                    throw new RuntimeException("Can not delete unused images! Branch '" + branch + "' does not exist. Please check cleanup configuration!");
-                }
-                for (BookSO book : workspace.getBooks()) {
-                    Logger.debug("-- book folder: " + book.getBook().getFolder());
-                    for (SeiteSO seite : book.getAlleSeiten()) {
-                        new ValidatorService().unusedImageFiles(seite, langs, null, filesToBeDeleted);
-                    }
-                }
-                if (filesToBeDeleted.isEmpty()) {
-                    Logger.info(branch + " | No unused images found.");
-                } else {
-                    for (String dn : filesToBeDeleted) {
-                        Logger.debug(branch + " | image to be deleted: " + dn);
-                    }
-                    List<String> cantBeDeleted = new ArrayList<>();
-                    userSO.dao().deleteFiles(filesToBeDeleted, new CommitMessage("Delete unused images"), workspace, cantBeDeleted);
-                    if (!cantBeDeleted.isEmpty()) {
-                        Logger.error(branch + " | Error deleting files: " + cantBeDeleted);
-                    } else {
-                        Logger.info(branch + " | Deleted unused images: " + filesToBeDeleted.size());
-                    }
-                }
-            }
-            Logger.debug("UnusedImagesTimer | end");
+//            if (!MinervaOptions.CLEANUP_LOGIN.isSet() || !MinervaOptions.CLEANUP_PASSWORD.isSet()) {
+//                Logger.error("Cleanup options not set in configuration. Go to Menu (in admin mode) > Configuration to enter the needed values.");
+//                return;
+//            }
+//            String login = MinervaOptions.CLEANUP_LOGIN.get();
+//            Logger.debug("UnusedImagesTimer | user: " + login);
+//            UserSO userSO = new UserSO(MinervaWebapp.factory().getBackendService().login(login, MinervaOptions.CLEANUP_PASSWORD.get(), null));
+//            List<String> langs = MinervaWebapp.factory().getLanguages();
+//            Set<String> filesToBeDeleted = new TreeSet<>();
+//            for (String branch : MinervaOptions.CLEANUP_BRANCHES.get().split(",")) {
+//                branch = branch.trim();
+//                Logger.debug("- branch: " + branch);
+//                WorkspaceSO workspace = userSO.getWorkspace(branch);
+//                if (workspace.getBooks() == null) {
+//                    Logger.error("workspace.getBooks() is null");
+//                    throw new RuntimeException("Can not delete unused images! Branch '" + branch + "' does not exist. Please check cleanup configuration!");
+//                }
+//                for (BookSO book : workspace.getBooks()) {
+//                    Logger.debug("-- book folder: " + book.getBook().getFolder());
+//                    for (SeiteSO seite : book.getAlleSeiten()) {
+//                        new ValidatorService().unusedImageFiles(seite, langs, null, filesToBeDeleted);
+//                    }
+//                }
+//                if (filesToBeDeleted.isEmpty()) {
+//                    Logger.info(branch + " | No unused images found.");
+//                } else {
+//                    for (String dn : filesToBeDeleted) {
+//                        Logger.debug(branch + " | image to be deleted: " + dn);
+//                    }
+//                    List<String> cantBeDeleted = new ArrayList<>();
+//                    userSO.dao().deleteFiles(filesToBeDeleted, new CommitMessage("Delete unused images"), workspace, cantBeDeleted);
+//                    if (!cantBeDeleted.isEmpty()) {
+//                        Logger.error(branch + " | Error deleting files: " + cantBeDeleted);
+//                    } else {
+//                        Logger.info(branch + " | Deleted unused images: " + filesToBeDeleted.size());
+//                    }
+//                }
+//            }
+//            Logger.debug("UnusedImagesTimer | end");
         }
     }
 
