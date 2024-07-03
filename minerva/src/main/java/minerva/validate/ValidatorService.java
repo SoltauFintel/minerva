@@ -341,8 +341,12 @@ public class ValidatorService {
             Set<String> filesToBeDeleted = new TreeSet<>();
             for (String branch : MinervaOptions.CLEANUP_BRANCHES.get().split(",")) {
                 branch = branch.trim();
-                WorkspaceSO workspace = userSO.getWorkspace(branch);
                 Logger.debug("- branch: " + branch);
+                WorkspaceSO workspace = userSO.getWorkspace(branch);
+                if (workspace.getBooks() == null) {
+                    Logger.error("workspace.getBooks() is null");
+                    throw new RuntimeException("Can not delete unused images! Branch '" + branch + "' does not exist. Please check cleanup configuration!");
+                }
                 for (BookSO book : workspace.getBooks()) {
                     Logger.debug("-- book folder: " + book.getBook().getFolder());
                     for (SeiteSO seite : book.getAlleSeiten()) {
