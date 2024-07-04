@@ -1,6 +1,9 @@
 package minerva.task;
 
+import minerva.base.StringService;
 import minerva.comment.Comment;
+import minerva.model.BookSO;
+import minerva.model.SeiteSO;
 import minerva.seite.CommentWithSeite;
 
 /**
@@ -11,6 +14,7 @@ public class CommentTask implements Task {
     private final Comment comment;
     private final String parentLink;
     private final String link;
+    private final String text;
     
     public CommentTask(CommentWithSeite cws, String branch) {
         this.cws = cws;
@@ -18,6 +22,16 @@ public class CommentTask implements Task {
         String zt = branch + "/" + cws.getSeite().getBook().getBook().getFolder() + "/" + cws.getSeite().getId();
         parentLink = "/s/" + zt;
         link = "/sc/" + zt + "/comments?highlight=" + comment.getId() + "#" + comment.getId();
+        
+        String html = cws.getComment().getText();
+        SeiteSO seite = cws.getSeite();
+        BookSO book = seite.getBook();
+        String prefix = "/sc/" + book.getWorkspace().getBranch() + "/" + book.getBook().getFolder() + "/"
+                + seite.getId() + "/";
+        for (String src : StringService.findHtmlTags(html, "img", "src")) {
+            html = html.replace("src=\"" + src + "\"", "src=\"" + prefix + src + "\"");
+        }
+        text = html;
     }
     
     @Override
@@ -42,7 +56,7 @@ public class CommentTask implements Task {
 
     @Override
     public String getText() {
-        return comment.getText();
+        return text;
     }
 
     @Override
