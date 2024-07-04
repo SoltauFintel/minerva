@@ -28,7 +28,7 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
         List<Task> tasks = new TaskService().getTasks(user, branch, login);
         int n = (int) tasks.stream().filter(i -> !TaskPriority.HIDE.equals(user.getTaskPriority(i.getId()))).count();
         if ("master".equals(branch)) {
-            TaskService.openMasterTasks.put(login, Integer.valueOf(n));
+            TaskService.openMasterTasks.put(login == null ? user.getLogin() : login, Integer.valueOf(n));
             MinervaPageInitializer.updateOpenMasterTasks(n, this);
         }
         
