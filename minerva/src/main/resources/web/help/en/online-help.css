@@ -1,0 +1,46 @@
+* {
+    font-family: Arial;
+}
+
+body {
+    max-width: 800px;
+    margin: auto;
+}
+
+.noContent {
+    color: #99c;
+}
+
+p.math {
+    text-align: center;
+}
+
+a:hover {
+    text-decoration: none;
+    color: red;
+}
+
+li.book {
+    margin-bottom: 1em;
+}
+
+@media print
+{    
+    .hidden-print, .hidden-print *
+    {
+        display: none !important;
+    }
+}
+
+ul.toc {
+    font-size: 9pt;
+    padding-left: 1.3em;
+}
+
+div.toc {
+    padding-left: 2em;
+}
+
+li.subpage {
+    margin-top: .5em;
+}
