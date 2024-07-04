@@ -7,13 +7,16 @@ import org.pmw.tinylog.Logger;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+/**
+ * Manage users
+ */
 public class UsersPage extends UPage {
 
     @Override
     protected void execute() {
         user.onlyAdmin();
-        Logger.info("Users");
-        user.log("Users");
+        Logger.info("Manage users");
+        user.log("Manage users");
         
         Stream<User> users = UserAccess.loadUsers().stream().sorted((a, b) -> a.getRealName().compareToIgnoreCase(b.getRealName()));
 

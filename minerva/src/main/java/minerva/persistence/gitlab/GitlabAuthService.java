@@ -4,6 +4,8 @@ import org.gitlab4j.api.GitLabApi;
 import org.gitlab4j.api.GitLabApiException;
 import org.pmw.tinylog.Logger;
 
+import com.google.common.base.Objects;
+
 import github.soltaufintel.amalia.base.IdGenerator;
 import github.soltaufintel.amalia.rest.REST;
 import github.soltaufintel.amalia.rest.RestStatusException;
@@ -59,8 +61,9 @@ public class GitlabAuthService {
         String mail = currentUser.getEmail();
         
         minerva.user.User user = UserAccess.loadUser(login, true, mail);
-        if (!user.getMailAddress().equals(mail)) {
-            Logger.warn("Gitlab user " + login + " mail mismatch: " + user.getMailAddress() + " <> " + mail);
+        if (!Objects.equal(user.getMailAddress(), mail)) {
+            Logger.warn("Gitlab user " + login + " mail mismatch: " + user.getMailAddress() + " <> " + mail +
+                    ". Please enter mail address in admin dialog 'Manage users'.");
         }
         GitlabDataStore xu = new GitlabDataStore(user);
         xu.setPassword("");
