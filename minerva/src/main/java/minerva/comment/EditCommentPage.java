@@ -70,7 +70,7 @@ public class EditCommentPage extends Page {
             headerId = "answerComment";
             Comment parent = sv.get(parentId);
             put("parentText", "<div class=\"reply\">" //
-                    + "<p>" + NLS.get(sv.getLanguage(), "comment-by") + " " + UserAccess.login2RealName(parent.getUser()) + ":</p>" //
+                    + "<p>" + NLS.get(sv.getLanguage(), "comment-by") + " <b>" + UserAccess.login2RealName(parent.getUser()) + "</b>:</p>" //
                     + parent.getText() + "</div>");
         }
         String header = NLS.get(sv.getLanguage(), headerId);
