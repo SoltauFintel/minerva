@@ -9,7 +9,7 @@
         <p>
             Branch: {{branch}}
             | {{N.user}}: {{login}}
-            | {{N.anzahl}}: <span class="label {{if hasTasks}}label-danger{{else}}label-success{{/if}}">{{n}}</span>
+            | {{N.anzahl}}: {{if showTaskButtons}}<span class="label {{if hasTasks}}label-danger{{else}}label-success{{/if}}">{{n}}</span>{{else}}{{n}}{{/if}}
             {{if hasWeitere}}(+{{weitere}}){{/if}}
             | <a href="/w/{{branch}}/tasks-created-by-me">{{N.tasksCreatedByMe}}</a>
             | <a href="/w/{{branch}}/pages-watched-by-me">{{N.vonMirBeobachteteSeiten}}</a>

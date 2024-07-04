@@ -13,6 +13,7 @@ import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.base.MinervaPageInitializer;
 import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
+import minerva.model.UserSO;
 import minerva.user.UserAccess;
 import minerva.workspace.WPage;
 
@@ -21,31 +22,26 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
     @Override
     protected void execute() {
         String login = ctx.queryParam("login");
-        boolean me = login == null || user.getLogin().equals(login);
-        Logger.info(user.getLogin() + " | " + (me ? "My tasks" : "All tasks for " + login));
         boolean showAll = "a".equals(ctx.queryParam("m"));
-        
-        List<Task> tasks = new TaskService().getTasks(user, branch, login);
-        int n = (int) tasks.stream().filter(i -> !TaskPriority.HIDE.equals(user.getTaskPriority(i.getId()))).count();
-        if ("master".equals(branch)) {
-            TaskService.openMasterTasks.put(login == null ? user.getLogin() : login, Integer.valueOf(n));
-            MinervaPageInitializer.updateOpenMasterTasks(n, this);
-        }
-        
-        header(n("myTasks"));
-        putInt("n", n);
-        if (tasks.size() != n) {
-            putInt("weitere", tasks.size() - n);
-            put("hasWeitere", true);
+
+        boolean me = false;
+        List<Task> tasklist;
+        if (StringService.isNullOrEmpty(login) || user.getLogin().equals(login)) {
+            me = true;
+            tasklist = init(user, me);
+            Logger.info(user.getLogin() + " | My tasks");
+            header(n("myTasks"));
         } else {
-            put("hasWeitere", false);
-        }
-        put("login", esc(UserAccess.login2RealName(StringService.isNullOrEmpty(login) ? user.getLogin() : login)));
-        fill(tasks, branch, model, user.getLogin(), showAll);
-        put("hasTasks", !tasks.isEmpty());
+            tasklist = init(new UserSO(UserAccess.loadUser(login)), me);
+            Logger.info(user.getLogin() + " | All tasks for " + login);
+            header(n("Tasks"));
+        }        
+        
+        fill(tasklist, branch, model, user.getLogin(), showAll);
+        put("hasTasks", !tasklist.isEmpty());
         put("showTaskButtons", me);
         put("showAll", showAll);
-        put("hasHiddenTasks", tasks.stream().anyMatch(i -> TaskPriority.HIDE.equals(user.getTaskPriority(i.getId()))));
+        put("hasHiddenTasks", tasklist.stream().anyMatch(i -> TaskPriority.HIDE.equals(user.getTaskPriority(i.getId()))));
         if (showAll) {
             put("showHideLink", "/w/" + esc(branch) + "/my-tasks" + (me ? "" : "?login" + u(login)));
             put("showHideText", esc(n("hideUnimportantTasks")));
@@ -55,6 +51,25 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
         }
     }
     
+    private List<Task> init(UserSO pUser, boolean me) {
+        List<Task> tasks = new TaskService().getTasks(user/*current user for loading data!*/, branch, pUser.getLogin());
+        
+        int size = tasks.size();
+        int n = (int) tasks.stream().filter(i -> !TaskPriority.HIDE.equals(pUser.getTaskPriority(i.getId()))).count();
+        if ("master".equals(branch)) {
+            TaskService.update(pUser, n);
+            if (me) {
+                MinervaPageInitializer.fillNumberOfOpenMasterTasks(n, this);
+            }
+        }
+
+        putInt("n", n);
+        put("hasWeitere", size != n);
+        putInt("weitere", size - n);
+        put("login", Escaper.esc(UserAccess.login2RealName(pUser.getLogin())));
+        return tasks;
+    }
+
     private void fill(List<Task> tasks, String branch, DataMap model, String login, boolean showAll) {
         DataList list = model.list("tasks");
         fill2(tasks, branch, login, TaskPriority.TOP, list);

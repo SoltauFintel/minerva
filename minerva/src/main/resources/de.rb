@@ -113,6 +113,7 @@ undoneComment=Kommentar als unerledigt kennzeichnen
 zustaendig=zuständig
 doneBy=erledigt
 myTasks=Meine Aufgaben
+Tasks=Aufgaben
 history=Historie
 date=Datum
 newTag=Neues tag

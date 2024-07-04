@@ -114,6 +114,7 @@ undoneComment=set comment as not done
 zustaendig=assigned to
 doneBy=done
 myTasks=My tasks
+Tasks=Tasks
 history=History
 date=Date
 newTag=New tag

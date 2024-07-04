@@ -86,11 +86,10 @@ public class MinervaPageInitializer extends PageInitializer {
     }
     
     public static void updateOpenMasterTasks(MinervaPageInitModel m, Page page) {
-    	Integer omt = m.getUser() == null ? null : TaskService.openMasterTasks.get(m.getUser().getLogin());
-    	updateOpenMasterTasks(omt == null ? 0 : omt.intValue(), page);
+    	fillNumberOfOpenMasterTasks(TaskService.get(m.getUser()), page);
     }
 
-    public static void updateOpenMasterTasks(int omt, Page page) {
+    public static void fillNumberOfOpenMasterTasks(int omt, Page page) {
         page.put("hasOpenMasterTasks", omt > 0);
         page.putInt("numberOfOpenMasterTasks", omt);
     }

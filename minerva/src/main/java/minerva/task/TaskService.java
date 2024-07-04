@@ -9,7 +9,7 @@ import minerva.model.UserSO;
 
 public class TaskService {
     public static List<TasksSupplier> tasksSuppliers = new ArrayList<>();
-    public static final Map<String, Integer> openMasterTasks = new HashMap<>();
+    private static final Map<String, Integer> openMasterTasks = new HashMap<>();
     
     static {
         tasksSuppliers.add(new CommentsSupplier());
@@ -35,8 +35,15 @@ public class TaskService {
     }
     
     public static void update(UserSO user) {
-        int omt = new TaskService().getNumberOfTasks(user);
+        update(user, new TaskService().getNumberOfTasks(user));
+    }
+    
+    public static void update(UserSO user, int omt) {
         openMasterTasks.put(user.getLogin(), Integer.valueOf(omt));
+    }
+    
+    public static int get(UserSO user) {
+        return user == null ? 0 : openMasterTasks.get(user.getLogin());
     }
 
     public List<Task> getTasksCreatedByMe(UserSO user, String branch, String login) {
