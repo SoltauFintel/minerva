@@ -65,8 +65,7 @@ public class TocMacro {
         TocEntry h2 = null, h3 = null, h4 = null, h5 = null;
         int lfd = 0;
         for (Element heading : headings) {
-            int level = Integer.parseInt(heading.nodeName().substring(1, 2));
-            if (headingslevels < level - 1) {
+            if (ignoreHeading(heading, headingslevels)) {
                 continue;
             }
             String title = heading.text();
@@ -85,6 +84,7 @@ public class TocMacro {
                 }
             }
             
+            int level = Integer.parseInt(heading.nodeName().substring(1, 2));
             if (level == 6 && h5 != null) {
                 h5.getSubpages().add(entry);
             } else if (level == 5 && h4 != null) {
@@ -103,6 +103,15 @@ public class TocMacro {
                 entries.add(entry);
             }
         }
+    }
+    
+    public static boolean ignoreHeading(Element heading, SeiteSO seite) {
+        return ignoreHeading(heading, seite.getSeite().getTocHeadingsLevels());
+    }
+
+    private static boolean ignoreHeading(Element heading, int headingslevels) {
+        int level = Integer.parseInt(heading.nodeName().substring(1, 2));
+        return headingslevels < level - 1; // true=continue
     }
 
     private void subpages2TocEntries(List<TocMacroPage> seiten, List<TocEntry> entries, int level, int maxLevel) {
@@ -208,6 +217,11 @@ public class TocMacro {
     }
     
     private boolean exist(HelpKeysForHeading i, Elements headings) {
-        return headings.stream().anyMatch(heading -> i.getHeading().equals(heading.text()));
+        for (Element heading : headings) {
+            if (!ignoreHeading(heading, seite) && i.getHeading().equals(heading.text())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

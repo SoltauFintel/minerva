@@ -49,7 +49,7 @@ public class HelpKeysForHeadingPage extends SPage {
         Elements headings = TocMacro._getHeadings(Jsoup.parse(seite.getContent().getString(lang)));
         int lfd = 0;
         for (Element heading : headings) {
-            if (++lfd == h) {
+            if (!TocMacro.ignoreHeading(heading, seite) && ++lfd == h) {
                 return heading.text();
             }
         }
