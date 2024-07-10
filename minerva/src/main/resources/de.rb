@@ -376,3 +376,5 @@ erlaeuterungen=Erläuterungen
 validationErlaeuterungen=Im Abschnitt "Validierung" sind Fehlermeldungen einiger Seitenprüfungen gelistet. Diese Fehler sollte man korrigieren. "Gleiche Titel" listen gleiche Seitentitel auf. Gleiche Titel sind (technisch) erlaubt und stellen oft keinen Fehler dar. Manchmal kann es aber dennoch unbeabsichtigt passiert sein, dass man zu einem Thema zwei oder mehr Seiten angelegt hat. "Ungenutzte Grafiken" können nicht durch den Anwender korrigiert werden und stören auch nicht weiter. Es ist die Aufgabe von Minerva dies zu bereinigen. "Externe Links": solange ein Link für den Leserkreis erreichbar ist, ist alles gut.
 Help=Hilfe
 MinervaHelp=Minerva Hilfe
+helpKeysErrors=Es gibt Hilfe-Keys für nicht mehr existierende Überschriften:
+deleteTheseHelpKeys=Diese Hilfe-Keys löschen!

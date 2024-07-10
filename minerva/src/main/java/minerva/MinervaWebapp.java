@@ -93,10 +93,12 @@ import minerva.search.SearchPage;
 import minerva.seite.AddSeiteAction;
 import minerva.seite.AllHelpKeysPage;
 import minerva.seite.CancelEditingAction;
+import minerva.seite.CleanupHelpKeysForHeadingsAction;
 import minerva.seite.DeleteSeitePage;
 import minerva.seite.DuplicateSeiteAction;
 import minerva.seite.EditHtmlPage;
 import minerva.seite.EditSeitePage;
+import minerva.seite.HelpKeysForHeadingPage;
 import minerva.seite.HelpKeysPage;
 import minerva.seite.LockedByPage;
 import minerva.seite.OrderSeitePage;
@@ -248,6 +250,8 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/s/:branch/:book/:id/links", LinkAnalysisPage.class);
         post("/s/:branch/:book/:id/toc", TocAction.class);
         post("/s/:branch/:book/:id/editorsnote", SaveEditorsNoteAction.class);
+        form("/s/:branch/:book/:id/help-keys/:lang/:h", HelpKeysForHeadingPage.class);
+        get("/s/:branch/:book/:id/cleanup-hkh", CleanupHelpKeysForHeadingsAction.class);
 
         // Links
         form("/links/:branch/:book/:id", LinkResolverPage.class);

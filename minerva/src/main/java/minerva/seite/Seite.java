@@ -25,6 +25,7 @@ public class Seite {
      * Commented-out help keys are not planned, but practically possible by prefixing them with characters that break the key.
      */
     private final List<String> helpKeys = new ArrayList<>();
+    private List<HelpKeysForHeading> hkh;
     private final List<PageChange> changes = new ArrayList<>();
     private int tocHeadingsLevels = 0;
     private int tocSubpagesLevels = 0;
@@ -113,6 +114,20 @@ public class Seite {
 
     public List<String> getHelpKeys() {
         return helpKeys;
+    }
+
+    /**
+     * @return help keys for headings
+     */
+    public List<HelpKeysForHeading> getHkh() {
+        return hkh;
+    }
+
+    /**
+     * @param hkh help keys for headings
+     */
+    public void setHkh(List<HelpKeysForHeading> hkh) {
+        this.hkh = hkh;
     }
 
     public int getTocHeadingsLevels() {

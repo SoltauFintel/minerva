@@ -235,6 +235,23 @@
                     {{if hasOneHelpKey}}<br/><span
                         style="font-family: 'Courier New'; font-size: 9pt;">{{oneHelpKey}}</span>{{/if}}
                 </p>
+                
+                {{if hasErrorsTotal}}
+                    <p style="font-size: 8pt;">{{N.helpKeysErrors}}</p>
+                    {{each L in languages}}
+                        {{if L.hasErrors}}
+                            <p style="font-size: 8pt;">{{L.LANG}}:</p>
+                            <ul>
+                                {{each e in L.errors}}
+                                    <li style="font-size: 8pt;">{{e.headingTitle}}: {{e.helpKeys}}</li>
+                                {{/each}}
+                            </ul>
+                        {{/if}}
+                    {{/each}}
+                    <p>
+                        <a href="{{id}}/cleanup-hkh" class="btn btn-sm btn-danger">{{N.deleteTheseHelpKeys}}</a>
+                    </p>
+                {{/if}}
             {{/if}}
         {{/if}}
         

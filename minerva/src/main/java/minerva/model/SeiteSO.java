@@ -5,6 +5,7 @@ import static minerva.access.DirAccess.IMAGE;
 import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -31,6 +32,7 @@ import minerva.base.UserMessage;
 import minerva.comment.SeiteCommentService2;
 import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
+import minerva.seite.HelpKeysForHeading;
 import minerva.seite.IPageChangeStrategy;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
@@ -801,5 +803,60 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     private Set<String> getImageFilenames() {
         String imageDir = book.getFolder() + "/img/" + seite.getId();
         return book.dao().getFilenames(imageDir);
+    }
+    
+    public List<String> getHeadingHelpKeys(String lang, String headingTitle) {
+        if (seite.getHkh() != null) {
+            for (HelpKeysForHeading i : seite.getHkh()) {
+                if (i.getLanguage().equals(lang) && i.getHeading().equals(headingTitle)) {
+                    return i.getHelpKeys();
+                }
+            }
+        }
+        return new ArrayList<>();
+    }
+    
+    public void saveHeadingHelpKeys(String lang, String headingTitle, String helpKeysText) {
+        List<String> helpKeys = new ArrayList<>();
+        splitHelpKeys(helpKeysText.replace(",", "\n"), helpKeys);
+        if (seite.getHkh() == null) {
+            seite.setHkh(new ArrayList<>());
+        }
+        boolean found = false;
+        for (HelpKeysForHeading i : seite.getHkh()) {
+            if (i.getLanguage().equals(lang) && i.getHeading().equals(headingTitle)) {
+                if (i.getHelpKeys().equals(helpKeys)) {
+                    return;
+                }
+                i.setHelpKeys(helpKeys);
+                found = true;
+            }
+        }
+        if (!found) {
+            HelpKeysForHeading i = new HelpKeysForHeading();
+            i.setLanguage(lang);
+            i.setHeading(headingTitle);
+            i.setHelpKeys(helpKeys);
+            seite.getHkh().add(i);
+        }
+        saveMeta(new CommitMessage(this, "help keys for headings"));
+        updateOnlineHelp();
+    }
+    
+    public void saveHelpKeys(String helpKeysText) {
+        seite.getHelpKeys().clear();
+        splitHelpKeys(helpKeysText, seite.getHelpKeys());
+        saveMeta(new CommitMessage(this, "help keys"));
+        updateOnlineHelp();
+    }
+    
+    public static void splitHelpKeys(String helpKeysText, List<String> helpKeysTarget) {
+        for (String line : helpKeysText.split("\n")) {
+            String helpKey = line.trim();
+            if (!helpKey.isEmpty()) {
+                helpKeysTarget.add(helpKey);
+            }
+        }
+        Collections.sort(helpKeysTarget);
     }
 }

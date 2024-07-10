@@ -67,7 +67,7 @@ public class LinkService {
     }
 
     private static boolean validLink(String href, List<BookSO> books) {
-        if (href.isBlank() || href.startsWith("http://") || href.startsWith("https://") || href.startsWith("#")) {
+        if (href.isBlank() || href.startsWith("http://") || href.startsWith("https://") || href.startsWith("#") || href.contains("/help-keys/")) {
             return true;
         }
         for (BookSO book : books) {

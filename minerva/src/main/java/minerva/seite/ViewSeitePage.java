@@ -146,6 +146,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         Seite _seite = seite.getSeite();
         DataList list = list("languages");
         put("guiLanguage", user.getGuiLanguage());
+        int errors = 0;
         for (String lang : langs) {
             DataMap map = list.add();
             map.put("LANG", lang.toUpperCase());
@@ -162,13 +163,25 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             }
             map.put("titel", esc(titel));
             TocMacro macro = new TocMacro(seite.getTocMacroPage(), "-", lang, "");
-            map.put("content", macro.transform(seite.getContent().getString(lang)));
-            map.put("toc", macro.getTOC()); // no esc, after transform()
+            if (!MinervaWebapp.factory().isCustomerVersion()) {
+                macro.setSeite(seite);
+            }
+            map.put("content", transformContent(macro, lang, map));
             map.put("active", lang.equals(user.getPageLanguage()));
+            if (!MinervaWebapp.factory().isCustomerVersion()) {
+                errors += macro.fillHkhErrors(map);
+            }
             fillBreadcrumbs(lang, map.list("breadcrumbs"));
             map.putInt("subpagesSize", fillSubpages(seite, seite.getSeiten(), lang, map.list("subpages"),
                     branch, bookFolder, false));
         }
+        put("hasErrorsTotal", errors > 0);
+    }
+    
+    protected String transformContent(TocMacro macro, String lang, DataMap map) {
+        String html = macro.transform(seite.getContent().getString(lang));
+        map.put("toc", macro.getTOC()); // no esc, after transform()
+        return html;
     }
     
     private void subpages() {

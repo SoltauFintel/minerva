@@ -2,6 +2,8 @@ package minerva.seite;
 
 import org.pmw.tinylog.Logger;
 
+import com.github.template72.data.DataMap;
+
 import minerva.MinervaWebapp;
 import minerva.model.SeiteSO;
 import minerva.model.UserSO.LoginAndEndTime;
@@ -32,6 +34,11 @@ public class EditSeitePage extends ViewSeitePage {
             put("postcontentslink", "/post-contents/seite?key=" + u(getKey()));
             seite.imagesBeforeEdit();
         }
+    }
+
+    @Override
+    protected String transformContent(TocMacro macro, String lang, DataMap map) {
+        return seite.getContent().getString(lang);
     }
 
     private void save(String branch, String bookFolder, String id, SeiteSO seiteSO) {

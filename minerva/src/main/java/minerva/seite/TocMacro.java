@@ -1,13 +1,21 @@
 package minerva.seite;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.pmw.tinylog.Logger;
 
+import com.github.template72.data.DataList;
+import com.github.template72.data.DataMap;
+
+import github.soltaufintel.amalia.web.action.Escaper;
+import minerva.model.SeiteSO;
 import minerva.publish.TocEntry;
 
 public class TocMacro {
@@ -16,12 +24,17 @@ public class TocMacro {
     protected final String lang;
     protected final String liStyle;
     private String toc = null;
+    private SeiteSO seite; // can be null
     
     public TocMacro(TocMacroPage page, String customer, String lang, String liStyle) {
         this.page = page;
         this.customer = customer;
         this.lang = lang;
         this.liStyle = liStyle;
+    }
+
+    public void setSeite(SeiteSO seite) {
+        this.seite = seite;
     }
 
     public String transform(String html) {
@@ -33,7 +46,7 @@ public class TocMacro {
         }
         
         Document doc = Jsoup.parse(html);
-        Elements headings = doc.select("h2,h3,h4,h5,h6");
+        Elements headings = _getHeadings(doc);
         List<TocEntry> entries = new ArrayList<>();
         if (headingslevels > 0) {
             collectTocEntries(headingslevels, headings, entries);
@@ -61,6 +74,16 @@ public class TocMacro {
             entry.setTitle(title);
             entry.setId("#t" + ++lfd);
             heading.attr("id", entry.getId().substring("#".length())); // modify HTML
+            if (seite != null) {
+                List<String> helpKeys = seite.getHeadingHelpKeys(lang, title);
+                if (helpKeys.isEmpty()) {
+                    heading.append("<a href=\"" + page.getId() + "/help-keys/" + lang + "/" + lfd + "\" class=\"edithk0\">Hilfe-Keys</a>");
+                } else {
+                    heading.append("<a href=\"" + page.getId() + "/help-keys/" + lang + "/" + lfd + "\" class=\"edithk1\">Hilfe-Keys: "
+                            + helpKeys.stream().collect(Collectors.joining(", "))
+                            + "</a>");
+                }
+            }
             
             if (level == 6 && h5 != null) {
                 h5.getSubpages().add(entry);
@@ -130,5 +153,61 @@ public class TocMacro {
             throw new RuntimeException("Call transform() before getTOC()!");
         }
         return toc;
+    }
+
+    public Elements getHeadings() {
+        Document doc = Jsoup.parse(seite.getContent().getString(lang));
+        return _getHeadings(doc);
+    }
+    
+    public static Elements _getHeadings(Document doc) {
+        return doc.select("h2,h3,h4,h5,h6");
+    }
+
+    /**
+     * call setSeite() before
+     * @param p -
+     * @return greater 0 if there are errors
+     */
+    public int fillHkhErrors(DataMap p) {
+        DataList list = p.list("errors");
+        if (seite.getSeite().getHkh() != null) {
+            Elements headings = getHeadings();
+            for (Iterator<HelpKeysForHeading> iterator = seite.getSeite().getHkh().iterator(); iterator.hasNext();) {
+                HelpKeysForHeading i = iterator.next();
+                if (i.getLanguage().equals(lang) && !exist(i, headings)) { // There are help keys for a non-existing heading.
+                    DataMap map = list.add();
+                    map.put("headingTitle", Escaper.esc(i.getHeading()));
+                    map.put("helpKeys", Escaper.esc(i.getHelpKeys().stream().collect(Collectors.joining(", "))));
+                }
+            }
+        }
+        int n = list.size();
+        p.put("hasErrors", n > 0);
+        return n;
+    }
+    
+    /**
+     * call setSeite() before
+     * @return true if data has been changed and must be saved
+     */
+    public boolean cleanupHkhErrors() {
+        boolean dirty = false;
+        if (seite.getSeite().getHkh() != null) {
+            Elements headings = getHeadings();
+            for (Iterator<HelpKeysForHeading> iterator = seite.getSeite().getHkh().iterator(); iterator.hasNext();) {
+                HelpKeysForHeading i = iterator.next();
+                if (i.getLanguage().equals(lang) && !exist(i, headings)) { // There are help keys for a non-existing heading.
+                    Logger.info("delete HKH (" + i.getLanguage() + "): " + i.getHeading() + "=" + i.getHelpKeys());
+                    iterator.remove();
+                    dirty = true;
+                }
+            }
+        }
+        return dirty;
+    }
+    
+    private boolean exist(HelpKeysForHeading i, Elements headings) {
+        return headings.stream().anyMatch(heading -> i.getHeading().equals(heading.text()));
     }
 }
