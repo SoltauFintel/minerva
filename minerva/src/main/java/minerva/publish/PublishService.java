@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
@@ -18,6 +19,7 @@ import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
+import minerva.seite.HelpKeysForHeading;
 
 public class PublishService {
     private final List<String> langs;
@@ -134,6 +136,13 @@ public class PublishService {
             p.getLabels().add("toc-s-" + levels);
         }
         p.getHelpKeys().addAll(seite.getSeite().getHelpKeys());
+        if (seite.getSeite().getHkh() != null) {
+            for (HelpKeysForHeading i : seite.getSeite().getHkh()) {
+                String hk = i.getHelpKeys().stream().collect(Collectors.joining(","));
+                String e = "$$$" + i.getLanguage() + ":" + i.getHeading() + "$$$" + hk;
+                p.getHelpKeys().add(e);
+            }
+        }
         return p;
     }
 }
