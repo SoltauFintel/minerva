@@ -1,5 +1,6 @@
 package minerva.postcontents;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +27,9 @@ public class PostContentsService {
         PostContentsData data;
         try {
             data = (PostContentsData) cls.getConstructor(Context.class).newInstance(ctx);
+        } catch (InvocationTargetException e) {
+            Logger.error(e.getTargetException());
+            throw new RuntimeException(e);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

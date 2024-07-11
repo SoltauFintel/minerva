@@ -1,6 +1,7 @@
 package minerva.image;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -28,6 +29,9 @@ public abstract class ImageDownloadService {
             if (e.getKey().test(ctx)) {
                 try {
                     return e.getValue().getConstructor(Context.class).newInstance(ctx);
+                } catch (InvocationTargetException ex) {
+                    Logger.error(ex.getTargetException());
+                    throw new RuntimeException(ex);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }

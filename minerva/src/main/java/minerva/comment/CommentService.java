@@ -1,11 +1,14 @@
 package minerva.comment;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
+
+import org.pmw.tinylog.Logger;
 
 import com.github.template72.data.DataMap;
 import com.google.gson.Gson;
@@ -25,6 +28,9 @@ public abstract class CommentService {
             if (e.getKey().test(ctx)) {
                 try {
                     return e.getValue().getConstructor(Context.class).newInstance(ctx);
+                } catch (InvocationTargetException ex) {
+                    Logger.error(ex.getTargetException());
+                    throw new RuntimeException(ex);
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
