@@ -212,6 +212,10 @@ public class TocMacro {
                     dirty = true;
                 }
             }
+            if (seite.getSeite().getHkh().isEmpty()) {
+                seite.getSeite().setHkh(null);
+                dirty = true;
+            }
         }
         return dirty;
     }
