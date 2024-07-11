@@ -819,25 +819,35 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     public void saveHeadingHelpKeys(String lang, String headingTitle, String helpKeysText) {
         List<String> helpKeys = new ArrayList<>();
         splitHelpKeys(helpKeysText.replace(",", "\n"), helpKeys);
-        if (seite.getHkh() == null) {
-            seite.setHkh(new ArrayList<>());
-        }
-        boolean found = false;
-        for (HelpKeysForHeading i : seite.getHkh()) {
-            if (i.getLanguage().equals(lang) && i.getHeading().equals(headingTitle)) {
-                if (i.getHelpKeys().equals(helpKeys)) {
-                    return;
-                }
-                i.setHelpKeys(helpKeys);
-                found = true;
+        if (helpKeys.isEmpty()) {
+            if (seite.getHkh() == null) {
+                return;
             }
-        }
-        if (!found) {
-            HelpKeysForHeading i = new HelpKeysForHeading();
-            i.setLanguage(lang);
-            i.setHeading(headingTitle);
-            i.setHelpKeys(helpKeys);
-            seite.getHkh().add(i);
+            seite.getHkh().removeIf(i -> i.getLanguage().equals(lang) && i.getHeading().equals(headingTitle));
+            if (seite.getHkh().isEmpty()) {
+                seite.setHkh(null);
+            }
+        } else {
+            if (seite.getHkh() == null) {
+                seite.setHkh(new ArrayList<>());
+            }
+            boolean found = false;
+            for (HelpKeysForHeading i : seite.getHkh()) {
+                if (i.getLanguage().equals(lang) && i.getHeading().equals(headingTitle)) {
+                    if (i.getHelpKeys().equals(helpKeys)) {
+                        return;
+                    }
+                    i.setHelpKeys(helpKeys);
+                    found = true;
+                }
+            }
+            if (!found) {
+                HelpKeysForHeading i = new HelpKeysForHeading();
+                i.setLanguage(lang);
+                i.setHeading(headingTitle);
+                i.setHelpKeys(helpKeys);
+                seite.getHkh().add(i);
+            }
         }
         saveMeta(new CommitMessage(this, "help keys for headings"));
         updateOnlineHelp();
