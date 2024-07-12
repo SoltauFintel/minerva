@@ -14,6 +14,7 @@ import minerva.comment.SeiteCommentService2;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
+import minerva.seite.PageTree;
 import minerva.seite.ViewSeitePage;
 
 public class BookPage extends BPage implements Uptodatecheck {
@@ -33,7 +34,7 @@ public class BookPage extends BPage implements Uptodatecheck {
         put("title", esc(title.toLowerCase().contains("buch") ? title : title + " (Buch)"));
         put("allPages", allPages);
         put("hasLeftArea", true);
-        put("leftAreaContent", ViewSeitePage.tree(book.getSeiten(), user.getPageLanguage(), ""));
+        put("leftAreaContent", new PageTree().tree(book.getSeiten(), user.getPageLanguage(), ""));
         if (isOneLang()) {
             langs = oneLang(model, book);
         }
