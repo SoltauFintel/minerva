@@ -14,14 +14,14 @@ public class PageTree {
         String html = "";
         for (String lang : langs) {
             String hidden = lang.equals(user.getPageLanguage()) ? "" : " hidden";
-            String tree = tree(seite.getBook().getSeiten(), lang, seite.getId());
+            String tree = getHTML(seite.getBook().getSeiten(), lang, seite.getId());
             html += "<div id=\"tree_" + lang + "\"" + hidden + ">" + tree + "</div>";
         }
         return html;
     }
     
     // BookPage
-    public String tree(SeitenSO seiten, String lang, String currentSeiteId) {
+    public String getHTML(SeitenSO seiten, String lang, String currentSeiteId) {
         List<TreeItem> treeItems = seiten.getTreeItems(lang, currentSeiteId, null);
         return tree2(treeItems, "", true);
     }
@@ -35,17 +35,7 @@ public class PageTree {
         }
         for (int i = 0; i < treeItems.size(); i++) {
             TreeItem seite = treeItems.get(i);
-            String aClass = "";
-            if (seite.hasContent() == 2) {
-                aClass = " class=\"noContent\"";
-            }
-            if (seite.isCurrent()) {
-                if (aClass.isEmpty()) {
-                    aClass = " class=\"treeActivePage\"";
-                } else {
-                    aClass = " class=\"noContent treeActivePage\"";
-                }
-            }
+            String aClass = getCssClass(seite);
             String icon = seite.isNoTree() ? "fa-ban" : "fa-file-o";
             String color = seite.isNoTree() ? "#999" : "#666";
             icon = "<i class=\"fa " + icon + "\" style=\"color: " + color + ";\"></i> ";
@@ -70,8 +60,22 @@ public class PageTree {
                 ret += tree2(seite.getSubitems(), seite.getId(), seite.isExpanded()); // recursive
             }
         }
-        ret += "</ul>\n";
-        return ret;
+        return ret + "</ul>\n";
+    }
+
+    private String getCssClass(TreeItem seite) {
+        String aClass = "";
+        if (seite.hasContent() == 2) {
+            aClass = " class=\"noContent\"";
+        }
+        if (seite.isCurrent()) {
+            if (aClass.isEmpty()) {
+                aClass = " class=\"treeActivePage\"";
+            } else {
+                aClass = " class=\"noContent treeActivePage\"";
+            }
+        }
+        return aClass;
     }
     
     private boolean showTags(int x, List<TreeItem> seiten) {
