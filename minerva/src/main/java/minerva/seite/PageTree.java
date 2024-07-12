@@ -23,10 +23,10 @@ public class PageTree {
     // BookPage
     public String getHTML(SeitenSO seiten, String lang, String currentSeiteId) {
         List<TreeItem> treeItems = seiten.getTreeItems(lang, currentSeiteId, null);
-        return tree2(treeItems, "", true);
+        return makeHTML(treeItems, "", true);
     }
     
-    private String tree2(List<TreeItem> treeItems, String id, boolean expanded) {
+    private String makeHTML(List<TreeItem> treeItems, String id, boolean expanded) {
         String ret = "<ul id=\"P_" + id + "\" class=\"pagetree\"";
         if (id.isEmpty() || expanded) {
             ret += ">";
@@ -34,33 +34,38 @@ public class PageTree {
             ret += " style=\"display:none;\">";
         }
         for (int i = 0; i < treeItems.size(); i++) {
-            TreeItem seite = treeItems.get(i);
-            String aClass = getCssClass(seite);
-            String icon = seite.isNoTree() ? "fa-ban" : "fa-file-o";
-            String color = seite.isNoTree() ? "#999" : "#666";
-            icon = "<i class=\"fa " + icon + "\" style=\"color: " + color + ";\"></i> ";
-            boolean hasVisibleSubpages = false;
-            for (TreeItem subpage : seite.getSubitems()) {
-                if (subpage.hasContent() > 0) {
-                    hasVisibleSubpages = true;
-                    icon = "<a onclick=\"treeclick('P_" + seite.getId() + "')\" class=\"tci\"><i id=\"iP_" +
-                            seite.getId() + "\" class=\"fa " + (seite.isExpanded() ? "fa-caret-down" : "fa-caret-right") + "\" style=\"font-size: 15pt;"
-                            + (seite.isExpanded() ? "" : " padding-right: 4px;") + "\"></i></a> ";
-                    break;
-                }
-            }
-            ret += "<li><nobr>" + icon + "<a" + aClass + " href=\"" + seite.getLink() + "\">" + seite.getTitle() + "</a>";
-            if (showTags(i, treeItems)) {
-                ret += seite.getTags().stream().sorted().map(tag ->
-                        " <span class=\"label label-tag\" style=\"padding-left: 1.4em;\"><i class=\"fa fa-tag\"></i> " + tag + "</span>")
-                        .collect(Collectors.joining());
-            }
-            ret += "</nobr></li>\n";
-            if (hasVisibleSubpages) {
-                ret += tree2(seite.getSubitems(), seite.getId(), seite.isExpanded()); // recursive
-            }
+            ret = makeItemHTML(i, treeItems, ret);
         }
         return ret + "</ul>\n";
+    }
+
+    private String makeItemHTML(int i, List<TreeItem> treeItems, String ret) {
+        TreeItem seite = treeItems.get(i);
+        String aClass = getCssClass(seite);
+        String icon = seite.isNoTree() ? "fa-ban" : "fa-file-o";
+        String color = seite.isNoTree() ? "#999" : "#666";
+        icon = "<i class=\"fa " + icon + "\" style=\"color: " + color + ";\"></i> ";
+        boolean hasVisibleSubpages = false;
+        for (TreeItem subpage : seite.getSubitems()) {
+            if (subpage.hasContent() > 0) {
+                hasVisibleSubpages = true;
+                icon = "<a onclick=\"treeclick('P_" + seite.getId() + "')\" class=\"tci\"><i id=\"iP_" +
+                        seite.getId() + "\" class=\"fa " + (seite.isExpanded() ? "fa-caret-down" : "fa-caret-right") + "\" style=\"font-size: 15pt;"
+                        + (seite.isExpanded() ? "" : " padding-right: 4px;") + "\"></i></a> ";
+                break;
+            }
+        }
+        ret += "<li><nobr>" + icon + "<a" + aClass + " href=\"" + seite.getLink() + "\">" + seite.getTitle() + "</a>";
+        if (showTags(i, treeItems)) {
+            ret += seite.getTags().stream().sorted().map(tag ->
+                    " <span class=\"label label-tag\" style=\"padding-left: 1.4em;\"><i class=\"fa fa-tag\"></i> " + tag + "</span>")
+                    .collect(Collectors.joining());
+        }
+        ret += "</nobr></li>\n";
+        if (hasVisibleSubpages) {
+            ret += makeHTML(seite.getSubitems(), seite.getId(), seite.isExpanded()); // recursive
+        }
+        return ret;
     }
 
     private String getCssClass(TreeItem seite) {
