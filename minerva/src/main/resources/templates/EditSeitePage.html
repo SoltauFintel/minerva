@@ -77,29 +77,31 @@
 </div>
 
 <script type="module">
-{{include: editor}}
+    {{include: editor}}
 </script>
 <script>
-function _onSubmit() {
-    {{each L in languages}}
-        if (document.getElementById('titel{{L.LANG}}').value.trim() == '') {
-            alert('{{N.enterTitle}} ({{L.LANG}})');
-            return false;
-        }
-    {{/each}}
-    document.getElementById('s1').style = ''
-}
-
-$('#langTabs a').click(function (e) {
-    e.preventDefault()
-    $(this).tab('show')
+    function _onSubmit() {
+        {{each L in languages}}
+            if (document.getElementById('titel{{L.LANG}}').value.trim() == '') {
+                alert('{{N.enterTitle}} ({{L.LANG}})');
+                return false;
+            }
+        {{/each}}
+        document.getElementById('s1').style = ''
+    }
     
-    {{each L in languages}}
-        if (e.target.href.endsWith('#{{L.lang}}')) {
-            document.querySelector('.titelfeld{{L.LANG}}').focus()
-        }
-    {{/each}}
+    $('#langTabs a').click(function (e) {
+        e.preventDefault()
+        $(this).tab('show')
+        
+        {{each L in languages}}
+            if (e.target.href.endsWith('#{{L.lang}}')) {
+                document.querySelector('.titelfeld{{L.LANG}}').focus()
+            }
+        {{/each}}
+        
+        $.get("/w/{{branch}}/language?m=page&lang=" + e.target.hash.substring(1));
+    })
     
-    $.get("/w/{{branch}}/language?m=page&lang=" + e.target.hash.substring(1));
-})
+    {{include: treeclickjs}}
 </script>

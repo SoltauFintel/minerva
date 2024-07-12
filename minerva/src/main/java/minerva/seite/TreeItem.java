@@ -39,6 +39,13 @@ public class TreeItem {
         return title;
     }
 
+    /**
+     * has content: > 0, has no content: 0
+     * @return 1: page is not empty,
+     * 2: page is empty, but at least one subpage is not empty,
+     * 3: error (which should be interpreted as "page is not empty" to be on the safe side),
+     * 0: page and subpages are empty.
+     */
     public int hasContent() {
         return hasContent;
     }

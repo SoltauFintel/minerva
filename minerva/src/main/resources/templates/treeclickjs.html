@@ -1,0 +1,18 @@
+$(
+    function() {
+        $.jstree.defaults.core.themes.dots = false;
+        $.jstree.defaults.core.dblclick_toggle = false;
+        $.jstree.defaults.core.multiple = false;
+        
+        {{each L in languages}}
+            $('#tree_{{L.lang}}').jstree();  // init tree
+        {{/each}}
+    }
+);
+
+{{each L in languages}}
+    $('#tree_{{L.lang}}').on("changed.jstree", function(e, data) {  // tree node clicked
+        let id = data.selected[0]
+        window.location.href = '/s/{{branch}}/{{bookFolder}}/' + id.substring(3 /* cut prefix 'iP_' */);
+    });
+{{/each}}

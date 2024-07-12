@@ -1,8 +1,9 @@
 package minerva.seite;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
+import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.model.UserSO;
@@ -13,9 +14,10 @@ public class PageTree {
     public String getHTML(UserSO user, List<String> langs, SeiteSO seite) {
         String html = "";
         for (String lang : langs) {
-            String hidden = lang.equals(user.getPageLanguage()) ? "" : " hidden";
-            String tree = getHTML(seite.getBook().getSeiten(), lang, seite.getId());
-            html += "<div id=\"tree_" + lang + "\"" + hidden + ">" + tree + "</div>";
+            String t = "<div id=\"tree_{lang}\"{hidden}>{tree}</div>";
+            html += t.replace("{lang}", lang)
+                    .replace("{hidden}", lang.equals(user.getPageLanguage()) ? "" : " hidden")
+                    .replace("{tree}", getHTML(seite.getBook().getSeiten(), lang, seite.getId()));
         }
         return html;
     }
@@ -27,62 +29,45 @@ public class PageTree {
     }
     
     private String makeHTML(List<TreeItem> treeItems, String id, boolean expanded) {
-        String ret = "<ul id=\"P_" + id + "\" class=\"pagetree\"";
-        if (id.isEmpty() || expanded) {
-            ret += ">";
-        } else {
-            ret += " style=\"display:none;\">";
-        }
+        String ret = "";
         for (int i = 0; i < treeItems.size(); i++) {
-            ret = makeItemHTML(i, treeItems, ret);
+            ret += makeItemHTML(i, treeItems);
         }
-        return ret + "</ul>\n";
+        return "<ul>" + ret + "</ul>\n";
     }
 
-    private String makeItemHTML(int i, List<TreeItem> treeItems, String ret) {
+    private String makeItemHTML(int i, List<TreeItem> treeItems) {
         TreeItem seite = treeItems.get(i);
-        String aClass = getCssClass(seite);
-        String icon = seite.isNoTree() ? "fa-ban" : "fa-file-o";
-        String color = seite.isNoTree() ? "#999" : "#666";
-        icon = "<i class=\"fa " + icon + "\" style=\"color: " + color + ";\"></i> ";
-        boolean hasVisibleSubpages = false;
-        for (TreeItem subpage : seite.getSubitems()) {
-            if (subpage.hasContent() > 0) {
-                hasVisibleSubpages = true;
-                icon = "<a onclick=\"treeclick('P_" + seite.getId() + "')\" class=\"tci\"><i id=\"iP_" +
-                        seite.getId() + "\" class=\"fa " + (seite.isExpanded() ? "fa-caret-down" : "fa-caret-right") + "\" style=\"font-size: 15pt;"
-                        + (seite.isExpanded() ? "" : " padding-right: 4px;") + "\"></i></a> ";
-                break;
-            }
+        String title = Escaper.esc(seite.getTitle());
+        if (seite.isCurrent()) {
+            title = "<b>" + title + "</b>";
         }
-        ret += "<li><nobr>" + icon + "<a" + aClass + " href=\"" + seite.getLink() + "\">" + seite.getTitle() + "</a>";
-        if (showTags(i, treeItems)) {
-            ret += seite.getTags().stream().sorted().map(tag ->
-                    " <span class=\"label label-tag\" style=\"padding-left: 1.4em;\"><i class=\"fa fa-tag\"></i> " + tag + "</span>")
-                    .collect(Collectors.joining());
-        }
-        ret += "</nobr></li>\n";
+        boolean hasVisibleSubpages = !seite.getSubitems().isEmpty();
+        String sub = "";
         if (hasVisibleSubpages) {
-            ret += makeHTML(seite.getSubitems(), seite.getId(), seite.isExpanded()); // recursive
+            sub = makeHTML(seite.getSubitems(), seite.getId(), seite.isExpanded()); // recursive
         }
-        return ret;
+        
+        String t = "<li id='iP_{id}' data-jstree='{\"icon\":\"fa {icon}\"}' {open}>{title}{tags}{sub}</li>\n";
+        return t.replace("{id}", seite.getId())
+                .replace("{icon}", getIcon(seite))
+                .replace("{open}", seite.isExpanded() ? " class='jstree-open'" : "")
+                .replace("{title}", title)
+                .replace("{tags}", showTags(i, treeItems) ? getTagsHtml(seite.getTags()) : "")
+                .replace("{sub}", sub);
     }
 
-    private String getCssClass(TreeItem seite) {
-        String aClass = "";
-        if (seite.hasContent() == 2) {
-            aClass = " class=\"noContent\"";
+    private String getIcon(TreeItem seite) {
+        if (seite.isNoTree()) {
+            return "fa-ban pagetreeIconColorNoTree";
+        } else if (seite.hasContent() == 2) { // page is empty but has subpages
+            return "fa-file-o pagetreeIconColorNoContent";
+        } else {
+            return "fa-file-text-o pagetreeIconColor";
         }
-        if (seite.isCurrent()) {
-            if (aClass.isEmpty()) {
-                aClass = " class=\"treeActivePage\"";
-            } else {
-                aClass = " class=\"noContent treeActivePage\"";
-            }
-        }
-        return aClass;
     }
     
+    // Show tags only if title occurs twice in same layer.
     private boolean showTags(int x, List<TreeItem> seiten) {
         String xt = seiten.get(x).getTitle();
         for (int i = 0; i < seiten.size(); i++) {
@@ -91,5 +76,13 @@ public class PageTree {
             }
         }
         return false;
+    }
+
+    private String getTagsHtml(Set<String> tags) {
+        String ret = "";
+        for (String tag : tags) {
+            ret += "<span class=\"label label-tag ml5px\"><i class=\"fa fa-tag\"></i> " + Escaper.esc(tag) + "</span>";
+        }
+        return ret;
     }
 }

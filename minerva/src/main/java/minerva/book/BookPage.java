@@ -34,7 +34,9 @@ public class BookPage extends BPage implements Uptodatecheck {
         put("title", esc(title.toLowerCase().contains("buch") ? title : title + " (Buch)"));
         put("allPages", allPages);
         put("hasLeftArea", true);
-        put("leftAreaContent", new PageTree().getHTML(book.getSeiten(), user.getPageLanguage(), ""));
+        String t = "<div id=\"tree_{lang}\">{tree}</div>";
+        put("leftAreaContent", t.replace("{lang}", user.getPageLanguage())
+                .replace("{tree}", new PageTree().getHTML(book.getSeiten(), user.getPageLanguage(), "")));
         if (isOneLang()) {
             langs = oneLang(model, book);
         }

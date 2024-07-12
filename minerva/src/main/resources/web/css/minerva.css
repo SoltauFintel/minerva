@@ -30,6 +30,10 @@ body {
     margin-bottom: 3em;
 }
 
+.ml5px {
+    margin-left: 5px;
+}
+
 .last-change {
     color: #666;
     font-style: italic;
@@ -670,4 +674,16 @@ ul.pagetree {
 
 .edithk0:hover, .edithk1:hover {
     text-decoration: none;
+}
+
+.pagetreeIconColor {
+    color: #666;
+}
+
+.pagetreeIconColorNoTree {
+    color: #999;
+}
+
+.pagetreeIconColorNoContent {
+    color: #800000;
 }
