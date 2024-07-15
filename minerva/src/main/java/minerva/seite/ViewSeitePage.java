@@ -49,6 +49,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             langs = BookPage.oneLang(model, book);
         }
         execute2();
+        pagemode();
     }
 
     protected void execute2() {
@@ -444,5 +445,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     
     private String a(String a) {
         return a == null ? "null" : "\"" + a.replace("\"", "\\\"") + "\"";
+    }
+    
+    protected void pagemode() {
+        setMathMultiselectPageMode();
     }
 }

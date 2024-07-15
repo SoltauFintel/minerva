@@ -24,6 +24,7 @@ public class EditCommentPage extends Page {
             save(id, add, parentId, sv);
             ctx.redirect(sv.getCommentsPagePath());
         } else {
+            put("ckeditor", true); put("jstree", true); // ckeditor()
             display(id, parentId, sv, add);
         }
     }

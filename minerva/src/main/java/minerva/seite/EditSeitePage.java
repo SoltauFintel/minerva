@@ -83,4 +83,9 @@ public class EditSeitePage extends ViewSeitePage {
     protected String modifyHeader(String header) {
         return "edit: " + header;
     }
+    
+    @Override
+    protected void pagemode() {
+        setCKEditorPageMode();
+    }
 }

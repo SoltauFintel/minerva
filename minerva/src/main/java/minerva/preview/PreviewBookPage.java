@@ -26,6 +26,7 @@ public class PreviewBookPage extends BPage {
         sv.setExclusions(new Exclusions(book.getWorkspace().getExclusions().get()));
         sv.setCustomer(customer);
 
+        setJQueryObenPageMode();
         put("title", esc(book.getBook().getTitle().getString(lang))
                 + " - " + n("preview") + " " + lang.toUpperCase() + TITLE_POSTFIX);
         put("titel", esc(book.getBook().getTitle().getString(lang)));

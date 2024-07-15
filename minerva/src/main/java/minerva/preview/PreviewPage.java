@@ -33,6 +33,7 @@ public class PreviewPage extends SPage {
         }
         ExclusionsService sv = v.getExclusionsService();
         
+        setMathPageMode();
         put("title", esc(seite.getSeite().getTitle().getString(lang)) + " - " + n("preview") + " " + lang.toUpperCase()
                 + TITLE_POSTFIX);
         put("titel", esc(seite.getSeite().getTitle().getString(lang)));

@@ -61,4 +61,9 @@ public class EditHtmlPage extends EditSeitePage {
             }
         };
     }
+    
+    @Override
+    protected void pagemode() {
+        setJQueryObenPageMode();
+    }
 }

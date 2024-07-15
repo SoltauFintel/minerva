@@ -32,6 +32,14 @@ public class MinervaPageInitializer extends PageInitializer {
             m.getUser().getWorkspace(m.getBranch()).pull();
             page.init(ctx);
         }
+
+        // pagemodes
+        page.put("jstree", false);
+        page.put("ckeditor", false);
+        page.put("math", false);
+        page.put("jstree", false);
+        page.put("multiselect", false);
+        
         page.put("hasLeftArea", false);
         page.put("leftAreaContent", "");
         page.put("guiLanguage", m.getUserLang());

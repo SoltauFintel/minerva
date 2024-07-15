@@ -33,6 +33,7 @@ public class EditFeatureFieldsPage extends SPage {
             Logger.info(branch + " | " + user.getLogin() + " | Edit feature fields " + id + " " + seite.getTitle());
             BookPage.oneLang(model, book);
             header(seite.getTitle() + " (" + n("editFeatureFields") + ")");
+            setMultiselectPageMode();
             put("titel", esc(seite.getTitle()));
             put("featureFields", FeatureFieldsHtmlFactory.FACTORY.build(seite, true).html());
             mad.customersMultiselect(model);

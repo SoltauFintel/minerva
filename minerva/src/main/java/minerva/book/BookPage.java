@@ -29,6 +29,7 @@ public class BookPage extends BPage implements Uptodatecheck {
         	user.getUser().setPageLanguage("de");
         }
         
+        setJQueryObenPageMode();
         String title = book.getBook().getTitle().getString(userLang);
         put("header", esc(title));
         put("title", esc(title.toLowerCase().contains("buch") ? title : title + " (Buch)"));

@@ -38,6 +38,7 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
         }        
         
         fill(tasklist, branch, model, user.getLogin(), showAll);
+        setJQueryObenPageMode();
         put("hasTasks", !tasklist.isEmpty());
         put("showTaskButtons", me);
         put("showAll", showAll);

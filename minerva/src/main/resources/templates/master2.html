@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+
+{{include: master_mainhead}}
+    {{if multiselect}}<link rel="stylesheet" type="text/css" href="/css/bootstrap-multiselect.css">{{/if}}
+
+    {{if ckeditor}}<link href="/css/ckeditor-vite.css" type="text/css" rel="stylesheet">{{/if}}
+    
+    {{if jstree}}<link href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" type="text/css" rel="stylesheet"/>{{/if}}
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    {{if math}}<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+               <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" id="MathJax-script" async></script>{{/if}}
+    
+    {{if ckeditor}}<script src="/js/ckeditor-vite.js" type="module"></script>
+                   <script src="/js/image-upload.js"></script>{{/if}}
+    
+    {{if jstree}}<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>{{/if}}
+</head>
+<body>
+
+{{include: master_mainbody}}
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/metismenu.min.js"></script>
+    <script src="/js/sb-admin-2.min.js"></script>
+
+    {{if multiselect}}<script src="/js/bootstrap-multiselect.js"></script>{{/if}}
+</body>
+</html>

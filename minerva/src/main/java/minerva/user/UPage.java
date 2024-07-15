@@ -41,4 +41,27 @@ public abstract class UPage extends Page {
     protected String n(String key) {
         return NLS.get(user.getGuiLanguage(), key);
     }
+
+    protected final void setJQueryObenPageMode() {
+        put("jstree", true);
+    }
+    
+    protected final void setCKEditorPageMode() { // EditSeitePage, EditCommentPage
+        put("ckeditor", true);
+        put("jstree", true);
+    }
+    
+    protected final void setMathPageMode() {
+        put("math", true);
+    }
+    
+    protected final void setMultiselectPageMode() {
+        put("multiselect", true);
+    }
+    
+    protected final void setMathMultiselectPageMode() {
+        setMathPageMode();
+        setMultiselectPageMode();
+        put("jstree", true);
+    }
 }

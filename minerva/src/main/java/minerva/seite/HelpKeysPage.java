@@ -15,6 +15,7 @@ public class HelpKeysPage extends SPage {
         } else {
             header(n("helpKeys"));
             put("helpKeys", seite.getSeite().getHelpKeys().stream().collect(Collectors.joining("\n")) + "\n");
+            setJQueryObenPageMode();
         }
     }
 }

@@ -13,6 +13,7 @@ public class MathPage extends UPage {
 
         String formula = "x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}";
         
+        setMathPageMode();
         put("title", n("formulaEditor"));
         put("formula", "\\(" + formula + "\\)");
         put("formula2", formula);
