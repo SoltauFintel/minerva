@@ -129,7 +129,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             mindmap();
         } else {
             put("hasLeftArea", true);
-            put("leftAreaContent", new PageTree().getHTML(user, langs, seite));
+            put("leftAreaContent", new PageTree().getHTML(seite.getBook().getSeiten(), langs, seite.getId(), user.getPageLanguage()));
             put("mindmapData", "");
             new FeatureFieldsService().getFeaturesForSeite(id, workspace).forEach(f -> list.add().put("link", esc(f.seiteId)).put("title", esc(f.title)));
         }

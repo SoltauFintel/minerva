@@ -101,6 +101,9 @@
         $(this).tab('show')
         lang = e.target.hash.substring(1)
         $.get("/w/{{branch}}/language?m=page&lang=" + lang);
+        {{each L in languages}}
+            $("#tree_{{L.lang}}").attr("hidden", lang != "{{L.lang}}");
+        {{/each}}
     })
 
     function sort() {

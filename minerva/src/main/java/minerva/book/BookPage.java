@@ -23,21 +23,20 @@ public class BookPage extends BPage implements Uptodatecheck {
     @Override
     protected void execute() {
         boolean allPages = user.getUser().isShowAllPages();
-        String userLang = user.getGuiLanguage();
+        String guiLanguage = user.getGuiLanguage();
+        String pageLanguage = user.getPageLanguage();
 
-        if (book.isFeatureTree() && !"de".equals(user.getPageLanguage())) {
+        if (book.isFeatureTree() && !"de".equals(pageLanguage)) {
         	user.getUser().setPageLanguage("de");
         }
         
         setJQueryObenPageMode();
-        String title = book.getBook().getTitle().getString(userLang);
+        String title = book.getBook().getTitle().getString(guiLanguage);
         put("header", esc(title));
         put("title", esc(title.toLowerCase().contains("buch") ? title : title + " (Buch)"));
         put("allPages", allPages);
         put("hasLeftArea", true);
-        String t = "<div id=\"tree_{lang}\">{tree}</div>";
-        put("leftAreaContent", t.replace("{lang}", user.getPageLanguage())
-                .replace("{tree}", new PageTree().getHTML(book.getSeiten(), user.getPageLanguage(), "")));
+        put("leftAreaContent", new PageTree().getHTML(book.getSeiten(), langs, null, pageLanguage));
         if (isOneLang()) {
             langs = oneLang(model, book);
         }
@@ -71,7 +70,7 @@ public class BookPage extends BPage implements Uptodatecheck {
             map.put("lang", lang);
             map.put("LANG", lang.toUpperCase());
             map.put("gliederung", gliederung.toString());
-            map.put("active", user.getPageLanguage().equals(lang));
+            map.put("active", pageLanguage.equals(lang));
             String bookTitle = book.getBook().getTitle().getString(lang);
             if (bookTitle.isBlank()) {
                 bookTitle = book.getBook().getFolder();

@@ -4,26 +4,22 @@ import java.util.List;
 import java.util.Set;
 
 import github.soltaufintel.amalia.web.action.Escaper;
-import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
-import minerva.model.UserSO;
 
 public class PageTree {
 
-    // ViewSeitePage
-    public String getHTML(UserSO user, List<String> langs, SeiteSO seite) {
+    public String getHTML(SeitenSO seiten, List<String> langs, String currentSeiteId, String pageLanguage) {
         String html = "";
         for (String lang : langs) {
             String t = "<div id=\"tree_{lang}\"{hidden}>{tree}</div>";
             html += t.replace("{lang}", lang)
-                    .replace("{hidden}", lang.equals(user.getPageLanguage()) ? "" : " hidden")
-                    .replace("{tree}", getHTML(seite.getBook().getSeiten(), lang, seite.getId()));
+                    .replace("{hidden}", lang.equals(pageLanguage) ? "" : " hidden")
+                    .replace("{tree}", getHTML(seiten, lang, currentSeiteId));
         }
         return html;
     }
     
-    // BookPage
-    public String getHTML(SeitenSO seiten, String lang, String currentSeiteId) {
+    private String getHTML(SeitenSO seiten, String lang, String currentSeiteId) {
         List<TreeItem> treeItems = seiten.getTreeItems(lang, currentSeiteId, null);
         return makeHTML(treeItems, "", true);
     }
