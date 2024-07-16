@@ -116,8 +116,16 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
     
     private void getReleasePageContent2(String key, String rnt, DocField rns, DocField rnd, StringBuilder html) {
         html.append("<h3>" + key + ": " + rnt.trim() + "</h3>");
-        append(rns, html);
-        append(rnd, html);
+        if (rns == null) {
+            Logger.info("Release notes import: field RNS does not exist for " + key);
+        } else {
+            append(rns, html);
+        }
+        if (rnd == null) {
+            Logger.info("Release notes import: field RND does not exist for " + key);
+        } else {
+            append(rnd, html);
+        }
     }
     
     private void append(DocField d, StringBuilder html) {
