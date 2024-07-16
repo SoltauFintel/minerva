@@ -127,9 +127,8 @@ public abstract class AbstractReleaseNotesService {
         createSectionPage(releaseNumber);
         SeiteSO seite = createReleasePage(releaseNumber);
         Map<String, String> filenames = ctx.getFiles();
-        Logger.info(releaseNumber + " | Release notes import: images: " + ctx.getResultingReleasePage().getImages().size());
-        ctx.getResultingReleasePage().getImages().forEach(dn -> filenames.put(dn, DirAccess.IMAGE));
-for (String dn : filenames.keySet()) System.out.println(dn); // XXX DEBUG
+        String prefix = ctx.getResultingReleasePage().getSeite().getBook().getFolder() + "/";
+        ctx.getResultingReleasePage().getImages().forEach(dn -> filenames.put(prefix + dn, DirAccess.IMAGE));
         ctx.getBook().dao().saveFiles(filenames,
                 new CommitMessage("Release Notes " + ctx.getSpaceKey() + " " + releaseNumber),
                 ctx.getBook().getWorkspace());
