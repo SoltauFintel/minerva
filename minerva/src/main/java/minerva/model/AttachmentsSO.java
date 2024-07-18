@@ -121,4 +121,13 @@ public class AttachmentsSO {
             new File(dir).delete();
         }
     }
+    
+    public void publish(File targetFolder) {
+        Set<String> filenames = seite.getBook().dao().getFilenames(dir);
+        if (filenames != null) {
+            for (String dn : filenames) {
+                FileService.copyFile(new File(dir, dn), new File(targetFolder, seite.getId()));
+            }
+        }        
+    }
 }

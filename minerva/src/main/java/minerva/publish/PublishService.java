@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import minerva.MinervaWebapp;
 import minerva.base.FileService;
 import minerva.book.BookType;
+import minerva.model.AttachmentsSO;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -116,6 +117,8 @@ public class PublishService {
                 if (src.isDirectory()) {
                     FileService.copyFiles(src, new File(targetImgFolder, seite.getId()));
                 }
+                
+                new AttachmentsSO(seite).publish(new File(targetFolder, "attachments")); // copy attachments
     
                 copyHtmlAndImg(seite.getSeiten(), pages, targetFolder); // recursive
             }
