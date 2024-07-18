@@ -31,6 +31,7 @@ public class PageMenu {
                 "fa-sitemap",
                 n("watchSubpages") + (subpagesWatched ? " <i class=\"fa fa-check greenbook\"></i>" : ""));
         menuitem(i, " data-toggle=\"modal\" data-target=\"#tocModal\"", "fa-list-ul", n("TOC"));
+        menuitem(i, viewLink + "/attachments", "fa-paperclip", "Attachments");
         menuitem(i, "", "", "-");
         
         if (gitlab) {

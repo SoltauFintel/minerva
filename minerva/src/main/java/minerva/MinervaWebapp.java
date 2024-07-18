@@ -8,6 +8,11 @@ import github.soltaufintel.amalia.web.builder.WebAppBuilder;
 import github.soltaufintel.amalia.web.config.AppConfig;
 import github.soltaufintel.amalia.web.route.PingRouteDefinition.PingAction;
 import github.soltaufintel.amalia.web.route.RouteDefinitions;
+import minerva.attachments.AttachmentsPage;
+import minerva.attachments.DeleteAttachmentAction;
+import minerva.attachments.DownloadAttachmentAction;
+import minerva.attachments.EditAttachmentPage;
+import minerva.attachments.UploadAttachmentAction;
 import minerva.auth.ActivateAdminRightsAction;
 import minerva.auth.Book6LoginAction;
 import minerva.auth.Book6StartAction;
@@ -148,7 +153,7 @@ import minerva.workspace.WorkspacesPage;
 import spark.Spark;
 
 public class MinervaWebapp extends RouteDefinitions {
-    public static final String VERSION = "3.1.1";
+    public static final String VERSION = "3.2.0";
     private static MinervaFactory factory;
     
     @Override
@@ -252,6 +257,13 @@ public class MinervaWebapp extends RouteDefinitions {
         post("/s/:branch/:book/:id/editorsnote", SaveEditorsNoteAction.class);
         form("/s/:branch/:book/:id/help-keys/:lang/:h", HelpKeysForHeadingPage.class);
         get("/s/:branch/:book/:id/cleanup-hkh", CleanupHelpKeysForHeadingsAction.class);
+        
+        // Attachments
+        get("/s/:branch/:book/:id/attachments/:dn", DownloadAttachmentAction.class);
+        get("/s/:branch/:book/:id/attachments", AttachmentsPage.class);
+        post("/s/:branch/:book/:id/upload-attachment", UploadAttachmentAction.class);
+        form("/s/:branch/:book/:id/edit-attachment/:dn", EditAttachmentPage.class);
+        get("/s/:branch/:book/:id/delete-attachment/:dn", DeleteAttachmentAction.class);
 
         // Links
         form("/links/:branch/:book/:id", LinkResolverPage.class);

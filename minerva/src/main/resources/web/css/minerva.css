@@ -687,3 +687,15 @@ ul.pagetree {
 .pagetreeIconColorNoContent {
     color: #800000;
 }
+
+.dropzone {
+    border: 2px dashed darkgreen;
+    height: 150px;
+    background-color: lightgreen;
+}
+
+.dz-message {
+    text-align: center;
+    color: #333;
+    margin-top: 3em;
+}
