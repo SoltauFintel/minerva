@@ -119,6 +119,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         String watchers = new WatchersService(seite).getWatchers();
         put("watchers", esc(watchers));
         put("hasWatchers", !watchers.isEmpty());
+        put("hasAttachments", seite.hasAttachments());
     }
 
     private void featureTree() {

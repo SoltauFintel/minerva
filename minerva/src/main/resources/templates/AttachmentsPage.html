@@ -29,7 +29,7 @@
         
         <h2><a href="{{viewlink}}">{{pageTitle}}</a></h2>
 
-        <p>Feature Preview! Bitte nur eine Datei hochladen! Das Hochladen mehrerer Dateien funktioniert noch nicht richtig.</p>
+        <p style="color: #d60;"><i>Feature Preview! Bitte nur eine Datei hochladen! Das Hochladen mehrerer Dateien funktioniert noch nicht richtig.</i></p>
         {{dropzone}}
 
         {{if hasAttachments}}
@@ -48,7 +48,7 @@
                             {{/each}}
                         </td>
                         <td style="text-align: right;">
-                            <a href="{{viewlink}}/edit-attachment/{{att.filename}}" class="btn btn-xs btn-default"><i
+                            <a href="{{viewlink}}/edit-attachment/{{att.filename}}" class="btn btn-xs btn-default br"><i
                                 class="fa fa-pencil"></i> {{N.EditCategories}}</a>
                             <a  onclick="return loeschen('{{att.filename}}', 'n_{{att.id}}');"
                                 href="{{viewlink}}/delete-attachment/{{att.filename}}" class="btn btn-xs btn-danger" title="{{N.delete}}"><i
@@ -57,6 +57,10 @@
                     </tr>
                 {{/each}}
             </table>
+            <p class="mt4">
+                <small>Das Einbauen der Attachments erfolgt mittels ${attachment=kategorie} bzw.
+                ${attachments=kategorie}</small>
+            </p>
         {{else}}
             <p class="mt2">- keine Attachments vorhanden -</p>
         {{/if}}

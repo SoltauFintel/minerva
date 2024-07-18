@@ -26,6 +26,7 @@ public class AttachmentsPage extends SPage {
             DataMap map = list.add();
             map.put("filename", esc(att.getFilename()));
             map.putInt("id", ++_id);
+            // TO-DO Man könnte noch anzeigen, ob die Datei verwendet wird. Das ist insbesondere dann wichtig, wenn eine andere Seite eine Datei referenziert.
             DataList list2 = map.list("categories");
             for (String cat : att.getCategories()) {
                 list2.add().put("cat", esc(cat));

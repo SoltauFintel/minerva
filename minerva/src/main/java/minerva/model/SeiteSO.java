@@ -869,4 +869,8 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         }
         Collections.sort(helpKeysTarget);
     }
+    
+    public boolean hasAttachments() {
+        return new AttachmentsSO(this).hasAttachments();
+    }
 }

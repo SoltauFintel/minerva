@@ -60,6 +60,11 @@ public class AttachmentsSO {
         return ret;
     }
 
+    public boolean hasAttachments() {
+        Set<String> filenames = seite.getBook().dao().getFilenames(dir);
+        return filenames != null && !filenames.isEmpty();
+    }
+
     public Attachment get(String filename) {
         return list().stream()
                 .filter(i -> i.getFilename().equals(filename))

@@ -86,6 +86,9 @@
             <a {{if hasNextlink}}href="{{nextlink}}"{{else}}disabled{{/if}} class="btn btn-default br hidden-print"
                 title="{{N.pageToNext}}" id="next1"><i class="fa fa-arrow-right"></i></a>
             <div style="float: right;" class="hidden-print">
+                {{if hasAttachments}}
+                    <a href="{{viewlink}}/attachments" class="btn btn-default br" title="Attachments"><i class="fa fa-paperclip"></i></a>
+                {{/if}}
                 <a href="/sc/{{branch}}/{{book}}/{{id}}/comments" class="btn btn-default"><i class="fa fa-comment{{if not commentsForMe}}-o{{/if}}"></i>
                     {{N.comments}} ({{commentsSize}})</a>
                 <ul class="nav navbar-nav" style="float: right; margin-left: 19px;">
