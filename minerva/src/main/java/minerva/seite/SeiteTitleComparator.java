@@ -1,8 +1,9 @@
-package minerva.model;
+package minerva.seite;
 
 import java.util.Comparator;
 
 import minerva.base.Version;
+import minerva.model.SeiteSO;
 
 public class SeiteTitleComparator implements Comparator<SeiteSO> {
     private final boolean reversedOrder;

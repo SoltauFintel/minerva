@@ -24,6 +24,7 @@ import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.ISeite;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
+import minerva.seite.SeiteTitleComparator;
 import minerva.seite.TreeItem;
 import minerva.seite.link.ExtractLinksContext;
 
