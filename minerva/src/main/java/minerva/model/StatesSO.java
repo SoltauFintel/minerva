@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import github.soltaufintel.amalia.spark.Context;
 import minerva.auth.MinervaAuth;
 import minerva.base.Tosmap;
+import minerva.base.UserMessage;
 import minerva.user.User;
 
 /**
@@ -71,5 +72,12 @@ public class StatesSO {
     public static void onEditing(String login, String branch, String seiteId, boolean finished) {
         // Inform all other active users about the start/end of editing the page.
         getStates().stream().forEach(state -> state.getUser().onEditing(login, branch, seiteId, finished));
+    }
+
+    public static class SessionExpiredException extends UserMessage {
+
+        public SessionExpiredException() {
+            super("session-expired", (UserSO) null);
+        }
     }
 }

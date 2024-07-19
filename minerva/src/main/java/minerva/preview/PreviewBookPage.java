@@ -10,8 +10,8 @@ import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
-import minerva.model.SeiteVisible;
 import minerva.model.SeitenSO;
+import minerva.seite.SeiteVisible;
 
 public class PreviewBookPage extends BPage {
 

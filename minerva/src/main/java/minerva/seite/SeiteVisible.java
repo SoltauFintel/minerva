@@ -1,4 +1,4 @@
-package minerva.model;
+package minerva.seite;
 
 import minerva.exclusions.ExclusionsService;
 

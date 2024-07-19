@@ -10,10 +10,10 @@ import com.github.template72.data.DataMap;
 import minerva.exclusions.ExclusionsService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
-import minerva.model.SeiteVisible;
 import minerva.seite.Breadcrumb;
 import minerva.seite.NavigateService;
 import minerva.seite.SPage;
+import minerva.seite.SeiteVisible;
 import ohhtml.toc.TocMacro;
 
 public class PreviewPage extends SPage {

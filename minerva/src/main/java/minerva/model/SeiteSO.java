@@ -36,6 +36,7 @@ import minerva.seite.IPageChangeStrategy;
 import minerva.seite.ISeite;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
+import minerva.seite.SeiteVisible;
 import minerva.seite.WatchersService;
 import minerva.seite.link.ExtractLinksContext;
 import minerva.seite.move.ChangeFile;
