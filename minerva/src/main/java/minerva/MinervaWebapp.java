@@ -90,9 +90,7 @@ import minerva.preview.PreviewCustomerPage;
 import minerva.preview.PreviewPage;
 import minerva.publish.PublishAction;
 import minerva.releasenotes.SelectRNCustomer2Page;
-import minerva.releasenotes.SelectRNCustomerPage;
 import minerva.releasenotes.SelectRNRelease2Page;
-import minerva.releasenotes.SelectRNReleasePage;
 import minerva.search.IndexWorkspaceAction;
 import minerva.search.SearchPage;
 import minerva.seite.AddSeiteAction;
@@ -223,10 +221,8 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/b/:branch/:book/export", ExportBookAction.class);
         get("/b/:branch/:book/export-csv", ExportCsvBookAction.class); // XXX temp.
         get("/b/:branch/:book/validate", ValidationPage.class);
-        get("/b/:branch/:book/rn-select-customer", SelectRNCustomerPage.class);   // Jira Server
-        form("/b/:branch/:book/rn-select-release", SelectRNReleasePage.class);    // Jira Server
-        get("/b/:branch/:book/rn-select-customer2", SelectRNCustomer2Page.class); // Jira Cloud
-        form("/b/:branch/:book/rn-select-release2", SelectRNRelease2Page.class);  // Jira Cloud
+        get("/b/:branch/:book/rn-select-customer2", SelectRNCustomer2Page.class);
+        form("/b/:branch/:book/rn-select-release2", SelectRNRelease2Page.class);
         get("/b/", CurrentWorkspaceAction.class); // falls man sich dahin verirren sollte
     }
 
