@@ -80,7 +80,7 @@ public class AttachmentsSO {
         String dn = dir + "/" + att.getFilename() + ".cat";
         String content = att.getCategories().stream()
                 .sorted((a, b) -> a.compareToIgnoreCase(b))
-                .collect(Collectors.joining(";"));
+                .collect(Collectors.joining(","));
         files.put(dn, content);
         seite.getBook().dao().saveFiles(files,
                 new CommitMessage(seite, "save attachment categories: " + att.getFilename()),
