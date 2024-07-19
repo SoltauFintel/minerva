@@ -1,7 +1,7 @@
 package minerva.auth;
 
 import github.soltaufintel.amalia.web.action.Action;
-import minerva.model.SessionExpiredException;
+import minerva.model.StatesSO.SessionExpiredException;
 
 public class LogoutAction extends Action {
 
