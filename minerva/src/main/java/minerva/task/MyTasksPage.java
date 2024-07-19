@@ -14,6 +14,7 @@ import minerva.base.MinervaPageInitializer;
 import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
 import minerva.model.UserSO;
+import minerva.user.User;
 import minerva.user.UserAccess;
 import minerva.workspace.WPage;
 
@@ -32,7 +33,11 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
             Logger.info(user.getLogin() + " | My tasks");
             header(n("myTasks"));
         } else {
-            tasklist = init(new UserSO(UserAccess.loadUser(login)), me);
+            User theUser = UserAccess.loadUser(login);
+            if (theUser == null) {
+            	throw new RuntimeException("Unknown user!");
+            }
+			tasklist = init(new UserSO(theUser), me);
             Logger.info(user.getLogin() + " | All tasks for " + login);
             header(n("Tasks"));
         }        
