@@ -8,6 +8,7 @@ import org.jsoup.select.Elements;
 import org.pmw.tinylog.Logger;
 
 import minerva.MinervaWebapp;
+import ohhtml.toc.TocMacro;
 
 /**
  * Edit help keys for headings (Anker Verknüpfungen)
@@ -49,7 +50,7 @@ public class HelpKeysForHeadingPage extends SPage {
         Elements headings = TocMacro._getHeadings(Jsoup.parse(seite.getContent().getString(lang)));
         int lfd = 0;
         for (Element heading : headings) {
-            if (!TocMacro.ignoreHeading(heading, seite) && ++lfd == h) {
+            if (!TocMacro.ignoreHeading(heading, new SeiteIPageAdapter(seite)) && ++lfd == h) {
                 return heading.text();
             }
         }

@@ -24,6 +24,7 @@ import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.user.User;
 import minerva.user.UserAccess;
+import ohhtml.toc.TocMacro;
 
 public class ViewSeitePage extends SPage implements Uptodatecheck {
     private String mindmapJson;
@@ -169,7 +170,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             map.put("titel", esc(titel));
             TocMacro macro = new TocMacro(seite.getTocMacroPage(), "-", lang, "");
             if (!MinervaWebapp.factory().isCustomerVersion()) {
-                macro.setSeite(seite);
+                macro.setSeite(new SeiteIPageAdapter(seite));
             }
             map.put("content", transformContent(macro, lang, map));
             map.put("active", lang.equals(user.getPageLanguage()));

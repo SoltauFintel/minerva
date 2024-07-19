@@ -23,10 +23,10 @@ import minerva.model.SeiteVisible;
 import minerva.model.SeitenSO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.NavigateService;
-import minerva.seite.TocMacro;
-import minerva.seite.TocMacroPage;
 import minerva.seite.link.Link;
 import minerva.seite.link.LinkService;
+import ohhtml.toc.TocMacro;
+import ohhtml.toc.TocMacroPage;
 
 /**
  * Multi-page HTML export

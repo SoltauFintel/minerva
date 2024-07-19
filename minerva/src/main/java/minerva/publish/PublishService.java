@@ -20,7 +20,8 @@ import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
-import minerva.seite.HelpKeysForHeading;
+import ohhtml.toc.HelpKeysForHeading;
+import ohhtml.toc.TocEntry;
 
 public class PublishService {
     private final List<String> langs;

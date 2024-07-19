@@ -3,6 +3,7 @@ package minerva.seite;
 import org.pmw.tinylog.Logger;
 
 import minerva.access.CommitMessage;
+import ohhtml.toc.TocMacro;
 
 /**
  * Wird eine Überschrift geändert, so sind zuvor damit verknüpfte Hilfe-Keys verwaist.
@@ -17,7 +18,7 @@ public class CleanupHelpKeysForHeadingsAction extends SAction {
         boolean dirty = false;
         for (String lang : langs) {
             TocMacro macro = new TocMacro(seite.getTocMacroPage(), "-", lang, "");
-            macro.setSeite(seite);
+            macro.setSeite(new SeiteIPageAdapter(seite));
             if (macro.cleanupHkhErrors()) {
                 dirty = true;
             }

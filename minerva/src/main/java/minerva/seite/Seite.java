@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import minerva.base.NlsString;
+import ohhtml.toc.HelpKeysForHeading;
 
 /**
  * Entity for holding page meta data.

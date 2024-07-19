@@ -14,7 +14,7 @@ import minerva.model.SeiteVisible;
 import minerva.seite.Breadcrumb;
 import minerva.seite.NavigateService;
 import minerva.seite.SPage;
-import minerva.seite.TocMacro;
+import ohhtml.toc.TocMacro;
 
 public class PreviewPage extends SPage {
     

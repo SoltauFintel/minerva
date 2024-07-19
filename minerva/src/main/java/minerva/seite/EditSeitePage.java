@@ -9,6 +9,7 @@ import minerva.model.SeiteSO;
 import minerva.model.UserSO.LoginAndEndTime;
 import minerva.postcontents.PostContentsService;
 import minerva.seite.link.InvalidLinksModel;
+import ohhtml.toc.TocMacro;
 
 public class EditSeitePage extends ViewSeitePage {
 
