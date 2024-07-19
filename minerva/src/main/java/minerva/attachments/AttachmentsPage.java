@@ -8,6 +8,7 @@ import com.github.template72.data.DataMap;
 import github.soltaufintel.amalia.web.image.Dropzone;
 import minerva.model.AttachmentsSO;
 import minerva.seite.SPage;
+import ohhtml.downloads.Attachment;
 
 public class AttachmentsPage extends SPage {
 

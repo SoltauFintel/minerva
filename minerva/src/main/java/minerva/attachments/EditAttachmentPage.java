@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import minerva.base.UserMessage;
 import minerva.model.AttachmentsSO;
 import minerva.seite.SPage;
+import ohhtml.downloads.Attachment;
 
 /**
  * Edit attachment categories

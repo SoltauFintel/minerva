@@ -16,9 +16,10 @@ import org.pmw.tinylog.Logger;
 
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
-import minerva.attachments.Attachment;
 import minerva.base.FileService;
 import minerva.base.UserMessage;
+import ohhtml.downloads.Attachment;
+import ohhtml.downloads.GetAttachments;
 import spark.utils.IOUtils;
 
 public class AttachmentsSO {
@@ -34,35 +35,16 @@ public class AttachmentsSO {
     }
     
     public List<Attachment> list() {
-        Map<String, Attachment> map = new HashMap<>();
-        Set<String> filenames = seite.getBook().dao().getFilenames(dir);
-        if (filenames != null) {
-            // first collect attachment files
-            for (String dn : filenames) {
-                if (!dn.endsWith(".cat")) { // attachment file
-                    map.put(dn, new Attachment(dn));
-                }
-            }
-            // then add categories to the attachment files
-            for (String dn : filenames) {
-                if (dn.endsWith(".cat")) { // categories file
-                    String content = FileService.loadPlainTextFile(new File(dir, dn));
-                    dn = dn.substring(0, dn.length() - ".cat".length());
-                    Attachment att = map.get(dn);
-                    if (att != null) {
-                        att.fromString(content);
-                    } // else: categories without attachment -> ignore it
-                }
-            }
-        }
-        List<Attachment> ret = new ArrayList<>(map.values());
-        ret.sort((a, b) -> a.getFilename().compareToIgnoreCase(b.getFilename()));
-        return ret;
+        return GetAttachments.list(dir, getFilenames());
     }
 
     public boolean hasAttachments() {
-        Set<String> filenames = seite.getBook().dao().getFilenames(dir);
+        Set<String> filenames = getFilenames();
         return filenames != null && !filenames.isEmpty();
+    }
+
+    private Set<String> getFilenames() {
+        return seite.getBook().dao().getFilenames(dir);
     }
 
     public Attachment get(String filename) {
@@ -128,7 +110,7 @@ public class AttachmentsSO {
     }
     
     public void publish(File targetFolder) {
-        Set<String> filenames = seite.getBook().dao().getFilenames(dir);
+        Set<String> filenames = getFilenames();
         if (filenames != null) {
             for (String dn : filenames) {
                 FileService.copyFile(new File(dir, dn), new File(targetFolder, seite.getId()));

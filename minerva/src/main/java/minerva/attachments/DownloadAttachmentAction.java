@@ -10,6 +10,7 @@ import minerva.model.AttachmentsSO;
 import minerva.model.SeiteSO;
 import minerva.model.StatesSO;
 import minerva.model.UserSO;
+import ohhtml.downloads.Attachment;
 
 public class DownloadAttachmentAction extends Route<Object> {
     private Object response;
