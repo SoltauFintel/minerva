@@ -9,7 +9,6 @@ import org.pmw.tinylog.Logger;
 
 import minerva.access.CommitMessage;
 import minerva.model.BookSO;
-import minerva.model.ISeite;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 

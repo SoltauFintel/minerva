@@ -33,6 +33,7 @@ import minerva.comment.SeiteCommentService2;
 import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
 import minerva.seite.IPageChangeStrategy;
+import minerva.seite.ISeite;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
 import minerva.seite.WatchersService;

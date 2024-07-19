@@ -1,4 +1,6 @@
-package minerva.model;
+package minerva.seite;
+
+import minerva.model.SeitenSO;
 
 public interface ISeite {
     

@@ -11,7 +11,6 @@ import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.web.action.Escaper;
 import github.soltaufintel.amalia.web.action.Page;
 import minerva.base.NLS;
-import minerva.model.ISeite;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.model.UserSO;

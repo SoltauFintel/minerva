@@ -21,6 +21,7 @@ import minerva.config.MinervaConfig;
 import minerva.seite.Breadcrumb;
 import minerva.seite.CommentWithSeite;
 import minerva.seite.IBreadcrumbLinkBuilder;
+import minerva.seite.ISeite;
 import minerva.seite.PageChange;
 import minerva.seite.Seite;
 import minerva.seite.TreeItem;

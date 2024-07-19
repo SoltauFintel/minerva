@@ -15,6 +15,7 @@ import minerva.book.BookType;
 import minerva.exclusions.ExclusionsService;
 import minerva.seite.Breadcrumb;
 import minerva.seite.IBreadcrumbLinkBuilder;
+import minerva.seite.ISeite;
 import minerva.seite.Seite;
 import minerva.seite.tag.TagNList;
 import minerva.subscription.SubscriptionService;
