@@ -1,8 +1,13 @@
 package minerva.seite;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
+
+import javax.imageio.ImageIO;
 
 import org.pmw.tinylog.Logger;
 
@@ -186,6 +191,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     
     protected String transformContent(TocMacro macro, String lang, DataMap map) {
         String html = macro.transform(seite.getContent().getString(lang));
+        html = thumbnails(html, seite.getBook().getFolder(), seite.getId(), booklink.replace("/b/", "/s/") + "/");
         map.put("toc", macro.getTOC()); // no esc, after transform()
         return html;
     }
@@ -451,5 +457,46 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     
     protected void pagemode() {
         setMathMultiselectPageMode();
+    }
+    
+    /**
+     * Displays large images as thumbnails and add a link for enlarging them to it.
+     * 
+     * @param html -
+     * @param folder book folder
+     * @param id page ID
+     * @param bookLink "/s/{branch}/{book-folder}/"
+     * @return HTML
+     */
+    public static String thumbnails(String html, String folder, String id, String bookLink) {
+        final int max = 1400;
+        final String t = "<a href=\"{link}\" target=\"minimg\"><img src=\"{dn}\" {attr}=\"270\" border=\"0\"></a>";
+
+        Set<String> img = StringService.findHtmlTags(html, "img", "src", i -> true, false);
+        for (String dn : img) {
+            try {
+                File file = new File(folder + "/" + dn);
+                BufferedImage picture = ImageIO.read(file);
+                int width = picture.getWidth();
+                int height = picture.getHeight();
+                if (width > max || height > max) {
+                    Logger.debug(id + " | thumbnail: " + dn + ", " + width + " x " + height);
+                    int o = html.indexOf("<img src=\"" + dn + "\"");
+                    if (o >= 0) {
+                        int oo = html.indexOf(">", o);
+                        if (oo > o) {
+                            String insert = t
+                                    .replace("{link}", bookLink + dn)
+                                    .replace("{dn}", dn)
+                                    .replace("{attr}", height > width ? "height" : "width");
+                            html = html.substring(0, o) + insert + html.substring(oo + 1);
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                Logger.error(id + " | thumbnail: " + dn + " => " + e.getMessage());
+            }
+        }
+        return html;
     }
 }
