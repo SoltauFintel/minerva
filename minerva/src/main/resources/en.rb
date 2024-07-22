@@ -387,3 +387,5 @@ deleteAttachment2="?
 EditAttachmentCategories=Edit attachment categories
 attachmentDoesnotExist=Attachment does not exist!
 emptyCategories=Please enter at least one category!
+upload1file=Please upload files individually!
+noAttachments=no attachments

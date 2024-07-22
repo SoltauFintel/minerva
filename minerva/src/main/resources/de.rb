@@ -387,3 +387,5 @@ deleteAttachment2=" löschen?
 EditAttachmentCategories=Attachment Kategorien bearbeiten
 attachmentDoesnotExist=Attachment nicht vorhanden!
 emptyCategories=Bitte geben Sie mindestens eine Kategorie ein!
+upload1file=Bitte Dateien einzeln hochladen!
+noAttachments=keine Attachments vorhanden

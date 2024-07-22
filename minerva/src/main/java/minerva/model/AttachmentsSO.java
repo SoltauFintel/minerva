@@ -17,6 +17,7 @@ import org.pmw.tinylog.Logger;
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.base.FileService;
+import minerva.base.StringService;
 import minerva.base.UserMessage;
 import ohhtml.downloads.Attachment;
 import ohhtml.downloads.GetAttachments;
@@ -53,7 +54,7 @@ public class AttachmentsSO {
                 .findFirst().orElseThrow(() -> new UserMessage("attachmentDoesnotExist", seite.getBook().getWorkspace()));
     }
     
-    public void save(InputStream inputStream, String dn) {
+    public void save(InputStream inputStream, String dn, String category) {
         File file = new File(dir, dn);
         if (file.isFile()) {
             throw new RuntimeException("Datei bereits vorhanden!"); // TODO UserMessage, bzw. sichtbare Meldung für Anwender
@@ -65,10 +66,19 @@ public class AttachmentsSO {
             Logger.error(e);
             throw new RuntimeException("Error uploading attachment!");
         }
+        
+        List<String> cat;
+        if (StringService.isNullOrEmpty(category)) {
+            cat = List.of("datei");
+        } else {
+            Attachment att = new Attachment(dn);
+            att.fromString(category.toLowerCase());
+            cat = att.getCategories();
+        }
 
         Map<String, String> files = new HashMap<>();
         files.put(dir + "/" + dn, DirAccess.IMAGE);
-        files.put(dir + "/" + dn + ".cat", "datei");
+        files.put(dir + "/" + dn + ".cat", StringService.isNullOrEmpty(category) ? "datei" : cat.stream().collect(Collectors.joining(",")));
         seite.getBook().dao().saveFiles(files,
                 new CommitMessage(seite, "save attachments: " + dn),
                 seite.getBook().getWorkspace());

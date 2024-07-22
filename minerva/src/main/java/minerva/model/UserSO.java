@@ -455,4 +455,16 @@ public class UserSO {
         user.setTaskPriorities(list);
         save();
     }
+    
+    public String getAttachmentCategory() {
+        load();
+        String ret = user.getAttachmentCategory();
+        return StringService.isNullOrEmpty(ret) ? "datei" : ret;
+    }
+    
+    public void saveAttachmentCategory(String category) {
+        load();
+        user.setAttachmentCategory(category);
+        save();
+    }
 }

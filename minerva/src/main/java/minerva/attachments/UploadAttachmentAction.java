@@ -30,7 +30,7 @@ public class UploadAttachmentAction extends SAction {
             String dn = part.getSubmittedFileName();
             Logger.info("UploadAttachmentAction | filename: '" + dn + "', size: " + mb + " MB (" + nbytes + ")");
 
-            new AttachmentsSO(seite).save(part.getInputStream(), dn);
+            new AttachmentsSO(seite).save(part.getInputStream(), dn, user.getAttachmentCategory());
 
             // nicht nötig -> ctx.redirect(viewlink + "/attachments");
         } catch (IOException | ServletException e) {

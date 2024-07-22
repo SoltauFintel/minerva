@@ -29,7 +29,21 @@
         
         <h2><a href="{{viewlink}}">{{pageTitle}}</a></h2>
 
-        <p style="color: #d60;"><i>Feature Preview! Bitte nur eine Datei hochladen! Das Hochladen mehrerer Dateien funktioniert noch nicht richtig.</i></p>
+        <form class="form-horizontal mt2" onkeydown="return event.key != 'Enter';">
+            <fieldset>
+                <div class="form-group">
+                    <label for="cat" class="col-lg-1 control-label">{{N.Categories}}</label>
+                    <div class="input-group col-lg-2">
+                        <input name="cat" id="cat" type="text" class="form-control" value="{{cat}}">
+                        <a hx-post="/attachment-category" hx-swap="none" class="btn btn-default btn-sm input-group-addon"><i
+                            class="fa fa-save" title="{{N.save}}"></i></a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        <p>{{N.upload1file}}</p>
+
         {{dropzone}}
 
         {{if hasAttachments}}
@@ -57,12 +71,8 @@
                     </tr>
                 {{/each}}
             </table>
-            <p class="mt4">
-                <small>Das Einbauen der Attachments erfolgt mittels ${attachment=kategorie} bzw.
-                ${attachments=kategorie}</small>
-            </p>
         {{else}}
-            <p class="mt2">- keine Attachments vorhanden -</p>
+            <p class="mt2">- {{N.noAttachments}} -</p>
         {{/if}}
     </div>
 </div>

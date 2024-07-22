@@ -12,6 +12,7 @@ import minerva.attachments.AttachmentsPage;
 import minerva.attachments.DeleteAttachmentAction;
 import minerva.attachments.DownloadAttachmentAction;
 import minerva.attachments.EditAttachmentPage;
+import minerva.attachments.SaveUserAttachmentCategoryAction;
 import minerva.attachments.UploadAttachmentAction;
 import minerva.auth.ActivateAdminRightsAction;
 import minerva.auth.Book6LoginAction;
@@ -260,6 +261,7 @@ public class MinervaWebapp extends RouteDefinitions {
         post("/s/:branch/:book/:id/upload-attachment", UploadAttachmentAction.class);
         form("/s/:branch/:book/:id/edit-attachment/:dn", EditAttachmentPage.class);
         get("/s/:branch/:book/:id/delete-attachment/:dn", DeleteAttachmentAction.class);
+        post("/attachment-category", SaveUserAttachmentCategoryAction.class);
 
         // Links
         form("/links/:branch/:book/:id", LinkResolverPage.class);

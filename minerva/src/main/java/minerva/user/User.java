@@ -23,6 +23,7 @@ public class User {
     private String lastEditedPage;
     private List<String> taskPriorities;
     private boolean showAllPages = false;
+    private String attachmentCategory;
     
     public String getLogin() {
         return login;
@@ -138,4 +139,12 @@ public class User {
 	public void setShowAllPages(boolean showAllPages) {
 		this.showAllPages = showAllPages;
 	}
+
+    public String getAttachmentCategory() {
+        return attachmentCategory;
+    }
+
+    public void setAttachmentCategory(String attachmentCategory) {
+        this.attachmentCategory = attachmentCategory;
+    }
 }
