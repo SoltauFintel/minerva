@@ -699,3 +699,7 @@ ul.pagetree {
     color: #333;
     margin-top: 3em;
 }
+
+.seite pre {
+    max-width: 75vw;
+}
