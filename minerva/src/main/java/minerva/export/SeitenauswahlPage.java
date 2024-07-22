@@ -63,6 +63,9 @@ public class SeitenauswahlPage extends WPage {
             put("bookPrefix", BOOK_PREFIX);
             DataList list = list("pages");
             for (BookSO book : workspace.getBooks()) {
+                if (book.isFeatureTree()) {
+                    continue;
+                }
                 DataMap map = list.add();
                 map.put("text", esc(book.getBook().getTitle().getString(lang)));
                 map.put("id", BOOK_PREFIX + esc(book.getBook().getFolder()));
