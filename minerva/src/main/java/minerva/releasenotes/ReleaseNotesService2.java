@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.pmw.tinylog.Logger;
 
 import de.xmap.jiracloud.DocField;
@@ -152,11 +156,22 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
                 ctx.getResultingReleasePage().getImages().add(dn);
                 saveImage(dn, e.getValue());
             }
-            String x = "<p>&nbsp;</p>\n";
-            while (text.endsWith(x)) {
-            	text = text.substring(0, text.length() - x.length());
-            }
-            html.append(text);
+            Document doc = Jsoup.parse(text);
+			Elements elements = doc.selectXpath("/html/body/p");
+			for (int i = elements.size() - 1; i >= 0; i--) {
+				Element e = elements.get(i);
+				if (e.text().isBlank() || e.text().equals("&nbsp;")) {
+					System.out.println("found <p>&nbsp;</p>");
+					e.remove();
+				} else {
+					break;
+				}
+			}
+//            String x = "<p>&nbsp;</p>\n";
+//            while (text.endsWith(x)) {
+//            	text = text.substring(0, text.length() - x.length());
+//            }
+			html.append(doc.html());
         }
     }
 
