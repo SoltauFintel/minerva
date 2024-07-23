@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
+import com.github.template72.data.DataList;
+import com.github.template72.data.DataMap;
+
 import de.xmap.jiracloud.ReleaseTicket;
 import minerva.MinervaWebapp;
 import minerva.base.StringService;
@@ -39,7 +42,7 @@ public class RNAPage extends BPage {
 			Logger.info("RNA: " + customer + " | " + releaseNr + " | " + releaseTicketNr + " | " + releaseNoteTicketNr);
 			String ergebnis;
 			try {
-				ergebnis = analyse(customer, releaseNr, releaseTicketNr, releaseNoteTicketNr);
+				ergebnis = analyse(customer, releaseNr, releaseTicketNr, releaseNoteTicketNr, list("releases"));
 			} catch (Exception e) {
 				Logger.error(e);
 				ergebnis = e.getMessage();
@@ -58,7 +61,7 @@ public class RNAPage extends BPage {
 		return ret == null ? "" : ret.trim();
 	}
 	
-	private String analyse(String customer, String r, String rt, String rnt) {
+	private String analyse(String customer, String r, String rt, String rnt, DataList list) {
 		String ret = "";
 
         ReleaseNotesConfig config = MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs().stream()
@@ -131,6 +134,16 @@ public class RNAPage extends BPage {
 				}
 			}
 		}
+		
+		sv.loadAllReleases_raw().stream().sorted((a,b)->b.getKey().compareTo(a.getKey())).forEach(i -> {
+			DataMap map = list.add();
+			map.put("ticketnr", esc(i.getKey()));
+			map.put("release", esc(i.getTargetVersion()));
+			map.put("pageID", esc(i.getPageId()));
+			map.put("relevant", i.isRelevant() ? "ja" : "nein");
+			map.put("imported", "");
+		});
+		
 		return ret;
 	}
 }
