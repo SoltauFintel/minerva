@@ -43,7 +43,14 @@ public class TaskService {
     }
     
     public static int get(UserSO user) {
-        return user == null ? 0 : openMasterTasks.get(user.getLogin());
+    	if (user != null) {
+    		Integer i = openMasterTasks.get(user.getLogin());
+    		// null check for i is necessary!
+    		if (i != null) {
+    			return i.intValue();
+    		}
+    	}
+    	return 0;
     }
 
     public List<Task> getTasksCreatedByMe(UserSO user, String branch, String login) {
