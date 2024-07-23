@@ -156,21 +156,18 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
                 ctx.getResultingReleasePage().getImages().add(dn);
                 saveImage(dn, e.getValue());
             }
+            // Wie machen Jsoup-parse+html() damit es später beim PDF Export nicht zu diesen ominösen Fehler kommt.
             Document doc = Jsoup.parse(text);
-			Elements elements = doc.selectXpath("/html/body/p");
+			Elements elements = doc.selectXpath("/html/body/p"); // Leerzeilen am Ende killen
 			for (int i = elements.size() - 1; i >= 0; i--) {
 				Element e = elements.get(i);
-				if (e.text().isBlank() || e.text().equals("&nbsp;")) {
-					System.out.println("found <p>&nbsp;</p>");
+				if (e.childNodeSize() == 0 && e.text().equals("&nbsp;")) {
+					Logger.debug("remove: " + e.text());
 					e.remove();
 				} else {
 					break;
 				}
 			}
-//            String x = "<p>&nbsp;</p>\n";
-//            while (text.endsWith(x)) {
-//            	text = text.substring(0, text.length() - x.length());
-//            }
 			html.append(doc.html());
         }
     }
