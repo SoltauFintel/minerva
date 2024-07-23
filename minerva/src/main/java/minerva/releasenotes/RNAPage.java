@@ -22,6 +22,7 @@ public class RNAPage extends BPage {
 	@Override
 	protected void execute() {
 		put("ergebnis", "");
+		put("hasRows", false);
 		if (isPOST()) {
 			String customer = ctx.formParam("customer");
 			String releaseNr = ctx.formParam("release");
