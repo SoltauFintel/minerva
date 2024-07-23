@@ -1,5 +1,7 @@
 package minerva.export;
 
+import org.pmw.tinylog.Logger;
+
 import minerva.MinervaWebapp;
 import minerva.book.BAction;
 import minerva.model.SeiteSO;
@@ -28,7 +30,12 @@ public class ExportCsvBookAction extends BAction {
 						if (release.hasContent(lang) > 0) {
 							String q = release.getSeite().getTitle().getString(lang);
 							int qq = q.lastIndexOf(" (");
-							version = lastWord(q.substring(0, qq));
+							if (qq < 0) {
+								version = "?";
+								Logger.error("Version not found in: \"" + q + "\"");
+							} else {
+								version = lastWord(q.substring(0, qq));
+							}
 							doLines(html);
 						}
 					}
