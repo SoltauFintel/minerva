@@ -31,8 +31,12 @@ public class ExportCsvBookAction extends BAction {
 							String q = release.getSeite().getTitle().getString(lang);
 							int qq = q.lastIndexOf(" (");
 							if (qq < 0) {
-								version = "?";
-								Logger.error("Version not found in: \"" + q + "\"");
+								if (q.startsWith("Release Notes ")) {
+									version = q.substring("Release Notes ".length());
+									Logger.error("version not found in: \"" + q + "\" -> try with this: \"" + version + "\"");
+								} else {
+									Logger.error("version not found in: \"" + q + "\"");
+								}
 							} else {
 								version = lastWord(q.substring(0, qq));
 							}
