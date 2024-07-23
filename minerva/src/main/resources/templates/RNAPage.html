@@ -1,0 +1,48 @@
+{{master: master}}
+
+<div class="row"> 
+    <div class="col-lg-12">
+        <h1 class="page-header">Release Notes Analyse Seite</h1>
+
+        <form action="/b/{{branch}}/{{bookFolder}}/rna" class="form-horizontal" method="post">
+            <fieldset>
+                <div class="form-group">
+                    <label for="customer" class="col-lg-1 control-label">Kunde</label>
+                    <div class="col-lg-3">
+                        <input class="form-control" type="text" id="customer" name="customer" autofocus>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="release" class="col-lg-1 control-label">Release Nummer</label>
+                    <div class="col-lg-3">
+                        <input class="form-control" type="text" id="release" name="release">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="releaseTicket" class="col-lg-1 control-label">Jira Release Ticket Nummer</label>
+                    <div class="col-lg-3">
+                        <input class="form-control" type="text" id="releaseTicket" name="releaseTicket">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="releaseNoteTicket" class="col-lg-1 control-label">Jira Release Note Ticket Nummer</label>
+                    <div class="col-lg-3">
+                        <input class="form-control" type="text" id="releaseNoteTicket" name="releaseNoteTicket">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <button type="submit" class="btn btn-primary br" onclick="document.querySelector('#s1').style='';">Starte Analyse
+                            <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
+                        <a href="/w/{{branch}}" class="btn btn-default">{{N.cancel}}</a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+
+        <hr/>
+        <h2>Analyse Ergebnis</h2>
+        <pre>{{ergebnis}}</pre>
+    </div>
+</div>

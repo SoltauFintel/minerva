@@ -90,6 +90,7 @@ import minerva.preview.PreviewBookPage;
 import minerva.preview.PreviewCustomerPage;
 import minerva.preview.PreviewPage;
 import minerva.publish.PublishAction;
+import minerva.releasenotes.RNAPage;
 import minerva.releasenotes.SelectRNCustomer2Page;
 import minerva.releasenotes.SelectRNRelease2Page;
 import minerva.search.IndexWorkspaceAction;
@@ -224,6 +225,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/b/:branch/:book/validate", ValidationPage.class);
         get("/b/:branch/:book/rn-select-customer2", SelectRNCustomer2Page.class);
         form("/b/:branch/:book/rn-select-release2", SelectRNRelease2Page.class);
+        form("/b/:branch/:book/rna", RNAPage.class);
         get("/b/", CurrentWorkspaceAction.class); // falls man sich dahin verirren sollte
     }
 

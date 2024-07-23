@@ -38,7 +38,29 @@ public abstract class AbstractReleaseNotesService {
         }
         return titles;
     }
-    
+
+    public String getExistingReleasePages_getSeiteId(String x) {
+        SeiteSO customerPage = findCustomerPage();
+        if (customerPage != null) {
+            for (SeiteSO sectionPage : customerPage.getSeiten()) {
+                if (sectionPage.getSeiten().isEmpty()) { // If no subpages it's a release page.
+                	String title = sectionPage.getSeite().getTitle().getString(ctx.getLang());
+                    if (title.equals(x)) {
+                    	return sectionPage.getSeite().getId();
+                    }
+                } else { // Subpages are release pages.
+                	for (SeiteSO seite : sectionPage.getSeiten()) {
+                		String title = seite.getSeite().getTitle().getString(ctx.getLang());
+                        if (title.equals(x)) {
+                        	return seite.getId();
+                        }
+                	}
+                }
+            }
+        }
+        return null;
+    }
+
     protected final SeiteSO findCustomerPage() {
         return ctx.getBook().getSeiten()._byTag(tag());
     }

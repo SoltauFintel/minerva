@@ -39,6 +39,11 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
                 .filter(rt -> rt.isRelevant())
                 .collect(Collectors.toList());
     }
+    
+    public List<ReleaseTicket> loadReleases_raw(String project) {
+        // ctx can be null
+    	return ReleaseTicket.load(jira(), project);
+    }
 
     public void importAllNonExistingReleases() {
         List<ReleaseTicket> releaseTickets = loadReleases(ctx.getProject());
