@@ -112,16 +112,18 @@ public class HtmlForPdf {
     /**
      * PDF needs conversion from hsl color to hex RGB color.
      */
-    private static String colors(String html) {
+    static String colors(String html) {
         for (String c : StringService.findHtmlTags(html, "span", "style")) {
-            String result = "";
-            for (String w : c.split(";")) {
-                w = changeColor(w, "background-color:");
-                w = changeColor(w, "color:");
-                result += w + ";";
-            }
-            if (!c.equals(result)) {
-                html = html.replace(c, result);
+            if (!c.isBlank()) {
+                String result = "";
+                for (String w : c.split(";")) {
+                    w = changeColor(w, "background-color:");
+                    w = changeColor(w, "color:");
+                    result += w + ";";
+                }
+                if (!c.equals(result)) {
+                    html = html.replace(c, result);
+                }
             }
         }
         return html;
