@@ -1,7 +1,6 @@
 package minerva.image;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.pmw.tinylog.Logger;
 
@@ -21,10 +20,9 @@ public class ImageDownloadAction extends AbstractImageDownload {
             public byte[] getData() {
                 try {
                     return Files.toByteArray(file);
-                } catch (IOException e) {
-                    Logger.error("[ImageDownloadAction] " + e.getClass().getSimpleName() + ": " + e.getMessage() +
-                            "\nimage file: " + file.getAbsolutePath());
-                    throw new RuntimeException("File not found!");
+                } catch (Exception e) {
+                    Logger.error("[ImageDownloadAction] " + e.getClass().getSimpleName() + ": " + e.getMessage());
+                    return null;
                 }
             }
         };
