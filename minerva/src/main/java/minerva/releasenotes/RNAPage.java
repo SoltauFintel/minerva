@@ -111,6 +111,9 @@ public class RNAPage extends BPage {
 						if (StringService.isNullOrEmpty(tt.getTargetVersion())) {
 							ret += "'Target release version' ist nicht belegt.\n";
 						}
+					} else {
+						ret += "Release Ticket " + rt + " ist nicht vorhanden!"
+								+ "\nFalls es doch ein Jira Ticket mit dieser Nummer geben sollte: ist der Tickettyp 'Release'?";
 					}
 				}
 			}
