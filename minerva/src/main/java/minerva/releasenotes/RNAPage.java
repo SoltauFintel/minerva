@@ -18,19 +18,33 @@ public class RNAPage extends BPage {
 
 	@Override
 	protected void execute() {
-		put("ergebnis", "1\n2");
+		put("ergebnis", "");
 		if (isPOST()) {
 			String customer = ctx.formParam("customer");
 			String releaseNr = ctx.formParam("release");
 			String releaseTicketNr = ctx.formParam("releaseTicket");
 			String releaseNoteTicketNr = ctx.formParam("releaseNoteTicket");
-			Logger.info("RNA: " + releaseNr + " | " + releaseTicketNr + " | " + releaseNoteTicketNr);
-			put("ergebnis", analyse(customer.trim().toUpperCase(), releaseNr.trim(), releaseTicketNr.trim(), releaseNoteTicketNr.trim()));
+			ctx.redirect(booklink + "/rna?c=" + u(customer) + "&r=" + u(releaseNr) + "&rt=" + u(releaseTicketNr)
+					+ "&rnt=" + u(releaseNoteTicketNr));
+		} else {
+			String customer = ctx.queryParam("c");
+			String releaseNr = ctx.queryParam("r");
+			String releaseTicketNr = ctx.queryParam("rt");
+			String releaseNoteTicketNr = ctx.queryParam("rnt");
+			Logger.info("RNA: " + customer + " | " + releaseNr + " | " + releaseTicketNr + " | " + releaseNoteTicketNr);
+			String ergebnis;
+			try {
+				ergebnis = analyse(customer.trim().toUpperCase(), releaseNr.trim(), releaseTicketNr.trim(),
+						releaseNoteTicketNr.trim());
+			} catch (Exception e) {
+				ergebnis = e.getMessage();
+			}
+			put("ergebnis", ergebnis);
 		}
 	}
 	
 	private String analyse(String customer, String r, String rt, String rnt) {
-		String ret = "3\n4\n";
+		String ret = "";
 
         ReleaseNotesConfig config = MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs().stream()
                 .filter(c -> c.getTicketPrefix().equals(customer)).findFirst().orElse(null);
@@ -96,7 +110,6 @@ public class RNAPage extends BPage {
 				}
 			}
 		}
-		
 		return ret;
 	}
 }
