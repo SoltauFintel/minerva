@@ -37,9 +37,14 @@ public class RNAPage extends BPage {
 				ergebnis = analyse(customer.trim().toUpperCase(), releaseNr.trim(), releaseTicketNr.trim(),
 						releaseNoteTicketNr.trim());
 			} catch (Exception e) {
+				Logger.error(e);
 				ergebnis = e.getMessage();
 			}
 			put("ergebnis", ergebnis);
+			put("c", esc(customer));
+			put("r", esc(releaseNr));
+			put("rn", esc(releaseTicketNr));
+			put("rnt", esc(releaseNoteTicketNr));
 		}
 	}
 	
@@ -80,7 +85,7 @@ public class RNAPage extends BPage {
 					+ rlist.stream().map(i -> "- " + i.getKey() + " | target version = " + i.getTargetVersion()
 							+ " | page ID = " + i.getPageId()).collect(Collectors.joining("\n"));
 		} else {
-			Optional<ReleaseTicket> releaseTicket = rlist.stream().filter(i -> i.getTargetVersion().equals(r))
+			Optional<ReleaseTicket> releaseTicket = rlist.stream().filter(i -> r.equals(i.getTargetVersion()))
 					.findFirst();
 			if (releaseTicket.isPresent()) {
 				ret += "Release Ticket zu Release " + r + ": " + releaseTicket.get().getKey() + " | page ID = "
