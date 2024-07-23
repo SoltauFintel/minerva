@@ -161,11 +161,12 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
 			Elements elements = doc.selectXpath("/html/body/p"); // Leerzeilen am Ende killen
 			for (int i = elements.size() - 1; i >= 0; i--) {
 				Element e = elements.get(i);
-				if (e.childNodeSize() == 0 && e.text().isBlank()) {
-					Logger.debug("remove blank paragraph: " + e.text());
-					e.remove();
-				} else {
-					break;
+				if (e.childNodeSize() == 0) { // && e.text().isBlank()) {
+					Logger.debug(" " + i + ") para: \"" + e.text() + "\", blank? " + e.text().isBlank() + ", nbsp? " + "&nbsp;".equals(e.text()));
+//					Logger.debug("remove blank paragraph: " + e.text());
+//					e.remove();
+//				} else {
+//					break;
 				}
 			}
 			html.append(doc.html().replace("style=\"border: 0px solid black\"", ""));
