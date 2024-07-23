@@ -28,24 +28,34 @@ public class RNAPage extends BPage {
 					+ "&rnt=" + u(releaseNoteTicketNr));
 		} else {
 			String customer = ctx.queryParam("c");
-			String releaseNr = ctx.queryParam("r");
-			String releaseTicketNr = ctx.queryParam("rt");
-			String releaseNoteTicketNr = ctx.queryParam("rnt");
+			if (customer == null) {
+				customer = "";
+			} else {
+				customer = customer.trim().toUpperCase();
+			}
+			String releaseNr = queryParam("r");
+			String releaseTicketNr = queryParam("rt");
+			String releaseNoteTicketNr = queryParam("rnt");
 			Logger.info("RNA: " + customer + " | " + releaseNr + " | " + releaseTicketNr + " | " + releaseNoteTicketNr);
 			String ergebnis;
 			try {
-				ergebnis = analyse(customer.trim().toUpperCase(), releaseNr.trim(), releaseTicketNr.trim(),
-						releaseNoteTicketNr.trim());
+				ergebnis = analyse(customer, releaseNr, releaseTicketNr, releaseNoteTicketNr);
 			} catch (Exception e) {
 				Logger.error(e);
 				ergebnis = e.getMessage();
 			}
 			put("ergebnis", ergebnis);
+			header("Release Notes Analyse");
 			put("c", esc(customer));
 			put("r", esc(releaseNr));
 			put("rn", esc(releaseTicketNr));
 			put("rnt", esc(releaseNoteTicketNr));
 		}
+	}
+	
+	private String queryParam(String key) {
+		String ret = ctx.queryParam(key);
+		return ret == null ? "" : ret.trim();
 	}
 	
 	private String analyse(String customer, String r, String rt, String rnt) {
