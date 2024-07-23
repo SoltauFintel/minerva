@@ -156,20 +156,18 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
                 ctx.getResultingReleasePage().getImages().add(dn);
                 saveImage(dn, e.getValue());
             }
-            // Wie machen Jsoup-parse+html() damit es später beim PDF Export nicht zu diesen ominösen Fehler kommt.
+            
+            // XXX DEBUG >>
             Document doc = Jsoup.parse(text);
-			Elements elements = doc.selectXpath("/html/body/p"); // Leerzeilen am Ende killen
-			for (int i = elements.size() - 1; i >= 0; i--) {
-				Element e = elements.get(i);
-				if (e.childNodeSize() == 0) { // && e.text().isBlank()) {
-					Logger.debug(" " + i + ") para: \"" + e.text() + "\", blank? " + e.text().isBlank() + ", nbsp? " + "&nbsp;".equals(e.text()));
-//					Logger.debug("remove blank paragraph: " + e.text());
-//					e.remove();
-//				} else {
-//					break;
-				}
-			}
-			html.append(doc.html().replace("style=\"border: 0px solid black\"", ""));
+            Elements elements = doc.selectXpath("/html/body/p"); // Leerzeilen am Ende killen
+            for (int i = elements.size() - 1; i >= 0; i--) {
+                Element e = elements.get(i);
+                Logger.info(" " + i + ") para [" + e.childNodeSize() + "]: \"" + e.text() + "\", blank? "
+                        + e.text().isBlank() + ", nbsp? " + "&nbsp;".equals(e.text()));
+            }
+            // << XXX
+            
+			html.append(text);
         }
     }
 
