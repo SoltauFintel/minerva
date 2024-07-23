@@ -12,9 +12,9 @@ import org.pmw.tinylog.Logger;
 
 import minerva.base.FileService;
 import minerva.base.NlsString;
-import minerva.base.StringService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
+import ohhtml.Thumbnails;
 
 public class FixHttpImage {
 
@@ -72,7 +72,7 @@ public class FixHttpImage {
         Set<String> ret = new HashSet<>();
         for (String lang : langs) {
             String html = content.getString(lang);
-            Set<String> set = StringService.findHtmlTags(html, "img", "src", src -> src.startsWith("http://") || src.startsWith("https://"), returnOne);
+            Set<String> set = Thumbnails.findHtmlTags(html, "img", "src", src -> src.startsWith("http://") || src.startsWith("https://"), returnOne);
             if (returnOne) {
                 return set;
             }
