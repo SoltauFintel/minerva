@@ -10,31 +10,31 @@
             <fieldset>
                 <div class="form-group">
                     <label for="customer" class="col-lg-2 control-label">Kunde</label>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <input class="form-control" type="text" id="customer" name="customer" value="{{c}}" autofocus>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="release" class="col-lg-2 control-label">Release Nummer</label>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <input class="form-control" type="text" id="release" name="release" value="{{r}}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="releaseTicket" class="col-lg-2 control-label">Jira Release Ticket Nummer</label>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <input class="form-control" type="text" id="releaseTicket" name="releaseTicket" value="{{rn}}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="releaseNoteTicket" class="col-lg-2 control-label">Jira Release Note Ticket Nummer</label>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <input class="form-control" type="text" id="releaseNoteTicket" name="releaseNoteTicket" value="{{rnt}}">
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <div class="col-lg-offset-2 col-lg-5">
+                    <div class="col-lg-offset-2 col-lg-3">
                         <button type="submit" class="btn btn-primary br" onclick="document.querySelector('#s1').style='';">Starte Analyse
                             <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
                         <a href="/w/{{branch}}" class="btn btn-default">{{N.cancel}}</a>

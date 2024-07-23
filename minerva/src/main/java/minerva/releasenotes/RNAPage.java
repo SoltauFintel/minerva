@@ -65,7 +65,7 @@ public class RNAPage extends BPage {
                 .filter(c -> c.getTicketPrefix().equals(customer)).findFirst().orElse(null);
         if (config == null) {
 			return "Kunde " + customer + " nicht vorhanden! Es gibt diese Kunden: "
-					+ MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs().stream().map(i -> i.getCustomer())
+					+ MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs().stream().map(i -> i.getTicketPrefix())
 							.collect(Collectors.joining(", "));
         }
 
@@ -110,8 +110,8 @@ public class RNAPage extends BPage {
 					if (t.isPresent()) {
 						ReleaseTicket tt = t.get();
 						ret += "Es gibt kein zugeordnetes Release Ticket. Release Ticket " + rt
-								+ " ist aber vorhanden. target version: " + tt.getTargetVersion() + " | page ID = "
-								+ tt.getPageId() + "\n";
+								+ " ist aber vorhanden.";
+						ret += " target version: " + tt.getTargetVersion() + " | page ID = " + tt.getPageId() + "\n";
 						ret += "relevant check: " + (tt.isRelevant() ? "ok" : "nicht ok") + "\n";
 						if (tt.getPageId() == null) {
 							ret += "Page ID ist leer. Muss Format haben wie bspw. '2024-03-11T15:13:11.3+0000'.\n";
@@ -120,6 +120,9 @@ public class RNAPage extends BPage {
 						}
 						if (StringService.isNullOrEmpty(tt.getTargetVersion())) {
 							ret += "'Target release version' ist nicht belegt.\n";
+						} else if (r.equals(tt.getTargetVersion())) {
+							ret += "'Target release version' hat falschen Wert im Ticket. SOLL=" + r + ", IST="
+									+ tt.getTargetVersion() + "\n";
 						}
 					} else {
 						ret += "Release Ticket " + rt + " ist nicht vorhanden!"
