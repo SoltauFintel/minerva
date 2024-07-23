@@ -30,12 +30,7 @@ public class RNAPage extends BPage {
 			ctx.redirect(booklink + "/rna?c=" + u(customer) + "&r=" + u(releaseNr) + "&rt=" + u(releaseTicketNr)
 					+ "&rnt=" + u(releaseNoteTicketNr));
 		} else {
-			String customer = ctx.queryParam("c");
-			if (customer == null) {
-				customer = "";
-			} else {
-				customer = customer.trim().toUpperCase();
-			}
+			String customer = queryParam("c");
 			String releaseNr = queryParam("r");
 			String releaseTicketNr = queryParam("rt");
 			String releaseNoteTicketNr = queryParam("rnt");
@@ -58,7 +53,7 @@ public class RNAPage extends BPage {
 	
 	private String queryParam(String key) {
 		String ret = ctx.queryParam(key);
-		return ret == null ? "" : ret.trim();
+		return ret == null ? "" : ret.trim().toUpperCase();
 	}
 	
 	private String analyse(String customer, String r, String rt, String rnt, DataList list) {
@@ -67,15 +62,17 @@ public class RNAPage extends BPage {
         ReleaseNotesConfig config = MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs().stream()
                 .filter(c -> c.getTicketPrefix().equals(customer)).findFirst().orElse(null);
         if (config == null) {
-			return "Kunde " + customer + " nicht vorhanden! Es gibt diese Kunden: "
-					+ MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs().stream().map(i -> i.getTicketPrefix())
-							.collect(Collectors.joining(", "));
+        	if (StringService.isNullOrEmpty(customer)) {
+				return "Bitte Kunde eingeben!" + getKunden();
+			} else {
+				return "Kunde " + customer + " nicht vorhanden!" + getKunden();
+			}
         }
 
         ReleaseNotesContext rc = new ReleaseNotesContext(config, null, book);
         ReleaseNotesService2 sv = new ReleaseNotesService2(rc);
         
-        ret = "Kunde: " + customer + ", Sprache: " + rc.getLang() + "\n";
+        ret = "Kunde: " + customer + ", Sprache: " + rc.getLang() + "\n\n";
         
 		if (!StringService.isNullOrEmpty(r)) {
 			// Gibt es die Seite r bereits?
@@ -96,7 +93,8 @@ public class RNAPage extends BPage {
 		} else if (StringService.isNullOrEmpty(r)) {
 			ret += "Es gibt diese Release Tickets zu Kunde " + customer + " in Jira:\n"
 					+ rlist.stream().map(i -> "- " + i.getKey() + " | target version = " + i.getTargetVersion()
-							+ " | page ID = " + i.getPageId()).collect(Collectors.joining("\n"));
+					+ " | page ID = " + i.getPageId() + " | relevant = " + (i.isRelevant() ? "ja" : "nein"))
+					.collect(Collectors.joining("\n"));
 		} else {
 			Optional<ReleaseTicket> releaseTicket = rlist.stream().filter(i -> r.equals(i.getTargetVersion()))
 					.findFirst();
@@ -106,8 +104,8 @@ public class RNAPage extends BPage {
 			} else {
 				if (StringService.isNullOrEmpty(rt)) {
 					ret += "Es gibt kein Release Ticket zu Release '" + r + "'."
-							+ "\nD.h. falls es doch ein Release Ticket geben sollte, ist bspw. 'target release version' in dem Ticket nicht korrekt gesetzt.\n"
-							+ "Bitte die Release Ticket Nr. für eine tiefergehende Prüfung eingeben!";
+							+ "\nD.h. falls es doch ein Release Ticket geben sollte, ist bspw. 'target release version' in dem Ticket nicht korrekt gesetzt."
+							+ "\n\nBitte die Release Ticket Nr. für eine tiefergehende Prüfung eingeben!";
 				} else {
 					Optional<ReleaseTicket> t = rlist.stream().filter(i -> i.getKey().equals(rt)).findFirst();
 					if (t.isPresent()) {
@@ -135,7 +133,7 @@ public class RNAPage extends BPage {
 			}
 		}
 		
-		sv.loadAllReleases_raw().stream().sorted((a,b)->b.getKey().compareTo(a.getKey())).forEach(i -> {
+		sv.loadAllReleases_raw().stream().sorted((a, b) -> b.getKey().compareTo(a.getKey())).forEach(i -> {
 			DataMap map = list.add();
 			map.put("ticketnr", esc(i.getKey()));
 			map.put("release", esc(i.getTargetVersion()));
@@ -143,7 +141,14 @@ public class RNAPage extends BPage {
 			map.put("relevant", i.isRelevant() ? "ja" : "nein");
 			map.put("imported", "");
 		});
+		put("hasRows", list.size() > 0);
 		
 		return ret;
+	}
+	
+	private String getKunden() {
+		List<ReleaseNotesConfig> rnConfigs = MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs();
+		String kundenliste = rnConfigs.stream().map(i -> i.getTicketPrefix()).collect(Collectors.joining(", "));
+		return " Es gibt diese Kunden: " + kundenliste;
 	}
 }
