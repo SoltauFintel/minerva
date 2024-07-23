@@ -158,12 +158,14 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
             }
             
             // XXX DEBUG >>
+            Logger.info("--->");
             Document doc = Jsoup.parse(text);
             Elements elements = doc.selectXpath("/html/body/p"); // Leerzeilen am Ende killen
             for (int i = elements.size() - 1; i >= 0; i--) {
                 Element e = elements.get(i);
-                Logger.info(" " + i + ") para [" + e.childNodeSize() + "]: \"" + e.text() + "\", blank? "
-                        + e.text().isBlank() + ", nbsp? " + "&nbsp;".equals(e.text()));
+                Logger.info(" " + i + ") para [" + e.childNodeSize() + "/" + e.childrenSize() + "]: \"" + e.text()
+                        + "\", blank? " + e.text().isBlank() + ", empty? " + e.text().isEmpty() + ", nbsp? "
+                        + "&nbsp;".equals(e.text()));
             }
             // << XXX
             
