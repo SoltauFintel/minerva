@@ -137,11 +137,12 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
     private void append(DocField d, StringBuilder html) {
         String text = d.getText();
         if (d.isPlainText()) {
-            if (!"Blindtext".equals(text)) {
-                html.append("<p>");
-                html.append(text.trim());
-                html.append("</p>");
+            if ("Blindtext".equalsIgnoreCase(text) || text.isBlank()) {
+            	return;
             }
+            html.append("<p>");
+            html.append(text.trim());
+            html.append("</p>");
         } else { // text is HTML
             String prefix = "img/" + ctx.getResultingReleasePage().getSeite().getId() + "/";
             for (Entry<String, byte[]> e : d.getImages().entrySet()) {
@@ -150,6 +151,10 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
                 text = text.replace("\"" + src + "\"", "\"" + dn + "\"");
                 ctx.getResultingReleasePage().getImages().add(dn);
                 saveImage(dn, e.getValue());
+            }
+            String x = "<p>&nbsp;</p>\n";
+            while (text.endsWith(x)) {
+            	text = text.substring(0, text.length() - x.length());
             }
             html.append(text);
         }
