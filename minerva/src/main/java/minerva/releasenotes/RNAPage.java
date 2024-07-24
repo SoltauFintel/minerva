@@ -14,6 +14,7 @@ import de.xmap.jiracloud.ReleaseTicket;
 import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.book.BPage;
+import minerva.config.MinervaOptions;
 
 /**
  * Release Notes Analysis page
@@ -24,6 +25,7 @@ public class RNAPage extends BPage {
 	protected void execute() {
 		put("ergebnis", "");
 		put("hasRows", false);
+		put("jiraCustomer", esc(MinervaOptions.JIRA_CUSTOMER.get()));
 		if (isPOST()) {
 			String customer = ctx.formParam("customer");
 			String releaseNr = ctx.formParam("release");
@@ -95,7 +97,7 @@ public class RNAPage extends BPage {
 		} else if (StringService.isNullOrEmpty(r)) {
 			ret += "Es gibt diese Release Tickets zu Kunde " + customer + " in Jira:\n"
 					+ rlist.stream().map(i -> "- " + i.getKey() + " | target version = " + i.getTargetVersion()
-					+ " | page ID = " + i.getPageId() + " | relevant = " + (i.isRelevant() ? "ja" : "nein"))
+					+ " | page ID = " + i.getPageId() + " | gültig = " + (i.isRelevant() ? "ja" : "nein"))
 					.collect(Collectors.joining("\n"));
 		} else {
 			Optional<ReleaseTicket> releaseTicket = rlist.stream().filter(i -> r.equals(i.getTargetVersion()))
@@ -103,8 +105,8 @@ public class RNAPage extends BPage {
 			if (releaseTicket.isPresent()) {
 				ReleaseTicket tt = releaseTicket.get();
 				ret += "Release Ticket zu Release " + r + ": " + tt.getKey() + " | page ID = " + tt.getPageId()
-						+ " | relevant = " + tt.isRelevant() + "\n";
-				ret += findReleaseNoteTickets(tt.getPageId(), sv, rc.getLang(), rnt);
+						+ " | gültig = " + tt.isRelevant() + "\n";
+				ret += findReleaseNoteTickets(tt, sv, rc.getLang(), rnt);
 			} else {
 				if (StringService.isNullOrEmpty(rt)) {
 					ret += "Es gibt kein Release Ticket zu Release '" + r + "'."
@@ -117,7 +119,7 @@ public class RNAPage extends BPage {
 						ret += "Es gibt kein zugeordnetes Release Ticket. Release Ticket " + rt
 								+ " ist aber vorhanden.";
 						ret += " target version: " + tt.getTargetVersion() + " | page ID = " + tt.getPageId() + "\n";
-						ret += "relevant check: " + (tt.isRelevant() ? "ok" : "nicht ok") + "\n";
+						ret += "gültig: " + (tt.isRelevant() ? "ja" : "nein") + "\n";
 						if (tt.getPageId() == null) {
 							ret += "Page ID ist leer. Muss Format haben wie bspw. '2024-03-11T15:13:11.3+0000'.\n";
 						} else if ("2024-03-11T15:13:11.3+0000".length() != tt.getPageId().length()) {
@@ -140,6 +142,7 @@ public class RNAPage extends BPage {
 		sv.loadAllReleases_raw().stream().sorted((a, b) -> b.getKey().compareTo(a.getKey())).forEach(i -> {
 			DataMap map = list.add();
 			map.put("ticketnr", esc(i.getKey()));
+			map.put("title", esc(i.getTitle()));
 			map.put("release", esc(i.getTargetVersion()));
 			map.put("pageID", esc(i.getPageId()));
 			map.put("relevant", i.isRelevant() ? "ja" : "nein");
@@ -151,21 +154,37 @@ public class RNAPage extends BPage {
 		return ret;
 	}
 	
-	private String findReleaseNoteTickets(String pageId, ReleaseNotesService2 sv, String lang, String rnt) {
-		List<ReleaseNoteTicket> list = sv.loadReleaseNoteTickets(pageId);
-		Logger.info("findReleaseNoteTickets pageId=" + pageId + " size=" + list.size());
-		String ret = list.stream()
-				.map(r -> "- " + r.getKey() + ": " + r.getRNT(lang) + "\n")
-				.collect(Collectors.joining());
+	private String findReleaseNoteTickets(ReleaseTicket y, ReleaseNotesService2 sv, String lang, String rnt) {
+		List<ReleaseNoteTicket> list = sv.loadReleaseNoteTickets(y.getPageId());
+		Logger.info("findReleaseNoteTickets pageId=" + y.getPageId() + " size=" + list.size());
+		String ret = getInfo(y.isRelevant(), list.isEmpty()) + list.stream()
+			.map(r -> "- " + r.getKey() + ": " + r.getRNT(lang) + "\n")
+			.collect(Collectors.joining());
 		String msg = "";
 		if (!StringService.isNullOrEmpty(rnt)) {
 			boolean vorh = list.stream().anyMatch(i -> i.getKey().equals(rnt));
 			msg = "Release Note Ticket '" + rnt + "' ist in Bezug auf das Release " + (vorh ? "" : "nicht ") + "vorhanden.\n";
 			if (!vorh) {
-				msg += "Bitte prüfen, ob das Ticket " + rnt+ " existiert und ob die Page ID im Feld 'Release notes page Ids' eingetragen ist.\n";
+				msg += "Bitte prüfen, ob das Ticket " + rnt + " existiert und ob die Page ID im Feld 'Release notes page Ids' eingetragen ist.\n";
 			}
 		}
 		return msg + ret;
+	}
+
+	private String getInfo(boolean relevant, boolean empty) {
+		if (empty) {
+			if (relevant) {
+				return "Release Ticket ist in Ordnung, aber es gibt keine Release Note Tickets.\n";
+			} else {
+				return "Release Ticket ist nicht gültig und es gibt auch keine Release Note Tickets.\n";
+			}
+		} else {
+			if (relevant) {
+				return "Release Notes Import ist möglich.\n";
+			} else {
+				return "Release Ticket ist nicht gültig. Es gibt Release Note Tickets.\n";
+			}
+		}
 	}
 
 	private String getKunden() {

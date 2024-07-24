@@ -50,13 +50,15 @@
 	        <table class="table table-striped table-hover mt3">
 	            <tr>
 	                <th>Release Ticket</th>
+	                <th>Titel</th>
 	                <th>Release Nr.</th>
 	                <th>Page ID</th>
-	                <th>relevant</th>
+	                <th>gültig</th>
 	            </tr>
 	            {{each i in releases}}
 	                <tr>
-	                    <td>{{i.ticketnr}}</td>
+	                    <td><a href="https://{{jiraCustomer}}.atlassian.net/browse/{{i.ticketnr}}" target="_blank">{{i.ticketnr}}</a></td>
+	                    <td>{{i.title}}</td>
 	                    <td>{{i.release}}</td>
 	                    <td>{{i.pageID}}</td>
 	                    <td>{{i.relevant}}</td>
