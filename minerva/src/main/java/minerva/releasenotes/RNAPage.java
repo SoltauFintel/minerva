@@ -79,19 +79,33 @@ public class RNAPage extends BPage {
         ret = "Kunde: " + customer + ", Sprache: " + rc.getLang() + "\n\n";
         
 		if (!StringService.isNullOrEmpty(r)) {
-			// Gibt es die Seite r bereits?
-	        List<String> existingReleasePageTitles = sv.getExistingReleasePages();
-	        String x = AbstractReleaseNotesService.TITLE_PREFIX + r;
-	        if (existingReleasePageTitles.contains(x)) {
-				String id = sv.getExistingReleasePages_getSeiteId(x);
-				String link = id == null ? "" : " /s/" + branch + "/" + bookFolder + "/" + id;
-				return ret + "Release " + r + " wurde bereits importiert." + " Löschen Sie die Release Seite" + link
-						+ " in Minerva, um das Release erneut nach Minerva zu importieren.";
-	        }
+			String m = analyse1(sv, r);
+			if (m != null) {
+				return ret + m;
+			}
 		}
 
 		List<ReleaseTicket> rlist = sv.loadReleases_raw(customer);
-		
+		ret = analyse2(customer, r, rt, rnt, ret, rc, sv, rlist);
+		releases(list, sv);
+		return ret;
+	}
+	
+	private String analyse1(ReleaseNotesService2 sv, String r) {
+		// Gibt es die Seite r bereits?
+        List<String> existingReleasePageTitles = sv.getExistingReleasePages();
+        String x = AbstractReleaseNotesService.TITLE_PREFIX + r;
+        if (existingReleasePageTitles.contains(x)) {
+			String id = sv.getExistingReleasePages_getSeiteId(x);
+			String link = id == null ? "" : " /s/" + branch + "/" + bookFolder + "/" + id;
+			return "Release " + r + " wurde bereits importiert." + " Löschen Sie die Release Seite" + link
+					+ " in Minerva, um das Release erneut nach Minerva zu importieren.";
+        }
+        return null;
+	}
+
+	private String analyse2(String customer, String r, String rt, String rnt, String ret, ReleaseNotesContext rc,
+			ReleaseNotesService2 sv, List<ReleaseTicket> rlist) {
 		if (rlist.isEmpty()) {
 			ret += "Es wurden keine Release Tickets für Kunde " + customer + " gefunden!";
 		} else if (StringService.isNullOrEmpty(r)) {
@@ -113,32 +127,40 @@ public class RNAPage extends BPage {
 							+ "\nD.h. falls es doch ein Release Ticket geben sollte, ist bspw. 'target release version' in dem Ticket nicht korrekt gesetzt."
 							+ "\n\nBitte die Release Ticket Nr. für eine tiefergehende Prüfung eingeben!";
 				} else {
-					Optional<ReleaseTicket> t = rlist.stream().filter(i -> i.getKey().equals(rt)).findFirst();
-					if (t.isPresent()) {
-						ReleaseTicket tt = t.get();
-						ret += "Es gibt kein zugeordnetes Release Ticket. Release Ticket " + rt
-								+ " ist aber vorhanden.";
-						ret += " target version: " + tt.getTargetVersion() + " | page ID = " + tt.getPageId() + "\n";
-						ret += "gültig: " + (tt.isRelevant() ? "ja" : "nein") + "\n";
-						if (tt.getPageId() == null) {
-							ret += "Page ID ist leer. Muss Format haben wie bspw. '2024-03-11T15:13:11.3+0000'.\n";
-						} else if ("2024-03-11T15:13:11.3+0000".length() != tt.getPageId().length()) {
-							ret += "Page ID muss das Format '2024-03-11T15:13:11.3+0000' haben und ein 'T' enthalten.\n";
-						}
-						if (StringService.isNullOrEmpty(tt.getTargetVersion())) {
-							ret += "'Target release version' ist nicht belegt.\n";
-						} else if (r.equals(tt.getTargetVersion())) {
-							ret += "'Target release version' hat falschen Wert im Ticket. SOLL=" + r + ", IST="
-									+ tt.getTargetVersion() + "\n";
-						}
-					} else {
-						ret += "Release Ticket " + rt + " ist nicht vorhanden!"
-								+ "\nFalls es doch ein Jira Ticket mit dieser Nummer geben sollte: ist der Tickettyp 'Release'?";
-					}
+					ret = analyse3(r, rt, ret, rlist);
 				}
 			}
 		}
-		
+		return ret;
+	}
+
+	private String analyse3(String r, String rt, String ret, List<ReleaseTicket> rlist) {
+		Optional<ReleaseTicket> t = rlist.stream().filter(i -> i.getKey().equals(rt)).findFirst();
+		if (t.isPresent()) {
+			ReleaseTicket tt = t.get();
+			ret += "Es gibt kein zugeordnetes Release Ticket. Release Ticket " + rt
+					+ " ist aber vorhanden.";
+			ret += " target version: " + tt.getTargetVersion() + " | page ID = " + tt.getPageId() + "\n";
+			ret += "gültig: " + (tt.isRelevant() ? "ja" : "nein") + "\n";
+			if (tt.getPageId() == null) {
+				ret += "Page ID ist leer. Muss Format haben wie bspw. '2024-03-11T15:13:11.3+0000'.\n";
+			} else if ("2024-03-11T15:13:11.3+0000".length() != tt.getPageId().length()) {
+				ret += "Page ID muss das Format '2024-03-11T15:13:11.3+0000' haben und ein 'T' enthalten.\n";
+			}
+			if (StringService.isNullOrEmpty(tt.getTargetVersion())) {
+				ret += "'Target release version' ist nicht belegt.\n";
+			} else if (r.equals(tt.getTargetVersion())) {
+				ret += "'Target release version' hat falschen Wert im Ticket. SOLL=" + r + ", IST="
+						+ tt.getTargetVersion() + "\n";
+			}
+		} else {
+			ret += "Release Ticket " + rt + " ist nicht vorhanden!"
+					+ "\nFalls es doch ein Jira Ticket mit dieser Nummer geben sollte: ist der Tickettyp 'Release'?";
+		}
+		return ret;
+	}
+
+	private void releases(DataList list, ReleaseNotesService2 sv) {
 		sv.loadAllReleases_raw().stream().sorted((a, b) -> b.getKey().compareTo(a.getKey())).forEach(i -> {
 			DataMap map = list.add();
 			map.put("ticketnr", esc(i.getKey()));
@@ -150,10 +172,8 @@ public class RNAPage extends BPage {
 		});
 		put("hasRows", list.size() > 0);
 		putInt("rows", list.size());
-
-		return ret;
 	}
-	
+
 	private String findReleaseNoteTickets(ReleaseTicket y, ReleaseNotesService2 sv, String lang, String rnt) {
 		List<ReleaseNoteTicket> list = sv.loadReleaseNoteTickets(y.getPageId());
 		Logger.info("findReleaseNoteTickets pageId=" + y.getPageId() + " size=" + list.size());
