@@ -48,7 +48,7 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
     public List<ReleaseTicket> loadAllReleases_raw() {
         // ctx can be null
         String jql = "issuetype=\"Release\"";
-        return jira().loadIssues(jql, issue -> new ReleaseTicket(issue));
+        return jira().loadIssues(jql, "&maxResults=500").stream().map(i -> new ReleaseTicket(i)).collect(Collectors.toList());
     }
 
     public void importAllNonExistingReleases() {

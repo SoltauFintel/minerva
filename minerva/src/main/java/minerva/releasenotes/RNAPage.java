@@ -143,6 +143,7 @@ public class RNAPage extends BPage {
 			map.put("imported", "");
 		});
 		put("hasRows", list.size() > 0);
+		putInt("rows", list.size());
 		
 		return ret;
 	}
