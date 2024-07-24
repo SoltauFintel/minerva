@@ -76,6 +76,10 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
         createReleasePages();
         return ctx.getResultingReleasePage().getId();
     }
+    
+    public List<ReleaseNoteTicket> loadReleaseNoteTickets(String pageId) {
+    	return ReleaseNoteTicket.load(jira(), pageId);
+    }
 
     @Override
     protected String getReleaseNumber(final String t) {

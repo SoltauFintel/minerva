@@ -9,6 +9,7 @@ import org.pmw.tinylog.Logger;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import de.xmap.jiracloud.ReleaseNoteTicket;
 import de.xmap.jiracloud.ReleaseTicket;
 import minerva.MinervaWebapp;
 import minerva.base.StringService;
@@ -100,8 +101,10 @@ public class RNAPage extends BPage {
 			Optional<ReleaseTicket> releaseTicket = rlist.stream().filter(i -> r.equals(i.getTargetVersion()))
 					.findFirst();
 			if (releaseTicket.isPresent()) {
-				ret += "Release Ticket zu Release " + r + ": " + releaseTicket.get().getKey() + " | page ID = "
-						+ releaseTicket.get().getPageId();
+				ReleaseTicket tt = releaseTicket.get();
+				ret += "Release Ticket zu Release " + r + ": " + tt.getKey() + " | page ID = " + tt.getPageId()
+						+ " | relevant = " + tt.isRelevant() + "\n";
+				ret += findReleaseNoteTickets(tt.getPageId(), sv, rc.getLang(), rnt);
 			} else {
 				if (StringService.isNullOrEmpty(rt)) {
 					ret += "Es gibt kein Release Ticket zu Release '" + r + "'."
@@ -144,10 +147,27 @@ public class RNAPage extends BPage {
 		});
 		put("hasRows", list.size() > 0);
 		putInt("rows", list.size());
-		
+
 		return ret;
 	}
 	
+	private String findReleaseNoteTickets(String pageId, ReleaseNotesService2 sv, String lang, String rnt) {
+		List<ReleaseNoteTicket> list = sv.loadReleaseNoteTickets(pageId);
+		Logger.info("findReleaseNoteTickets pageId=" + pageId + " size=" + list.size());
+		String ret = list.stream()
+				.map(r -> "- " + r.getKey() + ": " + r.getRNT(lang) + "\n")
+				.collect(Collectors.joining());
+		String msg = "";
+		if (!StringService.isNullOrEmpty(rnt)) {
+			boolean vorh = list.stream().anyMatch(i -> i.getKey().equals(rnt));
+			msg = "Release Note Ticket '" + rnt + "' ist in Bezug auf das Release " + (vorh ? "" : "nicht ") + "vorhanden.\n";
+			if (!vorh) {
+				msg += "Bitte prüfen, ob das Ticket " + rnt+ " existiert und ob die Page ID im Feld 'Release notes page Ids' eingetragen ist.\n";
+			}
+		}
+		return msg + ret;
+	}
+
 	private String getKunden() {
 		List<ReleaseNotesConfig> rnConfigs = MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs();
 		String kundenliste = rnConfigs.stream().map(i -> i.getTicketPrefix()).collect(Collectors.joining(", "));
