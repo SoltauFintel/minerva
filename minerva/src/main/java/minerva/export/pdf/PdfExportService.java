@@ -49,7 +49,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
     public String getBooksExportDownloadId(WorkspaceSO workspace) {
         String id;
         saveWorkspace(workspace);
-        Logger.info("error messages: " + errorMessages.size());
+        logErrorMessages(1);
         if (pdfFiles.size() == 1) {
             id = register(pdfFiles.get(0));
             Logger.info(pdfFiles.get(0).getAbsolutePath() + " => " + id);
@@ -88,7 +88,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
         prepare(book);
         File outputFolder = super.saveBook(book);
         createPDF(outputFolder);
-        Logger.info("error messages: " + errorMessages.size());
+        logErrorMessages(2);
         return outputFolder;
     }
 
@@ -115,7 +115,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
         File outputFolder = super.saveSeiten(seiten);
         
         createPDF(outputFolder);
-        Logger.info("error messages: " + errorMessages.size());
+        logErrorMessages(3);
         return outputFolder;
     }
     
@@ -259,5 +259,12 @@ public class PdfExportService extends MultiPageHtmlExportService {
 
     public List<String> getErrorMessages() {
         return errorMessages;
+    }
+
+    private void logErrorMessages(int number) {
+        Logger.info("[PDF-" + number + "] error messages: " + errorMessages.size() + " (details see DEBUG log)"); // [PDF-1] [PDF-2] [PDF-3]
+        for (String line : errorMessages) {
+			Logger.debug("- " + line);
+		}
     }
 }
