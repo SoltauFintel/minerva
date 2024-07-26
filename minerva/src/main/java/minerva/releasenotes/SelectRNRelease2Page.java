@@ -41,7 +41,7 @@ public class SelectRNRelease2Page extends BPage {
     }
 
     private void displayFormular(ReleaseNotesConfig config, String project, String rootTitle, String lang) {
-        List<ReleaseTicket> releaseTickets = new ReleaseNotesService2(null).loadReleases(project);
+        List<ReleaseTicket> releaseTickets = new ReleaseNotesService(null).loadReleases(project);
         List<IdAndLabel> releases = releaseTickets.stream().map(i -> new IdAndLabel() {
                 @Override
                 public String getId() {
@@ -53,7 +53,7 @@ public class SelectRNRelease2Page extends BPage {
                     return AbstractReleaseNotesService.TITLE_PREFIX + i.getTargetVersion();
                 }
             }).collect(Collectors.toList());
-        List<String> existingReleasePageTitles = new ReleaseNotesService2(new ReleaseNotesContext(config, null, book)).getExistingReleasePages();
+        List<String> existingReleasePageTitles = new ReleaseNotesService(new ReleaseNotesContext(config, null, book)).getExistingReleasePages();
         releases.removeIf(title -> existingReleasePageTitles.contains(title.getLabel()));
         releases.add(new IdAndLabel() {
             @Override
@@ -96,7 +96,7 @@ public class SelectRNRelease2Page extends BPage {
     
     private String getReleaseNumber(String project, String pageId) {
         // Irgendwie doof, dass ich das nochmal laden muss. Vielleicht das besser über URL-parametern übergeben!?
-        List<ReleaseTicket> releaseTickets = new ReleaseNotesService2(null).loadReleases(project);
+        List<ReleaseTicket> releaseTickets = new ReleaseNotesService(null).loadReleases(project);
         for (ReleaseTicket rt : releaseTickets) {
             if (rt.getPageId().equals(pageId)) {
                 return rt.getTargetVersion();
@@ -105,10 +105,10 @@ public class SelectRNRelease2Page extends BPage {
         throw new RuntimeException("Can't find project/pageId pair in release tickets!");
     }
     
-    private ReleaseNotesService2 service(ReleaseNotesConfig config, String pageId, String releaseNumber, String project) {
+    private ReleaseNotesService service(ReleaseNotesConfig config, String pageId, String releaseNumber, String project) {
         ReleaseNotesContext c = new ReleaseNotesContext(config, pageId, book);
         c.setReleaseNumber(releaseNumber);
         c.setProject(project);
-        return new ReleaseNotesService2(c);
+        return new ReleaseNotesService(c);
     }
 }

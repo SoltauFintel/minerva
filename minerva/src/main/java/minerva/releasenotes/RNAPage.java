@@ -73,7 +73,7 @@ public class RNAPage extends BPage {
         }
 
         ReleaseNotesContext rc = new ReleaseNotesContext(config, null, book);
-        ReleaseNotesService2 sv = new ReleaseNotesService2(rc);
+        ReleaseNotesService sv = new ReleaseNotesService(rc);
         
         ret = "Kunde: " + customer + ", Sprache: " + rc.getLang() + "\n\n";
         
@@ -90,7 +90,7 @@ public class RNAPage extends BPage {
 		return ret;
 	}
 	
-	private String analyse1(ReleaseNotesService2 sv, String r) {
+	private String analyse1(ReleaseNotesService sv, String r) {
 		// Gibt es die Seite r bereits?
         List<String> existingReleasePageTitles = sv.getExistingReleasePages();
         String x = AbstractReleaseNotesService.TITLE_PREFIX + r;
@@ -104,7 +104,7 @@ public class RNAPage extends BPage {
 	}
 
 	private String analyse2(String customer, String r, String rt, String rnt, String ret, ReleaseNotesContext rc,
-			ReleaseNotesService2 sv, List<ReleaseTicket> rlist) {
+			ReleaseNotesService sv, List<ReleaseTicket> rlist) {
 		if (rlist.isEmpty()) {
 			ret += "Es wurden keine Release Tickets für Kunde " + customer + " gefunden!";
 		} else if (StringService.isNullOrEmpty(r)) {
@@ -159,7 +159,7 @@ public class RNAPage extends BPage {
 		return ret;
 	}
 
-	private void releases(DataList list, ReleaseNotesService2 sv) {
+	private void releases(DataList list, ReleaseNotesService sv) {
 		sv.loadAllReleases_raw().stream().sorted((a, b) -> b.getKey().compareTo(a.getKey())).forEach(i -> {
 			DataMap map = list.add();
 			map.put("ticketnr", esc(i.getKey()));
@@ -173,7 +173,7 @@ public class RNAPage extends BPage {
 		putInt("rows", list.size());
 	}
 
-	private String findReleaseNoteTickets(ReleaseTicket y, ReleaseNotesService2 sv, String lang, String rnt) {
+	private String findReleaseNoteTickets(ReleaseTicket y, ReleaseNotesService sv, String lang, String rnt) {
 		List<ReleaseNoteTicket> list = sv.loadReleaseNoteTickets(y.getPageId());
 		Logger.info("findReleaseNoteTickets pageId=" + y.getPageId() + " size=" + list.size());
 		String ret = getInfo(y.isRelevant(), list.isEmpty()) + list.stream()

@@ -29,10 +29,10 @@ import minerva.model.WorkspaceSO;
 /**
  * Jira cloud
  */
-public class ReleaseNotesService2 extends AbstractReleaseNotesService {
+public class ReleaseNotesService extends AbstractReleaseNotesService {
     private List<ReleaseNoteTicket> releaseNoteTickets;
     
-    public ReleaseNotesService2(ReleaseNotesContext ctx) {
+    public ReleaseNotesService(ReleaseNotesContext ctx) {
         super(ctx);
     }
 
@@ -235,7 +235,7 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
         }
         ReleaseNotesContext context = new ReleaseNotesContext(config, null, seite.getBook());
         
-        return new ReleaseNotesService2(context).reimport(customer, releaseNumber, seite);
+        return new ReleaseNotesService(context).reimport(customer, releaseNumber, seite);
     }
     
     private static String getCustomer(SeiteSO customerPage, UserSO user) {

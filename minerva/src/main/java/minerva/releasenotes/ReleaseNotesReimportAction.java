@@ -9,7 +9,7 @@ public class ReleaseNotesReimportAction extends SAction {
 
     @Override
     protected void execute() {
-        String newId = ReleaseNotesService2.reimport(seite, langs);
+        String newId = ReleaseNotesService.reimport(seite, langs);
         ctx.redirect(viewlinkWithoutId + newId);
     }
 }
