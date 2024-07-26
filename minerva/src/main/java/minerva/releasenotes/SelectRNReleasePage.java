@@ -15,7 +15,7 @@ import minerva.book.BPage;
 /**
  * Release notes: select release to be imported
  */
-public class SelectRNRelease2Page extends BPage {
+public class SelectRNReleasePage extends BPage {
     private static final String ALL = "!all";
     
     @Override
