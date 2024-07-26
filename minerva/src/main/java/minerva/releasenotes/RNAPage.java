@@ -92,7 +92,7 @@ public class RNAPage extends BPage {
 	private String analyse1(ReleaseNotesService sv, String r) {
 		// Gibt es die Seite r bereits?
         List<String> existingReleasePageTitles = sv.getExistingReleasePages();
-        String x = AbstractReleaseNotesService.TITLE_PREFIX + r;
+        String x = ReleaseNotesService.TITLE_PREFIX + r;
         if (existingReleasePageTitles.contains(x)) {
 			String id = sv.getExistingReleasePages_getSeiteId(x);
 			String link = id == null ? "" : " /s/" + branch + "/" + bookFolder + "/" + id;

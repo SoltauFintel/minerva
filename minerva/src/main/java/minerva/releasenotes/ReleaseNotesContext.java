@@ -5,34 +5,28 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import minerva.confluence.ConfluencePage2;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 
 public class ReleaseNotesContext {
     private final ReleaseNotesConfig config;
-    private String releaseId;
+    private String pageId;
     private final BookSO book;
     private final Map<String, String> files = new HashMap<>();
-    private ConfluencePage2 releasePage;
     private SeiteSO customerPage;
     private SeiteSO sectionPage;
     private ResultingReleasePage resultingReleasePage;
     private String releaseNumber;
     private String project;
     
-    public ReleaseNotesContext(ReleaseNotesConfig config, String releaseId, BookSO book) {
+    public ReleaseNotesContext(ReleaseNotesConfig config, String pageId, BookSO book) {
         this.config = config;
-        this.releaseId = releaseId;
+        this.pageId = pageId;
         this.book = book;
     }
 
     public ReleaseNotesConfig getConfig() {
         return config;
-    }
-
-    public String getReleaseId() {
-        return releaseId;
     }
 
     public BookSO getBook() {
@@ -41,14 +35,6 @@ public class ReleaseNotesContext {
 
     public String getLang() {
         return config.getLanguage();
-    }
-
-    public ConfluencePage2 getReleasePage() {
-        return releasePage;
-    }
-
-    public void setReleasePage(ConfluencePage2 releasePage) {
-        this.releasePage = releasePage;
     }
 
     public Map<String, String> getFiles() {
@@ -80,11 +66,11 @@ public class ReleaseNotesContext {
     }
     
     public String getPageId() {
-        return releaseId;
+        return pageId;
     }
     
     public void setPageId(String pageId) {
-        releaseId = pageId;
+        this.pageId = pageId;
     }
 
     public String getReleaseNumber() {
