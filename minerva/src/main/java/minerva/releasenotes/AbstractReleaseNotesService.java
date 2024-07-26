@@ -72,7 +72,7 @@ public abstract class AbstractReleaseNotesService {
     }
 
     protected final String tag() {
-        return "release-notes-" + ctx.getSpaceKey().toLowerCase();
+        return "release-notes-" + ctx.getConfig().getTicketPrefix().toLowerCase();
     }
 
     protected final void createCustomerPage() {
@@ -158,7 +158,7 @@ public abstract class AbstractReleaseNotesService {
         String prefix = ctx.getResultingReleasePage().getSeite().getBook().getFolder() + "/";
         ctx.getResultingReleasePage().getImages().forEach(dn -> filenames.put(prefix + dn, DirAccess.IMAGE));
         ctx.getBook().dao().saveFiles(filenames,
-                new CommitMessage("Release Notes " + ctx.getSpaceKey() + " " + releaseNumber),
+                new CommitMessage("Release Notes " + ctx.getConfig().getCustomer() + " " + releaseNumber),
                 ctx.getBook().getWorkspace());
         Logger.info(releaseNumber +" | Number of saved pages: " + filenames.keySet().stream().filter(i -> i.endsWith(".meta")).count());
         seite.reindex();

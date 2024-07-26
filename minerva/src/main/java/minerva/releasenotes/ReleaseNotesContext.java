@@ -31,14 +31,6 @@ public class ReleaseNotesContext {
         return config;
     }
 
-    public String getSpaceKey() {
-        return config.getSpaceKey();
-    }
-
-    public String getRootTitle() {
-        return config.getRootTitle();
-    }
-
     public String getReleaseId() {
         return releaseId;
     }

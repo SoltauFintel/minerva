@@ -49,7 +49,7 @@ public class MinervaOptions {
 	public static final Option RELEASE_NOTES_BOOK_TITLES = add(CAT_RELEASE_NOTES, "release-notes.book-titles", "Book titles")
 			.setDefaultValue("Programmänderungen,Release notes").setHint("separator: ,");
 	public static final Option RELEASE_NOTES_CUSTOMERS = add(CAT_RELEASE_NOTES, "release-notes.customers", "Customers", OptionType.TEXTAREA)
-			.setHint("A line for each customer. Line format: title, language, ticket prefix, space key, customer");
+			.setHint("A line for each customer. Line format: language, ticket prefix, customer");
 
 	private static final OptionCategory CAT_JIRA = new OptionCategory("Jira Cloud");
 	public static final Option JIRA_CUSTOMER = add(CAT_JIRA, "jira.customer", "Customer");

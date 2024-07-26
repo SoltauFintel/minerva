@@ -244,7 +244,7 @@ public class ReleaseNotesService extends AbstractReleaseNotesService {
             if (tag.startsWith(x)) {
                 String customer = tag.substring(x.length()).toUpperCase();
                 if (!customer.isBlank()) {
-                    return customer;
+                    return customer; // = ticket prefix
                 }
             }
         }

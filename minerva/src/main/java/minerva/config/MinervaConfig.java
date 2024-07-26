@@ -244,15 +244,10 @@ public class MinervaConfig {
     	String lines = MinervaOptions.RELEASE_NOTES_CUSTOMERS.get();
     	for (String line : lines.split("\n")) {
     		String[] w = line.split(",");
-            if (w.length < 5 || w[4].isEmpty()) {
-                throw new RuntimeException("Release Notes customer line \"" + line + "\" is not valid! Please fix configuration.");
-            }
             ReleaseNotesConfig e = new ReleaseNotesConfig();
-            e.setRootTitle(w[0].trim());
-            e.setLanguage(w[1].trim());
-            e.setTicketPrefix(w[2].trim());
-            e.setSpaceKey(w[3].trim());
-            e.setCustomer(w[4].trim());
+            e.setLanguage(w[0].trim());
+            e.setTicketPrefix(w[1].trim());
+            e.setCustomer(w[2].trim());
             ret.add(e);
     	}
     	ret.sort((a, b) -> a.getCustomer().compareToIgnoreCase(b.getCustomer()));

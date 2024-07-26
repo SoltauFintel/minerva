@@ -3,12 +3,12 @@ package minerva.releasenotes;
 import minerva.MinervaWebapp;
 
 public class ReleaseNotesConfig {
+    /** customer display text, no technical meaning */
     private String customer;
+    /** Jira ticket prefix without "-" */
     private String ticketPrefix;
-    @Deprecated
-    private String spaceKey;
+    /** en, de */
     private String language;
-    private String rootTitle;
     
     public static ReleaseNotesConfig get(String customer) {
         return MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs().stream()
@@ -31,29 +31,11 @@ public class ReleaseNotesConfig {
         this.ticketPrefix = ticketPrefix;
     }
 
-    @Deprecated
-    public String getSpaceKey() {
-        return spaceKey;
-    }
-
-    @Deprecated
-    public void setSpaceKey(String spaceKey) {
-        this.spaceKey = spaceKey;
-    }
-
     public String getLanguage() {
         return language;
     }
 
     public void setLanguage(String language) {
         this.language = language;
-    }
-
-    public String getRootTitle() {
-        return rootTitle;
-    }
-
-    public void setRootTitle(String rootTitle) {
-        this.rootTitle = rootTitle;
     }
 }

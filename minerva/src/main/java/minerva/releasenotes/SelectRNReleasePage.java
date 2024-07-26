@@ -31,16 +31,15 @@ public class SelectRNReleasePage extends BPage {
         if (config == null) {
             throw new RuntimeException("Unknown ticket prefix: " + esc(ticketPrefix));
         }
-        String rootTitle = config.getRootTitle();
         String language = config.getLanguage();
         if (isPOST()) {
-            importRelease(config, ticketPrefix, rootTitle, language);
+            importRelease(config, ticketPrefix, language);
         } else {
-            displayFormular(config, ticketPrefix, rootTitle, language);
+            displayFormular(config, ticketPrefix, language);
         }
     }
 
-    private void displayFormular(ReleaseNotesConfig config, String project, String rootTitle, String lang) {
+    private void displayFormular(ReleaseNotesConfig config, String project, String lang) {
         List<ReleaseTicket> releaseTickets = new ReleaseNotesService(null).loadReleases(project);
         List<IdAndLabel> releases = releaseTickets.stream().map(i -> new IdAndLabel() {
                 @Override
@@ -72,7 +71,7 @@ public class SelectRNReleasePage extends BPage {
         combobox_idAndLabel("releases", releases, "", false);
     }
 
-    private void importRelease(ReleaseNotesConfig config, String project, String rootTitle, String lang) {
+    private void importRelease(ReleaseNotesConfig config, String project, String lang) {
         String pageId = ctx.formParam("release"); // It's the Page ID.
         if (StringService.isNullOrEmpty(pageId)) {
             throw new UserMessage("selectRelease", user);
