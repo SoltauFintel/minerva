@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 
+import minerva.MinervaWebapp;
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.book.Book;
@@ -219,5 +220,19 @@ public class BookSO {
      */
     public BookSO getMeAsFreshInstance() {
         return workspace.getBooks().byFolder(book.getFolder());
+    }
+    
+    public boolean isReleaseNotesBook(List<String> langs) {
+        if (!MinervaWebapp.factory().isGitlab()) {
+            return false;
+        }
+        for (String allowedTitle : MinervaWebapp.factory().getConfig().getReleaseNotesBookTitles()) {
+            for (String lang : langs) {
+                if (book.getTitle().getString(lang).equalsIgnoreCase(allowedTitle.trim())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

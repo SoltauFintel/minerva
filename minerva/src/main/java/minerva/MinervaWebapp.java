@@ -91,6 +91,7 @@ import minerva.preview.PreviewCustomerPage;
 import minerva.preview.PreviewPage;
 import minerva.publish.PublishAction;
 import minerva.releasenotes.RNAPage;
+import minerva.releasenotes.ReleaseNotesReimportAction;
 import minerva.releasenotes.SelectRNCustomer2Page;
 import minerva.releasenotes.SelectRNRelease2Page;
 import minerva.search.IndexWorkspaceAction;
@@ -256,6 +257,7 @@ public class MinervaWebapp extends RouteDefinitions {
         post("/s/:branch/:book/:id/editorsnote", SaveEditorsNoteAction.class);
         form("/s/:branch/:book/:id/help-keys/:lang/:h", HelpKeysForHeadingPage.class);
         get("/s/:branch/:book/:id/cleanup-hkh", CleanupHelpKeysForHeadingsAction.class);
+        get("/s/:branch/:book/:id/reimport-release-notes", ReleaseNotesReimportAction.class);
         
         // Attachments
         get("/s/:branch/:book/:id/attachments/:dn", DownloadAttachmentAction.class);

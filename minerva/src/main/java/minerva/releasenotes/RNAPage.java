@@ -63,8 +63,7 @@ public class RNAPage extends BPage {
 	private String analyse(String customer, String r, String rt, String rnt, DataList list) {
 		String ret = "";
 
-        ReleaseNotesConfig config = MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs().stream()
-                .filter(c -> c.getTicketPrefix().equals(customer)).findFirst().orElse(null);
+        ReleaseNotesConfig config = ReleaseNotesConfig.get(customer);
         if (config == null) {
         	if (StringService.isNullOrEmpty(customer)) {
 				return "Bitte Kunde eingeben!" + getKunden();

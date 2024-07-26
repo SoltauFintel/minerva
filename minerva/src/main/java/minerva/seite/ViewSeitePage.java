@@ -122,6 +122,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("watchers", esc(watchers));
         put("hasWatchers", !watchers.isEmpty());
         put("hasAttachments", seite.hasAttachments());
+        put("isReleaseNotesReimportAllowed", seite.isReleaseNotesReimportAllowed(langs));
     }
 
     private void featureTree() {

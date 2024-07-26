@@ -10,13 +10,15 @@ import minerva.model.SeiteSO;
 public abstract class SAction extends BAction {
     protected String id;
     protected SeiteSO seite;
+    protected String viewlinkWithoutId;
     protected String viewlink;
 
     @Override
     public void init(Context ctx) {
         super.init(ctx);
         id = ctx.pathParam("id");
-        viewlink = "/s/" + branch + "/" + bookFolder + "/" + id;
+        viewlinkWithoutId = "/s/" + branch + "/" + bookFolder + "/";
+        viewlink = viewlinkWithoutId + id;
 
         seite = book.seiteById(id);
     }

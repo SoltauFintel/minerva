@@ -27,8 +27,7 @@ public class SelectRNRelease2Page extends BPage {
         if (StringService.isNullOrEmpty(ticketPrefix)) {
             throw new RuntimeException("Missing parameter");
         }
-        ReleaseNotesConfig config = MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs().stream()
-                .filter(c -> c.getTicketPrefix().equals(ticketPrefix)).findFirst().orElse(null);
+        ReleaseNotesConfig config = ReleaseNotesConfig.get(ticketPrefix);
         if (config == null) {
             throw new RuntimeException("Unknown ticket prefix: " + esc(ticketPrefix));
         }

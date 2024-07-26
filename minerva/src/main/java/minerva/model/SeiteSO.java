@@ -875,4 +875,9 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     public boolean hasAttachments() {
         return new AttachmentsSO(this).hasAttachments();
     }
+    
+    public boolean isReleaseNotesReimportAllowed(List<String> langs) {
+        return book.isReleaseNotesBook(langs) //
+                && hasParent() && getParent().hasParent() && !getParent().getParent().hasParent(); // has 2 parent pages
+    }
 }

@@ -20,8 +20,11 @@ import de.xmap.jiracloud.ReleaseNoteTicket;
 import de.xmap.jiracloud.ReleaseTicket;
 import github.soltaufintel.amalia.base.IdGenerator;
 import minerva.base.NLS;
+import minerva.base.UserMessage;
 import minerva.config.MinervaOptions;
 import minerva.model.SeiteSO;
+import minerva.model.UserSO;
+import minerva.model.WorkspaceSO;
 
 /**
  * Jira cloud
@@ -207,5 +210,87 @@ public class ReleaseNotesService2 extends AbstractReleaseNotesService {
 					MinervaOptions.JIRA_CUSTOMER.get());
     	}
     	throw new RuntimeException("Jira Cloud access is not possible because options are not set.");
+    }
+
+    public static String reimport(SeiteSO seite, List<String> langs) {
+        // check if allowed
+        if (!seite.isReleaseNotesReimportAllowed(langs)) {
+            throw new RuntimeException("Action not possible!");
+        }
+        UserSO user = seite.getBook().getWorkspace().getUser();
+        if (seite.getSeite().getHelpKeys().size() != 1) {
+            throw new UserMessage("pageOnly1HelpKey", user);
+        }
+        String releaseNumber = seite.getSeite().getHelpKeys().get(0);
+        if (!(releaseNumber.contains(".") && releaseNumber.charAt(0) >= '0' && releaseNumber.charAt(0)<='9') ){
+            throw new UserMessage("helpKeyMustBeReleaseNumber", user);
+        }
+        
+        SeiteSO customerPage = seite.getParent().getParent();
+        String customer = getCustomer(customerPage, user);
+        ReleaseNotesConfig config = ReleaseNotesConfig.get(customer);
+        if (config == null) {
+            Logger.error("ReleaseNotesConfig is null. customer=" + customer);
+            throw new UserMessage("unknownCustomerCode", user);
+        }
+        ReleaseNotesContext context = new ReleaseNotesContext(config, null, seite.getBook());
+        
+        return new ReleaseNotesService2(context).reimport(customer, releaseNumber, seite);
+    }
+    
+    private static String getCustomer(SeiteSO customerPage, UserSO user) {
+        for (String tag : customerPage.getSeite().getTags()) {
+            final String x = "release-notes-";
+            if (tag.startsWith(x)) {
+                String customer = tag.substring(x.length()).toUpperCase();
+                if (!customer.isBlank()) {
+                    return customer;
+                }
+            }
+        }
+        throw new UserMessage("cantGetCustomer", user);
+    }
+
+    private String reimport(String project, String releaseNumber, SeiteSO seite) {
+        WorkspaceSO w = seite.getBook().getWorkspace();
+        String pageId = loadPageId(project, releaseNumber, w);
+        
+        // Step 1: reimport
+        String msg = "Re-importing release notes: " + project + " " + releaseNumber + " | " + pageId + " | " + w.getBranch();
+        Logger.info(msg);
+        seite.log(msg);
+        ctx.setPageId(pageId);
+        ctx.setReleaseNumber(releaseNumber);
+        ctx.setProject(project);
+        String seiteId = importRelease();
+        if (seiteId == null) {
+            throw new UserMessage("reimportFailed1", w, m -> m.replace("$p", pageId));
+        }
+        seite.getBook().getWorkspace().getUser().getUser().setPageLanguage(ctx.getLang());
+        
+        // Step 2: delete old page
+        Logger.info("delete old release notes page: " + seite.getId());
+        seite.remove();
+        
+        Logger.info("Re-import " + project + " " + releaseNumber + " successful. | new page: " + seiteId);
+        return seiteId;
+    }
+    
+    private String loadPageId(String project, String releaseNumber, WorkspaceSO w) {
+        String pageId = null;
+        List<ReleaseTicket> releaseTickets = loadReleases(project);
+        for (ReleaseTicket rt : releaseTickets) {
+            if (releaseNumber.equals(rt.getTargetVersion())) {
+                if (pageId == null) {
+                    pageId = rt.getPageId();
+                } else if (!pageId.equals(rt.getPageId())) {
+                    throw new UserMessage("multipleTargetVersion", w, msg -> msg.replace("$rn", releaseNumber));
+                }
+            }
+        }
+        if (pageId == null) {
+            throw new UserMessage("noReleaseTicket", w, msg -> msg.replace("$rn", releaseNumber).replace("$c", project));
+        }        
+        return pageId;
     }
 }

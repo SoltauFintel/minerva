@@ -1,5 +1,7 @@
 package minerva.releasenotes;
 
+import minerva.MinervaWebapp;
+
 public class ReleaseNotesConfig {
     private String customer;
     private String ticketPrefix;
@@ -7,6 +9,11 @@ public class ReleaseNotesConfig {
     private String spaceKey;
     private String language;
     private String rootTitle;
+    
+    public static ReleaseNotesConfig get(String customer) {
+        return MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs().stream()
+                .filter(c -> c.getTicketPrefix().equals(customer)).findFirst().orElse(null);
+    }
 
     public String getCustomer() {
         return customer;

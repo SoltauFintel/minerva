@@ -48,7 +48,7 @@ public class BookPage extends BPage implements Uptodatecheck {
         put("isSorted", sorted);
         put("Sortierung", n(sorted ? "alfaSorted" : "manuSorted"));
         put("newPage", n(book.isFeatureTree() ? "newFeature" : "newPage"));
-        put("hasReleaseNotesBtn", hasReleaseNotesBtn());
+        put("hasReleaseNotesBtn", book.isReleaseNotesBook(langs));
         put("additionalButtons", additionalButtons.getHTML(book));
         put("hasPrevlink", false);
         boolean hasSeiten = !book.getSeiten().isEmpty();
@@ -149,18 +149,4 @@ public class BookPage extends BPage implements Uptodatecheck {
 		}
 		return false;
 	}
-
-    private boolean hasReleaseNotesBtn() {
-        if (!MinervaWebapp.factory().isGitlab()) {
-            return false;
-        }
-        for (String allowedTitle : MinervaWebapp.factory().getConfig().getReleaseNotesBookTitles()) {
-            for (String lang : langs) {
-                if (book.getBook().getTitle().getString(lang).equalsIgnoreCase(allowedTitle.trim())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 }

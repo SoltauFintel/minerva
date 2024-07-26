@@ -30,9 +30,15 @@ public abstract class AbstractReleaseNotesService {
         if (customerPage != null) {
             for (SeiteSO sectionPage : customerPage.getSeiten()) {
                 if (sectionPage.getSeiten().isEmpty()) { // If no subpages it's a release page.
-                    titles.add(sectionPage.getSeite().getTitle().getString(ctx.getLang()));
+                    if (!sectionPage.getSeite().getTags().contains("rnignore")) {
+                        titles.add(sectionPage.getSeite().getTitle().getString(ctx.getLang()));
+                    }
                 } else { // Subpages are release pages.
-                    sectionPage.getSeiten().forEach(seite -> titles.add(seite.getSeite().getTitle().getString(ctx.getLang())));
+                    sectionPage.getSeiten().forEach(seite -> {
+                        if (!seite.getSeite().getTags().contains("rnignore")) {
+                            titles.add(seite.getSeite().getTitle().getString(ctx.getLang()));
+                        }
+                    });
                 }
             }
         }
