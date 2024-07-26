@@ -1,5 +1,7 @@
 package minerva.releasenotes;
 
+import static de.xmap.jiracloud.ReleaseNoteTicket.makeSortKey;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,7 +19,6 @@ import org.pmw.tinylog.Logger;
 
 import de.xmap.jiracloud.DocField;
 import de.xmap.jiracloud.JiraCloudAccess;
-import de.xmap.jiracloud.JiraCloudAccess.IssueAccess;
 import de.xmap.jiracloud.ReleaseNoteTicket;
 import de.xmap.jiracloud.ReleaseTicket;
 import github.soltaufintel.amalia.base.IdGenerator;
@@ -204,8 +205,20 @@ public class ReleaseNotesService {
         String project = ctx.getConfig().getTicketPrefix();
         StringBuilder html1 = new StringBuilder();
         StringBuilder html2 = new StringBuilder();
+        JiraCloudAccess jira = jira();
         for (ReleaseNoteTicket t : releaseNoteTickets) {
-            String ctn = getCustomerTicketNumber(t);
+            t.loadCustomerTicketNumberAndType(ctx.getProject(), jira);
+            if ("Bug".equalsIgnoreCase(t.getReleaseFor_issueType())) {
+                t.setSort("2" + makeSortKey(t.getCustomerTicketNumber()));
+            } else {
+                t.setSort("1" + makeSortKey(t.getCustomerTicketNumber()));
+            }
+        }
+        releaseNoteTickets.sort((a, b) -> a.getSort().compareTo(b.getSort()));
+        for (ReleaseNoteTicket t : releaseNoteTickets) {
+            String ctn = t.getCustomerTicketNumber();
+            Logger.debug("Release note ticket " + t.getKey() + ": " + t.getReleaseFor() + ", "
+                    + t.getReleaseFor_issueType() + ", sort=" + t.getSort() + ", " + ctn);
             StringBuilder html = ctn.contains(project) ? html1 : html2;
             getReleasePageContent2(ctn, t.getRNT(lang), t.getRNS().get(lang), t.getRND().get(lang), html);
         }
@@ -244,6 +257,7 @@ public class ReleaseNotesService {
         }
     }
 
+    // also important method: getReleasePageContent
     public String importRelease() {
     	Logger.debug("import release for page ID: " + ctx.getPageId());
         JiraCloudAccess jira = jira();
@@ -252,30 +266,12 @@ public class ReleaseNotesService {
             Logger.info("Can't import release notes because no Release note tickets were found! Page ID: " + ctx.getPageId());
             return null;
         }
-        releaseNoteTickets.forEach(rnt -> rnt.loadReleaseFor_issueType(jira));
         createReleasePages();
         return ctx.getResultingReleasePage().getId();
     }
     
     public List<ReleaseNoteTicket> loadReleaseNoteTickets(String pageId) {
     	return ReleaseNoteTicket.load(jira(), pageId);
-    }
-    
-    // Für den gewählten Kunden darf die 'Customer project key' Ticketnummer aus dem "release for" verknüpften Ticket verwendet werden.
-    // Ansonsten die RNT Nr..
-    private String getCustomerTicketNumber(ReleaseNoteTicket rnt) {
-        String ret = null;
-        String releaseFor = rnt.getReleaseFor(); // Ticketnr. des über "release for" verknüpfte Ticket
-        if (releaseFor != null) {
-            List<IssueAccess> list = jira().loadIssues("key=\"" + releaseFor + "\"", i -> i);
-            if (list.size() >= 1) {
-                IssueAccess ia = list.get(0);
-                if (ctx.getProject().equals(ia.text("/fields/project/key"))) { // Project übereinstimmend?
-                	ret = ia.text("/fields/customfield_10048"); // Customer project key
-                }
-            }
-        }
-    	return ret == null ? rnt.getKey() : ret;
     }
     
     private void getReleasePageContent2(String key, String rnt, DocField rns, DocField rnd, StringBuilder html) {

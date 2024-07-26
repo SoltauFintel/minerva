@@ -25,8 +25,9 @@ public class JiraCloudTest {
                     System.out.println("\t\t- images: " + rnt.getRND().get("en").getImages().size());
                     String rf = rnt.getReleaseFor();
                     System.out.println("\t\t- released for: " + rf);
-                    rnt.loadReleaseFor_issueType(jira);
+                    rnt.loadCustomerTicketNumberAndType(System.getenv("PROJECT"), jira);
                     System.out.println("\t\t- released for - issue type: " + rnt.getReleaseFor_issueType());
+                    System.out.println("\t\t- customer ticket number: " + rnt.getCustomerTicketNumber());
                 }
             }
         }
