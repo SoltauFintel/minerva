@@ -222,11 +222,11 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/b/:branch/:book/cal", CheckAllLinksPage.class);
         get("/b/:branch/:book/show-all-pages", ToggleShowAllPagesAction.class);
         get("/b/:branch/:book/export", ExportBookAction.class);
-        get("/b/:branch/:book/export-csv", ExportCsvBookAction.class); // XXX temp.
+        get("/b/:branch/:book/export-csv", ExportCsvBookAction.class); // temporär drin für WM
         get("/b/:branch/:book/validate", ValidationPage.class);
-        get("/b/:branch/:book/rn-select-customer", SelectRNCustomerPage.class);
-        form("/b/:branch/:book/rn-select-release", SelectRNReleasePage.class);
-        form("/b/:branch/:book/rna", RNAPage.class);
+        get("/b/:branch/:book/rn-select-customer", SelectRNCustomerPage.class); // Release notes
+        form("/b/:branch/:book/rn-select-release", SelectRNReleasePage.class);  // Release notes
+        form("/b/:branch/:book/rna", RNAPage.class);                            // Release notes
         get("/b/", CurrentWorkspaceAction.class); // falls man sich dahin verirren sollte
     }
 
@@ -257,7 +257,7 @@ public class MinervaWebapp extends RouteDefinitions {
         post("/s/:branch/:book/:id/editorsnote", SaveEditorsNoteAction.class);
         form("/s/:branch/:book/:id/help-keys/:lang/:h", HelpKeysForHeadingPage.class);
         get("/s/:branch/:book/:id/cleanup-hkh", CleanupHelpKeysForHeadingsAction.class);
-        get("/s/:branch/:book/:id/reimport-release-notes", ReleaseNotesReimportAction.class);
+        get("/s/:branch/:book/:id/reimport-release-notes", ReleaseNotesReimportAction.class); // Release notes
         
         // Attachments
         get("/s/:branch/:book/:id/attachments/:dn", DownloadAttachmentAction.class);
