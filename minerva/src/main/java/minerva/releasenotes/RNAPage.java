@@ -11,7 +11,6 @@ import com.github.template72.data.DataMap;
 
 import de.xmap.jiracloud.ReleaseNoteTicket;
 import de.xmap.jiracloud.ReleaseTicket;
-import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.book.BPage;
 import minerva.config.MinervaOptions;
@@ -207,7 +206,7 @@ public class RNAPage extends BPage {
 	}
 
 	private String getKunden() {
-		List<ReleaseNotesConfig> rnConfigs = MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs();
+		List<ReleaseNotesConfig> rnConfigs = ReleaseNotesConfig.loadReleaseNotesConfigs();
 		String kundenliste = rnConfigs.stream().map(i -> i.getTicketPrefix()).collect(Collectors.joining(", "));
 		return " Es gibt diese Kunden: " + kundenliste;
 	}

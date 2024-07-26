@@ -12,7 +12,6 @@ import github.soltaufintel.amalia.mail.MailSender;
 import github.soltaufintel.amalia.web.action.Escaper;
 import github.soltaufintel.amalia.web.config.AppConfig;
 import minerva.base.StringService;
-import minerva.releasenotes.ReleaseNotesConfig;
 
 public class MinervaConfig {
     private final AppConfig config;
@@ -237,21 +236,6 @@ public class MinervaConfig {
         } else {
             return c.split(",");
         }
-    }
-    
-    public List<ReleaseNotesConfig> loadReleaseNotesConfigs() {
-    	List<ReleaseNotesConfig> ret = new ArrayList<>();
-    	String lines = MinervaOptions.RELEASE_NOTES_CUSTOMERS.get();
-    	for (String line : lines.split("\n")) {
-    		String[] w = line.split(",");
-            ReleaseNotesConfig e = new ReleaseNotesConfig();
-            e.setLanguage(w[0].trim());
-            e.setTicketPrefix(w[1].trim());
-            e.setCustomer(w[2].trim());
-            ret.add(e);
-    	}
-    	ret.sort((a, b) -> a.getCustomer().compareToIgnoreCase(b.getCustomer()));
-    	return ret;
     }
     
     public String[] getPDF_tags() {
