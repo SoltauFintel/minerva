@@ -23,7 +23,7 @@ public class SelectRNCustomerPage extends BPage {
         for (ReleaseNotesConfig c : MinervaWebapp.factory().getConfig().loadReleaseNotesConfigs()) {
             DataMap map = list.add();
             map.put("customer", esc(c.getTicketPrefix()));
-            map.put("link", esc(booklink + "/rn-select-release2?c=" + u(c.getTicketPrefix())));
+            map.put("link", esc(booklink + "/rn-select-release?c=" + u(c.getTicketPrefix())));
         }
     }
 }

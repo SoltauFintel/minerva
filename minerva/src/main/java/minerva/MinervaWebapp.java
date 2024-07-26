@@ -224,8 +224,8 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/b/:branch/:book/export", ExportBookAction.class);
         get("/b/:branch/:book/export-csv", ExportCsvBookAction.class); // XXX temp.
         get("/b/:branch/:book/validate", ValidationPage.class);
-        get("/b/:branch/:book/rn-select-customer2", SelectRNCustomerPage.class);
-        form("/b/:branch/:book/rn-select-release2", SelectRNReleasePage.class);
+        get("/b/:branch/:book/rn-select-customer", SelectRNCustomerPage.class);
+        form("/b/:branch/:book/rn-select-release", SelectRNReleasePage.class);
         form("/b/:branch/:book/rna", RNAPage.class);
         get("/b/", CurrentWorkspaceAction.class); // falls man sich dahin verirren sollte
     }
