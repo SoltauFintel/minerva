@@ -11,7 +11,7 @@ import minerva.book.BPage;
  * 
  * Jira cloud
  */
-public class SelectRNCustomer2Page extends BPage {
+public class SelectRNCustomerPage extends BPage {
 
     @Override
     protected void execute() {
