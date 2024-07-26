@@ -213,6 +213,7 @@ public class GitService {
                 }
             }
         } catch (RefAlreadyExistsException e) {
+            // This also happens if the user doubleclicks the submit button.
             Logger.error(e);
             throw new RuntimeException("Branch name already exists. Please choose another name.");
         } catch (Exception e) {
