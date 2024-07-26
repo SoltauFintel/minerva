@@ -206,7 +206,7 @@ public class RNAPage extends BPage {
 	}
 
 	private String getKunden() {
-		List<ReleaseNotesConfig> rnConfigs = ReleaseNotesConfig.loadReleaseNotesConfigs();
+		List<ReleaseNotesConfig> rnConfigs = ReleaseNotesConfig.load();
 		String kundenliste = rnConfigs.stream().map(i -> i.getTicketPrefix()).collect(Collectors.joining(", "));
 		return " Es gibt diese Kunden: " + kundenliste;
 	}

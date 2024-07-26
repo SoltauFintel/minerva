@@ -12,13 +12,8 @@ public class ReleaseNotesConfig {
     private String ticketPrefix;
     /** en, de */
     private String language;
-    
-    public static ReleaseNotesConfig get(String customer) {
-        return loadReleaseNotesConfigs().stream()
-                .filter(c -> c.getTicketPrefix().equals(customer)).findFirst().orElse(null);
-    }
 
-    public static List<ReleaseNotesConfig> loadReleaseNotesConfigs() {
+    public static List<ReleaseNotesConfig> load() {
         List<ReleaseNotesConfig> ret = new ArrayList<>();
         String lines = MinervaOptions.RELEASE_NOTES_CUSTOMERS.get();
         for (String line : lines.split("\n")) {
@@ -31,6 +26,10 @@ public class ReleaseNotesConfig {
         }
         ret.sort((a, b) -> a.getCustomer().compareToIgnoreCase(b.getCustomer()));
         return ret;
+    }
+    
+    public static ReleaseNotesConfig get(String customer) {
+        return load().stream().filter(c -> c.getTicketPrefix().equals(customer)).findFirst().orElse(null);
     }
 
     public String getCustomer() {
