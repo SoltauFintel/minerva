@@ -31,11 +31,10 @@ public class SelectRNReleasePage extends BPage {
         if (config == null) {
             throw new RuntimeException("Unknown ticket prefix: " + esc(ticketPrefix));
         }
-        String language = config.getLanguage();
         if (isPOST()) {
-            importRelease(config, ticketPrefix, language);
+            importRelease(config, ticketPrefix, config.getLanguage());
         } else {
-            displayFormular(config, ticketPrefix, language);
+            displayFormular(config, ticketPrefix, config.getLanguage());
         }
     }
 
