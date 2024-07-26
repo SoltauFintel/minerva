@@ -1,4 +1,4 @@
-package minerva.confluence;
+package minerva.migration.confluence;
 
 public class ConfluenceExtensions {
     private String position; // int, but can be "none"

@@ -1,4 +1,4 @@
-package minerva.confluence;
+package minerva.migration.confluence;
 
 public class ConfluenceAncestor {
     private String id;

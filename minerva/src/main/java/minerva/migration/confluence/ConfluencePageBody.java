@@ -1,4 +1,4 @@
-package minerva.confluence;
+package minerva.migration.confluence;
 
 public class ConfluencePageBody {
     private ConfluencePageBodyStorage export_view;

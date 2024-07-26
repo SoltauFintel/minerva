@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 
 import minerva.base.FileService;
-import minerva.confluence.ConfluencePage;
+import minerva.migration.confluence.ConfluencePage;
 
 public class MappingTableCreator {
     private ConfluencePage root_de;
