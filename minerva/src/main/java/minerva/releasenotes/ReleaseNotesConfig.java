@@ -35,10 +35,10 @@ public class ReleaseNotesConfig {
         return load().stream().filter(c -> c.getTicketPrefix().equals(customer)).findFirst().orElse(null);
     }
 
-    public ReleaseNotesConfig(String customer, String ticketPrefix, String language) {
-        this.customer = customer;
-        this.ticketPrefix = ticketPrefix;
+    public ReleaseNotesConfig(String language, String ticketPrefix, String customer) {
         this.language = language;
+        this.ticketPrefix = ticketPrefix;
+        this.customer = customer;
     }
 
     public String getCustomer() {

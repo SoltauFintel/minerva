@@ -7,8 +7,8 @@
         <div class="mt2">
             {{each c in configs}}
                 <a href="{{c.link}}" class="btn btn-primary" style="margin-right: 1em;"
-                    onclick="document.querySelector('#s{{c.customer}}').style='';">{{c.customer}}
-                    <i id="s{{c.customer}}" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+                    onclick="document.querySelector('#s{{c.ticketPrefix}}').style='';">{{c.customer}}
+                    <i id="s{{c.ticketPrefix}}" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
             {{/each}}
         </div>
     </div>

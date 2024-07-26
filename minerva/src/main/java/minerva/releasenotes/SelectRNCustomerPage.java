@@ -22,7 +22,8 @@ public class SelectRNCustomerPage extends BPage {
         DataList list = list("configs");
         for (ReleaseNotesConfig c : ReleaseNotesConfig.load()) {
             DataMap map = list.add();
-            map.put("customer", esc(c.getTicketPrefix()));
+            map.put("ticketPrefix", esc(c.getTicketPrefix()));
+            map.put("customer", esc(c.getCustomer()));
             map.put("link", esc(booklink + "/rn-select-release?c=" + u(c.getTicketPrefix())));
         }
     }
