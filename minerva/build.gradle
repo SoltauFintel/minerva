@@ -25,7 +25,7 @@ dependencies {
     implementation 'com.openhtmltopdf:openhtmltopdf-java2d:1.0.10'
     implementation 'com.openhtmltopdf:openhtmltopdf-mathml-support:1.0.10'
     implementation 'com.openhtmltopdf:openhtmltopdf-slf4j:1.0.10'
-    implementation 'com.github.gastendonk:jiracloudrestapi:1.7.0'
+    implementation 'com.github.gastendonk:jiracloudrestapi:1.9.0'
     implementation files('lib/oh-html.jar')  // https://github.com/SoltauFintel/oh-html
     
     testImplementation 'junit:junit:4.13.2'

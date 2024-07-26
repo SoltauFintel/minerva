@@ -70,11 +70,13 @@ public class ReleaseNotesService extends AbstractReleaseNotesService {
 
     public String importRelease() {
     	Logger.debug("import release for page ID: " + ctx.getPageId());
-        releaseNoteTickets = ReleaseNoteTicket.load(jira(), ctx.getPageId());
+        JiraCloudAccess jira = jira();
+        releaseNoteTickets = ReleaseNoteTicket.load(jira, ctx.getPageId());
         if (releaseNoteTickets.isEmpty()) {
-            Logger.info("Can't import release notes because no 'Release note ticket's were found! Page ID: " + ctx.getPageId());
+            Logger.info("Can't import release notes because no Release note tickets were found! Page ID: " + ctx.getPageId());
             return null;
         }
+        releaseNoteTickets.forEach(rnt -> rnt.loadReleaseFor_issueType(jira));
         createReleasePages();
         return ctx.getResultingReleasePage().getId();
     }
