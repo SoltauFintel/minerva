@@ -83,7 +83,7 @@ public abstract class AbstractReleaseNotesService {
             customerPage.getSeite().getTags().add(tag());
             customerPage.getSeite().getTags().add("reversed-order");
             customerPage.getSeite().setSorted(true);
-            String customer = ctx.getConfig().getCustomer();
+            String customer = ctx.getConfig().getTicketPrefix();
             setTitleAndDummyContent(customerPage, "Programmänderungen " + customer, "Release Notes " + customer);
             customerPage.getSeite().setTocSubpagesLevels(2);
             customerPage.saveMetaTo(ctx.getFiles());
@@ -158,7 +158,7 @@ public abstract class AbstractReleaseNotesService {
         String prefix = ctx.getResultingReleasePage().getSeite().getBook().getFolder() + "/";
         ctx.getResultingReleasePage().getImages().forEach(dn -> filenames.put(prefix + dn, DirAccess.IMAGE));
         ctx.getBook().dao().saveFiles(filenames,
-                new CommitMessage("Release Notes " + ctx.getConfig().getCustomer() + " " + releaseNumber),
+                new CommitMessage("Release Notes " + ctx.getConfig().getTicketPrefix() + " " + releaseNumber),
                 ctx.getBook().getWorkspace());
         Logger.info(releaseNumber +" | Number of saved pages: " + filenames.keySet().stream().filter(i -> i.endsWith(".meta")).count());
         seite.reindex();
