@@ -25,6 +25,7 @@ import minerva.model.SeitenSO;
 import minerva.user.User;
 import minerva.user.UserAccess;
 import ohhtml.Thumbnails;
+import ohhtml.toc.LocalAnchors;
 import ohhtml.toc.TocMacro;
 
 public class ViewSeitePage extends SPage implements Uptodatecheck {
@@ -171,6 +172,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             }
             map.put("titel", esc(titel));
             TocMacro macro = new TocMacro(seite.getTocMacroPage(), "-", lang, "");
+            macro.setHelpKeysText(n("helpKeys"));
             if (!MinervaWebapp.factory().isCustomerVersion()) {
                 macro.setSeite(new SeiteIPageAdapter(seite));
             }
@@ -188,6 +190,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     
     protected String transformContent(TocMacro macro, String lang, DataMap map) {
         String html = macro.transform(seite.getContent().getString(lang));
+        html = new LocalAnchors().transform(html);
         html = Thumbnails.thumbnails(html, seite.getBook().getFolder(), seite.getId(), booklink.replace("/b/", "/s/") + "/");
         map.put("toc", macro.getTOC()); // no esc, after transform()
         return html;
