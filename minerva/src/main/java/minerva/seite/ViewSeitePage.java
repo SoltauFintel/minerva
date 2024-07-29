@@ -11,6 +11,7 @@ import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;
+import minerva.base.DeliverHtmlContent;
 import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
 import minerva.book.BookPage;
@@ -29,6 +30,7 @@ import ohhtml.toc.LocalAnchors;
 import ohhtml.toc.TocMacro;
 
 public class ViewSeitePage extends SPage implements Uptodatecheck {
+    public static DeliverHtmlContent<SeiteSO> additionalButtons = i -> "";
     private String mindmapJson;
     
     @Override
@@ -123,7 +125,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("watchers", esc(watchers));
         put("hasWatchers", !watchers.isEmpty());
         put("hasAttachments", seite.hasAttachments());
-        put("isReleaseNotesReimportAllowed", seite.isReleaseNotesReimportAllowed(langs));
+        put("additionalButtons", additionalButtons.getHTML(seite));
     }
 
     private void featureTree() {

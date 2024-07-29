@@ -258,11 +258,7 @@
             {{/if}}
         {{/if}}
         
-        {{if isReleaseNotesReimportAllowed}}
-            <hr/><p><a href="{{viewlink}}/reimport-release-notes" class="btn btn-success"
-                onclick="return reimportRN();">{{N.ErneutImportieren}}
-                <i id="irna" class="fa fa-delicious fa-spin" style="display: none;"></i></a></p>
-        {{/if}}
+        {{additionalButtons}}
         
         {{if hasWatchers}}
             <hr/>
@@ -365,14 +361,6 @@
         ret = confirm('{{N.sortConfirm}}');
         if (ret) {
             document.querySelector('#s1').style='';
-        }
-        return ret;
-    }
-
-    function reimportRN() {
-        ret = confirm('{{N.reimportReleaseNotes}}');
-        if (ret) {
-            document.querySelector('#irna').style = '';
         }
         return ret;
     }
