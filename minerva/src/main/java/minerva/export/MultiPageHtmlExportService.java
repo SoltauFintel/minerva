@@ -224,7 +224,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
                 if (o >= 0) {
                     String li = href.substring(0, o);
                     String re = href.substring(o);
-                    if (li.endsWith(".html")) {
+                    if (li.endsWith(".html") | li.isEmpty()) {
                         continue; // replace not necessary
                     } else {
                         newHref = li + ".html" + re;
