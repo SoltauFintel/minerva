@@ -189,10 +189,11 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     }
     
     protected String transformContent(TocMacro macro, String lang, DataMap map) {
-        String html = macro.transform(seite.getContent().getString(lang));
-        html = new LocalAnchors().transform(html);
+        String html = seite.getContent().getString(lang);
+        html = macro.transform(html); // TOC, help keys links
+        html = new LocalAnchors().transform(html); // after TocMacro.transform()
         html = Thumbnails.thumbnails(html, seite.getBook().getFolder(), seite.getId(), booklink.replace("/b/", "/s/") + "/");
-        map.put("toc", macro.getTOC()); // no esc, after transform()
+        map.put("toc", macro.getTOC()); // no esc, after TocMacro.transform()
         return html;
     }
     

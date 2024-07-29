@@ -15,6 +15,7 @@ import minerva.seite.NavigateService;
 import minerva.seite.SPage;
 import minerva.seite.SeiteVisible;
 import ohhtml.Thumbnails;
+import ohhtml.toc.LocalAnchors;
 import ohhtml.toc.TocMacro;
 
 public class PreviewPage extends SPage {
@@ -41,6 +42,7 @@ public class PreviewPage extends SPage {
         String html = seite.getContent().getString(lang);
         TocMacro toc = new TocMacro(seite.getTocMacroPage(), customer, lang, "");
         html = toc.transform(html); // transform before getTOC
+        html = new LocalAnchors().transform(html); // after TocMacro.transform()
         html = Thumbnails.thumbnails(html, seite.getBook().getFolder(), seite.getId(),
                 "/s/" + seite.getBook().getWorkspace().getBranch() + "/" + seite.getBook().getBook().getFolder() + "/");
         put("content", html); 
