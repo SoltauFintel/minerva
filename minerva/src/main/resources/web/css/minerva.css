@@ -664,12 +664,14 @@ ul.pagetree {
     color: #fff;
     font-size: 9pt;
     margin-left: 1em;
+    white-space: nowrap;
 }
 
 .edithk1 {
     color: #999;
     font-size: 9pt;
     margin-left: 1em;
+    white-space: nowrap;
 }
 
 .edithk0:hover, .edithk1:hover {
