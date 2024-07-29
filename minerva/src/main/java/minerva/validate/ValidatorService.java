@@ -88,6 +88,7 @@ public class ValidatorService {
                 doubleEmptyLines(body, msg);
                 headings(body, msg);
                 missingImageFiles(seite, html, msg);
+                brokenLocalAnchors(body, msg);
             }
         }
         return msg.stream().map(key -> translate(key, guiLang)).collect(Collectors.toList());
@@ -228,6 +229,27 @@ public class ValidatorService {
                 }
             }
         }
+    }
+
+    private void brokenLocalAnchors(Element body, List<String> msg) {
+        for (Element a : body.select("a")) {
+            String href = a.attr("href");
+            if (href.startsWith("#")) {
+                String target = href.substring(1).trim();
+                if (!findHeading(target, body)) {
+                    msg.add("v.brokenLocalAnchor;" + target.replace(";", ",") + ";" + a.wholeOwnText().trim().replace(";", ","));
+                }
+            }
+        }
+    }
+    
+    private boolean findHeading(String heading, Element body) {
+        for (Element h2 : body.select("h2,h3,h4,h5,h6")) {
+            if (h2.wholeOwnText().trim().equals(heading)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private String translate(String key, String lang) {

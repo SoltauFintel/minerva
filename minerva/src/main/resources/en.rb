@@ -213,6 +213,7 @@ v.doubleEmptyLines1=There is $0 double empty lines pairs.
 v.illegalTagsInHeading=Heading must not contain formatting: $0
 v.missingImageFile=Missing image file: $0
 v.httpImage=Image file with http(s) URL: $0
+v.brokenLocalAnchor=The local anchor link "$1" points to the nonexistent heading "$0".
 unusedImages=Unused images
 validate=Validate pages
 nMessages=Number of errors
