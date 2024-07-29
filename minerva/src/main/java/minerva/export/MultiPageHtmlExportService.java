@@ -25,6 +25,7 @@ import minerva.seite.NavigateService;
 import minerva.seite.SeiteVisible;
 import minerva.seite.link.Link;
 import minerva.seite.link.LinkService;
+import ohhtml.toc.LocalAnchors;
 import ohhtml.toc.TocMacro;
 import ohhtml.toc.TocMacroPage;
 
@@ -179,6 +180,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
         However, I'm not sure about this here because tocSubpagesLevels is an explicit setting. */
         TocMacro toc = new TocMacro(page, customer, lang, "");
         html = toc.transform(html);
+        html = new LocalAnchors().transform(html);
         return toc.getTOC() + html;
     }
 

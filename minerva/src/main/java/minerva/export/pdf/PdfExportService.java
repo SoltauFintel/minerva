@@ -21,6 +21,7 @@ import minerva.export.template.ExportTemplatesService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
+import ohhtml.toc.LocalAnchors;
 
 public class PdfExportService extends MultiPageHtmlExportService {
     private final List<File> pdfFiles = new ArrayList<>();
@@ -168,6 +169,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
         if (html != null) {
             html = super.formulas2images(html, seite, outputFolder, title);
         }
+        html = new LocalAnchors().transform(html);
         return html;
     }
 
