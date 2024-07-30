@@ -234,7 +234,7 @@ public class ValidatorService {
     private void brokenLocalAnchors(Element body, List<String> msg) {
         for (Element a : body.select("a")) {
             String href = a.attr("href");
-            if (href.startsWith("#")) {
+            if (!"#".equals(href.trim()) && href.startsWith("#")) {
                 String target = href.substring(1).trim();
                 if (!findHeading(target, body)) {
                     msg.add("v.brokenLocalAnchor;" + target.replace(";", ",") + ";" + a.wholeOwnText().trim().replace(";", ","));
