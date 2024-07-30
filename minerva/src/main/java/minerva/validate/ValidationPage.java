@@ -1,5 +1,6 @@
 package minerva.validate;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -9,6 +10,9 @@ import org.pmw.tinylog.Logger;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 import com.github.template72.data.DataValue;
+import com.github.template72.data.IDataCondition;
+import com.github.template72.data.IDataList;
+import com.github.template72.data.IDataMap;
 
 import minerva.book.BPage;
 import minerva.model.SeiteSO;
@@ -95,7 +99,26 @@ public class ValidationPage extends BPage {
 				seiten.sort((a, b) ->        ((DataValue) a.get("breadcrumbs")).toString()
 						.compareToIgnoreCase(((DataValue) b.get("breadcrumbs")).toString() ));
 			});
+		removeEmptyPairs(list);
 		langEintrag.put("hasSameTitles", entrySet.stream().anyMatch(e -> e.getKey().startsWith(lang + ":")));
+	}
+
+	private void removeEmptyPairs(DataList list) {
+		Iterator<IDataMap> iter = list.iterator();
+		while (iter.hasNext()) {
+			IDataMap i = iter.next();
+			boolean remove = true;
+			IDataList list2 = (IDataList) i.get("seiten");
+			for (IDataMap j : list2) {
+				boolean empty = ((IDataCondition) j.get("empty")).isTrue();
+				if (!empty) {
+					remove = false;
+				}
+			}
+			if (remove) {
+				iter.remove();
+			}
+		}
 	}
 	
 	private String breadcrumbs(SeiteSO seite, String lang) {
