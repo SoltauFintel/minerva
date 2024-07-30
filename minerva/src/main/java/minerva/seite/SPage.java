@@ -10,13 +10,15 @@ import minerva.model.SeiteSO;
 public abstract class SPage extends BPage {
     protected String id;
     protected SeiteSO seite;
+    protected String viewlinkWithoutId;
     protected String viewlink;
     
     @Override
     public void init(Context ctx) {
         super.init(ctx);
         id = ctx.pathParam("id");
-        viewlink = "/s/" + esc(branch) + "/" + esc(bookFolder) + "/" + esc(id);
+        viewlinkWithoutId = "/s/" + esc(branch) + "/" + esc(bookFolder) + "/";
+        viewlink = viewlinkWithoutId + esc(id);
 
         seite = getSeite();
         

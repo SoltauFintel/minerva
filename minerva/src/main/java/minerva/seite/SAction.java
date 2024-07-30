@@ -20,6 +20,10 @@ public abstract class SAction extends BAction {
         viewlinkWithoutId = "/s/" + branch + "/" + bookFolder + "/";
         viewlink = viewlinkWithoutId + id;
 
-        seite = book.seiteById(id);
+        seite = getSeite();
+    }
+    
+    protected SeiteSO getSeite() {
+        return book.seiteById(id);
     }
 }
