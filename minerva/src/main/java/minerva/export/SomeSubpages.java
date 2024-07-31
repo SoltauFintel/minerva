@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.pmw.tinylog.Logger;
-
-import minerva.MinervaWebapp;
 import minerva.model.SeiteSO;
 
 /**
@@ -14,23 +11,15 @@ import minerva.model.SeiteSO;
  * Wenn Seite AA eine Unterseite von A ist, so ist AA auch im Export mit Seitenauswahl eine Unterseite von A.
  */
 public class SomeSubpages implements SubpagesSelector {
+	public static ProcessPages processPages = seiten -> seiten;
     private final List<SeiteAndDone> allPages;
     
+    public interface ProcessPages {
+    	List<SeiteSO> process(List<SeiteSO> seiten);
+    }
+    
     public SomeSubpages(List<SeiteSO> allPages) {
-    	List<SeiteSO> ret = allPages;
-		if (allPages.size() == 1) {
-			List<String> langs = MinervaWebapp.factory().getLanguages();
-			SeiteSO so = allPages.get(0);
-			if (so.getBook().isReleaseNotesBook(langs) && so.hasParent() && !so.getParent().hasParent() && !so.getSeiten().isEmpty()) {
-				// nice export for single 2nd level page of Release Notes book (e.g. 3.29.x)
-				Logger.info("adding subpages for " + so.getTitle());
-				ret = new ArrayList<>();
-		    	for (SeiteSO sub : so.getSeiten()) {
-		    		ret.add(sub);
-		    	}
-			}			
-		}
-		this.allPages = ret.stream().map(seite -> new SeiteAndDone(seite)).collect(Collectors.toList());
+		this.allPages = processPages.process(allPages).stream().map(seite -> new SeiteAndDone(seite)).collect(Collectors.toList());
     }
 
 	public List<SeiteAndDone> getAllPages() {

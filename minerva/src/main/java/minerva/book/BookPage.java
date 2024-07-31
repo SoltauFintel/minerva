@@ -48,7 +48,6 @@ public class BookPage extends BPage implements Uptodatecheck {
         put("isSorted", sorted);
         put("Sortierung", n(sorted ? "alfaSorted" : "manuSorted"));
         put("newPage", n(book.isFeatureTree() ? "newFeature" : "newPage"));
-        put("hasReleaseNotesBtn", book.isReleaseNotesBook(langs));
         put("additionalButtons", additionalButtons.getHTML(book));
         put("hasPrevlink", false);
         boolean hasSeiten = !book.getSeiten().isEmpty();

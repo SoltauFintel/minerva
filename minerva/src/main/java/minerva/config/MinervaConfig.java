@@ -229,15 +229,6 @@ public class MinervaConfig {
         return config.get("release-notes.token");
     }
     
-    public String[] getReleaseNotesBookTitles() {
-        String c = MinervaOptions.RELEASE_NOTES_BOOK_TITLES.get();
-        if (StringService.isNullOrEmpty(c)) {
-            return new String[0];
-        } else {
-            return c.split(",");
-        }
-    }
-    
     public String[] getPDF_tags() {
     	String pdfTags = MinervaOptions.PDF_TAGS.get();
     	if (pdfTags == null) {
