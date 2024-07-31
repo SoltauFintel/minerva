@@ -167,8 +167,7 @@ public abstract class GenericExportService {
     protected abstract void init(File outputFolder);
 
     public static GenericExportService getService(ExportRequest req) {
-        String w = req.getContext().queryParam("w");
-        if ("pdf".equals(w)) {
+        if (req.pdf()) {
             return new PdfExportService(req);
         } else { // Multi page HTML
             return new MultiPageHtmlExportService(req);

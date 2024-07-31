@@ -11,21 +11,20 @@ public class ExportRequest {
     private final boolean withCover;
     private final boolean withTOC; // table of contents
     private final boolean withChapters;
-    private final Context context;
+    private final boolean pdf;
 
     public ExportRequest(WorkspaceSO workspace, Context ctx) {
         this(workspace, ctx.queryParam("customer"), ctx.queryParam("lang"), ctx.queryParam("template"), //
                 o("c", ctx), o("i", ctx), o("k", ctx), //
-                ctx);
+                "pdf".equals(ctx.queryParam("w")));
     }
     
     private static boolean o(String pChar, Context ctx) {
         return ctx.queryParam("o") == null ? false : ctx.queryParam("o").contains(pChar);
     }
 
-    // internal and for test
-    ExportRequest(WorkspaceSO workspace, String customer, String language, String templateId, //
-            boolean withCover, boolean withTOC, boolean withChapters, Context context) {
+    public ExportRequest(WorkspaceSO workspace, String customer, String language, String templateId, //
+            boolean withCover, boolean withTOC, boolean withChapters, boolean pdf) {
         this.workspace = workspace;
         this.customer = customer;
         this.language = language;
@@ -33,7 +32,7 @@ public class ExportRequest {
         this.withCover = withCover;
         this.withTOC = withTOC;
         this.withChapters = withChapters;
-        this.context = context;
+        this.pdf = pdf;
     }
 
     public WorkspaceSO getWorkspace() {
@@ -64,7 +63,7 @@ public class ExportRequest {
         return withChapters;
     }
 
-    public Context getContext() {
-        return context;
+    public boolean pdf() {
+    	return pdf;
     }
 }
