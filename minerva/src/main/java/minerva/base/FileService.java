@@ -111,6 +111,7 @@ public class FileService {
                 ret += c;
             }
         }
+        ret = ret.replace("--", "-");
         if (ret.isEmpty()) {
             throw new RuntimeException("Safe name is empty");
         }
