@@ -53,7 +53,7 @@ public class SeitenauswahlPage extends WPage {
             if (StringService.isNullOrEmpty(seiteId)) {
                 put("pageExportMode", false);
             } else {
-                String pageTitle = getPageTitle(seiteId);
+                String pageTitle = getPageTitle(seiteId, lang);
                 put("pageExportMode", !StringService.isNullOrEmpty(pageTitle));
                 put("pageExportId", esc(seiteId));
                 put("pageExportTitle", esc(pageTitle));
@@ -117,8 +117,8 @@ public class SeitenauswahlPage extends WPage {
         }
     }
     
-    private String getPageTitle(String seiteId) {
+    private String getPageTitle(String seiteId, String lang) {
         SeiteSO seite = workspace.findPage(seiteId);
-        return seite == null ? "" : seite.getSeite().getTitle().getString(user.getGuiLanguage());
+        return seite == null ? "" : seite.getSeite().getTitle().getString(lang);
     }
 }
