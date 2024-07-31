@@ -245,6 +245,7 @@ multiPageHtml=Multi page HTML
 exportFormat=Export format
 goToMenu=Go to menu
 downloadExportInfo=The export has been created. Please download the file:
+downloadExportInfo2=The export has been created. Please display the file:
 export-already-downloaded=The file has already been downloaded and no longer exists. Please run the export again if necessary.
 addExportTemplateSet=Add export template set
 editExportTemplateSet=Edit export template set

@@ -246,6 +246,7 @@ multiPageHtml=Mehrseitiges HTML
 exportFormat=Exportformat
 goToMenu=Weiter zum Menü
 downloadExportInfo=Der Export wurde erstellt und kann jetzt heruntergeladen werden:
+downloadExportInfo2=Der Export wurde erstellt und kann jetzt angezeigt werden:
 export-already-downloaded=Die Datei wurde bereits heruntergeladen und ist nicht mehr vorhanden. Bitte ggf. Export erneut ausführen.
 addExportTemplateSet=Export Template Set erstellen
 editExportTemplateSet=Export Template Set bearbeiten

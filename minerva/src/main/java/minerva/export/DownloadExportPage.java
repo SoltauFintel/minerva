@@ -18,17 +18,18 @@ public class DownloadExportPage extends WPage {
     protected void execute() {
         String id = ctx.pathParam("id");
         String mode = ctx.queryParam("mode");
+        boolean asAttachment = "dla".equals(mode);
         
-        if ("dl".equals(mode)) {
+        if ("dl".equals(mode) || asAttachment) {
             render = false;
             File file = GenericExportService.pop(id);
             if (file != null && file.isFile()) {
                 if (file.getName().endsWith(".pdf")) {
                     ctx.res.type("application/pdf");
-                    download(file);
+                    download(file, asAttachment ? "attachment" : "inline");
                 } else if (file.getName().endsWith(".zip")) {
                     ctx.res.type("application/zip");
-                    download(file);
+                    download(file, "attachment");
                 }
             } else {
                 throw new UserMessage("export-already-downloaded", user);
@@ -43,12 +44,18 @@ public class DownloadExportPage extends WPage {
             put("dn", esc(dn));
             put("dnu", u(dn));
             put("downloadIcon", dn.endsWith(".pdf") ? "file-pdf-o" : "download");
+            put("pdf", dn.endsWith(".pdf"));
         }
     }
     
-    private void download(File file) {
-    	Logger.debug("download: " + file.getAbsolutePath());
-        ctx.res.header("Content-Disposition", "inline; filename=\"" + file.getName() + "\""); // inline -> opens PDF in new tab instead of showing it in the browser download list
+    /**
+     * @param file -
+     * @param attachment "inline": opens PDF in new tab instead of showing it in the browser download list, or "attachment"
+     */
+    private void download(File file, String attachment) {
+		Logger.debug(attachment + " download: " + file.getAbsolutePath());
+		String disposition = attachment + "; filename=\"" + file.getName() + "\"";
+		ctx.res.header("Content-Disposition", disposition);
         try {
             ctx.res.raw().getOutputStream().write(Files.readAllBytes(file.toPath()));
         } catch (IOException e) {
