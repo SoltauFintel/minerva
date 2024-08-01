@@ -24,6 +24,7 @@ public class User {
     private List<String> taskPriorities;
     private boolean showAllPages = false;
     private String attachmentCategory;
+    private String publishReleaseNumber;
     
     public String getLogin() {
         return login;
@@ -147,4 +148,12 @@ public class User {
     public void setAttachmentCategory(String attachmentCategory) {
         this.attachmentCategory = attachmentCategory;
     }
+
+	public String getPublishReleaseNumber() {
+		return publishReleaseNumber;
+	}
+
+	public void setPublishReleaseNumber(String publishReleaseNumber) {
+		this.publishReleaseNumber = publishReleaseNumber;
+	}
 }

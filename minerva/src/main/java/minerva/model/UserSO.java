@@ -467,4 +467,10 @@ public class UserSO {
         user.setAttachmentCategory(category);
         save();
     }
+    
+    public void saveReleaseNumber(String rn) {
+    	load();
+    	user.setPublishReleaseNumber(rn == null ? "" : rn.trim());
+    	save();
+    }
 }
