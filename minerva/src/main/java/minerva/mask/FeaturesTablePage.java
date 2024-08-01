@@ -22,7 +22,7 @@ public class FeaturesTablePage extends SPage {
         if (isPOST()) {
             filterValues();
         } else {
-            Logger.info(branch + " | " + user.getLogin() + " | Features table " + id + " " + seite.getTitle());
+            Logger.info(user.getLogin() + " | " + branch + " | Features table #" + id + ": " + seite.getTitle());
             header(seite.getTitle());
             menu();
             if (!seite.getSeiten().isEmpty()) {
