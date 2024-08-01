@@ -31,6 +31,7 @@ import ohhtml.toc.TocMacro;
 
 public class ViewSeitePage extends SPage implements Uptodatecheck {
     public static DeliverHtmlContent<SeiteSO> additionalButtons = i -> "";
+    public static AddFeatures addFeatures = (seite, features) -> {}; 
     private String mindmapJson;
     
     @Override
@@ -138,9 +139,15 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             put("hasLeftArea", true);
             put("leftAreaContent", new PageTree().getHTML(seite.getBook().getSeiten(), langs, seite.getId(), user.getPageLanguage()));
             put("mindmapData", "");
-            new FeatureFieldsService().getFeaturesForSeite(id, workspace).forEach(f -> list.add().put("link", esc(f.seiteId)).put("title", esc(f.title)));
+            new FeatureFieldsService().addFeatures(seite, list);
+            addFeatures.addFeatures(seite, list);
+			list.sort((a, b) -> a.getValue("title").toString().compareToIgnoreCase(b.getValue("title").toString()));
         }
         put("showFeatures", !list.isEmpty());
+    }
+    
+    public interface AddFeatures {
+    	void addFeatures(SeiteSO seite, DataList features);
     }
 
     private void commentsSize() {

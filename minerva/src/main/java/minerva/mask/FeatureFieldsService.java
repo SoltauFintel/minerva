@@ -7,8 +7,10 @@ import java.util.Map.Entry;
 
 import org.pmw.tinylog.Logger;
 
+import com.github.template72.data.DataList;
 import com.google.gson.Gson;
 
+import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.access.MultiPurposeDirAccess;
@@ -17,8 +19,9 @@ import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.search.SearchResult;
+import minerva.seite.ViewSeitePage.AddFeatures;
 
-public class FeatureFieldsService {
+public class FeatureFieldsService implements AddFeatures {
 
     public FeatureFields get(SeiteSO seite) {
         FeatureFields ff = load(seite);
@@ -183,7 +186,14 @@ public class FeatureFieldsService {
         return false;
     }
 
-    public List<RSeite> getFeaturesForSeite(String seiteId, WorkspaceSO workspace) {
+	@Override
+	public void addFeatures(SeiteSO seite, DataList features) {
+        new FeatureFieldsService()
+        	.getFeaturesForSeite(seite.getId(), seite.getBook().getWorkspace())
+        	.forEach(f -> features.add().put("link", Escaper.esc(f.seiteId)).put("title", Escaper.esc(f.title)));
+	}
+
+	private List<RSeite> getFeaturesForSeite(String seiteId, WorkspaceSO workspace) {
         List<RSeite> features = new ArrayList<>();
         FeatureFieldsService sv = new FeatureFieldsService();
         for (BookSO book : workspace.getBooks()) {
@@ -199,7 +209,6 @@ public class FeatureFieldsService {
                 }
             }
         }
-        features.sort((a, b) -> a.title.compareToIgnoreCase(b.title));
         return features;
     }
 }
