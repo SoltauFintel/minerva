@@ -28,6 +28,7 @@ public class MenuPage extends WPage {
 
     private void workspaces() {
         DataList list = list("workspaces");
+        DataList wList = list("workspaceCommands");
         if (MinervaWebapp.factory().isGitlab()) {
             for (WorkspaceSO workspace : user.getWorkspaces()) {
                 DataMap map = list.add();
@@ -42,7 +43,30 @@ public class MenuPage extends WPage {
                     map.put("isCurrent", false);
                 }
             }
+            
+            workspaceMenu(wList, "pullWS", "fa-refresh", "/w/:branch/pull", true);
+            workspaceMenu(wList, "cloneWS", "fa-refresh red", "/w/:branch/pull?force=1", true);
+            workspaceMenu(wList, "createWS", "fa-folder", "/create-workspace");
+            workspaceMenu(wList, "deleteWS", "fa-trash-o red", "/w/:branch/delete");
+            workspaceMenu(wList, "createBranch", "fa-code-fork", "/branch/:branch");
+            workspaceMenu(wList, "mergeBranch", "fa-code-fork", "/merge/:branch");
+            if (isDelayedPushAllowed()) {
+                if (user.getUser().getDelayedPush().contains(branch)) {
+                    workspaceMenu(wList, "endFSMode", "fa-flag-checkered fsmode", "/w/:branch/deactivate-f-s-mode");
+                } else {
+                    workspaceMenu(wList, "beginFSMode", "fa-flag-checkered", "/w/:branch/activate-f-s-mode");
+                }
+            }
         }
+    }
+    
+    private void workspaceMenu(DataList list, String title, String icon, String link) {
+        workspaceMenu(list, title, icon, link, false);
+    }
+
+    private void workspaceMenu(DataList list, String title, String icon, String link, boolean waitDisplay) {
+        list.add().put("link", esc(link.replace(":branch", branch))).put("title", esc(n(title))).put("icon", icon).put("spin", waitDisplay)
+            .put("id", "i" + counter++);
     }
 
     private void menu() {
@@ -74,7 +98,6 @@ public class MenuPage extends WPage {
         if (fac.isCustomerVersion()) {
             menu(list, "papierkorb", "fa-recycle", "/w/:branch/recycle");
         }
-        workspace(list);
         menu(list, "keyValues", "fa-key", "/values/:branch");
         menu(list, "masks", "fa-list-alt", "/mask/:branch");
         additionalMenuItems(list);
@@ -82,24 +105,6 @@ public class MenuPage extends WPage {
         admin(fac, isAdmin, booksOk, list);
         if (booksOk && fac.isCustomerVersion() && !MinervaWebapp.factory().getAdmins().contains(user.getLogin())) {
             menu(list, "reindex", "fa-refresh", "/w/:branch/index", true);
-        }
-    }
-
-    private void workspace(DataList list) {
-        if (MinervaWebapp.factory().isGitlab()) {
-            menu(list, "pullWS", "fa-refresh", "/w/:branch/pull", true);
-            menu(list, "cloneWS", "fa-refresh red", "/w/:branch/pull?force=1", true);
-            menu(list, "createWS", "fa-folder", "/create-workspace");
-            menu(list, "deleteWS", "fa-trash-o red", "/w/:branch/delete");
-            menu(list, "createBranch", "fa-code-fork", "/branch/:branch");
-            menu(list, "mergeBranch", "fa-code-fork", "/merge/:branch");
-            if (isDelayedPushAllowed()) {
-                if (user.getUser().getDelayedPush().contains(branch)) {
-                    menu(list, "endFSMode", "fa-flag-checkered fsmode", "/w/:branch/deactivate-f-s-mode");
-                } else {
-                    menu(list, "beginFSMode", "fa-flag-checkered", "/w/:branch/activate-f-s-mode");
-                }
-            }
         }
     }
     

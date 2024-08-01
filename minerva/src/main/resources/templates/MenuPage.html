@@ -24,13 +24,18 @@ h2 {
 .fa-internal {
     color: #f40;
 }
+
+.wb {
+    margin-right: 1em;
+    margin-top: 1em;
+}
 </style>
 
 <div class="row">
     <div class="col-lg-12">
         {{if gitlab}}
             <h1 class="page-header">Workspaces</h1>
-            <div class="bs-glyphicons">
+            <div class="bs-glyphicons" style="margin-bottom: 4px;">
                 <ul class="bs-glyphicons-list">
                     {{each c in workspaces}}
                         <li style="cursor: pointer;"{{if c.isCurrent}} class="currentBranch"{{/if}} onclick="location.href='{{c.link}}';">
@@ -40,6 +45,10 @@ h2 {
                     {{/each}}
                 </ul>
             </div>
+            {{each c in workspaceCommands}}
+                <a href="{{c.link}}" class="btn btn-default wb"{{if c.spin}} onclick="document.getElementById('{{c.id}}').style='';"{{/if}}><i class="fa {{c.icon}}"></i> {{c.title}}
+                    {{if c.spin}}<i id="{{c.id}}" class="fa fa-delicious fa-spin" style="display: none;"></i>{{/if}}</a>
+            {{/each}}
         {{/if}}
         <h1 class="page-header">{{header}}</h1>
         <div class="bs-glyphicons">
