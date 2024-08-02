@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import github.soltaufintel.amalia.base.IdGenerator;
+import minerva.config.MinervaOptions;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 
@@ -116,7 +117,7 @@ public class FeatureRelationsService {
 
         @Override
         public String getLink() {
-            return "http://jira01.intern.x-map.de:8080/browse/" + ticket;
+			return "https://" + MinervaOptions.JIRA_CUSTOMER.get() + ".atlassian.net/browse/" + ticket;
         }
 
         @Override
