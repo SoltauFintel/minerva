@@ -23,6 +23,7 @@ import minerva.search.SearchResult;
  * <p>Search service: https://github.com/SoltauFintel/xsearch</p>
  */
 public class SearchSO {
+    public static Searcher additionalSearcher = null;
     private final String host;
     private final WorkspaceSO workspace;
     private final List<String> langs;
@@ -98,14 +99,32 @@ public class SearchSO {
     
     public List<SearchResult> search(String x, String lang) {
         List<SearchResult> ret;
-        if (StringService.isNullOrEmpty(x) || host == null) {
-            ret = new ArrayList<>();
-        } else {
+        if (StringService.isNullOrEmpty(x)) {
+            return new ArrayList<>();
+        } else if (!StringService.isNullOrEmpty(host)) {
+        	// search pages using xsearch
             String url = host + "/search/" + getSiteName(lang) + "?q=" + Escaper.urlEncode(x, "");
             Type type = new TypeToken<ArrayList<SearchResult>>() {}.getType();
+            Logger.info(url);
             ret = new REST(url).get().fromJson(type);
+        } else {
+        	ret = new ArrayList<>();
         }
-        new FeatureFieldsService().search(workspace, x, lang, ret);
+        
+        // search features
+        new FeatureFieldsService().search(workspace, x.toLowerCase(), lang, ret);
+		
+        // search in other data
+        if (additionalSearcher != null) {
+			List<SearchResult> ret2 = additionalSearcher.search(workspace, x.toLowerCase(), lang);
+			if (ret2 != null) {
+				ret.addAll(ret2);
+			}
+        }
         return ret;
+    }
+
+    public interface Searcher {
+    	List<SearchResult> search(WorkspaceSO workspace, String x, String lang);
     }
 }
