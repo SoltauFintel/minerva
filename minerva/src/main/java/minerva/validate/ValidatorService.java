@@ -27,6 +27,7 @@ import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.link.Link;
 import minerva.seite.link.LinkService;
+import minerva.user.User;
 import minerva.validate.ValidationResult.VRLink;
 import minerva.validate.ValidationResult.VRSeite;
 import minerva.validate.ValidationResult.VRUnusedImageSeite;
@@ -358,7 +359,11 @@ public class ValidatorService {
             }
             String login = MinervaOptions.CLEANUP_LOGIN.get();
             Logger.debug("UnusedImagesTimer | user: " + login);
-            UserSO userSO = new UserSO(MinervaWebapp.factory().getBackendService().login(login, MinervaOptions.CLEANUP_PASSWORD.get(), null));
+            User user = MinervaWebapp.factory().getBackendService().login(login, MinervaOptions.CLEANUP_PASSWORD.get(), null);
+            if (user == null) {
+            	return;
+            }
+			UserSO userSO = new UserSO(user);
             List<String> langs = MinervaWebapp.factory().getLanguages();
             Set<String> filesToBeDeleted = new TreeSet<>();
             for (String branch : MinervaOptions.CLEANUP_BRANCHES.get().split(",")) {
