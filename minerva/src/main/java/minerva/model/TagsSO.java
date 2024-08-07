@@ -66,7 +66,7 @@ public class TagsSO {
             ret.add(seiteSO);
         }
         for (SeiteSO sub : seiteSO.getSeiten()) {
-            ret.addAll(sub.tags().findTag(tag));
+            ret.addAll(sub.tags().findTag(tag)); // recursive
         }
         return ret;
     }

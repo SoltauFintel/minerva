@@ -173,6 +173,11 @@ public class BookSO {
         dao().saveFiles(files, cm("subpages reorderd"), workspace);
     }
 
+    /**
+     * recursive
+     * @param tag -
+     * @return pages
+     */
     public List<SeiteSO> findTag(String tag) {
         List<SeiteSO> ret = new ArrayList<>();
         for (SeiteSO seite : seiten) {
