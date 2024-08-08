@@ -49,7 +49,11 @@ public class Seite {
         this.tags.addAll(c.tags);
         this.version = c.version;
         this.helpKeys.addAll(c.helpKeys);
-        this.hkh.addAll(c.hkh);
+        if (c.hkh == null) {
+        	this.hkh = c.hkh;
+        } else {
+        	this.hkh = new ArrayList<>(c.hkh);
+        }
         this.changes.addAll(c.changes);
         this.tocHeadingsLevels = c.tocHeadingsLevels;
         this.tocSubpagesLevels = c.tocSubpagesLevels;
