@@ -170,7 +170,9 @@ public class BookSO {
             workspace.getBooks().saveTo(files);
         }
         reorderdSeiten.setPositionsAndSaveTo(files);
-        dao().saveFiles(files, cm("subpages reorderd"), workspace);
+        if (!files.isEmpty()) {
+            dao().saveFiles(files, cm("subpages reorderd"), workspace);
+        }
     }
 
     /**

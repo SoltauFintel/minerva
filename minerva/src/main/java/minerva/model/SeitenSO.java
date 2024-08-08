@@ -207,8 +207,11 @@ public class SeitenSO extends MList<SeiteSO> {
     public void setPositionsAndSaveTo(Map<String, String> files) {
         int position = 1;
         for (SeiteSO sub : this) {
-            sub.getSeite().setPosition(position++);
-            sub.saveMetaTo(files);
+            if (position != sub.getSeite().getPosition()) {
+                sub.getSeite().setPosition(position);
+                sub.saveMetaTo(files);
+            }
+            position++;
         }
     }
 

@@ -518,7 +518,9 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
             saveMetaTo(files);
         }
         reorderdSeiten.setPositionsAndSaveTo(files);
-        saveFiles(files, new CommitMessage(this, "subpages reorderd"));
+        if (!files.isEmpty()) {
+            saveFiles(files, new CommitMessage(this, "subpages reorderd"));
+        }
     }
 
     private void saveFiles(Map<String, String> files, CommitMessage commitMessage) {
