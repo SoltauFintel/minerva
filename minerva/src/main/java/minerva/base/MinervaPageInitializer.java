@@ -87,6 +87,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("hasLastEditedPage", m.getLastEditedPage_link() != null);
         page.put("lastEditedPage_link", m.getLastEditedPage_link());
         page.put("lastEditedPage_title", m.getLastEditedPage_title());
+        page.put("customerModeActive", false);
         if (m.hasUser()) {
             hasUserVars(page, m);
         }
@@ -144,5 +145,12 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("previewTitle", NLS.get(userLang, "preview"));
         page.put("previewlink", "/p/" + m.getBranch());
         page.put("hasBook", true);
+        customerMode(m.getUser().getUser().getCustomerMode(), page);
+    }
+    
+    public static void customerMode(String customerMode, Page page) {
+        boolean active = !StringService.isNullOrEmpty(customerMode);
+        page.put("customerModeActive", active);
+        page.put("customerMode", esc(active ? customerMode.toUpperCase() : ""));
     }
 }

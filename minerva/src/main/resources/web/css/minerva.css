@@ -705,3 +705,10 @@ ul.pagetree {
 .seite pre {
     max-width: 75vw;
 }
+
+.infobar {
+    background-color: #e9f3fc;
+    padding: 4px 8px;
+    font-size: 9pt;
+    text-align: center;
+}

@@ -25,6 +25,7 @@ public class User {
     private boolean showAllPages = false;
     private String attachmentCategory;
     private String publishReleaseNumber;
+    private String customerMode;
     
     public String getLogin() {
         return login;
@@ -156,4 +157,12 @@ public class User {
 	public void setPublishReleaseNumber(String publishReleaseNumber) {
 		this.publishReleaseNumber = publishReleaseNumber;
 	}
+
+    public String getCustomerMode() {
+        return customerMode;
+    }
+
+    public void setCustomerMode(String customerMode) {
+        this.customerMode = customerMode;
+    }
 }

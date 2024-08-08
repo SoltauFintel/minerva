@@ -1,0 +1,21 @@
+{{master: master}}
+
+<div class="row"> 
+    <div class="col-lg-12">
+        <h1 class="page-header">{{header}}</h1>
+
+        {{each c in customers}}
+            <a href="/w/{{branch}}/customer-mode/{{c.customer}}" class="btn br {{c.css}}">{{c.label}}</a>
+        {{/each}}
+        
+        {{if showTags}}
+            <h2 class="mt2">{{ccm}}</h2>
+            <h3>{{N.exclusionsInfo}}</h3>
+            <p>{{tags}}</p>
+            <h3>{{N.exclusionsInfoPlus}}</h3>
+            <p>{{tagsPlus}}</p>
+            <h3>{{N.exclusionsInfoMinus}}</h3>
+            <p>{{tagsMinus}}</p>
+        {{/if}}
+    </div>
+</div>

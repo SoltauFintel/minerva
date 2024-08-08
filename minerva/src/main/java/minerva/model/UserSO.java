@@ -473,4 +473,10 @@ public class UserSO {
     	user.setPublishReleaseNumber(rn == null ? "" : rn.trim());
     	save();
     }
+    
+    public void saveCustomerMode(String customer) {
+        load();
+        user.setCustomerMode(customer);
+        save();
+    }
 }

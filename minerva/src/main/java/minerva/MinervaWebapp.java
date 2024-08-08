@@ -96,6 +96,7 @@ import minerva.seite.AddSeiteAction;
 import minerva.seite.AllHelpKeysPage;
 import minerva.seite.CancelEditingAction;
 import minerva.seite.CleanupHelpKeysForHeadingsAction;
+import minerva.seite.CustomerModePage;
 import minerva.seite.DeleteSeitePage;
 import minerva.seite.DuplicateSeiteAction;
 import minerva.seite.EditHtmlPage;
@@ -194,6 +195,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/recycle/delete/:id", DeleteWeggeworfeneSeiteAction.class);
         get("/w/:branch/recycle/subpages/:id", PapierkorbUnterseitenPage.class);
         form("/w/:branch/recycle", PapierkorbPage.class);
+        get("/w/:branch/customer-mode/:customer", CustomerModePage.class);
         get("/w/:branch/menu", MenuPage.class);
 
         // Export
