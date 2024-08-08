@@ -49,16 +49,22 @@ public class Seite {
         this.tags.addAll(c.tags);
         this.version = c.version;
         this.helpKeys.addAll(c.helpKeys);
+        this.hkh.addAll(c.hkh);
         this.changes.addAll(c.changes);
+        this.tocHeadingsLevels = c.tocHeadingsLevels;
+        this.tocSubpagesLevels = c.tocSubpagesLevels;
+        this.editorsNote = c.editorsNote;
     }
     
     // needed for duplicate action
-	public void copyFrom(Seite m) {
-		tags.addAll(m.tags);
-		helpKeys.addAll(m.helpKeys);
-		tocHeadingsLevels = m.tocHeadingsLevels;
-		tocSubpagesLevels = m.tocSubpagesLevels;
-		sorted = m.sorted;
+    // not to set: id, parentId, title, position, version, changes, editorsNote.
+	public void copyFrom(Seite c) {
+	    sorted = c.sorted;
+		tags.addAll(c.tags);
+		helpKeys.addAll(c.helpKeys);
+		hkh.addAll(c.hkh);
+		tocHeadingsLevels = c.tocHeadingsLevels;
+		tocSubpagesLevels = c.tocSubpagesLevels;
     }
 
     public String getId() {
