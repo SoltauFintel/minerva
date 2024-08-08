@@ -392,5 +392,5 @@ customerMode=Kundenmodus
 turnOffCustomerMode=Kundenmodus ausschalten!
 customerModeIsOff=Kundenmodus ist aus
 exclusionsInfo=Seiten, die eines dieser tags haben, werden nicht angezeigt
-exclusionsInfoPlus=Seiten, die eines dieser tags haben, werden auf jeden Fall angezeigt (zweithöchste Priorität)
+exclusionsInfoPlus=Seiten, die eines dieser tags haben, werden angezeigt (zweithöchste Priorität)
 exclusionsInfoMinus=Seiten, die eines dieser tags haben, werden auf keinen Fall angezeigt (höchste Priorität)

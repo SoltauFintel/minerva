@@ -47,7 +47,7 @@ public class CustomerModePage extends WPage {
         }
         
         header(n("customerMode"));
-        put("ccm", esc(ccm));
+        put("ccm", esc(ccm == null ? "" : ccm.toUpperCase()));
         DataList list = list("customers");
         for (String customer : customers) {
             list.add()

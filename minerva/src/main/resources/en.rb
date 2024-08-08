@@ -392,5 +392,5 @@ customerMode=Customer mode
 turnOffCustomerMode=Turn off customer mode!
 customerModeIsOff=Customer mode is not active
 exclusionsInfo=Pages that have one of these tags will not be displayed
-exclusionsInfoPlus=Pages that have one of these tags will definitely be displayed (second highest priority)
+exclusionsInfoPlus=Pages that have one of these tags will be displayed (second highest priority)
 exclusionsInfoMinus=Pages that have one of these tags will not be displayed under any circumstances (highest priority)
