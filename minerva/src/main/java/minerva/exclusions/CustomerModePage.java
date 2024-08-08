@@ -1,4 +1,4 @@
-package minerva.seite;
+package minerva.exclusions;
 
 import java.util.List;
 import java.util.Set;
@@ -8,7 +8,6 @@ import com.github.template72.data.DataList;
 
 import minerva.base.MinervaPageInitializer;
 import minerva.base.StringService;
-import minerva.exclusions.Exclusions;
 import minerva.model.ExclusionsSO;
 import minerva.workspace.WPage;
 
