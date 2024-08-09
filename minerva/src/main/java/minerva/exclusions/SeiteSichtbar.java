@@ -1,6 +1,5 @@
 package minerva.exclusions;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -14,30 +13,35 @@ import minerva.base.StringService;
 import minerva.config.MinervaOptions;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
+import minerva.user.User;
 
-// Dieses Objekt lebt nur für die Dauer der Anfrage. Wenn viele Seiten auf einmal zu prüfen sind, lebt es halt so lange.
-// Es klebt aber nicht am Workspace.
-
+/**
+ * Seite sichtbar Kontext
+ *
+ * <p>Dieses Objekt lebt nur für die Dauer der Anfrage. Wenn viele Seiten auf einmal zu prüfen sind, lebt es halt so lange.
+ * Es klebt aber nicht am Workspace.</p>
+ */
 public class SeiteSichtbar {
-    private final WorkspaceSO workspace; // TODO muss ich den speichern?
     private final Exclusions exclusions;
-    private final List<String> languages = new ArrayList<>();
+    private final List<String> languages;
     private String customer;
     private boolean showAllPages;
     private final String[] pdfTags;
 
-    // TODO context mit ungleich 1 language  .... Macht das Sinn? Wann genutzt?
-
     public SeiteSichtbar(WorkspaceSO workspace) {
-        this(workspace, MinervaWebapp.factory().getLanguages());
+        this(workspace, MinervaWebapp.factory().getLanguages()); // alle Sprachen: macht Sinn bei Reorder und beim Navigieren
     }
 
-    public SeiteSichtbar(WorkspaceSO workspace, List<String> languages) {
-        this.workspace = workspace;
+    public SeiteSichtbar(WorkspaceSO workspace, String language) {
+    	this(workspace, List.of(language));
+    }
+    
+    private SeiteSichtbar(WorkspaceSO workspace, List<String> languages) {
         exclusions = workspace.exclusions();
-        this.languages.addAll(languages);
-        customer = workspace.getUser().getUser().getCustomerMode();
-        showAllPages = workspace.getUser().getUser().isShowAllPages();
+        this.languages = languages;
+        User user = workspace.getUser().getUser();
+		customer = user.getCustomerMode();
+        showAllPages = user.isShowAllPages();
         pdfTags = new String[0];
     }
 
@@ -49,11 +53,10 @@ public class SeiteSichtbar {
      * @param language -
      */
     public SeiteSichtbar(WorkspaceSO workspace, String customer, boolean pdfExport, String language) {
-        this.workspace = workspace;
-        languages.add(language);
+        languages = List.of(language);
         exclusions = workspace.exclusions();
         this.customer = customer;
-        showAllPages = false; // TODO zu klären
+        showAllPages = true;
         if (pdfExport) {
             String tags = MinervaOptions.PDF_TAGS.get(); // nicht_drucken
             if (tags == null) {
@@ -66,12 +69,7 @@ public class SeiteSichtbar {
         }
     }
 
-    // TODO prüfen ob benötigt
-    public WorkspaceSO getWorkspace() {
-        return workspace;
-    }
-
-    public boolean isPdfTag(String tag) {
+    private boolean isPdfTag(String tag) {
         for (String i : pdfTags) {
             if (i.equals(tag)) {
                 return true;
@@ -80,11 +78,11 @@ public class SeiteSichtbar {
         return false;
     }
     
-    public String getCustomer() {
+    private String getCustomer() {
         return customer;
     }
     
-    public boolean hasCustomer() {
+    private boolean hasCustomer() {
         return !StringService.isNullOrEmpty(customer) && !"-".equals(customer);
     }
     
@@ -92,7 +90,7 @@ public class SeiteSichtbar {
         this.customer = customer;
     }
 
-    public boolean isShowAllPages() {
+    private boolean isShowAllPages() {
         return showAllPages;
     }
 
@@ -100,24 +98,26 @@ public class SeiteSichtbar {
         this.showAllPages = showAllPages;
     }
     
-    public Exclusions getExclusions() {
+    private Exclusions getExclusions() {
         return exclusions;
     }
 
-    public List<String> getLanguages() {
+    private List<String> getLanguages() {
         return languages;
     }
     
-    public SeiteSichtbar withLanguage(String language) {
-        languages.clear();
-        languages.add(language);
-        return this;
-    }
-    
+    /**
+     * @param seite -
+     * @return Seite sichtbar?
+     */
     public boolean isVisible(SeiteSO seite) {
     	return getVisibleResult(seite, this).isVisible();
     }
-    
+
+    /**
+     * @param seite -
+     * @return Sichtbarkeit der Seite
+     */
     public Visible getVisibleResult(SeiteSO seite) {
     	return getVisibleResult(seite, this);
     }

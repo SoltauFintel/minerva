@@ -90,7 +90,7 @@ public class ValidationPage extends BPage {
 					DataMap map2 = seiten.add();
 					map2.put("title", esc(seite.getSeite().getTitle().getString(lang)));
 					map2.put("breadcrumbs", esc(breadcrumbs(seite, lang)));
-					SeiteSichtbar ssc = new SeiteSichtbar(seite.getBook().getWorkspace(), List.of(lang));
+					SeiteSichtbar ssc = new SeiteSichtbar(seite.getBook().getWorkspace(), lang);
 					ssc.setShowAllPages(true);
 					Visible visible = ssc.getVisibleResult(seite);
 					map2.put("empty", visible.hasSubpages() || visible.isShowAllPages()); 

@@ -100,7 +100,7 @@ public class BookPage extends BPage implements Uptodatecheck {
 		for (SeiteSO seite : seiten) {
 			seitenII.add(seite);
 		}
-		SeiteSichtbar ssc = new SeiteSichtbar(workspace, List.of(lang));
+		SeiteSichtbar ssc = new SeiteSichtbar(workspace, lang);
 		ssc.setShowAllPages(allPages);
 		for (int i = 0; i < seitenII.size(); i++) {
 			SeiteSO seite = seitenII.get(i);

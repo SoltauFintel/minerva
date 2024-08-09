@@ -1,7 +1,5 @@
 package minerva.export;
 
-import java.util.List;
-
 import org.pmw.tinylog.Logger;
 
 import minerva.MinervaWebapp;
@@ -27,7 +25,7 @@ public class ExportCsvBookAction extends BAction {
 				title = title.replace("DEVK ", "DEVK");
 				customer = lastWord(title) + ";" + lang;
 				version = "";
-				SeiteSichtbar ssc = new SeiteSichtbar(book.getWorkspace(), List.of(lang));
+				SeiteSichtbar ssc = new SeiteSichtbar(book.getWorkspace(), lang);
 				for (SeiteSO releaseGroup : kunde.getSeiten()) {
 					for (SeiteSO release : releaseGroup.getSeiten()) {
 						String html = release.getContent().getString(lang);

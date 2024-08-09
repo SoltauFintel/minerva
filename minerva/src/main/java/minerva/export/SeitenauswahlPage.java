@@ -63,7 +63,7 @@ public class SeitenauswahlPage extends WPage {
             putInt("width", 700);
             put("bookPrefix", BOOK_PREFIX);
             DataList list = list("pages");
-            SeiteSichtbar ssc = new SeiteSichtbar(workspace, List.of(lang));
+            SeiteSichtbar ssc = new SeiteSichtbar(workspace, lang);
             for (BookSO book : workspace.getBooks()) {
                 if (book.isFeatureTree()) {
                     continue;

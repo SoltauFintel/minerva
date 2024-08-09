@@ -341,7 +341,7 @@ public class SeitenSO extends MList<SeiteSO> {
         for (SeiteSO seite : this) {
             // fehlt hier die showAllPages Berücksichtigung? -> aufgrund von SeiteSichtbarContext ist die jetzt dabei
             if (ssc == null) {
-                ssc = new SeiteSichtbar(seite.getBook().getWorkspace(), List.of(lang));
+                ssc = new SeiteSichtbar(seite.getBook().getWorkspace(), lang);
             }
             Visible visible = ssc.getVisibleResult(seite);
             if (!visible.isVisible()) {

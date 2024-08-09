@@ -196,6 +196,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             }
             fillBreadcrumbs(lang, map.list("breadcrumbs"));
             // TODO showAllPages war hier false. Aber ist das so richtig/gewollt?
+            // TODO muss hier ssc die lang haben?
             map.putInt("subpagesSize", fillSubpages(seite, seite.getSeiten(), lang, map.list("subpages"), branch, bookFolder, ssc));
         }
         put("hasErrorsTotal", errors > 0);

@@ -622,7 +622,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
             
             @Override
             public boolean isVisible(String customer, String lang) {
-                SeiteSichtbar ssc = new SeiteSichtbar(SeiteSO.this.book.getWorkspace(), List.of(lang));
+                SeiteSichtbar ssc = new SeiteSichtbar(SeiteSO.this.book.getWorkspace(), lang);
                 ssc.setCustomer(customer);
                 return ssc.isVisible(SeiteSO.this);
             }
