@@ -88,9 +88,6 @@ import minerva.papierkorb.RecycleAction;
 import minerva.persistence.gitlab.GitlabAuthAction;
 import minerva.persistence.gitlab.GitlabAuthCallbackAction;
 import minerva.postcontents.PostContentsAction;
-import minerva.preview.PreviewBookPage;
-import minerva.preview.PreviewCustomerPage;
-import minerva.preview.PreviewPage;
 import minerva.publish.PublishAction;
 import minerva.search.IndexWorkspaceAction;
 import minerva.search.SearchPage;
@@ -163,7 +160,6 @@ public class MinervaWebapp extends RouteDefinitions {
         images();
         tags();
         comments();
-        preview();
         users();
         values();
         masks();
@@ -295,12 +291,6 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/sc/:branch/:book/:id/comment-done", CommentDoneAction.class);
     }
 
-    private void preview() {
-        get("/p/:branch/:customer/:book/:lang/:id", PreviewPage.class);
-        get("/p/:branch/:customer/:book/:lang", PreviewBookPage.class);
-        get("/p/:branch", PreviewCustomerPage.class);
-    }
-    
     private void users() {
         get("/users", UsersPage.class);
         form("/user/add", AddUserPage.class);

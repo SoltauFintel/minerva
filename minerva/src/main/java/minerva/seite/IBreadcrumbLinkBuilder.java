@@ -1,5 +1,7 @@
 package minerva.seite;
 
+// Seitdem der Preview-Modus ausgebaut worden ist, gibt es nur noch eine Implementierung.
+
 public interface IBreadcrumbLinkBuilder {
 
     /**
