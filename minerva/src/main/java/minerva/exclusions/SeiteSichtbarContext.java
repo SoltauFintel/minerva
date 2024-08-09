@@ -6,6 +6,7 @@ import java.util.List;
 import minerva.MinervaWebapp;
 import minerva.base.StringService;
 import minerva.config.MinervaOptions;
+import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 
 // Dieses Objekt lebt nur für die Dauer der Anfrage. Wenn viele Seiten auf einmal zu prüfen sind, lebt es halt so lange.
@@ -18,6 +19,8 @@ public class SeiteSichtbarContext {
     private String customer;
     private boolean showAllPages;
     private final String[] pdfTags;
+
+    // TODO context mit ungleich 1 language  .... Macht das Sinn? Wann genutzt?
 
     public SeiteSichtbarContext(WorkspaceSO workspace) {
         this(workspace, MinervaWebapp.factory().getLanguages());
@@ -103,5 +106,13 @@ public class SeiteSichtbarContext {
         languages.clear();
         languages.add(language);
         return this;
+    }
+    
+    public boolean isVisible(SeiteSO seite) {
+    	return getVisibleResult(seite).isVisible();
+    }
+    
+    public Visible getVisibleResult(SeiteSO seite) {
+    	return new SeiteSichtbar(seite, this).getVisibleResult();
     }
 }

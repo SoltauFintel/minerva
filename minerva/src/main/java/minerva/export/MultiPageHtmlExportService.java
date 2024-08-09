@@ -15,7 +15,6 @@ import com.github.template72.data.DataMap;
 
 import minerva.base.FileService;
 import minerva.base.NLS;
-import minerva.exclusions.SeiteSichtbar;
 import minerva.exclusions.Visible;
 import minerva.export.Formula2Image.TransformPath;
 import minerva.export.pdf.Chapter;
@@ -107,8 +106,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
     private void addSeiten(SeitenSO seiten, StringBuilder html) {
         boolean first = true;
         for (SeiteSO seite : seiten) {
-            SeiteSichtbar ss = new SeiteSichtbar(seite, ssc);
-            Visible visible = ss.getVisibleResult();
+			Visible visible = ssc.getVisibleResult(seite);
             if (visible.isVisible() && !seite.isNoTree()) {
                 if (first) {
                     html.append("<ul>");
@@ -205,7 +203,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
     private String subpages(SeiteSO seite) {
         String ret = "";
         for (SeiteSO sub : seite.getSeiten()) {
-            if (new SeiteSichtbar(sub, ssc).isVisible()) {
+            if (ssc.isVisible(sub)) {
                 if (validPages == null || validPages.contains(sub)) {
                     ret += "<li><a href=\"" + sub.getId() + "\">" + esc(sub.getSeite().getTitle().getString(lang))
                             + "</a></li>";

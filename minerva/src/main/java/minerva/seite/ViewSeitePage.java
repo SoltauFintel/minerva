@@ -16,7 +16,6 @@ import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
 import minerva.book.BookPage;
 import minerva.comment.SeiteCommentService2;
-import minerva.exclusions.SeiteSichtbar;
 import minerva.exclusions.SeiteSichtbarContext;
 import minerva.image.FixHttpImage;
 import minerva.mask.FeatureFieldsHtmlFactory;
@@ -275,7 +274,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
                 || !seite.checkSubfeaturesLimit()) {
             seiten.sort(lang);
             for (SeiteSO sub : seiten) {
-                if (ssc == null || new SeiteSichtbar(sub, ssc).isVisible()) {
+                if (ssc == null || ssc.isVisible(sub)) {
                     DataMap map = subpages.add();
                     map.put("id", Escaper.esc(sub.getId()));
                     map.put("titel", Escaper.esc(sub.getSeite().getTitle().getString(lang)));

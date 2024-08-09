@@ -14,39 +14,19 @@ public class SeiteSichtbar {
     private final SeiteSO seite;
     private final SeiteSichtbarContext context;
     
-    // TODO context mit ungleich 1 language  .... Macht das Sinn? Wann genutzt?
-
-    /**
-     * cheap constructor, should be used for many executions
-     * 
-     * @param seite   -
-     * @param context -
-     */
-    public SeiteSichtbar(SeiteSO seite, SeiteSichtbarContext context) {
+    SeiteSichtbar(SeiteSO seite, SeiteSichtbarContext context) {
         this.seite = seite;
         this.context = context;
     }
 
-    /**
-     * expensive constructor, often used for a single execution
-     * 
-     * @param seite
-     */
-    public SeiteSichtbar(SeiteSO seite) {
-        this(seite, new SeiteSichtbarContext(seite.getBook().getWorkspace()));
-    }
-
-    public boolean isVisible() {
-    	return getVisibleResult(seite, context).isVisible();
-    }
-    
-    public Visible getVisibleResult() {
+    Visible getVisibleResult() {
     	return getVisibleResult(seite, context);
     }
 
     // main part
     private static Visible getVisibleResult(SeiteSO seite, SeiteSichtbarContext context) {
         if (!isAccessible(seite.getSeite().getTags(), context)) {
+        	// Es ist ein Kunde gesetzt und dessen Ausschlüsse-tags verbieten den Zugriff auf die Seite.
         	return new Visible(false);
         } else {
             // Wenn es für mind. eine Sprache nicht leer ist, dann ist die Seite sichtbar.
@@ -56,12 +36,13 @@ public class SeiteSichtbar {
                 }
             }
             // Die Seite ist leer und daher eigentlich nicht sichtbar.
-            // Wenn es aber mindestens eine nicht-leere Unterseite gibt, dann ist das Ergebnis HAS_SUBPAGES statt NO.
+            // Wenn es aber mindestens eine nicht-leere Unterseite gibt, dann ist das Ergebnis hasSubpages statt nicht-sichtbar.
             for (SeiteSO sub : seite.getSeiten()) {
             	if (getVisibleResult(sub, context).isVisible()) { // recursive
             		return new Visible(true, true, false);
             	}
             }
+            // Seite nicht sichtbar oder show-all-pages-mode aktiv.
         	return new Visible(context.isShowAllPages(), false, context.isShowAllPages());
         }
     }
@@ -123,18 +104,18 @@ public class SeiteSichtbar {
         return LabelClass.NOT_IN;
     }
 
-    private static boolean isEmpty(SeiteSO seite, String lang) {
+    private static boolean isEmpty(SeiteSO seite, String language) {
         return !seite.getBook().isFeatureTree() // Leere Seiten sind im Feature Tree Standard und sollen nicht ausgeblendet werden.
         		&& (seite.getSeite().getTags().contains("autolink") // autolink-Seiten soll standardmäßig versteckt werden.
-        				|| contentIsEmpty(seite, lang));
+        				|| contentIsEmpty(seite, language));
         
     }
 
-    public static boolean contentIsEmpty(SeiteSO seite, String lang) {
+    public static boolean contentIsEmpty(SeiteSO seite, String language) {
         // In theory, this approach is a bit expensive since all content must be loaded and must be parsed.
         // However in practice it takes less than 0.4 seconds on the first call.
         try {
-            String html = seite.getContent().getString(lang);
+            String html = seite.getContent().getString(language);
             Document doc = Jsoup.parse(html);
             Elements body = doc.select("body");
             return body == null || body.isEmpty() || body.get(0).childrenSize() == 0;

@@ -11,7 +11,6 @@ import minerva.MinervaWebapp;
 import minerva.base.DeliverHtmlContent;
 import minerva.base.Uptodatecheck;
 import minerva.comment.SeiteCommentService2;
-import minerva.exclusions.SeiteSichtbar;
 import minerva.exclusions.SeiteSichtbarContext;
 import minerva.exclusions.Visible;
 import minerva.model.BookSO;
@@ -105,8 +104,7 @@ public class BookPage extends BPage implements Uptodatecheck {
 		ssc.setShowAllPages(allPages);
 		for (int i = 0; i < seitenII.size(); i++) {
 			SeiteSO seite = seitenII.get(i);
-			SeiteSichtbar ss = new SeiteSichtbar(seite, ssc);
-			Visible visible = ss.getVisibleResult();
+			Visible visible = ssc.getVisibleResult(seite);
 			if (!visible.isVisible()) {
 			    continue;
 			}

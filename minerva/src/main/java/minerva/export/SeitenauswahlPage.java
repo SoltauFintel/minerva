@@ -9,7 +9,6 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.base.StringService;
-import minerva.exclusions.SeiteSichtbar;
 import minerva.exclusions.SeiteSichtbarContext;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
@@ -107,7 +106,7 @@ public class SeitenauswahlPage extends WPage {
     
     private void add(SeitenSO seiten, String indent, String lang, SeiteSichtbarContext ssc, DataList list) {
         for (SeiteSO seite : seiten) {
-            if (new SeiteSichtbar(seite, ssc).isVisible()) {
+            if (ssc.isVisible(seite)) {
                 DataMap map = list.add();
                 String title = seite.getSeite().getTitle().getString(lang);
                 map.put("text", esc(indent + title));

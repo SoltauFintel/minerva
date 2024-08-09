@@ -18,7 +18,6 @@ import minerva.book.BookType;
 import minerva.comment.Comment;
 import minerva.comment.SeiteCommentService2;
 import minerva.config.MinervaConfig;
-import minerva.exclusions.SeiteSichtbar;
 import minerva.exclusions.SeiteSichtbarContext;
 import minerva.exclusions.Visible;
 import minerva.seite.Breadcrumb;
@@ -344,8 +343,7 @@ public class SeitenSO extends MList<SeiteSO> {
             if (ssc == null) {
                 ssc = new SeiteSichtbarContext(seite.getBook().getWorkspace(), List.of(lang));
             }
-            SeiteSichtbar ss = new SeiteSichtbar(seite, ssc);
-            Visible visible = ss.getVisibleResult();
+            Visible visible = ssc.getVisibleResult(seite);
             if (!visible.isVisible()) {
                 continue;
             }

@@ -6,7 +6,6 @@ import org.pmw.tinylog.Logger;
 
 import minerva.MinervaWebapp;
 import minerva.book.BAction;
-import minerva.exclusions.SeiteSichtbar;
 import minerva.exclusions.SeiteSichtbarContext;
 import minerva.model.SeiteSO;
 
@@ -32,7 +31,7 @@ public class ExportCsvBookAction extends BAction {
 				for (SeiteSO releaseGroup : kunde.getSeiten()) {
 					for (SeiteSO release : releaseGroup.getSeiten()) {
 						String html = release.getContent().getString(lang);
-						if (new SeiteSichtbar(release, ssc).isVisible()) {
+						if (ssc.isVisible(release)) {
 							String q = release.getSeite().getTitle().getString(lang);
 							int qq = q.lastIndexOf(" (");
 							if (qq < 0) {

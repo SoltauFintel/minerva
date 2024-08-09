@@ -2,7 +2,6 @@ package minerva.seite;
 
 import java.util.List;
 
-import minerva.exclusions.SeiteSichtbar;
 import minerva.exclusions.SeiteSichtbarContext;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
@@ -126,7 +125,7 @@ public class NavigateService {
     }
     
     private boolean valid(SeiteSO seite) {
-        if (ssc != null && !new SeiteSichtbar(seite, ssc).isVisible()) {
+        if (ssc != null && !ssc.isVisible(seite)) {
             return false;
         }
         if (validPages != null) { // for select-pages-HTML-export

@@ -13,7 +13,6 @@ import github.soltaufintel.amalia.web.action.PageInitializer;
 import minerva.MinervaWebapp;
 import minerva.book.BookType;
 import minerva.config.MinervaConfig;
-import minerva.exclusions.SeiteSichtbar;
 import minerva.exclusions.SeiteSichtbarContext;
 import minerva.model.BookSO;
 import minerva.model.BooksSO;
@@ -133,7 +132,7 @@ public class MinervaPageInitializer extends PageInitializer {
     private static boolean isVisible(BookSO book) {
         SeiteSichtbarContext ssc = new SeiteSichtbarContext(book.getWorkspace());
         for (SeiteSO seite : book.getSeiten()) {
-            if (new SeiteSichtbar(seite, ssc).isVisible()) {
+            if (ssc.isVisible(seite)) {
                 Logger.debug("Book \"" + book.getTitle() + "\" is visible because page \"" + seite.getTitle()
                         + "\" is visible [active customer mode]");
                 return true;
