@@ -2,8 +2,6 @@ package minerva.base;
 
 import static github.soltaufintel.amalia.web.action.Escaper.esc;
 
-import java.util.List;
-
 import org.pmw.tinylog.Logger;
 
 import com.github.template72.data.DataList;
@@ -15,7 +13,8 @@ import github.soltaufintel.amalia.web.action.PageInitializer;
 import minerva.MinervaWebapp;
 import minerva.book.BookType;
 import minerva.config.MinervaConfig;
-import minerva.exclusions.CustomerModeService;
+import minerva.exclusions.SeiteSichtbar;
+import minerva.exclusions.SeiteSichtbarContext;
 import minerva.model.BookSO;
 import minerva.model.BooksSO;
 import minerva.model.SeiteSO;
@@ -132,13 +131,9 @@ public class MinervaPageInitializer extends PageInitializer {
     
     // Customer mode
     private static boolean isVisible(BookSO book) {
-        CustomerModeService cms = new CustomerModeService(book.getWorkspace());
-        if (!cms.isActive()) {
-            return true;
-        }
-        List<String> langs = MinervaWebapp.factory().getLanguages();
+        SeiteSichtbarContext ssc = new SeiteSichtbarContext(book.getWorkspace());
         for (SeiteSO seite : book.getSeiten()) {
-            if (cms.isAccessible(seite) && isSeiteVisible(seite, langs, cms)) {
+            if (new SeiteSichtbar(seite, ssc).isVisible()) {
                 Logger.debug("Book \"" + book.getTitle() + "\" is visible because page \"" + seite.getTitle()
                         + "\" is visible [active customer mode]");
                 return true;
@@ -148,15 +143,6 @@ public class MinervaPageInitializer extends PageInitializer {
         return false; // There is no top level page that is accessible.
     }
     
-    private static boolean isSeiteVisible(SeiteSO seite, List<String> langs, CustomerModeService cms) {
-        for (String lang : langs) {
-            if (!seite.isVisible(cms.getExclusionsService(), lang).isVisible()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     private void hasUserVars(Page page, MinervaPageInitModel m) {
         String userLang = m.getUserLang();
         page.put("abmelden", NLS.get(userLang, "logout"));

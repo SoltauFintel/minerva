@@ -11,6 +11,7 @@ import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.web.action.Escaper;
 import github.soltaufintel.amalia.web.action.Page;
 import minerva.base.NLS;
+import minerva.exclusions.SeiteSichtbarContext;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.model.UserSO;
@@ -63,7 +64,9 @@ public abstract class OrderSeiteService {
             fill(branch, bookFolder, id, hasSeiten);
         }
 
-        ViewSeitePage.fillSubpages(null, seitenWC, user.getGuiLanguage(), model.list("subpages"), branch, bookFolder, true, null);
+        SeiteSichtbarContext ssc = new SeiteSichtbarContext(user.getWorkspace(branch));
+        ssc.setShowAllPages(true);
+        ViewSeitePage.fillSubpages(null, seitenWC, user.getGuiLanguage(), model.list("subpages"), branch, bookFolder, ssc);
     }
 
     private SeitenSO startEvent(SeitenSO seiten) {

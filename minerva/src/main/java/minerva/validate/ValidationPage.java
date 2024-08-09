@@ -15,6 +15,7 @@ import com.github.template72.data.IDataList;
 import com.github.template72.data.IDataMap;
 
 import minerva.book.BPage;
+import minerva.exclusions.SeiteSichtbar;
 import minerva.model.SeiteSO;
 import minerva.seite.Breadcrumb;
 import minerva.seite.ViewAreaBreadcrumbLinkBuilder;
@@ -88,8 +89,7 @@ public class ValidationPage extends BPage {
 					DataMap map2 = seiten.add();
 					map2.put("title", esc(seite.getSeite().getTitle().getString(lang)));
 					map2.put("breadcrumbs", esc(breadcrumbs(seite, lang)));
-					int hc = seite.hasContent(lang);
-					map2.put("empty", hc == 0 || hc == 2);
+					map2.put("empty", SeiteSichtbar.isEmptyOrHasSubpages(seite, lang));
 					map2.put("link", seite.viewlink());
 					DataList list3 = map2.list("tags");
 					for (String tag : seite.getSeite().getTags()) {

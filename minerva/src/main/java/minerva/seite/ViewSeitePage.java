@@ -16,7 +16,8 @@ import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
 import minerva.book.BookPage;
 import minerva.comment.SeiteCommentService2;
-import minerva.exclusions.CustomerModeService;
+import minerva.exclusions.SeiteSichtbar;
+import minerva.exclusions.SeiteSichtbarContext;
 import minerva.image.FixHttpImage;
 import minerva.mask.FeatureFieldsHtmlFactory;
 import minerva.mask.FeatureFieldsService;
@@ -34,7 +35,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     public static DeliverHtmlContent<SeiteSO> additionalButtons = i -> "";
     public static AddFeatures addFeatures = (seite, features) -> {}; 
     private String mindmapJson;
-    private CustomerModeService cms;
+    private SeiteSichtbarContext ssc;
     
     @Override
     protected SeiteSO getSeite() {
@@ -66,7 +67,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         	u.setPageLanguage("de");
         }
         seite.forceReloadIfCheap();
-        cms = new CustomerModeService(workspace);
+        ssc = new SeiteSichtbarContext(workspace);
         fillLanguageSpecifics(u);
         Seite _seite = seite.getSeite();
         simpleVars(u, _seite);
@@ -95,8 +96,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         editorComponent();
         header(modifyHeader(seite.getTitle()));
         fillLinks(branch, bookFolder, id, seite, _seite, u.getPageLanguage());
+        boolean customerModeActive = !StringService.isNullOrEmpty(user.getUser().getCustomerMode());
         getPageMenu().menu(model, seite, viewlink, isAdmin, isFavorite, pageWatched, subpagesWatched,
-                MinervaWebapp.factory().getConfig().isGitlab(), MinervaWebapp.factory().isCustomerVersion(), cms.isActive()); // möglichst spät aufrufen
+                MinervaWebapp.factory().getConfig().isGitlab(), MinervaWebapp.factory().isCustomerVersion(), customerModeActive); // möglichst spät aufrufen
         Logger.info(u.getLogin() + " | " + seite.getBook().getWorkspace().getBranch() + " | "
                 + seite.getTitle() + " | " + u.getPageLanguage());
     }
@@ -194,8 +196,8 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
                 errors += macro.fillHkhErrors(map);
             }
             fillBreadcrumbs(lang, map.list("breadcrumbs"));
-            map.putInt("subpagesSize", fillSubpages(seite, seite.getSeiten(), lang, map.list("subpages"),
-                    branch, bookFolder, false, cms));
+            // TODO showAllPages war hier false. Aber ist das so richtig/gewollt?
+            map.putInt("subpagesSize", fillSubpages(seite, seite.getSeiten(), lang, map.list("subpages"), branch, bookFolder, ssc));
         }
         put("hasErrorsTotal", errors > 0);
     }
@@ -266,17 +268,14 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     }
     
     static int fillSubpages(SeiteSO seite, SeitenSO seiten, String lang, DataList subpages, String branch, String bookFolder,
-            boolean showAllPages, CustomerModeService cms) {
+            SeiteSichtbarContext ssc) {
         int n = 0;
         if (seite == null
                 || !seite.isFeatureTree()
                 || !seite.checkSubfeaturesLimit()) {
             seiten.sort(lang);
             for (SeiteSO sub : seiten) {
-                if (cms != null && !cms.isAccessible(sub)) {
-                    continue;
-                }
-                if (showAllPages || sub.hasContent(lang) > 0) {
+                if (ssc == null || new SeiteSichtbar(sub, ssc).isVisible()) {
                     DataMap map = subpages.add();
                     map.put("id", Escaper.esc(sub.getId()));
                     map.put("titel", Escaper.esc(sub.getSeite().getTitle().getString(lang)));
@@ -310,7 +309,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         String booklink = "/b/" + branch + "/" + bookFolder;
         put("booklink", booklink);
         put("parentlink", seiteSO.hasParent() ? (onlyBookFolder + seite.getParentId()) : booklink);
-        NavigateService nav = new NavigateService(true, pageLanguage, cms.getExclusionsService());
+        NavigateService nav = new NavigateService(pageLanguage, ssc);
         navlink("prevlink", nav.previousPage(seiteSO), id, onlyBookFolder, "/b/" + branch + "/" + book.getBook().getFolder());
         navlink("nextlink", nav.nextPage(seiteSO), id, onlyBookFolder, null);
         put("tabcode", getTabCode(nav, seiteSO, id, onlyBookFolder));
@@ -348,7 +347,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     private String getTabCode(NavigateService nav0, SeiteSO seiteSO, String seiteId, String onlyBookFolder) {
         String ret = "", ret2 = "";
         for (String lang : langs) {
-            NavigateService nav = new NavigateService(true, lang, null);
+            NavigateService nav = new NavigateService(lang, null);
             SeiteSO prevSeite = nav.previousPage(seiteSO);
             boolean has;
             String link;
@@ -369,7 +368,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             ret2 += "$(\"#tree_" + lang + "\").attr(\"hidden\", lang != \"" + lang + "\")\n";
         }
         for (String lang : langs) {
-            NavigateService nav = new NavigateService(true, lang, null);
+            NavigateService nav = new NavigateService(lang, null);
             SeiteSO prevSeite = nav.nextPage(seiteSO);
             boolean has;
             String link;

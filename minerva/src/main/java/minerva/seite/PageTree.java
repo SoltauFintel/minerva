@@ -56,7 +56,7 @@ public class PageTree {
     private String getIcon(TreeItem seite) {
         if (seite.isNoTree()) {
             return "fa-ban pagetreeIconColorNoTree";
-        } else if (seite.hasContent() == 2) { // page is empty but has subpages
+        } else if (seite.hasSubpages()) { // page is empty but has non-empty subpages
             return "fa-file-o pagetreeIconColorNoContent";
         } else {
             return "fa-file-text-o pagetreeIconColor";

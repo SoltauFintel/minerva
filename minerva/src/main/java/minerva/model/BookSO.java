@@ -12,8 +12,8 @@ import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.book.Book;
 import minerva.book.BookType;
-import minerva.exclusions.ExclusionsService;
-import minerva.exclusions.HasContent;
+import minerva.exclusions.SeiteSichtbar;
+import minerva.exclusions.SeiteSichtbarContext;
 import minerva.seite.Breadcrumb;
 import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.ISeite;
@@ -204,8 +204,13 @@ public class BookSO {
         return breadcrumbs;
     }
 
-    public boolean hasContent(String lang, ExclusionsService sv) {
-        return HasContent.hasBookContent(this, lang, sv);
+    public boolean hasContent(SeiteSichtbarContext context) {
+        for (SeiteSO seite : seiten) {
+            if (new SeiteSichtbar(seite, context).isVisible()) {
+                return true;
+            }
+        }
+        return false;
     }
     
     public CommitMessage cm(String comment) {

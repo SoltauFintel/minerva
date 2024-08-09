@@ -27,9 +27,8 @@ import minerva.base.NlsString;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.comment.SeiteCommentService2;
-import minerva.exclusions.ExclusionsService;
-import minerva.exclusions.HasContent;
-import minerva.exclusions.SeiteVisible;
+import minerva.exclusions.SeiteSichtbar;
+import minerva.exclusions.SeiteSichtbarContext;
 import minerva.seite.IPageChangeStrategy;
 import minerva.seite.ISeite;
 import minerva.seite.PageChange;
@@ -582,25 +581,6 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         book.getWorkspace().getUser().log("#" + getId() + " \"" + getTitle() + "\" " + msg);
     }
     
-    public SeiteVisible isVisible(String customer, String lang) {
-        return new HasContent(this).isVisible(customer, lang);
-    }
-    
-    public SeiteVisible isVisible(ExclusionsService sv, String lang) {
-        return new HasContent(this).isVisible(sv, lang);
-    }
-    
-    /**
-     * has content: > 0, has no content: 0
-     * @return 1: page is not empty,
-     * 2: page is empty, but at least one subpage is not empty,
-     * 3: error (which should be interpreted as "page is not empty" to be on the safe side),
-     * 0: page and subpages are empty.
-     */
-    public int hasContent(String lang) {
-        return new HasContent(this).hasContent(lang);
-    }
-    
     /**
      * Books instance have been changed after pull.
      * @return same page but as fresh instance from fresh book instance
@@ -643,7 +623,9 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
             
             @Override
             public boolean isVisible(String customer, String lang) {
-                return SeiteSO.this.isVisible(customer, lang).isVisible();
+                SeiteSichtbarContext ssc = new SeiteSichtbarContext(SeiteSO.this.book.getWorkspace(), List.of(lang));
+                ssc.setCustomer(customer);
+                return new SeiteSichtbar(SeiteSO.this, ssc).isVisible();
             }
             
             @Override

@@ -8,7 +8,7 @@ import github.soltaufintel.amalia.web.action.Escaper;
 public class TreeItem {
     private final String id;
     private final String title;
-    private final int hasContent;
+    private final boolean hasSubpages;
     private final String bookFolder;
     private final String branch;
     private final boolean current;
@@ -19,10 +19,10 @@ public class TreeItem {
     private final boolean noTree;
     
     public TreeItem(String id, String title, Set<String> tags, boolean current, boolean noTree,
-            int hasContent, String branch, String bookFolder, TreeItem parent) {
+            boolean hasSubpages, String branch, String bookFolder, TreeItem parent) {
         this.id = id;
         this.title = title;
-        this.hasContent = hasContent;
+        this.hasSubpages = hasSubpages;
         this.bookFolder = bookFolder;
         this.branch = branch;
         this.parent = parent;
@@ -39,15 +39,8 @@ public class TreeItem {
         return title;
     }
 
-    /**
-     * has content: > 0, has no content: 0
-     * @return 1: page is not empty,
-     * 2: page is empty, but at least one subpage is not empty,
-     * 3: error (which should be interpreted as "page is not empty" to be on the safe side),
-     * 0: page and subpages are empty.
-     */
-    public int hasContent() {
-        return hasContent;
+    public boolean hasSubpages() {
+        return hasSubpages;
     }
 
     public boolean isCurrent() {

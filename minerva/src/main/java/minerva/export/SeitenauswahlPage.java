@@ -9,6 +9,8 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.base.StringService;
+import minerva.exclusions.SeiteSichtbar;
+import minerva.exclusions.SeiteSichtbarContext;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -62,6 +64,7 @@ public class SeitenauswahlPage extends WPage {
             putInt("width", 700);
             put("bookPrefix", BOOK_PREFIX);
             DataList list = list("pages");
+            SeiteSichtbarContext ssc = new SeiteSichtbarContext(workspace, List.of(lang));
             for (BookSO book : workspace.getBooks()) {
                 if (book.isFeatureTree()) {
                     continue;
@@ -71,7 +74,7 @@ public class SeitenauswahlPage extends WPage {
                 map.put("id", BOOK_PREFIX + esc(book.getBook().getFolder()));
                 map.put("isBook", true);
                 
-                add(book.getSeiten(), "____", lang, list);
+                add(book.getSeiten(), "____", lang, ssc, list);
             }
         }
     }
@@ -102,17 +105,16 @@ public class SeitenauswahlPage extends WPage {
         user.log(info);
     }
     
-    private void add(SeitenSO seiten, String indent, String lang, DataList list) {
+    private void add(SeitenSO seiten, String indent, String lang, SeiteSichtbarContext ssc, DataList list) {
         for (SeiteSO seite : seiten) {
-            int hc = seite.hasContent(lang);
-            if (hc > 0) {
+            if (new SeiteSichtbar(seite, ssc).isVisible()) {
                 DataMap map = list.add();
                 String title = seite.getSeite().getTitle().getString(lang);
                 map.put("text", esc(indent + title));
                 map.put("id", esc(seite.getId()));
                 map.put("isBook", false);
                 
-                add(seite.getSeiten(), indent + "____", lang, list); // recursive
+                add(seite.getSeiten(), indent + "____", lang, ssc, list); // recursive
             }
         }
     }

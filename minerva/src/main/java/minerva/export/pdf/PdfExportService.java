@@ -34,7 +34,6 @@ public class PdfExportService extends MultiPageHtmlExportService {
     
     public PdfExportService(ExportRequest req) {
         super(req);
-        exclusionsService.setContext("PDF");
         pdfCss = new ExportTemplatesService(req.getWorkspace()).load(req.getTemplateId()).getPdfStyles();
         if (StringService.isNullOrEmpty(pdfCss)) {
             Logger.warn("PDF CSS is empty!");
@@ -199,7 +198,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
     private void createCoverAndToc(StringBuilder html) {
         DataMap model = new DataMap();
         
-        String customer = exclusionsService.getCustomer();
+        String customer = getCustomer();
         if ("-".equals(customer)) {
             customer = "";
         } else if (customer.toLowerCase().equals(customer)) {

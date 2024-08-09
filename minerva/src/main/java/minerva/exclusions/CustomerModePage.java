@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.github.template72.data.DataList;
 
 import minerva.base.StringService;
+import minerva.model.ExclusionsSO;
 import minerva.workspace.WPage;
 
 /**

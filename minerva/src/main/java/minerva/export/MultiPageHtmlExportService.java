@@ -15,7 +15,7 @@ import com.github.template72.data.DataMap;
 
 import minerva.base.FileService;
 import minerva.base.NLS;
-import minerva.exclusions.SeiteVisible;
+import minerva.exclusions.SeiteSichtbar;
 import minerva.export.Formula2Image.TransformPath;
 import minerva.export.pdf.Chapter;
 import minerva.model.BookSO;
@@ -39,7 +39,6 @@ public class MultiPageHtmlExportService extends GenericExportService {
     public MultiPageHtmlExportService(ExportRequest req) {
         super(req);
         req.getWorkspace().getUser().onlyWithExportRight();
-        exclusionsService.setContext("Multi-page-HTML-export");
     }
     
     @Override
@@ -62,7 +61,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
         std(n("books"), model);
         DataList list = model.list("books");
         for (BookSO book : workspace.getBooks()) {
-            if (book.hasContent(lang, exclusionsService)) {
+            if (book.hasContent(ssc)) {
                 DataMap map = list.add();
                 map.put("link", esc(book.getBook().getFolder()) + "/index.html");
                 map.put("title", esc(book.getBook().getTitle().getString(lang)));
@@ -107,14 +106,14 @@ public class MultiPageHtmlExportService extends GenericExportService {
     private void addSeiten(SeitenSO seiten, StringBuilder html) {
         boolean first = true;
         for (SeiteSO seite : seiten) {
-            SeiteVisible v = seite.isVisible(exclusionsService, lang);
-            if (v.isVisible() && !seite.isNoTree()) {
+            SeiteSichtbar ss = new SeiteSichtbar(seite, ssc);
+            if (ss.isVisible() && !seite.isNoTree()) {
                 if (first) {
                     html.append("<ul>");
                     first = false;
                 }
                 html.append("\n<li><a href=\"html/" + esc(seite.getId()) + ".html\""
-                        + (v.hasSubpages() ? " class=\"noContent\"" : "") + ">"
+                        + (ss.hasSubpages(lang) ? " class=\"noContent\"" : "") + ">"
                         + esc(seite.getSeite().getTitle().getString(lang)) + "</a>");
                 addSeiten(seite.getSeiten(), html);
                 html.append("</li>");
@@ -154,7 +153,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
         DataMap model = new DataMap();
         model.put("title", esc(title));
         String body = getBody(html, title);
-        model.put("content", tocMacro(body, seite, exclusionsService.getCustomer())); // no esc!
+        model.put("content", tocMacro(body, seite, getCustomer())); // no esc!
         model.put("cssFolder", "");
         model.put("back", n("back"));
         model.put("forward", n("forward"));
@@ -204,7 +203,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
     private String subpages(SeiteSO seite) {
         String ret = "";
         for (SeiteSO sub : seite.getSeiten()) {
-            if (sub.isVisible(exclusionsService, lang).isVisible()) {
+            if (new SeiteSichtbar(sub, ssc).isVisible()) {
                 if (validPages == null || validPages.contains(sub)) {
                     ret += "<li><a href=\"" + sub.getId() + "\">" + esc(sub.getSeite().getTitle().getString(lang))
                             + "</a></li>";
@@ -239,7 +238,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
     }
     
     private void navigation(SeiteSO seite, SeiteSO parent, DataMap model) {
-        NavigateService nav = new NavigateService(true, lang, exclusionsService);
+        NavigateService nav = new NavigateService(lang, ssc);
         nav.setSortAllowed(false);
         nav.setValidPages(validPages);
         SeiteSO bb = nav.previousPage(seite);

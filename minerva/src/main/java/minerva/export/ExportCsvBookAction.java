@@ -1,9 +1,13 @@
 package minerva.export;
 
+import java.util.List;
+
 import org.pmw.tinylog.Logger;
 
 import minerva.MinervaWebapp;
 import minerva.book.BAction;
+import minerva.exclusions.SeiteSichtbar;
+import minerva.exclusions.SeiteSichtbarContext;
 import minerva.model.SeiteSO;
 
 /**
@@ -24,10 +28,11 @@ public class ExportCsvBookAction extends BAction {
 				title = title.replace("DEVK ", "DEVK");
 				customer = lastWord(title) + ";" + lang;
 				version = "";
+				SeiteSichtbarContext ssc = new SeiteSichtbarContext(book.getWorkspace(), List.of(lang));
 				for (SeiteSO releaseGroup : kunde.getSeiten()) {
 					for (SeiteSO release : releaseGroup.getSeiten()) {
 						String html = release.getContent().getString(lang);
-						if (release.hasContent(lang) > 0) {
+						if (new SeiteSichtbar(release, ssc).isVisible()) {
 							String q = release.getSeite().getTitle().getString(lang);
 							int qq = q.lastIndexOf(" (");
 							if (qq < 0) {

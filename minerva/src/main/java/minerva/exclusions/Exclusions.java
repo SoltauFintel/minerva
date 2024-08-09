@@ -8,8 +8,7 @@ import java.util.TreeSet;
 
 import org.pmw.tinylog.Logger;
 
-import minerva.base.StringService;
-
+// TODO move to oh-html
 public class Exclusions {
     /** key: customer, value: tag list */
     private final Map<String, List<String>> customers = new HashMap<>();
@@ -47,36 +46,6 @@ public class Exclusions {
         return customers.get(customer);
     }
 
-    public enum LabelClass {
-        /** normal exclusion label */
-        NORMAL,
-        /** negative list. if this exclusion label occurs then always return "page is not accessible" */
-        OFF,
-        /** positive list. if this label occurs then override NORMAL LabelClass but not OFF LabelClass */
-        ON,
-        /** does not contain */
-        NOT_IN;
-    }
-    
-    public LabelClass contains(String tag, String customer) {
-        if (StringService.isNullOrEmpty(customer)) {
-            return LabelClass.NORMAL; // wrong customer -> don't deliver help page!
-        }
-        List<String> list = customers.get(customer.toLowerCase());
-        if (list != null) {
-            for (String i : list) {
-                if (i.equalsIgnoreCase("+" + tag)) {
-                    return LabelClass.ON;
-                } else if (i.equalsIgnoreCase("-" + tag)) {
-                    return LabelClass.OFF;
-                } else if (i.equalsIgnoreCase(tag)) {
-                    return LabelClass.NORMAL;
-                }
-            }
-        }
-        return LabelClass.NOT_IN;
-    }
-    
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();

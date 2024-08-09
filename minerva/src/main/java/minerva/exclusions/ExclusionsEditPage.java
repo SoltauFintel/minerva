@@ -9,6 +9,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.MinervaWebapp;
+import minerva.model.ExclusionsSO;
 import minerva.seite.tag.TagN;
 import minerva.user.UPage;
 

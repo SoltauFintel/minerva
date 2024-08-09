@@ -99,17 +99,16 @@ public class PublishService {
             boolean copied = false;
             // collect page data
             for (String lang : langs) {
-                if (seite.hasContent(lang) > 0) { // Don't publish empty pages.
-                    copied = true;
-                    TocEntry p = createTocEntry(seite, lang);
-                    parent.get(lang).getSubpages().add(p);
-                    pages.put(lang, p);
-    
-                    // copy .html files
-                    File src = new File(seite.filenameHtml(lang));
-                    if (src.isFile()) {
-                        FileService.copyFile(src, new File(targetFolder, lang));
-                    }
+                // "Don't publish empty pages." (hasContent>0) removed during SeiteSichtbar refactoring.
+                copied = true;
+                TocEntry p = createTocEntry(seite, lang);
+                parent.get(lang).getSubpages().add(p);
+                pages.put(lang, p);
+
+                // copy .html files
+                File src = new File(seite.filenameHtml(lang));
+                if (src.isFile()) {
+                    FileService.copyFile(src, new File(targetFolder, lang));
                 }
             }
             if (copied) {

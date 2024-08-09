@@ -2,33 +2,27 @@ package minerva.seite;
 
 import java.util.List;
 
-import minerva.MinervaWebapp;
-import minerva.exclusions.ExclusionsService;
+import minerva.exclusions.SeiteSichtbar;
+import minerva.exclusions.SeiteSichtbarContext;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 
 public class NavigateService {
-    private final boolean omitEmptyPages;
     private final String lang;
-    private final ExclusionsService exclusions;
+    private final SeiteSichtbarContext ssc;
     private SeiteSO parent;
     private boolean sortAllowed = true;
     /** null: all pages are valid */
     private List<SeiteSO> validPages = null;
 
     /**
-     * @param omitEmptyPages true: omit empty pages, false: include all pages
      * @param lang must be a valid value if omitEmptyPages is true
      * @param exclusions if not null: omit page if not accessible
      */
-    public NavigateService(boolean omitEmptyPages, String lang, ExclusionsService exclusions) {
-        if (omitEmptyPages && !MinervaWebapp.factory().getLanguages().contains(lang)) {
-            throw new IllegalArgumentException("Argument lang must be specified if omitEmptyPages is true!");
-        }
-        this.omitEmptyPages = omitEmptyPages;
+    public NavigateService(String lang, SeiteSichtbarContext ssc) {
         this.lang = lang;
-        this.exclusions = exclusions;
+        this.ssc = ssc;
     }
 
     public boolean isSortAllowed() {
@@ -132,14 +126,8 @@ public class NavigateService {
     }
     
     private boolean valid(SeiteSO seite) {
-        if (omitEmptyPages && seite.hasContent(lang) == 0) {
+        if (ssc != null && !new SeiteSichtbar(seite, ssc).isVisible()) {
             return false;
-        }
-        if (exclusions != null) {
-            exclusions.setSeite(seite);
-            if (!exclusions.isAccessible()) {
-                return false;
-            }
         }
         if (validPages != null) { // for select-pages-HTML-export
             for (SeiteSO i : validPages) {

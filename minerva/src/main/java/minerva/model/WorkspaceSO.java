@@ -11,7 +11,7 @@ import minerva.access.CommitHash;
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.config.MinervaOptions;
-import minerva.exclusions.ExclusionsSO;
+import minerva.exclusions.Exclusions;
 import minerva.persistence.filesystem.FileSystemDirAccess;
 import minerva.seite.tag.TagNList;
 import minerva.task.TaskService;
@@ -134,6 +134,11 @@ public class WorkspaceSO {
     
     public ExclusionsSO getExclusions() {
         return new ExclusionsSO(this);
+    }
+    
+    public Exclusions exclusions() {
+        return new Exclusions(getExclusions().get()); /* TODO geplant ist, dass WorkspaceSO das hier cachet.
+        Wenn der User dann die Exclusions ändert, dann wird der Cache aktualisiert. */
     }
     
     public void createBranch(String newBranch, String commit) {

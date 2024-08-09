@@ -12,8 +12,8 @@ import minerva.MinervaWebapp;
 import minerva.base.FileService;
 import minerva.base.NLS;
 import minerva.book.BookType;
-import minerva.exclusions.Exclusions;
-import minerva.exclusions.ExclusionsService;
+import minerva.exclusions.SeiteSichtbar;
+import minerva.exclusions.SeiteSichtbarContext;
 import minerva.export.SomeSubpages.SeiteAndDone;
 import minerva.export.pdf.Bookmark;
 import minerva.export.pdf.Chapter;
@@ -35,7 +35,7 @@ public abstract class GenericExportService {
     protected final ExportRequest req;
     protected final String lang;
     protected final ExportTemplateSet exportTemplateSet;
-    protected final ExclusionsService exclusionsService;
+    protected final SeiteSichtbarContext ssc;
     protected BookSO currentBook = null;
     protected boolean booksMode = false;
     /** current parent bookmark */
@@ -46,13 +46,11 @@ public abstract class GenericExportService {
         this.req = req;
         lang = req.getLanguage();
         exportTemplateSet = new ExportTemplatesService(req.getWorkspace()).load(req.getTemplateId());
-        exclusionsService = new ExclusionsService();
-        exclusionsService.setCustomer(req.getCustomer());
-        exclusionsService.setExclusions(new Exclusions(req.getWorkspace().getExclusions().get()));
+        ssc = new SeiteSichtbarContext(req.getWorkspace(), req.getCustomer(), req.pdf(), req.getLanguage());
     }
     
     protected String getCustomer() {
-        return exclusionsService.getCustomer().toUpperCase();
+        return req.getCustomer().toUpperCase();
     }
 
     public String getBooksExportDownloadId(WorkspaceSO workspace) {
@@ -68,7 +66,7 @@ public abstract class GenericExportService {
         File outputFolder = getFolder(NLS.get(lang, "allBooks"));
         Logger.info("export books output folder: " + outputFolder.getAbsolutePath());
         for (BookSO book : workspace.getBooks()) {
-            if (BookType.PUBLIC.equals(book.getBook().getType()) && book.hasContent(lang, exclusionsService)) {
+            if (BookType.PUBLIC.equals(book.getBook().getType()) && book.hasContent(ssc)) {
                 String bookFolder = FileService.getSafeName(book.getBook().getFolder());
                 saveBookTo(book, new File(outputFolder, bookFolder));
             } else {
@@ -139,7 +137,7 @@ public abstract class GenericExportService {
     }
     
     private boolean _saveSeiteTo(SeiteSO seite, SeiteSO parent, Chapter chapter, SubpagesSelector ss, File outputFolder) {
-        if (seite.isVisible(exclusionsService, lang).isVisible()) {
+        if (new SeiteSichtbar(seite, ssc).isVisible()) {
             saveSeiteTo(seite, parent, chapter, outputFolder);
 
             Bookmark keep = cb; // remember

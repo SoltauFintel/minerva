@@ -18,7 +18,8 @@ import minerva.book.BookType;
 import minerva.comment.Comment;
 import minerva.comment.SeiteCommentService2;
 import minerva.config.MinervaConfig;
-import minerva.exclusions.CustomerModeService;
+import minerva.exclusions.SeiteSichtbar;
+import minerva.exclusions.SeiteSichtbarContext;
 import minerva.seite.Breadcrumb;
 import minerva.seite.CommentWithSeite;
 import minerva.seite.IBreadcrumbLinkBuilder;
@@ -336,40 +337,39 @@ public class SeitenSO extends MList<SeiteSO> {
 
     public List<TreeItem> getTreeItems(String lang, String currentPageId, TreeItem parent) {
         List<TreeItem> ret = new ArrayList<>();
-        CustomerModeService cms = null;
+        SeiteSichtbarContext ssc = null;
         for (SeiteSO seite : this) {
-            if (cms == null) {
-                cms = new CustomerModeService(seite.getBook().getWorkspace());
+            // fehlt hier die showAllPages Berücksichtigung? -> aufgrund von SeiteSichtbarContext ist die jetzt dabei
+            if (ssc == null) {
+                ssc = new SeiteSichtbarContext(seite.getBook().getWorkspace(), List.of(lang));
             }
-            if (!cms.isAccessible(seite)) {
+            SeiteSichtbar ss = new SeiteSichtbar(seite, ssc);
+            if (!ss.isVisible()) {
                 continue;
             }
-            int hc = seite.hasContent(lang);
-            if (hc > 0) {
-                BookSO book = seite.getBook();
-                TreeItem treeItem = new TreeItem(seite.getId(),
-                        seite.getSeite().getTitle().getString(lang),
-                        seite.getSeite().getTags(),
-                        seite.getId().equals(currentPageId),
-                        seite.isNoTree(),
-                        hc,
-                        book.getWorkspace().getBranch(),
-                        book.getBook().getFolder(),
-                        parent);
-                if (treeItem.isCurrent()) {
-                    treeItem.setExpanded(true);
-                    TreeItem p = treeItem.getParent();
-                    while (p != null) {
-                        p.setExpanded(true);
-                        p = p.getParent();
-                    }
+            BookSO book = seite.getBook();
+            TreeItem treeItem = new TreeItem(seite.getId(),
+                    seite.getSeite().getTitle().getString(lang),
+                    seite.getSeite().getTags(),
+                    seite.getId().equals(currentPageId),
+                    seite.isNoTree(),
+                    ss.hasSubpages(lang),
+                    book.getWorkspace().getBranch(),
+                    book.getBook().getFolder(),
+                    parent);
+            if (treeItem.isCurrent()) {
+                treeItem.setExpanded(true);
+                TreeItem p = treeItem.getParent();
+                while (p != null) {
+                    p.setExpanded(true);
+                    p = p.getParent();
                 }
-                ret.add(treeItem);
-                if (seite.isFeatureTree() && seite.checkSubfeaturesLimit()) {
-                	treeItem.setSubitems(List.of());
-                } else {
-                	treeItem.setSubitems(seite.getSeiten().getTreeItems(lang, currentPageId, treeItem)); // resursive
-                }
+            }
+            ret.add(treeItem);
+            if (seite.isFeatureTree() && seite.checkSubfeaturesLimit()) {
+            	treeItem.setSubitems(List.of());
+            } else {
+            	treeItem.setSubitems(seite.getSeiten().getTreeItems(lang, currentPageId, treeItem)); // resursive
             }
         }
         return ret;

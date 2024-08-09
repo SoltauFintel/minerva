@@ -11,7 +11,8 @@ import minerva.MinervaWebapp;
 import minerva.base.DeliverHtmlContent;
 import minerva.base.Uptodatecheck;
 import minerva.comment.SeiteCommentService2;
-import minerva.exclusions.CustomerModeService;
+import minerva.exclusions.SeiteSichtbar;
+import minerva.exclusions.SeiteSichtbarContext;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -20,7 +21,6 @@ import minerva.seite.ViewSeitePage;
 
 public class BookPage extends BPage implements Uptodatecheck {
     public static DeliverHtmlContent<BookSO> additionalButtons = i -> "";
-    private CustomerModeService cms;
     
     @Override
     protected void execute() {
@@ -30,7 +30,6 @@ public class BookPage extends BPage implements Uptodatecheck {
         if (book.isFeatureTree() && !"de".equals(pageLanguage)) {
             user.getUser().setPageLanguage("de");
         }
-        cms = new CustomerModeService(workspace);
         
         setJQueryObenPageMode();
         String title = book.getBook().getTitle().getString(guiLanguage);
@@ -101,45 +100,47 @@ public class BookPage extends BPage implements Uptodatecheck {
 		for (SeiteSO seite : seiten) {
 			seitenII.add(seite);
 		}
+		SeiteSichtbarContext ssc = new SeiteSichtbarContext(workspace, List.of(lang));
+		ssc.setShowAllPages(allPages);
 		for (int i = 0; i < seitenII.size(); i++) {
 			SeiteSO seite = seitenII.get(i);
-			if (!cms.isAccessible(seite)) {
+			SeiteSichtbar ss = new SeiteSichtbar(seite);
+			if (!ss.isVisible()) {
 			    continue;
 			}
-            int hasContent = seite.hasContent(lang);
-            if (hasContent > 0 || allPages) {
-            	String trueTitle = seite.getSeite().getTitle().getString(lang);
-                String title = trueTitle;
-                if (title.isBlank()) {
-                    title = "without title #" + seite.getId();
-                }
-                String link = "/s/" + branch + "/" + bookFolder + "/" + esc(seite.getSeite().getId());
-                String nc = hasContent == 2 ? " class=\"noContent\"" : "";
-                if (allPages && hasContent == 0) {
-                    nc = " class=\"hiddenPage\"";
-                }
-                gliederung.append("\t<li id=\"");
-                gliederung.append(seite.getId());
-                gliederung.append("\"><a href=\"");
-                gliederung.append(link);
-                gliederung.append("\"" + nc + ">");
-                gliederung.append(esc(title));
-                gliederung.append("</a>");
-                if (showTags(i, seitenII, lang)) {
-					seite.getSeite().getTags().stream().sorted().forEach(tag ->
-						gliederung.append(" <span class=\"label label-tag\"><i class=\"fa fa-tag\"></i> " + tag + "</span>"));
-                }
-                int state = new SeiteCommentService2(seite).getCommentState(user.getLogin());
-                if (state > 0) {
-                    gliederung.append(state == 2 ? hasCommentForMe : hasComment);
-                }
-                gliederung.append("</li>\n");
-                
-                if (seite.isFeatureTree() && seite.checkSubfeaturesLimit()) {
-                    continue;
-                }
-                fillSeiten(branch, bookFolder, seite.getSeiten(), lang, allPages, true, gliederung); // recursive
+        	String trueTitle = seite.getSeite().getTitle().getString(lang);
+            String title = trueTitle;
+            if (title.isBlank()) {
+                title = "without title #" + seite.getId();
             }
+            String link = "/s/" + branch + "/" + bookFolder + "/" + esc(seite.getSeite().getId());
+            String nc = "";
+            if (allPages) {
+                nc = " class=\"hiddenPage\"";
+            } else if (ss.hasSubpages(lang)) {
+                nc = " class=\"noContent\"";
+            }
+            gliederung.append("\t<li id=\"");
+            gliederung.append(seite.getId());
+            gliederung.append("\"><a href=\"");
+            gliederung.append(link);
+            gliederung.append("\"" + nc + ">");
+            gliederung.append(esc(title));
+            gliederung.append("</a>");
+            if (showTags(i, seitenII, lang)) {
+				seite.getSeite().getTags().stream().sorted().forEach(tag ->
+					gliederung.append(" <span class=\"label label-tag\"><i class=\"fa fa-tag\"></i> " + tag + "</span>"));
+            }
+            int state = new SeiteCommentService2(seite).getCommentState(user.getLogin());
+            if (state > 0) {
+                gliederung.append(state == 2 ? hasCommentForMe : hasComment);
+            }
+            gliederung.append("</li>\n");
+            
+            if (seite.isFeatureTree() && seite.checkSubfeaturesLimit()) {
+                continue;
+            }
+            fillSeiten(branch, bookFolder, seite.getSeiten(), lang, allPages, true, gliederung); // recursive
         }
         gliederung.append("</ul>\n");
     }
