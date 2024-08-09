@@ -16,7 +16,7 @@ import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
 import minerva.book.BookPage;
 import minerva.comment.SeiteCommentService2;
-import minerva.exclusions.SeiteSichtbarContext;
+import minerva.exclusions.SeiteSichtbar;
 import minerva.image.FixHttpImage;
 import minerva.mask.FeatureFieldsHtmlFactory;
 import minerva.mask.FeatureFieldsService;
@@ -34,7 +34,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     public static DeliverHtmlContent<SeiteSO> additionalButtons = i -> "";
     public static AddFeatures addFeatures = (seite, features) -> {}; 
     private String mindmapJson;
-    private SeiteSichtbarContext ssc;
+    private SeiteSichtbar ssc;
     
     @Override
     protected SeiteSO getSeite() {
@@ -66,7 +66,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         	u.setPageLanguage("de");
         }
         seite.forceReloadIfCheap();
-        ssc = new SeiteSichtbarContext(workspace);
+        ssc = new SeiteSichtbar(workspace);
         fillLanguageSpecifics(u);
         Seite _seite = seite.getSeite();
         simpleVars(u, _seite);
@@ -267,7 +267,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     }
     
     static int fillSubpages(SeiteSO seite, SeitenSO seiten, String lang, DataList subpages, String branch, String bookFolder,
-            SeiteSichtbarContext ssc) {
+            SeiteSichtbar ssc) {
         int n = 0;
         if (seite == null
                 || !seite.isFeatureTree()

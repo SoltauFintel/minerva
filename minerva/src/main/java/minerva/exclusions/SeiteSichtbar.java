@@ -18,7 +18,7 @@ import minerva.model.WorkspaceSO;
 // Dieses Objekt lebt nur für die Dauer der Anfrage. Wenn viele Seiten auf einmal zu prüfen sind, lebt es halt so lange.
 // Es klebt aber nicht am Workspace.
 
-public class SeiteSichtbarContext {
+public class SeiteSichtbar {
     private final WorkspaceSO workspace; // TODO muss ich den speichern?
     private final Exclusions exclusions;
     private final List<String> languages = new ArrayList<>();
@@ -28,11 +28,11 @@ public class SeiteSichtbarContext {
 
     // TODO context mit ungleich 1 language  .... Macht das Sinn? Wann genutzt?
 
-    public SeiteSichtbarContext(WorkspaceSO workspace) {
+    public SeiteSichtbar(WorkspaceSO workspace) {
         this(workspace, MinervaWebapp.factory().getLanguages());
     }
 
-    public SeiteSichtbarContext(WorkspaceSO workspace, List<String> languages) {
+    public SeiteSichtbar(WorkspaceSO workspace, List<String> languages) {
         this.workspace = workspace;
         exclusions = workspace.exclusions();
         this.languages.addAll(languages);
@@ -48,7 +48,7 @@ public class SeiteSichtbarContext {
      * @param pdfExport true: PDF export, false: HTML export
      * @param language -
      */
-    public SeiteSichtbarContext(WorkspaceSO workspace, String customer, boolean pdfExport, String language) {
+    public SeiteSichtbar(WorkspaceSO workspace, String customer, boolean pdfExport, String language) {
         this.workspace = workspace;
         languages.add(language);
         exclusions = workspace.exclusions();
@@ -108,7 +108,7 @@ public class SeiteSichtbarContext {
         return languages;
     }
     
-    public SeiteSichtbarContext withLanguage(String language) {
+    public SeiteSichtbar withLanguage(String language) {
         languages.clear();
         languages.add(language);
         return this;
@@ -123,7 +123,7 @@ public class SeiteSichtbarContext {
     }
     
     // main part
-    private static Visible getVisibleResult(SeiteSO seite, SeiteSichtbarContext context) {
+    private static Visible getVisibleResult(SeiteSO seite, SeiteSichtbar context) {
         if (!isAccessible(seite.getSeite().getTags(), context)) {
         	// Es ist ein Kunde gesetzt und dessen Ausschlüsse-tags verbieten den Zugriff auf die Seite.
         	return new Visible(false);
@@ -146,7 +146,7 @@ public class SeiteSichtbarContext {
         }
     }
 
-    private static boolean isAccessible(Set<String> tags, SeiteSichtbarContext context) {
+    private static boolean isAccessible(Set<String> tags, SeiteSichtbar context) {
         if (!context.hasCustomer()) {
             return true;
         }

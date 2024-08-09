@@ -18,7 +18,7 @@ import minerva.book.BookType;
 import minerva.comment.Comment;
 import minerva.comment.SeiteCommentService2;
 import minerva.config.MinervaConfig;
-import minerva.exclusions.SeiteSichtbarContext;
+import minerva.exclusions.SeiteSichtbar;
 import minerva.exclusions.Visible;
 import minerva.seite.Breadcrumb;
 import minerva.seite.CommentWithSeite;
@@ -337,11 +337,11 @@ public class SeitenSO extends MList<SeiteSO> {
 
     public List<TreeItem> getTreeItems(String lang, String currentPageId, TreeItem parent) {
         List<TreeItem> ret = new ArrayList<>();
-        SeiteSichtbarContext ssc = null;
+        SeiteSichtbar ssc = null;
         for (SeiteSO seite : this) {
             // fehlt hier die showAllPages Berücksichtigung? -> aufgrund von SeiteSichtbarContext ist die jetzt dabei
             if (ssc == null) {
-                ssc = new SeiteSichtbarContext(seite.getBook().getWorkspace(), List.of(lang));
+                ssc = new SeiteSichtbar(seite.getBook().getWorkspace(), List.of(lang));
             }
             Visible visible = ssc.getVisibleResult(seite);
             if (!visible.isVisible()) {

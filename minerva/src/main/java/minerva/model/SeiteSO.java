@@ -27,7 +27,7 @@ import minerva.base.NlsString;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.comment.SeiteCommentService2;
-import minerva.exclusions.SeiteSichtbarContext;
+import minerva.exclusions.SeiteSichtbar;
 import minerva.seite.IPageChangeStrategy;
 import minerva.seite.ISeite;
 import minerva.seite.PageChange;
@@ -622,7 +622,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
             
             @Override
             public boolean isVisible(String customer, String lang) {
-                SeiteSichtbarContext ssc = new SeiteSichtbarContext(SeiteSO.this.book.getWorkspace(), List.of(lang));
+                SeiteSichtbar ssc = new SeiteSichtbar(SeiteSO.this.book.getWorkspace(), List.of(lang));
                 ssc.setCustomer(customer);
                 return ssc.isVisible(SeiteSO.this);
             }

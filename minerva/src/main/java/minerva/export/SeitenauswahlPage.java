@@ -9,7 +9,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.base.StringService;
-import minerva.exclusions.SeiteSichtbarContext;
+import minerva.exclusions.SeiteSichtbar;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -63,7 +63,7 @@ public class SeitenauswahlPage extends WPage {
             putInt("width", 700);
             put("bookPrefix", BOOK_PREFIX);
             DataList list = list("pages");
-            SeiteSichtbarContext ssc = new SeiteSichtbarContext(workspace, List.of(lang));
+            SeiteSichtbar ssc = new SeiteSichtbar(workspace, List.of(lang));
             for (BookSO book : workspace.getBooks()) {
                 if (book.isFeatureTree()) {
                     continue;
@@ -104,7 +104,7 @@ public class SeitenauswahlPage extends WPage {
         user.log(info);
     }
     
-    private void add(SeitenSO seiten, String indent, String lang, SeiteSichtbarContext ssc, DataList list) {
+    private void add(SeitenSO seiten, String indent, String lang, SeiteSichtbar ssc, DataList list) {
         for (SeiteSO seite : seiten) {
             if (ssc.isVisible(seite)) {
                 DataMap map = list.add();

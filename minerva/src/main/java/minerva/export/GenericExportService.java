@@ -12,7 +12,7 @@ import minerva.MinervaWebapp;
 import minerva.base.FileService;
 import minerva.base.NLS;
 import minerva.book.BookType;
-import minerva.exclusions.SeiteSichtbarContext;
+import minerva.exclusions.SeiteSichtbar;
 import minerva.export.SomeSubpages.SeiteAndDone;
 import minerva.export.pdf.Bookmark;
 import minerva.export.pdf.Chapter;
@@ -34,7 +34,7 @@ public abstract class GenericExportService {
     protected final ExportRequest req;
     protected final String lang;
     protected final ExportTemplateSet exportTemplateSet;
-    protected final SeiteSichtbarContext ssc;
+    protected final SeiteSichtbar ssc;
     protected BookSO currentBook = null;
     protected boolean booksMode = false;
     /** current parent bookmark */
@@ -45,7 +45,7 @@ public abstract class GenericExportService {
         this.req = req;
         lang = req.getLanguage();
         exportTemplateSet = new ExportTemplatesService(req.getWorkspace()).load(req.getTemplateId());
-        ssc = new SeiteSichtbarContext(req.getWorkspace(), req.getCustomer(), req.pdf(), req.getLanguage());
+        ssc = new SeiteSichtbar(req.getWorkspace(), req.getCustomer(), req.pdf(), req.getLanguage());
     }
     
     protected String getCustomer() {

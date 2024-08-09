@@ -10,7 +10,7 @@ import com.github.template72.data.DataMap;
 
 import minerva.base.StringService;
 import minerva.comment.SeiteCommentService2;
-import minerva.exclusions.SeiteSichtbarContext;
+import minerva.exclusions.SeiteSichtbar;
 import minerva.mask.field.MaskField;
 import minerva.model.SeiteSO;
 import minerva.seite.SPage;
@@ -110,7 +110,7 @@ public class FeaturesTablePage extends SPage {
             row.put("url", esc(url0 + te.feature.getId()));
             row.put("columns", columns);
             row.put("eins", ++k % 4 == 1);
-            row.put("hasText", !SeiteSichtbarContext.contentIsEmpty(te.feature, "de"));
+            row.put("hasText", !SeiteSichtbar.contentIsEmpty(te.feature, "de"));
             row.put("hasOpenComments", new SeiteCommentService2(te.feature).getCommentState(te.feature.getLogin()) > 0);
             n++;
         }

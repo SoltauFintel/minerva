@@ -2,14 +2,14 @@ package minerva.seite;
 
 import java.util.List;
 
-import minerva.exclusions.SeiteSichtbarContext;
+import minerva.exclusions.SeiteSichtbar;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 
 public class NavigateService {
     private final String lang;
-    private final SeiteSichtbarContext ssc;
+    private final SeiteSichtbar ssc;
     private SeiteSO parent;
     private boolean sortAllowed = true;
     /** null: all pages are valid */
@@ -19,7 +19,7 @@ public class NavigateService {
      * @param lang must be a valid value if omitEmptyPages is true
      * @param exclusions if not null: omit page if not accessible
      */
-    public NavigateService(String lang, SeiteSichtbarContext ssc) {
+    public NavigateService(String lang, SeiteSichtbar ssc) {
         this.lang = lang;
         this.ssc = ssc;
     }

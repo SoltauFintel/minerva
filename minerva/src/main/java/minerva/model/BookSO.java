@@ -12,7 +12,7 @@ import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.book.Book;
 import minerva.book.BookType;
-import minerva.exclusions.SeiteSichtbarContext;
+import minerva.exclusions.SeiteSichtbar;
 import minerva.seite.Breadcrumb;
 import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.ISeite;
@@ -203,7 +203,7 @@ public class BookSO {
         return breadcrumbs;
     }
 
-    public boolean hasContent(SeiteSichtbarContext ssc) {
+    public boolean hasContent(SeiteSichtbar ssc) {
         for (SeiteSO seite : seiten) {
             if (ssc.isVisible(seite)) {
                 return true;
