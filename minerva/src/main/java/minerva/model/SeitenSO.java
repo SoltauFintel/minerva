@@ -18,9 +18,9 @@ import minerva.book.BookType;
 import minerva.comment.Comment;
 import minerva.comment.SeiteCommentService2;
 import minerva.config.MinervaConfig;
-import minerva.exclusions.HasContentEnum;
 import minerva.exclusions.SeiteSichtbar;
 import minerva.exclusions.SeiteSichtbarContext;
+import minerva.exclusions.Visible;
 import minerva.seite.Breadcrumb;
 import minerva.seite.CommentWithSeite;
 import minerva.seite.IBreadcrumbLinkBuilder;
@@ -345,17 +345,17 @@ public class SeitenSO extends MList<SeiteSO> {
                 ssc = new SeiteSichtbarContext(seite.getBook().getWorkspace(), List.of(lang));
             }
             SeiteSichtbar ss = new SeiteSichtbar(seite, ssc);
-            if (!ss.isVisible()) {
+            Visible visible = ss.getVisibleResult();
+            if (!visible.isVisible()) {
                 continue;
             }
-            HasContentEnum hc = ss.hasContent(lang);
             BookSO book = seite.getBook();
             TreeItem treeItem = new TreeItem(seite.getId(),
                     seite.getSeite().getTitle().getString(lang),
                     seite.getSeite().getTags(),
                     seite.getId().equals(currentPageId),
                     seite.isNoTree(),
-                    hc == HasContentEnum.EMPTY || hc == HasContentEnum.EMPTY_BUT_HAS_NONEMPTY_SUBPAGES,
+                    visible.hasSubpages() || visible.isShowAllPages(),
                     book.getWorkspace().getBranch(),
                     book.getBook().getFolder(),
                     parent);

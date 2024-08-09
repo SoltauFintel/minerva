@@ -13,6 +13,8 @@ import minerva.model.SeiteSO;
 public class SeiteSichtbar {
     private final SeiteSO seite;
     private final SeiteSichtbarContext context;
+    
+    // TODO context mit ungleich 1 language  .... Macht das Sinn? Wann genutzt?
 
     /**
      * cheap constructor, should be used for many executions
@@ -35,30 +37,33 @@ public class SeiteSichtbar {
     }
 
     public boolean isVisible() {
-        boolean ret = isAccessible(seite.getSeite().getTags(), context);
-        if (ret && !context.isShowAllPages()) {
+    	return getVisibleResult(seite, context).isVisible();
+    }
+    
+    public Visible getVisibleResult() {
+    	return getVisibleResult(seite, context);
+    }
+
+    // main part
+    private static Visible getVisibleResult(SeiteSO seite, SeiteSichtbarContext context) {
+        if (!isAccessible(seite.getSeite().getTags(), context)) {
+        	return new Visible(false);
+        } else {
             // Wenn es für mind. eine Sprache nicht leer ist, dann ist die Seite sichtbar.
             for (String lang : context.getLanguages()) {
-                if (hasContent(seite, lang, false) != HasContentEnum.EMPTY) {
-                    return true;
+            	if (!isEmpty(seite, lang)) {
+                    return new Visible(true);
                 }
             }
-            ret = false;
+            // Die Seite ist leer und daher eigentlich nicht sichtbar.
+            // Wenn es aber mindestens eine nicht-leere Unterseite gibt, dann ist das Ergebnis HAS_SUBPAGES statt NO.
+            for (SeiteSO sub : seite.getSeiten()) {
+            	if (getVisibleResult(sub, context).isVisible()) { // recursive
+            		return new Visible(true, true, false);
+            	}
+            }
+        	return new Visible(context.isShowAllPages(), false, context.isShowAllPages());
         }
-        return ret;
-    }
-
-    public HasContentEnum hasContent(String lang) {
-        return hasContent(seite, lang, false);
-    }
-
-    public boolean hasSubpages(String lang) {
-        return hasContent(seite, lang, false) == HasContentEnum.EMPTY_BUT_HAS_NONEMPTY_SUBPAGES;
-    }
-
-    public static boolean isEmptyOrHasSubpages(SeiteSO seite, String lang) {
-        HasContentEnum hc = hasContent(seite, lang, false);
-        return hc == HasContentEnum.EMPTY || hc == HasContentEnum.EMPTY_BUT_HAS_NONEMPTY_SUBPAGES;
     }
 
     private static boolean isAccessible(Set<String> tags, SeiteSichtbarContext context) {
@@ -118,34 +123,25 @@ public class SeiteSichtbar {
         return LabelClass.NOT_IN;
     }
 
-    private static HasContentEnum hasContent(SeiteSO seite, String lang, boolean returnError) {
-        if (seite.getBook().isFeatureTree()) {
-            return HasContentEnum.NOT_EMPTY;
-        } else if (seite.getSeite().getTags().contains("autolink")) {
-            return HasContentEnum.EMPTY;
-        }
-        return hasContentR(seite, lang, returnError);
+    private static boolean isEmpty(SeiteSO seite, String lang) {
+        return !seite.getBook().isFeatureTree() // Leere Seiten sind im Feature Tree Standard und sollen nicht ausgeblendet werden.
+        		&& (seite.getSeite().getTags().contains("autolink") // autolink-Seiten soll standardmäßig versteckt werden.
+        				|| contentIsEmpty(seite, lang));
+        
     }
 
-    public static HasContentEnum hasContentR(SeiteSO seite, String lang, boolean returnError) {
+    public static boolean contentIsEmpty(SeiteSO seite, String lang) {
         // In theory, this approach is a bit expensive since all content must be loaded and must be parsed.
         // However in practice it takes less than 0.4 seconds on the first call.
         try {
             String html = seite.getContent().getString(lang);
             Document doc = Jsoup.parse(html);
             Elements body = doc.select("body");
-            if (body != null && !body.isEmpty() && body.get(0).childrenSize() > 0) {
-                return HasContentEnum.NOT_EMPTY;
-            }
-            for (SeiteSO sub : seite.getSeiten()) {
-                if (hasContentR(sub, lang, returnError) != HasContentEnum.EMPTY) { // recursive
-                    return HasContentEnum.EMPTY_BUT_HAS_NONEMPTY_SUBPAGES;
-                }
-            }
-            return HasContentEnum.EMPTY;
+            return body == null || body.isEmpty() || body.get(0).childrenSize() == 0;
         } catch (Exception e) {
             Logger.error(e);
-            return returnError ? HasContentEnum.ERROR : HasContentEnum.NOT_EMPTY;
+            return false; // Im Fehlerfall wie eine nicht-leere Seite behandeln, d.h. die Seite würde dann angezeigt werden.
+            // Das soll verhindern, dass im Fehlerfall eine Seite gar nicht mehr zugreifbar wäre.
         }
     }
 }

@@ -11,9 +11,9 @@ import minerva.MinervaWebapp;
 import minerva.base.DeliverHtmlContent;
 import minerva.base.Uptodatecheck;
 import minerva.comment.SeiteCommentService2;
-import minerva.exclusions.HasContentEnum;
 import minerva.exclusions.SeiteSichtbar;
 import minerva.exclusions.SeiteSichtbarContext;
+import minerva.exclusions.Visible;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -106,7 +106,8 @@ public class BookPage extends BPage implements Uptodatecheck {
 		for (int i = 0; i < seitenII.size(); i++) {
 			SeiteSO seite = seitenII.get(i);
 			SeiteSichtbar ss = new SeiteSichtbar(seite);
-			if (!ss.isVisible()) {
+			Visible visible = ss.getVisibleResult();
+			if (!visible.isVisible()) {
 			    continue;
 			}
         	String trueTitle = seite.getSeite().getTitle().getString(lang);
@@ -116,11 +117,10 @@ public class BookPage extends BPage implements Uptodatecheck {
             }
             String link = "/s/" + branch + "/" + bookFolder + "/" + esc(seite.getSeite().getId());
             String nc = "";
-            HasContentEnum hc = ss.hasContent(lang);
-            if (allPages && hc == HasContentEnum.EMPTY) {
-                nc = " class=\"hiddenPage\"";
-            } else if (hc == HasContentEnum.EMPTY_BUT_HAS_NONEMPTY_SUBPAGES) {
-                nc = " class=\"noContent\"";
+            if (visible.isShowAllPages()) {
+            	nc = " class=\"hiddenPage\""; // red
+            } else if (visible.hasSubpages()) {
+            	nc = " class=\"noContent\"";  // grey
             }
             gliederung.append("\t<li id=\"");
             gliederung.append(seite.getId());
