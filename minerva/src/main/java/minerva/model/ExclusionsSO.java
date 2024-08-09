@@ -25,6 +25,7 @@ public class ExclusionsSO {
                 exclusions == null ? "" : exclusions, //
                 new CommitMessage(DN), //
                 workspace);
+        workspace.clearExclusionsCache();
     }
     
     private MultiPurposeDirAccess access() {
@@ -32,14 +33,14 @@ public class ExclusionsSO {
     }
 
     public TreeSet<String> getCustomers() {
-        return new TreeSet<>(new Exclusions(get()).getCustomers());
+        return new TreeSet<>(workspace.exclusions().getCustomers());
     }
 
     public TreeSet<String> getSuggestedTags(Set<String> tags) {
         TreeSet<String> ret = new TreeSet<>();
-        Exclusions o = new Exclusions(get());
-        for (String customer : o.getCustomers()) {
-            for (String tag : o.getTags(customer)) {
+        Exclusions exclusions = workspace.exclusions();
+        for (String customer : exclusions.getCustomers()) {
+            for (String tag : exclusions.getTags(customer)) {
                 if (tag.startsWith("+") || tag.startsWith("-")) {
                     tag = tag.substring(1);
                 }

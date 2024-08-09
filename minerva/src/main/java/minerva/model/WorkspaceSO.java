@@ -23,6 +23,7 @@ public class WorkspaceSO {
     private BooksSO books;
     private Boolean ok = null;
     private String userMessage;
+    private Exclusions exclusions;
     
     public WorkspaceSO(UserSO user, String parentFolder, String branch) {
         this.user = user;
@@ -137,8 +138,14 @@ public class WorkspaceSO {
     }
     
     public Exclusions exclusions() {
-        return new Exclusions(getExclusions().get()); /* TODO geplant ist, dass WorkspaceSO das hier cachet.
-        Wenn der User dann die Exclusions ändert, dann wird der Cache aktualisiert. */
+		if (exclusions == null) {
+			exclusions = new Exclusions(getExclusions().get());
+		}
+		return exclusions;
+    }
+    
+    public void clearExclusionsCache() {
+    	exclusions = null;
     }
     
     public void createBranch(String newBranch, String commit) {
