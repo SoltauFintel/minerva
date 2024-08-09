@@ -27,11 +27,33 @@ public class SeiteSichtbar {
     private String customer;
     private boolean showAllPages;
     private final String[] pdfTags;
+    
+    /**
+     * copy constructor with set language
+     * @param ss -
+     * @param language -
+     */
+    public SeiteSichtbar(SeiteSichtbar ss, String language) {
+    	this.exclusions = ss.exclusions;
+    	this.languages = List.of(language);
+    	this.customer = ss.customer;
+    	this.showAllPages = ss.showAllPages;
+    	this.pdfTags = ss.pdfTags;
+    }
 
+    /**
+     * constructor: all languages
+     * @param workspace -
+     */
     public SeiteSichtbar(WorkspaceSO workspace) {
         this(workspace, MinervaWebapp.factory().getLanguages()); // alle Sprachen: macht Sinn bei Reorder und beim Navigieren
     }
 
+    /**
+     * constructor: one language
+     * @param workspace -
+     * @param language e.g. "de"
+     */
     public SeiteSichtbar(WorkspaceSO workspace, String language) {
     	this(workspace, List.of(language));
     }
@@ -44,7 +66,7 @@ public class SeiteSichtbar {
         showAllPages = user.isShowAllPages();
         pdfTags = new String[0];
     }
-
+    
     /**
      * Constructor for export
      * @param workspace -

@@ -195,9 +195,8 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
                 errors += macro.fillHkhErrors(map);
             }
             fillBreadcrumbs(lang, map.list("breadcrumbs"));
-            // TODO showAllPages war hier false. Aber ist das so richtig/gewollt?
-            // TODO muss hier ssc die lang haben?
-            map.putInt("subpagesSize", fillSubpages(seite, seite.getSeiten(), lang, map.list("subpages"), branch, bookFolder, ssc));
+            int size = fillSubpages(seite, seite.getSeiten(), lang, map.list("subpages"), branch, bookFolder, new SeiteSichtbar(ssc, lang));
+			map.putInt("subpagesSize", size);
         }
         put("hasErrorsTotal", errors > 0);
     }
@@ -267,8 +266,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         model.put("lastChangeUser", Escaper.esc(change.getUser()));
     }
     
-    static int fillSubpages(SeiteSO seite, SeitenSO seiten, String lang, DataList subpages, String branch, String bookFolder,
-            SeiteSichtbar ssc) {
+    static int fillSubpages(SeiteSO seite, SeitenSO seiten, String lang, DataList subpages, String branch, String bookFolder, SeiteSichtbar ssc) {
         int n = 0;
         if (seite == null
                 || !seite.isFeatureTree()
