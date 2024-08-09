@@ -78,10 +78,6 @@ public class SeiteSichtbar {
         return false;
     }
     
-    private String getCustomer() {
-        return customer;
-    }
-    
     private boolean hasCustomer() {
         return !StringService.isNullOrEmpty(customer) && !"-".equals(customer);
     }
@@ -90,20 +86,8 @@ public class SeiteSichtbar {
         this.customer = customer;
     }
 
-    private boolean isShowAllPages() {
-        return showAllPages;
-    }
-
     public void setShowAllPages(boolean showAllPages) {
         this.showAllPages = showAllPages;
-    }
-    
-    private Exclusions getExclusions() {
-        return exclusions;
-    }
-
-    private List<String> getLanguages() {
-        return languages;
     }
     
     /**
@@ -129,7 +113,7 @@ public class SeiteSichtbar {
         	return new Visible(false);
         } else {
             // Wenn es für mind. eine Sprache nicht leer ist, dann ist die Seite sichtbar.
-            for (String lang : context.getLanguages()) {
+            for (String lang : context.languages) {
             	if (!isEmpty(seite, lang)) {
                     return new Visible(true);
                 }
@@ -142,7 +126,7 @@ public class SeiteSichtbar {
             	}
             }
             // Seite nicht sichtbar oder show-all-pages-mode aktiv.
-        	return new Visible(context.isShowAllPages(), false, context.isShowAllPages());
+        	return new Visible(context.showAllPages, false, context.showAllPages);
         }
     }
 
@@ -152,7 +136,7 @@ public class SeiteSichtbar {
         }
         boolean ret = true;
         boolean voteForON = false;
-        List<String> exclusionsTags = context.getExclusions().getTags(context.getCustomer().toLowerCase());
+        List<String> exclusionsTags = context.exclusions.getTags(context.customer.toLowerCase());
         for (String tag : tags) {
             LabelClass v;
             if (context.isPdfTag(tag)) {
