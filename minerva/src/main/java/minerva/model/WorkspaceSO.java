@@ -11,6 +11,7 @@ import minerva.access.CommitHash;
 import minerva.access.CommitMessage;
 import minerva.access.DirAccess;
 import minerva.config.MinervaOptions;
+import minerva.exclusions.ExclusionsSO;
 import minerva.persistence.filesystem.FileSystemDirAccess;
 import minerva.seite.tag.TagNList;
 import minerva.task.TaskService;

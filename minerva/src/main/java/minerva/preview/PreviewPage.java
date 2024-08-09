@@ -8,12 +8,12 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.exclusions.ExclusionsService;
+import minerva.exclusions.SeiteVisible;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.seite.Breadcrumb;
 import minerva.seite.NavigateService;
 import minerva.seite.SPage;
-import minerva.seite.SeiteVisible;
 import ohhtml.Thumbnails;
 import ohhtml.toc.LocalAnchors;
 import ohhtml.toc.TocMacro;

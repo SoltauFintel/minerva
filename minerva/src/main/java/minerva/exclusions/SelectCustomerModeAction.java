@@ -4,7 +4,6 @@ import java.util.Set;
 
 import org.pmw.tinylog.Logger;
 
-import minerva.model.ExclusionsSO;
 import minerva.workspace.WAction;
 
 /**

@@ -1,6 +1,4 @@
-package minerva.seite;
-
-import minerva.exclusions.ExclusionsService;
+package minerva.exclusions;
 
 public class SeiteVisible {
     /** see hasContent and isSeiteVisible */

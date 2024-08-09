@@ -8,10 +8,10 @@ import com.github.template72.data.DataMap;
 import minerva.book.BPage;
 import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
+import minerva.exclusions.SeiteVisible;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
-import minerva.seite.SeiteVisible;
 
 @Deprecated
 public class PreviewBookPage extends BPage {

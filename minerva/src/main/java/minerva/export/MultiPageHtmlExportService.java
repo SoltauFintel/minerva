@@ -15,6 +15,7 @@ import com.github.template72.data.DataMap;
 
 import minerva.base.FileService;
 import minerva.base.NLS;
+import minerva.exclusions.SeiteVisible;
 import minerva.export.Formula2Image.TransformPath;
 import minerva.export.pdf.Chapter;
 import minerva.model.BookSO;
@@ -22,7 +23,6 @@ import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.NavigateService;
-import minerva.seite.SeiteVisible;
 import minerva.seite.link.Link;
 import minerva.seite.link.LinkService;
 import ohhtml.toc.LocalAnchors;
