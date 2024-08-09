@@ -36,7 +36,7 @@ public class SeiteSichtbar {
 
     public boolean isVisible() {
         boolean ret = isAccessible(seite.getSeite().getTags(), context);
-        if (ret) {
+        if (ret && !context.isShowAllPages()) {
             // Wenn es für mind. eine Sprache nicht leer ist, dann ist die Seite sichtbar.
             for (String lang : context.getLanguages()) {
                 if (hasContent(seite, lang, false) != HasContentEnum.EMPTY) {
@@ -46,6 +46,10 @@ public class SeiteSichtbar {
             ret = false;
         }
         return ret;
+    }
+
+    public HasContentEnum hasContent(String lang) {
+        return hasContent(seite, lang, false);
     }
 
     public boolean hasSubpages(String lang) {

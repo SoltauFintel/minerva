@@ -11,6 +11,7 @@ import minerva.MinervaWebapp;
 import minerva.base.DeliverHtmlContent;
 import minerva.base.Uptodatecheck;
 import minerva.comment.SeiteCommentService2;
+import minerva.exclusions.HasContentEnum;
 import minerva.exclusions.SeiteSichtbar;
 import minerva.exclusions.SeiteSichtbarContext;
 import minerva.model.BookSO;
@@ -115,9 +116,10 @@ public class BookPage extends BPage implements Uptodatecheck {
             }
             String link = "/s/" + branch + "/" + bookFolder + "/" + esc(seite.getSeite().getId());
             String nc = "";
-            if (allPages) {
+            HasContentEnum hc = ss.hasContent(lang);
+            if (allPages && hc == HasContentEnum.EMPTY) {
                 nc = " class=\"hiddenPage\"";
-            } else if (ss.hasSubpages(lang)) {
+            } else if (hc == HasContentEnum.EMPTY_BUT_HAS_NONEMPTY_SUBPAGES) {
                 nc = " class=\"noContent\"";
             }
             gliederung.append("\t<li id=\"");
