@@ -13,6 +13,7 @@ import minerva.access.DirAccess;
 import minerva.book.Book;
 import minerva.book.BookType;
 import minerva.exclusions.ExclusionsService;
+import minerva.exclusions.HasContent;
 import minerva.seite.Breadcrumb;
 import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.ISeite;
@@ -204,12 +205,7 @@ public class BookSO {
     }
 
     public boolean hasContent(String lang, ExclusionsService sv) {
-        for (SeiteSO seite : seiten) {
-            if (seite.hasContent(lang) > 0 && sv.isAccessible(seite.getSeite().getTags())) {
-                return true;
-            }
-        }
-        return false;
+        return HasContent.hasBookContent(this, lang, sv);
     }
     
     public CommitMessage cm(String comment) {

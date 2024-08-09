@@ -15,9 +15,6 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.pmw.tinylog.Logger;
 
 import com.google.gson.Gson;
@@ -30,8 +27,8 @@ import minerva.base.NlsString;
 import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.comment.SeiteCommentService2;
-import minerva.exclusions.Exclusions;
 import minerva.exclusions.ExclusionsService;
+import minerva.exclusions.HasContent;
 import minerva.exclusions.SeiteVisible;
 import minerva.seite.IPageChangeStrategy;
 import minerva.seite.ISeite;
@@ -586,34 +583,13 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     }
     
     public SeiteVisible isVisible(String customer, String lang) {
-        ExclusionsService sv = new ExclusionsService();
-        sv.setCustomer(customer);
-        sv.setExclusions(new Exclusions(book.getWorkspace().getExclusions().get()));
-        return isVisible(sv, lang);
+        return new HasContent(this).isVisible(customer, lang);
     }
     
     public SeiteVisible isVisible(ExclusionsService sv, String lang) {
-        return new SeiteVisible(isSeiteVisible(sv, lang), sv);
+        return new HasContent(this).isVisible(sv, lang);
     }
     
-    /**
-     * Don't show page if return value is below 1.
-     * @param seite page
-     * @return 0: has no content, -1: not accessible, -2: not visible, 1, 2 or 3: show page (see SeiteSO.hasContent)
-     */
-    private int isSeiteVisible(ExclusionsService exclusionsService, String lang) {
-        int c = hasContent(lang);
-        if (c > 0) {
-            exclusionsService.setSeite(this);
-            if (!exclusionsService.isAccessible()) {
-                return -1;
-            } else if (seite.getTags().contains("invisible")) {
-                return -2;
-            }
-        }
-        return c;
-    }
-
     /**
      * has content: > 0, has no content: 0
      * @return 1: page is not empty,
@@ -622,34 +598,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
      * 0: page and subpages are empty.
      */
     public int hasContent(String lang) {
-        if (book.isFeatureTree()) {
-            return 1;
-        } else if (seite.getTags().contains("autolink")) {
-        	return 0;
-        }
-        return hasContentR(lang);
-    }
-    
-    public int hasContentR(String lang) {
-        // In theory, this approach is a bit expensive since all content must be loaded and must be parsed.
-        // However in practice it takes less than 0.4 seconds on the first call.
-        try {
-            String html = getContent().getString(lang);
-            Document doc = Jsoup.parse(html);
-            Elements body = doc.select("body");
-            if (body != null && !body.isEmpty() && body.get(0).childrenSize() > 0) {
-                return 1;
-            }
-            for (SeiteSO sub : seiten) {
-                if (sub.hasContent(lang) > 0) {
-                    return 2;
-                }
-            }
-            return 0;
-        } catch (Exception e) {
-            Logger.error(e);
-            return 3;
-        }
+        return new HasContent(this).hasContent(lang);
     }
     
     /**
