@@ -18,6 +18,7 @@ import ohhtml.Thumbnails;
 import ohhtml.toc.LocalAnchors;
 import ohhtml.toc.TocMacro;
 
+@Deprecated
 public class PreviewPage extends SPage {
     
     @Override

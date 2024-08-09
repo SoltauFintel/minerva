@@ -11,6 +11,7 @@ import minerva.MinervaWebapp;
 import minerva.base.DeliverHtmlContent;
 import minerva.base.Uptodatecheck;
 import minerva.comment.SeiteCommentService2;
+import minerva.exclusions.CustomerModeService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -19,16 +20,17 @@ import minerva.seite.ViewSeitePage;
 
 public class BookPage extends BPage implements Uptodatecheck {
     public static DeliverHtmlContent<BookSO> additionalButtons = i -> "";
+    private CustomerModeService cms;
     
     @Override
     protected void execute() {
         boolean allPages = user.getUser().isShowAllPages();
         String guiLanguage = user.getGuiLanguage();
         String pageLanguage = user.getPageLanguage();
-
         if (book.isFeatureTree() && !"de".equals(pageLanguage)) {
-        	user.getUser().setPageLanguage("de");
+            user.getUser().setPageLanguage("de");
         }
+        cms = new CustomerModeService(workspace);
         
         setJQueryObenPageMode();
         String title = book.getBook().getTitle().getString(guiLanguage);
@@ -101,6 +103,9 @@ public class BookPage extends BPage implements Uptodatecheck {
 		}
 		for (int i = 0; i < seitenII.size(); i++) {
 			SeiteSO seite = seitenII.get(i);
+			if (!cms.isAccessible(seite)) {
+			    continue;
+			}
             int hasContent = seite.hasContent(lang);
             if (hasContent > 0 || allPages) {
             	String trueTitle = seite.getSeite().getTitle().getString(lang);

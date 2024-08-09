@@ -191,17 +191,18 @@
         {{else}}
             <h4>{{N.subpages}} (0)</h4>
         {{/if}}
-        <p class="mt1">
-            <a href="{{positionlink}}"
-                class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"
-                ><i class="fa fa-sort"></i> {{N.reorder}}</a>
-            {{if isAdmin}}
-                <a href="{{sortlink}}"
-                    class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"
-                    onclick="return sort();"><i class="fa fa-sort-alpha-asc"></i> {{N.sort}}!
-                    <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
-            {{/if}}
-        </p>
+        {{if not customerModeActive}}
+            <p class="mt1">
+                <a href="{{positionlink}}" class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"
+                    ><i class="fa fa-sort"></i> {{N.reorder}}</a>
+                {{if isAdmin}}
+                    <a href="{{sortlink}}"
+                        class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"
+                        onclick="return sort();"><i class="fa fa-sort-alpha-asc"></i> {{N.sort}}!
+                        <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+                {{/if}}
+            </p>
+        {{/if}}
         <p class="rightSideGreyText">
             Position: {{position}} | {{Sortierung}}
         </p>

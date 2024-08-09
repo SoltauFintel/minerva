@@ -18,6 +18,7 @@ import minerva.book.BookType;
 import minerva.comment.Comment;
 import minerva.comment.SeiteCommentService2;
 import minerva.config.MinervaConfig;
+import minerva.exclusions.CustomerModeService;
 import minerva.seite.Breadcrumb;
 import minerva.seite.CommentWithSeite;
 import minerva.seite.IBreadcrumbLinkBuilder;
@@ -335,7 +336,14 @@ public class SeitenSO extends MList<SeiteSO> {
 
     public List<TreeItem> getTreeItems(String lang, String currentPageId, TreeItem parent) {
         List<TreeItem> ret = new ArrayList<>();
+        CustomerModeService cms = null;
         for (SeiteSO seite : this) {
+            if (cms == null) {
+                cms = new CustomerModeService(seite.getBook().getWorkspace());
+            }
+            if (!cms.isAccessible(seite)) {
+                continue;
+            }
             int hc = seite.hasContent(lang);
             if (hc > 0) {
                 BookSO book = seite.getBook();

@@ -57,12 +57,14 @@
                 class="fa fa-refresh" id="s_pull"></i></a>
         </p>
         <p style="margin-top: 7em;">
-            <a href="{{positionlink}}" class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"><i
-                class="fa fa-sort"></i> {{N.reorder}}</a>
-            {{if isAdmin}}
-                <a href="{{sortlink}}" class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"
-                    onclick="return sort();"><i class="fa fa-sort-alpha-asc"></i> {{N.sort}}!
-                    <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+            {{if not customerModeActive}}
+                <a href="{{positionlink}}" class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"><i
+                    class="fa fa-sort"></i> {{N.reorder}}</a>
+                {{if isAdmin}}
+                    <a href="{{sortlink}}" class="btn btn-default btn-sm br{{if not hasPositionlink}} disabled{{/if}}"
+                        onclick="return sort();"><i class="fa fa-sort-alpha-asc"></i> {{N.sort}}!
+                        <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+                {{/if}}
             {{/if}}
         </p>
         <p style="font-size: 8pt; color: #888;" class="mb2">
@@ -74,12 +76,19 @@
             </p>
         {{/if}}
         <p>
-            <input onchange="window.location.href='{{booklink}}/show-all-pages'" type="checkbox" style="cursor: pointer;"
-                id="showallpages"{{if allPages}} checked{{/if}}> <label for="showallpages" style="font-weight: normal; cursor: pointer;">{{N.allPages}}</label>
+            {{if customerModeActive}}
+                <input onchange="window.location.href='{{booklink}}/show-all-pages'" type="checkbox"
+                    id="showallpages" disabled> <label for="showallpages" style="font-weight: normal; text-decoration-line: line-through;">{{N.allPages}}</label>
+            {{else}}
+                <input onchange="window.location.href='{{booklink}}/show-all-pages'" type="checkbox" style="cursor: pointer;"
+                    id="showallpages"{{if allPages}} checked{{/if}}> <label for="showallpages" style="font-weight: normal; cursor: pointer;">{{N.allPages}}</label>
+            {{/if}}
         </p>
-        <p>
-            <a href="{{booklink}}/validate" class="btn btn-default mw">{{N.validate}}</a>
-        </p>
+        {{if not customerModeActive}}
+            <p>
+                <a href="{{booklink}}/validate" class="btn btn-default mw">{{N.validate}}</a>
+            </p>
+        {{/if}}
         {{additionalButtons}}
     </div>
 </div>

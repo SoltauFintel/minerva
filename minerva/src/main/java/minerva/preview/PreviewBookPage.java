@@ -13,6 +13,7 @@ import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.seite.SeiteVisible;
 
+@Deprecated
 public class PreviewBookPage extends BPage {
 
     @Override

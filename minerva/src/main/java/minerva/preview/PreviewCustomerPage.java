@@ -8,6 +8,7 @@ import com.github.template72.data.DataMap;
 import minerva.model.WorkspaceSO;
 import minerva.user.UPage;
 
+@Deprecated
 public class PreviewCustomerPage extends UPage {
 
     @Override

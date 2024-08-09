@@ -16,6 +16,7 @@ import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
 import minerva.book.BookPage;
 import minerva.comment.SeiteCommentService2;
+import minerva.exclusions.CustomerModeService;
 import minerva.image.FixHttpImage;
 import minerva.mask.FeatureFieldsHtmlFactory;
 import minerva.mask.FeatureFieldsService;
@@ -33,6 +34,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     public static DeliverHtmlContent<SeiteSO> additionalButtons = i -> "";
     public static AddFeatures addFeatures = (seite, features) -> {}; 
     private String mindmapJson;
+    private CustomerModeService cms;
     
     @Override
     protected SeiteSO getSeite() {
@@ -64,6 +66,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         	u.setPageLanguage("de");
         }
         seite.forceReloadIfCheap();
+        cms = new CustomerModeService(workspace);
         fillLanguageSpecifics(u);
         Seite _seite = seite.getSeite();
         simpleVars(u, _seite);
@@ -93,7 +96,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         header(modifyHeader(seite.getTitle()));
         fillLinks(branch, bookFolder, id, seite, _seite, u.getPageLanguage());
         getPageMenu().menu(model, seite, viewlink, isAdmin, isFavorite, pageWatched, subpagesWatched,
-                MinervaWebapp.factory().getConfig().isGitlab(), MinervaWebapp.factory().isCustomerVersion()); // möglichst spät aufrufen
+                MinervaWebapp.factory().getConfig().isGitlab(), MinervaWebapp.factory().isCustomerVersion(), cms.isActive()); // möglichst spät aufrufen
         Logger.info(u.getLogin() + " | " + seite.getBook().getWorkspace().getBranch() + " | "
                 + seite.getTitle() + " | " + u.getPageLanguage());
     }
@@ -192,7 +195,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             }
             fillBreadcrumbs(lang, map.list("breadcrumbs"));
             map.putInt("subpagesSize", fillSubpages(seite, seite.getSeiten(), lang, map.list("subpages"),
-                    branch, bookFolder, false));
+                    branch, bookFolder, false, cms));
         }
         put("hasErrorsTotal", errors > 0);
     }
@@ -263,13 +266,16 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     }
     
     static int fillSubpages(SeiteSO seite, SeitenSO seiten, String lang, DataList subpages, String branch, String bookFolder,
-            boolean showAllPages) {
+            boolean showAllPages, CustomerModeService cms) {
         int n = 0;
         if (seite == null
                 || !seite.isFeatureTree()
                 || !seite.checkSubfeaturesLimit()) {
             seiten.sort(lang);
             for (SeiteSO sub : seiten) {
+                if (cms != null && !cms.isAccessible(sub)) {
+                    continue;
+                }
                 if (showAllPages || sub.hasContent(lang) > 0) {
                     DataMap map = subpages.add();
                     map.put("id", Escaper.esc(sub.getId()));
@@ -304,7 +310,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         String booklink = "/b/" + branch + "/" + bookFolder;
         put("booklink", booklink);
         put("parentlink", seiteSO.hasParent() ? (onlyBookFolder + seite.getParentId()) : booklink);
-        NavigateService nav = new NavigateService(true, pageLanguage, null);
+        NavigateService nav = new NavigateService(true, pageLanguage, cms.getExclusionsService());
         navlink("prevlink", nav.previousPage(seiteSO), id, onlyBookFolder, "/b/" + branch + "/" + book.getBook().getFolder());
         navlink("nextlink", nav.nextPage(seiteSO), id, onlyBookFolder, null);
         put("tabcode", getTabCode(nav, seiteSO, id, onlyBookFolder));

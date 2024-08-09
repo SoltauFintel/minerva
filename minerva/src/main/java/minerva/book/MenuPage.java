@@ -51,8 +51,10 @@ public class MenuPage extends WPage {
         boolean booksOk = workspace.getBooks() != null && !workspace.getBooks().isEmpty();
         DataList list = list("commands");
         menu(list, "myTasks", "fa-inbox", "/w/:branch/my-tasks");
-        menu(list, "customerMode", "fa-thumbs-o-up", "/w/:branch/customer-mode/na");
-        menu(list, "preview", "fa-thumbs-o-up bluebook", "/p/:branch");
+        if (!fac.isCustomerVersion()) {
+            menu(list, "customerMode", "fa-thumbs-o-up", "/w/:branch/customer-mode/na");
+        }
+//        menu(list, "preview", "fa-thumbs-o-up bluebook", "/p/:branch");
         if (fac.isGitlab()) {
             menu(list, "workspaceHistory", "fa-clock-o", "/w/:branch/history");
         }

@@ -18,7 +18,7 @@ public class PageMenu {
     }
 
     public DataList menu(DataMap model, SeiteSO seite, String viewlink, boolean isAdmin, boolean isFavorite,
-            boolean pageWatched, boolean subpagesWatched, boolean gitlab, boolean isCustomerVersion) {
+            boolean pageWatched, boolean subpagesWatched, boolean gitlab, boolean isCustomerVersion, boolean customerMode) {
         DataList i = model.list("menuitems");
         String viewLink = model.get("viewlink").toString();
         menuitem(i, viewLink + "/toggle-favorite",
@@ -59,8 +59,10 @@ public class PageMenu {
         menuitem(i, "/w/" + Escaper.esc(seite.getBook().getWorkspace().getBranch()) + "/export?seite="
                 + Escaper.urlEncode(seite.getId(), ""), "fa-upload", n("exportPage"));
         menuitem(i, model.get("duplicatelink").toString(), "fa-copy", n("duplicatePage"));
-        menuitem(i, model.get("movelink").toString(), "fa-arrow-circle-right", n("movePage"));
-        menuitem(i, model.get("deletelink").toString(), "fa-trash", n("deletePage") + "...");
+        if (!customerMode) { // recht willkuerliches Verbot
+            menuitem(i, model.get("movelink").toString(), "fa-arrow-circle-right", n("movePage"));
+            menuitem(i, model.get("deletelink").toString(), "fa-trash", n("deletePage") + "...");
+        }
         return i;
     }
     

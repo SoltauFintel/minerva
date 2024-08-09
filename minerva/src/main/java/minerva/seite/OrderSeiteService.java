@@ -63,7 +63,7 @@ public abstract class OrderSeiteService {
             fill(branch, bookFolder, id, hasSeiten);
         }
 
-        ViewSeitePage.fillSubpages(null, seitenWC, user.getGuiLanguage(), model.list("subpages"), branch, bookFolder, true);
+        ViewSeitePage.fillSubpages(null, seitenWC, user.getGuiLanguage(), model.list("subpages"), branch, bookFolder, true, null);
     }
 
     private SeitenSO startEvent(SeitenSO seiten) {

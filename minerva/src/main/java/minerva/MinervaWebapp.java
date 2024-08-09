@@ -49,6 +49,7 @@ import minerva.config.MinervaFactory;
 import minerva.config.MinervaOptions;
 import minerva.exclusions.CustomerModePage;
 import minerva.exclusions.ExclusionsEditPage;
+import minerva.exclusions.SelectCustomerModeAction;
 import minerva.export.DownloadExportPage;
 import minerva.export.ExportBookAction;
 import minerva.export.ExportCsvBookAction;
@@ -195,7 +196,8 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/recycle/delete/:id", DeleteWeggeworfeneSeiteAction.class);
         get("/w/:branch/recycle/subpages/:id", PapierkorbUnterseitenPage.class);
         form("/w/:branch/recycle", PapierkorbPage.class);
-        get("/w/:branch/customer-mode/:customer", CustomerModePage.class);
+        get("/w/:branch/customer-mode/:customer", SelectCustomerModeAction.class);
+        get("/w/:branch/customer-mode", CustomerModePage.class);
         get("/w/:branch/menu", MenuPage.class);
 
         // Export

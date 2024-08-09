@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import com.github.template72.data.DataList;
 
-import minerva.base.MinervaPageInitializer;
 import minerva.base.StringService;
 import minerva.model.ExclusionsSO;
 import minerva.workspace.WPage;
@@ -20,31 +19,10 @@ public class CustomerModePage extends WPage {
 
     @Override
     protected void execute() {
-        String selection = ctx.pathParam("customer");
         String ccm = user.getUser().getCustomerMode(); // current customer mode
         Exclusions exclusions = new Exclusions(new ExclusionsSO(workspace).get());
         Set<String> customers = exclusions.getCustomers();
-        if ("off".equals(selection)) { // turn mode off
-            ccm = null;
-            user.saveCustomerMode(ccm);
-        } else if (!"na".equals(selection)) { // change customer?
-            for (String customer : customers) {
-                if (customer.equalsIgnoreCase(selection)) {
-                    ccm = customer;
-                    user.saveCustomerMode(ccm);
-                    break;
-                }
-            }
-        }
         List<String> tags = exclusions.getTags(ccm);
-        if (tags == null) {
-            put("showTags", false);
-        } else {
-            put("showTags", true);
-            put("tagsPlus", esc(tags.stream().filter(i -> i.startsWith("+")).map(i -> i.substring(1)).collect(Collectors.joining(", "))));
-            put("tagsMinus", esc(tags.stream().filter(i -> i.startsWith("-")).map(i -> i.substring(1)).collect(Collectors.joining(", "))));
-            put("tags", esc(tags.stream().filter(i -> !i.startsWith("-") && !i.startsWith("+")).collect(Collectors.joining(", "))));
-        }
         
         header(n("customerMode"));
         put("ccm", esc(ccm == null ? "" : ccm.toUpperCase()));
@@ -56,9 +34,16 @@ public class CustomerModePage extends WPage {
                 .put("css", customer.equalsIgnoreCase(ccm) ? "btn-success" : "btn-default");
         }
         list.add()
-            .put("customer", "off")
+            .put("customer", "null")
             .put("label", n(StringService.isNullOrEmpty(ccm) ? "customerModeIsOff" : "turnOffCustomerMode"))
             .put("css", StringService.isNullOrEmpty(ccm) ? "btn-danger" : "btn-default");
-        MinervaPageInitializer.customerMode(ccm, this); // This page must refresh MinervaPageInitializer values.
+        if (tags == null) {
+            put("showTags", false);
+        } else {
+            put("showTags", true);
+            put("tagsPlus", esc(tags.stream().filter(i -> i.startsWith("+")).map(i -> i.substring(1)).collect(Collectors.joining(", "))));
+            put("tagsMinus", esc(tags.stream().filter(i -> i.startsWith("-")).map(i -> i.substring(1)).collect(Collectors.joining(", "))));
+            put("tags", esc(tags.stream().filter(i -> !i.startsWith("-") && !i.startsWith("+")).collect(Collectors.joining(", "))));
+        }
     }
 }

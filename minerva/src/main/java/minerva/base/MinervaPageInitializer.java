@@ -2,6 +2,10 @@ package minerva.base;
 
 import static github.soltaufintel.amalia.web.action.Escaper.esc;
 
+import java.util.List;
+
+import org.pmw.tinylog.Logger;
+
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
@@ -11,8 +15,10 @@ import github.soltaufintel.amalia.web.action.PageInitializer;
 import minerva.MinervaWebapp;
 import minerva.book.BookType;
 import minerva.config.MinervaConfig;
+import minerva.exclusions.CustomerModeService;
 import minerva.model.BookSO;
 import minerva.model.BooksSO;
+import minerva.model.SeiteSO;
 import minerva.task.TaskService;
 import minerva.user.UserAccess;
 
@@ -103,12 +109,12 @@ public class MinervaPageInitializer extends PageInitializer {
         page.putInt("numberOfOpenMasterTasks", omt);
     }
 
-    private void booksForMenu(boolean hasUser, String userLang, BooksSO books, Page page) {
+    public static void booksForMenu(boolean hasUser, String userLang, BooksSO books, Page page) {
         DataList list = page.list("booksForMenu");
         page.put("bookslinkForMenu", "/w");
         if (hasUser && books != null) {
             for (BookSO book : books) {
-                if (BookType.PUBLIC.equals(book.getBook().getType())) {
+                if (BookType.PUBLIC.equals(book.getBook().getType()) && isVisible(book)) {
                     DataMap map = list.add();
                     map.put("folder", esc(book.getBook().getFolder()));
                     String title = book.getBook().getTitle().getString(userLang);
@@ -124,6 +130,33 @@ public class MinervaPageInitializer extends PageInitializer {
         }
     }
     
+    // Customer mode
+    private static boolean isVisible(BookSO book) {
+        CustomerModeService cms = new CustomerModeService(book.getWorkspace());
+        if (!cms.isActive()) {
+            return true;
+        }
+        List<String> langs = MinervaWebapp.factory().getLanguages();
+        for (SeiteSO seite : book.getSeiten()) {
+            if (cms.isAccessible(seite) && isSeiteVisible(seite, langs, cms)) {
+                Logger.debug("Book \"" + book.getTitle() + "\" is visible because page \"" + seite.getTitle()
+                        + "\" is visible [active customer mode]");
+                return true;
+            }
+        }
+        Logger.debug("Book isn't visible due to active customer mode: " + book.getTitle());
+        return false; // There is no top level page that is accessible.
+    }
+    
+    private static boolean isSeiteVisible(SeiteSO seite, List<String> langs, CustomerModeService cms) {
+        for (String lang : langs) {
+            if (!seite.isVisible(cms.getExclusionsService(), lang).isVisible()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     private void hasUserVars(Page page, MinervaPageInitModel m) {
         String userLang = m.getUserLang();
         page.put("abmelden", NLS.get(userLang, "logout"));
