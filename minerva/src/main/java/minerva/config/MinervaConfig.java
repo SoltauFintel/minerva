@@ -229,14 +229,6 @@ public class MinervaConfig {
         return config.get("release-notes.token");
     }
     
-    public String[] getPDF_tags() {
-    	String pdfTags = MinervaOptions.PDF_TAGS.get();
-    	if (pdfTags == null) {
-    	    return new String[0];
-    	}
-        return pdfTags.split(","); // nicht_drucken
-    }
-    
     /**
      * @return tag text. New pages will get this tag. Can be null or empty.
      */
