@@ -78,7 +78,7 @@ public class SeiteSichtbar {
         languages = List.of(language);
         exclusions = workspace.exclusions();
         this.customer = customer;
-        showAllPages = true;
+        showAllPages = false; // wegen autolink muss das false sein
         if (pdfExport) {
             String tags = MinervaOptions.PDF_TAGS.get(); // nicht_drucken
             if (tags == null) {
@@ -228,7 +228,6 @@ public class SeiteSichtbar {
         return !seite.getBook().isFeatureTree() // Leere Seiten sind im Feature Tree Standard und sollen nicht ausgeblendet werden.
         		&& (seite.getSeite().getTags().contains("autolink") // autolink-Seiten soll standardmäßig versteckt werden.
         				|| contentIsEmpty(seite, language));
-        
     }
 
     public static boolean contentIsEmpty(SeiteSO seite, String language) {
