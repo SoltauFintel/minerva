@@ -130,25 +130,40 @@ public class SeiteSichtbar {
     
     // main part
     private static Visible getVisibleResult(SeiteSO seite, SeiteSichtbar context) {
+        boolean noTree = isNoTree(seite);
         if (!isAccessible(seite.getSeite().getTags(), context)) {
         	// Es ist ein Kunde gesetzt und dessen Ausschlüsse-tags verbieten den Zugriff auf die Seite.
-        	return new Visible(false);
+        	return new Visible(noTree, false);
         } else {
             // Wenn es für mind. eine Sprache nicht leer ist, dann ist die Seite sichtbar.
             for (String lang : context.languages) {
             	if (!isEmpty(seite, lang)) {
-                    return new Visible(true);
+                    return new Visible(noTree, true);
                 }
             }
             // Die Seite ist leer und daher eigentlich nicht sichtbar.
             // Wenn es aber mindestens eine nicht-leere Unterseite gibt, dann ist das Ergebnis hasSubpages statt nicht-sichtbar.
             for (SeiteSO sub : seite.getSeiten()) {
             	if (getVisibleResult(sub, context).isVisible()) { // recursive
-            		return new Visible(true, true, false);
+            		return new Visible(noTree, true, true, false);
             	}
             }
             // Seite nicht sichtbar oder show-all-pages-mode aktiv.
-        	return new Visible(context.showAllPages, false, context.showAllPages);
+        	return new Visible(noTree, context.showAllPages, false, context.showAllPages);
+        }
+    }
+    
+    // same algo in oh-webapp/Subhtml
+    private static boolean isNoTree(SeiteSO seite) {
+        if (seite.getSeite().getTags().contains("no-tree")) {
+            for (SeiteSO sub : seite.getSeiten()) {
+                if (!isNoTree(sub)) { // recursive
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
         }
     }
 

@@ -13,6 +13,7 @@ import minerva.base.FileService;
 import minerva.base.NLS;
 import minerva.book.BookType;
 import minerva.exclusions.SeiteSichtbar;
+import minerva.exclusions.Visible;
 import minerva.export.SomeSubpages.SeiteAndDone;
 import minerva.export.pdf.Bookmark;
 import minerva.export.pdf.Chapter;
@@ -136,11 +137,12 @@ public abstract class GenericExportService {
     }
     
     private boolean _saveSeiteTo(SeiteSO seite, SeiteSO parent, Chapter chapter, SubpagesSelector ss, File outputFolder) {
-    	if (ssc.isVisible(seite)) {
+        Visible visible = ssc.getVisibleResult(seite);
+    	if (visible.isVisible()) {
             saveSeiteTo(seite, parent, chapter, outputFolder);
 
             Bookmark keep = cb; // remember
-            keep.getBookmarks().add(cb = new Bookmark(seite, lang, chapter, req.withChapters()));
+            keep.getBookmarks().add(cb = new Bookmark(seite, lang, chapter, req.withChapters(), visible.isNoTree()));
             
             saveSeitenTo(ss.getSubpages(seite), seite, chapter, ss, outputFolder);
             

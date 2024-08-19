@@ -17,8 +17,8 @@ public class Bookmark {
         this.noTree = noTree;
     }
     
-    public Bookmark(SeiteSO seite, String lang, Chapter chapter, boolean withChapters) {
-        this(seite.getId(), (withChapters ? (chapter.toString() + " ") : "") + seite.getSeite().getTitle().getString(lang), seite.isNoTree());
+    public Bookmark(SeiteSO seite, String lang, Chapter chapter, boolean withChapters, boolean noTree) {
+        this(seite.getId(), (withChapters ? (chapter.toString() + " ") : "") + seite.getSeite().getTitle().getString(lang), noTree);
     }
 
     public static Bookmark root() {

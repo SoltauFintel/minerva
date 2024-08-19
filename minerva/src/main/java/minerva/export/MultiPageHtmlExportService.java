@@ -86,7 +86,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
         std(book.getBook().getTitle().getString(lang), model);
         navigationBooksMode(model, ".html", "");
         StringBuilder outline = new StringBuilder();
-        addSeiten(book.getSeiten(), outline);
+        addSeitenToOutline(book.getSeiten(), outline);
         model.put("outline", outline.toString());
         model.put("cssFolder", "html/");
         return model;
@@ -103,24 +103,24 @@ public class MultiPageHtmlExportService extends GenericExportService {
         model.put("forward", n("forward"));
     }
     
-    private void addSeiten(SeitenSO seiten, StringBuilder html) {
+    private void addSeitenToOutline(SeitenSO seiten, StringBuilder outline) {
         boolean first = true;
         for (SeiteSO seite : seiten) {
 			Visible visible = ssc.getVisibleResult(seite);
-            if (visible.isVisible() && !seite.isNoTree()) {
+            if (visible.isVisible() && !visible.isNoTree()) {
                 if (first) {
-                    html.append("<ul>");
+                    outline.append("<ul>");
                     first = false;
                 }
-                html.append("\n<li><a href=\"html/" + esc(seite.getId()) + ".html\""
+                outline.append("\n<li><a href=\"html/" + esc(seite.getId()) + ".html\""
                         + (visible.hasSubpages() ? " class=\"noContent\"" : "") + ">"
                         + esc(seite.getSeite().getTitle().getString(lang)) + "</a>");
-                addSeiten(seite.getSeiten(), html);
-                html.append("</li>");
+                addSeitenToOutline(seite.getSeiten(), outline); // recursive
+                outline.append("</li>");
             }
         }
         if (!first) {
-            html.append("</ul>");
+            outline.append("</ul>");
         }
     }
 

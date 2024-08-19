@@ -339,7 +339,7 @@ public class SeitenSO extends MList<SeiteSO> {
         List<TreeItem> ret = new ArrayList<>();
         SeiteSichtbar ssc = null;
         for (SeiteSO seite : this) {
-            // fehlt hier die showAllPages Berücksichtigung? -> aufgrund von SeiteSichtbarContext ist die jetzt dabei
+            // fehlt hier die showAllPages Berücksichtigung? -> aufgrund von SeiteSichtbar ist die jetzt dabei
             if (ssc == null) {
                 ssc = new SeiteSichtbar(seite.getBook().getWorkspace(), lang);
             }
@@ -352,7 +352,7 @@ public class SeitenSO extends MList<SeiteSO> {
                     seite.getSeite().getTitle().getString(lang),
                     seite.getSeite().getTags(),
                     seite.getId().equals(currentPageId),
-                    seite.isNoTree(),
+                    visible.isNoTree(),
                     visible.hasSubpages() || visible.isShowAllPages(),
                     book.getWorkspace().getBranch(),
                     book.getBook().getFolder(),

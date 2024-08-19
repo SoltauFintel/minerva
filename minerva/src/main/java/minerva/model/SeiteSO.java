@@ -697,20 +697,6 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
 		return "/s/" + Escaper.esc(book.getWorkspace().getBranch()) + "/"
 				+ Escaper.esc(book.getBook().getFolder()) + "/" + seite.getId();
 	}
-    
-    // same algo in oh-webapp/Subhtml
-    public boolean isNoTree() {
-        if (seite.getTags().contains("no-tree")) {
-            for (SeiteSO sub : seiten) {
-                if (!sub.isNoTree()) { // recursive
-                    return false;
-                }
-            }
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     public void imagesBeforeEdit() {
         Set<String> filenames = getImageFilenames();
