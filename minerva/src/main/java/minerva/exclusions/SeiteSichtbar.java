@@ -9,10 +9,10 @@ import org.jsoup.select.Elements;
 import org.pmw.tinylog.Logger;
 
 import minerva.MinervaWebapp;
-import minerva.base.StringService;
 import minerva.config.MinervaOptions;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
+import minerva.user.CustomerMode;
 import minerva.user.User;
 
 /**
@@ -24,7 +24,7 @@ import minerva.user.User;
 public class SeiteSichtbar {
     private final Exclusions exclusions;
     private final List<String> languages;
-    private String customer;
+    private CustomerMode customerMode;
     private boolean showAllPages;
     private final String[] pdfTags;
     
@@ -36,7 +36,7 @@ public class SeiteSichtbar {
     public SeiteSichtbar(SeiteSichtbar ss, String language) {
     	this.exclusions = ss.exclusions;
     	this.languages = List.of(language);
-    	this.customer = ss.customer;
+    	this.customerMode = ss.customerMode;
     	this.showAllPages = ss.showAllPages;
     	this.pdfTags = ss.pdfTags;
     }
@@ -62,7 +62,7 @@ public class SeiteSichtbar {
         exclusions = workspace.exclusions();
         this.languages = languages;
         User user = workspace.getUser().getUser();
-		customer = user.getCustomerMode();
+		customerMode = workspace.getUser().getCustomerMode();
         showAllPages = user.isShowAllPages();
         pdfTags = new String[0];
     }
@@ -74,10 +74,10 @@ public class SeiteSichtbar {
      * @param pdfExport true: PDF export, false: HTML export
      * @param language -
      */
-    public SeiteSichtbar(WorkspaceSO workspace, String customer, boolean pdfExport, String language) {
+    public SeiteSichtbar(WorkspaceSO workspace, CustomerMode customer, boolean pdfExport, String language) {
         languages = List.of(language);
         exclusions = workspace.exclusions();
-        this.customer = customer;
+        this.customerMode = customer;
         showAllPages = false; // wegen autolink muss das false sein
         if (pdfExport) {
             String tags = MinervaOptions.PDF_TAGS.get(); // nicht_drucken
@@ -101,11 +101,11 @@ public class SeiteSichtbar {
     }
     
     private boolean hasCustomer() {
-        return !StringService.isNullOrEmpty(customer) && !"-".equals(customer);
+        return customerMode.isActive();
     }
     
-    public void setCustomer(String customer) {
-        this.customer = customer;
+    public void setCustomerMode(CustomerMode customerMode) {
+        this.customerMode = customerMode;
     }
 
     public void setShowAllPages(boolean showAllPages) {
@@ -173,7 +173,7 @@ public class SeiteSichtbar {
         }
         boolean ret = true;
         boolean voteForON = false;
-        List<String> exclusionsTags = context.exclusions.getTags(context.customer.toLowerCase());
+        List<String> exclusionsTags = context.exclusions.getTags(context.customerMode.getCustomer().toLowerCase());
         for (String tag : tags) {
             LabelClass v;
             if (context.isPdfTag(tag)) {

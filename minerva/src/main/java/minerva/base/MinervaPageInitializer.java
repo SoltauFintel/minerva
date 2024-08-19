@@ -18,6 +18,7 @@ import minerva.model.BookSO;
 import minerva.model.BooksSO;
 import minerva.model.SeiteSO;
 import minerva.task.TaskService;
+import minerva.user.CustomerMode;
 import minerva.user.UserAccess;
 
 public class MinervaPageInitializer extends PageInitializer {
@@ -163,12 +164,12 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("previewTitle", NLS.get(userLang, "preview"));
         page.put("previewlink", "/p/" + m.getBranch());
         page.put("hasBook", true);
-        customerMode(m.getUser().getUser().getCustomerMode(), page);
+        customerMode(m.getUser().getCustomerMode(), page);
     }
     
-    public static void customerMode(String customerMode, Page page) {
-        boolean active = !StringService.isNullOrEmpty(customerMode);
+    public static void customerMode(CustomerMode customerMode, Page page) {
+        boolean active = customerMode.isActive();
         page.put("customerModeActive", active);
-        page.put("customerMode", esc(active ? customerMode.toUpperCase() : ""));
+        page.put("customerMode", esc(customerMode.toString()));
     }
 }

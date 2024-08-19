@@ -39,6 +39,7 @@ import minerva.seite.move.IMoveFile;
 import minerva.seite.move.MoveFile;
 import minerva.subscription.SubscriptionService;
 import minerva.subscription.TPage;
+import minerva.user.CustomerMode;
 import ohhtml.toc.HelpKeysForHeading;
 import ohhtml.toc.TocMacroPage;
 
@@ -623,7 +624,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
             @Override
             public boolean isVisible(String customer, String lang) {
                 SeiteSichtbar ssc = new SeiteSichtbar(SeiteSO.this.book.getWorkspace(), lang);
-                ssc.setCustomer(customer);
+                ssc.setCustomerMode(new CustomerMode(customer));
                 return ssc.isVisible(SeiteSO.this);
             }
             
@@ -792,5 +793,9 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     
     public boolean hasAttachments() {
         return new AttachmentsSO(this).hasAttachments();
+    }
+    
+    public boolean isCustomerMode() {
+        return book.getWorkspace().getUser().getCustomerMode().isActive();
     }
 }

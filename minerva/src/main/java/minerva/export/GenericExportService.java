@@ -24,6 +24,7 @@ import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.model.WorkspaceSO;
+import minerva.user.CustomerMode;
 
 /**
  * Output format unspecific export service
@@ -46,7 +47,7 @@ public abstract class GenericExportService {
         this.req = req;
         lang = req.getLanguage();
         exportTemplateSet = new ExportTemplatesService(req.getWorkspace()).load(req.getTemplateId());
-        ssc = new SeiteSichtbar(req.getWorkspace(), req.getCustomer(), req.pdf(), req.getLanguage());
+        ssc = new SeiteSichtbar(req.getWorkspace(), new CustomerMode(req.getCustomer()), req.pdf(), req.getLanguage());
     }
     
     protected String getCustomer() {

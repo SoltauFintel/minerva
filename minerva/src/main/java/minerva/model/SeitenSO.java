@@ -344,7 +344,7 @@ public class SeitenSO extends MList<SeiteSO> {
                 ssc = new SeiteSichtbar(seite.getBook().getWorkspace(), lang);
             }
             Visible visible = ssc.getVisibleResult(seite);
-            if (!visible.isVisible()) {
+            if (!visible.isVisible() || (seite.isCustomerMode() && visible.isNoTree())) {
                 continue;
             }
             BookSO book = seite.getBook();

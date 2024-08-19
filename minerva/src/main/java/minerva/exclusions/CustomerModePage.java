@@ -8,6 +8,7 @@ import com.github.template72.data.DataList;
 
 import minerva.base.StringService;
 import minerva.model.ExclusionsSO;
+import minerva.user.CustomerMode;
 import minerva.workspace.WPage;
 
 /**
@@ -19,24 +20,24 @@ public class CustomerModePage extends WPage {
 
     @Override
     protected void execute() {
-        String ccm = user.getUser().getCustomerMode(); // current customer mode
+        CustomerMode ccm = user.getCustomerMode(); // current customer mode
         Exclusions exclusions = new Exclusions(new ExclusionsSO(workspace).get());
         Set<String> customers = exclusions.getCustomers();
-        List<String> tags = exclusions.getTags(ccm);
+        List<String> tags = exclusions.getTags(ccm.getCustomer());
         
         header(n("customerMode"));
-        put("ccm", esc(ccm == null ? "" : ccm.toUpperCase()));
+        put("ccm", esc(ccm.toString()));
         DataList list = list("customers");
         for (String customer : customers) {
             list.add()
                 .put("customer", customer.toLowerCase())
                 .put("label", customer.toUpperCase())
-                .put("css", customer.equalsIgnoreCase(ccm) ? "btn-success" : "btn-default");
+                .put("css", customer.equalsIgnoreCase(ccm.getCustomer()) ? "btn-success" : "btn-default");
         }
         list.add()
             .put("customer", "null")
-            .put("label", n(StringService.isNullOrEmpty(ccm) ? "customerModeIsOff" : "turnOffCustomerMode"))
-            .put("css", StringService.isNullOrEmpty(ccm) ? "btn-danger" : "btn-default");
+            .put("label", n(StringService.isNullOrEmpty(ccm.getCustomer()) ? "customerModeIsOff" : "turnOffCustomerMode"))
+            .put("css", StringService.isNullOrEmpty(ccm.getCustomer()) ? "btn-danger" : "btn-default");
         if (tags == null) {
             put("showTags", false);
         } else {

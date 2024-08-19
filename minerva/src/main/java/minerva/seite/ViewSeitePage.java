@@ -95,7 +95,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         editorComponent();
         header(modifyHeader(seite.getTitle()));
         fillLinks(branch, bookFolder, id, seite, _seite, u.getPageLanguage());
-        boolean customerModeActive = !StringService.isNullOrEmpty(user.getUser().getCustomerMode());
+        boolean customerModeActive = user.getCustomerMode().isActive();
         getPageMenu().menu(model, seite, viewlink, isAdmin, isFavorite, pageWatched, subpagesWatched,
                 MinervaWebapp.factory().getConfig().isGitlab(), MinervaWebapp.factory().isCustomerVersion(), customerModeActive); // möglichst spät aufrufen
         Logger.info(u.getLogin() + " | " + seite.getBook().getWorkspace().getBranch() + " | "

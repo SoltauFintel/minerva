@@ -29,6 +29,7 @@ import minerva.export.ExportUserSettings;
 import minerva.seite.CommentWithSeite;
 import minerva.seite.link.InvalidLinksModel;
 import minerva.task.TaskPriority;
+import minerva.user.CustomerMode;
 import minerva.user.User;
 import minerva.user.UserAccess;
 
@@ -478,5 +479,9 @@ public class UserSO {
         load();
         user.setCustomerMode(customer);
         save();
+    }
+    
+    public CustomerMode getCustomerMode() {
+        return new CustomerMode(user.getCustomerMode());
     }
 }
