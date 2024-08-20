@@ -59,7 +59,7 @@ public class SubscribersAccess {
 
     public void uploadZip(File zipFile, String subscriber) {
         if (available(subscriber)) {
-            String url = subscriber + "/book6/upload";
+            String url = subscriber + "/book6/upload?token=" + System.getenv("MINERVA_TOKEN");
             new REST(url).uploadZip(zipFile);
             Logger.info("Upload of " + zipFile.getAbsolutePath() + " to " + url + " completed.");
         }
@@ -68,7 +68,7 @@ public class SubscribersAccess {
     public void put(TPage page) {
         for (String subscriber : subscribers) {
             if (available(subscriber)) {
-                String url = subscriber + "/book6/page/" + page.getId();
+                String url = makeUrl(page.getId(), subscriber);
                 Logger.info("PUT " + url);
                 new REST(url).put(new Gson().toJson(page), REST.json_utf8()).close();
             }
@@ -78,12 +78,16 @@ public class SubscribersAccess {
     public void delete(String id) {
         for (String subscriber : subscribers) {
             if (available(subscriber)) {
-                String url = subscriber + "/book6/page/" + id;
+                String url = makeUrl(id, subscriber);
                 Logger.info("DELETE " + url);
                 REST.delete(url);
             }
         }
     }
+
+	private String makeUrl(String id, String subscriber) {
+		return subscriber + "/book6/page/" + id + "?token=" + System.getenv("MINERVA_TOKEN");
+	}
     
     private boolean available(String subscriber) {
         String r;
