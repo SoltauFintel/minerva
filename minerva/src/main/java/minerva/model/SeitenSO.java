@@ -2,11 +2,16 @@ package minerva.model;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 import org.pmw.tinylog.Logger;
+
+import com.google.gson.Gson;
 
 import github.soltaufintel.amalia.base.IdGenerator;
 import minerva.MinervaWebapp;
@@ -207,14 +212,36 @@ public class SeitenSO extends MList<SeiteSO> {
     }
     
     public void setPositionsAndSaveTo(Map<String, String> files) {
+        Map<String, Seite> seitendaten = getSeitendaten(); // Load old positions from harddisk.
         int position = 1;
         for (SeiteSO sub : this) {
-            if (position != sub.getSeite().getPosition()) {
+            Seite hdd = seitendaten.get(sub.getId());
+            if (hdd == null) {
+                Logger.warn("Page " + sub.getId() + " unexpectedly not found!");
+            }
+            if (hdd == null || hdd.getPosition() != position) {
                 sub.getSeite().setPosition(position);
                 sub.saveMetaTo(files);
             }
             position++;
         }
+    }
+    
+    private Map<String, Seite> getSeitendaten() {
+        Map<String, Seite> ret = new HashMap<>();
+        if (!isEmpty()) {
+            Set<String> filenames = new HashSet<>();
+            for (SeiteSO i : this) {
+                filenames.add(i.filenameMeta());
+            }
+            Map<String, String> now = get(0).getBook().dao().loadFiles(filenames);
+            Gson gson = new Gson();
+            for (String json : now.values()) {
+                Seite seite = gson.fromJson(json, Seite.class);
+                ret.put(seite.getId(), seite);
+            }
+        }
+        return ret;
     }
 
     public List<SeiteSO> searchInTitle(String search, String excludeSeiteId, List<String> langs) {
