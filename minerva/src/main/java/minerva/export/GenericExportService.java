@@ -140,20 +140,28 @@ public abstract class GenericExportService {
     private boolean _saveSeiteTo(SeiteSO seite, SeiteSO parent, Chapter chapter, SubpagesSelector ss, File outputFolder) {
         Visible visible = ssc.getVisibleResult(seite);
     	if (visible.isVisible()) {
-            saveSeiteTo(seite, parent, chapter, outputFolder);
+            if (saveSeiteTo(seite, parent, chapter, outputFolder)) {
 
-            Bookmark keep = cb; // remember
-            keep.getBookmarks().add(cb = new Bookmark(seite, lang, chapter, req.withChapters(), visible.isNoTree()));
-            
-            saveSeitenTo(ss.getSubpages(seite), seite, chapter, ss, outputFolder);
-            
-            cb = keep; // restore
-            return true;
+                Bookmark keep = cb; // remember
+                keep.getBookmarks().add(cb = new Bookmark(seite, lang, chapter, req.withChapters(), visible.isNoTree()));
+                
+                saveSeitenTo(ss.getSubpages(seite), seite, chapter, ss, outputFolder);
+                
+                cb = keep; // restore
+                return true;
+            }
         }
         return false;
     }
     
-    protected abstract void saveSeiteTo(SeiteSO seite, SeiteSO parent, Chapter chapter, File outputFolder);
+    /**
+     * @param seite -
+     * @param parent -
+     * @param chapter -
+     * @param outputFolder -
+     * @return false: no page has been added
+     */
+    protected abstract boolean saveSeiteTo(SeiteSO seite, SeiteSO parent, Chapter chapter, File outputFolder);
     
     private File getFolder(String name) {
         File folder = new File(

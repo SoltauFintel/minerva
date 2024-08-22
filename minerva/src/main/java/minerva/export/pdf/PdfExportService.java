@@ -14,6 +14,7 @@ import com.github.template72.data.DataMap;
 import minerva.base.FileService;
 import minerva.base.NLS;
 import minerva.base.StringService;
+import minerva.exclusions.SeiteSichtbar;
 import minerva.export.ExportRequest;
 import minerva.export.Formula2Image.TransformPath;
 import minerva.export.MultiPageHtmlExportService;
@@ -128,11 +129,11 @@ public class PdfExportService extends MultiPageHtmlExportService {
     }
     
     @Override
-    protected void saveSeiteTo(SeiteSO seite, SeiteSO parent, Chapter chapter, File outputFolder) {
+    protected boolean saveSeiteTo(SeiteSO seite, SeiteSO parent, Chapter chapter, File outputFolder) {
         String title = seite.getSeite().getTitle().getString(lang);
         String html = getHtml(seite, title, outputFolder);
         if (html == null) {
-            return;
+            return false;
         }
     
         sb.append("<div id=\"");
@@ -159,10 +160,22 @@ public class PdfExportService extends MultiPageHtmlExportService {
         sb.append("</h1>\n");
         sb.append(html);
         sb.append("\n</div>\n\n");
+        return true;
     }
 
     private String getHtml(SeiteSO seite, String title, File outputFolder) {
         String html = super.getBody(seite.getContent().getString(lang), title);
+        if (seite.isFeatureTree()) {
+            if (html.isBlank() && seite.getSeiten().isEmpty()) {
+                return null;
+            } else if (!seite.getSeiten().isEmpty()) {
+                for (SeiteSO sub : seite.getSeiten()) {
+                    if (SeiteSichtbar.contentIsEmpty(sub, lang) && sub.getSeiten().isEmpty()) {
+                        html += "<p>" + esc(sub.getSeite().getTitle().getString(lang)) + "</p>";
+                    }
+                }
+            }
+        }
         String info = seite.getId() + ": \"" + title + "\"";
         html = HtmlForPdf.processHtml(html, getDoctype(), info, seite.getBook().getFolder(), errorMessages);
         if (html != null) {

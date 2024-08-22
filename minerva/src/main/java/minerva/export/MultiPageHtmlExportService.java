@@ -147,7 +147,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
     }
     
     @Override
-    protected void saveSeiteTo(SeiteSO seite, SeiteSO parent, Chapter chapter, File outputFolder) {
+    protected boolean saveSeiteTo(SeiteSO seite, SeiteSO parent, Chapter chapter, File outputFolder) {
         String html = seite.getContent().getString(lang);
         String title = seite.getSeite().getTitle().getString(lang);
         DataMap model = new DataMap();
@@ -172,6 +172,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
         FileService.copyFiles(
                 new File(seite.getBook().getFolder() + "/img/" + seite.getId()),
                 new File(outputFolder, "img/" + seite.getId()));
+        return true;
     }
 
     private String tocMacro(String html, SeiteSO seite, String customer) {
