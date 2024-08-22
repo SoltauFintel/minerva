@@ -70,7 +70,6 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         fillLanguageSpecifics(u);
         Seite _seite = seite.getSeite();
         simpleVars(u, _seite);
-        subpages();
         new MaskAndDataFields(seite).customersMultiselect(model);
         commentsSize();
         PageChange change = seite.getLastChange();
@@ -169,6 +168,8 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         DataList list = list("languages");
         put("guiLanguage", user.getGuiLanguage());
         int errors = 0;
+        boolean hasSubPages = false;
+        boolean hasPositionlink = false;
         for (String lang : langs) {
             DataMap map = list.add();
             map.put("LANG", lang.toUpperCase());
@@ -197,8 +198,17 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             fillBreadcrumbs(lang, map.list("breadcrumbs"));
             int size = fillSubpages(seite, seite.getSeiten(), lang, map.list("subpages"), branch, bookFolder, new SeiteSichtbar(ssc, lang));
 			map.putInt("subpagesSize", size);
+			if (size > 0) {
+			    hasSubPages = true;
+			}
+			if (size >= 2) {
+			    hasPositionlink = true;
+			}
         }
+        put("hasSubPages", hasSubPages);
+        put("hasPositionlink", hasPositionlink);
         put("hasErrorsTotal", errors > 0);
+        put("page", seite.isPageInFeatureTree()); // normal page in feature tree
     }
     
     protected String transformContent(TocMacro macro, String lang, DataMap map) {
@@ -210,16 +220,6 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         return html;
     }
     
-    private void subpages() {
-        if (seite.isFeatureTree() && seite.checkSubfeaturesLimit()) {
-            put("hasSubPages", false);
-            put("hasPositionlink", false);
-        } else {
-            put("hasSubPages", !seite.getSeiten().isEmpty());
-            put("hasPositionlink", seite.getSeiten().size() > 1);
-        }
-    }
-
     private void editorComponent() {
         put("bigEditor", true);
         
@@ -268,22 +268,37 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     
     static int fillSubpages(SeiteSO seite, SeitenSO seiten, String lang, DataList subpages, String branch, String bookFolder, SeiteSichtbar ssc) {
         int n = 0;
+        if (seite != null && seite.isFeatureTree() && seite.checkSubfeaturesLimit()) {
+            // Actually no sub-features display, but pages with tag "page" should be displayed.
+            seiten.sort(lang);
+            for (SeiteSO sub : seiten) {
+                if ((ssc == null || ssc.isVisible(sub)) && sub.isPageInFeatureTree()) {
+                    fillSubpage(sub, subpages, lang, branch, bookFolder);
+                    n++;
+                }
+            }
+            return n;
+        }
         if (seite == null
                 || !seite.isFeatureTree()
                 || !seite.checkSubfeaturesLimit()) {
             seiten.sort(lang);
             for (SeiteSO sub : seiten) {
                 if (ssc == null || ssc.isVisible(sub)) {
-                    DataMap map = subpages.add();
-                    map.put("id", Escaper.esc(sub.getId()));
-                    map.put("titel", Escaper.esc(sub.getSeite().getTitle().getString(lang)));
-                    map.put("viewlink", "/s/" + branch + "/" + bookFolder + "/" + Escaper.esc(sub.getId()));
-                    map.putInt("position", sub.getSeite().getPosition());
+                    fillSubpage(sub, subpages, lang, branch, bookFolder);
                     n++;
                 }
             }
         }
         return n;
+    }
+    
+    private static void fillSubpage(SeiteSO sub, DataList subpages, String lang, String branch, String bookFolder) {
+        DataMap map = subpages.add();
+        map.put("id", Escaper.esc(sub.getId()));
+        map.put("titel", Escaper.esc(sub.getSeite().getTitle().getString(lang)));
+        map.put("viewlink", "/s/" + branch + "/" + bookFolder + "/" + Escaper.esc(sub.getId()));
+        map.putInt("position", sub.getSeite().getPosition());
     }
 
     private void fillTags(Seite seite) {
@@ -435,10 +450,14 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         list.add(root = new MME(seite.getTitle(), "type-a"));
         if (!seite.checkSubfeaturesLimit()) {
             for (SeiteSO sub : seite.getSeiten()) {
-                list.add(parent = new MME(sub.getId(), root, sub.getTitle()));
-                if (sub.getSeiten().size() < 10) {
-                    for (SeiteSO sub2 : sub.getSeiten()) {
-                        list.add(new MME(sub2.getId(), parent, sub2.getTitle()));
+                if (!sub.isPageInFeatureTree()) {
+                    list.add(parent = new MME(sub.getId(), root, sub.getTitle()));
+                    if (sub.getSeiten().size() < 10) {
+                        for (SeiteSO sub2 : sub.getSeiten()) {
+                            if (!sub2.isPageInFeatureTree()) {
+                                list.add(new MME(sub2.getId(), parent, sub2.getTitle()));
+                            }
+                        }
                     }
                 }
             }

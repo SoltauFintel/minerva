@@ -137,11 +137,23 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     }
     
     public String getSortTitle() {
-        return StringService.umlaute(getTitle());
+        return editSort(getTitle());
     }
 
     public String getSortTitle(String lang) {
-        return StringService.umlaute(getSeite().getTitle().getString(lang));
+        return editSort(getSeite().getTitle().getString(lang));
+    }
+    
+    private String editSort(String sort) {
+        sort = StringService.umlaute(sort);
+        if (isFeatureTree()) {
+            if (isPageInFeatureTree()) {
+                sort = "1" + sort; // put normal pages at begin
+            } else {
+                sort = "2" + sort; // put features at end
+            }
+        }
+        return sort;
     }
 
     public BookSO getBook() {
@@ -666,6 +678,15 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     
     public boolean isNotPublic() {
         return book.isNotPublic();
+    }
+    
+    /**
+     * Feature tree: Is the tag "page" set?
+     * @return true: Page should be displayed as a normal content page in the feature tree,
+     * false: not feature tree or normal representation as feature.
+     */
+    public boolean isPageInFeatureTree() {
+        return book.isFeatureTree() && seite.getTags().contains("page");
     }
 
     @Override

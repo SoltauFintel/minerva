@@ -26,7 +26,7 @@ public class FeatureFieldsHtml {
     }
 
     public String html() {
-        if (!seite.isFeatureTree()) {
+        if (!seite.isFeatureTree() || seite.isPageInFeatureTree()) {
             return ""; // feature fields only for feature tree item
         }
         MaskAndDataFields mad = new MaskAndDataFields(seite);
