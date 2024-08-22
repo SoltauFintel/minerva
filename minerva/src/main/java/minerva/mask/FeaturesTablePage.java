@@ -123,7 +123,7 @@ public class FeaturesTablePage extends SPage {
 		_titel = _titel == null ? "" : _titel.toLowerCase();
         for (SeiteSO ft : seite.getSeiten()) {
             TableEntry te = new TableEntry(ft);
-            if (te.doFilter() && (_titel.isEmpty() || ft.getTitle().toLowerCase().contains(_titel))) {
+            if (te.doFilter() && (_titel.isEmpty() || ft.getTitle().toLowerCase().contains(_titel)) && !ft.isPageInFeatureTree()) {
                 features.add(te);
             }
         }
