@@ -29,6 +29,7 @@ public class SeitenauswahlPage extends WPage {
         String template = ctx.queryParam("template");
         String o = ctx.queryParam("o");
         String w = ctx.queryParam("w");
+        boolean withFeatures = "1".equals(ctx.queryParam("f"));
 
         if (isPOST()) {
             String auswahlliste = ctx.formParam("al");
@@ -65,7 +66,7 @@ public class SeitenauswahlPage extends WPage {
             DataList list = list("pages");
             SeiteSichtbar ssc = new SeiteSichtbar(workspace, lang);
             for (BookSO book : workspace.getBooks()) {
-                if (book.isFeatureTree()) {
+                if (!withFeatures && book.isFeatureTree()) {
                     continue;
                 }
                 DataMap map = list.add();

@@ -261,6 +261,7 @@ withTOC=with table of contents
 withChapters=with chapter numbers
 exportInfo=If you select "all books", the feature tree and internal books will not be included. If you select customer "-", no tags will be taken into account, i.e. <i>all</i> pages will be exported.
 selectPage=Select page(s)
+selectPageWithFeatures=Select page(s) (including features)
 seitenauswahl=Export: select page(s)
 pages=Pages
 doExport=export

@@ -262,6 +262,7 @@ withTOC=mit Inhaltsverzeichnis
 withChapters=mit Kapitelnumerierung
 exportInfo=Bei Auswahl von "alle Bücher" werden Featurebaum und interne Bücher nicht einbezogen. Bei Auswahl von Kunde "-" werden keine tags berücksichtigt, d.h. es werden <i>alle</i> Seiten exportiert.
 selectPage=Seite(n) auswählen
+selectPageWithFeatures=Seite(n) auswählen (inkl. Features)
 seitenauswahl=Export: Seitenauswahl
 pages=Seiten
 doExport=Exportieren
