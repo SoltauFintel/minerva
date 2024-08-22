@@ -155,7 +155,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
             sb.append(chapter.toString());
             sb.append(" ");
         }
-        sb.append(title.replace("&", "&amp;"));
+        sb.append(esc(title));
         sb.append("</h1>\n");
         sb.append(html);
         sb.append("\n</div>\n\n");
@@ -206,7 +206,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
         }
         model.put("customer", customer);
         
-        model.put("bookTitle", bookTitle.replace("&", "&amp;"));
+        model.put("bookTitle", esc(bookTitle));
         model.put("de", "de".equals(lang));
         model.put("cover", req.withCover());
         model.put("toc", req.withTOC());
@@ -227,7 +227,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
             if (!b.isNoTree()) {
                 DataMap map = list.add();
                 map.put("id", b.getId());
-                map.put("title", b.getTitle().replace("&", "&amp;"));
+                map.put("title", esc(b.getTitle()));
             }
         }
     }
@@ -242,12 +242,12 @@ public class PdfExportService extends MultiPageHtmlExportService {
             html.append("<bookmark href=\"#");
             html.append(bm.getId());
             html.append("\" name=\"");
-            html.append(bm.getTitle().replace("&", "&amp;").replace("\"", "&quot;"));
+            html.append(esc(bm.getTitle()));            
             if (bm.getBookmarks().isEmpty()) {
                 html.append("\"/>\n");
             } else {
                 html.append("\">\n");
-                bookmarks(bm.getBookmarks(), html);
+                bookmarks(bm.getBookmarks(), html); // recursive
                 html.append("</bookmark>\n");
             }
         }
@@ -267,5 +267,9 @@ public class PdfExportService extends MultiPageHtmlExportService {
         for (String line : errorMessages) {
 			Logger.debug("- " + line);
 		}
+    }
+    
+    private String esc(String text) {
+        return text.replace("&", "&amp;").replace("\"", "&quot;").replace("<", "&lt;").replace(">", "&gt;");
     }
 }

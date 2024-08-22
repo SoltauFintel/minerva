@@ -39,6 +39,12 @@ public class PdfWriter {
 
             builder.useFont(() -> notoSans, "Noto Sans");
             builder.withHtmlContent(html, "/");
+            /* DEBUG
+            If an error occurs in the next line the error message contains a line number. Here we're giving out all lines to find the error:
+            int line = 0;
+            for (String l : html.split("\n")) {
+                System.out.println(++line + ": " + l);
+            }*/
             builder.toStream(os).run();
 
             if (withDiagnostics) {
