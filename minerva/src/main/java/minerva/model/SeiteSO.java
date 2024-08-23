@@ -433,6 +433,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
             seite.getTitle().setString(lang, newTitle.getString(lang));
             content.setString(lang, newContent.getString(lang));
         }
+        comment = createTagsFromComment(comment);
         IPageChangeStrategy strat = MinervaWebapp.factory().getPageChangeStrategy();
         strat.set(comment, this);
         CommitMessage commitMessage = strat.getCommitMessage(comment, this);
@@ -460,6 +461,20 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         Logger.info(book.getWorkspace().getUser().getLogin() + " | " + book.getWorkspace().getBranch() + " | "
                 + newTitle.getString(langs.get(0))
                 + " -> Page #" + getId() + " saved. " + (System.currentTimeMillis() - start) + "ms");
+    }
+
+    private String createTagsFromComment(String comment) {
+        for (String i : List.of("tag=", "tags=")) {
+            if (comment.startsWith(i)) {
+                for (String tag : comment.substring(i.length()).split(",")) {
+                    if (!tag.isBlank()) {
+                        seite.getTags().add(tag.trim().toLowerCase());
+                    }
+                }
+                return "";
+            }
+        }
+        return comment;
     }
 
     private void validate(NlsString newTitle, NlsString newContent, int version, List<String> langs) {
