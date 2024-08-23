@@ -1,27 +1,20 @@
 package minerva.image;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.io.FileUtils;
-import org.pmw.tinylog.Logger;
-
-import minerva.base.FileService;
 import minerva.base.NlsString;
-import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import ohhtml.Thumbnails;
 
 public class FixHttpImage {
 
-    /**
+    /* *
      * Look if HTML contains http images. Then fix that by downloading the images,
      * uploading them and edit the HTML.
      */
+/* Auskommentiert, weil es den Verdacht gibt, dass dieser Code fehlerhaft ist.
     public void process(NlsString html, List<String> langs, List<String> seiteImages, BookSO book, String seiteId) {
         String hardErrors = "";
         try {
@@ -63,6 +56,7 @@ public class FixHttpImage {
             // The user should remove image from page because we would always run again into this error.
         }
     }
+*/
     
     public boolean hasAbsoluteUrlImage(SeiteSO seite, List<String> langs) {
         return !getAbsoluteUrlImages(seite.getContent(), langs, true).isEmpty();
