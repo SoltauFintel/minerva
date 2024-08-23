@@ -120,6 +120,7 @@ newTag=Neues tag
 historyFor=Git Historie für Datei
 editTags=tags bearbeiten
 whatChanged=Was haben Sie geändert?
+whatChangedTooltip=Schreiben Sie durch Kommas getrennte tags und stellen Sie ihnen das Präfix 'tag=' voran, um tags zu erstellen (anstelle des Änderungskommentars).
 lastChangeInfo=letzte Änderung am $d durch $u$c
 lastChangeInfoForBook=letzte Änderung von Seite "<a href="$h">$p</a>" am $d durch $u$c
 pageLinkToThisPage=Die unten stehende Seite verlinkt auf die zu löschende Seite (oder Unterseite(n)). Es wird empfohlen erst die Links zu korrigieren, damit keine Broken Links entstehen.

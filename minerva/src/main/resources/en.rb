@@ -121,6 +121,7 @@ newTag=New tag
 historyFor=Git history for file
 editTags=Edit tags
 whatChanged=What did you change?
+whatChangedTooltip=Write comma-separated tags and prefix them with 'tag=' to create tags (instead of the change comment)
 lastChangeInfo=last change from $d by $u$c
 lastChangeInfoForBook=last change of page "<a href="$h">$p</a>" from $d by $u$c
 pageLinkToThisPage=The page below links to this page (or subpage(s)). It is recommended to correct the links first so that no broken links are created.
