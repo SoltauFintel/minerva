@@ -31,6 +31,7 @@ import minerva.book.BookPage;
 import minerva.book.BooksPage;
 import minerva.book.DeleteBookPage;
 import minerva.book.EditBookPage;
+import minerva.book.MenuStructureAction;
 import minerva.book.MenuPage;
 import minerva.book.OrderTopLevelSeitePage;
 import minerva.book.SelectLanguageAction;
@@ -220,6 +221,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/b/:branch/:book/export", ExportBookAction.class);
         get("/b/:branch/:book/export-csv", ExportCsvBookAction.class); // temporär drin für WM
         get("/b/:branch/:book/validate", ValidationPage.class);
+get("/b/:branch/:book/menu", MenuStructureAction.class);
         get("/b/", CurrentWorkspaceAction.class); // falls man sich dahin verirren sollte
     }
 
