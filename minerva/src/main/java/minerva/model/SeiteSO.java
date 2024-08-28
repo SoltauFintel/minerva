@@ -725,9 +725,13 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     public int compareTo(SeiteSO b) {
         return getTitle().compareToIgnoreCase(b.getTitle());
     }
-    
+
+    /**
+     * Sub features will be displayed if there's a tag show-all-pages. That is needed for the menu structure.
+     * @return true: don't show sub features because they are too many
+     */
     public boolean checkSubfeaturesLimit() {
-    	return getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures();
+    	return !seite.getTags().contains("show-all-pages") && getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures();
     }
     
     public String viewlink() {
