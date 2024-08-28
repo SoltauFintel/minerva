@@ -141,6 +141,7 @@ public class FeatureFieldsService implements AddFeatures {
     	/** can also be a link */
         public String seiteId;
         public String title;
+        public String featureNumber;
     }
 
     public void search(WorkspaceSO workspace, String q, String lang, List<SearchResult> result) {
@@ -190,7 +191,11 @@ public class FeatureFieldsService implements AddFeatures {
 	public void addFeatures(SeiteSO seite, DataList features) {
         new FeatureFieldsService()
         	.getFeaturesForSeite(seite.getId(), seite.getBook().getWorkspace())
-        	.forEach(f -> features.add().put("link", Escaper.esc(f.seiteId)).put("title", Escaper.esc(f.title)));
+        	.forEach(f -> features.add() //
+        			.put("link", Escaper.esc(f.seiteId)) //
+        			.put("title", Escaper.esc(f.title)) //
+        			.put("featurenumber", Escaper.esc(f.featureNumber))
+        			.put("hasFeaturenumber", !StringService.isNullOrEmpty(f.featureNumber)));
 	}
 
 	private List<RSeite> getFeaturesForSeite(String seiteId, WorkspaceSO workspace) {
@@ -204,6 +209,7 @@ public class FeatureFieldsService implements AddFeatures {
                         RSeite feature = new RSeite();
                         feature.seiteId = "../" + seite.getBook().getBook().getFolder() + "/" + seite.getId();
                         feature.title = seite.getSeite().getTitle().getString("de");
+                        feature.featureNumber = ff.get("featurenumber");
                         features.add(feature);
                     }
                 }

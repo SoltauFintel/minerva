@@ -717,3 +717,7 @@ ul.pagetree {
     font-size: 9pt;
     text-align: center;
 }
+
+.vspFeatureNumber {
+    background-color: #c94;
+}

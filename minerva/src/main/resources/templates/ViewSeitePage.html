@@ -220,7 +220,7 @@
             <h4>{{N.Features}}</h4>
             <ul>
                 {{each f in features}}
-                    <li><a href="{{f.link}}">{{f.title}}</a></li>
+                    <li><a href="{{f.link}}">{{f.title}}{{if f.hasFeaturenumber}} <span class="label vspFeatureNumber">{{f.featurenumber}}</span>{{/if}}</a></li>
                 {{/each}}
             </ul>
         {{/if}}
