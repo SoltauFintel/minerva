@@ -52,8 +52,10 @@ public class MenuStructureAction extends BAction {
 		findPages(items, book.getSeiten());
 
 		BookSO target = book.getWorkspace().getBooks().byFolder("featuretree");
-		SeiteSO targetPage = target.seiteById("pmd3e3"); // F1
+		SeiteSO targetPage = target.seiteById("w3i9ca"); // "Menü"
 		Map<String, String> files = new HashMap<>();
+		targetPage.getSeite().setSorted(false);
+		targetPage.saveMetaTo(files);
 		nextFeatureNumber = 1;
 		createFeatures(items, targetPage, true, files);
 		Logger.info("saving " + files.size() + " files...");
@@ -90,23 +92,21 @@ public class MenuStructureAction extends BAction {
 		String seiteId = parentPage.getSeiten().createSeite(parentPage, parentPage.getBook(), parentPage.getBook().dao());
 		SeiteSO seite = parentPage.getSeiten().byId(seiteId);
 
+		seite.getSeite().setSorted(false);
 		seite.getSeite().getTitle().setString("de", title);
 		seite.getSeite().getTitle().setString("en", title);
 
 		seite.saveMetaTo(files);
 
-		boolean hasFeatureNumber = item.getItems().isEmpty();
-		boolean hasHandbuchLink = !StringService.isNullOrEmpty(item.getSeiteId());
-		if (hasFeatureNumber || hasHandbuchLink) {
-			FeatureFields ff = FeatureFields.create(seite);
-			if (hasFeatureNumber) {
-				ff.set("featurenumber", "FMP" + new DecimalFormat("0000").format(nextFeatureNumber++));
-			}
-			if (hasHandbuchLink) {
-				ff.getPages().add(item.getSeiteId()); // link to handbuch page
-			}
-			files.put(FeatureFieldsService.dn(seite), gson.toJson(ff));
+		FeatureFields ff = FeatureFields.create(seite);
+		if (item.getItems().isEmpty()) {
+			ff.set("featurenumber", "FMP" + new DecimalFormat("0000").format(nextFeatureNumber++));
 		}
+		if (!StringService.isNullOrEmpty(item.getSeiteId())) {
+			ff.getPages().add(item.getSeiteId()); // link to handbuch page
+		}
+		files.put(FeatureFieldsService.dn(seite), gson.toJson(ff));
+
 		return seite;
 	}
 
