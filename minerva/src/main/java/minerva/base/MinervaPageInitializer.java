@@ -70,6 +70,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("searchFocus", false);
         page.put("delayedPush", false);
         page.put("delayedPushAllowed", false);
+        page.put("endFSMode", "Turn off delayed persistence (Save)");
         page.put("previewTitle", "Preview");
         page.put("previewlink", "/p/master");
         page.put("q", "");
@@ -157,6 +158,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("delayedPushAllowed", MinervaWebapp.factory().isGitlab()
                 && !"master".equals(m.getBranch())
                 && !(m.getBranch().length() >= 1 && m.getBranch().charAt(0) >= '0' && m.getBranch().charAt(0) <= '9'));
+        page.put("endFSMode", NLS.get(userLang, "endFSMode"));
         page.list("favorites");
         if (m.getBooks() == null) {
             return;
