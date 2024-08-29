@@ -128,7 +128,7 @@ public class FeatureRelationsService {
 
         @Override
         public String getIcon() {
-            return "fa-bookmark greenbook";
+            return "fa-bookmark ticket1";
         }
 
         @Override

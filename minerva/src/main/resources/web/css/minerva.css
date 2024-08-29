@@ -92,6 +92,14 @@ body {
     color: #337ab7;
 }
 
+.ticket1 {
+    color: #909;
+}
+
+.ticket2 {
+    color: #090;
+}
+
 .btn-gitlab {
     color: black;
     background-color: #ffa41c;
