@@ -33,7 +33,7 @@
                             <b>{{N.zuLoeschendeBeziehungenAnhaken}}:</b>
                             {{each s in seiten}}
                                 <div class="checkbox">
-                                    <label><input type="checkbox" name="{{s.id}}"> {{s.title}}</label>
+                                    <label><input type="checkbox" name="{{s.id}}"{{if not s.isDeletable}} disabled{{/if}}> {{s.title}}</label>
                                 </div>
                             {{/each}}
                         </div>

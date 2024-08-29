@@ -9,12 +9,14 @@ import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 
 public class FeatureRelationsService {
+    public static RelationsAdder relationsAdder = (feature, ff, relations) -> {};
     
     public List<Relation> getRelations(SeiteSO feature, FeatureFields ff) {
         List<Relation> relations = new ArrayList<>();
         BookSO book = feature.getBook();
         wegfuehrendeBeziehungen(ff, relations, book);
         ankommendeBeziehungen(feature, relations, book);
+        relationsAdder.addRelations(feature, ff, relations);
         relations.sort((a, b) -> a.getTitle().compareToIgnoreCase(b.getTitle()));
         return relations;
     }
@@ -52,6 +54,10 @@ public class FeatureRelationsService {
         String getLink();
         
         String getIcon();
+        
+        default boolean isDeletable() {
+        	return true;
+        }
         
         void deleteFrom(FeatureFields ff);
     }
@@ -101,7 +107,7 @@ public class FeatureRelationsService {
     public static class TicketRelation implements Relation {
         private final String ticket;
         
-        private TicketRelation(String ticket) {
+        public TicketRelation(String ticket) {
             this.ticket = ticket;
         }
         
@@ -164,5 +170,9 @@ public class FeatureRelationsService {
         public void deleteFrom(FeatureFields ff) {
             ff.getLinks().remove(link);
         }
+    }
+    
+    public interface RelationsAdder {
+    	void addRelations(SeiteSO feature, FeatureFields ff, List<Relation> relations);
     }
 }

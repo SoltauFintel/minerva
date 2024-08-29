@@ -36,6 +36,7 @@ public class EditRelationsPage extends SPage {
                 map.put("id", s.getId());
                 map.put("icon", s.getIcon());
                 map.put("title", esc(s.getTitle()));
+                map.put("isDeletable", s.isDeletable());
             }
             put("hasSeiten", !seiten.isEmpty());
         }
