@@ -12,6 +12,8 @@ import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 
 public class FeatureFields {
+	/** Feature field name for the feature number. */
+	public static final String FEATURENUMBER = "featurenumber";
     // TODO FeatureFields löschen, wenn Seite gelöscht wird
     private String seiteId;
     /** special mask tag or "ft" */
@@ -55,6 +57,9 @@ public class FeatureFields {
     }
     
     public void set(String id, String value) {
+    	if (FEATURENUMBER.equals(id)) {
+    		value = value.replace(" ", "_");
+    	}
         fields.put(id, value);
     }
     
