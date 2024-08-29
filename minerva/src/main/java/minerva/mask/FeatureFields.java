@@ -57,8 +57,8 @@ public class FeatureFields {
     }
     
     public void set(String id, String value) {
-    	if (FEATURENUMBER.equals(id)) {
-    		value = value.replace(" ", "_");
+    	if (FEATURENUMBER.equals(id) && value != null) {
+    		value = value.replace(" ", "_").toUpperCase();
     	}
         fields.put(id, value);
     }
