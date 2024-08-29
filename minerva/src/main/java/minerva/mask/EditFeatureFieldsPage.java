@@ -1,6 +1,8 @@
 package minerva.mask;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
@@ -12,22 +14,13 @@ import minerva.mask.field.MaskFieldType;
 import minerva.seite.SPage;
 
 public class EditFeatureFieldsPage extends SPage {
-
+	public static EditFeatureFieldListener editFeatureFieldListener = fields -> {};
+	
     @Override
     protected void execute() {
         MaskAndDataFields mad = new MaskAndDataFields(seite);
         if (isPOST()) {
-            for (MaskField maskField : mad.getMaskFields()) {
-                if (!maskField.isImportField()) {
-                    String id = maskField.getId();
-                    String oldValue = mad.getDataFields().get(id);
-                    String value = getValue(maskField);
-                    uniqueness(maskField, value, oldValue, mad);
-                    mad.getDataFields().set(id, value);
-                }
-            }
-            mad.save();
-            
+        	save(mad);
             ctx.redirect(viewlink);
         } else {
 			Logger.info(user.getLogin() + " | " + branch + " | Edit feature fields " + id + " " + seite.getTitle());
@@ -39,6 +32,22 @@ public class EditFeatureFieldsPage extends SPage {
             mad.customersMultiselect(model);
         }
     }
+
+	private void save(MaskAndDataFields mad) {
+		List<FeatureFieldChange> fields = new ArrayList<>();
+		for (MaskField maskField : mad.getMaskFields()) {
+		    if (!maskField.isImportField()) {
+		        String id = maskField.getId();
+		        String oldValue = mad.getDataFields().get(id);
+		        String value = getValue(maskField);
+		        uniqueness(maskField, value, oldValue, mad);
+		        mad.getDataFields().set(id, value);
+		        fields.add(new FeatureFieldChange(id, oldValue, mad.getDataFields().get(id)/*set() could change value!*/));
+		    }
+		}
+		mad.save();
+		editFeatureFieldListener.changed(fields);
+	}
 
     private String getValue(MaskField maskField) {
         if (MaskFieldType.CUSTOMERS.equals(maskField.getType())) {
@@ -76,5 +85,35 @@ public class EditFeatureFieldsPage extends SPage {
         if (mustBeUnique && dirty && mad.findValue(seite, maskField.getId(), value)) {
             throw new UserMessage("valueIsntUnique", seite.getBook().getWorkspace(), s -> s.replace("$v", value).replace("$l", maskField.getLabel()));
         }
+    }
+    
+	public static class FeatureFieldChange {
+		private final String id;
+		private final String oldValue;
+		private final String newValue;
+
+		public FeatureFieldChange(String id, String oldValue, String newValue) {
+			super();
+			this.id = id;
+			this.oldValue = oldValue;
+			this.newValue = newValue;
+		}
+
+		public String getId() {
+			return id;
+		}
+
+		public String getOldValue() {
+			return oldValue;
+		}
+
+		public String getNewValue() {
+			return newValue;
+		}
+	}
+    
+    public interface EditFeatureFieldListener {
+
+    	void changed(List<FeatureFieldChange> fields);
     }
 }
