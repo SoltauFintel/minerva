@@ -18,8 +18,9 @@ public class ResponsibilitiesPage extends BPage {
     @Override
     protected void execute() {
         BookPage.oneLang(model, book);
-        header(n("Responsibilities"));
         List<Responsible> responsibles = new FeatureFieldsService().responsibles(book);
+        
+        header(n("Responsibilities"));
         DataList list = list("responsibles");
         for (Responsible r : responsibles) {
             DataMap map = list.add();
@@ -27,9 +28,11 @@ public class ResponsibilitiesPage extends BPage {
             map.putInt("n", r.seiten.size());
             DataList list2 = map.list("seiten");
             for (RSeite rs : r.seiten) {
-                DataMap map2 = list2.add();
-                map2.put("id", esc(rs.seiteId));
-                map2.put("title", esc(rs.title));
+                list2.add()
+                	.put("title", esc(rs.title))
+                	.put("link", "/s/" + branch + "/" + bookFolder + "/" + rs.seiteId)
+                	.put("featurenumber", esc(rs.featureNumber))
+                	.putHas("featurenumber", rs.featureNumber);
             }
         }
     }

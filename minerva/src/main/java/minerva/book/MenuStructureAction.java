@@ -100,7 +100,7 @@ public class MenuStructureAction extends BAction {
 
 		FeatureFields ff = FeatureFields.create(seite);
 		if (item.getItems().isEmpty()) {
-			ff.set("featurenumber", "FMP" + new DecimalFormat("0000").format(nextFeatureNumber++));
+			ff.set(FeatureFields.FEATURENUMBER, "FMP" + new DecimalFormat("0000").format(nextFeatureNumber++));
 		}
 		if (!StringService.isNullOrEmpty(item.getSeiteId())) {
 			ff.getPages().add(item.getSeiteId()); // link to handbuch page

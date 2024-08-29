@@ -7,8 +7,8 @@
         {{each r in responsibles}}
             <h2>{{r.name}} ({{r.n}})</h2>
             <ul>
-                {{each s in r.seiten}}
-                    <li><a href="/s/{{branch}}/{{bookFolder}}/{{s.id}}">{{s.title}}</a></li>
+                {{each f in r.seiten}}
+                    <li><a href="{{f.link}}">{{f.title}}</a>{{if f.hasFeaturenumber}} <span class="label featurenumber">{{f.featurenumber}}</span>{{/if}}</li>
                 {{/each}}
             </ul>
         {{/each}}

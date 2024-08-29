@@ -89,7 +89,7 @@ public class FeatureFieldsService implements AddFeatures {
      */
     public List<Responsible> responsibles(BookSO book) {
         if (!book.isFeatureTree()) {
-            throw new RuntimeException("It's not a feature tree");
+            throw new RuntimeException("Only for feature tree");
         }
         List<Responsible> ret = new ArrayList<>();
         for (SeiteSO seite : book.getAlleSeiten()) {
@@ -129,6 +129,7 @@ public class FeatureFieldsService implements AddFeatures {
             RSeite rs = new RSeite();
             rs.seiteId = seite.getId();
             rs.title = seite.getTitle();
+            rs.featureNumber = new FeatureFieldsService().get(seite).get(FeatureFields.FEATURENUMBER);
             seiten.add(rs);
             seiten.sort((a, b) -> a.title.compareToIgnoreCase(b.title));
         }
@@ -195,7 +196,7 @@ public class FeatureFieldsService implements AddFeatures {
         			.put("link", Escaper.esc(f.seiteId)) //
         			.put("title", Escaper.esc(f.title)) //
         			.put("featurenumber", Escaper.esc(f.featureNumber))
-        			.put("hasFeaturenumber", !StringService.isNullOrEmpty(f.featureNumber)));
+        			.putHas("featurenumber", f.featureNumber));
 	}
 
 	private List<RSeite> getFeaturesForSeite(String seiteId, WorkspaceSO workspace) {
@@ -209,7 +210,7 @@ public class FeatureFieldsService implements AddFeatures {
                         RSeite feature = new RSeite();
                         feature.seiteId = "../" + seite.getBook().getBook().getFolder() + "/" + seite.getId();
                         feature.title = seite.getSeite().getTitle().getString("de");
-                        feature.featureNumber = ff.get("featurenumber");
+                        feature.featureNumber = ff.get(FeatureFields.FEATURENUMBER);
                         features.add(feature);
                     }
                 }
