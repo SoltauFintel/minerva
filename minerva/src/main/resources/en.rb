@@ -397,3 +397,4 @@ exclusionsInfo=Pages that have one of these tags will not be displayed
 exclusionsInfoPlus=Pages that have one of these tags will be displayed (second highest priority)
 exclusionsInfoMinus=Pages that have one of these tags will not be displayed under any circumstances (highest priority)
 featureNumbersToJira=The feature numbers have been transferred to Jira.
+saveFeatures=Save Features

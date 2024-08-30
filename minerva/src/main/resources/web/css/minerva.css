@@ -142,6 +142,10 @@ body {
     color: #c00;
 }
 
+.error {
+    color: #c00;
+}
+
 .search-result {
     margin-bottom: 1em;
 }

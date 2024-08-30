@@ -101,4 +101,8 @@ public class FeatureFields {
     public Set<String> getLinks() {
         return links;
     }
+
+	public Map<String, String> getFieldsMap() {
+		return fields;
+	}
 }
