@@ -41,6 +41,7 @@ public class QuicklyCreateFeaturesService {
 			SeiteSO seite = parent.getSeiten()._byId(id);
 			seite.getSeite().getTitle().setString("de", line);
 			seite.getSeite().getTitle().setString("en", line);
+			seite.getSeite().setSorted(false);
 			seite.saveMetaTo(files);
 			FeatureFields ff = FeatureFields.create(seite);
 			if (!featureNumber.isBlank()) {
