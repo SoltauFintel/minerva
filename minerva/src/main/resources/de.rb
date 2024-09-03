@@ -398,3 +398,4 @@ exclusionsInfoPlus=Seiten, die eines dieser tags haben, werden angezeigt (zweith
 exclusionsInfoMinus=Seiten, die eines dieser tags haben, werden auf keinen Fall angezeigt (höchste Priorität)
 featureNumbersToJira=Die Featurenummern wurden nach Jira übertragen.
 saveFeatures=Speichere Features
+iAmResponsible=Ich bin Zuständiger.
