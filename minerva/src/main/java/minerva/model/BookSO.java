@@ -125,6 +125,10 @@ public class BookSO {
         return workspace.getUser();
     }
     
+    public String getUserRealName() {
+    	return workspace.getUser().getUser().getRealName();
+    }
+    
     /**
      * @return page ID
      */

@@ -101,9 +101,16 @@ public class FeatureFieldsService implements AddFeatures {
                 }
             }
         }
+        String currentUser = book.getUserRealName();
         ret.sort((a, b) -> {
-            int r = b.seiten.size() - a.seiten.size();
-            return r == 0 ? a.name.compareToIgnoreCase(b.name) : r;
+        	String acu = a.name.equals(currentUser) ? "1" : "2";
+        	String bcu = b.name.equals(currentUser) ? "1" : "2";
+        	int r = acu.compareTo(bcu);
+        	if (r == 0) {
+	            r = b.seiten.size() - a.seiten.size();
+	            return r == 0 ? a.name.compareToIgnoreCase(b.name) : r;
+        	}
+        	return r;
         });
         return ret;
     }

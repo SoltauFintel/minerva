@@ -143,7 +143,7 @@ public class BookPage extends BPage implements Uptodatecheck {
             }
             if (seite.isFeatureTree()) {
             	FeatureFields ff = new FeatureFieldsService().get(seite);
-            	if (seite.getBook().getWorkspace().getUser().getUser().getRealName().equals(ff.get("responsible"))) {
+            	if (seite.getBook().getUserRealName().equals(ff.get("responsible"))) {
             		gliederung.append(" <i class=\"fa fa-user ml05 commentByMe\" title=\"" + n("iAmResponsible") + "\"></i>");
             	}
             }
