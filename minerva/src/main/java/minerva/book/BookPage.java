@@ -13,6 +13,8 @@ import minerva.base.Uptodatecheck;
 import minerva.comment.SeiteCommentService2;
 import minerva.exclusions.SeiteSichtbar;
 import minerva.exclusions.Visible;
+import minerva.mask.FeatureFields;
+import minerva.mask.FeatureFieldsService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -134,6 +136,16 @@ public class BookPage extends BPage implements Uptodatecheck {
             int state = new SeiteCommentService2(seite).getCommentState(user.getLogin());
             if (state > 0) {
                 gliederung.append(state == 2 ? hasCommentForMe : hasComment);
+            }
+            if (seite.isFeatureTree() && seite.hasFt_tag()) {
+				gliederung.append(" <a href=\"/f/" + branch + "/" + bookFolder + "/" + seite.getId()
+						+ "\"><i class=\"fa fa-table greenbook ml05\" title=\"Features\"></i></a>");
+            }
+            if (seite.isFeatureTree()) {
+            	FeatureFields ff = new FeatureFieldsService().get(seite);
+            	if (seite.getBook().getWorkspace().getUser().getUser().getRealName().equals(ff.get("responsible"))) {
+            		gliederung.append(" <i class=\"fa fa-user ml05 commentByMe\" title=\"" + n("iAmResponsible") + "\"></i>");
+            	}
             }
             gliederung.append("</li>\n");
             
