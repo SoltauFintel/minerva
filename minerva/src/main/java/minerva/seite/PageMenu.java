@@ -32,6 +32,9 @@ public class PageMenu {
                 n("watchSubpages") + (subpagesWatched ? " <i class=\"fa fa-check greenbook\"></i>" : ""));
         menuitem(i, " data-toggle=\"modal\" data-target=\"#tocModal\"", "fa-list-ul", n("TOC"));
         menuitem(i, viewLink + "/attachments", "fa-paperclip", "Attachments");
+        if (seite.isFeatureTree()) {
+        	menuitem(i, viewLink + "/quick", "fa-rocket", n("QuicklyCreateFeaturesTitle"));
+        }
         menuitem(i, "", "", "-");
         
         if (gitlab) {

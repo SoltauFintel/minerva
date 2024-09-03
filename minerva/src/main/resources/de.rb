@@ -399,3 +399,5 @@ exclusionsInfoMinus=Seiten, die eines dieser tags haben, werden auf keinen Fall 
 featureNumbersToJira=Die Featurenummern wurden nach Jira übertragen.
 saveFeatures=Speichere Features
 iAmResponsible=Ich bin Zuständiger.
+QuicklyCreateFeaturesTitle=Schnelles Erstellen von Features
+QuicklyCreateFeaturesPageInfo=Bitte pro Zeile ein Feature eingeben. 0 bis n Minus-Zeichen für die Einrückungstiefe voranstellen. Hinter dem Featuretitel kann mit # abgetrennt die Featurenummer angegeben werden.

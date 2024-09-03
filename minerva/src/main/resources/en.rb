@@ -399,3 +399,6 @@ exclusionsInfoMinus=Pages that have one of these tags will not be displayed unde
 featureNumbersToJira=The feature numbers have been transferred to Jira.
 saveFeatures=Save Features
 iAmResponsible=I am responsible.
+QuicklyCreateFeaturesTitle=Quickly Create Features
+QuicklyCreateFeaturesPageInfo=Please enter one feature per line. Prefix 0 to n minus signs for the indentation depth. The feature number can be specified after the feature title, separated by #.
+

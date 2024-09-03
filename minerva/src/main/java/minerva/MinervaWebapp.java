@@ -72,6 +72,7 @@ import minerva.mask.EditFeatureFieldsPage;
 import minerva.mask.EditRelationsPage;
 import minerva.mask.FeaturesTablePage;
 import minerva.mask.MasksPage;
+import minerva.mask.QuicklyCreateFeaturesPage;
 import minerva.mask.ResponsibilitiesPage;
 import minerva.mask.ViewMaskPage;
 import minerva.mask.field.AddMaskFieldPage;
@@ -248,6 +249,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/s/:branch/:book/:id/toggle-watch", ToggleWatchAction.class);
         get("/s/:branch/:book/:id/links", LinkAnalysisPage.class);
         post("/s/:branch/:book/:id/toc", TocAction.class);
+        form("/s/:branch/:book/:id/quick", QuicklyCreateFeaturesPage.class);
         post("/s/:branch/:book/:id/editorsnote", SaveEditorsNoteAction.class);
         form("/s/:branch/:book/:id/help-keys/:lang/:h", HelpKeysForHeadingPage.class);
         get("/s/:branch/:book/:id/cleanup-hkh", CleanupHelpKeysForHeadingsAction.class);
