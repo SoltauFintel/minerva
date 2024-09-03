@@ -83,7 +83,7 @@ public class FeatureFieldsHtml {
         String st = "<div class=\"form-group\"><div class=\"col-lg-8 col-lg-offset-2\">"
                 + "<a href=\"/ff" + li + "\" class=\"btn btn-primary btn-sm br\">{editFeatureFields}</a>"
                 + "<a href=\"/fr" + li + "\" class=\"btn btn-default btn-sm br\">{createRelations}</a>";
-        if (hasFt_tag()) {
+        if (seite.hasFt_tag()) {
             st += "<a href=\"/f" + li + "\" class=\"btn btn-success btn-lg br\"><i class=\"fa fa-table\"></i> " + n("Features") + "</a>";
         }
         st += getAdditionalButtons(seite, ff) + "\n</div></div>\n" + relations(ff);
@@ -208,15 +208,6 @@ public class FeatureFieldsHtml {
             </div>
              """
             .replace("{value}", ff.get(f.getId()));
-    }
-
-    private boolean hasFt_tag() {
-        for (String tag : seite.getSeite().getTags()) {
-            if (tag.startsWith("ft_")) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private String relations(FeatureFields ff) {

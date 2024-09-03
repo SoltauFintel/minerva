@@ -683,6 +683,15 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         }
     }
     
+    public boolean hasFt_tag() {
+        for (String tag : seite.getTags()) {
+            if (tag.startsWith("ft_")) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public boolean isFeatureTree() {
         return book.isFeatureTree();
     }
