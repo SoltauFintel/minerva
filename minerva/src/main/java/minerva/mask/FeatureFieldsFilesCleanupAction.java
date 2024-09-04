@@ -34,10 +34,10 @@ public class FeatureFieldsFilesCleanupAction extends BAction {
 			if (existing.contains(dn)) {
 				ok++;
 			} else {
-				kill.add(bf + dn);
-				File kk = new File(bf+dn);
+				kill.add(bf + "feature-fields/"+dn);
+				File kk = new File(bf+ "feature-fields/"+dn);
 				if(!kk.isFile()) {
-					Logger.error("not a file: " + bf+dn + " => "+kk.getAbsolutePath());
+					Logger.error("not a file: " + bf+ "feature-fields/"+dn + " => "+kk.getAbsolutePath());
 				}
 				if (kill.size() == 100) {
 					System.out.println("break at 100");
