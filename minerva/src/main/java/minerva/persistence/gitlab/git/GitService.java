@@ -314,9 +314,11 @@ public class GitService {
                     add.call();
                 }
                 if (!removeFilenames.isEmpty()) {
+System.out.println("rm 1 | " + removeFilenames.size());                	
                     RmCommand rm = git.rm();
                     removeFilenames.forEach(filename -> rm.addFilepattern(filename));
                     rm.call();
+System.out.println("rm 2");                	
                 }
             }
             RevCommit commit = git.commit()
@@ -332,6 +334,7 @@ public class GitService {
             }
             return commit.getName();
         } catch (EmptyCommitException e) {
+e.printStackTrace();
             throw new MinervaEmptyCommitException(e.getMessage());
         } catch (Exception e) {
             Logger.error(e); // Das muss leider so, damit keine Info verloren geht.

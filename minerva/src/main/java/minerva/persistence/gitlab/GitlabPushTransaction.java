@@ -63,10 +63,12 @@ public class GitlabPushTransaction {
             String x = workspace.getFolder() + "/";
             Set<String> filesToAdd = addFilenames.stream().map(dn -> dn.replace(x, "")).collect(Collectors.toSet());
             Set<String> filesToRemove = removeFilenames.stream().map(dn -> dn.replace(x, "")).collect(Collectors.toSet());
+System.out.println("filesToRemove="+filesToRemove.size());            
             String name = StringService.isNullOrEmpty(user.getRealName()) ? user.getLogin() : user.getRealName();
             git.commit(commitMessage, name, user.getMailAddress(), user, filesToAdd, filesToRemove);
             workspace.onPush();
         } catch (MinervaEmptyCommitException ex) {
+ex.printStackTrace();
             if (addFilenames.size() > 5 || removeFilenames.size() > 5) { // prevent ultra long log message output
                 Logger.info("no changes -> no commit and no merge request needed. add: "
                         + addFilenames.size() + ", remove: " + removeFilenames.size());
