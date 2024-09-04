@@ -305,6 +305,7 @@ public class GitService {
             throw new IllegalArgumentException("mail must not be empty!");
         }
         try (Git git = Git.open(workspace)) {
+        	boolean allowEmpty = false;
             if (addFilenames.size() == 1 && addFilenames.contains(ADD_ALL_FILES)) {
                 git.add().addFilepattern(".").call();
             } else {
@@ -318,14 +319,16 @@ System.out.println("rm 1 | " + removeFilenames.size());
                     RmCommand rm = git.rm();
                     removeFilenames.forEach(filename -> rm.addFilepattern(filename));
                     rm.call();
-System.out.println("rm 2");                	
+                    allowEmpty = true;
+System.out.println("rm 2. set allowEmpty to true!");                	
                 }
             }
+System.out.println("message: '"+commitMessage.toString()+"'");
             RevCommit commit = git.commit()
                 .setMessage(commitMessage.toString())
                 .setAuthor(authorName, mail)
                 .setCommitter(authorName, mail)
-                .setAllowEmpty(false)
+                .setAllowEmpty(allowEmpty)
                 .call();
             if (user != null) {
                 git.push()

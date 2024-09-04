@@ -1,5 +1,6 @@
 package minerva.mask;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -34,6 +35,10 @@ public class FeatureFieldsFilesCleanupAction extends BAction {
 				ok++;
 			} else {
 				kill.add(bf + dn);
+				File kk = new File(bf+dn);
+				if(!kk.isFile()) {
+					Logger.error("not a file: " + bf+dn + " => "+kk.getAbsolutePath());
+				}
 				if (kill.size() == 100) {
 					System.out.println("break at 100");
 					break;
