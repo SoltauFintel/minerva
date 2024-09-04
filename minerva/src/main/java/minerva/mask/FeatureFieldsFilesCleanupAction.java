@@ -1,6 +1,5 @@
 package minerva.mask;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -34,22 +33,12 @@ public class FeatureFieldsFilesCleanupAction extends BAction {
 			if (existing.contains(dn)) {
 				ok++;
 			} else {
-				kill.add(bf + "feature-fields/"+dn);
-				File kk = new File(bf+ "feature-fields/"+dn);
-				if(!kk.isFile()) {
-					Logger.error("not a file: " + bf+ "feature-fields/"+dn + " => "+kk.getAbsolutePath());
-				}
-				if (kill.size() == 100) {
-					System.out.println("break at 100");
-					break;
-				}
+				kill.add(bf + "feature-fields/" + dn);
 			}
 		}
 		Logger.info("Anzahl: " + kill.size() + " | ok: " + ok);
 		if (!kill.isEmpty()) {
 			List<String> cant = new ArrayList<>();
-// TODO Problem hier: der sagt es wäre ein leerer Commit !?!?!?
-			System.out.println("kill="+kill.size());
 			book.dao().deleteFiles(kill, new CommitMessage("Delete unused *.ff files"), workspace, cant);
 			if (cant.isEmpty()) {
 				Logger.info("Löschen erfolgreich");

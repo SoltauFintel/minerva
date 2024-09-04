@@ -315,15 +315,12 @@ public class GitService {
                     add.call();
                 }
                 if (!removeFilenames.isEmpty()) {
-System.out.println("rm 1 | " + removeFilenames.size());                	
                     RmCommand rm = git.rm();
                     removeFilenames.forEach(filename -> rm.addFilepattern(filename));
                     rm.call();
                     allowEmpty = true;
-System.out.println("rm 2. set allowEmpty to true!");                	
                 }
             }
-System.out.println("message: '"+commitMessage.toString()+"'");
             RevCommit commit = git.commit()
                 .setMessage(commitMessage.toString())
                 .setAuthor(authorName, mail)
@@ -337,7 +334,6 @@ System.out.println("message: '"+commitMessage.toString()+"'");
             }
             return commit.getName();
         } catch (EmptyCommitException e) {
-e.printStackTrace();
             throw new MinervaEmptyCommitException(e.getMessage());
         } catch (Exception e) {
             Logger.error(e); // Das muss leider so, damit keine Info verloren geht.
