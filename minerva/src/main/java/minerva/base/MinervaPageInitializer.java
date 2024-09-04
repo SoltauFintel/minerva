@@ -81,7 +81,6 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("branch", esc(m.getBranch()));
         page.put("exclusionsTitle", "Exclusions");
         page.put("hasBook", false);
-        page.put("hasPreviewBooks", false);
         page.put("hasMenuItems", false);
         page.list("menuItems");
         page.list("previewBooks");

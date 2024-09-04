@@ -19,13 +19,6 @@
                           {{each b in booksForMenu}}
                             <li><a href="/b/{{branch}}/{{b.folder}}" class="navbtn"><i class="fa fa-book greenbook"></i> {{b.title}}</a></li>
                         {{/each}}
-                    {{else if hasPreviewBooks}}
-                        <li class="line-vertical"/>
-                        <li><a href="/" class="navbtn"><i class="fa fa-times-circle greenbook" title="{{N.exitPreview}}"></i></a></li>
-                        <li><a href="/p/{{branch}}" class="navbtn"><i class="fa fa-thumbs-o-up bluebook" title="{{N.preview}}"></i></a></li>
-                        {{each b in previewBooks}}
-                            <li><a href="{{b.link}}" class="navbtn"><i class="fa fa-book bluebook"></i> {{b.title}}</a></li>
-                        {{/each}}
                     {{else if hasMenuItems}}
                         <li class="line-vertical"/>
                         <li><a href="/" class="navbtn"><i class="fa fa-times-circle greenbook" title="{{N.toBooks}}"></i></a></li>
