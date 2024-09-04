@@ -11,6 +11,9 @@ import minerva.access.CommitMessage;
 import minerva.book.BAction;
 import minerva.model.SeiteSO;
 
+/**
+ * @deprecated Wird nicht mehr benötigt.
+ */
 public class FeatureFieldsFilesCleanupAction extends BAction {
 
 	@Override
@@ -47,8 +50,6 @@ public class FeatureFieldsFilesCleanupAction extends BAction {
 			}
 		}
 
-		// TODO Wenn Features neu importiert werden, müssen auch die alten .ff Dateien gelöscht werden.
-
-		ctx.redirect("/");
+		ctx.redirect(bookFolder);
 	}
 }
