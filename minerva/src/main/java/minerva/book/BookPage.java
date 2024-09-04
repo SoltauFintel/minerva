@@ -31,6 +31,9 @@ public class BookPage extends BPage implements Uptodatecheck {
         String pageLanguage = user.getPageLanguage();
         if (book.isFeatureTree() && !"de".equals(pageLanguage)) {
             user.getUser().setPageLanguage("de");
+            render = false;
+            ctx.redirect(bookFolder);
+            return;
         }
         
         setJQueryObenPageMode();
