@@ -34,6 +34,10 @@ public class FeatureFieldsFilesCleanupAction extends BAction {
 				ok++;
 			} else {
 				kill.add(bf + dn);
+				if (kill.size() == 100) {
+					System.out.println("break at 100");
+					break;
+				}
 			}
 		}
 		Logger.info("Anzahl: " + kill.size() + " | ok: " + ok);
