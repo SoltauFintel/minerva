@@ -3,6 +3,7 @@ package minerva.mask;
 import java.util.ArrayList;
 import java.util.List;
 
+import minerva.book.BookPage;
 import minerva.seite.SPage;
 
 public class QuicklyCreateFeaturesPage extends SPage {
@@ -23,6 +24,7 @@ public class QuicklyCreateFeaturesPage extends SPage {
 			ctx.redirect(viewlink);
 		} else {
 			header(n("QuicklyCreateFeaturesTitle"));
+            BookPage.oneLang(model, book);
 		}
 	}
 }
