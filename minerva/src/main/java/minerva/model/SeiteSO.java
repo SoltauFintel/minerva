@@ -305,7 +305,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
 		filenamesToDelete.add(bookFolder + "/img/" + r);
 
         // Feature tree Daten für diese Seite
-		filenamesToDelete.add(bookFolder + "/feature-fields/" + r);
+		filenamesToDelete.add(bookFolder + "/feature-fields/" + getId() + ".ff");
 
         // Kommentare (inkl. Images) dieser Seite
         filenamesToDelete.add(new SeiteCommentService2(this).dir() + "/**");
