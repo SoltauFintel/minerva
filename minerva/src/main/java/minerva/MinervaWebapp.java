@@ -70,6 +70,7 @@ import minerva.mask.AddMaskPage;
 import minerva.mask.DeleteMaskAction;
 import minerva.mask.EditFeatureFieldsPage;
 import minerva.mask.EditRelationsPage;
+import minerva.mask.FeatureFieldsFilesCleanupAction;
 import minerva.mask.FeaturesTablePage;
 import minerva.mask.MasksPage;
 import minerva.mask.QuicklyCreateFeaturesPage;
@@ -221,6 +222,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/b/:branch/:book/export", ExportBookAction.class);
         get("/b/:branch/:book/export-csv", ExportCsvBookAction.class); // temporär drin für WM
         get("/b/:branch/:book/validate", ValidationPage.class);
+get("/b/:branch/:book/ffcleanup", FeatureFieldsFilesCleanupAction.class); // XXX
 //get("/b/:branch/:book/menu", MenuStructureAction.class);
         get("/b/", CurrentWorkspaceAction.class); // falls man sich dahin verirren sollte
     }
