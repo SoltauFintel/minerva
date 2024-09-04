@@ -20,8 +20,8 @@ public class FeatureFieldsFilesCleanupAction extends BAction {
 			throw new RuntimeException("Only for feature tree");
 		}
 
-		final String bf = book.getFolder();
-		Set<String> filenames = book.dao().getFilenames(bf + "/feature-fields");
+		final String bf = book.getFolder() + "/";
+		Set<String> filenames = book.dao().getFilenames(bf + "feature-fields");
 		Set<String> existing = new HashSet<>();
 		Set<String> kill = new HashSet<>();
 		for (SeiteSO ft : book.getAlleSeiten()) {
@@ -33,12 +33,14 @@ public class FeatureFieldsFilesCleanupAction extends BAction {
 			if (existing.contains(dn)) {
 				ok++;
 			} else {
-				kill.add(bf + "/" + dn);
+				kill.add(bf + dn);
 			}
 		}
 		Logger.info("Anzahl: " + kill.size() + " | ok: " + ok);
 		if (!kill.isEmpty()) {
 			List<String> cant = new ArrayList<>();
+// TODO Problem hier: der sagt es wäre ein leerer Commit !?!?!?
+			System.out.println("kill="+kill.size());
 			book.dao().deleteFiles(kill, new CommitMessage("Delete unused *.ff files"), workspace, cant);
 			if (cant.isEmpty()) {
 				Logger.info("Löschen erfolgreich");

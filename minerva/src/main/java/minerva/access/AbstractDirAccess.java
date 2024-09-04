@@ -118,8 +118,11 @@ public abstract class AbstractDirAccess implements DirAccess {
                 cantBeDeleted.add(dn);
             }
         }
+System.out.println("Kontrolle 1: " + filenames.size()); // XXX DEBUG        
         filenames.removeAll(killList);
+System.out.println("Kontrolle 2: " + filenames.size()); // XXX DEBUG        
         filenames.addAll(addList);
+System.out.println("Kontrolle 3: " + filenames.size()); // XXX DEBUG
     }
 
     private void deleteFolder(File folder, Set<String> addList, List<String> cantBeDeleted, boolean deleteSubfolders) {
