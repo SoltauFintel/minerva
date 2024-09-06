@@ -401,4 +401,8 @@ saveFeatures=Save Features
 iAmResponsible=I am responsible.
 QuicklyCreateFeaturesTitle=Quickly Create Features
 QuicklyCreateFeaturesPageInfo=Please enter one feature per line. Prefix 0 to n minus signs for the indentation depth. The feature number can be specified after the feature title, separated by #.
-
+linkResolverPage1=Resolve links
+linkResolverPage2=Please search for a page title so that the link can be replaced with its page ID.
+linkResolverPage3=search by page title
+linkResolverPage4=Result list
+linkResolverPage5=A link with <br>address <b>"$h"</b> and title <b>"$t"</b> was found on the page "$p".

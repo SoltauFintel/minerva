@@ -59,11 +59,14 @@ public class LinkResolverPage extends SPage {
 
     private void fill(int index, InvalidLinksModel linksModel, Link link, String href) {
         put("href", href);
-        put("aTitle", link == null ? "" : esc(link.getTitle()));
         putInt("nextIndex", index + 1);
         putInt("index", index);
         putSize("size", linksModel.getLinks());
         put("result0", makeSearchHTML());
+        put("linkResolverPage5", n("linkResolverPage5")
+        		.replace("$h", href)
+        		.replace("$p", seite == null ? "" : esc(seite.getTitle()))
+        		.replace("$t", link == null ? "" : esc(link.getTitle())));
     }
 
     private void search(String search, int index) {
