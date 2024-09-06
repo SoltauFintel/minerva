@@ -10,6 +10,7 @@ import minerva.MinervaWebapp;
 import minerva.config.MinervaFactory;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
+import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
 import minerva.user.UserAccess;
 import minerva.workspace.WPage;
@@ -47,7 +48,7 @@ public class MenuPage extends WPage {
 
     private void menu() {
         MinervaFactory fac = MinervaWebapp.factory();
-        boolean isAdmin = "1".equals(ctx.req.session().attribute("admin"));
+        boolean isAdmin = UserSO.isAdmin(ctx);
         boolean booksOk = workspace.getBooks() != null && !workspace.getBooks().isEmpty();
         DataList list = list("commands");
         menu(list, "myTasks", "fa-inbox", "/w/:branch/my-tasks");

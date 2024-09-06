@@ -8,6 +8,7 @@ import com.github.template72.data.DataMap;
 import github.soltaufintel.amalia.web.action.Page;
 import minerva.base.NLS;
 import minerva.base.StringService;
+import minerva.model.UserSO;
 import minerva.user.UPage;
 import minerva.user.UserAccess;
 
@@ -37,7 +38,7 @@ public class CommentsPage extends Page {
     }
 
     private String commentsHTML(List<Comment> comments, CommentService sv, int ebene, DataList allCommentsIdList) {
-        boolean isAdmin = "1".equals(ctx.req.session().attribute("admin"));
+        boolean isAdmin = UserSO.isAdmin(ctx);
         StringBuilder sb = new StringBuilder();
         for (Comment c : comments) {
             DataMap m = new DataMap();

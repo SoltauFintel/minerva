@@ -24,7 +24,7 @@ public abstract class UPage extends Page {
         user = StatesSO.get(ctx).getUser();
         langs = MinervaWebapp.factory().getLanguages();
         model.put("N", "en".equals(user.getGuiLanguage()) ? NLS.dataMap_en : NLS.dataMap_de); // RB texts
-        isAdmin = "1".equals(ctx.req.session().attribute("admin"));
+        isAdmin = UserSO.isAdmin(ctx);
     }
 
     protected void header(String title) {

@@ -17,6 +17,7 @@ import minerva.exclusions.SeiteSichtbar;
 import minerva.model.BookSO;
 import minerva.model.BooksSO;
 import minerva.model.SeiteSO;
+import minerva.model.UserSO;
 import minerva.task.TaskService;
 import minerva.user.CustomerMode;
 import minerva.user.UserAccess;
@@ -29,7 +30,7 @@ public class MinervaPageInitializer extends PageInitializer {
         MinervaConfig config = MinervaWebapp.factory().getConfig();
         boolean gitlab = config.isGitlab();
         boolean hasUser = m.hasUser();
-        boolean isAdmin = "1".equals(ctx.req.session().attribute("admin"));
+        boolean isAdmin = UserSO.isAdmin(ctx);
         if (page instanceof Uptodatecheck
                 && gitlab
                 && m.getUser() != null && m.getBranch() != null

@@ -20,6 +20,7 @@ import org.pmw.tinylog.Logger;
 
 import com.google.common.base.Strings;
 
+import github.soltaufintel.amalia.spark.Context;
 import minerva.MinervaWebapp;
 import minerva.access.DirAccess;
 import minerva.base.FileService;
@@ -483,5 +484,9 @@ public class UserSO {
     
     public CustomerMode getCustomerMode() {
         return new CustomerMode(user.getCustomerMode());
+    }
+    
+    public static boolean isAdmin(Context ctx) {
+    	return "1".equals(ctx.req.session().attribute("admin"));
     }
 }
