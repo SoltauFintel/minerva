@@ -7,6 +7,7 @@ import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.user.UPage;
+import ohhtml.toc.HelpKeysForHeading;
 
 public class AllHelpKeysPage extends UPage {
 
@@ -31,6 +32,16 @@ public class AllHelpKeysPage extends UPage {
                 map.put("helpKey", esc(helpKey));
                 map.put("link", linkPrefix + seite.getId());
                 map.put("pageTitle", esc(seite.getTitle()));
+            }
+            if (seite.getSeite().getHkh() != null) {
+            	for (HelpKeysForHeading hkh : seite.getSeite().getHkh()) {
+            		for (String helpKey : hkh.getHelpKeys()) {
+            			DataMap map = list.add();
+            			map.put("helpKey", esc(helpKey));
+            			map.put("link", linkPrefix + seite.getId());
+            			map.put("pageTitle", esc(seite.getTitle() + " > " + hkh.getHeading()));
+            		}
+				}
             }
         }
     }
