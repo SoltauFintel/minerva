@@ -44,8 +44,9 @@ public abstract class CommonCommentService extends CommentService {
         lang = user.getGuiLanguage();
         dao = user.dao();
         WorkspaceSO workspace = user.getWorkspace(branch);
+		MinervaWebapp.factory().getBackendService().uptodatecheck(workspace, () -> Logger.info("CommonCommentService #" + id + " -> pull"));
         simpledao = new SimpleDirAccess(dao, workspace);
-        
+
         init(workspace, bookFolder, id);
     }
     
