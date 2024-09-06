@@ -23,6 +23,7 @@ import minerva.seite.ViewSeitePage;
 
 public class BookPage extends BPage implements Uptodatecheck {
     public static DeliverHtmlContent<BookSO> additionalButtons = i -> "";
+    public static DeliverHtmlContent<BookSO> additionalFeatureTreeButtons = i -> "";
     
     @Override
     protected void execute() {
@@ -55,6 +56,7 @@ public class BookPage extends BPage implements Uptodatecheck {
         put("Sortierung", n(sorted ? "alfaSorted" : "manuSorted"));
         put("newPage", n(book.isFeatureTree() ? "newFeature" : "newPage"));
         put("additionalButtons", additionalButtons.getHTML(book));
+        put("additionalFeatureTreeButtons", additionalFeatureTreeButtons.getHTML(book));
         put("hasPrevlink", false);
         boolean hasSeiten = !book.getSeiten().isEmpty();
         put("hasNextlink", hasSeiten);

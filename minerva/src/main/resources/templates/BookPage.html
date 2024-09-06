@@ -71,10 +71,7 @@
             {{Sortierung}}
         </p>
         {{if isFeatureTree}}
-<!-- TODO -->
-            <p><a href="/feature-numbers/{{branch}}/{{bookFolder}}" class="btn btn-default mw">Featurenummern</a></p>
-            <p><a href="/mask/{{branch}}/{{bookFolder}}/add-feature-numbers-to-jira" class="btn btn-default mw">{{N.saveFeatures}}</a></p>
-            <p><a href="/mask/{{branch}}/{{bookFolder}}/ticket-features-info" class="btn btn-default mw">Ticket Info</a></p>
+            {{additionalFeatureTreeButtons}}
             <p class="mb2"><a href="/responsibilities/{{branch}}/{{bookFolder}}" class="btn btn-default mw">{{N.Responsibilities}}</a></p>
         {{/if}}
         <p>
