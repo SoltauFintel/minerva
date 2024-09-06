@@ -405,4 +405,4 @@ linkResolverPage1=Resolve links
 linkResolverPage2=Please search for a page title so that the link can be replaced with its page ID.
 linkResolverPage3=search by page title
 linkResolverPage4=Result list
-linkResolverPage5=A link with <br>address <b>"$h"</b> and title <b>"$t"</b> was found on the page "$p".
+linkResolverPage5=A link with address <b>"$h"</b> and title <b>"$t"</b> was found on the page "$p".
