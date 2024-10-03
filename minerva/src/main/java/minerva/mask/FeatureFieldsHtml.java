@@ -207,7 +207,7 @@ public class FeatureFieldsHtml {
                 </div>
             </div>
              """
-            .replace("{value}", ff.get(f.getId()));
+            .replace("{value}", Escaper.esc(ff.get(f.getId())));
     }
 
     private String relations(FeatureFields ff) {
