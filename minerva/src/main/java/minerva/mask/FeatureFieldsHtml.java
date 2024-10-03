@@ -183,7 +183,7 @@ public class FeatureFieldsHtml {
                     </div>
                 </div>
                  """
-                .replace("{value}", ff.get(f.getId()));
+                .replace("{value}", Escaper.esc(ff.get(f.getId())));
     }
 
     private String textareaField(MaskField f, FeatureFields ff) {
@@ -195,7 +195,7 @@ public class FeatureFieldsHtml {
                     </div>
                 </div>
                  """
-                .replace("{value}", ff.get(f.getId()));
+                .replace("{value}", Escaper.esc(ff.get(f.getId())));
     }
 
     private String standardField(MaskField f, FeatureFields ff) {
