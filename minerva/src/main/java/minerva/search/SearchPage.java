@@ -65,15 +65,15 @@ public class SearchPage extends UPage {
 		            map2.put("path", esc(s.getPath()));
 		            map2.put("content", s.getContent());
 		            
-		            DataList list3 = map2.list("breadcrumbs");
-						for (int i = s.getBreadcrumbs().size() - 1; i >= 0; i--) {
-							Breadcrumb b = s.getBreadcrumbs().get(i);
-							list3.add() //
-									.put("link ", esc(b.getLink())) //
-									.put("title", esc(b.getTitle().getString(e.getKey())));
-						}
-						map2.put("hasBreadcrumbs", !s.getBreadcrumbs().isEmpty());
+					DataList list3 = map2.list("breadcrumbs");
+					for (int i = s.getBreadcrumbs().size() - 1; i >= 0; i--) {
+						Breadcrumb b = s.getBreadcrumbs().get(i);
+						list3.add() //
+								.put("link", esc(b.getLink())) //
+								.put("title", esc(b.getTitle().getString(e.getKey())));
 					}
-			    });
+					map2.put("hasBreadcrumbs", !s.getBreadcrumbs().isEmpty());
+				}
+		    });
 	}
 }
