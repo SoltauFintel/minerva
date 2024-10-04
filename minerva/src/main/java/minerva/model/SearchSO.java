@@ -114,6 +114,7 @@ public class SearchSO {
         
         // search features
         new FeatureFieldsService().search(workspace, x.toLowerCase(), lang, ret);
+        addBreadcrumbs(ret);
 		
         // search in other data
         if (additionalSearcher != null) {
@@ -122,21 +123,22 @@ public class SearchSO {
 				ret.addAll(ret2);
 			}
         }
-        addBreadcrumbs(ret);
         return ret;
     }
 
     private void addBreadcrumbs(List<SearchResult> result) {
     	for (SearchResult r : result) {
-			try {
-				String[] p = r.getPath().split("/"); // e.g. "handbuch/843xwy"
-				String bookFolder = p[0];
-				String id = p[1];
-				BookSO book = workspace.getBooks().byFolder(bookFolder);
-				r.getBreadcrumbs().addAll(book.getBreadcrumbs(id, new ViewAreaBreadcrumbLinkBuilder()));
-			} catch (Exception ignore) {
-System.err.println("path="+r.getPath());
-ignore.printStackTrace(); // XXX DEBUG
+			if (r.getBreadcrumbs().isEmpty()) {
+				try {
+					String[] p = r.getPath().split("/"); // e.g. "handbuch/843xwy"
+					String bookFolder = p[0];
+					String id = p[1];
+					BookSO book = workspace.getBooks().byFolder(bookFolder);
+					r.getBreadcrumbs().addAll(book.getBreadcrumbs(id, new ViewAreaBreadcrumbLinkBuilder()));
+				} catch (Exception e) {
+					Logger.debug("path: " + r.getPath());
+					Logger.debug(e);
+				}
 			}
 		}
 	}
