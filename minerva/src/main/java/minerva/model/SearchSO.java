@@ -135,6 +135,7 @@ public class SearchSO {
 				BookSO book = workspace.getBooks().byFolder(bookFolder);
 				r.getBreadcrumbs().addAll(book.getBreadcrumbs(id, new ViewAreaBreadcrumbLinkBuilder()));
 			} catch (Exception ignore) {
+System.err.println("path="+r.getPath());
 ignore.printStackTrace(); // XXX DEBUG
 			}
 		}
