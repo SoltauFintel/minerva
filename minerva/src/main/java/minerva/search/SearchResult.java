@@ -1,9 +1,15 @@
 package minerva.search;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import minerva.seite.Breadcrumb;
+
 public class SearchResult {
     private String path;
     private String title;
     private String content;
+    private final List<Breadcrumb> breadcrumbs = new ArrayList<>();
 
     public String getPath() {
         return path;
@@ -28,4 +34,8 @@ public class SearchResult {
     public void setContent(String content) {
         this.content = content;
     }
+
+	public List<Breadcrumb> getBreadcrumbs() {
+		return breadcrumbs;
+	}
 }

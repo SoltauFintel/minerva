@@ -12,6 +12,14 @@
                     <li class="search-result"><a href="/s/{{branch}}/{{r.path}}">{{r.title}}</a>
                         <sub class="langColor">[{{L.lang}}]</sub>
                         <br/><div class="textfrag">{{r.content}}</div>
+                        {{if r.hasBreadcrumbs}}
+                            <br/><small>
+                            {{each b in r.breadcrumbs}}
+                                <a href="{{b.link}}">{{b.title}}</a> &gt;
+                            {{/each}}
+                            <a href="/s/{{branch}}/{{r.path}}">{{r.title}}</a>
+                            </small>
+                        {{/if}}
                     </li>
                 {{/each}}
             {{/each}}

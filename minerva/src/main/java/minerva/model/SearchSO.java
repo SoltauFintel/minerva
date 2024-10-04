@@ -17,6 +17,7 @@ import minerva.mask.FeatureFieldsService;
 import minerva.search.CreatePageRequest;
 import minerva.search.CreateSiteRequest;
 import minerva.search.SearchResult;
+import minerva.seite.ViewAreaBreadcrumbLinkBuilder;
 
 /**
  * Indexing and search function
@@ -121,10 +122,25 @@ public class SearchSO {
 				ret.addAll(ret2);
 			}
         }
+        addBreadcrumbs(ret);
         return ret;
     }
 
-    public interface Searcher {
+    private void addBreadcrumbs(List<SearchResult> result) {
+    	for (SearchResult r : result) {
+			try {
+				String[] p = r.getPath().split("/"); // e.g. "/s/master/handbuch/843xwy"
+				String bookFolder = p[3];
+				String id = p[4];
+				BookSO book = workspace.getBooks().byFolder(bookFolder);
+				r.getBreadcrumbs().addAll(book.getBreadcrumbs(id, new ViewAreaBreadcrumbLinkBuilder()));
+			} catch (Exception ignore) {
+ignore.printStackTrace(); // XXX DEBUG
+			}
+		}
+	}
+
+	public interface Searcher {
     	List<SearchResult> search(WorkspaceSO workspace, String x, String lang);
     }
 }

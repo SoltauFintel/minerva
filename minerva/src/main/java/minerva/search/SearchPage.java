@@ -10,6 +10,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.base.StringService;
+import minerva.seite.Breadcrumb;
 import minerva.user.UPage;
 
 public class SearchPage extends UPage {
@@ -63,6 +64,14 @@ public class SearchPage extends UPage {
 		            map2.put("title", esc(s.getTitle()));
 		            map2.put("path", esc(s.getPath()));
 		            map2.put("content", s.getContent());
+		            
+		            DataList list3 = map2.list("breadcrumbs");
+		            for (Breadcrumb b : s.getBreadcrumbs()) {
+						list3.add()
+							.put("link", esc(b.getLink()))
+							.put("title", esc(b.getTitle().getString(e.getKey())));
+					}
+		            map2.put("hasBreadcrumbs", !s.getBreadcrumbs().isEmpty());
 		        }
 		    });
 	}
