@@ -1,5 +1,12 @@
 {{master: master}}
 
+<style>
+.searchResultBreadcrumbs a {
+    color: #666;
+    font-weight: 0;
+}
+</style>
+
 <div class="row"> 
     <div class="col-lg-12">
         <h1 class="page-header">{{N.volltextsuche}}: {{q}}</h1>
@@ -13,7 +20,7 @@
                         <sub class="langColor">[{{L.lang}}]</sub>
                         <br/><div class="textfrag">{{r.content}}</div>
                         {{if r.hasBreadcrumbs}}
-                            <br/><small>
+                            <br/><small class="searchResultBreadcrumbs">
                             {{each b in r.breadcrumbs}}
                                 <a href="{{b.link}}">{{b.title}}</a> &gt;
                             {{/each}}
