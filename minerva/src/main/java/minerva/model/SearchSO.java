@@ -129,9 +129,9 @@ public class SearchSO {
     private void addBreadcrumbs(List<SearchResult> result) {
     	for (SearchResult r : result) {
 			try {
-				String[] p = r.getPath().split("/"); // e.g. "/s/master/handbuch/843xwy"
-				String bookFolder = p[3];
-				String id = p[4];
+				String[] p = r.getPath().split("/"); // e.g. "handbuch/843xwy"
+				String bookFolder = p[0];
+				String id = p[1];
 				BookSO book = workspace.getBooks().byFolder(bookFolder);
 				r.getBreadcrumbs().addAll(book.getBreadcrumbs(id, new ViewAreaBreadcrumbLinkBuilder()));
 			} catch (Exception ignore) {
