@@ -20,11 +20,18 @@
                         <sub class="langColor">[{{L.lang}}]</sub>
                         <br/><div class="textfrag">{{r.content}}</div>
                         {{if r.hasBreadcrumbs}}
-                            <br/><small class="searchResultBreadcrumbs">
-                            {{each b in r.breadcrumbs}}
-                                <a href="{{b.link}}">{{b.title}}</a> &gt;
-                            {{/each}}
-                            <a href="/s/{{branch}}/{{r.path}}">{{r.title}}</a>
+                            <small class="searchResultBreadcrumbs">
+                                {{if r.internal}}
+                                    <i class="fa fa-book fa-internal"></i>
+                                {{else if r.isFeatureTree}}
+                                    <i class="fa-sitemap fa-sitemap-color"></i>
+                                {{else}}
+                                    <i class="fa fa-book greenbook"></i>
+                                {{/if}}
+	                            {{each b in r.breadcrumbs}}
+	                                <a href="{{b.link}}">{{b.title}}</a> &gt;
+	                            {{/each}}
+	                            <a href="/s/{{branch}}/{{r.path}}">{{r.title}}</a>
                             </small>
                         {{/if}}
                     </li>

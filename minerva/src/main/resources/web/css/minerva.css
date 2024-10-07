@@ -557,6 +557,10 @@ ul.pagetree {
     color: #909;
 }
 
+.fa-internal {
+    color: #f40;
+}
+
 .reply {
     margin-top: 2em;
     border: 1pt dashed grey;
