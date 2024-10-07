@@ -337,10 +337,6 @@ body {
     max-width: 500px;
 }
 
-.langColor {
-    color: #999;
-}
-
 .textareaExclusions {
     white-space: nowrap;
     overflow-x: auto;
@@ -746,7 +742,7 @@ ul.pagetree {
     background-color: #909;
 }
 
-.searchResultBreadcrumbs a {
-    color: #666;
+.searchResultBreadcrumbs, .searchResultBreadcrumbs a {
+    color: #99a;
     font-weight: normal;
 }

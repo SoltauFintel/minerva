@@ -10,7 +10,6 @@
             {{each L in langs}}
                 {{each r in L.result}}
                     <li class="search-result"><a href="/s/{{branch}}/{{r.path}}">{{r.title}}</a>
-                        <sub class="langColor">[{{L.lang}}]</sub>
                         <br/><div class="textfrag">{{r.content}}</div>
                         {{if r.hasBreadcrumbs}}
                             <small class="searchResultBreadcrumbs">
@@ -24,7 +23,7 @@
 	                            {{each b in r.breadcrumbs}}
 	                                <a href="{{b.link}}">{{b.title}}</a> &gt;
 	                            {{/each}}
-	                            <a href="/s/{{branch}}/{{r.path}}">{{r.title}}</a>
+	                            <a href="/s/{{branch}}/{{r.path}}">{{r.title}}</a> [{{L.lang}}]
                             </small>
                         {{/if}}
                     </li>
