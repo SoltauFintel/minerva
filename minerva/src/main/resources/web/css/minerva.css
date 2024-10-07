@@ -745,3 +745,8 @@ ul.pagetree {
 .featurenumber {
     background-color: #909;
 }
+
+.searchResultBreadcrumbs a {
+    color: #666;
+    font-weight: normal;
+}
