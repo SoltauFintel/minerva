@@ -406,3 +406,5 @@ linkResolverPage2=Bitte nach einem Seitentitel suchen, damit der Link mit dessen
 linkResolverPage3=nach Seitentitel suchen
 linkResolverPage4=Ergebnisliste
 linkResolverPage5=Es wurde in der Seite "$p" ein Link mit <br>Adresse <b>"$h"</b> und Titel <b>"$t"</b> gefunden.
+qbofftext=Zeige Suchergebnisse für alle Bücher
+buchfilter=Buchfilter

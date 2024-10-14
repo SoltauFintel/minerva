@@ -5,6 +5,14 @@
         <h1 class="page-header">{{N.volltextsuche}}: {{q}}</h1>
 
         <p>{{N.treffer}}: {{n}}</p>
+        {{if hasBooksfilter}}
+            <p>{{N.buchfilter}}: {{each b in booksfilter}}<a href="{{b.link}}">{{b.title}}</a>{{if not b.last}}, {{/if}} {{/each}}</p>
+            <hr/>
+        {{/if}}
+        {{if hasqb}}
+            <p><a href="{{qboff}}">{{N.qbofftext}}</a></p>
+            <hr/>
+        {{/if}}
         
         <ul>
             {{each L in langs}}

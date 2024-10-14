@@ -406,3 +406,5 @@ linkResolverPage2=Please search for a page title so that the link can be replace
 linkResolverPage3=search by page title
 linkResolverPage4=Result list
 linkResolverPage5=A link with address <b>"$h"</b> and title <b>"$t"</b> was found on the page "$p".
+qbofftext=Show results for all books
+buchfilter=Book filter

@@ -93,16 +93,24 @@ public class BooksSO extends MList<BookSO> {
         remove(x);
         save(cm);
     }
-    
-    public BookSO byFolder(String folder) {
+
+	public BookSO byFolder(String folder) {
+		BookSO ret = _byFolder(folder);
+		if (ret == null) {
+			throw new RuntimeException("Book does not exist!");
+		}
+		return ret;
+	}
+
+    public BookSO _byFolder(String folder) {
         for (BookSO book : this) {
             if (book.getBook().getFolder().equals(folder)) {
                 return book;
             }
         }
-        throw new RuntimeException("Book does not exist!");
+        return null;
     }
-    
+
     public int calculateNextPosition() {
         int max = 0;
         for (BookSO book : this) {

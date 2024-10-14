@@ -1,5 +1,6 @@
 package minerva.search;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,8 @@ import minerva.user.UPage;
 
 public class SearchPage extends UPage {
 	private int n;
+	private List<BookSO> booksfilter = new ArrayList<>();
+	private BookSO qb_book;
 	
     @Override
     protected void execute() {
@@ -28,16 +31,21 @@ public class SearchPage extends UPage {
             ctx.redirect("/w/" + esc(branch) + "/search?q=" + u(q));
         } else {
         	n = 0;
+        	WorkspaceSO workspace = user.getWorkspace(branch);
+			qb_book = workspace.getBooks()._byFolder(ctx.queryParam("qb"));
+        	
             Map<String, List<SearchResult>> results = getResults(branch, q);
-            Logger.info(user.getLogin() + " | " + branch
-                    + " | Search for \"" + q + "\": " + n + " page" + (n == 1 ? "" : "s"));
 
             put("branch", esc(branch));
             put("searchFocus", true);
             put("q", esc(q));
             put("hasq", !StringService.isNullOrEmpty(q));
-            fillList(results, user.getWorkspace(branch));
+			fillList(results, workspace);
             putInt("n", n);
+
+            fillBooksfilter(q, workspace);
+			Logger.info(user.getLogin() + " | " + branch + " | Search for \"" + q + "\": " + n + " page"
+					+ (n == 1 ? "" : "s") + (qb_book != null ? " | qb: " + qb_book.getBook().getFolder() : ""));
         }
     }
 
@@ -47,7 +55,6 @@ public class SearchPage extends UPage {
 		    List<SearchResult> result = user.getWorkspace(branch).getSearch().search(q, lang);
 		    int nn = result.size();
 		    if (nn > 0) {
-		        n += nn;
 		        results.put(lang, result);
 		    }
 		}
@@ -57,7 +64,7 @@ public class SearchPage extends UPage {
 	private void fillList(Map<String, List<SearchResult>> results, WorkspaceSO workspace) {
 		DataList list = list("langs");
 		results.entrySet().stream()
-		    .sorted((a, b) -> Integer.compare(b.getValue().size(), a.getValue().size()))
+		    .sorted((a, b) -> Integer.compare(b.getValue().size(), a.getValue().size())) // Language with more hits at begin
 		    .forEach(e -> {
 		        DataMap map = list.add();
 		        map.put("lang", esc(e.getKey()));
@@ -69,10 +76,22 @@ public class SearchPage extends UPage {
 	}
 
 	private void fillResult(SearchResult s, Entry<String, List<SearchResult>> e, DataList list, WorkspaceSO workspace) {
+		BookSO book = getBook(s, workspace);
+		
+		// booksfilter Auswahl anwenden
+		if (qb_book != null && book != null && !book.getBook().getFolder().equals(qb_book.getBook().getFolder())) {
+			return;
+		}
+		n++;
+		
 		DataMap map = list.add();
 		map.put("title", esc(s.getTitle()));
 		map.put("path", esc(s.getPath()));
 		map.put("content", s.getContent());
+		boolean hasBreadcrumbs = !s.getBreadcrumbs().isEmpty();
+		map.put("hasBreadcrumbs", hasBreadcrumbs);
+		map.put("isFeatureTree", book == null ? false : book.isFeatureTree());
+		map.put("isInternal", book == null ? false : book.isInternal());
 		
 		DataList list2 = map.list("breadcrumbs");
 		for (int i = s.getBreadcrumbs().size() - 1; i >= 0; i--) {
@@ -81,20 +100,40 @@ public class SearchPage extends UPage {
 					.put("link", esc(b.getLink())) //
 					.put("title", esc(b.getTitle().getString(e.getKey())));
 		}
-		boolean hasBreadcrumbs = !s.getBreadcrumbs().isEmpty();
-		map.put("hasBreadcrumbs", hasBreadcrumbs);
-		map.put("isFeatureTree", false);
-		map.put("isInternal", false);
-		if (hasBreadcrumbs) {
-			try {
-				String a = s.getBreadcrumbs().get(s.getBreadcrumbs().size() - 1).getLink();
-				int o = a.lastIndexOf("/");
-				a = a.substring(o + 1);
-				BookSO book = workspace.getBooks().byFolder(a);
-				map.put("isFeatureTree", book.isFeatureTree());
-				map.put("isInternal", book.isInternal());
-			} catch (Exception ignore) {
-			}
+		
+		if (book != null && !findBook(book)) {
+			booksfilter.add(book);
+			booksfilter.sort((a, b) -> a.getTitle().compareTo(b.getTitle()));
 		}
+	}
+
+	private BookSO getBook(SearchResult s, WorkspaceSO workspace) {
+		if (!s.getBreadcrumbs().isEmpty()) {
+			Breadcrumb first = s.getBreadcrumbs().get(s.getBreadcrumbs().size() - 1);
+			String folder = first.getLink();
+			int o = folder.lastIndexOf("/");
+			folder = folder.substring(o + 1);
+			return workspace.getBooks()._byFolder(folder);
+		}
+		return null;
+	}
+	
+	private boolean findBook(BookSO book) {
+		String folder = book.getBook().getFolder();
+		return booksfilter.stream().anyMatch(i -> i.getBook().getFolder().equals(folder));
+	}
+
+	private void fillBooksfilter(String q, WorkspaceSO workspace) {
+		put("hasBooksfilter", booksfilter.size() >= 2);
+		DataList list = list("booksfilter");
+		int i = 0;
+		for (BookSO book : booksfilter) {
+			list.add().put("title", esc(book.getTitle())) //
+					.put("link", "search?q=" + u(q) + "&qb=" + u(book.getBook().getFolder())) //
+					.put("last", i == booksfilter.size() - 1);
+			i++;
+		}
+		put("hasqb", qb_book != null);
+		put("qboff", "search?q=" + u(q));
 	}
 }
