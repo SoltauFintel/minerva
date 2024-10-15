@@ -52,6 +52,7 @@ public class PageMenu {
                     "fa-question-circle",
                     n("helpKeys") + " (" + model.get("helpKeysSize").toString() + ")");
         }
+        menuitem(i, viewlink + "/cross-book-links", "fa-share" + (seite.getSeite().getLinks().isEmpty() ? "" : " greenbook"), n("crossBookLinksMenu"));
         menuitem(i, viewLink + "/links", "fa-link", n("linkAnalysis"));
         additionalMenuItems(i);
         menuitem(i, "", "", "-");

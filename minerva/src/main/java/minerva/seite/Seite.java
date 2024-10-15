@@ -31,6 +31,8 @@ public class Seite {
     private int tocHeadingsLevels = 0;
     private int tocSubpagesLevels = 0;
     private String editorsNote;
+    /** cross-book links */
+    private final List<String> links = new ArrayList<>();
 
     public Seite() {
     }
@@ -163,5 +165,9 @@ public class Seite {
 
     public void setEditorsNote(String editorsNote) {
         this.editorsNote = editorsNote;
+    }
+
+    public List<String> getLinks() {
+        return links;
     }
 }

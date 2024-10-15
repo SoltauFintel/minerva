@@ -146,6 +146,7 @@ public class PublishService {
                 p.getHelpKeys().add(e);
             }
         }
+        p.getLinks().addAll(seite.getSeite().getLinks());
         return p;
     }
 }

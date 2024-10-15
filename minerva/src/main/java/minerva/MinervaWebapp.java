@@ -114,6 +114,7 @@ import minerva.seite.ToggleFavoriteAction;
 import minerva.seite.ToggleWatchAction;
 import minerva.seite.ViewSeitePage;
 import minerva.seite.link.CheckAllLinksPage;
+import minerva.seite.link.CrossBookLinksPage;
 import minerva.seite.link.LinkAnalysisPage;
 import minerva.seite.link.LinkResolverPage;
 import minerva.seite.move.MoveSeiteAckPage;
@@ -252,6 +253,7 @@ public class MinervaWebapp extends RouteDefinitions {
         post("/s/:branch/:book/:id/editorsnote", SaveEditorsNoteAction.class);
         form("/s/:branch/:book/:id/help-keys/:lang/:h", HelpKeysForHeadingPage.class);
         get("/s/:branch/:book/:id/cleanup-hkh", CleanupHelpKeysForHeadingsAction.class);
+        get("/s/:branch/:book/:id/cross-book-links", CrossBookLinksPage.class);
         
         // Attachments
         get("/s/:branch/:book/:id/attachments/:dn", DownloadAttachmentAction.class);
