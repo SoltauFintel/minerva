@@ -353,17 +353,7 @@ public class ValidatorService {
     public static class DeleteUnusedImages {
         
         public static void start() {
-            if (!MinervaOptions.CLEANUP_LOGIN.isSet() || !MinervaOptions.CLEANUP_PASSWORD.isSet()) {
-                Logger.error("Cleanup options not set in configuration. Go to Menu (in admin mode) > Configuration to enter the needed values.");
-                return;
-            }
-            String login = MinervaOptions.CLEANUP_LOGIN.get();
-            Logger.debug("UnusedImagesTimer | user: " + login);
-            User user = MinervaWebapp.factory().getBackendService().login(login, MinervaOptions.CLEANUP_PASSWORD.get(), null);
-            if (user == null) {
-            	return;
-            }
-			UserSO userSO = new UserSO(user);
+			UserSO userSO = login();
             List<String> langs = MinervaWebapp.factory().getLanguages();
             Set<String> filesToBeDeleted = new TreeSet<>();
             for (String branch : MinervaOptions.CLEANUP_BRANCHES.get().split(",")) {
@@ -397,6 +387,16 @@ public class ValidatorService {
             }
             Logger.debug("UnusedImagesTimer | end");
         }
+        
+    	public static UserSO login() {
+            if (!MinervaOptions.CLEANUP_LOGIN.isSet() || !MinervaOptions.CLEANUP_PASSWORD.isSet()) {
+                Logger.error("Cleanup login and/or password are not set in configuration. Go to Menu (in admin mode) > Configuration to enter the needed values.");
+                return null;
+            }
+            User user = MinervaWebapp.factory().getBackendService()
+            		.login(MinervaOptions.CLEANUP_LOGIN.get(), MinervaOptions.CLEANUP_PASSWORD.get(), null);
+            return user == null ? null : new UserSO(user);
+    	}
     }
 
 	private void extractLinks(SeiteSO seite, String lang, ValidationResult result) {
