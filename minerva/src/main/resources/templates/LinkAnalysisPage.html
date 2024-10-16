@@ -16,11 +16,19 @@
                 </tr>
                 {{each h in links}}
                     <tr>
-                    <td>{{h.lang}} </td> <td> {{if h.outgoing}}<span style="color: #0a0;">outgoing</span>{{else}}<span
-                        style="color: blue;">incoming</span>{{/if}} {{if h.internal}}internal{{else}}<span
-                        style="color: red;">external</span>{{/if}}
-                        </td><td> <a href="{{h.href}}">{{h.linkTitle}}</a></td>
-                        <td>{{h.pageTitle}}</td></tr>
+                        <td>{{h.lang}}</td>
+                        <td>
+                            {{if h.outgoing}}<span style="color: #0a0;">outgoing</span>{{else}}<span style="color: blue;">incoming</span>{{/if}}
+                            {{if h.crossbook}}<span style="color: #909;">cross-book</span>{{else if h.internal}}internal{{else}}<span style="color: red;">external</span>{{/if}}
+                        </td>
+                        {{if h.crossbook}}
+                            <td></td>
+                            <td><a href="{{h.href}}">{{h.pageTitle}}</a></td>
+                        {{else}}
+                            <td><a href="{{h.href}}">{{h.linkTitle}}</a></td>
+                            <td>{{h.pageTitle}}</td>
+                        {{/if}}
+                    </tr>
                 {{/each}}
             </table>
         {{else}}
