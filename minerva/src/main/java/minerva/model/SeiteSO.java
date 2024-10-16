@@ -265,8 +265,18 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     
     public void remove() {
         Set<String> filenamesToDelete = new HashSet<>();
-        remove(filenamesToDelete);
+        List<SeiteSO> changedPages = new ArrayList<>();
+        remove(filenamesToDelete, changedPages);
 
+        changedPages.removeIf(s -> filenamesToDelete.contains(s.filenameMeta()));
+        if (!changedPages.isEmpty()) {
+            Map<String, String> files = new HashMap<>();
+            for (SeiteSO s : changedPages) {
+                s.saveMetaTo(files);
+            }
+            dao().saveFiles(files, new CommitMessage(this, "page deleted (cross-book links cleanup)"), book.getWorkspace());
+        }
+        
         List<String> cantBeDeleted = new ArrayList<>();
         dao().deleteFiles(filenamesToDelete,
                 new CommitMessage(this, "page deleted"), book.getWorkspace(), cantBeDeleted);
@@ -292,14 +302,16 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         }
     }
     
-    public void remove(Set<String> filenamesToDelete) {
+    public void remove(Set<String> filenamesToDelete, List<SeiteSO> changedPages) {
         // Untergeordnete Seiten
         for (SeiteSO unterseite : seiten) {
-            unterseite.remove(filenamesToDelete); // rekursiv
+            unterseite.remove(filenamesToDelete, changedPages); // rekursiv
         }
         
         String bookFolder = book.getFolder();
         String r = getId() + "/*";
+        
+        removeCrossBookLinksTargetingThisPage(changedPages);
         
         // Images für diese Seite
 		filenamesToDelete.add(bookFolder + "/img/" + r);
@@ -320,6 +332,27 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         
         // Metadaten dieser Seite
         filenamesToDelete.add(filenameMeta());
+    }
+    
+    private void removeCrossBookLinksTargetingThisPage(List<SeiteSO> changedPages) {
+        String x = book.getBook().getFolder() + "/" + getId();
+        for (BookSO b : book.getWorkspace().getBooks()) {
+            for (SeiteSO s : b.getAlleSeiten()) {
+                if (s.getSeite().getLinks().removeIf(i -> i.equals(x))) {
+                    String xId = s.getId();
+                    boolean found = false;
+                    for (SeiteSO j : changedPages) {
+                        if (j.getId().equals(xId)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        changedPages.add(s);
+                    }
+                }
+            }
+        }
     }
 
     public void move(String parentId) {
