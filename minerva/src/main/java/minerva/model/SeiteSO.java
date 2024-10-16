@@ -268,14 +268,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         List<SeiteSO> changedPages = new ArrayList<>();
         remove(filenamesToDelete, changedPages);
 
-        changedPages.removeIf(s -> filenamesToDelete.contains(s.filenameMeta()));
-        if (!changedPages.isEmpty()) {
-            Map<String, String> files = new HashMap<>();
-            for (SeiteSO s : changedPages) {
-                s.saveMetaTo(files);
-            }
-            dao().saveFiles(files, new CommitMessage(this, "page deleted (cross-book links cleanup)"), book.getWorkspace());
-        }
+        crossBookLinks_persistChangedPages(filenamesToDelete, changedPages);
         
         List<String> cantBeDeleted = new ArrayList<>();
         dao().deleteFiles(filenamesToDelete,
@@ -301,8 +294,8 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
             throw new UserMessage("cantDeleteAllFiles", book.getWorkspace(), msg -> msg.replace("$id", getId()));
         }
     }
-    
-    public void remove(Set<String> filenamesToDelete, List<SeiteSO> changedPages) {
+
+	public void remove(Set<String> filenamesToDelete, List<SeiteSO> changedPages) {
         // Untergeordnete Seiten
         for (SeiteSO unterseite : seiten) {
             unterseite.remove(filenamesToDelete, changedPages); // rekursiv
@@ -354,6 +347,17 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
             }
         }
     }
+    
+    public void crossBookLinks_persistChangedPages(Set<String> filenamesToDelete, List<SeiteSO> changedPages) {
+        changedPages.removeIf(s -> filenamesToDelete.contains(s.filenameMeta()));
+        if (!changedPages.isEmpty()) {
+            Map<String, String> files = new HashMap<>();
+            for (SeiteSO s : changedPages) {
+                s.saveMetaTo(files);
+            }
+            dao().saveFiles(files, new CommitMessage(this, "page deleted (cross-book links cleanup)"), book.getWorkspace());
+        }
+	}
 
     public void move(String parentId) {
         // Seite bei neuer Parent-Seite hinzfuügen
