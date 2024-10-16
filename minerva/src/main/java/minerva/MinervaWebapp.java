@@ -374,7 +374,7 @@ public class MinervaWebapp extends RouteDefinitions {
                 .withInitializer(config -> MinervaOptions.options = new MinervaOptions(MinervaOptions.getConfigFile(MinervaOptions.MAIN_CONFIG, config)))
                 .withInitializer(config -> factory = new MinervaFactory(new MinervaConfig(config)))
                 .withInitializer(config -> CommentService.services.put(ctx -> ctx.path().startsWith("/sc/"), SeiteCommentService.class))
-                .withInitializer(config -> JournalTimer.start(config))
+                .withInitializer(config -> JournalTimer.startTimer(config))
                 .withInitializer(config -> UnusedImagesTimer.startTimer())
                 .withAuth(new MinervaAuth());
     }

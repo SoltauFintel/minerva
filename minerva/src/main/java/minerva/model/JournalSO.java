@@ -108,7 +108,7 @@ public class JournalSO {
     public static class JournalTimer extends BaseTimer {
         private static String cron;
         
-        public static void start(AppConfig config) {
+        public static void startTimer(AppConfig config) {
             cron = config.get("JournalTimer.cron", "0 0 6 1 * ?"); // first day of month 6:00
             new JournalTimer().start();
         }
