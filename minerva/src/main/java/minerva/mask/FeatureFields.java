@@ -21,7 +21,7 @@ public class FeatureFields {
     /** key: field id, value: field content */
     private final Map<String, String> fields = new HashMap<>();
     private final Set<String> pages = new HashSet<>();
-    private final Set<String> tickets = new HashSet<>();
+    private final Set<String> tickets = new HashSet<>(); // unused
     private final Set<String> links = new HashSet<>();
     
     /** Must only be called by FeatureFields.create(feature)! */
@@ -94,6 +94,10 @@ public class FeatureFields {
         return pages;
     }
 
+    /**
+     * @deprecated do not use
+     * @return -
+     */
     public Set<String> getTickets() {
         return tickets;
     }

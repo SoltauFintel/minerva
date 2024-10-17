@@ -141,10 +141,9 @@ public class EditFeatureFieldsPage extends SPage {
     
     private void saveRelations(FeatureFieldsService sv, FeatureFields ff, List<Relation> seiten) {
         List<String> pages = get("pages");
-        List<String> tickets = get("tickets");
         List<String> links = get("links");
         
-        boolean dirty = !pages.isEmpty() || !tickets.isEmpty() || !links.isEmpty();
+		boolean dirty = !pages.isEmpty() || !links.isEmpty();
         for (Relation s : seiten) {
             if ("on".equals(ctx.formParam(s.getId()))) {
                 s.deleteFrom(ff);
@@ -155,7 +154,6 @@ public class EditFeatureFieldsPage extends SPage {
         if (dirty) {
             validate(pages, links);
             ff.getPages().addAll(pages);
-            ff.getTickets().addAll(tickets);
             ff.getLinks().addAll(links);
             sv.set(seite, ff);
         }
