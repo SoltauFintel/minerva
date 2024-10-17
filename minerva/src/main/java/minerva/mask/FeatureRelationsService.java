@@ -74,7 +74,7 @@ public class FeatureRelationsService {
             SeiteSO seite = book.getWorkspace().findPage(id);
             link = seite == null ? "" : "/s/{branch}/" + seite.getBook().getBook().getFolder() + "/" + id;
             title = seite == null ? id : seite.getTitle();
-            icon = seite.isFeatureTree() ? "fa-file fa-sitemap-color" : "fa-file-text greenbook";
+            icon = seite.isFeatureTree() ? "fa-sitemap fa-sitemap-color" : "fa-file-text greenbook";
             this.deleteRoutine = deleteRoutine;
         }
 
@@ -163,7 +163,7 @@ public class FeatureRelationsService {
 
         @Override
         public String getIcon() {
-            return "fa-globe bluebook";
+            return link != null && link.contains("atlassian.net/wiki/") ? "fa-file-text-o ftConfluenceLinkColor" : "fa-globe ftLinkColor";
         }
 
         @Override

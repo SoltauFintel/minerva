@@ -553,6 +553,14 @@ ul.pagetree {
     color: #909;
 }
 
+.ftLinkColor {
+    color: #9c6808;
+}
+
+.ftConfluenceLinkColor {
+    color: #0c66e4;
+}
+
 .fa-internal {
     color: #f40;
 }
