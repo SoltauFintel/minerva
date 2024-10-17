@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import github.soltaufintel.amalia.base.IdGenerator;
-import minerva.config.MinervaOptions;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 
@@ -23,7 +22,6 @@ public class FeatureRelationsService {
 
     private void wegfuehrendeBeziehungen(FeatureFields ff, List<Relation> relations, BookSO book) {
         ff.getPages().forEach(_id -> relations.add(new PageRelation(_id, book, i -> i.getPages().remove(_id))));
-        ff.getTickets().forEach(ticket -> relations.add(new TicketRelation(ticket)));
         ff.getLinks().forEach(link -> relations.add(new LinkRelation(link)));
     }
 
@@ -101,39 +99,6 @@ public class FeatureRelationsService {
         @Override
         public void deleteFrom(FeatureFields ff) {
             deleteRoutine.delete(ff);
-        }
-    }
-    
-    public static class TicketRelation implements Relation {
-        private final String ticket;
-        
-        public TicketRelation(String ticket) {
-            this.ticket = ticket;
-        }
-        
-        @Override
-        public String getId() {
-            return ticket;
-        }
-        
-        @Override
-        public String getTitle() {
-            return ticket;
-        }
-
-        @Override
-        public String getLink() {
-			return "https://" + MinervaOptions.JIRA_CUSTOMER.get() + ".atlassian.net/browse/" + ticket;
-        }
-
-        @Override
-        public String getIcon() {
-            return "fa-bookmark ticket1";
-        }
-
-        @Override
-        public void deleteFrom(FeatureFields ff) {
-            ff.getTickets().remove(ticket);
         }
     }
     
