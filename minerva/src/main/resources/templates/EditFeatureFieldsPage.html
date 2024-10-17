@@ -1,9 +1,53 @@
 {{master: master2}}
 
+<style>
+.pheader {
+    font-size: 12pt;
+}
+</style>
+
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">{{header}}</h1>
+        <p class="pheader">{{N.editFeatureFields}}</p>
         {{featureFields}}
+        
+        <p class="pheader">{{N.createRelations}}</p>
+        <p>{{N.relationsInfo}}</p>
+
+        <div class="form-group">
+            <label for="pages" class="col-lg-2 control-label">Feature- oder Seite-ID</label>
+            <div class="col-lg-2">
+                <textarea class="form-control" rows="4" id="pages" name="pages" autofocus></textarea>
+            </div>
+            <label for="links" class="col-lg-1 control-label">Links</label>
+            <div class="col-lg-4">
+                <textarea class="form-control" rows="4" id="links" name="links"></textarea>
+            </div>
+        </div>
+        
+        {{if hasSeiten}}
+            <div class="form-group">
+                <div class="col-lg-9">
+                    <p class="pheader">{{N.zuLoeschendeBeziehungenAnhaken}}</p>
+                    {{each s in seiten}}
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="{{s.id}}"{{if not s.isDeletable}} disabled{{/if}}> {{s.title}}</label>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        {{/if}}
+
+        <div class="form-group">
+            <div class="col-lg-5">
+                <button type="submit" class="btn btn-primary br" onclick="document.querySelector('#s1').style='';">{{N.save}}
+                    <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
+                <a href="{{viewlink}}" class="btn btn-default">{{N.cancel}}</a>
+            </div>
+        </div>
+        </fieldset></form>
+        
     </div>
 </div>
 

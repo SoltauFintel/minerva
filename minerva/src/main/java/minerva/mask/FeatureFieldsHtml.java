@@ -51,44 +51,26 @@ public class FeatureFieldsHtml {
                     .replace("{label}", f.getLabel());
         }
         if (!fields.isEmpty()) {
-            if (editMode) {
-                ret += saveButton();
-            } else {
+            if (!editMode) {
                 String st = buttons(ff);
                 ret += st;
             }
         }
-        ret = ret.replace("{branch}", seite.getBook().getWorkspace().getBranch())
+        return ret.replace("{branch}", seite.getBook().getWorkspace().getBranch())
                 .replace("{bookFolder}", seite.getBook().getBook().getFolder())
                 .replace("{seiteId}", seite.getId());
-        return ret + "</fieldset>\n</form>\n" + (editMode ? "" : "<hr/>");
-    }
-
-    private String saveButton() {
-        return """
-                <div class="form-group">
-                    <div class="col-lg-offset-2 col-lg-5">
-                        <button type="submit" class="btn btn-primary br" onclick="document.querySelector('#s1').style='';">{save}
-                            <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
-                        <a href="/s/{branch}/{bookFolder}/{seiteId}" class="btn btn-default">{cancel}</a>
-                    </div>
-                </div>
-                """
-                .replace("{save}", n("save"))
-                .replace("{cancel}", n("cancel"));
+        // no closing </fieldset></form> !
     }
 
     private String buttons(FeatureFields ff) {
         String li = "/{branch}/{bookFolder}/{seiteId}";
         String st = "<div class=\"form-group\"><div class=\"col-lg-8 col-lg-offset-2\">"
-                + "<a href=\"/ff" + li + "\" class=\"btn btn-primary btn-sm br\">{editFeatureFields}</a>"
-                + "<a href=\"/fr" + li + "\" class=\"btn btn-default btn-sm br\">{createRelations}</a>";
+                + "<a href=\"/ff" + li + "\" class=\"btn btn-primary btn-sm br\">{editFeatureFields}</a>";
         if (seite.hasFt_tag()) {
             st += "<a href=\"/f" + li + "\" class=\"btn btn-success btn-lg br\"><i class=\"fa fa-table\"></i> " + n("Features") + "</a>";
         }
         st += getAdditionalButtons(seite, ff) + "\n</div></div>\n" + relations(ff);
-        return st.replace("{editFeatureFields}", n("editFeatureFields")) //
-                .replace("{createRelations}", n("createRelations"));
+        return st.replace("{editFeatureFields}", n("editFeatureFieldsBtn"));
     }
     
     protected String getAdditionalButtons(SeiteSO seite, FeatureFields ff) {
