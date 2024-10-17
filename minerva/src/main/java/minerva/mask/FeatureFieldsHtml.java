@@ -65,11 +65,18 @@ public class FeatureFieldsHtml {
     private String buttons(FeatureFields ff) {
         String li = "/{branch}/{bookFolder}/{seiteId}";
         String st = relations(ff);
+        boolean indent = st.isEmpty();
+        if (indent) {
+            st += "<div class=\"form-group\"><div class=\"col-lg-8 col-lg-offset-2\">";
+        }
         st += "<a href=\"/ff" + li + "\" class=\"btn btn-warning br\"><i class=\"fa fa-sitemap\"></i> {editFeatureFields}</a>";
         if (seite.hasFt_tag()) {
             st += "<a href=\"/f" + li + "\" class=\"btn btn-success btn-lg br\"><i class=\"fa fa-table\"></i> " + n("Features") + "</a>";
         }
         st += getAdditionalButtons(seite, ff);
+        if (indent) {
+            st += "</div></div>";
+        }
         return st.replace("{editFeatureFields}", n("editFeatureFieldsBtn"));
     }
     
