@@ -229,10 +229,11 @@ public class FeatureFieldsHtml {
 			top.append("<td>");
 			top.append(n(muster.getColumnTitleKey()));
 			top.append("</td>");
-			bottom.append("<td><ul>");
+            bottom.append("<td><ul class=\"ulFeatures\">");
 			for (Relation s : relations) {
 				if (s.getColumn() == col.intValue()) {
-					bottom.append("<li><i class=\"fa {icon}\"></i> <a href=\"{link}\"{target}>{title}</a></li>" //
+					bottom.append(("<li>" + (s.noBreak() ? "<nobr>" : "") + "<i class=\"fa {icon}\"></i> <a href=\"{link}\"{target}>{title}</a>" //
+					        + (s.noBreak() ? "</nobr>" : "") + "</li>") //
 		                  .replace("{icon}", s.getIcon()) //
 		                  .replace("{link}", s.getLink()) //
 		                  .replace("{target}", s.getLink().startsWith("http") ? " target=\"_blank\"" : "") //

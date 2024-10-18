@@ -64,6 +64,10 @@ public class FeatureRelationsService {
         }
         
         void deleteFrom(FeatureFields ff);
+        
+        default boolean noBreak() {
+            return false;
+        }
     }
     
     public static class PageRelation implements Relation {

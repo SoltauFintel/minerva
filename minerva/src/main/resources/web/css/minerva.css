@@ -774,3 +774,9 @@ table.relationstable ul {
 .pheader {
     font-size: 14pt;
 }
+
+.ulFeatures {
+    max-height: 350px;
+    overflow-y: auto;
+    min-width: 12em;
+}
