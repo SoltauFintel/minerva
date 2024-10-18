@@ -139,7 +139,8 @@ public class FeatureRelationsService {
         
         @Override
         public String getTitle() {
-            return link;
+            final int max = 70;
+            return link.length() > max + 3 ? (link.substring(0, max) + "...") : link;
         }
 
         @Override
