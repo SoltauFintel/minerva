@@ -54,15 +54,16 @@ public class EditFeatureFieldsPage extends SPage {
 
 	private void save(MaskAndDataFields mad, List<Relation> relations) {
 	    // Feature fields ----
+	    FeatureFields ff = mad.getDataFields();
 		List<FeatureFieldChange> fields = new ArrayList<>();
-		for (MaskField maskField : mad.getMaskFields()) {
+        for (MaskField maskField : mad.getMaskFields()) {
 		    if (!maskField.isImportField()) {
 		        String id = maskField.getId();
-		        String oldValue = mad.getDataFields().get(id);
+		        String oldValue = ff.get(id);
 		        String value = getValue(maskField);
 		        uniqueness(maskField, value, oldValue, mad);
-		        mad.getDataFields().set(id, value);
-		        fields.add(new FeatureFieldChange(id, oldValue, mad.getDataFields().get(id)/*set() could change value!*/));
+		        ff.set(id, value);
+		        fields.add(new FeatureFieldChange(id, oldValue, ff.get(id)/*set() could change value!*/));
 		    }
 		}
 		
@@ -72,14 +73,14 @@ public class EditFeatureFieldsPage extends SPage {
         boolean dirty = !pages.isEmpty() || !links.isEmpty();
         for (Relation r : relations) {
             if ("on".equals(ctx.formParam(r.getId()))) {
-                r.deleteFrom(mad.getDataFields());
+                r.deleteFrom(ff);
                 dirty = true;
             }
         }
         if (dirty) {
             validate(pages, links);
-            mad.getDataFields().getPages().addAll(pages);
-            mad.getDataFields().getLinks().addAll(links);
+            ff.getPages().addAll(pages);
+            ff.getLinks().addAll(links);
         }
         
         // save ----
