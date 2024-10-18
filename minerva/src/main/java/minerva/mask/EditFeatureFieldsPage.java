@@ -26,12 +26,9 @@ public class EditFeatureFieldsPage extends SPage {
     @Override
     protected void execute() {
         MaskAndDataFields mad = new MaskAndDataFields(seite);
-        FeatureFieldsService sv = new FeatureFieldsService();
-        FeatureFields ff = sv.get(seite);
-        List<Relation> seiten = new FeatureRelationsService().getRelations(seite, ff); 
+        List<Relation> seiten = new FeatureRelationsService().getRelations(seite, mad.getDataFields()); 
         if (isPOST()) {
-        	saveFeatureFields(mad);
-            saveRelations(sv, ff, seiten);
+        	save(mad, seiten);
             ctx.redirect(viewlink);
         } else {
 			Logger.info(user.getLogin() + " | " + branch + " | Edit feature fields+relations " + id + " " + seite.getTitle());
@@ -55,7 +52,8 @@ public class EditFeatureFieldsPage extends SPage {
         }
     }
 
-	private void saveFeatureFields(MaskAndDataFields mad) {
+	private void save(MaskAndDataFields mad, List<Relation> relations) {
+	    // Feature fields ----
 		List<FeatureFieldChange> fields = new ArrayList<>();
 		for (MaskField maskField : mad.getMaskFields()) {
 		    if (!maskField.isImportField()) {
@@ -67,8 +65,26 @@ public class EditFeatureFieldsPage extends SPage {
 		        fields.add(new FeatureFieldChange(id, oldValue, mad.getDataFields().get(id)/*set() could change value!*/));
 		    }
 		}
-		mad.save();
-		editFeatureFieldListener.changed(fields);
+		
+		// Relations ----
+        List<String> pages = get("pages");
+        List<String> links = get("links");
+        boolean dirty = !pages.isEmpty() || !links.isEmpty();
+        for (Relation r : relations) {
+            if ("on".equals(ctx.formParam(r.getId()))) {
+                r.deleteFrom(mad.getDataFields());
+                dirty = true;
+            }
+        }
+        if (dirty) {
+            validate(pages, links);
+            mad.getDataFields().getPages().addAll(pages);
+            mad.getDataFields().getLinks().addAll(links);
+        }
+        
+        // save ----
+        mad.save();
+        editFeatureFieldListener.changed(fields);
 	}
 
     private String getValue(MaskField maskField) {
@@ -139,26 +155,6 @@ public class EditFeatureFieldsPage extends SPage {
     	void changed(List<FeatureFieldChange> fields);
     }
     
-    private void saveRelations(FeatureFieldsService sv, FeatureFields ff, List<Relation> seiten) {
-        List<String> pages = get("pages");
-        List<String> links = get("links");
-        
-		boolean dirty = !pages.isEmpty() || !links.isEmpty();
-        for (Relation s : seiten) {
-            if ("on".equals(ctx.formParam(s.getId()))) {
-                s.deleteFrom(ff);
-                dirty = true;
-            }
-        }
-        
-        if (dirty) {
-            validate(pages, links);
-            ff.getPages().addAll(pages);
-            ff.getLinks().addAll(links);
-            sv.set(seite, ff);
-        }
-    }
-
     private List<String> get(String name) {
         String w = ctx.formParam(name);
         if (StringService.isNullOrEmpty(w)) {
