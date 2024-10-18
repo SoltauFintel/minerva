@@ -16,7 +16,7 @@ public class FeatureRelationsService {
         wegfuehrendeBeziehungen(ff, relations, book);
         ankommendeBeziehungen(feature, relations, book);
         relationsAdder.addRelations(feature, ff, relations);
-        relations.sort((a, b) -> a.getTitle().compareToIgnoreCase(b.getTitle()));
+        relations.sort((a, b) -> a.getSort().compareToIgnoreCase(b.getSort()));
         return relations;
     }
 
@@ -52,6 +52,12 @@ public class FeatureRelationsService {
         String getLink();
         
         String getIcon();
+        
+        int getColumn();
+        
+        String getColumnTitleKey();
+        
+        String getSort();
         
         default boolean isDeletable() {
         	return true;
@@ -93,13 +99,28 @@ public class FeatureRelationsService {
 
         @Override
         public String getIcon() {
-            return icon;
+            return icon + " fa-fw";
         }
 
         @Override
         public void deleteFrom(FeatureFields ff) {
             deleteRoutine.delete(ff);
         }
+
+		@Override
+		public int getColumn() {
+			return 10;
+		}
+
+		@Override
+		public String getColumnTitleKey() {
+			return "frctPage";
+		}
+
+		@Override
+		public String getSort() {
+			return title;
+		}
     }
     
     public static class LinkRelation implements Relation {
@@ -107,7 +128,7 @@ public class FeatureRelationsService {
         private final String id;
         
         private LinkRelation(String link) {
-            this.link = link;
+            this.link = link == null ? "" : link;
             id = "link_" + IdGenerator.code6(link);
         }
 
@@ -128,13 +149,28 @@ public class FeatureRelationsService {
 
         @Override
         public String getIcon() {
-            return link != null && link.contains("atlassian.net/wiki/") ? "fa-file-text-o ftConfluenceLinkColor" : "fa-globe ftLinkColor";
+            return link.contains("atlassian.net/wiki/") ? "fa-file-text-o ftConfluenceLinkColor fa-fw" : "fa-globe ftLinkColor fa-fw";
         }
 
         @Override
         public void deleteFrom(FeatureFields ff) {
             ff.getLinks().remove(link);
         }
+
+		@Override
+		public int getColumn() {
+			return 50;
+		}
+
+		@Override
+		public String getColumnTitleKey() {
+			return "frctLink";
+		}
+
+		@Override
+		public String getSort() {
+			return (link.contains("atlassian.net/wiki/") ? "1" : "2") + link;
+		}
     }
     
     public interface RelationsAdder {

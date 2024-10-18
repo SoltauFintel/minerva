@@ -413,3 +413,5 @@ crossBookLinks=Verknüpfe Seiten aus anderen Büchern
 AddPage=Seite hinzufügen
 NoLinkedPages=Es wurden bisher keine Seiten verknüpft.
 NoPagesToAdd=Es gibt keine Seiten zum Hinzufügen.
+frctLink=Links
+frctPage=Features/Seiten

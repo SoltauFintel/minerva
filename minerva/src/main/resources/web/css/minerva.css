@@ -754,3 +754,23 @@ ul.pagetree {
     color: #99a;
     font-weight: normal;
 }
+
+table.relationstable {
+    border-collapse: collapse;
+    margin-bottom: 1em;
+}
+
+table.relationstable td {
+    border: 1px solid #666;
+    padding: 1em;
+    vertical-align: top;
+}
+
+table.relationstable ul {
+	padding-left: 0em;
+	list-style: none;
+}
+
+.pheader {
+    font-size: 14pt;
+}

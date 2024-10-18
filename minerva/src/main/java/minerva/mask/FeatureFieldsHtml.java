@@ -1,7 +1,8 @@
 package minerva.mask;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
+import java.util.TreeSet;
 
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.base.NLS;
@@ -200,18 +201,50 @@ public class FeatureFieldsHtml {
     }
 
     private String relations(FeatureFields ff) {
-        List<Relation> seiten = new FeatureRelationsService().getRelations(seite, ff);
-        if (seiten.isEmpty()) {
+        List<Relation> relations = new FeatureRelationsService().getRelations(seite, ff);
+        if (relations.isEmpty()) {
             return "";
         }
-        return "<p><b>" + n("relations") + "</b></p><ul>"
-                + seiten.stream().map(s ->
-                    "<li><i class=\"fa {icon}\"></i> <a href=\"{link}\"{target}>{title}</a></li>" //
-                        .replace("{icon}", s.getIcon()) //
-                        .replace("{link}", s.getLink()) //
-                        .replace("{target}", s.getLink().startsWith("http") ? " target=\"_blank\"" : "") //
-                        .replace("{title}", Escaper.esc(s.getTitle()))).collect(Collectors.joining())
-                + "</ul>";
+        Set<Integer> cols = new TreeSet<>();
+        for (Relation r : relations) {
+        	cols.add(Integer.valueOf(r.getColumn()));
+        }
+		StringBuilder top = new StringBuilder();
+		StringBuilder bottom = new StringBuilder();
+		top.append("<p><b>");
+		top.append(n("relations"));
+		top.append("</b></p><table class=\"relationstable\"><tr>");
+		bottom.append("<tr>");
+		for (Integer col : cols) {
+			Relation muster = null;
+			for (Relation r : relations) {
+				if (r.getColumn() == col.intValue()) {
+					muster = r;
+					break;
+				}
+			}
+			if (muster == null) { // can not happen
+				continue;
+			}
+			top.append("<td>");
+			top.append(n(muster.getColumnTitleKey()));
+			top.append("</td>");
+			bottom.append("<td><ul>");
+			for (Relation s : relations) {
+				if (s.getColumn() == col.intValue()) {
+					bottom.append("<li><i class=\"fa {icon}\"></i> <a href=\"{link}\"{target}>{title}</a></li>" //
+		                  .replace("{icon}", s.getIcon()) //
+		                  .replace("{link}", s.getLink()) //
+		                  .replace("{target}", s.getLink().startsWith("http") ? " target=\"_blank\"" : "") //
+		                  .replace("{title}", Escaper.esc(s.getTitle())));
+				}				
+			}
+			bottom.append("</ul></td>\n");
+		}
+		top.append("</tr>\n");
+		bottom.append("</tr></table>");
+		top.append(bottom.toString());
+		return top.toString();
     }
     
     private String n(String key) {

@@ -412,3 +412,5 @@ crossBookLinks=Link pages from other books
 AddPage=Add page
 NoLinkedPages=No pages have been linked yet.
 NoPagesToAdd=There are no pages to add.
+frctLink=Links
+frctPage=Features/Pages
