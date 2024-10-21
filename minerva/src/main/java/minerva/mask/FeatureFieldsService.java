@@ -225,4 +225,14 @@ public class FeatureFieldsService implements AddFeatures {
         }
         return features;
     }
+	
+	public SeiteSO byFeatureNumber(BookSO book, String nr) {
+		for (SeiteSO seite : book.getAlleSeiten()) {
+			String fnr = get(seite).get(FeatureFields.FEATURENUMBER);
+			if (fnr != null && nr.equalsIgnoreCase(fnr)) {
+				return seite;
+			}
+		}
+		throw new RuntimeException("Feature number '" + nr + "' not found in book '" + book.getTitle() + "'!");
+	}
 }
