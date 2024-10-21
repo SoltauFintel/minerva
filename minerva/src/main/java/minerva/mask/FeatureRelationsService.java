@@ -130,10 +130,12 @@ public class FeatureRelationsService {
     public static class LinkRelation implements Relation {
         private final String link;
         private final String id;
+        private final String title;
         
         private LinkRelation(String link) {
             this.link = link == null ? "" : link;
             id = "link_" + IdGenerator.code6(link);
+            title = new WebpageTitleService().getTitle(link);
         }
 
         @Override
@@ -143,8 +145,7 @@ public class FeatureRelationsService {
         
         @Override
         public String getTitle() {
-            final int max = 70;
-            return link.length() > max + 3 ? (link.substring(0, max) + "...") : link;
+        	return title;
         }
 
         @Override
