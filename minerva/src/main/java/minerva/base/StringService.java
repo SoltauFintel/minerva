@@ -122,7 +122,11 @@ public class StringService {
         }
         return ret;
     }
-    
+	
+	public static String today() {
+		return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	}
+
     public static String now() {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
