@@ -135,7 +135,7 @@ public class FeatureRelationsService {
         private LinkRelation(String link) {
             this.link = link == null ? "" : link;
             id = "link_" + IdGenerator.code6(link);
-            title = new WebpageTitleService().getTitle(link);
+            title = WebpageTitleService.webpageTitleService.getTitle(link);
         }
 
         @Override
