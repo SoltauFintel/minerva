@@ -121,7 +121,25 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("Sortierung", n(_seite.isSorted() ? "alfaSorted" : "manuSorted"));
         put("isSorted", _seite.isSorted());
         put("hasAbsoluteUrlImage", new FixHttpImage().hasAbsoluteUrlImage(seite, langs));
-        put("featureFields", FeatureFieldsHtmlFactory.FACTORY.build(seite, false).html() + "</fieldset></form><hr/>");
+        put("featureFields", FeatureFieldsHtmlFactory.FACTORY.build(seite, false).html() + "</fieldset></form>"
+        		+ "<div class=mt1><a id=b1 class=\"btn btn-success\" onclick=\"click1();\">Status 1</a>"
+        		+ "<a id=b2 class=\"btn btn-success\" onclick=\"click2();\" style=\"margin-left: 1em;\">Status 2</a></div>"
+        		+ "<script>function click1() {"
+        		+ " let k= document.querySelector('#b1');"
+        		+ "if (k.classList.contains('btn-success')) {\n"
+        		+ "k.classList.remove ('btn-success');  "
+        		+ "k.classList.add ('btn-danger');} else {"
+        		+ "k.classList.remove ('btn-danger'); k.classList.add ('btn-success'); }"
+        		+ " }\n"
+        		+ "function click2() {"
+        		+ " let k= document.querySelector('#b2');"
+        		+ "if (k.classList.contains('btn-success')) {\n"
+        		+ "k.classList.remove ('btn-success');  "
+        		+ "k.classList.add ('btn-danger');} else {"
+        		+ "k.classList.remove ('btn-danger'); k.classList.add ('btn-success'); }"
+        		+ "}\n"
+        		+ "</script>"
+        		+ "<hr/>");
         put("editorsNote", esc(_seite.getEditorsNote()));
         put("editorsNoteBR", esc(_seite.getEditorsNote()).replace("\n", "<br/>"));
         put("hasEditorsNote", !StringService.isNullOrEmpty(_seite.getEditorsNote()));
