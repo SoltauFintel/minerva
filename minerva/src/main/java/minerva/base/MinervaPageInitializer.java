@@ -135,8 +135,8 @@ public class MinervaPageInitializer extends PageInitializer {
         SeiteSichtbar ssc = new SeiteSichtbar(book.getWorkspace());
         for (SeiteSO seite : book.getSeiten()) {
             if (ssc.isVisible(seite)) {
-                Logger.debug("Book \"" + book.getTitle() + "\" is visible because page \"" + seite.getTitle()
-                        + "\" is visible [active customer mode]");
+                /*Logger.debug("Book \"" + book.getTitle() + "\" is visible because page \"" + seite.getTitle()
+                        + "\" is visible [active customer mode]");*/
                 return true;
             }
         }
