@@ -45,7 +45,7 @@ public class QuicklyCreateFeaturesService {
 			seite.saveMetaTo(files);
 			FeatureFields ff = FeatureFields.create(seite);
 			if (!featureNumber.isBlank()) {
-				ff.set(FeatureFields.FEATURENUMBER, featureNumber);
+				ff.setFeatureNumber(featureNumber);
 			}
 			files.put(FeatureFieldsService.dn(seite), gson.toJson(ff));
 			
