@@ -56,6 +56,10 @@ public class FeatureFields {
         return ret == null ? "" : ret;
     }
     
+    public String getFeatureNumber() {
+    	return get(FEATURENUMBER);
+    }
+    
     public void set(String id, String value) {
     	if (FEATURENUMBER.equals(id) && value != null) {
     		value = value.replace(" ", "_").toUpperCase();

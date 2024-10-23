@@ -136,7 +136,7 @@ public class FeatureFieldsService implements AddFeatures {
             RSeite rs = new RSeite();
             rs.seiteId = seite.getId();
             rs.title = seite.getTitle();
-            rs.featureNumber = new FeatureFieldsService().get(seite).get(FeatureFields.FEATURENUMBER);
+            rs.featureNumber = new FeatureFieldsService().get(seite).getFeatureNumber();
             seiten.add(rs);
             seiten.sort((a, b) -> a.title.compareToIgnoreCase(b.title));
         }
@@ -217,7 +217,7 @@ public class FeatureFieldsService implements AddFeatures {
                         RSeite feature = new RSeite();
                         feature.seiteId = "../" + seite.getBook().getBook().getFolder() + "/" + seite.getId();
                         feature.title = seite.getSeite().getTitle().getString("de");
-                        feature.featureNumber = ff.get(FeatureFields.FEATURENUMBER);
+                        feature.featureNumber = ff.getFeatureNumber();
                         features.add(feature);
                     }
                 }
@@ -228,7 +228,7 @@ public class FeatureFieldsService implements AddFeatures {
 	
 	public SeiteSO byFeatureNumber(BookSO book, String nr) {
 		for (SeiteSO seite : book.getAlleSeiten()) {
-			String fnr = get(seite).get(FeatureFields.FEATURENUMBER);
+			String fnr = get(seite).getFeatureNumber();
 			if (fnr != null && nr.equalsIgnoreCase(fnr)) {
 				return seite;
 			}
