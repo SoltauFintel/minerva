@@ -101,11 +101,29 @@ public class WorkspaceSO {
     }
     
     private void info(String text) {
-        Logger.info(text
-                .replace("$l", user.getUser().getLogin())
+        String login = user.getLogin();
+		text = text
+                .replace("$l", login)
                 .replace("$b", branch)
-                .replace("$n", "" + books.size()));
+                .replace("$n", "" + books.size());
+		if (isAutomaticUser(login)) {
+			Logger.debug(text);
+		} else {
+			Logger.info(text);
+		}
     }
+    
+    public static void info(String login, String msg) {
+		if (isAutomaticUser(login)) {
+			Logger.debug(login + " | " + msg);
+		} else {
+			Logger.info(login + " | " + msg);
+		}
+	}
+
+	private static boolean isAutomaticUser(String login) {
+		return login != null && login.equalsIgnoreCase(MinervaOptions.CLEANUP_LOGIN.get());
+	}
 
     public List<SeiteSO> findTag(String tag) {
         String x = TagsSO.cleanTag(tag);
