@@ -3,6 +3,8 @@ package minerva.book;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.pmw.tinylog.Logger;
+
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
@@ -30,12 +32,15 @@ public class BookPage extends BPage implements Uptodatecheck {
         boolean allPages = user.getUser().isShowAllPages();
         String guiLanguage = user.getGuiLanguage();
         String pageLanguage = user.getPageLanguage();
-        if (book.isFeatureTree() && !"de".equals(pageLanguage)) {
-            user.getUser().setPageLanguage("de");
-            render = false;
-            ctx.redirect(bookFolder);
-            return;
-        }
+		if (book.isFeatureTree()) {
+			if (!"de".equals(pageLanguage)) {
+				user.getUser().setPageLanguage("de");
+				render = false;
+				ctx.redirect(bookFolder);
+				return;
+			}
+			Logger.info(user.getLogin() + " | " + book.getWorkspace().getBranch() + " | " + book.getTitle());
+		}
         
         setJQueryObenPageMode();
         String title = book.getBook().getTitle().getString(guiLanguage);
