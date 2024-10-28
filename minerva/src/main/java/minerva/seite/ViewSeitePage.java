@@ -207,7 +207,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
 			if (size > 0) {
 			    hasSubPages = true;
 			}
-			if (size >= 2) {
+			if (size >= 2 || (seite.isFeatureTree() && seite.getSeiten().size() >= 2)) {
 			    hasPositionlink = true;
 			}
         }
