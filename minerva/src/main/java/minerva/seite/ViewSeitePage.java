@@ -122,8 +122,12 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("Sortierung", n(_seite.isSorted() ? "alfaSorted" : "manuSorted"));
         put("isSorted", _seite.isSorted());
         put("hasAbsoluteUrlImage", new FixHttpImage().hasAbsoluteUrlImage(seite, langs));
-        put("featureFields", FeatureFieldsHtmlFactory.FACTORY.build(seite, false).html() + "</fieldset></form>" +
-        		featureStatusButtons.getHTML(seite) + "<hr/>");
+        if (!seite.isFeatureTree() || seite.isPageInFeatureTree()) {
+        	put("featureFields", "");
+        } else {
+        	put("featureFields", FeatureFieldsHtmlFactory.FACTORY.build(seite, false).html() + "</fieldset></form>" +
+        			featureStatusButtons.getHTML(seite) + "<hr/>");
+        }
         put("editorsNote", esc(_seite.getEditorsNote()));
         put("editorsNoteBR", esc(_seite.getEditorsNote()).replace("\n", "<br/>"));
         put("hasEditorsNote", !StringService.isNullOrEmpty(_seite.getEditorsNote()));
