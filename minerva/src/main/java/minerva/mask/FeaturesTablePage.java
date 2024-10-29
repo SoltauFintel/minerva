@@ -16,6 +16,7 @@ import minerva.model.SeiteSO;
 import minerva.seite.SPage;
 
 public class FeaturesTablePage extends SPage {
+	public static GetFeatureState getFeatureState = feature -> "";
     MaskAndDataFields mad0;
     
     @Override
@@ -112,6 +113,7 @@ public class FeaturesTablePage extends SPage {
             row.put("eins", ++k % 4 == 1);
             row.put("hasText", !SeiteSichtbar.contentIsEmpty(te.feature, "de"));
             row.put("hasOpenComments", new SeiteCommentService2(te.feature).getCommentState(te.feature.getLogin()) > 0);
+            row.put("featureStateHTML", getFeatureState.getFeatureStateHTML(te.feature)); // HTML, no esc() !
             n++;
         }
         putInt("n", n);
@@ -181,5 +183,10 @@ public class FeaturesTablePage extends SPage {
             }
         }
         ctx.redirect(seite.getId() + q);
+    }
+    
+    public interface GetFeatureState {
+
+    	String getFeatureStateHTML(SeiteSO feature);
     }
 }

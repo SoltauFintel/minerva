@@ -788,3 +788,7 @@ table.relationstable ul {
 .tfGreen {
     color: #090;
 }
+
+.tfGrey {
+    color: grey;
+}

@@ -33,6 +33,7 @@
                 <div style="border-radius: 15px; background-color: {{if f.hasText}}#d0d0f8{{else}}#f0f0f8{{/if}}; padding: 8px; margin-right: 8px; margin-bottom: 8px; word-break: break-all;">
                     <a href="{{f.url}}" style="font-weight: bold;">{{f.title}}</a>
                     {{if f.hasOpenComments}}<i class="fa fa-comment-o" title="{{N.hasComment}}"></i>{{/if}}
+                    {{f.featureStateHTML}}
                     {{f.columns}}
                 </div>
             </div>
