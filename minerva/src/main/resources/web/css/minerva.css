@@ -780,3 +780,11 @@ table.relationstable ul {
     overflow-y: auto;
     min-width: 12em;
 }
+
+.tfRed {
+    color: #f00;
+}
+
+.tfGreen {
+    color: #090;
+}
