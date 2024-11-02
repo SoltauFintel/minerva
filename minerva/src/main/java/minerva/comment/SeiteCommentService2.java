@@ -1,6 +1,6 @@
 package minerva.comment;
 
-import minerva.access.SimpleDirAccess;
+import gitper.access.SimpleDirAccess;
 import minerva.model.SeiteSO;
 
 /**
@@ -9,6 +9,6 @@ import minerva.model.SeiteSO;
 public class SeiteCommentService2 extends AbstractCommentService2 {
     
     public SeiteCommentService2(SeiteSO seite) {
-        super(new SimpleDirAccess(seite), SeiteCommentService.calcDir(seite));
+        super(new SimpleDirAccess(seite.getBook().dao(), seite.getBook().getWorkspace()), SeiteCommentService.calcDir(seite));
     }
 }

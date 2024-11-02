@@ -3,9 +3,9 @@ package minerva.auth;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.action.Page;
+import gitper.BackendService;
+import gitper.Gitper;
 import minerva.MinervaWebapp;
-import minerva.config.BackendService;
-import minerva.user.User;
 
 // TODO Brauch ich das hier eigentlich?
 public class LoginPage extends Page {
@@ -19,13 +19,13 @@ public class LoginPage extends Page {
             Logger.info("LoginPage POST " + login);
 
             // Kann User angemeldet werden?
-            User user = loginService.login(login, password, null);
+            gitper.User user = loginService.login(login, password, null);
             if (user == null) { // Nein...
                 ctx.redirect(errorUrl());
                 return;
             }
             
-            MinervaAuth.login2(ctx, user);
+            Gitper.gitperInterface.login2(ctx, user);
         } else {
             Logger.debug("LoginPage " + loginService.getClass().getSimpleName());
             put("loginError", "f".equals(ctx.queryParam("m")));

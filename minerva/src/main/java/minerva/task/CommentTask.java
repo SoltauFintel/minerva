@@ -1,6 +1,6 @@
 package minerva.task;
 
-import minerva.base.StringService;
+import minerva.base.TextService;
 import minerva.comment.Comment;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
@@ -28,7 +28,7 @@ public class CommentTask implements Task {
         BookSO book = seite.getBook();
         String prefix = "/sc/" + book.getWorkspace().getBranch() + "/" + book.getBook().getFolder() + "/"
                 + seite.getId() + "/";
-        for (String src : StringService.findHtmlTags(html, "img", "src")) {
+        for (String src : TextService.findHtmlTags(html, "img", "src")) {
             html = html.replace("src=\"" + src + "\"", "src=\"" + prefix + src + "\"");
         }
         text = html;

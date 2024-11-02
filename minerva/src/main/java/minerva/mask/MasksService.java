@@ -7,8 +7,8 @@ import java.util.Map.Entry;
 
 import com.google.gson.Gson;
 
-import minerva.access.CommitMessage;
-import minerva.access.MultiPurposeDirAccess;
+import gitper.access.CommitMessage;
+import gitper.access.MultiPurposeDirAccess;
 import minerva.mask.field.MaskField;
 import minerva.model.WorkspaceSO;
 

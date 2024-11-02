@@ -11,10 +11,9 @@ import com.github.template72.data.DataList;
 import com.google.gson.Gson;
 
 import github.soltaufintel.amalia.web.action.Escaper;
-import minerva.access.CommitMessage;
-import minerva.access.DirAccess;
-import minerva.access.MultiPurposeDirAccess;
-import minerva.base.StringService;
+import gitper.access.DirAccess;
+import gitper.access.MultiPurposeDirAccess;
+import gitper.base.StringService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
@@ -38,7 +37,7 @@ public class FeatureFieldsService implements AddFeatures {
             throw new IllegalArgumentException("seiteId and/or maskTag must not be empty");
         }
         BookSO book = seite.getBook();
-        new MultiPurposeDirAccess(book.dao()).save(dn(seite), featureFields, new CommitMessage(seite, "feature fields"), book.getWorkspace());
+        new MultiPurposeDirAccess(book.dao()).save(dn(seite), featureFields, seite.commitMessage("feature fields"), book.getWorkspace());
     }
     
     public void removeEntryAndSave(FeatureFields ff, String id, SeiteSO seite) {
@@ -48,7 +47,7 @@ public class FeatureFieldsService implements AddFeatures {
     
     public void delete(SeiteSO seite) {
         BookSO book = seite.getBook();
-        if (!new MultiPurposeDirAccess(book.dao()).delete(dn(seite), new CommitMessage(seite, "feature fields deleted"),
+        if (!new MultiPurposeDirAccess(book.dao()).delete(dn(seite), seite.commitMessage("feature fields deleted"),
                 book.getWorkspace())) {
             throw new RuntimeException("Error deleting feature fileds for page " + seite.getId());
         }

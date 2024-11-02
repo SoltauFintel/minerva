@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 
-import minerva.access.CommitMessage;
-import minerva.access.DirAccess;
+import gitper.access.CommitMessage;
+import gitper.access.DirAccess;
 import minerva.book.Book;
 import minerva.book.BookType;
 import minerva.exclusions.SeiteSichtbar;

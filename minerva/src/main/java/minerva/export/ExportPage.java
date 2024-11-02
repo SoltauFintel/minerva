@@ -1,6 +1,6 @@
 package minerva.export;
 
-import static minerva.base.StringService.upper;
+import static gitper.base.StringService.upper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.action.IdAndLabel;
-import minerva.base.StringService;
+import gitper.base.StringService;
 import minerva.base.UserMessage;
 import minerva.export.template.ExportTemplateSet;
 import minerva.export.template.ExportTemplatesService;

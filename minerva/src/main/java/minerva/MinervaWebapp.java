@@ -1,13 +1,21 @@
 package minerva;
 
+import org.gitlab4j.api.GitLabApi;
 import org.pmw.tinylog.Level;
 
+import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.web.WebApp;
 import github.soltaufintel.amalia.web.builder.LoggingInitializer;
 import github.soltaufintel.amalia.web.builder.WebAppBuilder;
 import github.soltaufintel.amalia.web.config.AppConfig;
 import github.soltaufintel.amalia.web.route.PingRouteDefinition.PingAction;
 import github.soltaufintel.amalia.web.route.RouteDefinitions;
+import gitper.Gitper;
+import gitper.GitperInterface;
+import gitper.User;
+import gitper.persistence.gitlab.GitFactory;
+import gitper.persistence.gitlab.GitlabAuthAction;
+import gitper.persistence.gitlab.GitlabAuthCallbackAction;
 import minerva.attachments.AttachmentsPage;
 import minerva.attachments.DeleteAttachmentAction;
 import minerva.attachments.DownloadAttachmentAction;
@@ -26,6 +34,7 @@ import minerva.base.MinervaError404Page;
 import minerva.base.MinervaErrorPage;
 import minerva.base.MinervaPageInitializer;
 import minerva.base.ServerlogPage;
+import minerva.base.Tosmap;
 import minerva.book.AddBookPage;
 import minerva.book.BookPage;
 import minerva.book.BooksPage;
@@ -46,6 +55,7 @@ import minerva.config.EditConfigPage;
 import minerva.config.InfoAction;
 import minerva.config.MinervaConfig;
 import minerva.config.MinervaFactory;
+import minerva.config.MinervaGitlabConfig;
 import minerva.config.MinervaOptions;
 import minerva.exclusions.CustomerModePage;
 import minerva.exclusions.ExclusionsEditPage;
@@ -85,8 +95,6 @@ import minerva.papierkorb.DeleteWeggeworfeneSeiteAction;
 import minerva.papierkorb.PapierkorbPage;
 import minerva.papierkorb.PapierkorbUnterseitenPage;
 import minerva.papierkorb.RecycleAction;
-import minerva.persistence.gitlab.GitlabAuthAction;
-import minerva.persistence.gitlab.GitlabAuthCallbackAction;
 import minerva.postcontents.PostContentsAction;
 import minerva.publish.PublishAction;
 import minerva.search.IndexWorkspaceAction;
@@ -134,6 +142,7 @@ import minerva.task.TasksCreatedByMePage;
 import minerva.user.AddUserPage;
 import minerva.user.DeleteUserAction;
 import minerva.user.EditUserPage;
+import minerva.user.UserAccess;
 import minerva.user.UsersPage;
 import minerva.validate.ValidationPage;
 import minerva.validate.ValidatorService.UnusedImagesTimer;
@@ -371,6 +380,7 @@ public class MinervaWebapp extends RouteDefinitions {
                 .withErrorPage(MinervaErrorPage.class, MinervaError404Page.class)
                 .withInitializer(config -> MinervaOptions.options = new MinervaOptions(MinervaOptions.getConfigFile(MinervaOptions.MAIN_CONFIG, config)))
                 .withInitializer(config -> factory = new MinervaFactory(new MinervaConfig(config)))
+                .withInitializer(config -> initGitper())
                 .withInitializer(config -> CommentService.services.put(ctx -> ctx.path().startsWith("/sc/"), SeiteCommentService.class))
                 .withInitializer(config -> JournalTimer.startTimer(config))
                 .withInitializer(config -> UnusedImagesTimer.startTimer())
@@ -389,5 +399,42 @@ public class MinervaWebapp extends RouteDefinitions {
     
     public static void bootForTest() {
         factory = new MinervaFactory(new MinervaConfig(new AppConfig()));        
+    }
+    
+    private static void initGitper() {
+        Gitper.gitperInterface = new GitperInterface() {
+			
+			@Override
+			public void login2(Context ctx, gitper.User user) {
+				MinervaAuth.login2(ctx, (minerva.user.User) user);
+			}
+			
+			@Override
+			public GitLabApi initWithAccessToken(String token) {
+				return GitFactory.initWithAccessToken(token, new MinervaGitlabConfig().getGitlabUrl());
+			}
+			
+			@Override
+			public User loadUser(String login, boolean create, String mail) {
+				return UserAccess.loadUser(login, create, mail);
+			}
+			
+			@Override
+			public gitper.User createUser(String login) {
+				minerva.user.User user = new minerva.user.User();
+				user.setLogin(login);
+				return user;
+			}
+			
+			@Override
+			public Object tosmap_pop(String state) {
+				return Tosmap.pop(state);
+			}
+			
+			@Override
+			public void tosmap_add(String state, long t) {
+				Tosmap.add(state, t, state);
+			}
+		};
     }
 }

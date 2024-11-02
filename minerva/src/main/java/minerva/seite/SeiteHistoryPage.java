@@ -9,10 +9,10 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Escaper;
+import gitper.BackendService;
+import gitper.base.ICommit;
 import minerva.MinervaWebapp;
 import minerva.book.BookPage;
-import minerva.config.BackendService;
-import minerva.config.ICommit;
 import minerva.config.MinervaFactory;
 import minerva.user.UserAccess;
 
@@ -25,7 +25,7 @@ public class SeiteHistoryPage extends SPage {
         MinervaFactory fac = MinervaWebapp.factory();
         fac.gitlabOnlyPage();
         BackendService backend = fac.getBackendService();
-        List<ICommit> commits = backend.getSeiteMetaHistory(seite, followRenames);
+        List<ICommit> commits = backend.getFileHistory(seite.filenameMeta(), seite.getBook().getWorkspace(), followRenames);
 
         header(seite.getTitle() + " - " + n("history"));
         putCommits(commits, backend, model);

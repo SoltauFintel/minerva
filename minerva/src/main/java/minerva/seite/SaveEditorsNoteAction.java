@@ -2,7 +2,7 @@ package minerva.seite;
 
 import org.pmw.tinylog.Logger;
 
-import minerva.access.CommitMessage;
+import gitper.access.CommitMessage;
 
 public class SaveEditorsNoteAction extends SAction {
 

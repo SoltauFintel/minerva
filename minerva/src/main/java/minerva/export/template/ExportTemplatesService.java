@@ -1,6 +1,6 @@
 package minerva.export.template;
 
-import static minerva.base.StringService.umlaute;
+import static gitper.base.StringService.umlaute;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,8 +12,8 @@ import java.util.Set;
 import com.github.template72.loader.ResourceTemplateLoader;
 
 import github.soltaufintel.amalia.base.IdGenerator;
-import minerva.access.CommitMessage;
-import minerva.access.MultiPurposeDirAccess;
+import gitper.access.CommitMessage;
+import gitper.access.MultiPurposeDirAccess;
 import minerva.model.WorkspaceSO;
 
 public class ExportTemplatesService {

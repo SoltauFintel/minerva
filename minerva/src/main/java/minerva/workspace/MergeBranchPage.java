@@ -24,7 +24,7 @@ public class MergeBranchPage extends UPage {
             Logger.info(info);
             user.log(info);
        
-            user.dao().mergeBranch(sourceBranch, branch, user);
+            user.dao().mergeBranch(sourceBranch, branch, user.getUser());
             if (deleteWorkspace) {
                 user.getWorkspaces().remove(user.getWorkspace(sourceBranch));
             }

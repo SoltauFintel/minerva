@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import github.soltaufintel.amalia.web.action.Escaper;
+import gitper.access.CommitMessage;
+import gitper.access.MultiPurposeDirAccess;
+import gitper.base.FileService;
+import gitper.base.StringService;
 import minerva.MinervaWebapp;
-import minerva.access.CommitMessage;
-import minerva.access.MultiPurposeDirAccess;
-import minerva.base.FileService;
 import minerva.base.MList;
 import minerva.base.NlsString;
-import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.book.Book;
 import minerva.book.BookType;

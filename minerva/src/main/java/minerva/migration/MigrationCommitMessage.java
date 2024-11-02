@@ -1,6 +1,6 @@
 package minerva.migration;
 
-import minerva.access.CommitMessage;
+import gitper.access.CommitMessage;
 
 public class MigrationCommitMessage extends CommitMessage {
 

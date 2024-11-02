@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.pmw.tinylog.Logger;
 
-import minerva.base.StringService;
+import minerva.base.TextService;
 import minerva.seite.link.Link;
 import minerva.seite.link.LinkService;
 
@@ -96,7 +96,7 @@ public class HtmlForPdf {
      * Replace img src to absolute paths.
      */
     private static String images(String html, String info, String imageBaseDir, List<String> errorMessages) {
-        Set<String> imgSources = StringService.findHtmlTags(html, "img", "src");
+        Set<String> imgSources = TextService.findHtmlTags(html, "img", "src");
         for (String src : imgSources) {
             if (src.startsWith("http")) {
                 errorMessages.add(info + " has an image with http URL: " + src);
@@ -113,7 +113,7 @@ public class HtmlForPdf {
      * PDF needs conversion from hsl color to hex RGB color.
      */
     static String colors(String html) {
-        for (String c : StringService.findHtmlTags(html, "span", "style")) {
+        for (String c : TextService.findHtmlTags(html, "span", "style")) {
             if (!c.isBlank()) {
                 String result = "";
                 for (String w : c.split(";")) {

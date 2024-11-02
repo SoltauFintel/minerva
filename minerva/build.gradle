@@ -20,6 +20,7 @@ application {
 }
 
 dependencies {
+    api            project(':gitper')
     api            'com.github.SoltauFintel.amalia:amalia-web:0.16.0'
     implementation 'com.github.SoltauFintel:spark:2.10.0-a1'
     implementation 'commons-io:commons-io:2.12.0'

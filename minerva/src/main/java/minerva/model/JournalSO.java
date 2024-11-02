@@ -14,8 +14,8 @@ import org.quartz.SchedulerException;
 
 import github.soltaufintel.amalia.timer.BaseTimer;
 import github.soltaufintel.amalia.web.config.AppConfig;
+import gitper.base.FileService;
 import minerva.MinervaWebapp;
-import minerva.base.FileService;
 import minerva.base.NlsString;
 
 public class JournalSO {

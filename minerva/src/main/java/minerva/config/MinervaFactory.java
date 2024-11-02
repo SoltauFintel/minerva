@@ -3,11 +3,12 @@ package minerva.config;
 import java.io.File;
 import java.util.List;
 
-import minerva.access.CommitMessage;
+import gitper.BackendService;
+import gitper.access.CommitMessage;
+import gitper.base.FileService;
+import gitper.base.StringService;
 import minerva.auth.MinervaAuth;
-import minerva.base.FileService;
 import minerva.base.NlsString;
-import minerva.base.StringService;
 import minerva.model.SeiteSO;
 import minerva.seite.IPageChangeStrategy;
 import minerva.seite.PageChange;
@@ -50,7 +51,7 @@ public class MinervaFactory {
             
             @Override
             public CommitMessage getCommitMessage(String comment, SeiteSO seite) {
-                return new CommitMessage(seite, comment);
+                return seite.commitMessage(comment);
             }
             
             @Override

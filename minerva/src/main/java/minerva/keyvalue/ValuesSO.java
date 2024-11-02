@@ -8,8 +8,8 @@ import java.util.Set;
 
 import com.google.gson.Gson;
 
-import minerva.access.CommitMessage;
-import minerva.access.MultiPurposeDirAccess;
+import gitper.access.CommitMessage;
+import gitper.access.MultiPurposeDirAccess;
 import minerva.base.MList;
 import minerva.base.UserMessage;
 import minerva.model.WorkspaceSO;

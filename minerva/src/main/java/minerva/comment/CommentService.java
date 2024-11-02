@@ -14,9 +14,9 @@ import com.github.template72.data.DataMap;
 import com.google.gson.Gson;
 
 import github.soltaufintel.amalia.spark.Context;
-import minerva.access.DirAccess;
-import minerva.access.MultiPurposeDirAccess;
-import minerva.access.SimpleDirAccess;
+import gitper.access.DirAccess;
+import gitper.access.MultiPurposeDirAccess;
+import gitper.access.SimpleDirAccess;
 
 public abstract class CommentService {
     /** key: path Predicate, value: CommentService class */

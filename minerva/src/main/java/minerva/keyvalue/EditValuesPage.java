@@ -2,8 +2,8 @@ package minerva.keyvalue;
 
 import java.util.stream.Collectors;
 
+import gitper.base.StringService;
 import minerva.MinervaWebapp;
-import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.workspace.WPage;
 

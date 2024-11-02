@@ -12,7 +12,7 @@ import com.google.gson.reflect.TypeToken;
 
 import github.soltaufintel.amalia.rest.REST;
 import github.soltaufintel.amalia.web.action.Escaper;
-import minerva.base.StringService;
+import gitper.base.StringService;
 import minerva.mask.FeatureFieldsService;
 import minerva.search.CreatePageRequest;
 import minerva.search.CreateSiteRequest;

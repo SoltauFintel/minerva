@@ -3,10 +3,12 @@ package minerva.user;
 import java.util.ArrayList;
 import java.util.List;
 
+import gitper.GitlabConfig;
 import minerva.MinervaWebapp;
+import minerva.config.MinervaGitlabConfig;
 import minerva.export.ExportUserSettings;
 
-public class User {
+public class User implements gitper.User {
     private String login;
     private String realName;
     private String mailAddress;
@@ -27,18 +29,22 @@ public class User {
     private String publishReleaseNumber;
     private String customerMode;
     
+    @Override
     public String getLogin() {
         return login;
     }
 
+    @Override
     public void setLogin(String login) {
         this.login = login;
     }
 
+    @Override
     public String getMailAddress() {
         return mailAddress;
     }
 
+    @Override
     public void setMailAddress(String mailAddress) {
         this.mailAddress = mailAddress;
     }
@@ -101,6 +107,7 @@ public class User {
         this.exportAllowed = exportAllowed;
     }
 
+    @Override
     public String getRealName() {
         return realName;
     }
@@ -117,6 +124,7 @@ public class User {
         return watchlist;
     }
 
+    @Override
     public List<String> getDelayedPush() {
         return delayedPush;
     }
@@ -165,4 +173,9 @@ public class User {
     public void setCustomerMode(String customerMode) {
         this.customerMode = customerMode;
     }
+
+	@Override
+	public GitlabConfig getGitlabConfig() {
+		return new MinervaGitlabConfig();
+	}
 }

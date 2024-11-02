@@ -1,6 +1,6 @@
 package minerva.model;
 
-import static minerva.access.DirAccess.IMAGE;
+import static gitper.access.DirAccess.IMAGE;
 
 import java.io.File;
 import java.text.DecimalFormat;
@@ -20,11 +20,15 @@ import org.pmw.tinylog.Logger;
 import com.google.gson.Gson;
 
 import github.soltaufintel.amalia.web.action.Escaper;
+import gitper.access.CommitMessage;
+import gitper.access.DirAccess;
+import gitper.base.StringService;
+import gitper.movefile.ChangeFile;
+import gitper.movefile.IMoveFile;
+import gitper.movefile.MoveFile;
 import minerva.MinervaWebapp;
-import minerva.access.CommitMessage;
-import minerva.access.DirAccess;
 import minerva.base.NlsString;
-import minerva.base.StringService;
+import minerva.base.TextService;
 import minerva.base.UserMessage;
 import minerva.comment.SeiteCommentService2;
 import minerva.exclusions.SeiteSichtbar;
@@ -34,9 +38,6 @@ import minerva.seite.PageChange;
 import minerva.seite.Seite;
 import minerva.seite.WatchersService;
 import minerva.seite.link.ExtractLinksContext;
-import minerva.seite.move.ChangeFile;
-import minerva.seite.move.IMoveFile;
-import minerva.seite.move.MoveFile;
 import minerva.subscription.SubscriptionService;
 import minerva.subscription.TPage;
 import minerva.user.CustomerMode;
@@ -199,7 +200,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     }
 
     public void forceReloadIfCheap() {
-        Seite s = MinervaWebapp.factory().getBackendService().forceReloadIfCheap(filenameMeta());
+        Seite s = (Seite) MinervaWebapp.factory().getBackendService().forceReloadIfCheap(filenameMeta());
         if (s == null) { // any problem, then just cancel
             return;
         }
@@ -254,7 +255,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
 
     public void activateSorted() {
         seite.setSorted(true);
-        saveMeta(new CommitMessage(this, "subpages sorted alphabetically"));
+        saveMeta(commitMessage("subpages sorted alphabetically"));
         book.getWorkspace().pull(); // ja, ist etwas brutal...
         new SubscriptionService().pagesChanged();
     }
@@ -271,8 +272,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         crossBookLinks_persistChangedPages(filenamesToDelete, changedPages);
         
         List<String> cantBeDeleted = new ArrayList<>();
-        dao().deleteFiles(filenamesToDelete,
-                new CommitMessage(this, "page deleted"), book.getWorkspace(), cantBeDeleted);
+        dao().deleteFiles(filenamesToDelete, commitMessage("page deleted"), book.getWorkspace(), cantBeDeleted);
         boolean success = cantBeDeleted.isEmpty();
 
         if (success) {
@@ -355,7 +355,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
             for (SeiteSO s : changedPages) {
                 s.saveMetaTo(files);
             }
-            dao().saveFiles(files, new CommitMessage(this, "page deleted (cross-book links cleanup)"), book.getWorkspace());
+            dao().saveFiles(files, commitMessage("page deleted (cross-book links cleanup)"), book.getWorkspace());
         }
 	}
 
@@ -376,7 +376,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
             book.getSeiten().byId(seite.getParentId()).getSeiten().onlyRemove(this);
         }
         seite.setParentId(parentId);
-        saveMeta(new CommitMessage(this, "page moved"));
+        saveMeta(commitMessage("page moved"));
         book.getWorkspace().pull();
         new SubscriptionService().pagesChanged();
     }
@@ -392,7 +392,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         List<IMoveFile> files = new ArrayList<>();
         changePageTo(newPosition, files);
         movePageToBookTo(targetBook, langs, files);
-        dao().moveFiles(files, new CommitMessage(this, "moved to book " + targetBookFolder), workspace);
+        dao().moveFiles(files, commitMessage("moved to book " + targetBookFolder), workspace);
         
         workspace.pull();
         // not allowed in customer version -> new SubscriptionService().pagesChanged();
@@ -442,7 +442,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     		List<String> allPageTitles = book.getAlleSeiten().stream()
     				.map(s -> s.getSeite().getTitle().getString(lang))
     				.collect(Collectors.toList());
-    		String newTitle = StringService.findCopyOfTitle(seite.getTitle().getString(lang), lang, allPageTitles);
+    		String newTitle = TextService.findCopyOfTitle(seite.getTitle().getString(lang), lang, allPageTitles);
         	copy.getSeite().getTitle().setString(lang, newTitle);
         	
         	// copy HTML
@@ -563,7 +563,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
 
     public void saveHtmlTo(Map<String,String> files, List<String> langs) {
         langs.forEach(lang -> {
-            String html = StringService.prettyHTML(content.getString(lang));
+            String html = TextService.prettyHTML(content.getString(lang));
             content.setString(lang, html); // write it back - important for HTML editing mode
             files.put(filenameHtml(lang), html);
         });
@@ -579,7 +579,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         }
         reorderdSeiten.setPositionsAndSaveTo(files);
         if (!files.isEmpty()) {
-            saveFiles(files, new CommitMessage(this, "subpages reorderd"));
+            saveFiles(files, commitMessage("subpages reorderd"));
         }
     }
 
@@ -856,14 +856,14 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
                 seite.getHkh().add(i);
             }
         }
-        saveMeta(new CommitMessage(this, "help keys for headings"));
+        saveMeta(commitMessage("help keys for headings"));
         updateOnlineHelp();
     }
     
     public void saveHelpKeys(String helpKeysText) {
         seite.getHelpKeys().clear();
         splitHelpKeys(helpKeysText, seite.getHelpKeys());
-        saveMeta(new CommitMessage(this, "help keys"));
+        saveMeta(commitMessage("help keys"));
         updateOnlineHelp();
     }
     
@@ -884,4 +884,12 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     public boolean isCustomerMode() {
         return book.getWorkspace().getUser().getCustomerMode().isActive();
     }
+    
+	public CommitMessage commitMessage(String comment) {
+		String title = seite.getTitle().getString(MinervaWebapp.factory().getLanguages().get(0));
+		if (!title.equals(comment) && !comment.isEmpty()) {
+			title += ": " + comment;
+		}
+		return new CommitMessage(title);
+	}
 }

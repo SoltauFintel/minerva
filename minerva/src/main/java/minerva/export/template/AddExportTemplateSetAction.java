@@ -1,8 +1,8 @@
 package minerva.export.template;
 
 import github.soltaufintel.amalia.base.IdGenerator;
+import gitper.base.StringService;
 import minerva.base.NLS;
-import minerva.base.StringService;
 import minerva.workspace.WAction;
 
 /**

@@ -2,8 +2,7 @@ package minerva.subscription;
 
 import java.util.List;
 
-import minerva.access.CommitMessage;
-import minerva.base.StringService;
+import gitper.base.StringService;
 import minerva.seite.SAction;
 
 public class AddMappingAction extends SAction {
@@ -24,7 +23,7 @@ public class AddMappingAction extends SAction {
         } else if (!"d".equals(m)) {
             hk.add(ohId);
         }
-        seite.saveMeta(new CommitMessage(seite, "d".equals(m) ? "remove mapping" : "add mapping"));
+        seite.saveMeta(seite.commitMessage("d".equals(m) ? "remove mapping" : "add mapping"));
         
         seite.updateOnlineHelp();
 

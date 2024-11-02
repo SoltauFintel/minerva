@@ -17,11 +17,12 @@ import org.jsoup.nodes.Document;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.IdGenerator;
+import gitper.access.DirAccess;
+import gitper.base.FileService;
+import gitper.base.StringService;
 import minerva.MinervaWebapp;
-import minerva.access.DirAccess;
-import minerva.base.FileService;
 import minerva.base.NlsString;
-import minerva.base.StringService;
+import minerva.base.TextService;
 import minerva.book.BookType;
 import minerva.migration.confluence.ConfluenceComments;
 import minerva.migration.confluence.ConfluencePage;
@@ -361,7 +362,7 @@ public class ConfluenceToMinervaMigrationService {
     }
 
     private Set<String> extract(String html, String tag, final String x1) {
-        return StringService.findHtmlTags(html, tag, x1);
+        return TextService.findHtmlTags(html, tag, x1);
     }
     
     private Map<String, String> loadMappings(File csvFile) {

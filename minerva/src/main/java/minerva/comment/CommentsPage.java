@@ -6,8 +6,8 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Page;
+import gitper.base.StringService;
 import minerva.base.NLS;
-import minerva.base.StringService;
 import minerva.model.UserSO;
 import minerva.user.UPage;
 import minerva.user.UserAccess;

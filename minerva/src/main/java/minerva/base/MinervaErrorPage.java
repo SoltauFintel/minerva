@@ -1,11 +1,14 @@
 package minerva.base;
 
+import java.util.Map;
+
 import org.pmw.tinylog.Logger;
 
 import com.google.common.base.Strings;
 
 import github.soltaufintel.amalia.web.action.ErrorPage;
 import github.soltaufintel.amalia.web.action.Page;
+import gitper.base.ErrorMessageHolder;
 
 public class MinervaErrorPage extends Page implements ErrorPage {
     protected Exception exception;
@@ -37,8 +40,12 @@ public class MinervaErrorPage extends Page implements ErrorPage {
             Logger.error(exception);
         }
         ctx.status(500);
-        if (exception instanceof ErrorMessageHolder e) {
-            msg = e.getErrorMessage(); // no esc
+        if (exception instanceof ErrorMessageHolder ex) {
+        	msg = NLS.get("de", ex.getKey()); // TODO GUI language
+        	for (Map.Entry<String, String> entry : ex.getParameters().entrySet()) {
+        		msg = msg.replace(entry.getKey(), entry.getValue());
+        	}
+        	// no esc
         } else {
             msg = esc(msg); // for subclasses
         }

@@ -2,6 +2,7 @@ package minerva.model;
 
 import java.io.File;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -9,12 +10,13 @@ import java.util.Map;
 
 import org.pmw.tinylog.Logger;
 
+import gitper.Workspaces;
+import gitper.access.DirAccess;
+import gitper.base.FileService;
 import minerva.MinervaWebapp;
-import minerva.access.DirAccess;
-import minerva.base.FileService;
 import minerva.base.MList;
 
-public class WorkspacesSO extends MList<WorkspaceSO> {
+public class WorkspacesSO extends MList<WorkspaceSO> implements Workspaces {
     public static final String MINERVA_BRANCH = "minerva";
     private final String userFolder;
 
@@ -57,6 +59,15 @@ public class WorkspacesSO extends MList<WorkspaceSO> {
         }
         return ret;
     }
+
+	@Override
+	public List<String> getBranches() {
+		List<String> ret = new ArrayList<>();
+		for (WorkspaceSO w : this) {
+			ret.add(w.getBranch());
+		}
+		return ret;
+	}
 
     public List<String> getAddableBranches(WorkspaceSO ref) {
         return MinervaWebapp.factory().getBackendService().getAddableBranches(this, ref);

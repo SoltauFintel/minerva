@@ -2,7 +2,7 @@ package minerva.keyvalue;
 
 import java.util.ArrayList;
 
-import minerva.base.StringService;
+import gitper.base.StringService;
 import minerva.base.UserMessage;
 import minerva.workspace.WPage;
 

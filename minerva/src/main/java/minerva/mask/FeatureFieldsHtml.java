@@ -5,8 +5,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import github.soltaufintel.amalia.web.action.Escaper;
+import gitper.base.StringService;
 import minerva.base.NLS;
-import minerva.base.StringService;
 import minerva.keyvalue.Values;
 import minerva.keyvalue.ValuesSO;
 import minerva.mask.FeatureRelationsService.Relation;

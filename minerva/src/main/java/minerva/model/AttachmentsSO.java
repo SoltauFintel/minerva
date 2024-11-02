@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
-import minerva.access.CommitMessage;
-import minerva.access.DirAccess;
-import minerva.base.FileService;
-import minerva.base.StringService;
+import gitper.access.CommitMessage;
+import gitper.access.DirAccess;
+import gitper.base.FileService;
+import gitper.base.StringService;
 import minerva.base.UserMessage;
 import ohhtml.downloads.Attachment;
 import ohhtml.downloads.GetAttachments;
@@ -80,7 +80,7 @@ public class AttachmentsSO {
         files.put(dir + "/" + dn, DirAccess.IMAGE);
         files.put(dir + "/" + dn + ".cat", StringService.isNullOrEmpty(category) ? "datei" : cat.stream().collect(Collectors.joining(",")));
         seite.getBook().dao().saveFiles(files,
-                new CommitMessage(seite, "save attachments: " + dn),
+                seite.commitMessage("save attachments: " + dn),
                 seite.getBook().getWorkspace());
         Logger.info("saved attachment file as " + file.getAbsolutePath());
     }
@@ -93,7 +93,7 @@ public class AttachmentsSO {
                 .collect(Collectors.joining(","));
         files.put(dn, content);
         seite.getBook().dao().saveFiles(files,
-                new CommitMessage(seite, "save attachment categories: " + att.getFilename()),
+                seite.commitMessage("save attachment categories: " + att.getFilename()),
                 seite.getBook().getWorkspace());
     }
     
@@ -104,7 +104,7 @@ public class AttachmentsSO {
         filenames.add(dn);
         filenames.add(dn + ".cat");
         List<String> cantBeDeleted = new ArrayList<>();
-        CommitMessage cm = new CommitMessage(seite, "delete attachment: " + att.getFilename());
+        CommitMessage cm = seite.commitMessage("delete attachment: " + att.getFilename());
         seite.getBook().dao().deleteFiles(filenames, cm, seite.getBook().getWorkspace(), cantBeDeleted);
         if (cantBeDeleted.isEmpty()) {
             Logger.info("Attachment deleted: " + att.getFilename());

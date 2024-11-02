@@ -10,7 +10,7 @@ import org.pmw.tinylog.Logger;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
-import minerva.base.StringService;
+import gitper.base.StringService;
 import minerva.base.UserMessage;
 import minerva.book.BookPage;
 import minerva.mask.FeatureRelationsService.Relation;

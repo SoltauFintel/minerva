@@ -11,8 +11,8 @@ import org.pmw.tinylog.Logger;
 
 import com.google.gson.Gson;
 
+import gitper.base.FileService;
 import minerva.MinervaWebapp;
-import minerva.base.FileService;
 import minerva.book.BookType;
 import minerva.model.AttachmentsSO;
 import minerva.model.BookSO;
@@ -20,6 +20,7 @@ import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
+import minerva.user.User;
 import ohhtml.toc.HelpKeysForHeading;
 import ohhtml.toc.TocEntry;
 
@@ -37,7 +38,7 @@ public class PublishService {
     }
 
     public File loginAndPublish(String login, String password, String branch) {
-        UserSO userSO = new UserSO(MinervaWebapp.factory().getBackendService().login(login, password, null));
+        UserSO userSO = new UserSO((User) MinervaWebapp.factory().getBackendService().login(login, password, null));
         WorkspaceSO workspace = userSO.getWorkspace(branch);
         return publish(workspace);
     }

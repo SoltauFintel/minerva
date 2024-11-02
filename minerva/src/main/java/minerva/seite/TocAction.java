@@ -1,7 +1,5 @@
 package minerva.seite;
 
-import minerva.access.CommitMessage;
-
 public class TocAction extends SAction {
 
     @Override
@@ -13,7 +11,7 @@ public class TocAction extends SAction {
         if (s.getTocHeadingsLevels() != tocHeadingsLevels || s.getTocSubpagesLevels() != tocSubpagesLevels) { // is dirty?
             s.setTocHeadingsLevels(tocHeadingsLevels);
             s.setTocSubpagesLevels(tocSubpagesLevels);
-            seite.saveMeta(new CommitMessage(seite, "TOC"));
+            seite.saveMeta(seite.commitMessage("TOC"));
         }
         
         ctx.redirect(viewlink);

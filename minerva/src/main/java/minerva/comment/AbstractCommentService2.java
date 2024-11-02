@@ -2,8 +2,8 @@ package minerva.comment;
 
 import java.util.List;
 
-import minerva.access.SimpleDirAccess;
-import minerva.base.StringService;
+import gitper.access.SimpleDirAccess;
+import gitper.base.StringService;
 
 public abstract class AbstractCommentService2 {
     private final SimpleDirAccess simpledao;

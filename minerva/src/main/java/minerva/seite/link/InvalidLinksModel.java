@@ -3,7 +3,6 @@ package minerva.seite.link;
 import java.util.ArrayList;
 import java.util.List;
 
-import minerva.access.CommitMessage;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 
@@ -43,7 +42,7 @@ public class InvalidLinksModel {
             }
         }
         if (dirty) {
-            seite.saveHtml(new CommitMessage(seite, "links replaced"), langs);
+            seite.saveHtml(seite.commitMessage("links replaced"), langs);
             seite.updateOnlineHelp();
         }
     }

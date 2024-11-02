@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
+import gitper.base.StringService;
+
 /**
  * Thread- and overflow-safe map
  */

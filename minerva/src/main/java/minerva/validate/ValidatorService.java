@@ -16,10 +16,10 @@ import org.quartz.SchedulerException;
 
 import github.soltaufintel.amalia.timer.BaseTimer;
 import github.soltaufintel.amalia.web.action.Escaper;
+import gitper.access.CommitMessage;
 import minerva.MinervaWebapp;
-import minerva.access.CommitMessage;
 import minerva.base.NLS;
-import minerva.base.StringService;
+import minerva.base.TextService;
 import minerva.config.MinervaOptions;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
@@ -218,7 +218,7 @@ public class ValidatorService {
 
     private void missingImageFiles(SeiteSO seite, String html, List<String> msg) {
         String bookFolder = seite.getBook().getFolder();
-        Set<String> imgSources = StringService.findHtmlTags(html, "img", "src");
+        Set<String> imgSources = TextService.findHtmlTags(html, "img", "src");
         for (String src : imgSources) {
             if (src.startsWith("http://") || src.startsWith("https://")) {
                 msg.add("v.hasAbsoluteUrlImage;" + src);
@@ -393,9 +393,9 @@ public class ValidatorService {
                 Logger.error("Cleanup login and/or password are not set in configuration. Go to Menu (in admin mode) > Configuration to enter the needed values.");
                 return null;
             }
-            User user = MinervaWebapp.factory().getBackendService()
+            gitper.User user = MinervaWebapp.factory().getBackendService()
             		.login(MinervaOptions.CLEANUP_LOGIN.get(), MinervaOptions.CLEANUP_PASSWORD.get(), null);
-            return user == null ? null : new UserSO(user);
+            return user == null ? null : new UserSO((User) user);
     	}
     }
 

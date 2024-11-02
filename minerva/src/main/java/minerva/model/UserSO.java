@@ -21,10 +21,10 @@ import org.pmw.tinylog.Logger;
 import com.google.common.base.Strings;
 
 import github.soltaufintel.amalia.spark.Context;
+import gitper.access.DirAccess;
+import gitper.base.FileService;
+import gitper.base.StringService;
 import minerva.MinervaWebapp;
-import minerva.access.DirAccess;
-import minerva.base.FileService;
-import minerva.base.StringService;
 import minerva.base.Tosmap;
 import minerva.export.ExportUserSettings;
 import minerva.seite.CommentWithSeite;

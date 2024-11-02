@@ -2,7 +2,6 @@ package minerva.seite;
 
 import org.pmw.tinylog.Logger;
 
-import minerva.access.CommitMessage;
 import ohhtml.toc.TocMacro;
 
 /**
@@ -24,7 +23,7 @@ public class CleanupHelpKeysForHeadingsAction extends SAction {
             }
         }
         if (dirty) {
-            seite.saveMeta(new CommitMessage(seite, "cleanup help keys for headings"));
+            seite.saveMeta(seite.commitMessage("cleanup help keys for headings"));
         }
         
         ctx.redirect(viewlink);

@@ -3,7 +3,6 @@ package minerva.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import minerva.access.CommitMessage;
 import minerva.seite.tag.TagNList;
 
 public class TagsSO {
@@ -40,7 +39,7 @@ public class TagsSO {
             dirty = addOneTag(oneTag);
         }
         if (dirty) {
-            seiteSO.saveMeta(new CommitMessage(seiteSO, "tag" + (n > 1 ? "s" : "") + " " + tag + " added"));
+            seiteSO.saveMeta(seiteSO.commitMessage("tag" + (n > 1 ? "s" : "") + " " + tag + " added"));
             if (invisibleTagAdded) {
                 seiteSO.updateOnlineHelp_nowInvisible();
             }
@@ -75,14 +74,14 @@ public class TagsSO {
         boolean containsInvisibleBefore = seiteSO.getSeite().getTags().contains("invisible");
         if ("$all".equals(tag)) {
             seiteSO.getSeite().getTags().clear();
-            seiteSO.saveMeta(new CommitMessage(seiteSO, "all tags deleted"));
+            seiteSO.saveMeta(seiteSO.commitMessage("all tags deleted"));
             
             if (containsInvisibleBefore) {
                 seiteSO.updateOnlineHelp_nowVisible();
             }
         } else {
             seiteSO.getSeite().getTags().remove(tag);
-            seiteSO.saveMeta(new CommitMessage(seiteSO, "tag " + tag + " deleted"));
+            seiteSO.saveMeta(seiteSO.commitMessage("tag " + tag + " deleted"));
             
             if (containsInvisibleBefore && "invisible".equals(tag)) {
                 seiteSO.updateOnlineHelp_nowVisible();

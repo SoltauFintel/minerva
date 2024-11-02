@@ -6,17 +6,19 @@ import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
+import gitper.User;
+import gitper.Workspace;
+import gitper.access.CommitHash;
+import gitper.access.CommitMessage;
+import gitper.access.DirAccess;
 import minerva.MinervaWebapp;
-import minerva.access.CommitHash;
-import minerva.access.CommitMessage;
-import minerva.access.DirAccess;
 import minerva.config.MinervaOptions;
 import minerva.exclusions.Exclusions;
 import minerva.persistence.filesystem.FileSystemDirAccess;
 import minerva.seite.tag.TagNList;
 import minerva.task.TaskService;
 
-public class WorkspaceSO {
+public class WorkspaceSO implements Workspace {
     private final UserSO user;
     private final String folder;
     private final String branch;
@@ -34,15 +36,23 @@ public class WorkspaceSO {
     public UserSO getUser() {
         return user;
     }
+    
+    @Override
+    public User user() {
+    	return user.getUser();
+    }
 
+    @Override
     public String getFolder() {
         return folder;
     }
 
+    @Override
     public String getBranch() {
         return branch;
     }
 
+    @Override
     public DirAccess dao() {
         if (user.getUser().getDelayedPush().contains(branch)) {
             return new FileSystemDirAccess();
@@ -90,6 +100,7 @@ public class WorkspaceSO {
         return userMessage;
     }
 
+    @Override
     public void pull() {
         pull(false);
     }
@@ -170,6 +181,7 @@ public class WorkspaceSO {
         dao().createBranch(this, newBranch, commit);
     }
 
+    @Override
     public void onPush() {
         StatesSO.onPush(user.getLogin(), branch);
     }

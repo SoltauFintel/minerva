@@ -3,8 +3,8 @@ package minerva.model;
 import java.util.Set;
 import java.util.TreeSet;
 
-import minerva.access.CommitMessage;
-import minerva.access.MultiPurposeDirAccess;
+import gitper.access.CommitMessage;
+import gitper.access.MultiPurposeDirAccess;
 import minerva.exclusions.Exclusions;
 
 public class ExclusionsSO {

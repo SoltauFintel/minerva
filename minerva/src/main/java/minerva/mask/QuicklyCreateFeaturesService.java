@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 
-import minerva.access.CommitMessage;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 
@@ -51,6 +50,6 @@ public class QuicklyCreateFeaturesService {
 			
 			pm.put("" + (indent + 1), seite);
 		}
-		book.dao().saveFiles(files, new CommitMessage(parent0, "Quickly Create Features"), book.getWorkspace());
+		book.dao().saveFiles(files, parent0.commitMessage("Quickly Create Features"), book.getWorkspace());
 	}
 }

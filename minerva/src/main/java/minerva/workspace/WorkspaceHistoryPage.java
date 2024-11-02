@@ -6,10 +6,10 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 import com.github.template72.data.IDataMap;
 
+import gitper.BackendService;
+import gitper.base.ICommit;
 import minerva.MinervaWebapp;
 import minerva.base.Uptodatecheck;
-import minerva.config.BackendService;
-import minerva.config.ICommit;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;

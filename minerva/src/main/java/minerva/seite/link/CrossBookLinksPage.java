@@ -6,7 +6,6 @@ import java.util.List;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
-import minerva.access.CommitMessage;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -22,14 +21,14 @@ public class CrossBookLinksPage extends SPage {
         if ("d".equals(m)) { // delete link
             render = false;
             if (seite.getSeite().getLinks().remove(link)) {
-                seite.saveMeta(new CommitMessage(seite, "delete link"));
+                seite.saveMeta(seite.commitMessage("delete link"));
             }
             ctx.redirect("cross-book-links");
         } else if ("a".equals(m)) { // add link
             render = false;
             if (find(link) != null) {
                 seite.getSeite().getLinks().add(link);
-                seite.saveMeta(new CommitMessage(seite, "add link"));
+                seite.saveMeta(seite.commitMessage("add link"));
             }
             ctx.redirect("cross-book-links");
         } else { // show links

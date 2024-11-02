@@ -1,6 +1,6 @@
 package minerva.model;
 
-import static minerva.base.FileService.moveFiles;
+import static gitper.base.FileService.moveFiles;
 
 import java.io.File;
 import java.util.List;
@@ -9,10 +9,10 @@ import java.util.stream.Stream;
 
 import org.pmw.tinylog.Logger;
 
+import gitper.access.MultiPurposeDirAccess;
+import gitper.base.FileService;
+import gitper.base.StringService;
 import minerva.MinervaWebapp;
-import minerva.access.MultiPurposeDirAccess;
-import minerva.base.FileService;
-import minerva.base.StringService;
 import minerva.comment.SeiteCommentService;
 import minerva.config.MinervaFactory;
 import minerva.papierkorb.WSeite;

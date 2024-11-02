@@ -11,7 +11,7 @@ import org.pmw.tinylog.Logger;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
-import minerva.base.StringService;
+import gitper.base.StringService;
 import minerva.model.BookSO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.Breadcrumb;

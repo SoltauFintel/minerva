@@ -1,6 +1,6 @@
 package minerva.task;
 
-import static minerva.base.StringService.makeClickableLinks;
+import static gitper.base.StringService.makeClickableLinks;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.action.Escaper;
+import gitper.base.StringService;
 import minerva.base.MinervaPageInitializer;
-import minerva.base.StringService;
 import minerva.base.Uptodatecheck;
 import minerva.model.UserSO;
 import minerva.user.User;

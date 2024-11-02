@@ -4,8 +4,8 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.spark.Context;
+import gitper.access.CommitHash;
 import minerva.MinervaWebapp;
-import minerva.access.CommitHash;
 import minerva.base.DeliverHtmlContent;
 import minerva.config.MinervaFactory;
 import minerva.model.BookSO;

@@ -2,8 +2,8 @@ package minerva.workspace;
 
 import org.pmw.tinylog.Logger;
 
+import gitper.base.StringService;
 import minerva.MinervaWebapp;
-import minerva.base.StringService;
 import minerva.base.UserMessage;
 import minerva.model.WorkspaceSO;
 import minerva.model.WorkspacesSO;

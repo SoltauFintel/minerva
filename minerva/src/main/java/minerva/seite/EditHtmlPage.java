@@ -1,7 +1,7 @@
 package minerva.seite;
 
 import minerva.base.NlsString;
-import minerva.base.StringService;
+import minerva.base.TextService;
 
 public class EditHtmlPage extends EditSeitePage {
 
@@ -30,7 +30,7 @@ public class EditHtmlPage extends EditSeitePage {
                 NlsString ret = new NlsString();
                 for (String lang : langs) {
                     String html = ctx.formParam("htmlEditor" + lang.toUpperCase());
-                    html = StringService.prettyHTML(html);
+                    html = TextService.prettyHTML(html);
                     ret.setString(lang, html);
                 }
                 return ret;

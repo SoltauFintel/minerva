@@ -8,8 +8,8 @@ import java.util.stream.Collectors;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.mail.Mail;
+import gitper.base.StringService;
 import minerva.MinervaWebapp;
-import minerva.base.StringService;
 import minerva.config.MinervaConfig;
 import minerva.config.MinervaOptions;
 import minerva.model.SeiteSO;

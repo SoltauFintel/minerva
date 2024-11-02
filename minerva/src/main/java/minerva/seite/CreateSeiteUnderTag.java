@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.pmw.tinylog.Logger;
 
-import minerva.access.CommitMessage;
+import gitper.access.CommitMessage;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;

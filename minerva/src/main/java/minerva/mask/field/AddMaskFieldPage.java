@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import github.soltaufintel.amalia.web.action.IdAndLabel;
+import gitper.base.StringService;
 import minerva.base.NLS;
-import minerva.base.StringService;
 import minerva.mask.Mask;
 import minerva.mask.MasksService;
 import minerva.workspace.WPage;

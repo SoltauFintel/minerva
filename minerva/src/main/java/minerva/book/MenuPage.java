@@ -1,6 +1,6 @@
 package minerva.book;
 
-import static minerva.base.StringService.umlaute;
+import static gitper.base.StringService.umlaute;
 
 import com.github.template72.data.DataCondition;
 import com.github.template72.data.DataList;

@@ -11,9 +11,9 @@ import com.github.template72.Template;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
-import minerva.base.FileService;
+import gitper.base.FileService;
+import gitper.base.StringService;
 import minerva.base.NLS;
-import minerva.base.StringService;
 import minerva.exclusions.SeiteSichtbar;
 import minerva.export.ExportRequest;
 import minerva.export.Formula2Image.TransformPath;

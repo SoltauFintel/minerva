@@ -11,7 +11,7 @@ import github.soltaufintel.amalia.mail.Mail;
 import github.soltaufintel.amalia.mail.MailSender;
 import github.soltaufintel.amalia.web.action.Escaper;
 import github.soltaufintel.amalia.web.config.AppConfig;
-import minerva.base.StringService;
+import gitper.base.StringService;
 
 public class MinervaConfig {
     private final AppConfig config;

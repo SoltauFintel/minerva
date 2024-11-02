@@ -2,7 +2,7 @@ package minerva.user;
 
 import org.pmw.tinylog.Logger;
 
-import minerva.base.StringService;
+import gitper.base.StringService;
 
 public class AddUserPage extends UPage {
 

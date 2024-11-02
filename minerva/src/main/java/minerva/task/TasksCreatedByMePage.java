@@ -1,6 +1,6 @@
 package minerva.task;
 
-import static minerva.base.StringService.makeClickableLinks;
+import static gitper.base.StringService.makeClickableLinks;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import org.pmw.tinylog.Logger;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
-import minerva.base.StringService;
+import gitper.base.StringService;
 import minerva.base.Uptodatecheck;
 import minerva.user.UserAccess;
 import minerva.workspace.WPage;

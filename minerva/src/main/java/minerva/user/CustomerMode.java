@@ -1,6 +1,6 @@
 package minerva.user;
 
-import minerva.base.StringService;
+import gitper.base.StringService;
 
 public class CustomerMode {
     private final String customer;

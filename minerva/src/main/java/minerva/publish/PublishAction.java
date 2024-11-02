@@ -1,6 +1,6 @@
 package minerva.publish;
 
-import static minerva.base.StringService.isNullOrEmpty;
+import static gitper.base.StringService.isNullOrEmpty;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.web.action.Action;
-import minerva.base.FileService;
+import gitper.base.FileService;
 
 public class PublishAction extends Action {
     private static String handle = "handle";

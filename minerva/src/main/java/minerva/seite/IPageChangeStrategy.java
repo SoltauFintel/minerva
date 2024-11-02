@@ -2,7 +2,7 @@ package minerva.seite;
 
 import java.util.List;
 
-import minerva.access.CommitMessage;
+import gitper.access.CommitMessage;
 import minerva.model.SeiteSO;
 
 public interface IPageChangeStrategy {

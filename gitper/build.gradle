@@ -1,0 +1,34 @@
+plugins {
+    id 'java-library'
+    id 'eclipse'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+        vendor = JvmVendorSpec.ADOPTIUM
+    }
+}
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+dependencies {
+    implementation 'org.eclipse.jgit:org.eclipse.jgit:6.5.0.202303070854-r'
+    implementation 'org.gitlab4j:gitlab4j-api:5.0.1' // keep this version
+    implementation 'commons-io:commons-io:2.12.0'
+    
+    // TODO versuchen es von Amalia zu lösen
+    api            'com.github.SoltauFintel.amalia:amalia-web:0.16.0'
+    implementation 'com.github.SoltauFintel:spark:2.10.0-a1'
+            //implementation 'org.tinylog:tinylog:1.3.6'
+            //implementation 'com.google.code.gson:gson:2.10.1'
+    
+    testImplementation 'junit:junit:4.13.2'
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://www.javaxt.com/maven' }
+}

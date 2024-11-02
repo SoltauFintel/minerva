@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
+import gitper.base.FileService;
+import gitper.base.StringService;
 import minerva.MinervaWebapp;
-import minerva.base.FileService;
-import minerva.base.StringService;
 
 public class UserAccess {
 

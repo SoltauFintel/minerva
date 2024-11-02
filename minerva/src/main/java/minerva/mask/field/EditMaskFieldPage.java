@@ -1,6 +1,6 @@
 package minerva.mask.field;
 
-import minerva.base.StringService;
+import gitper.base.StringService;
 import minerva.mask.Mask;
 import minerva.mask.MasksService;
 import minerva.workspace.WPage;

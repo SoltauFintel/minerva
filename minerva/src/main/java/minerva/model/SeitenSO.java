@@ -14,11 +14,11 @@ import org.pmw.tinylog.Logger;
 import com.google.gson.Gson;
 
 import github.soltaufintel.amalia.base.IdGenerator;
+import gitper.access.DirAccess;
+import gitper.access.MultiPurposeDirAccess;
+import gitper.base.StringService;
 import minerva.MinervaWebapp;
-import minerva.access.DirAccess;
-import minerva.access.MultiPurposeDirAccess;
 import minerva.base.MList;
-import minerva.base.StringService;
 import minerva.book.BookType;
 import minerva.comment.Comment;
 import minerva.comment.SeiteCommentService2;

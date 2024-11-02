@@ -8,8 +8,8 @@ import java.util.Map;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.IdGenerator;
+import gitper.base.FileService;
 import minerva.MinervaWebapp;
-import minerva.base.FileService;
 import minerva.base.NLS;
 import minerva.book.BookType;
 import minerva.exclusions.SeiteSichtbar;

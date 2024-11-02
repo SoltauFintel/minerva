@@ -2,7 +2,7 @@ package minerva.mask;
 
 import org.pmw.tinylog.Logger;
 
-import minerva.base.StringService;
+import gitper.base.StringService;
 import minerva.workspace.WPage;
 
 public class AddMaskPage extends WPage {

@@ -1,7 +1,7 @@
 package minerva.comment;
 
 import github.soltaufintel.amalia.spark.Context;
-import minerva.access.CommitMessage;
+import gitper.access.CommitMessage;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 
@@ -34,12 +34,12 @@ public class SeiteCommentService extends CommonCommentService {
 
     @Override
     protected CommitMessage getSaveCommitMessage(String commitMessage) {
-        return new CommitMessage(seite, commitMessage);
+        return seite.commitMessage(commitMessage);
     }
     
     @Override
     protected CommitMessage getDeleteCommitMessage() {
-        return new CommitMessage(seite, "comment deleted");
+        return seite.commitMessage("comment deleted");
     }
 
     @Override

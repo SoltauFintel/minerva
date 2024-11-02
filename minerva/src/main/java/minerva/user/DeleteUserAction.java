@@ -2,8 +2,8 @@ package minerva.user;
 
 import org.pmw.tinylog.Logger;
 
+import gitper.base.StringService;
 import minerva.MinervaWebapp;
-import minerva.base.StringService;
 
 public class DeleteUserAction extends UAction {
 

@@ -2,8 +2,8 @@ package minerva.comment;
 
 import github.soltaufintel.amalia.base.IdGenerator;
 import github.soltaufintel.amalia.web.action.Page;
+import gitper.base.StringService;
 import minerva.base.NLS;
-import minerva.base.StringService;
 import minerva.postcontents.PostContentsService;
 import minerva.user.UPage;
 import minerva.user.UserAccess;

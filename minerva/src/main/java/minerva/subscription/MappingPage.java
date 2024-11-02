@@ -5,7 +5,7 @@ import java.util.List;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
-import minerva.base.StringService;
+import gitper.base.StringService;
 import minerva.seite.SPage;
 
 public class MappingPage extends SPage {
