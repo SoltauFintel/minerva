@@ -7,9 +7,13 @@ public class MinervaGitlabConfig implements GitlabConfig {
 	private final MinervaConfig config;
 
 	public MinervaGitlabConfig() {
-		config = MinervaWebapp.factory().getConfig();
+		this(MinervaWebapp.factory().getConfig());
 	}
-	
+
+	public MinervaGitlabConfig(MinervaConfig config) {
+		this.config = config;
+	}
+
 	@Override
 	public String getGitlabProject() {
 		return config.getGitlabProject();
