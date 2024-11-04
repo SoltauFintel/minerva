@@ -3,6 +3,7 @@ package gitper;
 import org.gitlab4j.api.GitLabApi;
 
 import github.soltaufintel.amalia.spark.Context;
+import gitper.persistence.gitlab.GitlabAuthService;
 
 public interface GitperInterface {
 
@@ -17,4 +18,6 @@ public interface GitperInterface {
 	User createUser(String login);
 	
 	User loadUser(String login, boolean create, String mail); // UserAccess
+	
+	GitlabAuthService authService();
 }

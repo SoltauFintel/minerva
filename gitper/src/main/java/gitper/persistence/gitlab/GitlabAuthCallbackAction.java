@@ -13,7 +13,7 @@ public class GitlabAuthCallbackAction extends Action {
         String code = ctx.queryParam("code");
         String state = ctx.queryParam("state");
 
-        if (!new GitlabAuthService().processCallback(code, state, user -> Gitper.gitperInterface.login2(ctx, user))) {
+        if (!Gitper.gitperInterface.authService().processCallback(code, state, user -> Gitper.gitperInterface.login2(ctx, user))) {
             ctx.redirect("/");
         }
     }

@@ -9,6 +9,7 @@ import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.pmw.tinylog.Logger;
 
+import gitper.Gitper;
 import gitper.User;
 import gitper.Workspace;
 import gitper.access.CommitMessage;
@@ -63,7 +64,7 @@ public class GitlabRepository {
                         at org.eclipse.jgit.api.FetchCommand.call(FetchCommand.java:249)
                         at org.eclipse.jgit.api.PullCommand.call(PullCommand.java:266)
                         at minerva.persistence.gitlab.git.GitService.pull(GitService.java:101)*/
-                        new GitlabAuthService().refreshToken(user);
+                    	Gitper.gitperInterface.authService().refreshToken(user);
                         continue;
                     }
                     return;

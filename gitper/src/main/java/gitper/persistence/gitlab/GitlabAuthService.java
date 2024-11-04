@@ -15,7 +15,11 @@ import gitper.Gitper;
 
 public class GitlabAuthService {
     private static final String STATE_PREFIX = "minerva-state-";
-    private GitlabConfig gitlabConfig;
+    private final GitlabConfig gitlabConfig;
+    
+    public GitlabAuthService(GitlabConfig gitlabConfig) {
+    	this.gitlabConfig = gitlabConfig;
+    }
     
     public String getAuthUrl() {
         String appId = u(cfg().getGitlabAppId());

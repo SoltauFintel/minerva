@@ -16,6 +16,7 @@ import gitper.User;
 import gitper.persistence.gitlab.GitFactory;
 import gitper.persistence.gitlab.GitlabAuthAction;
 import gitper.persistence.gitlab.GitlabAuthCallbackAction;
+import gitper.persistence.gitlab.GitlabAuthService;
 import minerva.attachments.AttachmentsPage;
 import minerva.attachments.DeleteAttachmentAction;
 import minerva.attachments.DownloadAttachmentAction;
@@ -434,6 +435,11 @@ public class MinervaWebapp extends RouteDefinitions {
 			@Override
 			public void tosmap_add(String state, long t) {
 				Tosmap.add(state, t, state);
+			}
+
+			@Override
+			public GitlabAuthService authService() {
+				return new GitlabAuthService(new MinervaGitlabConfig());
 			}
 		};
     }
