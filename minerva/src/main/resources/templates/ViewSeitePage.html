@@ -223,7 +223,9 @@
             <h4>{{N.Features}}</h4>
             <ul>
                 {{each f in features}}
-                    <li><a href="{{f.link}}">{{f.title}}</a>{{if f.hasFeaturenumber}} <span class="label featurenumber">{{f.featurenumber}}</span>{{/if}}</li>
+                    <li>{{if f.sch}}<i class="fa fa-exchange" style="color: #5bc0de;"></i> {{/if}}<a
+                        href="{{f.link}}">{{f.title}}</a>{{if f.hasFeaturenumber}} <span
+                        class="label featurenumber">{{f.featurenumber}}</span>{{/if}}</li>
                 {{/each}}
             </ul>
         {{/if}}

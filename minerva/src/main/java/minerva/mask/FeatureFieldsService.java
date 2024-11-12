@@ -201,7 +201,8 @@ public class FeatureFieldsService implements AddFeatures {
         	.forEach(f -> features.add() //
         			.put("link", Escaper.esc(f.seiteId)) //
         			.put("title", Escaper.esc(f.title)) //
-        			.put("featurenumber", Escaper.esc(f.featureNumber))
+        			.put("sch", false) //
+        			.put("featurenumber", Escaper.esc(f.featureNumber)) //
         			.putHas("featurenumber", f.featureNumber));
 	}
 
