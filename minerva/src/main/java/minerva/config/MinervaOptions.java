@@ -17,6 +17,8 @@ public class MinervaOptions {
 	// All labels in English language!
 	
 	public static final OptionCategory CAT_GENERAL = new OptionCategory("General");
+	public static final Option TIMER_ACTIVE = add(CAT_GENERAL, "timer-active", "Automatic processing")
+			.setHint("1: on, other value: off");
 	public static final Option PDF_TAGS = add(CAT_GENERAL, "pdf-tags", "PDF tags"); 
 	public static final Option MATHJAX_CONVERTER_URL = add(CAT_GENERAL, "mathjax-converter-url", "MathJax converter URL")
 			.setDefaultValue("https://latex.codecogs.com/png.image?{p}").setHint("vars: {p}"); 

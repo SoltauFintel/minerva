@@ -17,6 +17,7 @@ import github.soltaufintel.amalia.web.config.AppConfig;
 import gitper.base.FileService;
 import minerva.MinervaWebapp;
 import minerva.base.NlsString;
+import minerva.config.MinervaOptions;
 
 public class JournalSO {
     private static final String handle = "journal";
@@ -109,6 +110,9 @@ public class JournalSO {
         private static String cron;
         
         public static void startTimer(AppConfig config) {
+    		if (!"1".equals(MinervaOptions.TIMER_ACTIVE.get())) {
+    			return;
+    		}
             cron = config.get("JournalTimer.cron", "0 0 6 1 * ?"); // first day of month 6:00
             new JournalTimer().start();
         }

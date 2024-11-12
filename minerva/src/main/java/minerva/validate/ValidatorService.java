@@ -330,6 +330,10 @@ public class ValidatorService {
         private static String cron;
         
         public static void startTimer() {
+    		if (!"1".equals(MinervaOptions.TIMER_ACTIVE.get())) {
+    			Logger.info("Timers are not active.");
+    			return;
+    		}
 			if (MinervaOptions.CLEANUP_LOGIN.isSet() && MinervaOptions.CLEANUP_PASSWORD.isSet()
 					&& MinervaOptions.CLEANUP_BRANCHES.isSet() && MinervaOptions.CLEANUP_CRON.isSet()) {
 				cron = MinervaOptions.CLEANUP_CRON.get();
