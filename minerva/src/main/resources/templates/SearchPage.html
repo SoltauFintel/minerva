@@ -18,6 +18,7 @@
             {{each L in langs}}
                 {{each r in L.result}}
                     <li class="search-result"><a href="/s/{{branch}}/{{r.path}}">{{r.title}}</a>
+                        {{if r.hasFeatureNumber}}<span class="label featurenumber">{{r.featureNumber}}</span>{{/if}}
                         <br/><div class="textfrag">{{r.content}}</div>
                         {{if r.hasBreadcrumbs}}
                             <small class="searchResultBreadcrumbs">

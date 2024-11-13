@@ -92,6 +92,8 @@ public class SearchPage extends UPage {
 		map.put("hasBreadcrumbs", hasBreadcrumbs);
 		map.put("isFeatureTree", book == null ? false : book.isFeatureTree());
 		map.put("isInternal", book == null ? false : book.isInternal());
+		map.put("featureNumber", esc(s.getFeatureNumber()));
+		map.putHas("featureNumber", s.getFeatureNumber());
 		
 		DataList list2 = map.list("breadcrumbs");
 		for (int i = s.getBreadcrumbs().size() - 1; i >= 0; i--) {

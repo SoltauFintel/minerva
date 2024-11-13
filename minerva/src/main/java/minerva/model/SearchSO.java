@@ -135,6 +135,10 @@ public class SearchSO {
 					String id = p[1];
 					BookSO book = workspace.getBooks().byFolder(bookFolder);
 					r.getBreadcrumbs().addAll(book.getBreadcrumbs(id, new ViewAreaBreadcrumbLinkBuilder()));
+					if (book.isFeatureTree() && r.getFeatureNumber() == null) {
+						// Die normale MongoDB-basierte Suche hat ein Feature gefunden. Hier muss dann noch die Feature-Nummer gesetzt werden.
+						r.setFeatureNumber(new FeatureFieldsService().get(book._seiteById(id)).getFeatureNumber());
+					}
 				} catch (Exception e) {
 					Logger.debug("path: " + r.getPath());
 					Logger.debug(e);

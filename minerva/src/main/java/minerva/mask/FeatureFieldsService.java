@@ -174,6 +174,7 @@ public class FeatureFieldsService implements AddFeatures {
                         sr.setTitle(seite.getTitle());
                         sr.setPath(path);
                         sr.setContent(lv);
+                        sr.setFeatureNumber(dataFields.getFeatureNumber());
                         result.add(sr);
                         n++;
                     }

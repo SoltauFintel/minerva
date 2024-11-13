@@ -10,6 +10,7 @@ public class SearchResult {
     private String title;
     private String content;
     private final List<Breadcrumb> breadcrumbs = new ArrayList<>();
+    private String featureNumber = null;
 
     public String getPath() {
         return path;
@@ -37,5 +38,13 @@ public class SearchResult {
 
 	public List<Breadcrumb> getBreadcrumbs() {
 		return breadcrumbs;
+	}
+
+	public String getFeatureNumber() {
+		return featureNumber;
+	}
+
+	public void setFeatureNumber(String featureNumber) {
+		this.featureNumber = featureNumber;
 	}
 }
