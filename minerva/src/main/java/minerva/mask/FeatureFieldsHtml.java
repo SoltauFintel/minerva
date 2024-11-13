@@ -53,7 +53,7 @@ public class FeatureFieldsHtml {
         }
         if (!fields.isEmpty()) {
             if (!editMode) {
-                String st = buttons(ff);
+                String st = relationsAndButtons(ff);
                 ret += st;
             }
         }
@@ -63,13 +63,17 @@ public class FeatureFieldsHtml {
         // no closing </fieldset></form> !
     }
 
-    private String buttons(FeatureFields ff) {
-        String li = "/{branch}/{bookFolder}/{seiteId}";
+    private String relationsAndButtons(FeatureFields ff) {
+    	
+    	// RELATIONS ----
         String st = relations(ff);
+        
+        // BUTTONS ----
         boolean indent = st.isEmpty();
         if (indent) {
             st += "<div class=\"form-group\"><div class=\"col-lg-8 col-lg-offset-2\">";
         }
+        String li = "/{branch}/{bookFolder}/{seiteId}";
         st += "<a href=\"/ff" + li + "\" class=\"btn btn-warning br\"><i class=\"fa fa-sitemap\"></i> {editFeatureFields}</a>";
         if (seite.hasFt_tag()) {
             st += "<a href=\"/f" + li + "\" class=\"btn btn-success btn-lg br ml1\"><i class=\"fa fa-table\"></i> " + n("Features") + "</a>";

@@ -175,7 +175,7 @@ public class FeatureRelationsService {
 
 		@Override
 		public String getSort() {
-			return (link.contains("atlassian.net/wiki/") ? "1" : "2") + link;
+			return (link.contains("atlassian.net/wiki/") ? "1" : "2") + title;
 		}
     }
     
