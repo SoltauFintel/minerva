@@ -158,8 +158,8 @@
                     title="{{N.pageToPrev}}" id="prev2"><i class="fa fa-arrow-left"></i></a>
                 <a {{if hasNextlink}}href="{{nextlink}}"{{else}}disabled{{/if}} class="btn btn-default br"
                     title="{{N.pageToNext}}" id="next2"><i class="fa fa-arrow-right"></i></a>
-                <a href="{{editlink}}" class="btn btn-primary br" style="min-width: 100px;"><i
-                    class="fa fa-pencil"></i> {{N.edit}}</a>
+                <a href="{{editlink}}" class="btn {{if isFeatureTree}}btn-default{{else}}btn-primary{{/if}} br" style="min-width: 100px;"><i
+                    class="fa fa-pencil"></i> {{editButton2}}</a>
                 {{if hasLastChange}}
                     <span class="last-change">{{lastChangeInfo}}</span>
                 {{/if}}
@@ -171,7 +171,7 @@
     
     <div class="col-lg-3 hidden-print">
         <p style="margin-top: 16px;">
-            <a href="{{editlink}}" class="btn btn-primary br" style="min-width: 100px;"><i class="fa fa-pencil"></i>
+            <a href="{{editlink}}" class="btn btn-primary br" style="min-width: 100px;{{if isFeatureTree}} visibility: hidden;{{/if}}"><i class="fa fa-pencil"></i>
                 {{N.edit}}</a>
             <a href="{{createlink}}" class="btn btn-default br">{{newPage}}</a>
             <a href="{{pulllink}}" class="btn btn-default br" title="{{N.pullT}}"

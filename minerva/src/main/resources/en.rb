@@ -417,3 +417,4 @@ frctLink=Links
 frctPage=Features/Pages
 esGibtFehler=There are errors
 etwaigeWeitereEingabenGespeichert=Any further input was saved.
+editContent=Edit content

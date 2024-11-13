@@ -145,6 +145,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             put("hasLeftArea", false);
             put("leftAreaContent", "");
             mindmap();
+            put("editButton2", n("editContent"));
         } else {
             put("hasLeftArea", true);
             put("leftAreaContent", new PageTree().getHTML(seite.getBook().getSeiten(), langs, seite.getId(), user.getPageLanguage()));
@@ -152,6 +153,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             new FeatureFieldsService().addFeatures(seite, list);
             addFeatures.addFeatures(seite, list);
 			list.sort((a, b) -> a.getValue("title").toString().compareToIgnoreCase(b.getValue("title").toString()));
+            put("editButton2", n("edit"));
         }
         put("showFeatures", !list.isEmpty());
     }
