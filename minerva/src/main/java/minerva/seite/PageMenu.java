@@ -38,7 +38,7 @@ public class PageMenu {
         menuitem(i, "", "", "-");
         
         if (gitlab) {
-            menuitem(i, viewLink + "/history", "fa-clock-o", n("history"));
+            menuitem(i, viewLink + "/history", "fa-history", n("history"));
         }
         if (isAdmin) {
             //  li  style="background-color: #ff9;"

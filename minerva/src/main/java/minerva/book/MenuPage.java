@@ -57,7 +57,7 @@ public class MenuPage extends WPage {
         }
 //        menu(list, "preview", "fa-thumbs-o-up bluebook", "/p/:branch");
         if (fac.isGitlab()) {
-            menu(list, "workspaceHistory", "fa-clock-o", "/w/:branch/history");
+            menu(list, "workspaceHistory", "fa-history", "/w/:branch/history");
         }
         if (booksOk) {
             menu(list, "tagCloud", "fa-cloud", "/w/:branch/tag-cloud");
