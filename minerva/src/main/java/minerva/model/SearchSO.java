@@ -43,7 +43,16 @@ public class SearchSO {
         long start = System.currentTimeMillis();
         nPages = 0;
         createSite();
-        workspace.getBooks().forEach(book -> book.getAlleSeiten().forEach(seite -> index(seite))); // Index pages including all subpages
+        
+		// Index pages including all subpages
+		workspace.getBooks().forEach(book -> {
+			for (String lang : langs) {
+				if (!book.isFeatureTree() || "de".equals(lang)) {
+					book.getAlleSeiten().forEach(seite -> index(seite, lang));
+				}
+			}
+		});
+        
         long end = System.currentTimeMillis();
         Logger.info("All books of workspace " + workspace.getBranch() + " have been reindexed. "
                 + nPages + " pages, " + (end - start) + "ms");
@@ -61,18 +70,29 @@ public class SearchSO {
     }
     
     /**
-     * Index single page excluding subpages
+     * Index single page excluding subpages - all languages
      * @param seite page
      */
     public void index(SeiteSO seite) {
-        for (String lang : langs) {
-            CreatePageRequest req = new CreatePageRequest();
-            req.setHtml("<title>" + Escaper.esc(seite.getSeite().getTitle().getString(lang)) + "</title>"
-                    + seite.getContent().getString(lang));
-            req.setPath(getPath(seite));
-            post("/indexing/" + getSiteName(lang) + "/page", req);
-            nPages++;
-        }
+    	for (String lang : langs) {
+			if (!seite.isFeatureTree() || "de".equals(lang)) {
+				index(seite, lang);
+    		}
+    	}
+    }
+    
+    /**
+     * Index single page excluding subpages
+     * @param seite page
+     * @param lang one language
+     */
+    private void index(SeiteSO seite, String lang) {
+        CreatePageRequest req = new CreatePageRequest();
+        req.setHtml("<title>" + Escaper.esc(seite.getSeite().getTitle().getString(lang)) + "</title>"
+                + seite.getContent().getString(lang));
+        req.setPath(getPath(seite));
+        post("/indexing/" + getSiteName(lang) + "/page", req);
+        nPages++;
     }
 
     public void unindex(SeiteSO seite) {
