@@ -11,6 +11,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import gitper.base.StringService;
+import minerva.base.NLS;
 import minerva.base.UserMessage;
 import minerva.book.BookPage;
 import minerva.mask.FeatureRelationsService.Relation;
@@ -18,6 +19,7 @@ import minerva.mask.field.MaskField;
 import minerva.mask.field.MaskFieldType;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
+import minerva.model.WorkspaceSO;
 import minerva.seite.SPage;
 
 public class EditFeatureFieldsPage extends SPage {
@@ -29,7 +31,6 @@ public class EditFeatureFieldsPage extends SPage {
         List<Relation> seiten = new FeatureRelationsService().getRelations(seite, mad.getDataFields()); 
         if (isPOST()) {
         	save(mad, seiten);
-            ctx.redirect(viewlink);
         } else {
 			Logger.info(user.getLogin() + " | " + branch + " | Edit feature fields+relations " + id + " " + seite.getTitle());
             BookPage.oneLang(model, book);
@@ -53,8 +54,24 @@ public class EditFeatureFieldsPage extends SPage {
     }
 
 	private void save(MaskAndDataFields mad, List<Relation> relations) {
-	    // Feature fields ----
 	    FeatureFields ff = mad.getDataFields();
+	    List<String> errors = new ArrayList<>();
+		List<FeatureFieldChange> fields = saveFeatureFields(mad, ff);
+        saveRelations(relations, ff, errors);
+        mad.save();
+        editFeatureFieldListener.changed(fields);
+        
+        if (errors.isEmpty()) {
+            ctx.redirect(viewlink);
+        } else {
+        	showErrorPage(n("esGibtFehler", workspace) + ":\n" +
+        			errors.stream().collect(Collectors.joining("\n")) + "\n" +
+        			n("etwaigeWeitereEingabenGespeichert", workspace),
+        			viewlink);
+        }
+	}
+
+	private List<FeatureFieldChange> saveFeatureFields(MaskAndDataFields mad, FeatureFields ff) {
 		List<FeatureFieldChange> fields = new ArrayList<>();
         for (MaskField maskField : mad.getMaskFields()) {
 		    if (!maskField.isImportField()) {
@@ -66,9 +83,11 @@ public class EditFeatureFieldsPage extends SPage {
 		        fields.add(new FeatureFieldChange(id, oldValue, ff.get(id)/*set() could change value!*/));
 		    }
 		}
-		
-		// Relations ----
-        List<String> pages = get("pages");
+		return fields;
+	}
+
+	private void saveRelations(List<Relation> relations, FeatureFields ff, List<String> errors) {
+		List<String> pages = get("pages");
         List<String> links = get("links");
         boolean dirty = !pages.isEmpty() || !links.isEmpty();
         for (Relation r : relations) {
@@ -78,14 +97,10 @@ public class EditFeatureFieldsPage extends SPage {
             }
         }
         if (dirty) {
-            validate(pages, links);
+            validate(pages, links, errors);
             ff.getPages().addAll(pages);
             ff.getLinks().addAll(links);
         }
-        
-        // save ----
-        mad.save();
-        editFeatureFieldListener.changed(fields);
 	}
 
     private String getValue(MaskField maskField) {
@@ -159,35 +174,42 @@ public class EditFeatureFieldsPage extends SPage {
     private List<String> get(String name) {
         String w = ctx.formParam(name);
         if (StringService.isNullOrEmpty(w)) {
-            return List.of();
+            return new ArrayList<>(); // no List.of() !
         }
         return Arrays.asList(w.split("\n")).stream().filter(i -> !i.isBlank()).map(i -> i.trim()).collect(Collectors.toList());
     }
 
-    private void validate(List<String> pages, List<String> links) {
+    private void validate(List<String> pages, List<String> links, List<String> errors) {
+    	List<String> kill = new ArrayList<>();
         for (int i = 0; i < pages.size(); i++) {
             String id = pages.get(i);
             
             if (!findPage(id)) {
                 String idByTitle = isTitle(id);
                 if (idByTitle == null) {
-                    throw new UserMessage("pageNotFound3", workspace, s -> s.replace("$id", id));
+                    errors.add("- " + n("pageNotFound3", workspace).replace("$id", id));
+                    kill.add(id);
                 } else {
                     pages.set(i, idByTitle);
                 }
             }
         }
+        pages.removeAll(kill);
+        
+        kill.clear();
         for (String link : links) {
             if (!link.startsWith("http://") && !link.startsWith("https://")) {
-                throw new UserMessage("linkMustStartWithHttp", workspace);
+				errors.add("- " + link + ": " + n("linkMustStartWithHttp", workspace));
+				kill.add(link);
             }
         }
+        links.removeAll(kill);
     }
     
-    private String isTitle(String id) {
+    private String isTitle(String title) {
         List<String> ret = new ArrayList<>();
         for (BookSO book : workspace.getBooks()) {
-            SeiteSO x = book.getSeiten()._byTitle(id, "de");
+            SeiteSO x = book.getSeiten()._byTitle(title, "de");
             if (x != null) {
                 ret.add(x.getId());
             }
@@ -200,5 +222,9 @@ public class EditFeatureFieldsPage extends SPage {
 
     private boolean findPage(String id) {
         return workspace.findPage(id) != null;
+    }
+    
+    private String n(String key, WorkspaceSO workspace) {
+    	return NLS.get(workspace.getUser().getGuiLanguage(), key);
     }
 }

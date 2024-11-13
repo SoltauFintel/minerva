@@ -12,6 +12,7 @@ encoding//src/main/resources/templates/BooksPage.html=UTF-8
 encoding//src/main/resources/templates/BrokenMappingsPage.html=UTF-8
 encoding//src/main/resources/templates/CheckAllLinksPage.html=UTF-8
 encoding//src/main/resources/templates/CreateBranchPage.html=UTF-8
+encoding//src/main/resources/templates/CustomErrorPage.html=UTF-8
 encoding//src/main/resources/templates/CustomerModePage.html=UTF-8
 encoding//src/main/resources/templates/DeactivateFSModePage.html=UTF-8
 encoding//src/main/resources/templates/DeleteBookPage.html=UTF-8

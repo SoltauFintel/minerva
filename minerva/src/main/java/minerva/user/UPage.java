@@ -5,6 +5,7 @@ import java.util.List;
 import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.web.action.Page;
 import minerva.MinervaWebapp;
+import minerva.base.CustomErrorPage;
 import minerva.base.NLS;
 import minerva.model.StatesSO;
 import minerva.model.UserSO;
@@ -63,5 +64,9 @@ public abstract class UPage extends Page {
         setMathPageMode();
         setMultiselectPageMode();
         put("jstree", true);
+    }
+    
+    protected final void showErrorPage(String msg, String continueLink) {
+    	CustomErrorPage.showErrorPage(msg, continueLink, ctx);
     }
 }

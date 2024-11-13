@@ -29,6 +29,7 @@ import minerva.auth.Book6StartAction;
 import minerva.auth.LoggedOutPage;
 import minerva.auth.Login2Page;
 import minerva.auth.MinervaAuth;
+import minerva.base.CustomErrorPage;
 import minerva.base.MathPage;
 import minerva.base.MessagePage;
 import minerva.base.MinervaError404Page;
@@ -315,6 +316,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/backdoor", Login2Page.class);
         addNotProtected("/backdoor");
         get("/activate-admin-rights", ActivateAdminRightsAction.class);
+        get("/error", CustomErrorPage.class);
     }
 
     private void values() {

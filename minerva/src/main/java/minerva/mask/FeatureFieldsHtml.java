@@ -72,7 +72,7 @@ public class FeatureFieldsHtml {
         }
         st += "<a href=\"/ff" + li + "\" class=\"btn btn-warning br\"><i class=\"fa fa-sitemap\"></i> {editFeatureFields}</a>";
         if (seite.hasFt_tag()) {
-            st += "<a href=\"/f" + li + "\" class=\"btn btn-success btn-lg br\"><i class=\"fa fa-table\"></i> " + n("Features") + "</a>";
+            st += "<a href=\"/f" + li + "\" class=\"btn btn-success btn-lg br ml1\"><i class=\"fa fa-table\"></i> " + n("Features") + "</a>";
         }
         st += getAdditionalButtons(seite, ff);
         if (indent) {

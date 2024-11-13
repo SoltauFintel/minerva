@@ -18,6 +18,7 @@ import github.soltaufintel.amalia.timer.BaseTimer;
 import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.access.CommitMessage;
 import minerva.MinervaWebapp;
+import minerva.base.CustomErrorPage;
 import minerva.base.NLS;
 import minerva.base.TextService;
 import minerva.config.MinervaOptions;
@@ -351,6 +352,7 @@ public class ValidatorService {
         @Override
         protected void timerEvent(JobExecutionContext context) throws Exception {
             DeleteUnusedImages.start();
+            CustomErrorPage.clear();
         }
     }
     
