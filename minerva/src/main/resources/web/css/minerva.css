@@ -792,3 +792,19 @@ table.relationstable ul {
 .tfGrey {
     color: grey;
 }
+
+.statusframe0 {
+    margin-top: 1.5em;	
+}
+
+.statusframe {
+    border: 1px #ccc dashed;
+    display: inline;
+    margin-top: 1em;
+    padding: 1em;
+}
+
+.statusframetext {
+	padding-right: 1em;
+	color: grey;
+}
