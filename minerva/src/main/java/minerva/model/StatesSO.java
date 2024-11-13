@@ -3,10 +3,14 @@ package minerva.model;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+import org.pmw.tinylog.Logger;
+
 import github.soltaufintel.amalia.spark.Context;
+import minerva.MinervaWebapp;
 import minerva.auth.MinervaAuth;
 import minerva.base.Tosmap;
 import minerva.base.UserMessage;
+import minerva.config.MinervaOptions;
 import minerva.user.User;
 
 /**
@@ -46,6 +50,20 @@ public class StatesSO {
         } catch (Exception ignore) {
         }
     }
+    
+    /**
+     * Login for cron timers
+     * @return UserSO
+     */
+	public static UserSO login() {
+        if (!MinervaOptions.CLEANUP_LOGIN.isSet() || !MinervaOptions.CLEANUP_PASSWORD.isSet()) {
+            Logger.error("Cleanup login and/or password are not set in configuration. Go to Menu (in admin mode) > Configuration to enter the needed values.");
+            return null;
+        }
+        gitper.User user = MinervaWebapp.factory().getBackendService()
+        		.login(MinervaOptions.CLEANUP_LOGIN.get(), MinervaOptions.CLEANUP_PASSWORD.get(), null);
+        return user == null ? null : new UserSO((User) user);
+	}
 
     public static void logout(Context ctx) {
         Tosmap.remove(key(ctx));

@@ -24,11 +24,11 @@ import minerva.base.TextService;
 import minerva.config.MinervaOptions;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
+import minerva.model.StatesSO;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.link.Link;
 import minerva.seite.link.LinkService;
-import minerva.user.User;
 import minerva.validate.ValidationResult.VRLink;
 import minerva.validate.ValidationResult.VRSeite;
 import minerva.validate.ValidationResult.VRUnusedImageSeite;
@@ -359,7 +359,7 @@ public class ValidatorService {
     public static class DeleteUnusedImages {
         
         public static void start() {
-			UserSO userSO = login();
+			UserSO userSO = StatesSO.login();
             List<String> langs = MinervaWebapp.factory().getLanguages();
             Set<String> filesToBeDeleted = new TreeSet<>();
             for (String branch : MinervaOptions.CLEANUP_BRANCHES.get().split(",")) {
@@ -393,16 +393,6 @@ public class ValidatorService {
             }
             Logger.debug("UnusedImagesTimer | end");
         }
-        
-    	public static UserSO login() {
-            if (!MinervaOptions.CLEANUP_LOGIN.isSet() || !MinervaOptions.CLEANUP_PASSWORD.isSet()) {
-                Logger.error("Cleanup login and/or password are not set in configuration. Go to Menu (in admin mode) > Configuration to enter the needed values.");
-                return null;
-            }
-            gitper.User user = MinervaWebapp.factory().getBackendService()
-            		.login(MinervaOptions.CLEANUP_LOGIN.get(), MinervaOptions.CLEANUP_PASSWORD.get(), null);
-            return user == null ? null : new UserSO((User) user);
-    	}
     }
 
 	private void extractLinks(SeiteSO seite, String lang, ValidationResult result) {
