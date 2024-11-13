@@ -106,7 +106,7 @@ public class SearchSO {
         	// search pages using xsearch
             String url = host + "/search/" + getSiteName(lang) + "?q=" + Escaper.urlEncode(x, "");
             Type type = new TypeToken<ArrayList<SearchResult>>() {}.getType();
-            Logger.info(url);
+            Logger.debug(url);
             ret = new REST(url).get().fromJson(type);
         } else {
         	ret = new ArrayList<>();
