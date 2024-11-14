@@ -15,10 +15,14 @@ public abstract class WPage extends UPage {
     public void init(Context ctx) {
         super.init(ctx);
 
-        branch = ctx.pathParam("branch");
+        branch = __branch();
         user.setCurrentWorkspace(workspace = user.getWorkspace(branch));
 
         put("branch", branch);
         put("isMasterBranch", "master".equals(branch));
+    }
+    
+    protected String __branch() {
+    	return ctx.pathParam("branch");
     }
 }

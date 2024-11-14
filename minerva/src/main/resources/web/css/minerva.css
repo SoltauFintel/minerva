@@ -808,3 +808,7 @@ table.relationstable ul {
 	padding-right: 1em;
 	color: grey;
 }
+
+.landing a {
+    min-width: 100%;
+}

@@ -17,7 +17,7 @@ public abstract class BPage extends WPage {
     @Override
     public void init(Context ctx) {
         super.init(ctx);
-        bookFolder = ctx.pathParam("book");
+        bookFolder = __book();
         booklink = "/b/" + branch + "/" + bookFolder;
 
         books = workspace.getBooks();
@@ -27,6 +27,10 @@ public abstract class BPage extends WPage {
         put("booklink", booklink);
     }
     
+    protected String __book() {
+    	return ctx.pathParam("book");
+    }
+
     protected boolean isOneLang() {
         return book.isFeatureTree() || book.isInternal();
     }
