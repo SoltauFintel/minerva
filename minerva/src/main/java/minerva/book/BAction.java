@@ -17,10 +17,14 @@ public abstract class BAction extends WAction {
     @Override
     public void init(Context ctx) {
         super.init(ctx);
-        bookFolder = ctx.pathParam("book");
+        bookFolder = __book();
         booklink = "/b/" + branch + "/" + bookFolder;
 
         books = workspace.getBooks();
         book = books.byFolder(bookFolder);
+    }
+    
+    protected String __book() {
+    	return ctx.pathParam("book");
     }
 }

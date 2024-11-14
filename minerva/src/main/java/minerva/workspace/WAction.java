@@ -11,7 +11,11 @@ public abstract class WAction extends UAction {
     @Override
     public void init(Context ctx) {
         super.init(ctx);
-        branch = ctx.pathParam("branch");
+        branch = __branch();
         workspace = user.getWorkspace(branch);
+    }
+    
+    protected String __branch() {
+    	return ctx.pathParam("branch");
     }
 }
