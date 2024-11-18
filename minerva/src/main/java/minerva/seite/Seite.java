@@ -68,7 +68,11 @@ public class Seite {
 	    sorted = c.sorted;
 		tags.addAll(c.tags);
 		helpKeys.addAll(c.helpKeys);
-		hkh.addAll(c.hkh);
+		if (c.hkh == null) {
+			hkh = null;
+		} else {
+			hkh = new ArrayList<>(c.hkh);
+		}
 		tocHeadingsLevels = c.tocHeadingsLevels;
 		tocSubpagesLevels = c.tocSubpagesLevels;
     }
