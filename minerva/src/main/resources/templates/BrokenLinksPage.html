@@ -20,7 +20,7 @@
         <h1 class="page-header">{{header}}</h1>
         
         {{each page in pages}}
-            <h3><a href="/s/{{branch}}/{{bookFolder}}/{{page.id}}" target="page1">{{page.title}}</a> <span class="buch">{{if page.hasTitle}}#{{page.id}} {{/if}}{{page.book}}</span></h3>
+            <h3><a href="/s/{{branch}}/{{bookFolder}}/{{page.id}}" target="page1">{{page.title}}</a> <span class="buch">{{page.book}}</span></h3>
             {{each L in page.languages}}
                 <p>
                     <b>{{L.language}}</b>{{L.info}}

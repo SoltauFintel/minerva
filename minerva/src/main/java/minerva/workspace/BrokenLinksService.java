@@ -111,15 +111,15 @@ public class BrokenLinksService {
         BLPages ret = new BLPages();
         for (List<BrokenLink> list : brokenLinks) {
             for (BrokenLink bl : list) {
-                if (/*bl.getErrorType().contains("(404)") &&*/ bl.getUrl().startsWith("http://localhost:8080/html/")) {
+//                if (/*bl.getErrorType().contains("(404)") &&*/ bl.getUrl().startsWith("http://localhost:8080/html/")) {
                     for (Entry<String, List<BLCaller>> e : bl.getCallers().entrySet()) {
                         for (BLCaller path : e.getValue()) {
                             save(bl.getUrl(), bl.getErrorType(), bl.getCustomer(), e.getKey(), path.getDetails(), ret.getPages());
                         }
                     }
-                } else {
-                    ret.getOtherBrokenLinks().add(bl);
-                }
+//                } else {
+//                    ret.getOtherBrokenLinks().add(bl);
+//                }
             }
         }
         return ret;
@@ -136,7 +136,12 @@ public class BrokenLinksService {
         }
         BLPage page = findPage(sourceId, lang, pages);
         BLLanguage language = page.findLanguage(lang);
-        String targetId = url.substring(url.lastIndexOf("/") + 1);
+        String targetId;
+        if (url.startsWith("http://localhost:8080/html/")) {
+            targetId = url.substring(url.lastIndexOf("/") + 1);
+        } else {
+            targetId = url;
+        }
         BLBrokenLink bl = language.findBrokenLink(targetId, workspace);
         bl.getCustomers().add(customer);
         bl.setErrorType(errorType);
