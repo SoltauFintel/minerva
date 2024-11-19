@@ -24,7 +24,7 @@ public class BrokenLinksService {
     
     public List<BLPage> load(WorkspaceSO workspace) {
         this.workspace = workspace;
-        if (MinervaOptions.OH_HOSTS.isSet()) {
+        if (!MinervaOptions.OH_HOSTS.isSet()) {
             throw new RuntimeException("Config option 'OH_HOSTS' is not set!");
         }
         String[] hosts = MinervaOptions.OH_HOSTS.get().split("\n");
