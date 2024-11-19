@@ -95,6 +95,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("lastEditedPage_link", m.getLastEditedPage_link());
         page.put("lastEditedPage_title", m.getLastEditedPage_title());
         page.put("customerModeActive", false);
+        page.put("customerModeLabel", "Kundenmodus");
         if (m.hasUser()) {
             hasUserVars(page, m);
         }
@@ -167,6 +168,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("previewTitle", NLS.get(userLang, "preview"));
         page.put("previewlink", "/p/" + m.getBranch());
         page.put("hasBook", true);
+        page.put("customerModeLabel",NLS.get(userLang, "customerMode"));
         customerMode(m.getUser().getCustomerMode(), page);
     }
     

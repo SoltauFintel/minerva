@@ -63,7 +63,7 @@
                 {{BranchLabel}}: {{branch}}
                 {{if customerModeActive}}
                     &nbsp; | &nbsp;
-                    {{N.customerMode}} {{customerMode}}
+                    {{customerModeLabel}} {{customerMode}}
                 {{/if}}
                 {{if delayedPush}}
                     &nbsp; | &nbsp;
@@ -75,7 +75,7 @@
     {{else if customerModeActive}}
         <tr>
             <td{{if hasLeftArea}} colspan="2"{{/if}} class="infobar">
-                {{N.customerMode}} {{customerMode}}
+                {{customerModeLabel}} {{customerMode}}
             </td>
         </tr>
     {{/if}}
