@@ -1,13 +1,17 @@
 package minerva.workspace;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import minerva.workspace.BrokenLinksService.BLCaller;
 
 public class BrokenLink {
     private final String customer;
     private final String errorType;
     private final String url;
-    private final List<String> callers = new ArrayList<>();
+    /** key: caller ID */
+    private final Map<String, List<BLCaller>> callers = new HashMap<>();
 
     public BrokenLink(String customer, String errorType, String url) {
         this.customer = customer;
@@ -27,7 +31,7 @@ public class BrokenLink {
         return url;
     }
 
-    public List<String> getCallers() {
+    public Map<String, List<BLCaller>> getCallers() {
         return callers;
     }
 }
