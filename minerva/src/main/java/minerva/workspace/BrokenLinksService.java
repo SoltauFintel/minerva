@@ -161,6 +161,16 @@ public class BrokenLinksService {
         public List<BLPage> getPages() {
             return pages;
         }
+        
+        public int getNumberOfBrokenLinks() {
+            int n = 0;
+            for (BLPage page : pages) {
+                for (BLLanguage l : page.getLanguages()) {
+                    n += l.getBrokenLinks().size();
+                }
+            }
+            return n;
+        }
     }
     
     public static class BLPage {

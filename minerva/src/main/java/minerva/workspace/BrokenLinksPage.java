@@ -23,8 +23,9 @@ public class BrokenLinksPage extends WPage {
         BLPages pages = new BrokenLinksService().load(workspace);
         
         header(n("BrokenLinks"));
-        put("ohHosts", esc(MinervaOptions.OH_HOSTS.get().replace("\n", ", ")));
+        put("ohHosts", esc(MinervaOptions.OH_HOSTS.get().replace("\r", "").replace("\n", ", ")));
         put("bookFolder", esc(workspace.getBooks().get(0).getBook().getFolder()));
+        putInt("n", pages.getNumberOfBrokenLinks());
         String info = "<p>" + esc(n("brokenLinksInfo")) + ":</p>";
         DataList list = list("pages");
         for (BLPage page : pages.getPages()) {
