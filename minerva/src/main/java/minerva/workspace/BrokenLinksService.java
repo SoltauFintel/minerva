@@ -111,10 +111,10 @@ public class BrokenLinksService {
         BLPages ret = new BLPages();
         for (List<BrokenLink> list : brokenLinks) {
             for (BrokenLink bl : list) {
-                if (bl.getErrorType().contains("(404)") && bl.getUrl().startsWith("http://localhost:8080/html/")) {
+                if (/*bl.getErrorType().contains("(404)") &&*/ bl.getUrl().startsWith("http://localhost:8080/html/")) {
                     for (Entry<String, List<BLCaller>> e : bl.getCallers().entrySet()) {
                         for (BLCaller path : e.getValue()) {
-                            save(bl.getUrl(), bl.getCustomer(), e.getKey(), path.getDetails(), ret.getPages());
+                            save(bl.getUrl(), bl.getErrorType(), bl.getCustomer(), e.getKey(), path.getDetails(), ret.getPages());
                         }
                     }
                 } else {
@@ -125,7 +125,7 @@ public class BrokenLinksService {
         return ret;
     }
 
-    private void save(String url, String customer, String sourceId, String path, List<BLPage> pages) {
+    private void save(String url, String errorType, String customer, String sourceId, String path, List<BLPage> pages) {
         String lang;
         if (path.contains("-> html/de ->")) {
             lang = "de";
@@ -139,6 +139,7 @@ public class BrokenLinksService {
         String targetId = url.substring(url.lastIndexOf("/") + 1);
         BLBrokenLink bl = language.findBrokenLink(targetId, workspace);
         bl.getCustomers().add(customer);
+        bl.setErrorType(errorType);
     }
 
     private BLPage findPage(String id, String lang, List<BLPage> pages) {
@@ -256,7 +257,8 @@ public class BrokenLinksService {
         private final String title;
         private Set<String> tags = Set.of();
         private String bookFolder = "";
-
+        private String errorType;
+        
         BLBrokenLink(String id, String title) {
             this.id = id;
             this.title = title;
@@ -289,6 +291,14 @@ public class BrokenLinksService {
         public void setBookFolder(String bookFolder) {
             this.bookFolder = bookFolder;
         }
+
+        public String getErrorType() {
+            return errorType;
+        }
+
+        public void setErrorType(String errorType) {
+            this.errorType = errorType;
+        }
     }
     
     /**
@@ -314,6 +324,15 @@ public class BrokenLinksService {
                     ret = ret.substring(1);
                 }
                 return ret;
+            } else {
+                // "http://localhost:8080/html/93783143.html"
+                final String x = "http://localhost:8080/html/";
+                o = details.indexOf(x);
+                if (o == 0) {
+                    if (details.indexOf(x, x.length()) < 0) {
+                        return details.substring(x.length()).replace(".html", "");
+                    }
+                }
             }
             return details;
         }

@@ -49,6 +49,8 @@ public class BrokenLinksPage extends WPage {
                     map3.put("hasTitle", !bl.getTitle().equals(bl.getId()));
                     map3.put("customers", esc(bl.getCustomers().stream().collect(Collectors.joining(", "))));
                     map3.put("bookFolder", esc(bl.getBookFolder()));
+                    map3.put("is404", bl.getErrorType().contains("(404)"));
+                    map3.put("errorType", esc(bl.getErrorType()));
                     DataList list4 = map3.list("tags");
                     bl.getTags().forEach(tag -> list4.add().put("tag", esc(tag)));
                 }
