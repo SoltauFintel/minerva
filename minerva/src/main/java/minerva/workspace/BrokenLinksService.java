@@ -305,6 +305,36 @@ public class BrokenLinksService {
         }
     }
     
+    public static class BrokenLink {
+        private final String customer;
+        private final String errorType;
+        private final String url;
+        /** key: caller ID */
+        private final Map<String, List<BLCaller>> callers = new HashMap<>();
+
+        BrokenLink(String customer, String errorType, String url) {
+            this.customer = customer;
+            this.errorType = errorType;
+            this.url = url;
+        }
+
+        public String getCustomer() {
+            return customer;
+        }
+
+        public String getErrorType() {
+            return errorType;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public Map<String, List<BLCaller>> getCallers() {
+            return callers;
+        }
+    }
+    
     /**
      * Broken Links Caller line
      */
@@ -339,36 +369,6 @@ public class BrokenLinksService {
                 }
             }
             return details;
-        }
-    }
-    
-    public static class BrokenLink {
-        private final String customer;
-        private final String errorType;
-        private final String url;
-        /** key: caller ID */
-        private final Map<String, List<BLCaller>> callers = new HashMap<>();
-
-        BrokenLink(String customer, String errorType, String url) {
-            this.customer = customer;
-            this.errorType = errorType;
-            this.url = url;
-        }
-
-        public String getCustomer() {
-            return customer;
-        }
-
-        public String getErrorType() {
-            return errorType;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public Map<String, List<BLCaller>> getCallers() {
-            return callers;
         }
     }
 }
