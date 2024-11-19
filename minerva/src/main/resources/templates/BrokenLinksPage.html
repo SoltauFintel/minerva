@@ -38,10 +38,10 @@
             <hr/>
             <h2>{{N.otherBrokenLinks}}</h2>
             {{each bl in other}}
-                <h3>{{bl.errorType}}: <a href="{{bl.url}}" target="_blank">{{bl.url}}</a> {{bl.customer}}</h3>
+                <h3>{{bl.errorType}}: <a href="{{bl.url}}" target="_blank">{{bl.url}}</a> <span class="buch">{{bl.customer}}</span></h3>
                 <ul>
-                    {{each c in i.callers}}
-                        <li>{{c.details}}</li>
+                    {{each c in bl.callers}}
+                        <li class="mb1">{{c.details}}</li>
                     {{/each}}
                 </ul>
             {{/each}}
