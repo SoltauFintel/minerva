@@ -127,12 +127,10 @@ public class BrokenLinksService {
 
     private void save(String url, String errorType, String customer, String sourceId, String path, List<BLPage> pages) {
         String lang;
-        if (path.contains("-> html/de ->")) {
-            lang = "de";
-        } else if (path.contains("-> html/en ->")) {
+        if (path.contains("-> html/en ->")) {
             lang = "en";
         } else {
-            throw new RuntimeException("Cannot extract language from: " + path);
+            lang = "de";
         }
         BLPage page = findPage(sourceId, lang, pages);
         BLLanguage language = page.findLanguage(lang);
