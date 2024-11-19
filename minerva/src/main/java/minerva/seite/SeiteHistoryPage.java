@@ -14,6 +14,7 @@ import gitper.base.ICommit;
 import minerva.MinervaWebapp;
 import minerva.book.BookPage;
 import minerva.config.MinervaFactory;
+import minerva.model.SeiteSO;
 import minerva.user.UserAccess;
 
 public class SeiteHistoryPage extends SPage {
@@ -25,7 +26,8 @@ public class SeiteHistoryPage extends SPage {
         MinervaFactory fac = MinervaWebapp.factory();
         fac.gitlabOnlyPage();
         BackendService backend = fac.getBackendService();
-        List<ICommit> commits = backend.getFileHistory(seite.filenameMeta(), seite.getBook().getWorkspace(), followRenames);
+        String filenameMeta = seite.getBook().getBook().getFolder() + "/" + seite.getId() + SeiteSO.META_SUFFIX;
+        List<ICommit> commits = backend.getFileHistory(filenameMeta, seite.getBook().getWorkspace(), followRenames);
 
         header(seite.getTitle() + " - " + n("history"));
         putCommits(commits, backend, model);
