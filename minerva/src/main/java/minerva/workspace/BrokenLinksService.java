@@ -24,7 +24,10 @@ public class BrokenLinksService {
     
     public List<BLPage> load(WorkspaceSO workspace) {
         this.workspace = workspace;
-        String[] hosts = MinervaOptions.OH_HOSTS.get().split(",");
+        if (MinervaOptions.OH_HOSTS.isSet()) {
+            throw new RuntimeException("Config option 'OH_HOSTS' is not set!");
+        }
+        String[] hosts = MinervaOptions.OH_HOSTS.get().split("\n");
         List<List<BrokenLink>> sites = new ArrayList<>();
         for (String host : hosts) {
             sites.add(parseMain(host.trim()));
@@ -143,7 +146,7 @@ public class BrokenLinksService {
         if (seite == null) {
             return id;
         }
-        return id + ": " + (lang == null ? seite.getTitle() : seite.getSeite().getTitle().getString(lang));
+        return lang == null ? seite.getTitle() : seite.getSeite().getTitle().getString(lang);
     }
     
     public static class BLPage {

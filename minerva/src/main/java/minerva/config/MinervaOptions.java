@@ -22,9 +22,9 @@ public class MinervaOptions {
 	public static final Option PDF_TAGS = add(CAT_GENERAL, "pdf-tags", "PDF tags"); 
 	public static final Option MATHJAX_CONVERTER_URL = add(CAT_GENERAL, "mathjax-converter-url", "MathJax converter URL")
 			.setDefaultValue("https://latex.codecogs.com/png.image?{p}").setHint("vars: {p}"); 
-    public static final Option OH_HOSTS = add(CAT_GENERAL, "oh-hosts", "OH hosts")
-            .setHint("specify protocol, host and port. separator: ,")
-            .setDefaultValue("http://192.168.40.77:4190,http://192.168.40.77:4490"); 
+    public static final Option OH_HOSTS = add(CAT_GENERAL, "oh-hosts", "OH hosts", OptionType.TEXTAREA)
+            .setHint("Each entry in a line: specify protocol, host and port")
+            .setDefaultValue("http://192.168.40.77:4190\nhttp://192.168.40.77:4490"); 
 	
 	private static final OptionCategory CAT_SEARCH = new OptionCategory("Search");
 	public static final Option SEARCH_URL = add(CAT_SEARCH, "search.url", "Search URL")
