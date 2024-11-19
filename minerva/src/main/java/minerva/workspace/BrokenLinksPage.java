@@ -27,7 +27,7 @@ public class BrokenLinksPage extends WPage {
         for (BLPage page : pages) {
             DataMap map = list.add();
             map.put("id", esc(page.getId()));
-            map.put("title", esc(page.getId()));
+            map.put("title", esc(page.getTitle()));
             DataList list2 = map.list("languages");
             for (BLLanguage language : page.getLanguages()) {
                 DataMap map2 = list2.add();
