@@ -418,3 +418,5 @@ frctPage=Features/Pages
 esGibtFehler=There are errors
 etwaigeWeitereEingabenGespeichert=Any further input was saved.
 editContent=Edit content
+BrokenLinks=Broken Links
+brokenLinksInfo=O.g. Seite hat Verweise auf die folgenden Seiten, die aber nicht erreichbar sind

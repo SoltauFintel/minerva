@@ -14,6 +14,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import gitper.base.StringService;
 import minerva.config.MinervaOptions;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
@@ -32,7 +33,9 @@ public class BrokenLinksService {
         for (String host : hosts) {
             sites.add(parseMain(host.trim()));
         }
-        return merge(sites);
+        List<BLPage> ret = merge(sites);
+        ret.sort((a, b) -> StringService.umlaute(a.getTitle()).compareTo(StringService.umlaute(b.getTitle())));
+        return ret;
     }
     
     /**
@@ -126,7 +129,7 @@ public class BrokenLinksService {
         BLPage page = findPage(sourceId, lang, pages);
         BLLanguage language = page.findLanguage(lang);
         String targetId = url.substring(url.lastIndexOf("/") + 1);
-        BLBrokenLink bl = language.findBrokenLink(targetId, this);
+        BLBrokenLink bl = language.findBrokenLink(targetId, this, workspace);
         bl.getCustomers().add(customer);
     }
 
@@ -137,6 +140,8 @@ public class BrokenLinksService {
             }
         }
         BLPage p = new BLPage(id, getTitle(id, null));
+        SeiteSO seite = workspace.findPage(id);
+        p.setBookTitle(seite == null ? "" : seite.getBook().getTitle());
         pages.add(p);
         return p;
     }
@@ -154,7 +159,8 @@ public class BrokenLinksService {
         private final String id;
         private final String title;
         private final Set<BLLanguage> languages = new TreeSet<>();
-
+        private String bookTitle;
+        
         public BLPage(String id, String title) {
             this.id = id;
             this.title = title;
@@ -172,6 +178,14 @@ public class BrokenLinksService {
             return languages;
         }
         
+        public String getBookTitle() {
+            return bookTitle;
+        }
+
+        public void setBookTitle(String bookTitle) {
+            this.bookTitle = bookTitle;
+        }
+
         public BLLanguage findLanguage(String language) {
             for (BLLanguage l : languages) {
                 if (l.getLanguage().equals(language)) {
@@ -201,14 +215,20 @@ public class BrokenLinksService {
             return brokenLinks;
         }
 
-        public BLBrokenLink findBrokenLink(String id, BrokenLinksService sv) {
+        public BLBrokenLink findBrokenLink(String id, BrokenLinksService sv, WorkspaceSO workspace) {
             for (BLBrokenLink bl : brokenLinks) {
                 if (bl.getId().equals(id)) {
                     return bl;
                 }
             }
             BLBrokenLink bl = new BLBrokenLink(id, sv.getTitle(id, language));
+            SeiteSO seite = workspace.findPage(id);
+            if (seite != null) {
+                bl.setTags(seite.getSeite().getTags());
+                bl.setBookFolder(seite.getBook().getBook().getFolder());
+            }
             brokenLinks.add(bl);
+            brokenLinks.sort((a, b) -> StringService.umlaute(a.getTitle()).compareTo(StringService.umlaute(b.getTitle())));
             return bl;
         }
 
@@ -223,6 +243,8 @@ public class BrokenLinksService {
         /** Seite ID */
         private final String id;
         private final String title;
+        private Set<String> tags = Set.of();
+        private String bookFolder = "";
 
         public BLBrokenLink(String id, String title) {
             this.id = id;
@@ -239,6 +261,22 @@ public class BrokenLinksService {
 
         public Set<String> getCustomers() {
             return customers;
+        }
+
+        public Set<String> getTags() {
+            return tags;
+        }
+
+        public void setTags(Set<String> tags) {
+            this.tags = tags;
+        }
+
+        public String getBookFolder() {
+            return bookFolder;
+        }
+
+        public void setBookFolder(String bookFolder) {
+            this.bookFolder = bookFolder;
         }
     }
     
