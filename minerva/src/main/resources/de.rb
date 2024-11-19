@@ -421,3 +421,4 @@ etwaigeWeitereEingabenGespeichert=Etwaige weitere Eingaben wurden gespeichert.
 editContent=Seiteninhalt bearbeiten
 BrokenLinks=Broken Links
 brokenLinksInfo=O.g. Seite hat Verweise auf die folgenden Seiten, die aber nicht erreichbar sind
+otherBrokenLinks=Andere Broken Links

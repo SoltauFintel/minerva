@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
@@ -23,18 +25,18 @@ public class BrokenLinksService {
     private static final int TIMEOUT = 10000;
     private WorkspaceSO workspace;
     
-    public List<BLPage> load(WorkspaceSO workspace) {
+    public BLPages load(WorkspaceSO workspace) {
         this.workspace = workspace;
         if (!MinervaOptions.OH_HOSTS.isSet()) {
-            throw new RuntimeException("Config option 'OH_HOSTS' is not set!");
+            throw new RuntimeException("Config option '" + MinervaOptions.OH_HOSTS.getLabel() + "' is not set!");
         }
         String[] hosts = MinervaOptions.OH_HOSTS.get().split("\n");
         List<List<BrokenLink>> sites = new ArrayList<>();
         for (String host : hosts) {
             sites.add(parseMain(host.trim()));
         }
-        List<BLPage> ret = merge(sites);
-        ret.sort((a, b) -> StringService.umlaute(a.getTitle()).compareTo(StringService.umlaute(b.getTitle())));
+        BLPages ret = merge(sites);
+        ret.getPages().sort((a, b) -> StringService.umlaute(a.getTitle()).compareTo(StringService.umlaute(b.getTitle())));
         return ret;
     }
     
@@ -43,7 +45,7 @@ public class BrokenLinksService {
      * @throws IOException 
      * @throws MalformedURLException 
      */
-    public List<BrokenLink> parseMain(String host) {
+    private List<BrokenLink> parseMain(String host) {
         try {
             List<BrokenLink> ret = new ArrayList<>();
             Document doc = Jsoup.parse(new URL(host + "/brokenlinks"), TIMEOUT);
@@ -100,21 +102,27 @@ public class BrokenLinksService {
         return bl;
     }
 
-    // Broken Links von mehreren Hosts mergen
-    public List<BLPage> merge(List<List<BrokenLink>> brokenLinks) {
-        List<BLPage> pages = new ArrayList<>();
+    /**
+     * Broken Links von mehreren Hosts mergen
+     * @param brokenLinks -
+     * @return BLPages
+     */
+    private BLPages merge(List<List<BrokenLink>> brokenLinks) {
+        BLPages ret = new BLPages();
         for (List<BrokenLink> list : brokenLinks) {
             for (BrokenLink bl : list) {
                 if (bl.getErrorType().contains("(404)") && bl.getUrl().startsWith("http://localhost:8080/html/")) {
                     for (Entry<String, List<BLCaller>> e : bl.getCallers().entrySet()) {
                         for (BLCaller path : e.getValue()) {
-                            save(bl.getUrl(), bl.getCustomer(), e.getKey(), path.getDetails(), pages);
+                            save(bl.getUrl(), bl.getCustomer(), e.getKey(), path.getDetails(), ret.getPages());
                         }
                     }
+                } else {
+                    ret.getOtherBrokenLinks().add(bl);
                 }
             }
         }
-        return pages;
+        return ret;
     }
 
     private void save(String url, String customer, String sourceId, String path, List<BLPage> pages) {
@@ -129,41 +137,48 @@ public class BrokenLinksService {
         BLPage page = findPage(sourceId, lang, pages);
         BLLanguage language = page.findLanguage(lang);
         String targetId = url.substring(url.lastIndexOf("/") + 1);
-        BLBrokenLink bl = language.findBrokenLink(targetId, this, workspace);
+        BLBrokenLink bl = language.findBrokenLink(targetId, workspace);
         bl.getCustomers().add(customer);
     }
 
     private BLPage findPage(String id, String lang, List<BLPage> pages) {
-        for (BLPage p : pages) {
-            if (p.getId().equals(id)) {
-                return p;
+        for (BLPage page : pages) {
+            if (page.getId().equals(id)) {
+                return page;
             }
         }
-        BLPage p = new BLPage(id, getTitle(id, null));
         SeiteSO seite = workspace.findPage(id);
-        p.setBookTitle(seite == null ? "" : seite.getBook().getTitle());
-        pages.add(p);
-        return p;
+        BLPage page = new BLPage(id,
+                seite == null ? id : (lang == null ? seite.getTitle() : seite.getSeite().getTitle().getString(lang)),
+                seite == null ? "" : seite.getBook().getTitle());
+        pages.add(page);
+        return page;
     }
 
-    String getTitle(String id, String lang) {
-        SeiteSO seite = workspace.findPage(id);
-        if (seite == null) {
-            return id;
+    public static class BLPages {
+        private final List<BLPage> pages = new ArrayList<>();
+        private final List<BrokenLink> otherBrokenLinks = new ArrayList<>();
+        
+        public List<BLPage> getPages() {
+            return pages;
         }
-        return lang == null ? seite.getTitle() : seite.getSeite().getTitle().getString(lang);
+
+        public List<BrokenLink> getOtherBrokenLinks() {
+            return otherBrokenLinks;
+        }
     }
     
     public static class BLPage {
         /** Seite ID */
         private final String id;
         private final String title;
+        private final String bookTitle;
         private final Set<BLLanguage> languages = new TreeSet<>();
-        private String bookTitle;
         
-        public BLPage(String id, String title) {
+        BLPage(String id, String title, String bookTitle) {
             this.id = id;
             this.title = title;
+            this.bookTitle = bookTitle;
         }
 
         public String getId() {
@@ -180,10 +195,6 @@ public class BrokenLinksService {
         
         public String getBookTitle() {
             return bookTitle;
-        }
-
-        public void setBookTitle(String bookTitle) {
-            this.bookTitle = bookTitle;
         }
 
         public BLLanguage findLanguage(String language) {
@@ -203,7 +214,7 @@ public class BrokenLinksService {
         private final String language;
         private final List<BLBrokenLink> brokenLinks = new ArrayList<>();
         
-        public BLLanguage(String language) {
+        BLLanguage(String language) {
             this.language = language;
         }
 
@@ -215,14 +226,14 @@ public class BrokenLinksService {
             return brokenLinks;
         }
 
-        public BLBrokenLink findBrokenLink(String id, BrokenLinksService sv, WorkspaceSO workspace) {
+        public BLBrokenLink findBrokenLink(String id, WorkspaceSO workspace) {
             for (BLBrokenLink bl : brokenLinks) {
                 if (bl.getId().equals(id)) {
                     return bl;
                 }
             }
-            BLBrokenLink bl = new BLBrokenLink(id, sv.getTitle(id, language));
             SeiteSO seite = workspace.findPage(id);
+            BLBrokenLink bl = new BLBrokenLink(id, seite == null ? id : seite.getSeite().getTitle().getString(language));
             if (seite != null) {
                 bl.setTags(seite.getSeite().getTags());
                 bl.setBookFolder(seite.getBook().getBook().getFolder());
@@ -246,7 +257,7 @@ public class BrokenLinksService {
         private Set<String> tags = Set.of();
         private String bookFolder = "";
 
-        public BLBrokenLink(String id, String title) {
+        BLBrokenLink(String id, String title) {
             this.id = id;
             this.title = title;
         }
@@ -286,7 +297,7 @@ public class BrokenLinksService {
     public static class BLCaller {
         private final String details;
 
-        public BLCaller(String details) {
+        BLCaller(String details) {
             this.details = details;
         }
 
@@ -305,6 +316,36 @@ public class BrokenLinksService {
                 return ret;
             }
             return details;
+        }
+    }
+    
+    public static class BrokenLink {
+        private final String customer;
+        private final String errorType;
+        private final String url;
+        /** key: caller ID */
+        private final Map<String, List<BLCaller>> callers = new HashMap<>();
+
+        BrokenLink(String customer, String errorType, String url) {
+            this.customer = customer;
+            this.errorType = errorType;
+            this.url = url;
+        }
+
+        public String getCustomer() {
+            return customer;
+        }
+
+        public String getErrorType() {
+            return errorType;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public Map<String, List<BLCaller>> getCallers() {
+            return callers;
         }
     }
 }

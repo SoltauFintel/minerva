@@ -4,6 +4,11 @@
 .buch {
     font-size: 9pt;
 }
+
+.cust {
+    color: #999;
+    margin-right: 1em;
+}
 </style>
 
 <div class="row">
@@ -20,7 +25,7 @@
                             <li>
                                 <a href="/s/{{branch}}/{{B.bookFolder}}/{{B.id}}" target="page2">{{B.title}}</a>
                                 {{if B.hasTitle}}#{{B.id}}{{/if}}
-                                <small style="color: #999;">({{B.customers}})</small>
+                                <small class="cust">({{B.customers}})</small>
                                 {{each tag in B.tags}} <span class="label label-tag">{{tag.tag}}</span>{{/each}}
                             </li>
                         {{/each}}
@@ -28,7 +33,21 @@
                 </p>
             {{/each}}
         {{/each}}
+
+        {{if hasOtherBrokenLinks}}        
+            <hr/>
+            <h2>{{N.otherBrokenLinks}}</h2>
+            {{each bl in other}}
+                <h3>{{bl.errorType}}: <a href="{{bl.url}}" target="_blank">{{bl.url}}</a> {{bl.customer}}</h3>
+                <ul>
+                    {{each c in i.callers}}
+                        <li>{{c.details}}</li>
+                    {{/each}}
+                </ul>
+            {{/each}}
+        {{/if}}
         
+        <hr/>
         <p><small>{{ohHosts}}</small></p>
     </div>
 </div>
