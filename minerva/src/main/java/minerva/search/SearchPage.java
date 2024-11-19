@@ -51,8 +51,10 @@ public class SearchPage extends UPage {
 
 	private Map<String, List<SearchResult>> getResults(String branch, String q) {
 		Map<String, List<SearchResult>> results = new HashMap<>();
+		boolean first = true;
 		for (String lang : langs) { 
-		    List<SearchResult> result = user.getWorkspace(branch).getSearch().search(q, lang);
+		    List<SearchResult> result = user.getWorkspace(branch).getSearch().search(q, lang, first);
+		    first = false;
 		    int nn = result.size();
 		    if (nn > 0) {
 		        results.put(lang, result);

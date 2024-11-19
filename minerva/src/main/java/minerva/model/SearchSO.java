@@ -118,7 +118,7 @@ public class SearchSO {
         }
     }
     
-    public List<SearchResult> search(String x, String lang) {
+    public List<SearchResult> search(String x, String lang, boolean isFirstLanguage) {
         List<SearchResult> ret;
         if (StringService.isNullOrEmpty(x)) {
             return new ArrayList<>();
@@ -130,6 +130,10 @@ public class SearchSO {
             ret = new REST(url).get().fromJson(type);
         } else {
         	ret = new ArrayList<>();
+        }
+        
+        if (isFirstLanguage) {
+            searchBySeiteID(x, ret);
         }
         
         // search features
@@ -144,6 +148,17 @@ public class SearchSO {
 			}
         }
         return ret;
+    }
+
+    private void searchBySeiteID(String x, List<SearchResult> result) {
+        SeiteSO seite = workspace.findPage(x);
+        if (seite != null) {
+            SearchResult sr = new SearchResult();
+            sr.setPath(seite.getBook().getBook().getFolder() + "/" + seite.getId());
+            sr.setTitle(seite.getTitle());
+            sr.setContent("ID: " + seite.getId());
+            result.add(sr);
+        }
     }
 
     private void addBreadcrumbs(List<SearchResult> result) {
