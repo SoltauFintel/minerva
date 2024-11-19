@@ -150,6 +150,7 @@ import minerva.validate.ValidationPage;
 import minerva.validate.ValidatorService.UnusedImagesTimer;
 import minerva.workspace.ActivateFSModeAction;
 import minerva.workspace.AddWorkspacePage;
+import minerva.workspace.BrokenLinksPage;
 import minerva.workspace.CreateBranchPage;
 import minerva.workspace.CurrentWorkspaceAction;
 import minerva.workspace.DeactivateFSModePage;
@@ -198,6 +199,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/push-data", PushDataAction.class);
         get("/w/:branch/language", SelectLanguageAction.class);
         get("/w/:branch/broken-mappings", BrokenMappingsPage.class);
+        get("/w/:branch/broken-links", BrokenLinksPage.class);
         get("/w/:branch/activate-f-s-mode", ActivateFSModeAction.class);
         form("/w/:branch/deactivate-f-s-mode", DeactivateFSModePage.class);
         get("/w/:branch/recycle/pop/:id", RecycleAction.class);

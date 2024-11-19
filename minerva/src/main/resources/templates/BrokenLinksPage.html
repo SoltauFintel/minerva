@@ -1,0 +1,27 @@
+{{master: master}}
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">{{header}}</h1>
+        
+        {{each page in pages}}
+            <h3><a href="/s/{{branch}}/{{bookFolder}}/{{page.id}}" target="page1">{{page.title}}</a></h3>
+            {{each L in page.languages}}
+                <p>
+                    <b>{{L.language}}</b>{{L.info}}
+                    <ul>
+                        {{each B in L.brokenLinks}}
+                            <li>
+                                <a href="/s/{{branch}}/{{bookFolder}}/{{B.id}}" target="page2">{{B.title}}</a>
+                                <small>({{B.customers}})</small>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </p>
+            {{/each}}
+        {{/each}}
+        
+        <p><small>{{ohHosts}}</small></p>
+    </div>
+</div>
+    

@@ -73,6 +73,8 @@ public class MenuPage extends WPage {
         menu(list, "formulaEditor", "fa-superscript", "/math");
         if (fac.isCustomerVersion()) {
             menu(list, "Broken Mappings", "fa-chain-broken", "/w/:branch/broken-mappings");
+        } else {
+            menu(list, "Broken Links", "fa-chain-broken", "/w/:branch/broken-links");
         }
         export(booksOk, list);
         if (fac.isCustomerVersion()) {
