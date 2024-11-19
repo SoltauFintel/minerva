@@ -11,7 +11,8 @@
 }
 
 .errorType {
-    color: #c00;
+    color: #d00;
+    font-weight: bold;
 }
 </style>
 
@@ -27,9 +28,13 @@
                     <ul>
                         {{each B in L.brokenLinks}}
                             <li>
-                                <a href="/s/{{branch}}/{{B.bookFolder}}/{{B.id}}" target="page2">{{B.title}}</a>
-                                {{if B.hasTitle}}#{{B.id}}{{/if}}
-                                {{if not B.is404}}<span class="errorType">{{B.errorType}}</span>{{/if}}
+                                {{if B.is404}}
+                                    <a href="/s/{{branch}}/{{B.bookFolder}}/{{B.id}}" target="page2">{{B.title}}</a>
+                                    {{if B.hasTitle}}#{{B.id}}{{/if}}
+                                {{else}}
+                                    <span class="errorType">{{B.errorType}}</span>
+                                    {{B.title}}
+                                {{/if}}
                                 <small class="cust">({{B.customers}})</small>
                                 {{each tag in B.tags}} <span class="label label-tag">{{tag.tag}}</span>{{/each}}
                             </li>
@@ -39,19 +44,6 @@
             {{/each}}
         {{/each}}
 
-        {{if hasOtherBrokenLinks}}        
-            <hr/>
-            <h2>{{N.otherBrokenLinks}}</h2>
-            {{each bl in other}}
-                <h3>{{bl.errorType}}: <a href="{{bl.url}}" target="_blank">{{bl.url}}</a> <span class="buch">{{bl.customer}}</span></h3>
-                <ul>
-                    {{each c in bl.callers}}
-                        <li class="mb1">{{c.details}}</li>
-                    {{/each}}
-                </ul>
-            {{/each}}
-        {{/if}}
-        
         <hr/>
         <p><small>{{ohHosts}}</small></p>
     </div>

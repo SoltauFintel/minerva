@@ -1,6 +1,5 @@
 package minerva.workspace;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
@@ -11,11 +10,9 @@ import com.github.template72.data.DataMap;
 import gitper.base.StringService;
 import minerva.config.MinervaOptions;
 import minerva.workspace.BrokenLinksService.BLBrokenLink;
-import minerva.workspace.BrokenLinksService.BLCaller;
 import minerva.workspace.BrokenLinksService.BLLanguage;
 import minerva.workspace.BrokenLinksService.BLPage;
 import minerva.workspace.BrokenLinksService.BLPages;
-import minerva.workspace.BrokenLinksService.BrokenLink;
 
 public class BrokenLinksPage extends WPage {
 
@@ -57,19 +54,5 @@ public class BrokenLinksPage extends WPage {
                 list3.sort((a, b) -> a.get("title").toString().compareTo(b.get("title").toString()));
             }
         }
-        DataList list5 = list("other");
-        for (BrokenLink bl : pages.getOtherBrokenLinks()) {
-            DataMap map = list5.add();
-            map.put("errorType", esc(bl.getErrorType()));
-            map.put("url", esc(bl.getUrl()));
-            map.put("customer", esc(bl.getCustomer()));
-            DataList list6 = map.list("callers");
-            for (List<BLCaller> clist : bl.getCallers().values()) {
-                for (BLCaller c : clist) {
-                    list6.add().put("details", esc(c.getDetails()));
-                }
-            }
-        }
-        put("hasOtherBrokenLinks", !pages.getOtherBrokenLinks().isEmpty());
     }
 }

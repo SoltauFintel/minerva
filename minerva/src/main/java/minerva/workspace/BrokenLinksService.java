@@ -111,15 +111,11 @@ public class BrokenLinksService {
         BLPages ret = new BLPages();
         for (List<BrokenLink> list : brokenLinks) {
             for (BrokenLink bl : list) {
-//                if (/*bl.getErrorType().contains("(404)") &&*/ bl.getUrl().startsWith("http://localhost:8080/html/")) {
-                    for (Entry<String, List<BLCaller>> e : bl.getCallers().entrySet()) {
-                        for (BLCaller path : e.getValue()) {
-                            save(bl.getUrl(), bl.getErrorType(), bl.getCustomer(), e.getKey(), path.getDetails(), ret.getPages());
-                        }
+                for (Entry<String, List<BLCaller>> e : bl.getCallers().entrySet()) {
+                    for (BLCaller path : e.getValue()) {
+                        save(bl.getUrl(), bl.getErrorType(), bl.getCustomer(), e.getKey(), path.getDetails(), ret.getPages());
                     }
-//                } else {
-//                    ret.getOtherBrokenLinks().add(bl);
-//                }
+                }
             }
         }
         return ret;
@@ -161,14 +157,9 @@ public class BrokenLinksService {
 
     public static class BLPages {
         private final List<BLPage> pages = new ArrayList<>();
-        private final List<BrokenLink> otherBrokenLinks = new ArrayList<>();
         
         public List<BLPage> getPages() {
             return pages;
-        }
-
-        public List<BrokenLink> getOtherBrokenLinks() {
-            return otherBrokenLinks;
         }
     }
     
