@@ -32,6 +32,10 @@ public class PageMenuItem {
 		this.checked = checked;
 	}
 	
+	public String getLink() {
+		return link;
+	}
+
 	public void add(PageMenuContext ctx, DataList menuitems) {
 		if (!visible) {
 			return;
