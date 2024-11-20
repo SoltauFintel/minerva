@@ -62,23 +62,18 @@ public class FeatureFieldsService implements AddFeatures {
             throw new IllegalArgumentException("value must not be null");
         }
         DirAccess dao = excludeSeite.getBook().dao();
-        long start = System.currentTimeMillis();
         Map<String, String> files = dao.loadAllFiles(excludeSeite.getBook().getFolder() + "/feature-fields", ".ff");
         Gson gson = new Gson();
-        boolean ret = false;
         for (Entry<String, String> e : files.entrySet()) {
             if (!e.getKey().endsWith("/feature-fields/" + excludeSeite.getId() + ".ff")) {
                 FeatureFields ff = gson.fromJson(e.getValue(), FeatureFields.class);
                 String cv = ff.get(id);
                 if (cv != null && cv.equals(value)) {
-                    ret = true;
-                    break;
+                    return true;
                 }
             }
         }
-        long end = System.currentTimeMillis();
-        Logger.info("find value \"" + value + "\" in field " + id + ": " + (ret ? "found" : "not found") + " | " + (end - start) + "ms");
-        return ret;
+        return false;
     }
     
     /**
