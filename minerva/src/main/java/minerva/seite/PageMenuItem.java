@@ -3,6 +3,8 @@ package minerva.seite;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import minerva.model.BookSO;
+
 public class PageMenuItem {
 	private final boolean visible;
 	private final String link;
@@ -35,8 +37,10 @@ public class PageMenuItem {
 			return;
 		}
         DataMap map = menuitems.add();
+		BookSO book = ctx.getSeite().getBook();
 		map.put("link", link.replace("{viewlink}", ctx.getSeite().viewlink())
-						.replace("{branch}", ctx.getSeite().getBook().getWorkspace().getBranch())
+						.replace("{branch}", book.getWorkspace().getBranch())
+						.replace("{bookFolder}", book.getBook().getFolder())
 						.replace("{id}", ctx.getSeite().getId())
 						.replace("{duplicatelink}", ctx.get("duplicatelink"))
 						.replace("{movelink}", ctx.get("movelink"))
