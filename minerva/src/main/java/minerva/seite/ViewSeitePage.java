@@ -34,6 +34,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     public static DeliverHtmlContent<SeiteSO> additionalButtons = i -> "";
     public static DeliverHtmlContent<SeiteSO> featureStatusButtons = i -> "";
     public static AddFeatures addFeatures = (seite, features) -> {};
+    public static PageMenuSupplier menuSupplier = new PageMenuSupplier();
     private String mindmapJson;
     private SeiteSichtbar ssc;
     
@@ -95,18 +96,16 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         editorComponent();
         header(modifyHeader(seite.getTitle()));
         fillLinks(branch, bookFolder, id, seite, _seite, u.getPageLanguage());
-        boolean customerModeActive = user.getCustomerMode().isActive();
-        getPageMenu().menu(model, seite, viewlink, isAdmin, isFavorite, pageWatched, subpagesWatched,
-                MinervaWebapp.factory().getConfig().isGitlab(), MinervaWebapp.factory().isCustomerVersion(), customerModeActive); // möglichst spät aufrufen
-        Logger.info(u.getLogin() + " | " + seite.getBook().getWorkspace().getBranch() + " | "
+
+        PageMenuContext pmc = new PageMenuContext(seite, isAdmin, isFavorite, pageWatched, subpagesWatched, model);
+		DataList menuitems = model.list("menuitems");
+		menuSupplier.getMenuItems(pmc).forEach(item -> item.add(pmc, menuitems)); // möglichst spät aufrufen
+        
+		Logger.info(u.getLogin() + " | " + seite.getBook().getWorkspace().getBranch() + " | "
         		+ seite.getBook().getBook().getFolder() + " | "
                 + seite.getTitle() + " | " + u.getPageLanguage());
     }
     
-    protected PageMenu getPageMenu() {
-        return new PageMenu(user.getGuiLanguage());
-    }
-
     private void simpleVars(User u, Seite _seite) {
         fillTags(_seite);
         putSize("tagsSize", seite.getSeite().getTags());
