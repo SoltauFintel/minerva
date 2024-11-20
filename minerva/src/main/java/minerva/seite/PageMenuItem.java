@@ -49,13 +49,14 @@ public class PageMenuItem {
         map.put("line", "-".equals(label));
         map.put("attrs", "");
         map.put("liArgs", "");
-        if (theLink.startsWith(" ")) {
+        if (theLink.startsWith(" ")) { // modal
             map.put("link", "#");
             map.put("attrs", theLink);
+            if (theLink.contains("editorsnote")) {
+            	map.put("liArgs", " style=\"background-color: #ff9;\"");
+            }
         } else if (theLink.contains("/delete")) {
             map.put("attrs", " style=\"color: #900;\"");
-        } else if (theLink.contains("editorsnote")) {
-            map.put("liArgs", " style=\"background-color: #ff9;\"");
         }
 	}
 
