@@ -15,7 +15,7 @@ public class MME {
     }
 
     public MME(String id, MME parent, String text) {
-        this(id, parent, text, null);
+        this(id, parent, text, "type-b");
     }
 
     /** root */
