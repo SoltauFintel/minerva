@@ -42,26 +42,31 @@ public class PageMenuItem {
 		}
         DataMap map = menuitems.add();
 		BookSO book = ctx.getSeite().getBook();
-		map.put("link", link.replace("{viewlink}", ctx.getSeite().viewlink())
-						.replace("{branch}", book.getWorkspace().getBranch())
-						.replace("{bookFolder}", book.getBook().getFolder())
-						.replace("{id}", ctx.getSeite().getId())
-						.replace("{duplicatelink}", ctx.get("duplicatelink"))
-						.replace("{movelink}", ctx.get("movelink"))
-						.replace("{deletelink}", ctx.get("deletelink")));
+		String theLink = makeLink(ctx, book);
+		map.put("link", theLink);
         map.put("icon", icon);
         map.put("label", getLabel(ctx));
         map.put("line", "-".equals(label));
         map.put("attrs", "");
         map.put("liArgs", "");
-        if (link.startsWith(" ")) {
+        if (theLink.startsWith(" ")) {
             map.put("link", "#");
-            map.put("attrs", link);
-        } else if (link.contains("/delete")) {
+            map.put("attrs", theLink);
+        } else if (theLink.contains("/delete")) {
             map.put("attrs", " style=\"color: #900;\"");
-        } else if (link.contains("editorsnote")) {
+        } else if (theLink.contains("editorsnote")) {
             map.put("liArgs", " style=\"background-color: #ff9;\"");
         }
+	}
+
+	private String makeLink(PageMenuContext ctx, BookSO book) {
+		return link.replace("{viewlink}", ctx.getSeite().viewlink())
+					.replace("{branch}", book.getWorkspace().getBranch())
+					.replace("{bookFolder}", book.getBook().getFolder())
+					.replace("{id}", ctx.getSeite().getId())
+					.replace("{duplicatelink}", ctx.get("duplicatelink"))
+					.replace("{movelink}", ctx.get("movelink"))
+					.replace("{deletelink}", ctx.get("deletelink"));
 	}
 
 	private String getLabel(PageMenuContext ctx) {
