@@ -164,6 +164,11 @@ public class EditFeatureFieldsPage extends SPage {
 		public String getNewValue() {
 			return newValue;
 		}
+		
+		@Override
+		public String toString() {
+			return id + ": " + oldValue + "->" + newValue;
+		}
 	}
     
     public interface EditFeatureFieldListener {
