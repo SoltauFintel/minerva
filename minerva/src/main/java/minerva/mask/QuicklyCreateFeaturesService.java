@@ -1,5 +1,6 @@
 package minerva.mask;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,11 +12,13 @@ import minerva.model.SeiteSO;
 
 public class QuicklyCreateFeaturesService {
 	private static final Gson gson = new Gson();
+	public static FeatureNumbersCreator featureNumbersCreator = fn -> {};
 	
 	public void createFeatures(SeiteSO parent0, List<String> features) {
 		Map<String, String> files = new HashMap<>();
 		Map<String, SeiteSO> pm = new HashMap<>();
 		pm.put("0", parent0);
+		ArrayList<String> featureNumbers = new ArrayList<>();
 		BookSO book = parent0.getBook();
 		for (String line : features) {
 			int indent = 0;
@@ -45,11 +48,23 @@ public class QuicklyCreateFeaturesService {
 			FeatureFields ff = FeatureFields.create(seite);
 			if (!featureNumber.isBlank()) {
 				ff.setFeatureNumber(featureNumber);
+				if (!featureNumbers.contains(featureNumber)) {
+					featureNumbers.add(featureNumber);
+				}
 			}
 			files.put(FeatureFieldsService.dn(seite), gson.toJson(ff));
 			
 			pm.put("" + (indent + 1), seite);
 		}
 		book.dao().saveFiles(files, parent0.commitMessage("Quickly Create Features"), book.getWorkspace());
+		featureNumbersCreator.createFeatureNumbers(featureNumbers);
+	}
+	
+	/**
+	 * Create feature numbers in Jira
+	 */
+	public interface FeatureNumbersCreator {
+		
+		void createFeatureNumbers(ArrayList<String> featureNumbers); // must be ArrayList!
 	}
 }
