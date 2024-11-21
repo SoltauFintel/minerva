@@ -89,6 +89,9 @@ public class MinervaFactory {
         }
     }
     
+    /**
+     * @return true: Kundenversion, false: firmeninterne Version
+     */
     public boolean isCustomerVersion() {
         return "1".equals(config.getKunde());
     }

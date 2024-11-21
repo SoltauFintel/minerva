@@ -422,3 +422,5 @@ editContent=Seiteninhalt bearbeiten
 BrokenLinks=Broken Links
 brokenLinksInfo=O.g. Seite hat Verweise auf die folgenden Seiten, die aber nicht erreichbar sind
 otherBrokenLinks=Andere Broken Links
+Attachments=Attachments
+AttachmentsKundenversion=Anlagen

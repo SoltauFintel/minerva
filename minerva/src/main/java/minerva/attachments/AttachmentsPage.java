@@ -6,6 +6,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.image.Dropzone;
+import minerva.MinervaWebapp;
 import minerva.model.AttachmentsSO;
 import minerva.seite.SPage;
 import ohhtml.downloads.Attachment;
@@ -16,7 +17,7 @@ public class AttachmentsPage extends SPage {
     protected void execute() {
         List<Attachment> attachments = new AttachmentsSO(seite).list();
 
-        header("Attachments");
+		header(n(MinervaWebapp.factory().isCustomerVersion() ? "AttachmentsKundenversion" : "Attachments"));
         put("cat", esc(user.getAttachmentCategory()));
         put("dropzone", new Dropzone().getHTML(viewlink + "/upload-attachment")
             .replace(" multiple", " ") // TODO Wenn man mehr als eine Datei hochlädt, meldet das JS einen Fehler. Auch im Serverlog stehen ominöse Template Fehler.
