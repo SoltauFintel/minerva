@@ -16,7 +16,7 @@ public class EditSeitePage extends ViewSeitePage {
     @Override
     protected void execute2() {
         if (isPOST()) {
-            Logger.info(user.getLogin() + " | " + branch + " | saving page #" + id + " \"" + seite.getTitle() + "\" ..." + saveinfo());
+            Logger.debug(seite.getLogLine(null) + " | Saving page..." + saveinfo());
             save(branch, bookFolder, id, seite);
             workspace.onEditing(seite, true); // editing finished
         } else { // edit

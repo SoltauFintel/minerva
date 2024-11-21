@@ -41,6 +41,7 @@ import minerva.seite.link.ExtractLinksContext;
 import minerva.subscription.SubscriptionService;
 import minerva.subscription.TPage;
 import minerva.user.CustomerMode;
+import minerva.user.User;
 import ohhtml.toc.HelpKeysForHeading;
 import ohhtml.toc.TocMacroPage;
 
@@ -420,6 +421,13 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
             seite.movePageToBookTo(targetBook, langs, files); // recursive
         }
     }
+    
+    public String getLogLine(User u) {
+    	if (u == null) {
+    		u = book.getWorkspace().getUser().getUser();
+    	}
+		return u.getLogin() + " | " + book.getWorkspace().getBranch() + " | " + book.getBook().getFolder() + " | " + getTitle();
+    }
 
     public String duplicate(List<String> langs) {
     	// create new page
@@ -431,7 +439,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     	} else {
     		id = book.createTopLevelSeite();
     	}
-    	Logger.info("Page " + id + " is a copy of page " + getId());
+    	Logger.info(getLogLine(null) + " | Page " + id + " is a copy.");
     	
     	// copy data
         SeiteSO copy = book._seiteById(id);
@@ -495,9 +503,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         
         new Thread(() -> new WatchersService(this).notifyWatchers()).start();
 
-        Logger.info(book.getWorkspace().getUser().getLogin() + " | " + book.getWorkspace().getBranch() + " | "
-                + newTitle.getString(langs.get(0))
-                + " -> Page #" + getId() + " saved. " + (System.currentTimeMillis() - start) + "ms");
+        Logger.info(getLogLine(null) + " | *** Page saved. (" + (System.currentTimeMillis() - start) + "ms)");
     }
 
     private String createTagsFromComment(String comment) {

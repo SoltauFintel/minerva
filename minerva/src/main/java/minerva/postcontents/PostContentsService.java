@@ -34,7 +34,7 @@ public class PostContentsService {
             throw new RuntimeException(e);
         }
         push(data);
-        Logger.info("post contents data: " + data.getClass().getSimpleName() + ", " + data.getKey() + ", " + data.getVersion());
+        Logger.debug("post contents data: " + data.getClass().getSimpleName() + ", key: " + data.getKey() + ", version: " + data.getVersion());
     }
 
     private void push(PostContentsData data) {

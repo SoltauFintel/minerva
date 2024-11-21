@@ -105,9 +105,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
 		DataList menuitems = model.list("menuitems");
 		menuSupplier.getMenuItems(pmc).forEach(item -> item.add(pmc, menuitems)); // möglichst spät aufrufen
         
-		Logger.info(u.getLogin() + " | " + seite.getBook().getWorkspace().getBranch() + " | "
-        		+ seite.getBook().getBook().getFolder() + " | "
-                + seite.getTitle() + " | " + u.getPageLanguage());
+		Logger.info(seite.getLogLine(u));
     }
     
     private void simpleVars(User u, Seite _seite) {
