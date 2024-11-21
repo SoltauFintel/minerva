@@ -24,7 +24,7 @@ public class PageMenuItem {
 		this(true, link, icon, label, checked);
 	}
 
-	private PageMenuItem(boolean visible, String link, String icon, String label, boolean checked) {
+	public PageMenuItem(boolean visible, String link, String icon, String label, boolean checked) {
 		this.visible = visible;
 		this.link = link;
 		this.icon = icon;

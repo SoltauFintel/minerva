@@ -17,7 +17,7 @@ public class AttachmentsPage extends SPage {
     protected void execute() {
         List<Attachment> attachments = new AttachmentsSO(seite).list();
 
-		header(n(MinervaWebapp.factory().isCustomerVersion() ? "AttachmentsKundenversion" : "Attachments"));
+		header(n(getTitleKey()));
         put("cat", esc(user.getAttachmentCategory()));
         put("dropzone", new Dropzone().getHTML(viewlink + "/upload-attachment")
             .replace(" multiple", " ") // TODO Wenn man mehr als eine Datei hochlädt, meldet das JS einen Fehler. Auch im Serverlog stehen ominöse Template Fehler.
@@ -36,5 +36,9 @@ public class AttachmentsPage extends SPage {
             }
         }
         put("hasAttachments", !attachments.isEmpty());
+    }
+    
+    public static String getTitleKey() {
+    	return MinervaWebapp.factory().isCustomerVersion() ? "AttachmentsKundenversion" : "Attachments";
     }
 }
