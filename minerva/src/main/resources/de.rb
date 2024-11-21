@@ -424,3 +424,7 @@ brokenLinksInfo=O.g. Seite hat Verweise auf die folgenden Seiten, die aber nicht
 otherBrokenLinks=Andere Broken Links
 Attachments=Attachments
 AttachmentsKundenversion=Anlagen
+PageNotVisible=Seite nicht sichtbar!
+reasonOFFTAG=wegen 'OFF' tag $v
+reasonTAG=wegen tag $v
+reasonEMPTY=weil leer

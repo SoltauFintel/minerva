@@ -131,25 +131,27 @@ public class SeiteSichtbar {
     // main part
     private static Visible getVisibleResult(SeiteSO seite, SeiteSichtbar context) {
         boolean noTree = isNoTree(seite);
-        if (!isAccessible(seite.getSeite().getTags(), context)) {
+        Accessibility accessibility = isAccessible(seite.getSeite().getTags(), context);
+        if (!accessibility.accessible) {
         	// Es ist ein Kunde gesetzt und dessen Ausschlüsse-tags verbieten den Zugriff auf die Seite.
-        	return new Visible(noTree, false);
+        	return new Visible(noTree, false, accessibility.reason);
         } else {
             // Wenn es für mind. eine Sprache nicht leer ist, dann ist die Seite sichtbar.
             for (String lang : context.languages) {
             	if (!isEmpty(seite, lang)) {
-                    return new Visible(noTree, true);
+                    return new Visible(noTree, true, ""/*sichtbar weil für Sprache ... nicht leer*/);
                 }
             }
             // Die Seite ist leer und daher eigentlich nicht sichtbar.
             // Wenn es aber mindestens eine nicht-leere Unterseite gibt, dann ist das Ergebnis hasSubpages statt nicht-sichtbar.
             for (SeiteSO sub : seite.getSeiten()) {
             	if (getVisibleResult(sub, context).isVisible()) { // recursive
-            		return new Visible(noTree, true, true, false);
+            		return new Visible(noTree, true, true, false, ""/*leer, aber dennoch sichtbar weil Unterseite ... sichtbar ist*/);
             	}
             }
             // Seite nicht sichtbar oder show-all-pages-mode aktiv.
-        	return new Visible(noTree, context.showAllPages, false, context.showAllPages);
+        	return new Visible(noTree, context.showAllPages, false, context.showAllPages,
+        			context.showAllPages ? ""/*sichtbar weil alle-Seiten-Modus aktiv*/ : "reasonEMPTY");
         }
     }
     
@@ -167,11 +169,11 @@ public class SeiteSichtbar {
         }
     }
 
-    private static boolean isAccessible(Set<String> tags, SeiteSichtbar context) {
+    private static Accessibility isAccessible(Set<String> tags, SeiteSichtbar context) {
         if (!context.hasCustomer()) {
-            return true;
+            return new Accessibility(); // weil Kundenmodus nicht aktiv
         }
-        boolean ret = true;
+        Accessibility ret = new Accessibility(); // weil kann tag es unsichtbar macht
         boolean voteForON = false;
         List<String> exclusionsTags = context.exclusions.getTags(context.customerMode.getCustomer().toLowerCase());
         for (String tag : tags) {
@@ -184,12 +186,12 @@ public class SeiteSichtbar {
             if (v == LabelClass.ON) {
                 voteForON = true;
             } else if (v == LabelClass.OFF) {
-                return false;
+                return new Accessibility("reasonOFFTAG|" + tag);
             } else if (v == LabelClass.NORMAL) {
-                ret = false;
+                ret = new Accessibility("reasonTAG|" + tag);
             }
         }
-        return voteForON || ret;
+    	return voteForON ? new Accessibility() /*wegen 'ON' tag ...*/ : ret;
     }
 
     private enum LabelClass {
@@ -208,6 +210,23 @@ public class SeiteSichtbar {
         /** does not contain */
         NOT_IN;
     }
+    
+	private static class Accessibility {
+		final boolean accessible;
+		final String reason;
+
+		/** is accessible */
+		Accessibility() {
+			accessible = true;
+			reason = "";
+		}
+		
+		/** is not accessible */
+		Accessibility(String reason) {
+			accessible = false;
+			this.reason = reason;
+		}
+	}
 
     private static LabelClass contains(String tag, List<String> exclusionsTags) {
         if (exclusionsTags != null) {

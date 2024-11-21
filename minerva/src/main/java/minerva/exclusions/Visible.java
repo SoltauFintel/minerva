@@ -1,16 +1,20 @@
 package minerva.exclusions;
 
+import gitper.base.StringService;
+import minerva.base.NLS;
+
 public class Visible {
 	private final boolean visible;
 	private final boolean hasSubpages;
 	private final boolean showAllPages;
 	private final boolean noTree;
+	private final String reason; // RB key + "|" + $v value
 	
-	public Visible(boolean noTree, boolean visible) {
-		this(noTree, visible, false, false);
+	public Visible(boolean noTree, boolean visible, String reason) {
+		this(noTree, visible, false, false, reason);
 	}
 	
-	public Visible(boolean noTree, boolean visible, boolean hasSubpages, boolean showAllPages) {
+	public Visible(boolean noTree, boolean visible, boolean hasSubpages, boolean showAllPages, String reason) {
 	    this.noTree = noTree;
 		if ((!visible && hasSubpages) || (!visible && showAllPages) || (hasSubpages && showAllPages)) {
 			throw new IllegalArgumentException(
@@ -19,6 +23,7 @@ public class Visible {
 		this.visible = visible;
 		this.hasSubpages = hasSubpages;
 		this.showAllPages = showAllPages;
+		this.reason = reason;
 	}
 
 	/**
@@ -42,5 +47,15 @@ public class Visible {
 
 	public boolean isShowAllPages() {
 		return showAllPages;
+	}
+
+	public String getReason(String guiLanguage) {
+		if (StringService.isNullOrEmpty(reason)) {
+			return "";
+		}
+		int o = reason.indexOf("|");
+		return o >= 0
+				? NLS.get(guiLanguage, reason.substring(0, o)).replace("$v", reason.substring(o + 1))
+				: NLS.get(guiLanguage, reason);
 	}
 }

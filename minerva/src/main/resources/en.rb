@@ -423,3 +423,7 @@ brokenLinksInfo=O.g. Seite hat Verweise auf die folgenden Seiten, die aber nicht
 otherBrokenLinks=Other broken links
 Attachments=Attachments
 AttachmentsKundenversion=Attachments
+PageNotVisible=Page not visible!
+reasonOFFTAG=because of 'OFF' tag $v
+reasonTAG=because of tag $v
+reasonEMPTY=because it's empty

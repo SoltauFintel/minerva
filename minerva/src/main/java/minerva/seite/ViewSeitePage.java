@@ -17,6 +17,7 @@ import minerva.base.Uptodatecheck;
 import minerva.book.BookPage;
 import minerva.comment.SeiteCommentService2;
 import minerva.exclusions.SeiteSichtbar;
+import minerva.exclusions.Visible;
 import minerva.image.FixHttpImage;
 import minerva.mask.FeatureFieldsHtmlFactory;
 import minerva.mask.FeatureFieldsService;
@@ -69,6 +70,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         }
         seite.forceReloadIfCheap();
         ssc = new SeiteSichtbar(workspace);
+        Visible vr = ssc.getVisibleResult(seite);
+        put("visible", vr.isVisible());
+        put("visibleReason", esc(vr.getReason(user.getGuiLanguage())));
         fillLanguageSpecifics(u);
         Seite _seite = seite.getSeite();
         simpleVars(u, _seite);

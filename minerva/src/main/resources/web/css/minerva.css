@@ -545,8 +545,16 @@ ul.pagetree {
     background-color: #f99;
     padding: 4px;
     border-radius: 5px;
-    font-style: italic;
     text-align: center;
+    font-style: italic;
+}
+
+.pageNotVisible {
+    background-color: #e9f3fc;
+    padding: 4px;
+    border-radius: 5px;
+    text-align: center;
+    color: #c00;
 }
 
 .fa-sitemap-color {
