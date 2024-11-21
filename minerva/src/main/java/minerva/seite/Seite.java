@@ -60,6 +60,7 @@ public class Seite {
         this.tocHeadingsLevels = c.tocHeadingsLevels;
         this.tocSubpagesLevels = c.tocSubpagesLevels;
         this.editorsNote = c.editorsNote;
+        this.links.addAll(c.links);
     }
     
     // needed for duplicate action
@@ -75,6 +76,7 @@ public class Seite {
 		}
 		tocHeadingsLevels = c.tocHeadingsLevels;
 		tocSubpagesLevels = c.tocSubpagesLevels;
+		links.addAll(c.links);
     }
 
     public String getId() {
