@@ -427,3 +427,5 @@ PageNotVisible=Page not visible!
 reasonOFFTAG=because of 'OFF' tag $v
 reasonTAG=because of tag $v
 reasonEMPTY=because it's empty
+insertIntoPage=insert into page
+insertAllAttachmentsIntoPage=With ${attachments} all files can be inserted into the page.

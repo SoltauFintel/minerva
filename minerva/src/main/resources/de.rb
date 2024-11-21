@@ -428,3 +428,5 @@ PageNotVisible=Seite nicht sichtbar!
 reasonOFFTAG=wegen 'OFF' tag $v
 reasonTAG=wegen tag $v
 reasonEMPTY=weil leer
+insertIntoPage=in die Seite einfügen mit z.B.
+insertAllAttachmentsIntoPage=Mit ${attachments} können alle Dateien in die Seite eingefügt werden.

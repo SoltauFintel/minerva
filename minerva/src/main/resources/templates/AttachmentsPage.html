@@ -51,6 +51,7 @@
                 <tr>
                     <th>{{N.Filename}}</th>
                     <th>{{N.Categories}}</th>
+                    <th>{{N.insertIntoPage}}</th>
                     <th></th>
                 </tr>
                 {{each att in attachments}}
@@ -61,6 +62,7 @@
                                 <span class="label label-info">{{cat.cat}}</span>
                             {{/each}}
                         </td>
+                        <td>{{if att.hasCat1}}${attachment={{att.cat1}}}{{/if}}</td>
                         <td style="text-align: right;">
                             <a href="{{viewlink}}/edit-attachment/{{att.filename}}" class="btn btn-xs btn-default br"><i
                                 class="fa fa-pencil"></i> {{N.EditCategories}}</a>
@@ -74,5 +76,6 @@
         {{else}}
             <p class="mt2">- {{N.noAttachments}} -</p>
         {{/if}}
+        <p class="mt4">{{N.insertAllAttachmentsIntoPage}}</p>
     </div>
 </div>

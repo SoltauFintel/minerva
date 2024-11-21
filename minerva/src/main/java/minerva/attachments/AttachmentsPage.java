@@ -34,6 +34,8 @@ public class AttachmentsPage extends SPage {
             for (String cat : att.getCategories()) {
                 list2.add().put("cat", esc(cat));
             }
+            map.put("cat1", att.getCategories().isEmpty() ? "" : att.getCategories().get(0));
+            map.putHas("cat1", att.getCategories());
         }
         put("hasAttachments", !attachments.isEmpty());
     }
