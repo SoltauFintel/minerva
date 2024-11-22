@@ -190,7 +190,7 @@ public class EditFeatureFieldsPage extends SPage {
             String id = pages.get(i);
             
             if (!findPage(id)) {
-                String idByTitle = isTitle(id);
+                String idByTitle = isTitleOrFeatureNumber(id);
                 if (idByTitle == null) {
                     errors.add("- " + n("pageNotFound3", workspace).replace("$id", id));
                     kill.add(id);
@@ -211,12 +211,22 @@ public class EditFeatureFieldsPage extends SPage {
         links.removeAll(kill);
     }
     
-    private String isTitle(String title) {
+    private String isTitleOrFeatureNumber(String title) {
         List<String> ret = new ArrayList<>();
         for (BookSO book : workspace.getBooks()) {
             SeiteSO x = book.getSeiten()._byTitle(title, "de");
             if (x != null) {
                 ret.add(x.getId());
+            } else {
+            	if (title.startsWith("F") && book.isFeatureTree()) {
+            		for (SeiteSO seite : book.getAlleSeiten()) {
+						FeatureFields ff = new FeatureFieldsService().get(seite);
+						if (title.equals(ff.getFeatureNumber())) {
+							ret.add(seite.getId());
+							break;
+						}
+					}
+            	}
             }
         }
         if (ret.size() == 1) {

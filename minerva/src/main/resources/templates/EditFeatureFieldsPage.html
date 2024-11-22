@@ -10,7 +10,7 @@
         <p>{{N.relationsInfo}}</p>
 
         <div class="form-group">
-            <label for="pages" class="col-lg-2 control-label">Feature- oder Seite-ID<br/><small style="font-weight: normal;">oder kompletter -Titel</small></label>
+            <label for="pages" class="col-lg-2 control-label">{{N.ffe1}}<br/><small style="font-weight: normal;">{{N.ffe2}}<br/>{{N.ffe3}}</small></label>
             <div class="col-lg-2">
                 <textarea class="form-control" rows="4" id="pages" name="pages" autofocus></textarea>
             </div>
@@ -48,7 +48,7 @@
 
 <script>
     $(document).ready(function() {
-        a = { maxHeight: 300, nonSelectedText: 'nichts ausgewählt', nSelectedText: 'ausgewählt', allSelectedText: 'alle ausgewählt' };
+        a = { maxHeight: 300, nonSelectedText: '{{N.nothingSelected}}', nSelectedText: '{{N.selected}}', allSelectedText: '{{N.allSelected}}' };
         {{each c in customersMultiselect}}
             $('#{{c.id}}').multiselect(a);
         {{/each}}
