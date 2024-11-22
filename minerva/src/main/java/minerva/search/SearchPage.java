@@ -26,13 +26,15 @@ public class SearchPage extends UPage {
     protected void execute() {
         String branch = ctx.pathParam("branch");
         String q = ctx.queryParam("q");
+        String qb = ctx.queryParam("qb");
 
         if (isPOST()) {
-            ctx.redirect("/w/" + esc(branch) + "/search?q=" + u(q));
+        	String params = StringService.isNullOrEmpty(qb) ? "" : "&qb=" + u(qb);
+        	ctx.redirect("/w/" + esc(branch) + "/search?q=" + u(q) + params);
         } else {
         	n = 0;
         	WorkspaceSO workspace = user.getWorkspace(branch);
-			qb_book = workspace.getBooks()._byFolder(ctx.queryParam("qb"));
+			qb_book = StringService.isNullOrEmpty(qb) ? null : workspace.getBooks()._byFolder(qb);
         	
             Map<String, List<SearchResult>> results = getResults(branch, q);
 
