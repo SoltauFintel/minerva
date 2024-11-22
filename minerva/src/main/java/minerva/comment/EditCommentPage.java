@@ -48,7 +48,7 @@ public class EditCommentPage extends Page {
 		if (hasParentId) {
 			parent = sv.get(parentId);
 			if (add && parent != null) {
-				c.setPerson(parent.getPerson());
+				c.setPerson(parent.getUser());
 			}
 		}
 		
