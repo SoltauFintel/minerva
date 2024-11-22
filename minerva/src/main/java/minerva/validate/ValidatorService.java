@@ -331,16 +331,25 @@ public class ValidatorService {
         private static String cron;
         
         public static void startTimer() {
-    		if (!"1".equals(MinervaOptions.TIMER_ACTIVE.get())) {
-    			Logger.info("Timers are not active.");
-    			return;
-    		}
-			if (MinervaOptions.CLEANUP_LOGIN.isSet() && MinervaOptions.CLEANUP_PASSWORD.isSet()
-					&& MinervaOptions.CLEANUP_BRANCHES.isSet() && MinervaOptions.CLEANUP_CRON.isSet()) {
+        	boolean start;
+        	if (MinervaWebapp.factory().isCustomerVersion()) {
+        		start = MinervaOptions.CLEANUP_CRON.isSet();
+        	} else {
+	    		if (!"1".equals(MinervaOptions.TIMER_ACTIVE.get())) {
+	    			Logger.info("Timers are not active.");
+	    			return;
+	    		}
+				start = MinervaOptions.CLEANUP_LOGIN.isSet()
+						&& MinervaOptions.CLEANUP_PASSWORD.isSet()
+						&& MinervaOptions.CLEANUP_BRANCHES.isSet()
+						&& MinervaOptions.CLEANUP_CRON.isSet();
+				if (!start) {
+					Logger.info("No UnusedImagesTimer started because 'Cleanup service' options are not set.");
+	        	}
+        	}
+        	if (start) {
 				cron = MinervaOptions.CLEANUP_CRON.get();
 				new UnusedImagesTimer().start();
-			} else {
-				Logger.info("No UnusedImagesTimer started because 'Cleanup service' options are not set.");
         	}
         }
         
