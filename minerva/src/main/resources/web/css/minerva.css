@@ -636,6 +636,16 @@ ul.pagetree {
     text-decoration: underline;
 }
 
+a.sortlink {
+    color: #000;
+    text-decoration: underline;
+}
+
+a:hover.sortlink {
+    color: #900;
+    text-decoration: none;
+}
+
 .xmapcollapsible {
     color: #fff;
     background-color: #376092;
