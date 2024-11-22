@@ -32,7 +32,7 @@ public class EditFeatureFieldsPage extends SPage {
         if (isPOST()) {
         	save(mad, seiten);
         } else {
-			Logger.info(user.getLogin() + " | " + branch + " | Edit feature fields and relations \"" + seite.getTitle() + "\" #" + id);
+			Logger.info(seite.getLogLine(null) + " | Edit feature fields and relations");
             BookPage.oneLang(model, book);
             header(seite.getTitle());
             setMultiselectPageMode();

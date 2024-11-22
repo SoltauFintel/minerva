@@ -97,7 +97,7 @@ public abstract class OrderSeiteService {
         SeitenSO seitenWC = fetchSeiten();
         saveSubpagesAfterReordering(seitenWC);
         user.setOrderPagesModel(null);
-        Logger.info(branch + " | " + bookFolder + " | " + id + " | Subpages have been saved after reordering.");
+        Logger.info(user.getLogin() + " | " + branch + " | " + bookFolder + " | " + id + " | Subpages have been saved after reordering.");
         new SubscriptionService().pagesChanged();
         
         ctx.redirect(goBackLink);
