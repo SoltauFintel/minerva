@@ -10,6 +10,7 @@ public class Option {
 	private OptionType type;
 	private String defaultValue;
 	private String hint;
+	private boolean notForCustomerVersion = false;
 
 	public Option() {
 	}
@@ -89,6 +90,15 @@ public class Option {
 	 */
 	public void set(String value) {
 		MinervaOptions.options.optionValues.put(key, value);
+	}
+	
+	public Option notForCustomerVersion() {
+		notForCustomerVersion = true;
+		return this;
+	}
+
+	public boolean isNotForCustomerVersion() {
+		return notForCustomerVersion;
 	}
 
 //	public boolean bool() {

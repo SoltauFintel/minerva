@@ -24,7 +24,8 @@ public class MinervaOptions {
 			.setDefaultValue("https://latex.codecogs.com/png.image?{p}").setHint("vars: {p}"); 
     public static final Option OH_HOSTS = add(CAT_GENERAL, "oh-hosts", "OH hosts", OptionType.TEXTAREA)
             .setHint("Each entry in a line: specify protocol, host and port")
-            .setDefaultValue("http://192.168.40.77:4190\nhttp://192.168.40.77:4490"); 
+            .setDefaultValue("http://192.168.40.77:4190\nhttp://192.168.40.77:4490")
+            .notForCustomerVersion();
 	
 	private static final OptionCategory CAT_SEARCH = new OptionCategory("Search");
 	public static final Option SEARCH_URL = add(CAT_SEARCH, "search.url", "Search URL")
@@ -51,16 +52,17 @@ public class MinervaOptions {
 	public static final Option TNP_BOOKS = add(CAT_TAG_NEW_PAGE, "tag-new-page.books", "for book folders").setHint("empty: for all books");
 
 	private static final OptionCategory CAT_JIRA = new OptionCategory("Jira Cloud");
-	public static final Option JIRA_CUSTOMER = add(CAT_JIRA, "jira.customer", "Customer");
-	public static final Option JIRA_MAIL = add(CAT_JIRA, "jira.mail", "Mail");
-	public static final Option JIRA_TOKEN = add(CAT_JIRA, "jira.token", "Token", OptionType.SECRET);
+	public static final Option JIRA_CUSTOMER = add(CAT_JIRA, "jira.customer", "Customer").notForCustomerVersion();
+	public static final Option JIRA_MAIL = add(CAT_JIRA, "jira.mail", "Mail").notForCustomerVersion();
+	public static final Option JIRA_TOKEN = add(CAT_JIRA, "jira.token", "Token", OptionType.SECRET).notForCustomerVersion();
 
 	private static final OptionCategory CAT_CLEANUP = new OptionCategory("Cleanup service");
 	public static final Option CLEANUP_CRON = add(CAT_CLEANUP, "cleanup.cron", "cron").setDefaultValue("0 0 23 ? * MON-FRI"); // werktags 23:00 Uhr
 	public static final Option CLEANUP_LOGIN = add(CAT_CLEANUP, "cleanup.login", "Login")
-			.setHint("Login and password are also used by other timer-controlled services.");
-	public static final Option CLEANUP_PASSWORD = add(CAT_CLEANUP, "cleanup.password", "Password", OptionType.SECRET);
-	public static final Option CLEANUP_BRANCHES = add(CAT_CLEANUP, "cleanup.branches", "Branches").setDefaultValue("master");
+			.setHint("Login and password are also used by other timer-controlled services.")
+			.notForCustomerVersion();
+	public static final Option CLEANUP_PASSWORD = add(CAT_CLEANUP, "cleanup.password", "Password", OptionType.SECRET).notForCustomerVersion();
+	public static final Option CLEANUP_BRANCHES = add(CAT_CLEANUP, "cleanup.branches", "Branches").setDefaultValue("master").notForCustomerVersion();
 
 	/** global instance, same for all users, must be set at program start */
 	public static MinervaOptions options;
