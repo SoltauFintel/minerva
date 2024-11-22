@@ -9,15 +9,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.pmw.tinylog.Logger;
-import org.quartz.JobExecutionContext;
-import org.quartz.SchedulerException;
 
-import github.soltaufintel.amalia.timer.BaseTimer;
-import github.soltaufintel.amalia.web.config.AppConfig;
 import gitper.base.FileService;
 import minerva.MinervaWebapp;
+import minerva.base.AbstractTimer;
 import minerva.base.NlsString;
-import minerva.config.MinervaOptions;
 
 public class JournalSO {
     private static final String handle = "journal";
@@ -106,24 +102,10 @@ public class JournalSO {
     /**
      * Cleanup journal once a month
      */
-    public static class JournalTimer extends BaseTimer {
-        private static String cron;
-        
-        public static void startTimer(AppConfig config) {
-    		if (!"1".equals(MinervaOptions.TIMER_ACTIVE.get())) {
-    			return;
-    		}
-            cron = config.get("JournalTimer.cron", "0 0 6 1 * ?"); // first day of month 6:00
-            new JournalTimer().start();
-        }
+    public static class JournalTimer extends AbstractTimer {
         
         @Override
-        protected void config() throws SchedulerException {
-            start(cron);
-        }
-
-        @Override
-        protected void timerEvent(JobExecutionContext context) throws Exception {
+        protected void timerEvent() {
             cleanupAllJournals();
         }
     }

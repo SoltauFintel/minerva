@@ -11,16 +11,15 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.pmw.tinylog.Logger;
-import org.quartz.JobExecutionContext;
-import org.quartz.SchedulerException;
 
-import github.soltaufintel.amalia.timer.BaseTimer;
 import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.access.CommitMessage;
 import minerva.MinervaWebapp;
+import minerva.base.AbstractTimer;
 import minerva.base.CustomErrorPage;
 import minerva.base.NLS;
 import minerva.base.TextService;
+import minerva.base.Timer;
 import minerva.config.MinervaOptions;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
@@ -327,39 +326,29 @@ public class ValidatorService {
     /**
      * Delete unused images e.g. every day 23:00
      */
-    public static class UnusedImagesTimer extends BaseTimer {
-        private static String cron;
+    public static class UnusedImagesTimer extends AbstractTimer {
         
-        public static void startTimer() {
-        	boolean start;
+    	/**
+    	 * @return null if timer should not be started, otherwise cron expression
+    	 */
+        public static String cron() {
+        	boolean start = false;
         	if (MinervaWebapp.factory().isCustomerVersion()) {
         		start = MinervaOptions.CLEANUP_CRON.isSet();
-        	} else {
-	    		if (!"1".equals(MinervaOptions.TIMER_ACTIVE.get())) {
-	    			Logger.info("Timers are not active.");
-	    			return;
-	    		}
-				start = MinervaOptions.CLEANUP_LOGIN.isSet()
-						&& MinervaOptions.CLEANUP_PASSWORD.isSet()
-						&& MinervaOptions.CLEANUP_BRANCHES.isSet()
-						&& MinervaOptions.CLEANUP_CRON.isSet();
-				if (!start) {
-					Logger.info("No UnusedImagesTimer started because 'Cleanup service' options are not set.");
-	        	}
+        	} else if (Timer.checkIfTimersAreActive(UnusedImagesTimer.class)) {
+    			start = MinervaOptions.CLEANUP_LOGIN.isSet()
+    					&& MinervaOptions.CLEANUP_PASSWORD.isSet()
+    					&& MinervaOptions.CLEANUP_BRANCHES.isSet()
+    					&& MinervaOptions.CLEANUP_CRON.isSet();
+    			if (!start) {
+    				Logger.info("No UnusedImagesTimer started because 'Cleanup service' options are not set.");
+    			}
         	}
-        	if (start) {
-				cron = MinervaOptions.CLEANUP_CRON.get();
-				new UnusedImagesTimer().start();
-        	}
+        	return start ? MinervaOptions.CLEANUP_CRON.get() : null;
         }
         
         @Override
-        protected void config() throws SchedulerException {
-            start(cron);
-        }
-
-        @Override
-        protected void timerEvent(JobExecutionContext context) throws Exception {
+        protected void timerEvent() {
             DeleteUnusedImages.start();
             CustomErrorPage.clear();
         }

@@ -36,6 +36,7 @@ import minerva.base.MinervaError404Page;
 import minerva.base.MinervaErrorPage;
 import minerva.base.MinervaPageInitializer;
 import minerva.base.ServerlogPage;
+import minerva.base.Timer;
 import minerva.base.Tosmap;
 import minerva.book.AddBookPage;
 import minerva.book.BookPage;
@@ -386,8 +387,11 @@ public class MinervaWebapp extends RouteDefinitions {
                 .withInitializer(config -> factory = new MinervaFactory(new MinervaConfig(config)))
                 .withInitializer(config -> initGitper())
                 .withInitializer(config -> CommentService.services.put(ctx -> ctx.path().startsWith("/sc/"), SeiteCommentService.class))
-                .withInitializer(config -> JournalTimer.startTimer(config))
-                .withInitializer(config -> UnusedImagesTimer.startTimer())
+                .withInitializer(config -> { 
+                	Timer.create(config);
+                	Timer.INSTANCE.createTimer(JournalTimer.class, "0 0 6 1 * ?"); // first day of month 6:00
+            		Timer.INSTANCE.createTimer(UnusedImagesTimer.class, UnusedImagesTimer.cron(), true);
+                })
                 .withAuth(new MinervaAuth());
     }
     
