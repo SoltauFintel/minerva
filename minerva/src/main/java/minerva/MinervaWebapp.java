@@ -394,7 +394,7 @@ public class MinervaWebapp extends RouteDefinitions {
     public static void info() {
         System.out.println("languages: " + MinervaWebapp.factory().getLanguages()
                 + " | backend: " + MinervaWebapp.factory().getBackendService().getInfo("en")
-                + MinervaWebapp.factory().getFolderInfo());
+                + MinervaWebapp.factory().getFolderInfo() + " | workspaces folder: " + factory().getConfig().getWorkspacesFolder());
     }
     
     public static MinervaFactory factory() {
