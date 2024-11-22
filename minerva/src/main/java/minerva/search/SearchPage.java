@@ -38,6 +38,7 @@ public class SearchPage extends UPage {
         	
             Map<String, List<SearchResult>> results = getResults(branch, q);
 
+			header(n("volltextsuche") + ": " + q);
             put("branch", esc(branch));
             put("searchFocus", true);
             put("q", esc(q));
