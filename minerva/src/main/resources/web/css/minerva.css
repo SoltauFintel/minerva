@@ -838,3 +838,7 @@ table.relationstable ul {
 .darkgreen {
 	color: #080;
 }
+
+.vam td {
+    vertical-align: middle;
+}
