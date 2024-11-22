@@ -66,8 +66,10 @@ public abstract class CommentService {
     }
     
     public Comment get(String id) {
-        Comment ret = new MultiPurposeDirAccess(dao().dao()).load(dir() + "/" + id + ".json", Comment.class);
+        String dn = dir() + "/" + id + ".json";
+		Comment ret = new MultiPurposeDirAccess(dao().dao()).load(dn, Comment.class);
         if (ret == null) {
+        	Logger.error("Comment is null for file: " + dn);
             throw new RuntimeException("Comment does not exist!");
         }
         return ret;
@@ -78,8 +80,9 @@ public abstract class CommentService {
      * @param commitMessage commit message for the case that the backend is Git
      * @param add true: new comment, false: comment edited
      * @param changed true: comment is new or is changed (used for sending notification)
+     * @param doneParent ID of parent comment if it has to be done, null if parent comment has not to be changed or there is no parent comment
      */
-    public abstract void save(Comment comment, String commitMessage, boolean add, boolean changed);
+    public abstract void save(Comment comment, String commitMessage, boolean add, boolean changed, String doneParent);
     
     public abstract void delete();
 

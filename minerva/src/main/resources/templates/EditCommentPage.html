@@ -36,6 +36,19 @@
                         </select>
                     </div>
                 </div>
+                {{if hasParent}}
+	                <div class="form-group">
+	                    <div class="col-lg-3 col-lg-offset-1">
+	                        <div class="checkbox">
+	                            <label>
+	                                <input type="checkbox" id="done" name="done" checked>
+	                                {{N.setParentCommentDone}}
+	                            </label>
+	                        </div>
+	                    </div>
+	                </div>
+                {{/if}}
+                
                 <div class="form-group">
                     <div class="col-lg-offset-1 col-lg-5">
                         <button id="submit" type="submit" class="btn btn-primary br"

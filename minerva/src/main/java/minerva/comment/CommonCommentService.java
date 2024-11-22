@@ -1,5 +1,8 @@
 package minerva.comment;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.pmw.tinylog.Logger;
 
 import com.github.template72.data.DataMap;
@@ -26,6 +29,7 @@ public abstract class CommonCommentService extends CommentService {
     protected final String branch;
     protected final String lang;
     protected final DirAccess dao;
+    protected final WorkspaceSO workspace;
     protected final SimpleDirAccess simpledao;
     protected String dir;
     protected String parentEntityPath;
@@ -43,7 +47,7 @@ public abstract class CommonCommentService extends CommentService {
         UserSO user = StatesSO.get(ctx).getUser();
         lang = user.getGuiLanguage();
         dao = user.dao();
-        WorkspaceSO workspace = user.getWorkspace(branch);
+        workspace = user.getWorkspace(branch);
 		MinervaWebapp.factory().getBackendService().uptodatecheck(workspace, () -> Logger.info("CommonCommentService #" + id + " -> pull"));
         simpledao = new SimpleDirAccess(dao, workspace);
 
@@ -63,12 +67,31 @@ public abstract class CommonCommentService extends CommentService {
     }
 
     @Override
-    public void save(Comment comment, String commitMessage, boolean add, boolean changed) {
-        simpledao.save(comment.getId(), comment, CommentImageUploadService.popImages(comment.getId()),
-                getSaveCommitMessage(commitMessage), dir);
+    public void save(Comment comment, String commitMessage, boolean add, boolean changed, String doneParent) {
+        Map<String, String> files = new HashMap<>();
+        saveComment(comment, files);
+        CommentImageUploadService.popImages(comment.getId()).forEach(dn -> files.put(dir + "/" + dn, DirAccess.IMAGE));
+    	if (!StringService.isNullOrEmpty(doneParent)) {
+    		done(doneParent, files);
+    	}
+        dao.saveFiles(files, getSaveCommitMessage(commitMessage), workspace);
+
         if (changed) {
             sendNotifications(comment.getId(), comment.getPerson());
         }
+    }
+    
+    private void done(String id, Map<String, String> files) {
+		Comment parent = get(id);
+		if (parent != null) {
+			parent.setDone(true);
+			parent.setDoneDate(StringService.now());
+			saveComment(parent, files);
+		}
+    }
+    
+    private void saveComment(Comment comment, Map<String, String> files) {
+    	files.put(dir + "/" + comment.getId() + ".json", StringService.prettyJSON(comment));
     }
     
     protected abstract CommitMessage getSaveCommitMessage(String commitMessage);

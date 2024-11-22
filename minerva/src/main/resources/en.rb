@@ -430,3 +430,4 @@ reasonEMPTY=because it's empty
 insertIntoPage=insert into page
 insertAllAttachmentsIntoPage=With ${attachments} all files can be inserted into the page.
 showBook=Show book
+setParentCommentDone=set parent comment to done

@@ -431,3 +431,4 @@ reasonEMPTY=weil leer
 insertIntoPage=in die Seite einfügen mit z.B.
 insertAllAttachmentsIntoPage=Mit ${attachments} können alle Dateien in die Seite eingefügt werden.
 showBook=Buch anzeigen
+setParentCommentDone=übergeordneten Kommentar auf erledigt setzen
