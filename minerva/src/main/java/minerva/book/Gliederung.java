@@ -82,9 +82,20 @@ public class Gliederung {
             if (state > 0) {
                 gliederung.append(state == 2 ? hasCommentForMe : hasComment);
             }
-            if (seite.isFeatureTree() && seite.hasFt_tag()) {
-				gliederung.append(" <a href=\"/f/" + branch + "/" + bookFolder + "/" + seite.getId()
-						+ "\"><i class=\"fa fa-table greenbook ml05\" title=\"Features\"></i></a>");
+            if (seite.isFeatureTree()) {
+				String p = "", info = null, b = null;
+				if (seite.hasFt_tag()) {
+					b = "f";
+					p = "/" + seite.getId();
+					info = "Features";
+				} else if ("Schnittstellen".equals(seite.getTitle())) {
+					b = "sch";
+					info = seite.getTitle();
+				}
+				if (info != null) {
+					gliederung.append(" <a href=\"/" + b + "/" + branch + "/" + bookFolder + p
+							+ "\"><i class=\"fa fa-table greenbook ml05\" title=\"" + info + "\"></i></a>");
+				}
             }
             if (seite.isFeatureTree()) {
             	FeatureFields ff = new FeatureFieldsService().get(seite);
