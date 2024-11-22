@@ -4,15 +4,14 @@
     <div class="col-lg-12">
         <h1 class="page-header">{{header}}</h1>
 
-        <p>{{N.treffer}}: {{n}}</p>
         {{if hasBooksfilter}}
             <p>{{N.buchfilter}}: {{each b in booksfilter}}<a href="{{b.link}}">{{b.title}}</a>{{if not b.last}}, {{/if}} {{/each}}</p>
-            <hr/>
         {{/if}}
         {{if hasqb}}
             <p><a href="{{qboff}}">{{N.qbofftext}}</a></p>
-            <hr/>
         {{/if}}
+        <p>{{N.treffer}}: {{n}}</p>
+        <hr/>
         
         <ul>
             {{each L in langs}}
