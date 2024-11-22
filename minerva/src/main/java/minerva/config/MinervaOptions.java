@@ -83,8 +83,17 @@ public class MinervaOptions {
                 throw new RuntimeException("Error loading config file: " + configFile.getAbsolutePath(), e);
             }
 		} else {
-			Logger.warn("Config file does not exist: " + configFile.getAbsolutePath());
+			Logger.info("Config file does not exist: " + configFile.getAbsolutePath() + " | Starting with config with default option values.");
 			optionValues = new HashMap<>();
+		}
+		
+		// Save the configuration when starting the application
+		try {
+			File f = new File(configFile.getParentFile(), configFile.getName() + "-backup");
+			FileService.saveJsonFile(f, optionValues);
+			Logger.debug("Config backup: " + f.getAbsolutePath());
+		} catch (Exception e) {
+			Logger.error(e);
 		}
 	}
 	
@@ -116,7 +125,7 @@ public class MinervaOptions {
     public static File getConfigFile(String name, AppConfig config) {
     	return new File(getWorkspacesFolder(config), name + "-config.json");
     }
-	
+
     public static String getWorkspacesFolder(AppConfig config) {
         String ret = config.get(StartRelevantOption.WORKSPACES);
         if (ret == null || ret.trim().length() <= 3) {
