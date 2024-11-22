@@ -22,6 +22,7 @@ public class ValuesListPage extends WPage {
                     + (v.getValues().size() > 12 ? ", ..." : "")));
             map.putInt("n", v.getValues().size());
         }
+        put("empty", list.isEmpty());
         put("hasBook", false);
     }
 }

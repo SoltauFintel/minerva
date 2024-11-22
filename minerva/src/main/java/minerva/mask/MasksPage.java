@@ -23,6 +23,7 @@ public class MasksPage extends WPage {
             map.putSize("n", mask.getFields());
         }
         putSize("n", masks);
+        put("empty", list.isEmpty());
         masksMenu(model, branch, n("masks"));
     }
     

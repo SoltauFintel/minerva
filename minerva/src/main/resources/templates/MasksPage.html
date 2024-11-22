@@ -8,22 +8,24 @@
             <a href="/mask/{{branch}}/add" class="btn btn-primary">{{N.addNewMask}}</a>
         </p>
         
-        <table class="table table-striped table-hover mt2" style="width: auto;">
-            <tr>
-                <th>tag</th>
-                <th>{{N.fields}}</th>
-                <th></th>
-            </tr>
-            {{each m in masks}}
-                <tr>
-                    <td><a href="/mask/{{branch}}/{{m.tag}}">{{m.tag}}</a></td>
-                    <td>{{m.fields}}</td>
-                    <td><a href="/mask/{{branch}}/{{m.tag}}/delete" onclick="return loeschen('{{m.tag}}');"
-                        class="btn btn-danger btn-xs" title="{{N.deleteMask}}"><i class="fa fa-trash"></i><i id="wait_{{m.tag}}"
-                        class="fa fa-delicious fa-spin" style="display: none;"></i></a>
-                </tr>
-            {{/each}}
-        </table>
+        {{if not empty}}
+	        <table class="table table-striped table-hover mt2" style="width: auto;">
+	            <tr>
+	                <th>tag</th>
+	                <th>{{N.fields}}</th>
+	                <th></th>
+	            </tr>
+	            {{each m in masks}}
+	                <tr>
+	                    <td><a href="/mask/{{branch}}/{{m.tag}}">{{m.tag}}</a></td>
+	                    <td>{{m.fields}}</td>
+	                    <td><a href="/mask/{{branch}}/{{m.tag}}/delete" onclick="return loeschen('{{m.tag}}');"
+	                        class="btn btn-danger btn-xs" title="{{N.deleteMask}}"><i class="fa fa-trash"></i><i id="wait_{{m.tag}}"
+	                        class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+	                </tr>
+	            {{/each}}
+	        </table>
+        {{/if}}
     </div>
 </div>
 
