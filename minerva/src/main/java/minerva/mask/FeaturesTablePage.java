@@ -24,7 +24,7 @@ public class FeaturesTablePage extends SPage {
         if (isPOST()) {
             filterValues();
         } else {
-            Logger.info(user.getLogin() + " | " + branch + " | Features table #" + id + ": " + seite.getTitle());
+        	// logging see end of rows()
             header(seite.getTitle());
             menu();
             if (!seite.getSeiten().isEmpty()) {
@@ -93,7 +93,7 @@ public class FeaturesTablePage extends SPage {
     private void rows() {
         DataList list = list("features");
         String url0 = "/s/" + branch + "/" + book.getBook().getFolder() + "/";
-        int k = 0, n = 0;
+        int k = 0;
         for (TableEntry te : getFilteredSortedFeatures()) {
 			String columns = "";
             for (MaskField field : te.mad.getMaskFields()) {
@@ -114,9 +114,9 @@ public class FeaturesTablePage extends SPage {
             row.put("hasText", !SeiteSichtbar.contentIsEmpty(te.feature, "de"));
             row.put("hasOpenComments", new SeiteCommentService2(te.feature).getCommentState(te.feature.getLogin()) > 0);
             row.put("featureStateHTML", getFeatureState.getFeatureStateHTML(te.feature)); // HTML, no esc() !
-            n++;
         }
-        putInt("n", n);
+        putSize("n", list);
+        Logger.info(seite.getLogLine(null) + " | Features table (" + list.size() + ")");
     }
 
     private List<TableEntry> getFilteredSortedFeatures() {
