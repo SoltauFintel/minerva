@@ -8,7 +8,7 @@ public class PageMenuSupplier {
 
 	public List<PageMenuItem> getMenuItems(PageMenuContext ctx) {
 		return List.of( //
-			new PageMenuItem("{viewlink}/toggle-favorite", "fav fa-star" + (ctx.isFavorite() ? "" : "-o"), "N.favorite", ctx.isFavorite()),
+			new PageMenuItem("{viewlink}/toggle-favorite", "fav fa-star-o", "N.favorite", ctx.isFavorite()),
 			new PageMenuItem("{viewlink}/toggle-watch", "fa-bell" + (ctx.isPageWatched() ? "" : "-o"), "N.watchPage", ctx.isPageWatched()),
 			new PageMenuItem("{viewlink}/toggle-watch?m=s", "fa-sitemap", "N.watchSubpages", ctx.isSubpagesWatched()),
 	        new PageMenuItem(" data-toggle=\"modal\" data-target=\"#tocModal\"", "fa-list-ul", "N.TOC"),

@@ -55,7 +55,6 @@ public class MenuPage extends WPage {
         if (!fac.isCustomerVersion()) {
             menu(list, "customerMode", "fa-thumbs-o-up", "/w/:branch/customer-mode/na");
         }
-//        menu(list, "preview", "fa-thumbs-o-up bluebook", "/p/:branch");
         if (fac.isGitlab()) {
             menu(list, "workspaceHistory", "fa-history", "/w/:branch/history");
         }
@@ -69,24 +68,28 @@ public class MenuPage extends WPage {
                 menu(list, bookSO.getBook().getTitle().getString(user.getGuiLanguage()), "fa-sitemap fa-sitemap-color", "/b/:branch/" + bookSO.getBook().getFolder());
             }
         }
-        menu(list, "allHelpKeys", "fa-question-circle", "/w/:branch/help-keys");
+        if (!fac.isCustomerVersion()) {
+        	menu(list, "allHelpKeys", "fa-question-circle", "/w/:branch/help-keys");
+        }
         menu(list, "formulaEditor", "fa-superscript", "/math");
+        onlinehelp(fac, booksOk, list);
         if (fac.isCustomerVersion()) {
             menu(list, "Broken Mappings", "fa-chain-broken", "/w/:branch/broken-mappings");
         } else {
             menu(list, "Broken Links", "fa-chain-broken", "/w/:branch/broken-links");
         }
-        export(booksOk, list);
         if (fac.isCustomerVersion()) {
-            menu(list, "papierkorb", "fa-recycle", "/w/:branch/recycle");
+        	menu(list, "papierkorb", "fa-recycle", "/w/:branch/recycle");
         }
+        export(booksOk, list);
         workspace(list);
-        menu(list, "keyValues", "fa-key", "/values/:branch");
-        menu(list, "masks", "fa-list-alt", "/mask/:branch");
+        if (!fac.isCustomerVersion()) {
+	        menu(list, "keyValues", "fa-key", "/values/:branch");
+	        menu(list, "masks", "fa-list-alt", "/mask/:branch");
+        }
         additionalMenuItems(list);
-        onlinehelp(fac, booksOk, list);
         admin(fac, isAdmin, booksOk, list);
-        if (booksOk && fac.isCustomerVersion() && !MinervaWebapp.factory().getAdmins().contains(user.getLogin())) {
+        if (booksOk && fac.isCustomerVersion() && !fac.getAdmins().contains(user.getLogin())) {
             menu(list, "reindex", "fa-refresh", "/w/:branch/index", true);
         }
     }
@@ -126,7 +129,7 @@ public class MenuPage extends WPage {
                 && fac.isCustomerVersion()
                 && !fac.isGitlab()
                 && fac.getConfig().hasSubscribers()) {
-            menu(list, "updateOnlineHelp", "fa-upload", "/w/:branch/push-data");
+            menu(list, "updateOnlineHelp", "fa-upload darkgreen", "/w/:branch/push-data");
         }
     }
 
