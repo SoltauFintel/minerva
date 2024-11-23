@@ -36,6 +36,12 @@ public interface DirAccess {
      */
     Map<String,String> loadAllFiles(String folder);
 
+    /**
+     * Load all files with contents from given folder.
+     * @param folder relative filename in workspace
+     * @param postfix filename must end with this text, it's typically a filename suffix
+     * @return map with key=filename, value=content
+     */
     Map<String,String> loadAllFiles(String folder, String postfix);
     
     /**
