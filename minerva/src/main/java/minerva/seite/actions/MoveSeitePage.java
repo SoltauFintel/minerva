@@ -1,4 +1,4 @@
-package minerva.seite.move;
+package minerva.seite.actions;
 
 import github.soltaufintel.amalia.web.action.Escaper;
 import minerva.MinervaWebapp;

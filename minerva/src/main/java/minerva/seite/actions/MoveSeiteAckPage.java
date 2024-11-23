@@ -1,4 +1,4 @@
-package minerva.seite.move;
+package minerva.seite.actions;
 
 import minerva.book.BookPage;
 import minerva.model.BookSO;

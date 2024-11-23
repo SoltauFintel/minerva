@@ -1,4 +1,4 @@
-package minerva.seite.move;
+package minerva.seite.actions;
 
 import gitper.base.StringService;
 import minerva.seite.SAction;
