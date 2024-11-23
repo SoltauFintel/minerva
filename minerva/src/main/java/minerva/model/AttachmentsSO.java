@@ -54,10 +54,10 @@ public class AttachmentsSO {
                 .findFirst().orElseThrow(() -> new UserMessage("attachmentDoesnotExist", seite.getBook().getWorkspace()));
     }
     
-    public void save(InputStream inputStream, String dn, String category) {
+    public void save(InputStream inputStream, String dn, String category) throws FileAreadyExists {
         File file = new File(dir, dn);
         if (file.isFile()) {
-            throw new RuntimeException("Datei bereits vorhanden!"); // TODO UserMessage, bzw. sichtbare Meldung für Anwender
+            throw new FileAreadyExists();
         }
         file.getParentFile().mkdirs();
         try (FileOutputStream fos = new FileOutputStream(file)) {
@@ -83,6 +83,9 @@ public class AttachmentsSO {
                 seite.commitMessage("save attachments: " + dn),
                 seite.getBook().getWorkspace());
         Logger.info("saved attachment file as " + file.getAbsolutePath());
+    }
+    
+    public static class FileAreadyExists extends Exception {
     }
     
     public void saveCategories(Attachment att) {

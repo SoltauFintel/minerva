@@ -8,9 +8,12 @@
         queuecomplete: function() {
             window.location.reload(false);
         },
-        error: function(file) {
-            console.log('file:', file);
-            alert('{{N.uploadFailed}} ' + file);
+        error: function(r) {
+			if (r.xhr.status == 403) {
+				alert('{{N.fileAlreadyExists}}');
+			} else {
+            	alert('{{N.uploadFailed}}');
+			}
         },
     };
 

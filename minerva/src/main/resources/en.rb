@@ -435,3 +435,4 @@ nothingSelected=nothing selected
 selected=selected
 allSelected=all selected
 uploadFailed=Upload failed!
+fileAlreadyExists=File already exists!

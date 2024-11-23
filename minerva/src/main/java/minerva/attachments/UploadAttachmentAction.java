@@ -9,12 +9,11 @@ import javax.servlet.http.Part;
 import org.pmw.tinylog.Logger;
 
 import minerva.model.AttachmentsSO;
+import minerva.model.AttachmentsSO.FileAreadyExists;
 import minerva.seite.SAction;
 
 public class UploadAttachmentAction extends SAction {
     public static final int MAX_MB = 50;
-    
-    // TODO Datei gibt es bereits -> wird verhindert, aber es gibt noch keine saubere Meldung für Anwender (oder sowas wie Umbenennen)
     
     @Override
     protected void execute() {
@@ -35,7 +34,9 @@ public class UploadAttachmentAction extends SAction {
             // nicht nötig -> ctx.redirect(viewlink + "/attachments");
         } catch (IOException | ServletException e) {
             Logger.error(e);
-            throw new RuntimeException("Error uploading attachment!");
+            throw new RuntimeException("Error uploading attachment!"); // status 500
+        } catch (FileAreadyExists e) {
+        	ctx.res.status(403);
         }
     }
 }
