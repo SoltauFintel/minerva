@@ -12,7 +12,7 @@ public class CleanupHelpKeysForHeadingsAction extends SAction {
 
     @Override
     protected void execute() {
-        Logger.info(user.getLogin() + " | " + branch + " | " + seite.getTitle() + ": cleanup help-keys for headings");
+        Logger.info(seite.getLogLine(null) + " | cleanup help-keys for headings");
 
         boolean dirty = false;
         for (String lang : langs) {
