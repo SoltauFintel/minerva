@@ -11,10 +11,6 @@ public class DeleteAttachmentAction extends SAction {
         
         new AttachmentsSO(seite).delete(dn);
         
-     // TODO Die Warteanzeige klappt nicht.
-//        try { Thread.sleep(3500);
-//        } catch (InterruptedException e) {}
-        
         ctx.redirect(viewlink + "/attachments");
     }
 }
