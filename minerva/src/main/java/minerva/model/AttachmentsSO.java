@@ -19,6 +19,7 @@ import gitper.access.DirAccess;
 import gitper.base.FileService;
 import gitper.base.StringService;
 import minerva.base.UserMessage;
+import minerva.model.SearchSO.SearchContext;
 import ohhtml.downloads.Attachment;
 import ohhtml.downloads.GetAttachments;
 import spark.utils.IOUtils;
@@ -27,8 +28,6 @@ public class AttachmentsSO {
     private static final String FOLDER = "attachments";
     private final String dir;
     private final SeiteSO seite;
-    
-    // TODO Volltextsuche sollte auch nach Attachment-filename/-categories suchen können
     
     public AttachmentsSO(SeiteSO seite) {
         this.seite = seite;
@@ -130,4 +129,22 @@ public class AttachmentsSO {
             }
         }        
     }
+
+	public void search(SearchContext sc) {
+		String x = sc.getX().toLowerCase();
+		for (String filename : getFilenames()) {
+			// search by exact category
+			if (filename.endsWith(".cat")) {
+				String cat = FileService.loadPlainTextFile(new File(filename));
+				if (cat.equalsIgnoreCase(x)) {
+					sc.add(seite, "attachment category: " + cat);
+				}
+			}
+			// search by filename
+			String dn = new File(filename).getName();
+			if (dn.toLowerCase().contains(x)) {
+				sc.add(seite, "attachment: " + dn);
+			}
+		}
+	}
 }

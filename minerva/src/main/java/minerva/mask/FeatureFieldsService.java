@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.pmw.tinylog.Logger;
-
 import com.github.template72.data.DataList;
 import com.google.gson.Gson;
 
@@ -14,10 +12,11 @@ import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.access.DirAccess;
 import gitper.access.MultiPurposeDirAccess;
 import gitper.base.StringService;
+import minerva.mask.FeatureFields.MaskLabelContext;
 import minerva.model.BookSO;
+import minerva.model.SearchSO.ISearcher;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
-import minerva.search.SearchResult;
 import minerva.seite.ViewSeitePage.AddFeatures;
 
 public class FeatureFieldsService implements AddFeatures {
@@ -146,48 +145,21 @@ public class FeatureFieldsService implements AddFeatures {
         public String featureNumber;
     }
 
-    public void search(WorkspaceSO workspace, String q, String lang, List<SearchResult> result) {
-        if (!"de".equals(lang) || q == null || q.isBlank()) {
-            return;
-        }
-        final String x = q.toLowerCase();
-        for (BookSO book : workspace.getBooks()) {
-            if (!book.isFeatureTree()) {
-                continue;
+    public ISearcher getSearcher(WorkspaceSO workspace) {
+    	MaskLabelContext mlcontext = new MaskLabelContext(workspace);
+    	return (sc, seite) -> {
+            if (!"de".equals(sc.getLang()) || sc.getX() == null || sc.getX().isBlank() || !seite.isFeatureTree()) {
+                return;
             }
-            int n = 0;
-            for (SeiteSO seite : book.getAlleSeiten()) {
-                String path = seite.getBook().getBook().getFolder() + "/" + seite.getId();
-                if (!exist(path, result)) {
-                    FeatureFields dataFields = load(seite);
-                    if (dataFields == null) {
-                        continue;
-                    }
-                    String lv = dataFields.search(x, workspace);
-                    if (lv != null) {
-                        SearchResult sr = new SearchResult();
-                        sr.setTitle(seite.getTitle());
-                        sr.setPath(path);
-                        sr.setContent(lv);
-                        sr.setFeatureNumber(dataFields.getFeatureNumber());
-                        result.add(sr);
-                        n++;
-                    }
-                }
-            }
-            if (n > 0) {
-                Logger.info("Search \"" + q + "\" in " + book.getTitle() + " fields: " + n + " hit" + (n == 1 ? "" : "s"));
-            }
-        }
-    }
-
-    private boolean exist(String path, List<SearchResult> result) {
-        for (SearchResult sr : result) {
-            if (sr.getPath().equals(path)) {
-                return true;
-            }
-        }
-        return false;
+        	FeatureFields dataFields = load(seite);
+    		if (dataFields == null) {
+    			return;
+    		}
+    		String lv = dataFields.search(sc.getX().toLowerCase(), mlcontext);
+    		if (lv != null) {
+				sc.add(seite, lv).setFeatureNumber(dataFields.getFeatureNumber());
+    		}
+    	};
     }
 
 	@Override

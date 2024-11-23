@@ -3,6 +3,7 @@ package minerva.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import gitper.base.StringService;
 import minerva.seite.Breadcrumb;
 
 public class SearchResult {
@@ -46,5 +47,14 @@ public class SearchResult {
 
 	public void setFeatureNumber(String featureNumber) {
 		this.featureNumber = featureNumber;
+	}
+
+    public void merge(SearchResult b) {
+		if (StringService.isNullOrEmpty(featureNumber)) {
+			featureNumber = b.featureNumber;
+		}
+		if (!content.contains(b.content)) {
+			content += "\n" + b.content;
+		}
 	}
 }

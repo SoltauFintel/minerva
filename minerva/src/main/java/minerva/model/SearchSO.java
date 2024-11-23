@@ -131,13 +131,16 @@ public class SearchSO {
         } else {
         	ret = new ArrayList<>();
         }
+
+        // search in all pages with many algorithms
+        List<ISearcher> searchers = getSearchers(workspace, isFirstLanguage);
+        SearchContext sc = new SearchContext(x, lang, ret);
+    	for (BookSO book : workspace.getBooks()) {
+    		book.getAlleSeiten().forEach(seite ->
+				searchers.forEach(searcher -> searcher.search(sc, seite))
+			);
+		}
         
-        if (isFirstLanguage) {
-            searchBySeiteID(x, ret);
-        }
-        
-        // search features
-        new FeatureFieldsService().search(workspace, x.toLowerCase(), lang, ret);
         addBreadcrumbs(ret);
 		
         // search in other data
@@ -147,18 +150,35 @@ public class SearchSO {
 				ret.addAll(ret2);
 			}
         }
+    	
+        boolean again = true;
+        while (again) {
+        	again = merge(ret);
+        }
+        
         return ret;
     }
-
-    private void searchBySeiteID(String x, List<SearchResult> result) {
-        SeiteSO seite = workspace.findPage(x);
-        if (seite != null) {
-            SearchResult sr = new SearchResult();
-            sr.setPath(seite.getBook().getBook().getFolder() + "/" + seite.getId());
-            sr.setTitle(seite.getTitle());
-            sr.setContent("ID: " + seite.getId());
-            result.add(sr);
-        }
+    
+    // page search algorithms
+    private List<ISearcher> getSearchers(WorkspaceSO workspace, boolean isFirstLanguage) {
+    	List<ISearcher> ret = new ArrayList<>();
+    	
+    	// search by Seite ID
+    	if (isFirstLanguage) {
+    		ret.add((sc, seite) -> {
+				if (seite.getId().equalsIgnoreCase(sc.getX())) {
+		            sc.add(seite, "ID: " + seite.getId());
+				}
+			});
+    	}
+    	
+    	// search in attachments
+		ret.add((sc, seite) -> new AttachmentsSO(seite).search(sc));
+		
+		// search features
+		ret.add(new FeatureFieldsService().getSearcher(workspace));
+		
+    	return ret;
     }
 
     private void addBreadcrumbs(List<SearchResult> result) {
@@ -182,7 +202,67 @@ public class SearchSO {
 		}
 	}
 
-	public interface Searcher {
+    // Suchtreffer, die das gleiche Ziel haben, verschmelzen.
+    private boolean merge(List<SearchResult> sr) {
+		for (int i = 0; i < sr.size(); i++) {
+			SearchResult ii = sr.get(i);
+			String iPath = ii.getPath();
+			for (int j = 0; j < i; j++) {
+				SearchResult jj = sr.get(j);
+				if (iPath.equals(jj.getPath())) {
+					// i und j müssten vereinigt werden
+					ii.merge(jj);
+					sr.remove(j); // j muss weg
+					return true; // von vorne beginnen
+				}
+			}
+		}
+		return false;
+    }
+    
+    public static class SearchContext {
+    	private final String x;
+    	private final String lang;
+    	private final List<SearchResult> result;
+
+    	public SearchContext(String x, String lang, List<SearchResult> result) {
+			this.x = x;
+			this.lang = lang;
+			this.result = result;
+		}
+
+		public String getX() {
+			return x;
+		}
+
+		public String getLang() {
+			return lang;
+		}
+
+		public SearchResult add(SeiteSO seite, String content) {
+			SearchResult sr = new SearchResult();
+            sr.setPath(seite.getBook().getBook().getFolder() + "/" + seite.getId());
+            sr.setTitle(seite.getTitle());
+            sr.setContent(content);
+            result.add(sr);
+            return sr;
+		}
+    }
+
+    /**
+     * Search in page
+     */
+    public interface ISearcher {
+    	
+    	void search(SearchContext sc, SeiteSO seite);
+    }
+
+    /**
+     * Search in workspace
+     */
+    public interface Searcher {
+		
+    	// TODO auf SearchContext umstellen
     	List<SearchResult> search(WorkspaceSO workspace, String x, String lang);
     }
 }

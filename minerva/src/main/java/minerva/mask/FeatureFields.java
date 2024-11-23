@@ -74,29 +74,58 @@ public class FeatureFields {
     
     /**
      * @param x search expression, must be lowercase
-     * @param workspace -
+     * @param mlcontext -
      * @return null: not found, otherwise label and field content
      */
-    public String search(String x, WorkspaceSO workspace) {
+    public String search(String x, MaskLabelContext mlcontext) {
         for (Entry<String, String> e : fields.entrySet()) {
             if (e.getValue().toLowerCase().contains(x)) {
-                MasksService sv = new MasksService(workspace);
-                if (!StringService.isNullOrEmpty(maskTag)) {
-                    Mask mask = sv.getMask(maskTag);
-                    if (mask != null) {
-                        MaskField f = mask.get(e.getKey());
-                        if (f == null && !"ft".equals(maskTag)) {
-                            f = mask.get("ft");
-                        }
-                        if (f != null) {
-                            return f.getLabel() + ": " + e.getValue();
-                        }
-                    }
-                }
-                return e.getKey() + ": " + e.getValue();
+            	return mlcontext.getLabel(maskTag, e.getKey()) + ": " + e.getValue();
             }
         }
         return null;
+    }
+    
+    public static class MaskLabelContext {
+    	/** key: maskTag, value: Mask */
+    	private final Map<String, Mask> maskCache = new HashMap<>();
+    	/** key: maskTag:key, value: label (or key) */
+    	private final Map<String, String> labelCache = new HashMap<>();
+    	private final MasksService sv;
+    	
+    	public MaskLabelContext(WorkspaceSO workspace) {
+    		sv = new MasksService(workspace);
+    	}
+    	
+    	public String getLabel(String maskTag, String key) {
+    		String cacheKey = maskTag + ":" + key;
+    		String ret = labelCache.get(cacheKey);
+    		if (ret == null) {
+    			ret = calculateLabel(maskTag, key);
+    			labelCache.put(cacheKey, ret);
+    		}
+    		return ret;
+    	}
+    	
+    	private String calculateLabel(String maskTag, String key) {
+            if (!StringService.isNullOrEmpty(maskTag)) {
+            	Mask mask = maskCache.get(maskTag);
+            	if (mask == null) {
+            		mask = sv.getMask(maskTag);
+            		maskCache.put(maskTag, mask);
+            	}
+                if (mask != null) {
+                    MaskField f = mask.get(key);
+                    if (f == null && !"ft".equals(maskTag)) {
+                        f = mask.get("ft");
+                    }
+                    if (f != null) {
+                        return f.getLabel();
+                    }
+                }
+            }
+            return key;
+    	}
     }
 
     public Set<String> getPages() {
