@@ -20,7 +20,7 @@ public class AttachmentsPage extends SPage {
 		header(n(getTitleKey()));
         put("cat", esc(user.getAttachmentCategory()));
         put("dropzone", new Dropzone().getHTML(viewlink + "/upload-attachment")
-            .replace(" multiple", " ") // TODO Wenn man mehr als eine Datei hochlädt, meldet das JS einen Fehler. Auch im Serverlog stehen ominöse Template Fehler.
+            .replace(" multiple", " ") // TO-DO Wenn man mehr als eine Datei hochlädt, meldet das JS einen Fehler. Auch im Serverlog stehen ominöse Template Fehler.
             );
         putInt("mb", UploadAttachmentAction.MAX_MB);
         DataList list = list("attachments");

@@ -53,7 +53,6 @@ public class CrossBookLinksPage extends SPage {
         }
         list.sort((a, b) -> a.get("title").toString().compareTo(b.get("title").toString()));
         put("hasLinks", !list.isEmpty());
-        put("linksTitle", "Verknüpfte Seiten aus anderen Büchern"); // TODO NLS, Singular
         // Show pages from other books
         DataList list2 = list("books");
         List<BookSO> relevantBooks = getRelevantBooks();

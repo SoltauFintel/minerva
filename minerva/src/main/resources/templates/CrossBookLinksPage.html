@@ -7,7 +7,7 @@
         <h2><a href="{{viewlink}}">{{pageTitle}}</a></h2>
         
         {{if hasLinks}}
-            <p class="mt2">{{linksTitle}}:
+            <p class="mt2">{{N.LinkedPagesFromOtherBooks}}:</p>
             <table class="table table-striped table-hover ntabelle mb2" style="width: auto;">
                 {{each l in links}}
                     <tr>
@@ -22,7 +22,7 @@
                 {{/each}}
             </table>
         {{else}}
-            {{N.NoLinkedPages}}
+            <p class="mt2">{{N.NoLinkedPages}}</p>
         {{/if}}
         
         <hr/>

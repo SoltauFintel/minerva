@@ -436,3 +436,4 @@ selected=selected
 allSelected=all selected
 uploadFailed=Upload failed!
 fileAlreadyExists=File already exists!
+LinkedPagesFromOtherBooks=Linked pages from other books

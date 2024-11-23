@@ -440,3 +440,4 @@ selected=ausgewählt
 allSelected=alle ausgewählt
 uploadFailed=Upload hat nicht geklappt!
 fileAlreadyExists=Datei bereits vorhanden!
+LinkedPagesFromOtherBooks=Verknüpfte Seiten aus anderen Büchern
