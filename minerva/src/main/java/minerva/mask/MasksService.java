@@ -51,7 +51,7 @@ public class MasksService {
         if (!new MultiPurposeDirAccess(workspace.dao()).delete(dn(tag), new CommitMessage("Delete mask " + tag), workspace)) {
             throw new RuntimeException("Error deleting mask " + tag + "!");
         }
-        // TODO Nutzdaten auch löschen?
+        // Nutzdaten auch löschen? Nein, denn vielleicht wird ja eine ähnliche Maske erstellt und dann sind die Feldinhalte direkt noch da.
     }
     
     public void changeOrder(String tag, String id, boolean up) {
