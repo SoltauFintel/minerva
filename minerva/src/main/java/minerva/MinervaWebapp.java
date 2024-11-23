@@ -65,7 +65,6 @@ import minerva.exclusions.ExclusionsEditPage;
 import minerva.exclusions.SelectCustomerModeAction;
 import minerva.export.DownloadExportPage;
 import minerva.export.ExportBookAction;
-import minerva.export.ExportCsvBookAction;
 import minerva.export.ExportPage;
 import minerva.export.ExportWorkspaceAction;
 import minerva.export.SeitenauswahlPage;
@@ -233,7 +232,6 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/b/:branch/:book/cal", CheckAllLinksPage.class);
         get("/b/:branch/:book/show-all-pages", ToggleShowAllPagesAction.class);
         get("/b/:branch/:book/export", ExportBookAction.class);
-        get("/b/:branch/:book/export-csv", ExportCsvBookAction.class); // temporär drin für WM
         get("/b/:branch/:book/validate", ValidationPage.class);
         get("/b/", CurrentWorkspaceAction.class); // falls man sich dahin verirren sollte
     }
