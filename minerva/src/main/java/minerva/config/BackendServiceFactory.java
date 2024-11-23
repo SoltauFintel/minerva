@@ -5,7 +5,6 @@ import gitper.access.MultiPurposeDirAccess;
 import gitper.persistence.filesystem.FileSystemBackendService;
 import gitper.persistence.filesystem.FileSystemBackendService.MinervaFileSystemConfig;
 import gitper.persistence.gitlab.GitlabBackendService;
-import minerva.MinervaWebapp;
 import minerva.base.NLS;
 import minerva.seite.Seite;
 
@@ -29,12 +28,12 @@ public class BackendServiceFactory {
 
 			@Override
 			public String getWorkspacesFolder() {
-				return MinervaWebapp.factory().getConfig().getWorkspacesFolder();
+				return config.getWorkspacesFolder();
 			}
 
 			@Override
 			public String getEditorPassword() {
-				return MinervaWebapp.factory().getConfig().getEditorPassword();
+				return config.getEditorPassword();
 			}
 
 			@Override
