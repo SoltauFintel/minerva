@@ -1,4 +1,4 @@
-package minerva.persistence.filesystem;
+package gitper.persistence.filesystem;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,24 +14,19 @@ import gitper.Workspace;
 import gitper.Workspaces;
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
-import gitper.access.MultiPurposeDirAccess;
 import gitper.base.ICommit;
 import gitper.base.StringService;
-import minerva.MinervaWebapp;
-import minerva.base.NLS;
-import minerva.config.MinervaConfig;
-import minerva.seite.Seite;
 
-public class FileSystemBackendService implements BackendService {
-    private final MinervaConfig config;
-        
-    public FileSystemBackendService(MinervaConfig config) {
-        this.config = config;
+public abstract class FileSystemBackendService implements BackendService {
+    private final MinervaFileSystemConfig fsa;
+    
+    public FileSystemBackendService(MinervaFileSystemConfig fsa) {
+        this.fsa = fsa;
     }
 
     @Override
     public String getInfo(String lang) {
-        return NLS.get(lang, "filesystem") + " (" + new File(config.getWorkspacesFolder()).getAbsolutePath() + ")";
+        return fsa.n(lang, "filesystem") + " (" + new File(fsa.getWorkspacesFolder()).getAbsolutePath() + ")";
     }
 
     @Override
@@ -49,7 +44,7 @@ public class FileSystemBackendService implements BackendService {
         if (StringService.isNullOrEmpty(login)) {
             return null;
         }
-        if (!MinervaWebapp.factory().getConfig().getEditorPassword().equals(password)) {
+        if (!fsa.getEditorPassword().equals(password)) {
             return null;
         }
         return Gitper.gitperInterface.loadUser(login, true, mail);
@@ -57,18 +52,13 @@ public class FileSystemBackendService implements BackendService {
     
     @Override
     public String getUserFolder(User user) {
-        String folder = config.getUserFolder();
+        String folder = fsa.getUserFolder();
         Logger.debug(user.getLogin() + " | folder: " + folder);
         return folder;
     }
 
     @Override
     public void uptodatecheck(Workspace workspace, UpdateAction updateAction) { //
-    }
-
-    @Override
-    public Seite forceReloadIfCheap(String filenameMeta) {
-        return new MultiPurposeDirAccess(getDirAccess()).load(filenameMeta, Seite.class);
     }
 
     @Override
@@ -114,4 +104,15 @@ public class FileSystemBackendService implements BackendService {
     @Override
     public void checkIfMoveIsAllowed(Workspace workspace) { // it's always allowed
     }
+    
+	public interface MinervaFileSystemConfig {
+
+		String getWorkspacesFolder();
+
+		String getEditorPassword();
+
+		String getUserFolder();
+
+		String n(String lang, String key);
+	}
 }

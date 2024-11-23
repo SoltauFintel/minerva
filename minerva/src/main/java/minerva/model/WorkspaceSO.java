@@ -11,10 +11,10 @@ import gitper.Workspace;
 import gitper.access.CommitHash;
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
+import gitper.persistence.filesystem.FileSystemDirAccess;
 import minerva.MinervaWebapp;
 import minerva.config.MinervaOptions;
 import minerva.exclusions.Exclusions;
-import minerva.persistence.filesystem.FileSystemDirAccess;
 import minerva.seite.tag.TagNList;
 import minerva.task.TaskService;
 
