@@ -17,6 +17,7 @@ import org.jsoup.nodes.Document;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.IdGenerator;
+import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
 import gitper.base.FileService;
 import gitper.base.StringService;
@@ -111,7 +112,7 @@ public class ConfluenceToMinervaMigrationService {
             Logger.info("[Migration] deleteWorkspace() has nothing to do");
         } else {
             MinervaWebapp.factory().getBackendService().saveFiles(
-                    new MigrationCommitMessage("empty branch " + workspace.getBranch()),
+                    new CommitMessage("(Migration) empty branch " + workspace.getBranch()),
                     workspace, new HashSet<>(), filenames);
             Logger.info("[Migration] deleteWorkspace() ok");
         }
@@ -167,7 +168,7 @@ public class ConfluenceToMinervaMigrationService {
         // commit and push everything ----
         Logger.info("saving " + files.size() + " files for book \"" + sp.getTitle() + "\"...");
         if (!files.isEmpty()) {
-            MigrationCommitMessage cm = new MigrationCommitMessage(sp.getTitle());
+            CommitMessage cm = new CommitMessage("(Migration) " + sp.getTitle());
             cm.bigCommit();
             workspace.dao().saveFiles(files, cm, workspace);
         }
