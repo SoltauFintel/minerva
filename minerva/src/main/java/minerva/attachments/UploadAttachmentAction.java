@@ -27,7 +27,8 @@ public class UploadAttachmentAction extends SAction {
                 throw new RuntimeException("Attachment too big! Maximum size: " + MAX_MB + " MB");
             }
             String dn = part.getSubmittedFileName();
-            Logger.info("UploadAttachmentAction | filename: '" + dn + "', size: " + mb + " MB (" + nbytes + ")");
+			Logger.info(seite.getLogLine(null) + " | upload attachment | filename: " + dn +
+					" | size: " + mb + " MB (" + nbytes + ")");
 
             new AttachmentsSO(seite).save(part.getInputStream(), dn, user.getAttachmentCategory());
 
