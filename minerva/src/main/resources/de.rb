@@ -438,3 +438,4 @@ ffe3=oder Feature-Nr.
 nothingSelected=nichts ausgewählt
 selected=ausgewählt
 allSelected=alle ausgewählt
+uploadFailed=Upload hat nicht geklappt!

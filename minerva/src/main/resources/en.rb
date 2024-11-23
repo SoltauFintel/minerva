@@ -434,3 +434,4 @@ setParentCommentDone=set parent comment to done
 nothingSelected=nothing selected
 selected=selected
 allSelected=all selected
+uploadFailed=Upload failed!
