@@ -41,7 +41,7 @@ public class MinervaErrorPage extends Page implements ErrorPage {
         }
         ctx.status(500);
         if (exception instanceof ErrorMessageHolder ex) {
-        	msg = NLS.get("de", ex.getKey()); // TODO GUI language
+        	msg = NLS.get(language(), ex.getKey());
         	for (Map.Entry<String, String> entry : ex.getParameters().entrySet()) {
         		msg = msg.replace(entry.getKey(), entry.getValue());
         	}
@@ -53,6 +53,20 @@ public class MinervaErrorPage extends Page implements ErrorPage {
         put("p", "");
         put("title", "Minerva error");
         put("header", exception instanceof UserMessage ? "Message" : "Sorry, this should not happen!");
+    }
+    
+    private String language() {
+		String al = ctx.req.headers("Accept-Language");
+		if (al != null) {
+			int o = al.indexOf(";");
+			if (o >= 0) {
+				al = al.substring(0, o);
+				if (al.toLowerCase().startsWith("de")) {
+					return "de";
+				}
+			}
+		}
+		return "en";
     }
     
     @Override
