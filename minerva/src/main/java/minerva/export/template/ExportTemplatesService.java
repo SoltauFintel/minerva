@@ -14,6 +14,8 @@ import com.github.template72.loader.ResourceTemplateLoader;
 import github.soltaufintel.amalia.base.IdGenerator;
 import gitper.access.CommitMessage;
 import gitper.access.MultiPurposeDirAccess;
+import gitper.base.StringService;
+import minerva.base.NLS;
 import minerva.model.WorkspaceSO;
 
 public class ExportTemplatesService {
@@ -105,5 +107,25 @@ public class ExportTemplatesService {
     
     private String filename(String id) {
         return workspace.getFolder() + "/export-templates/" + id + DN_EXT;
+    }
+    
+    /**
+     * @param id null or empty: create, else: copy
+     * @return ID of newly created ExportTemplateSet
+     */
+    public String addOrCopyTemplateSet(String id) {
+        ExportTemplateSet template;
+        if (StringService.isNullOrEmpty(id)) {
+            // Create new export template set and go to edit mode.
+            template = createFromBuiltIn();
+        } else {
+            // Copy existing e.t.s. and go to edit mode.
+            template = load(id);
+            template.setId(IdGenerator.createId6());
+            String copy = NLS.get(workspace.getUser().getGuiLanguage(), "copy");
+            template.setName(template.getName() + " - " + copy + " " + template.getId());
+        }
+        save(template);
+        return template.getId();
     }
 }
