@@ -77,4 +77,15 @@ public class MasksService {
             }
         }
     }
+    
+    public void deleteMaskField(String tag, String id) {
+        Mask mask = getMask(tag);
+        if (mask != null) {
+            int n = mask.getFields().size();
+            mask.getFields().removeIf(i -> i.getId().equals(id));
+            if (mask.getFields().size() < n) {
+                saveMask(mask);
+            }
+        }
+    }
 }
