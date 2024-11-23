@@ -18,7 +18,6 @@ public class LinkAnalysisPage extends SPage {
         DataList list = list("links");
         for (LinkAnalysisEntry e : result) {
             DataMap map = list.add();
-//            map.put("id", esc(e.getId()));
             map.put("href", esc(e.getHref()));
             map.put("linkTitle", esc(e.getLinkTitle())); // This is the link title.
             map.put("pageTitle", esc(e.getPageTitle()));

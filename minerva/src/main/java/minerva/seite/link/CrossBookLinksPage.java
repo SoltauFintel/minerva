@@ -88,6 +88,7 @@ public class CrossBookLinksPage extends SPage {
         return ret;
     }
     
+    // TODO Hier Klasse Gliederung nutzbar?
     private String gliederung(BookSO b) {
         StringBuilder sb = new StringBuilder();
         g(b.getSeiten(), esc(viewlink + "/cross-book-links?m=a&d="), sb);

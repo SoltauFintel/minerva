@@ -18,6 +18,7 @@ public class MoveSeitePage extends SPage {
         put("pageTitle", esc(seite.getTitle()));
 
         boolean topLevelPage = seite.getSeite().getParentId().equals(SeiteSO.ROOT_ID);
+        // TODO Klasse Gliederung hier nutzbar?
         StringBuilder gliederung = new StringBuilder();
         gliederung.append("<ul>");
         book(book, topLevelPage, viewlink + "/move-ack?parentid=root", gliederung);
