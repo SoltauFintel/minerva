@@ -4,8 +4,8 @@ public class TocAction extends SAction {
 
     @Override
     protected void execute() {
-        int tocHeadingsLevels = Integer.valueOf(ctx.queryParam("tocHeadingsLevels").substring(0, 1));
-        int tocSubpagesLevels = Integer.valueOf(ctx.queryParam("tocSubpagesLevels").substring(0, 1));
+        int tocHeadingsLevels = i("tocHeadingsLevels");
+        int tocSubpagesLevels = i("tocSubpagesLevels");
 
         Seite s = seite.getSeite();
         if (s.getTocHeadingsLevels() != tocHeadingsLevels || s.getTocSubpagesLevels() != tocSubpagesLevels) { // is dirty?
@@ -15,5 +15,9 @@ public class TocAction extends SAction {
         }
         
         ctx.redirect(viewlink);
+    }
+    
+    private int i(String label) {
+    	return Integer.valueOf(ctx.queryParam(label).substring(0, 1));
     }
 }
