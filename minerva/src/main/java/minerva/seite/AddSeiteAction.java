@@ -10,6 +10,6 @@ public class AddSeiteAction extends BAction {
 
         String id = user.createSeite(branch, bookFolder, parentId);
 
-        ctx.redirect("/s-edit/" + branch + "/" + bookFolder + "/" + id);
+        ctx.redirect("/s-edit/" + esc(branch) + "/" + esc(bookFolder) + "/" + esc(id));
     }
 }
