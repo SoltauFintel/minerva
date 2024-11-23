@@ -1,4 +1,4 @@
-package minerva.seite;
+package minerva.seite.helpkeys;
 
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;

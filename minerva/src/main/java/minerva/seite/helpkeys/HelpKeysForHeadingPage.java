@@ -1,4 +1,4 @@
-package minerva.seite;
+package minerva.seite.helpkeys;
 
 import java.util.stream.Collectors;
 
@@ -8,6 +8,8 @@ import org.jsoup.select.Elements;
 import org.pmw.tinylog.Logger;
 
 import minerva.MinervaWebapp;
+import minerva.seite.SPage;
+import minerva.seite.SeiteIPageAdapter;
 import ohhtml.toc.TocMacro;
 
 /**

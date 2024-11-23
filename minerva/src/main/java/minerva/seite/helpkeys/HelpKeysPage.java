@@ -1,6 +1,8 @@
-package minerva.seite;
+package minerva.seite.helpkeys;
 
 import java.util.stream.Collectors;
+
+import minerva.seite.SPage;
 
 /**
  * Edit help keys for page

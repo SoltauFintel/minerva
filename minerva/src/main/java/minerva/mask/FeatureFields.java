@@ -4,11 +4,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import gitper.base.StringService;
-
 import java.util.Set;
 
+import gitper.base.StringService;
 import minerva.mask.field.MaskField;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;

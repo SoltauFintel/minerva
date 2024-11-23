@@ -2,7 +2,7 @@ package minerva.book;
 
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
-import minerva.seite.OrderSeiteService;
+import minerva.seite.actions.OrderSeiteService;
 
 public class OrderTopLevelSeitePage extends BPage {
     private OrderSeiteService sv;

@@ -1,4 +1,6 @@
-package minerva.seite;
+package minerva.seite.actions;
+
+import minerva.seite.SAction;
 
 public class SortSeiteAction extends SAction {
 

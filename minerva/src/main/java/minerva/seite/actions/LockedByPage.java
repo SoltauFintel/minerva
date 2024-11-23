@@ -1,6 +1,7 @@
-package minerva.seite;
+package minerva.seite.actions;
 
 import minerva.model.UserSO.LoginAndEndTime;
+import minerva.seite.SPage;
 import minerva.user.UserAccess;
 
 /**

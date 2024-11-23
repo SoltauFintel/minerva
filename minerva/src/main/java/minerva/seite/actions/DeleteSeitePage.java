@@ -1,4 +1,4 @@
-package minerva.seite;
+package minerva.seite.actions;
 
 import org.pmw.tinylog.Logger;
 
@@ -7,6 +7,7 @@ import com.github.template72.data.DataMap;
 
 import minerva.book.BookPage;
 import minerva.model.SeiteSO;
+import minerva.seite.SPage;
 
 public class DeleteSeitePage extends SPage {
     

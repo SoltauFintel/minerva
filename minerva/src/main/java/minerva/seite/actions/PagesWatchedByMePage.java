@@ -1,4 +1,4 @@
-package minerva.seite;
+package minerva.seite.actions;
 
 import java.util.ArrayList;
 import java.util.List;

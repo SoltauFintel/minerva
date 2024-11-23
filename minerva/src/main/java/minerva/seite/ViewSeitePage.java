@@ -276,7 +276,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         model.put("lastChangeUser", Escaper.esc(change.getUser()));
     }
     
-    static int fillSubpages(SeiteSO seite, SeitenSO seiten, String lang, DataList subpages, String branch, String bookFolder, SeiteSichtbar ssc) {
+    public static int fillSubpages(SeiteSO seite, SeitenSO seiten, String lang, DataList subpages, String branch, String bookFolder, SeiteSichtbar ssc) {
         int n = 0;
         if (seite != null && seite.isFeatureTree() && seite.checkSubfeaturesLimit()) {
             // Actually no sub-features display, but pages with tag "page" should be displayed.

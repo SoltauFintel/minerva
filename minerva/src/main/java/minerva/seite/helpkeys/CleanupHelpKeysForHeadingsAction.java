@@ -1,7 +1,9 @@
-package minerva.seite;
+package minerva.seite.helpkeys;
 
 import org.pmw.tinylog.Logger;
 
+import minerva.seite.SAction;
+import minerva.seite.SeiteIPageAdapter;
 import ohhtml.toc.TocMacro;
 
 /**

@@ -1,4 +1,4 @@
-package minerva.seite;
+package minerva.seite.actions;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +15,8 @@ import minerva.exclusions.SeiteSichtbar;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.model.UserSO;
+import minerva.seite.ISeite;
+import minerva.seite.ViewSeitePage;
 import minerva.subscription.SubscriptionService;
 import minerva.user.UPage;
 

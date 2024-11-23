@@ -1,8 +1,9 @@
-package minerva.seite;
+package minerva.seite.actions;
 
 import org.pmw.tinylog.Logger;
 
 import gitper.access.CommitMessage;
+import minerva.seite.SAction;
 
 public class SaveEditorsNoteAction extends SAction {
 

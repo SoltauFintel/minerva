@@ -1,4 +1,7 @@
-package minerva.seite;
+package minerva.seite.actions;
+
+import minerva.seite.SAction;
+import minerva.seite.Seite;
 
 public class TocAction extends SAction {
 

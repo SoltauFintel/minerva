@@ -1,6 +1,7 @@
-package minerva.seite;
+package minerva.seite.actions;
 
 import minerva.model.SeitenSO;
+import minerva.seite.SPage;
 
 public class OrderSeitePage extends SPage {
     private OrderSeiteService sv;

@@ -1,4 +1,4 @@
-package minerva.seite;
+package minerva.seite.actions;
 
 import java.util.List;
 import java.util.Set;
@@ -15,6 +15,7 @@ import minerva.MinervaWebapp;
 import minerva.book.BookPage;
 import minerva.config.MinervaFactory;
 import minerva.model.SeiteSO;
+import minerva.seite.SPage;
 import minerva.user.UserAccess;
 
 public class SeiteHistoryPage extends SPage {
