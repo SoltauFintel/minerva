@@ -93,7 +93,7 @@ public class Option {
 	}
 	
 	public Option notForCustomerVersion() {
-		notForCustomerVersion = true;
+//	TODO bug	notForCustomerVersion = true;
 		return this;
 	}
 
