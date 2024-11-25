@@ -24,7 +24,7 @@ public class PageMenuSupplier {
 	        new PageMenuItem("", "", "-"),
 	        new PageMenuItem(ctx.isAdmin(), "{viewlink}/html", "fa-code", "N.editHTML"),
 	        new PageMenuItem("/w/{branch}/export?seite={id}", "fa-upload", "N.exportPage"),
-	        new PageMenuItem("{duplicatelink}", "fa-copy", "N.duplicatePage"),
+	        new PageMenuItem("{duplicatelink}", "fa-copy", "N.duplicatePage|..."),
             new PageMenuItem(!ctx.isCustomerMode() /*recht willkuerliches Verbot*/, "{movelink}", "fa-arrow-circle-right", "N.movePage"), 
             new PageMenuItem(!ctx.isCustomerMode() /*recht willkuerliches Verbot*/, "{deletelink}" , "fa-trash", "N.deletePage|...")
 			);

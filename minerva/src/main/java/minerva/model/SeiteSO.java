@@ -429,7 +429,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
 		return u.getLogin() + " | " + book.getWorkspace().getBranch() + " | " + book.getBook().getFolder() + " | " + getTitle();
     }
 
-    public String duplicate(List<String> langs) {
+    public String duplicate(List<String> langs, boolean completeCopy) {
     	// create new page
         long start = System.currentTimeMillis();
     	String id;
@@ -443,7 +443,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     	
     	// copy data
         SeiteSO copy = book._seiteById(id);
-        copy.getSeite().copyFrom(seite);
+        copy.getSeite().copyFrom(seite, completeCopy);
         copy.content = new NlsString();
         for (String lang : langs) {
         	// find new title

@@ -65,18 +65,25 @@ public class Seite {
     
     // needed for duplicate action
     // not to set: id, parentId, title, position, version, changes, editorsNote.
-	public void copyFrom(Seite c) {
+	public void copyFrom(Seite c, boolean completeCopy) {
 	    sorted = c.sorted;
-		tags.addAll(c.tags);
-		helpKeys.addAll(c.helpKeys);
-		if (c.hkh == null) {
-			hkh = null;
-		} else {
-			hkh = new ArrayList<>(c.hkh);
-		}
 		tocHeadingsLevels = c.tocHeadingsLevels;
 		tocSubpagesLevels = c.tocSubpagesLevels;
-		links.addAll(c.links);
+	    if (completeCopy) {
+	    	tags.addAll(c.tags);
+	    	helpKeys.addAll(c.helpKeys);
+			if (c.hkh == null) {
+				hkh = null;
+			} else {
+				hkh = new ArrayList<>(c.hkh);
+			}
+			links.addAll(c.links);
+	    } else {
+	    	tags.clear();
+	    	helpKeys.clear();
+	    	hkh = null;
+	    	links.clear();
+	    }
     }
 
     public String getId() {

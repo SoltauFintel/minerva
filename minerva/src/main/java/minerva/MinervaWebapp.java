@@ -107,7 +107,7 @@ import minerva.seite.EditHtmlPage;
 import minerva.seite.EditSeitePage;
 import minerva.seite.ViewSeitePage;
 import minerva.seite.actions.DeleteSeitePage;
-import minerva.seite.actions.DuplicateSeiteAction;
+import minerva.seite.actions.DuplicateSeitePage;
 import minerva.seite.actions.LockedByPage;
 import minerva.seite.actions.MoveSeiteAckPage;
 import minerva.seite.actions.MoveSeiteAction;
@@ -245,7 +245,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/s/:branch/:book/:id/locked", LockedByPage.class);
         get("/s/:branch/:book/:id/pull", PullSeiteAction.class);
         get("/s/:branch/:book/:id/delete", DeleteSeitePage.class);
-        get("/s/:branch/:book/:id/duplicate", DuplicateSeiteAction.class);
+        get("/s/:branch/:book/:id/duplicate", DuplicateSeitePage.class);
         get("/s/:branch/:book/:parentid/add", AddSeiteAction.class);
         form("/s/:branch/:book/:id/order", OrderSeitePage.class);
         get("/s/:branch/:book/:id/sort", SortSeiteAction.class);
