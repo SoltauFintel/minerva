@@ -106,12 +106,9 @@ public class WatchersService {
         mail.setToEmailaddress(user.getMailAddress());
         mail.setSubject(MinervaOptions.MAIL_WATCH_SUBJECT.get()
         		.replace("{pageTitle}", editedSeite.getTitle())); // no esc!
-        mail.setBody(c.getWatchBody()  // TODO deprecated, replace to MinervaOptions.MAIL_WATCH_BODY.get()
+        mail.setBody(MinervaOptions.MAIL_WATCH_BODY.get()
         		.replace("{url}", getUrl())
-                .replace("{pageId}", editedSeite.getId()) // TODO deprecated
                 .replace("{pageTitle}", editedSeite.getTitle()) // no esc!
-                .replace("{bookFolder}", editedSeite.getBook().getBook().getFolder()) // TODO deprecated
-                .replace("{branch}", editedSeite.getBook().getWorkspace().getBranch()) // TODO deprecated
                 .replace("{notifiedPage}", user.getNotifiedBecauseOfPage().getTitle()));
         c.sendMail(mail);
     }
