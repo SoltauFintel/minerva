@@ -38,7 +38,7 @@ public class MinervaOptions {
 	public static final Option MAIL_WATCH_SUBJECT = add(CAT_WATCH, "mail.watch.subject", "Subject")
 			.setDefaultValue("watched page modified").setHint("var: {pageTitle}");
 	public static final Option MAIL_WATCH_BODY = add(CAT_WATCH, "mail.watch.body", "Mail text", OptionType.TEXTAREA)
-			.setHint("vars: {pageTitle}, {host}, {branch}, {bookFolder}, {pageId}"); // TODO fertige URLs wären besser -> derzeit genutzte URL aus Config besorgen
+			.setHint("vars: {pageTitle}, {url}");
 	
 	private static final OptionCategory CAT_COMMENT = new OptionCategory("New comment notification");
 	public static final Option MAIL_COMMENT_SUBJECT = add(CAT_COMMENT, "mail.comment.subject", "Subject")
