@@ -43,6 +43,10 @@ public class MultiPurposeDirAccess {
     }
     
     public <T> T load(String dn, Class<T> type) {
+    	return _load(dn, type, new Gson());
+    }
+
+    public <T> T _load(String dn, Class<T> type, Gson gson) {
         if (!new File(dn).isFile()) {
             return null;
         }
@@ -54,7 +58,7 @@ public class MultiPurposeDirAccess {
             Logger.error("JSON is null for file: " + dn);
             return null;
         }
-        return new Gson().fromJson(json, type);
+        return gson.fromJson(json, type);
     }
 
     /**
