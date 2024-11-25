@@ -10,6 +10,7 @@ import gitper.base.StringService;
 import minerva.model.ExclusionsSO;
 import minerva.user.CustomerMode;
 import minerva.workspace.WPage;
+import ohhtml.Exclusions;
 
 /**
  * With activated customer mode only the pages of the specified customer will be displayed.

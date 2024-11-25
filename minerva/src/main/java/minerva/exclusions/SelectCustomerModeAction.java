@@ -6,6 +6,7 @@ import org.pmw.tinylog.Logger;
 
 import minerva.model.ExclusionsSO;
 import minerva.workspace.WAction;
+import ohhtml.Exclusions;
 
 /**
  * Vorher gab es nur CustomerModePage. Wenn man dann oft hin- und herumschaltet,

@@ -5,7 +5,7 @@ import java.util.TreeSet;
 
 import gitper.access.CommitMessage;
 import gitper.access.MultiPurposeDirAccess;
-import minerva.exclusions.Exclusions;
+import ohhtml.Exclusions;
 
 public class ExclusionsSO {
     public static final String DN = "exclusions.txt";

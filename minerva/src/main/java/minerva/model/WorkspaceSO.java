@@ -14,9 +14,9 @@ import gitper.access.DirAccess;
 import gitper.persistence.filesystem.FileSystemDirAccess;
 import minerva.MinervaWebapp;
 import minerva.config.MinervaOptions;
-import minerva.exclusions.Exclusions;
 import minerva.seite.tag.TagNList;
 import minerva.task.TaskService;
+import ohhtml.Exclusions;
 
 public class WorkspaceSO implements Workspace {
     private final UserSO user;

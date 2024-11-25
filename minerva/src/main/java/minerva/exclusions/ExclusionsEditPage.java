@@ -12,6 +12,7 @@ import minerva.MinervaWebapp;
 import minerva.model.ExclusionsSO;
 import minerva.seite.tag.TagN;
 import minerva.user.UPage;
+import ohhtml.Exclusions;
 
 public class ExclusionsEditPage extends UPage {
 
