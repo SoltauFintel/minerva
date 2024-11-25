@@ -138,7 +138,7 @@ public class AttachmentsSO {
 				// search by exact category
 				if (filename.endsWith(".cat")) {
 					String cat = FileService.loadPlainTextFile(new File(filename));
-					if (cat.equalsIgnoreCase(x)) {
+					if (cat != null && cat.equalsIgnoreCase(x)) {
 						sc.add(seite, "attachment category: " + cat);
 					}
 				}
