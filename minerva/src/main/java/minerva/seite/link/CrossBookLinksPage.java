@@ -81,7 +81,7 @@ public class CrossBookLinksPage extends SPage {
             if (b.getBook().getFolder().equals(book.getBook().getFolder())) {
             } else if (b.isFeatureTree() || b.isInternal()) {
             } else {
-                // TODO
+                // TODO Ich wollte irgendwann noch einschränken von welchem Buch nach welchen Büchern gelinkt werden darf.
                 ret.add(b);
             }
         }
