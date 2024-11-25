@@ -131,19 +131,23 @@ public class AttachmentsSO {
     }
 
 	public void search(SearchContext sc) {
-		String x = sc.getX().toLowerCase();
-		for (String filename : getFilenames()) {
-			// search by exact category
-			if (filename.endsWith(".cat")) {
-				String cat = FileService.loadPlainTextFile(new File(filename));
-				if (cat.equalsIgnoreCase(x)) {
-					sc.add(seite, "attachment category: " + cat);
+		Set<String> filenames = getFilenames();
+		if (filenames != null) {
+			final String x = sc.getX().toLowerCase();
+			for (String filename : filenames) {
+				// search by exact category
+				if (filename.endsWith(".cat")) {
+					String cat = FileService.loadPlainTextFile(new File(filename));
+					if (cat.equalsIgnoreCase(x)) {
+						sc.add(seite, "attachment category: " + cat);
+					}
 				}
-			}
-			// search by filename
-			String dn = new File(filename).getName();
-			if (dn.toLowerCase().contains(x)) {
-				sc.add(seite, "attachment: " + dn);
+				
+				// search by filename
+				String dn = new File(filename).getName();
+				if (dn.toLowerCase().contains(x)) {
+					sc.add(seite, "attachment: " + dn);
+				}
 			}
 		}
 	}
