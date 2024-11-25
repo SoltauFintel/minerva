@@ -24,7 +24,7 @@ import minerva.seite.ViewAreaBreadcrumbLinkBuilder;
  * <p>Search service: https://github.com/SoltauFintel/xsearch</p>
  */
 public class SearchSO {
-    public static Searcher additionalSearcher = null;
+    public static WorkspaceSearcher additionalSearcher = null;
     private final String host;
     private final WorkspaceSO workspace;
     private final List<String> langs;
@@ -133,7 +133,7 @@ public class SearchSO {
         }
 
         // search in all pages with many algorithms
-        List<ISearcher> searchers = getSearchers(workspace, isFirstLanguage);
+        List<SeiteSearcher> searchers = getSearchers(workspace, isFirstLanguage);
         SearchContext sc = new SearchContext(x, lang, ret);
     	for (BookSO book : workspace.getBooks()) {
     		book.getAlleSeiten().forEach(seite ->
@@ -145,7 +145,7 @@ public class SearchSO {
 		
         // search in other data
         if (additionalSearcher != null) {
-			List<SearchResult> ret2 = additionalSearcher.search(workspace, x.toLowerCase(), lang);
+			List<SearchResult> ret2 = additionalSearcher.search(sc, workspace);
 			if (ret2 != null) {
 				ret.addAll(ret2);
 			}
@@ -160,8 +160,8 @@ public class SearchSO {
     }
     
     // page search algorithms
-    private List<ISearcher> getSearchers(WorkspaceSO workspace, boolean isFirstLanguage) {
-    	List<ISearcher> ret = new ArrayList<>();
+    private List<SeiteSearcher> getSearchers(WorkspaceSO workspace, boolean isFirstLanguage) {
+    	List<SeiteSearcher> ret = new ArrayList<>();
     	
     	// search by Seite ID
     	if (isFirstLanguage) {
@@ -249,20 +249,13 @@ public class SearchSO {
 		}
     }
 
-    /**
-     * Search in page
-     */
-    public interface ISearcher {
-    	
-    	void search(SearchContext sc, SeiteSO seite);
-    }
+	public interface SeiteSearcher {
 
-    /**
-     * Search in workspace
-     */
-    public interface Searcher {
-		
-    	// TODO auf SearchContext umstellen
-    	List<SearchResult> search(WorkspaceSO workspace, String x, String lang);
-    }
+		void search(SearchContext sc, SeiteSO seite);
+	}
+
+	public interface WorkspaceSearcher {
+
+		List<SearchResult> search(SearchContext sc, WorkspaceSO workspace);
+	}
 }

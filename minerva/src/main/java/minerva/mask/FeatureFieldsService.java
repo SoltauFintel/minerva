@@ -14,7 +14,7 @@ import gitper.access.MultiPurposeDirAccess;
 import gitper.base.StringService;
 import minerva.mask.FeatureFields.MaskLabelContext;
 import minerva.model.BookSO;
-import minerva.model.SearchSO.ISearcher;
+import minerva.model.SearchSO.SeiteSearcher;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.ViewSeitePage.AddFeatures;
@@ -145,7 +145,7 @@ public class FeatureFieldsService implements AddFeatures {
         public String featureNumber;
     }
 
-    public ISearcher getSearcher(WorkspaceSO workspace) {
+    public SeiteSearcher getSearcher(WorkspaceSO workspace) {
     	MaskLabelContext mlcontext = new MaskLabelContext(workspace);
     	return (sc, seite) -> {
             if (!"de".equals(sc.getLang()) || sc.getX() == null || sc.getX().isBlank() || !seite.isFeatureTree()) {
