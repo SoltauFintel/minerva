@@ -29,7 +29,7 @@ h2 {
             <div class="bs-glyphicons">
                 <ul class="bs-glyphicons-list">
                     {{each c in workspaces}}
-                        <li style="cursor: pointer;"{{if c.isCurrent}} class="currentBranch"{{/if}} onclick="location.href='{{c.link}}';">
+                        <li style="cursor: pointer; word-wrap: break-word;"{{if c.isCurrent}} class="currentBranch"{{/if}} onclick="location.href='{{c.link}}';">
                             <span class="glyphicon fa {{c.icon}} fa-fw"></span>
                             <span class="glypicon-class"><br />{{c.text}}</span>
                         </li>
