@@ -28,9 +28,6 @@ public class EditConfigPage extends UPage {
 		header("Configuration");
 		DataList list = list("categories");
 		for (OptionCategory cat : MinervaOptions.options.getCategories()) {
-			if (cat.getOptions().stream().allMatch(o -> o.isNotForCustomerVersion())) {
-				continue;
-			}
 			DataMap map = list.add();
 			map.put("label", esc(cat.getLabel()));
 			DataList list2 = map.list("options");
@@ -45,6 +42,9 @@ public class EditConfigPage extends UPage {
 					m.put("isTextarea", OptionType.TEXTAREA.equals(o.getType()));
 					m.put("isSecret", OptionType.SECRET.equals(o.getType()));
 				}
+			}
+			if (list2.isEmpty()) {
+				list.remove(list.size() - 1);
 			}
 		}
 	}
