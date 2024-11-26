@@ -136,6 +136,7 @@ public class FeatureRelationsService {
             this.link = link == null ? "" : link;
             id = "link_" + IdGenerator.code6(link);
             title = WebpageTitleService.webpageTitleService.getTitle(link);
+System.out.println("LinkRelation: " + link + " -> " + title); // XXX DEBUG
         }
 
         @Override
