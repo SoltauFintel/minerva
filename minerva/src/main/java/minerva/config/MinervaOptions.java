@@ -1,6 +1,9 @@
 package minerva.config;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -98,6 +101,18 @@ public class MinervaOptions {
 	}
 	
 	public void save() {
+		if (configFile.isFile()) {
+			try {
+				File copy = new File(configFile.getParentFile(), "config-backup/" + configFile.getName()
+						+ LocalDateTime.now().format(DateTimeFormatter.ofPattern("-yyyy-MM-dd-HH-mm-ss")));
+				Logger.info("Creating backup for " + configFile.getName() + ": " + copy.getAbsolutePath()); // TODO .debug
+				copy.getParentFile().mkdirs();
+				Files.copy(configFile.toPath(), copy.toPath());
+				Logger.info("Created  backup for " + configFile.getName() + ": " + copy.getAbsolutePath()); // TODO .debug
+			} catch (Exception e) {
+				Logger.error(e, "Error creating backup for " + configFile.getName());
+			}
+		}
 		FileService.saveJsonFile(configFile, optionValues);
 		Logger.info("Config file saved: " + configFile.getAbsolutePath());
 	}
