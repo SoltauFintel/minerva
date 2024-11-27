@@ -109,6 +109,9 @@ public class BookSO {
         return book;
     }
     
+    /**
+     * @return Attention: this is the absolute path! Use getBook().getFolder() for just getting the folder name.
+     */
     public String getFolder() {
         return workspace.getFolder() + "/" + book.getFolder();
     }
