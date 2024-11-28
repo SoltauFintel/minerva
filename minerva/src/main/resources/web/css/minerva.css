@@ -18,6 +18,10 @@ body {
     margin-top: 4em;
 }
 
+.mt4p {
+	margin-top: 4px;
+}
+
 .mb1 {
     margin-bottom: 1em;
 }
@@ -845,4 +849,8 @@ table.relationstable ul {
 
 .featuretitel {
 	color: #909;
+}
+
+.sortarrow {
+	color: #bbb;
 }
