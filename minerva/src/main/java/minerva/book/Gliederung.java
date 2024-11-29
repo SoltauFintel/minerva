@@ -43,10 +43,7 @@ public class Gliederung {
         gliederung.append("<ul>\n");
         String hasComment    = " <i class=\"fa fa-comment-o has-comment\" title=\"" + n("hasComment") + "\"></i>";
         String hasCommentForMe = " <i class=\"fa fa-comment has-comment\" title=\"" + n("hasComment") + "\"></i>";
-        List<SeiteSO> seitenII = new ArrayList<>(); // needed for indexed iteration
-		for (SeiteSO seite : seiten) {
-			seitenII.add(seite);
-		}
+        List<SeiteSO> seitenII = createSeitenCopy(seiten);
 		SeiteSichtbar ssc = new SeiteSichtbar(book.getWorkspace(), lang);
 		ssc.setShowAllPages(allPages);
 		for (int i = 0; i < seitenII.size(); i++) {
@@ -60,49 +57,21 @@ public class Gliederung {
             if (title.isBlank()) {
                 title = "without title #" + seite.getId();
             }
-            String link = "/s/" + branch + "/" + bookFolder + "/" + Escaper.esc(seite.getSeite().getId());
-            String nc = "";
-            if (visible.isShowAllPages()) {
-            	nc = " class=\"hiddenPage\""; // red
-            } else if (visible.hasSubpages()) {
-            	nc = " class=\"noContent\"";  // grey
-            }
             gliederung.append("\t<li id=\"");
             gliederung.append(seite.getId());
             gliederung.append("\"><a href=\"");
-            gliederung.append(link);
-            gliederung.append("\"" + nc + ">");
+			gliederung.append("/s/");
+			gliederung.append(branch);
+			gliederung.append("/");
+			gliederung.append(bookFolder);
+			gliederung.append("/");
+			gliederung.append(Escaper.esc(seite.getSeite().getId()));
+            gliederung.append("\"" + getNC(visible) + ">");
             gliederung.append(Escaper.esc(title));
             gliederung.append("</a>");
-            if (showTags(i, seitenII, lang)) {
-				seite.getSeite().getTags().stream().sorted().forEach(tag ->
-					gliederung.append(" <span class=\"label label-tag\"><i class=\"fa fa-tag\"></i> " + tag + "</span>"));
-            }
-            int state = new SeiteCommentService2(seite).getCommentState(book.getWorkspace().getUser().getLogin());
-            if (state > 0) {
-                gliederung.append(state == 2 ? hasCommentForMe : hasComment);
-            }
-            if (seite.isFeatureTree()) {
-				String p = "", info = null, b = null;
-				if (seite.hasFt_tag()) {
-					b = "f";
-					p = "/" + seite.getId();
-					info = "Features";
-				} else if ("Schnittstellen".equals(seite.getTitle())) {
-					b = "sch";
-					info = seite.getTitle();
-					bookFolder = "prozesse"; // TODO Mist
-				}
-				if (info != null) {
-					gliederung.append(" <a href=\"/" + b + "/" + branch + "/" + bookFolder + p
-							+ "\"><i class=\"fa fa-table greenbook ml05\" title=\"" + info + "\"></i></a>");
-				}
-
-				FeatureFields ff = new FeatureFieldsService().get(seite);
-            	if (seite.getBook().getUserRealName().equals(ff.get("responsible"))) {
-            		gliederung.append(" <i class=\"fa fa-user ml05 commentByMe\" title=\"" + n("iAmResponsible") + "\"></i>");
-            	}
-            }
+            tags(gliederung, seitenII, i, seite);
+            comments(gliederung, hasComment, hasCommentForMe, seite);
+            featuretree(gliederung, branch, bookFolder, seite);
             gliederung.append("</li>\n");
             
             if (seite.isFeatureTree() && seite.checkSubfeaturesLimit()) {
@@ -113,6 +82,38 @@ public class Gliederung {
         gliederung.append("</ul>\n");
     }
 
+	private List<SeiteSO> createSeitenCopy(SeitenSO seiten) {
+		List<SeiteSO> seitenII = new ArrayList<>(); // needed for indexed iteration
+		for (SeiteSO seite : seiten) {
+			seitenII.add(seite);
+		}
+		return seitenII;
+	}
+
+	private String getNC(Visible visible) {
+		String nc = "";
+		if (visible.isShowAllPages()) {
+			nc = " class=\"hiddenPage\""; // red
+		} else if (visible.hasSubpages()) {
+			nc = " class=\"noContent\"";  // grey
+		}
+		return nc;
+	}
+
+	private void tags(StringBuilder gliederung, List<SeiteSO> seitenII, int i, SeiteSO seite) {
+		if (showTags(i, seitenII, lang)) {
+			seite.getSeite().getTags().stream().sorted().forEach(tag ->
+				gliederung.append(" <span class=\"label label-tag\"><i class=\"fa fa-tag\"></i> " + tag + "</span>"));
+		}
+	}
+
+	private void comments(StringBuilder gliederung, String hasComment, String hasCommentForMe, SeiteSO seite) {
+		int state = new SeiteCommentService2(seite).getCommentState(book.getWorkspace().getUser().getLogin());
+		if (state > 0) {
+		    gliederung.append(state == 2 ? hasCommentForMe : hasComment);
+		}
+	}
+
 	private boolean showTags(int x, List<SeiteSO> seiten, String lang) {
 		String xt = seiten.get(x).getSeite().getTitle().getString(lang);
 		for (int i = 0; i < seiten.size(); i++) {
@@ -121,6 +122,31 @@ public class Gliederung {
 			}
 		}
 		return false;
+	}
+
+	private void featuretree(StringBuilder gliederung, String branch, String bookFolder, SeiteSO seite) {
+		if (!seite.isFeatureTree()) {
+			return;
+		}
+		String p = "", info = null, b = null;
+		if (seite.hasFt_tag()) {
+			b = "f";
+			p = "/" + seite.getId();
+			info = "Features";
+		} else if ("Schnittstellen".equals(seite.getTitle())) {
+			b = "sch";
+			info = seite.getTitle();
+			bookFolder = "prozesse"; // TODO Mist
+		}
+		if (info != null) {
+			gliederung.append(" <a href=\"/" + b + "/" + branch + "/" + bookFolder + p
+					+ "\"><i class=\"fa fa-table greenbook ml05\" title=\"" + info + "\"></i></a>");
+		}
+
+		FeatureFields ff = new FeatureFieldsService().get(seite);
+		if (seite.getBook().getUserRealName().equals(ff.get("responsible"))) {
+			gliederung.append(" <i class=\"fa fa-user ml05 commentByMe\" title=\"" + n("iAmResponsible") + "\"></i>");
+		}
 	}
 
 	private String n(String key) {
