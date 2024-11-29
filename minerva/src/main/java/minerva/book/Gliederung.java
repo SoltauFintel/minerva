@@ -3,12 +3,11 @@ package minerva.book;
 import java.util.ArrayList;
 import java.util.List;
 
+import minerva.base.DeliverHtmlContent;
 import minerva.base.NLS;
 import minerva.comment.SeiteCommentService2;
 import minerva.exclusions.SeiteSichtbar;
 import minerva.exclusions.Visible;
-import minerva.mask.FeatureFields;
-import minerva.mask.FeatureFieldsService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -18,6 +17,8 @@ import ohhtml.base.Escaper;
  * Pages tree for book page
  */
 public class Gliederung {
+	public static DeliverHtmlContent<SeiteSO> append = seite -> "";
+	public static DeliverHtmlContent<SeiteSO> recursively = seite -> "true";
 	private final BookSO book;
 	private final String guiLang;
 	private final String lang;
@@ -55,13 +56,12 @@ public class Gliederung {
             entry(gliederung, branch, bookFolder, seite, visible);
             tags(gliederung, seiten2, i, seite);
             comments(gliederung, hasComment, hasCommentForMe, seite);
-            featuretree(gliederung, branch, bookFolder, seite);
+            gliederung.append(append.getHTML(seite));
             gliederung.append("</li>\n");
             
-            if (seite.isFeatureTree() && seite.checkSubfeaturesLimit()) {
-                continue;
-            }
-            fillSeiten(seite.getSeiten(), true, gliederung); // recursive
+			if ("true".equals(recursively.getHTML(seite))) {
+				fillSeiten(seite.getSeiten(), true, gliederung); // recursive
+			}
         }
         gliederung.append("</ul>\n");
     }
@@ -128,31 +128,6 @@ public class Gliederung {
 		int state = new SeiteCommentService2(seite).getCommentState(book.getWorkspace().getUser().getLogin());
 		if (state > 0) {
 		    gliederung.append(state == 2 ? hasCommentForMe : hasComment);
-		}
-	}
-
-	private void featuretree(StringBuilder gliederung, String branch, String bookFolder, SeiteSO seite) {
-		if (!seite.isFeatureTree()) {
-			return;
-		}
-		String p = "", info = null, b = null;
-		if (seite.hasFt_tag()) {
-			b = "f";
-			p = "/" + seite.getId();
-			info = "Features";
-		} else if ("Schnittstellen".equals(seite.getTitle())) {
-			b = "sch";
-			info = seite.getTitle();
-			bookFolder = "prozesse"; // TODO Mist
-		}
-		if (info != null) {
-			gliederung.append(" <a href=\"/" + b + "/" + branch + "/" + bookFolder + p
-					+ "\"><i class=\"fa fa-table greenbook ml05\" title=\"" + info + "\"></i></a>");
-		}
-
-		FeatureFields ff = new FeatureFieldsService().get(seite);
-		if (seite.getBook().getUserRealName().equals(ff.get("responsible"))) {
-			gliederung.append(" <i class=\"fa fa-user ml05 commentByMe\" title=\"" + n("iAmResponsible") + "\"></i>");
 		}
 	}
 
