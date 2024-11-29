@@ -91,14 +91,14 @@ public class Gliederung {
 				} else if ("Schnittstellen".equals(seite.getTitle())) {
 					b = "sch";
 					info = seite.getTitle();
+					bookFolder = "prozesse"; // TODO Mist
 				}
 				if (info != null) {
 					gliederung.append(" <a href=\"/" + b + "/" + branch + "/" + bookFolder + p
 							+ "\"><i class=\"fa fa-table greenbook ml05\" title=\"" + info + "\"></i></a>");
 				}
-            }
-            if (seite.isFeatureTree()) {
-            	FeatureFields ff = new FeatureFieldsService().get(seite);
+
+				FeatureFields ff = new FeatureFieldsService().get(seite);
             	if (seite.getBook().getUserRealName().equals(ff.get("responsible"))) {
             		gliederung.append(" <i class=\"fa fa-user ml05 commentByMe\" title=\"" + n("iAmResponsible") + "\"></i>");
             	}
