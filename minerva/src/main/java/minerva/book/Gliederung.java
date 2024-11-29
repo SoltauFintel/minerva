@@ -43,33 +43,17 @@ public class Gliederung {
         gliederung.append("<ul>\n");
         String hasComment    = " <i class=\"fa fa-comment-o has-comment\" title=\"" + n("hasComment") + "\"></i>";
         String hasCommentForMe = " <i class=\"fa fa-comment has-comment\" title=\"" + n("hasComment") + "\"></i>";
-        List<SeiteSO> seitenII = createSeitenCopy(seiten);
+        List<SeiteSO> seiten2 = createSeitenCopy(seiten);
 		SeiteSichtbar ssc = new SeiteSichtbar(book.getWorkspace(), lang);
 		ssc.setShowAllPages(allPages);
-		for (int i = 0; i < seitenII.size(); i++) {
-			SeiteSO seite = seitenII.get(i);
+		for (int i = 0; i < seiten2.size(); i++) {
+			SeiteSO seite = seiten2.get(i);
 			Visible visible = ssc.getVisibleResult(seite);
 			if (!visible.isVisible()) {
 			    continue;
 			}
-        	String trueTitle = seite.getSeite().getTitle().getString(lang);
-            String title = trueTitle;
-            if (title.isBlank()) {
-                title = "without title #" + seite.getId();
-            }
-            gliederung.append("\t<li id=\"");
-            gliederung.append(seite.getId());
-            gliederung.append("\"><a href=\"");
-			gliederung.append("/s/");
-			gliederung.append(branch);
-			gliederung.append("/");
-			gliederung.append(bookFolder);
-			gliederung.append("/");
-			gliederung.append(Escaper.esc(seite.getSeite().getId()));
-            gliederung.append("\"" + getNC(visible) + ">");
-            gliederung.append(Escaper.esc(title));
-            gliederung.append("</a>");
-            tags(gliederung, seitenII, i, seite);
+            entry(gliederung, branch, bookFolder, seite, visible);
+            tags(gliederung, seiten2, i, seite);
             comments(gliederung, hasComment, hasCommentForMe, seite);
             featuretree(gliederung, branch, bookFolder, seite);
             gliederung.append("</li>\n");
@@ -83,11 +67,26 @@ public class Gliederung {
     }
 
 	private List<SeiteSO> createSeitenCopy(SeitenSO seiten) {
-		List<SeiteSO> seitenII = new ArrayList<>(); // needed for indexed iteration
+		List<SeiteSO> copy = new ArrayList<>(); // needed for indexed iteration
 		for (SeiteSO seite : seiten) {
-			seitenII.add(seite);
+			copy.add(seite);
 		}
-		return seitenII;
+		return copy;
+	}
+
+	private void entry(StringBuilder gliederung, String branch, String bookFolder, SeiteSO seite, Visible visible) {
+        gliederung.append("\t<li id=\"");
+		gliederung.append(seite.getId());
+		gliederung.append("\"><a href=\"");
+		gliederung.append("/s/");
+		gliederung.append(branch);
+		gliederung.append("/");
+		gliederung.append(bookFolder);
+		gliederung.append("/");
+		gliederung.append(Escaper.esc(seite.getSeite().getId()));
+		gliederung.append("\"" + getNC(visible) + ">");
+		gliederung.append(Escaper.esc(getTitle(seite)));
+		gliederung.append("</a>");
 	}
 
 	private String getNC(Visible visible) {
@@ -100,17 +99,18 @@ public class Gliederung {
 		return nc;
 	}
 
+	private String getTitle(SeiteSO seite) {
+		String title = seite.getSeite().getTitle().getString(lang);
+		if (title.isBlank()) {
+		    title = "without title #" + seite.getId();
+		}
+		return title;
+	}
+
 	private void tags(StringBuilder gliederung, List<SeiteSO> seitenII, int i, SeiteSO seite) {
 		if (showTags(i, seitenII, lang)) {
 			seite.getSeite().getTags().stream().sorted().forEach(tag ->
 				gliederung.append(" <span class=\"label label-tag\"><i class=\"fa fa-tag\"></i> " + tag + "</span>"));
-		}
-	}
-
-	private void comments(StringBuilder gliederung, String hasComment, String hasCommentForMe, SeiteSO seite) {
-		int state = new SeiteCommentService2(seite).getCommentState(book.getWorkspace().getUser().getLogin());
-		if (state > 0) {
-		    gliederung.append(state == 2 ? hasCommentForMe : hasComment);
 		}
 	}
 
@@ -122,6 +122,13 @@ public class Gliederung {
 			}
 		}
 		return false;
+	}
+
+	private void comments(StringBuilder gliederung, String hasComment, String hasCommentForMe, SeiteSO seite) {
+		int state = new SeiteCommentService2(seite).getCommentState(book.getWorkspace().getUser().getLogin());
+		if (state > 0) {
+		    gliederung.append(state == 2 ? hasCommentForMe : hasComment);
+		}
 	}
 
 	private void featuretree(StringBuilder gliederung, String branch, String bookFolder, SeiteSO seite) {
