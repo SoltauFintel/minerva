@@ -854,3 +854,19 @@ table.relationstable ul {
 .sortarrow {
 	color: #bbb;
 }
+
+.cnvbox {
+    font-size: 12pt;
+    border: 1pt #ccc solid;
+    border-radius: 10px;
+    background-color: #eee;
+    padding: 1em;
+}
+
+a.cnvlink:hover {
+    background-color: yellow;
+}
+
+tr.cnticket td {
+   vertical-align: top;
+}
