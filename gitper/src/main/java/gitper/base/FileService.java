@@ -11,7 +11,9 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -19,6 +21,9 @@ import org.apache.commons.io.FileUtils;
 import org.pmw.tinylog.Logger;
 
 import com.google.gson.Gson;
+
+import gitper.Workspace;
+import gitper.access.CommitMessage;
 
 public class FileService {
 
@@ -201,4 +206,34 @@ public class FileService {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Call only in Gitlab mode!
+     * @param files to be backuped
+     * @param backupDir target directory in workspace
+     * @param workspace -
+     * @return message
+     */
+    public static String backup(List<File> files, File backupDir, Workspace workspace) {
+		Map<String, String> map = new HashMap<>();
+		for (File file : files) {
+			if (file.isFile()) {
+				String content = loadPlainTextFile(file);
+				File target = new File(backupDir, file.getName());
+				if (!target.isFile() || !content.equals(loadPlainTextFile(target))) {
+					map.put(target.getAbsolutePath(), content);
+					Logger.debug("File backup: " + file.getAbsolutePath() + " -> " + target.getAbsolutePath());
+				} else {
+					Logger.debug("Target file is already uptodate: " + target.getAbsolutePath());
+				}
+			} else {
+				Logger.debug("File not found: " + file.getAbsolutePath());
+			}
+		}
+		if (map.isEmpty()) {
+			return "files not found or not changed -> no backup!";
+		}
+		workspace.dao().saveFiles(map, new CommitMessage("backup"), workspace);
+		return "backup made for " + map.size() + " file" + (map.size() == 1 ? "" : "s");
+	}
 }
