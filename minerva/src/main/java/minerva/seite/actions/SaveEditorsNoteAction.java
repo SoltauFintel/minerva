@@ -9,12 +9,12 @@ public class SaveEditorsNoteAction extends SAction {
 
     @Override
     protected void execute() {
-        String text = ctx.formParam("editorsnote").trim();
+        String text = ctx.formParam(EditorsNoteModal.ID).trim();
         
         Logger.info(seite.getLogLine(null) + " | Editor's note: \"" + text + "\"");
         
         seite.getSeite().setEditorsNote(text);
-        seite.saveMeta(new CommitMessage("Editor's note"));
+        seite.saveMeta(new CommitMessage(seite.getTitle() + ": Editor's note"));
         
         ctx.redirect(viewlink);
     }

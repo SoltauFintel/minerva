@@ -25,6 +25,7 @@ import minerva.mask.MaskAndDataFields;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
+import minerva.seite.actions.EditorsNoteModal;
 import minerva.user.User;
 import minerva.user.UserAccess;
 import ohhtml.Thumbnails;
@@ -130,7 +131,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         	put("featureFields", FeatureFieldsHtmlFactory.FACTORY.build(seite, false).html() + "</fieldset></form>" +
         			featureStatusButtons.getHTML(seite) + "<hr/>");
         }
-        put("editorsNote", esc(_seite.getEditorsNote()));
+        put("EditorsNoteModal", new EditorsNoteModal(seite)); // component
         put("editorsNoteBR", esc(_seite.getEditorsNote()).replace("\n", "<br/>"));
         put("hasEditorsNote", !StringService.isNullOrEmpty(_seite.getEditorsNote()));
         String watchers = new WatchersService(seite).getWatchers();

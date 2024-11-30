@@ -1,0 +1,31 @@
+<div class="modal fade" id="{{modalID}}" tabindex="-1" role="dialog" aria-labelledby="{{modalID}}Label" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="form" class="form-horizontal" action="{{action}}" method="POST">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+						aria-hidden="true">&times;</span><span class="sr-only">{{N.close}}</span></button>
+                    <h4 class="modal-title">{{title}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <textarea class="form-control" rows="{{rows}}" id="{{fieldID}}" name="{{fieldID}}">{{note}}</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary br" onclick=" document.querySelector('#{{saveID}}').style='';">{{N.save}}
+                    <i id="{{saveID}}" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{N.cancel}}</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+	$('#{{modalID}}').on('shown.bs.modal', function() {
+	    $('#{{fieldID}}').focus();
+	})
+</script>

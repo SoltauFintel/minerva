@@ -4,6 +4,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.model.BookSO;
+import minerva.seite.actions.EditorsNoteModal;
 
 public class PageMenuItem {
 	private final boolean visible;
@@ -52,7 +53,7 @@ public class PageMenuItem {
         if (theLink.startsWith(" ")) { // modal
             map.put("link", "#");
             map.put("attrs", theLink);
-            if (theLink.contains("editorsnote")) {
+            if (theLink.contains(EditorsNoteModal.class.getSimpleName())) {
             	map.put("liArgs", " style=\"background-color: #ff9;\"");
             }
         } else if (theLink.contains("/delete")) {
