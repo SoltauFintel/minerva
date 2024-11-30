@@ -18,22 +18,25 @@
                 <th>{{N.title}}</th>
                 <th>{{N.ordner}}</th>
                 <th>{{N.bookType}}</th>
+				<th></th>
             </tr>
             {{each b in books}}
                 <tr>
                     <td>
                         {{b.title}}
+                    </td>
+                    <td>{{b.folder}}</td>
+                    <td>{{b.type}}</td>
+					<td style="text-align: right;">
                         <a href="/b/{{branch}}/{{b.folder}}/edit" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i> {{N.edit}}</a>
                         <a href="/b/{{branch}}/{{b.folder}}" class="btn btn-xs btn-default"><i class="fa fa-book greenbook"></i> {{N.showBook}}</a>
-                        <a href="/b/{{branch}}/{{b.folder}}/cal" class="btn btn-xs btn-default" title="{{N.checkAllLinks}}"><i
-                            class="fa fa-chain-broken"></i></a>
+                        <a href="/b/{{branch}}/{{b.folder}}/cal" class="btn btn-xs btn-default"><i
+                            class="fa fa-chain-broken"></i> {{N.checkAllLinks}}</a>
                         {{if not isCustomerVersion}}
                             <a href="/b/{{branch}}/{{b.folder}}/delete" class="btn btn-xs btn-danger" title="{{N.delete}}"><i
                                 class="fa fa-trash-o"></i></a>
                         {{/if}}
-                    </td>
-                    <td>{{b.folder}}</td>
-                    <td>{{b.type}}</td>
+					</td>
                 </tr>
             {{/each}}
         </table>
