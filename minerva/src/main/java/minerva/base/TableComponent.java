@@ -2,31 +2,38 @@ package minerva.base;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.stream.Stream;
+
+import com.github.template72.compiler.CompiledTemplate;
+import com.github.template72.compiler.TemplateCompiler;
+import com.github.template72.compiler.TemplateCompilerBuilder;
+import com.github.template72.data.DataMap;
+import com.github.template72.data.IDataMap;
 
 import gitper.base.StringService;
 import minerva.user.UAction;
 
 public class TableComponent extends UAction {
+	private final TemplateCompiler compiler = new TemplateCompilerBuilder().build();
 	private final String tableCSS;
-	private final Map<String, String> global;
 	private final List<Col> cols;
-	private final List<Map<String, String>> list;
+	private final DataMap model;
+	private final String listName;
 	private final String sortlink;
 	private final String sid;
+	private String runVarName = "i";
 	private int sortedColumn = -1;
 	private boolean asc = false;
 	private String html;
-	
-	public TableComponent(String tableCSS, Map<String, String> global, List<Col> cols, List<Map<String, String>> list) {
+
+	public TableComponent(String tableCSS, List<Col> cols, DataMap model, String listName) {
 		this.tableCSS = tableCSS;
-		this.global = global;
 		this.cols = cols;
-		this.list = list;
+		this.model = model;
+		this.listName = listName;
 		sortlink = TableSortAction.register(this);
 		sid = sortlink.replace("/", "");
+		cols.forEach(col -> col.template = compiler.compile(col.getRowHTML()));
 	}
 
 	@Override
@@ -50,7 +57,8 @@ public class TableComponent extends UAction {
 				headers.append("\n<th><a href=\"#\" class=\"sortlink " + col.getHeaderCSS() + "\" hx-get=\"" + sortlink
 						+ i + "\" hx-target=\"." + sid + "\" hx-swap=\"outerHTML\">");
 			}
-			headers.append(replaceVars(col.getHeaderHTML(), global));
+			String content = compiler.compile(col.getHeaderHTML()).render(model);
+			headers.append(content);
 			String sortIcon = "";
 			if (!ColSort.NONE.equals(col.getSort()) && i == sortedColumn) {
 				sortIcon = asc ? "fa-arrow-down" : "fa-arrow-up";
@@ -65,29 +73,22 @@ public class TableComponent extends UAction {
 	}
 
 	private void makeRows(StringBuilder rows) {
-		Comparator<Map<String, String>> comparator = comparator();
-		Stream<Map<String, String>> stream = list.stream();
+		Comparator<IDataMap> comparator = comparator();
+		Stream<IDataMap> stream = model.getList(listName).stream();
 		if (comparator != null) {
 			stream = stream.sorted(comparator);
 		}
 		stream.forEach(map -> {
 			rows.append("\n\t<tr>");
+			model.put(runVarName, map);
 			cols.forEach(col -> {
-				String content = replaceVars(col.getRowHTML(), global);
-				content = replaceVars(content, map);
+				String content = col.template.render(model);
 				rows.append("\n\t\t<td class=\"" + col.getRowCSS() + "\">" + content + "</td>");
 			});
 			rows.append("\n\t</tr>");
 		});
 	}
 
-	private String replaceVars(String content, Map<String, String> vars) {
-		for (Entry<String, String> e : vars.entrySet()) {
-			content = content.replace("{{" + e.getKey() + "}}", e.getValue());
-		}
-		return content;
-	}
-	
 	@Override
 	protected String render() {
 		String ret = html;
@@ -103,6 +104,7 @@ public class TableComponent extends UAction {
 		private final String headerHTML;
 		private final String rowCSS;
 		private final String rowHTML;
+		CompiledTemplate template;
 		
 		public Col(String headerCSS, String headerHTML, String rowCSS, String rowHTML) {
 			this(null, ColSort.NONE, headerCSS, headerHTML, rowCSS, rowHTML);
@@ -199,7 +201,7 @@ public class TableComponent extends UAction {
 		return this;
 	}
 	
-	private Comparator<Map<String, String>> comparator() {
+	private Comparator<IDataMap> comparator() {
 		if (sortedColumn < 0) {
 			return null;
 		}
@@ -213,11 +215,23 @@ public class TableComponent extends UAction {
 	}
 	
 	private void makeSortValues(Col col, String sortkey) {
-		list.forEach(map -> map.put(sortkey,
-				StringService.umlaute(replaceVars(replaceVars(col.getRowHTML(), global), map))));
+		model.getList(listName).forEach(map -> { 
+			model.put(runVarName, map);
+			String content = col.template.render(model);
+			model.put(sortkey, StringService.umlaute(content));
+		});
 	}
 
-	protected Comparator<Map<String, String>> getComparator(String sortkey, boolean asc) {
-		return (a, b) -> (asc ? 1 : -1) * a.get(sortkey).compareToIgnoreCase(b.get(sortkey));
+	protected Comparator<IDataMap> getComparator(String sortkey, boolean asc) {
+		return (a, b) -> (asc ? 1 : -1) * a.get(sortkey).toString().compareToIgnoreCase(b.get(sortkey).toString());
+	}
+
+	public String getRunVarName() {
+		return runVarName;
+	}
+
+	public TableComponent setRunVarName(String runVarName) {
+		this.runVarName = runVarName;
+		return this;
 	}
 }
