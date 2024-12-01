@@ -26,6 +26,10 @@ public class TableComponent extends UAction {
 	private boolean asc = false;
 	private String html;
 
+	public TableComponent(List<Col> cols, DataMap model, String listName) {
+		this("", cols, model, listName);
+	}
+
 	public TableComponent(String tableCSS, List<Col> cols, DataMap model, String listName) {
 		this.tableCSS = tableCSS;
 		this.cols = cols;
