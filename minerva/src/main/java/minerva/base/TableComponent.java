@@ -4,6 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Stream;
 
 import gitper.base.StringService;
 import minerva.user.UAction;
@@ -13,77 +14,85 @@ public class TableComponent extends UAction {
 	private final Map<String, String> global;
 	private final List<Col> cols;
 	private final List<Map<String, String>> list;
-	private String html;
+	private final String sortlink;
+	private final String sid;
 	private int sortedColumn = -1;
 	private boolean asc = false;
+	private String html;
 	
 	public TableComponent(String tableCSS, Map<String, String> global, List<Col> cols, List<Map<String, String>> list) {
 		this.tableCSS = tableCSS;
 		this.global = global;
 		this.cols = cols;
 		this.list = list;
+		sortlink = TableSortAction.register(this);
+		sid = sortlink.replace("/", "");
 	}
 
 	@Override
 	protected void execute() {
-		if (sortedColumn >= 0) {
-			Col col = cols.get(sortedColumn);
-			String sortkey = col.getSortkey();
-			if (StringService.isNullOrEmpty(sortkey)) {
-				sortkey = "__sort";
-				for (Map<String, String> map : list) {
-					map.put(sortkey, StringService.umlaute(ins(ins(col.getRowHTML(), global), map)));
-				}
-			}
-			list.sort(getComparator(sortkey, asc));
-		}
-		
-		String headers = "", rows = "";
-		String sortlink = TableSortAction.register(this);
-		String sid = sortlink.replace("/", "");
+		StringBuilder sb = new StringBuilder();
+		sb.append("<table class=\"table table-striped table-hover mt2 " + tableCSS + " " + sid + "\">\n<tr>");
+		sb.append(makeHeader());
+		sb.append("\n</tr>");
+		makeRows(sb);
+		sb.append("\n</table>\n");
+		html = sb.toString();
+	}
+
+	private StringBuilder makeHeader() {
+		StringBuilder headers = new StringBuilder();
 		for (int i = 0; i < cols.size(); i++) {
 			Col col = cols.get(i);
 			if (ColSort.NONE.equals(col.getSort())) {
-				headers += "\n<th class=\"" + col.getHeaderCSS() + "\">";
+				headers.append("\n<th class=\"" + col.getHeaderCSS() + "\">");
 			} else {
-				headers += "\n<th><a href=\"#\" class=\"sortlink " + col.getHeaderCSS() + "\" hx-get=\"" + sortlink + i
-						+ "\" hx-target=\"." + sid + "\" hx-swap=\"outerHTML\">";
+				headers.append("\n<th><a href=\"#\" class=\"sortlink " + col.getHeaderCSS() + "\" hx-get=\"" + sortlink
+						+ i + "\" hx-target=\"." + sid + "\" hx-swap=\"outerHTML\">");
 			}
-			headers += ins(col.getHeaderHTML(), global);
-			String sort = "";
+			headers.append(replaceVars(col.getHeaderHTML(), global));
+			String sortIcon = "";
 			if (!ColSort.NONE.equals(col.getSort()) && i == sortedColumn) {
-				sort = asc ? "fa-arrow-down" : "fa-arrow-up";
+				sortIcon = asc ? "fa-arrow-down" : "fa-arrow-up";
 			}
-			headers += "<i class=\"fa fa-fw " + sort + " sortarrow\"></i>";
+			headers.append("<i class=\"fa fa-fw " + sortIcon + " sortarrow\"></i>");
 			if (!ColSort.NONE.equals(col.getSort())) {
-				headers += "</a>";
+				headers.append("</a>");
 			}
-			headers += "</th>";
+			headers.append("</th>");
 		}
-		for (Map<String, String> map : list) {
-			rows += "\n<tr>";
-			for (Col col : cols) {
-				String c = ins(ins(col.getRowHTML(), global), map);
-				rows += "\n<td class=\"" + col.getRowCSS() + "\">" + c + "</td>";
-			}
-			rows += "\n</tr>";
-		}
-		html = "<table class=\"table table-striped table-hover mt2 " + tableCSS + " " + sid + "\">\n"
-				+ "<tr>" + headers + "\n</tr>"
-				+ rows
-				+ "\n</table>\n";
+		return headers;
 	}
 
-	private String ins(String c, Map<String, String> map) {
-		for (Entry<String, String> e : map.entrySet()) {
-			c = c.replace("{{" + e.getKey() + "}}", e.getValue());
+	private void makeRows(StringBuilder rows) {
+		Comparator<Map<String, String>> comparator = comparator();
+		Stream<Map<String, String>> stream = list.stream();
+		if (comparator != null) {
+			stream = stream.sorted(comparator);
 		}
-		return c;
+		stream.forEach(map -> {
+			rows.append("\n\t<tr>");
+			cols.forEach(col -> {
+				String content = replaceVars(col.getRowHTML(), global);
+				content = replaceVars(content, map);
+				rows.append("\n\t\t<td class=\"" + col.getRowCSS() + "\">" + content + "</td>");
+			});
+			rows.append("\n\t</tr>");
+		});
+	}
+
+	private String replaceVars(String content, Map<String, String> vars) {
+		for (Entry<String, String> e : vars.entrySet()) {
+			content = content.replace("{{" + e.getKey() + "}}", e.getValue());
+		}
+		return content;
 	}
 	
 	@Override
 	protected String render() {
-		return html;
+		String ret = html;
+		html = null;
+		return ret;
 	}
 	
 	public static class Col {
@@ -190,6 +199,24 @@ public class TableComponent extends UAction {
 		return this;
 	}
 	
+	private Comparator<Map<String, String>> comparator() {
+		if (sortedColumn < 0) {
+			return null;
+		}
+		Col col = cols.get(sortedColumn);
+		String sortkey = col.getSortkey();
+		if (StringService.isNullOrEmpty(sortkey)) {
+			sortkey = "__sort";
+			makeSortValues(col, sortkey);
+		}
+		return getComparator(sortkey, asc);
+	}
+	
+	private void makeSortValues(Col col, String sortkey) {
+		list.forEach(map -> map.put(sortkey,
+				StringService.umlaute(replaceVars(replaceVars(col.getRowHTML(), global), map))));
+	}
+
 	protected Comparator<Map<String, String>> getComparator(String sortkey, boolean asc) {
 		return (a, b) -> (asc ? 1 : -1) * a.get(sortkey).compareToIgnoreCase(b.get(sortkey));
 	}
