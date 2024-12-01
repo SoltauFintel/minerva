@@ -870,3 +870,7 @@ a.cnvlink:hover {
 tr.cnticket td {
    vertical-align: top;
 }
+
+.wauto {
+	width: auto;
+}

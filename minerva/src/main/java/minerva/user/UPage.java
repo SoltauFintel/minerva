@@ -75,4 +75,10 @@ public abstract class UPage extends Page {
     	String html = component.run();
 		put(varname, html); // no esc
     }
+
+    protected final void put(String varname, UAction component) {
+    	component.init(ctx);
+    	String html = component.run();
+		put(varname, html); // no esc
+    }
 }

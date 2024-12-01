@@ -36,6 +36,7 @@ import minerva.base.MinervaError404Page;
 import minerva.base.MinervaErrorPage;
 import minerva.base.MinervaPageInitializer;
 import minerva.base.ServerlogPage;
+import minerva.base.TableSortAction;
 import minerva.base.Timer;
 import minerva.base.Tosmap;
 import minerva.book.AddBookPage;
@@ -354,6 +355,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/rest/ping", PingAction.class);
         Spark.get("/rest/cleanup-journals", (req, res) -> JournalSO.cleanupAllJournals());
         form("/config", EditConfigPage.class);
+        get("/tablesort/:id/:col", TableSortAction.class);
     }
 
     private void restApi() {
