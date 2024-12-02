@@ -874,3 +874,7 @@ tr.cnticket td {
 .wauto {
 	width: auto;
 }
+
+.tar {
+	text-align: right;
+}

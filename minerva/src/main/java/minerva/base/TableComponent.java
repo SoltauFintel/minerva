@@ -56,9 +56,10 @@ public class TableComponent extends UAction {
 		for (int i = 0; i < cols.size(); i++) {
 			Col col = cols.get(i);
 			if (ColSort.NONE.equals(col.getSort())) {
-				headers.append("\n<th class=\"" + col.getHeaderCSS() + "\">");
+				headers.append("\n<th class=\"" + col.getHeaderCSS() + (ColAlign.RIGHT.equals(col.getAlign()) ? " tar" : "") + "\">");
 			} else {
-				headers.append("\n<th><a href=\"#\" class=\"sortlink " + col.getHeaderCSS() + "\" hx-get=\"" + sortlink
+				headers.append("\n<th" + (ColAlign.RIGHT.equals(col.getAlign()) ? " class=\"tar\"" : "")
+						+ "><a href=\"#\" class=\"sortlink " + col.getHeaderCSS() + "\" hx-get=\"" + sortlink
 						+ i + "\" hx-target=\"." + sid + "\" hx-swap=\"outerHTML\">");
 			}
 			String content = compiler.compile(col.getHeaderHTML()).render(model);
@@ -67,7 +68,8 @@ public class TableComponent extends UAction {
 			if (!ColSort.NONE.equals(col.getSort()) && i == sortedColumn) {
 				sortIcon = asc ? "fa-arrow-down" : "fa-arrow-up";
 			}
-			headers.append("<i class=\"fa fa-fw " + sortIcon + " sortarrow\"></i>");
+			headers.append("<i class=\"fa " + (ColAlign.RIGHT.equals(col.getAlign()) ? "" : "fa-fw ") + sortIcon
+					+ " sortarrow\"></i>");
 			if (!ColSort.NONE.equals(col.getSort())) {
 				headers.append("</a>");
 			}
@@ -87,7 +89,8 @@ public class TableComponent extends UAction {
 			model.put(runVarName, map);
 			cols.forEach(col -> {
 				String content = col.template.render(model);
-				rows.append("\n\t\t<td class=\"" + col.getRowCSS() + "\">" + content + "</td>");
+				rows.append("\n\t\t<td class=\"" + col.getRowCSS() + col.getHeaderCSS()
+						+ (ColAlign.RIGHT.equals(col.getAlign()) ? " tar" : "") + "\">" + content + "</td>");
 			});
 			rows.append("\n\t</tr>");
 		});
@@ -108,39 +111,45 @@ public class TableComponent extends UAction {
 		private final String headerHTML;
 		private final String rowCSS;
 		private final String rowHTML;
+		private final ColAlign align;
 		CompiledTemplate template;
 		
 		public Col(String headerCSS, String headerHTML, String rowCSS, String rowHTML) {
-			this(null, ColSort.NONE, headerCSS, headerHTML, rowCSS, rowHTML);
+			this(null, ColSort.NONE, headerCSS, headerHTML, rowCSS, rowHTML, ColAlign.LEFT);
 		}
 		
-		private Col(String sortkey, ColSort sort, String headerCSS, String headerHTML, String rowCSS, String rowHTML) {
+		private Col(String sortkey, ColSort sort, String headerCSS, String headerHTML, String rowCSS, String rowHTML, ColAlign align) {
 			this.sortkey = sortkey;
 			this.sort = sort;
 			this.headerCSS = headerCSS;
 			this.headerHTML = headerHTML;
 			this.rowCSS = rowCSS;
 			this.rowHTML = rowHTML;
+			this.align = align;
 		}
 
 		public Col(String headerHTML, String rowHTML) {
-			this(null, ColSort.NONE, "", headerHTML, "", rowHTML);
+			this(null, ColSort.NONE, "", headerHTML, "", rowHTML, ColAlign.LEFT);
 		}
 
 		public Col(String headerHTML, String rowCSS, String rowHTML) {
-			this(null, ColSort.NONE, "", headerHTML, rowCSS, rowHTML);
+			this(null, ColSort.NONE, "", headerHTML, rowCSS, rowHTML, ColAlign.LEFT);
 		}
 
 		public Col sortable(String sortkey) {
-			return new Col(sortkey, ColSort.ASC_DESC, headerCSS, headerHTML, rowCSS, rowHTML);
+			return new Col(sortkey, ColSort.ASC_DESC, headerCSS, headerHTML, rowCSS, rowHTML, align);
 		}
 
 		public Col asc(String sortkey) {
-			return new Col(sortkey, ColSort.ASC, headerCSS, headerHTML, rowCSS, rowHTML);
+			return new Col(sortkey, ColSort.ASC, headerCSS, headerHTML, rowCSS, rowHTML, align);
 		}
 
 		public Col desc(String sortkey) {
-			return new Col(sortkey, ColSort.DESC, headerCSS, headerHTML, rowCSS, rowHTML);
+			return new Col(sortkey, ColSort.DESC, headerCSS, headerHTML, rowCSS, rowHTML, align);
+		}
+
+		public Col right() {
+			return new Col(sortkey, sort, headerCSS, headerHTML, rowCSS, rowHTML, ColAlign.RIGHT);
 		}
 
 		public String getSortkey() {
@@ -166,6 +175,16 @@ public class TableComponent extends UAction {
 		public String getRowHTML() {
 			return rowHTML;
 		}
+
+		public ColAlign getAlign() {
+			return align;
+		}
+	}
+	
+	public enum ColAlign {
+		LEFT, // default
+		// CENTER,
+		RIGHT;
 	}
 	
 	/**
