@@ -32,7 +32,7 @@ dependencies {
     implementation 'com.openhtmltopdf:openhtmltopdf-mathml-support:1.0.10'
     implementation 'com.openhtmltopdf:openhtmltopdf-slf4j:1.0.10'
     api            'com.github.gastendonk:jiracloudrestapi:1.15.0'
-    implementation files('lib/oh-html.jar')  // https://github.com/SoltauFintel/oh-html
+    api            files('lib/oh-html.jar')  // https://github.com/SoltauFintel/oh-html
     
     testImplementation 'junit:junit:4.13.2'
 }
