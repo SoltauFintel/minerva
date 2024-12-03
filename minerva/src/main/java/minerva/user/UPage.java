@@ -69,16 +69,4 @@ public abstract class UPage extends Page {
     protected final void showErrorPage(String msg, String continueLink) {
     	CustomErrorPage.showErrorPage(msg, continueLink, ctx);
     }
-    
-    protected final void put(String varname, UPage component) {
-    	component.init(ctx);
-    	String html = component.run();
-		put(varname, html); // no esc
-    }
-
-    protected final void put(String varname, UAction component) {
-    	component.init(ctx);
-    	String html = component.run();
-		put(varname, html); // no esc
-    }
 }

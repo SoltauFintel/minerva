@@ -6,9 +6,9 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.image.Dropzone;
+import github.soltaufintel.amalia.web.table.TableComponent;
+import github.soltaufintel.amalia.web.table.TableComponent.Col;
 import minerva.MinervaWebapp;
-import minerva.base.TableComponent;
-import minerva.base.TableComponent.Col;
 import minerva.model.AttachmentsSO;
 import minerva.seite.SPage;
 import ohhtml.downloads.Attachment;
