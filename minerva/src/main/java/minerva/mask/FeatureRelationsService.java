@@ -82,7 +82,7 @@ public class FeatureRelationsService {
             SeiteSO seite = book.getWorkspace().findPage(id);
             link = seite == null ? "" : "/s/{branch}/" + seite.getBook().getBook().getFolder() + "/" + id;
             title = seite == null ? id : seite.getTitle();
-            icon = seite.isFeatureTree() ? "fa-sitemap fa-sitemap-color" : "fa-file-text greenbook";
+            icon = seite != null && seite.isFeatureTree() ? "fa-sitemap fa-sitemap-color" : "fa-file-text greenbook";
             this.deleteRoutine = deleteRoutine;
         }
 
