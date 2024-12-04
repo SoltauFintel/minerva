@@ -80,9 +80,15 @@ public class FeatureRelationsService {
         private PageRelation(String id, BookSO book, DeleteRoutine deleteRoutine) {
             this.id = id;
             SeiteSO seite = book.getWorkspace().findPage(id);
-            link = seite == null ? "" : "/s/{branch}/" + seite.getBook().getBook().getFolder() + "/" + id;
-            title = seite == null ? id : seite.getTitle();
-            icon = seite != null && seite.isFeatureTree() ? "fa-sitemap fa-sitemap-color" : "fa-file-text greenbook";
+            if (seite == null) { // Target page has been deleted.
+            	link = "";
+	            title = id;
+	            icon = "fa-chain-broken error";
+            } else {
+            	link = "/s/{branch}/" + seite.getBook().getBook().getFolder() + "/" + id;
+	            title = seite.getTitle();
+	            icon = seite.isFeatureTree() ? "fa-sitemap fa-sitemap-color" : "fa-file-text greenbook";
+            }
             this.deleteRoutine = deleteRoutine;
         }
 
