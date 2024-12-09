@@ -201,4 +201,13 @@ public class WorkspaceSO implements Workspace {
     public PapierkorbSO getPapierkorb() {
         return new PapierkorbSO(this);
     }
+    
+	public BookSO getFeatureTreeBook() {
+		for (BookSO book : getBooks()) {
+			if (book.isFeatureTree()) {
+				return book;
+			}
+		}
+		return null;
+    }
 }
