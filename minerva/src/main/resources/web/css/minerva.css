@@ -879,8 +879,3 @@ tr.cnticket td {
 	text-align: right;
 }
 
-.image-wrap {
-	display: block;
-	overflow: auto;
-	max-width: 75%;
-}
