@@ -875,6 +875,10 @@ tr.cnticket td {
 	width: auto;
 }
 
+.tac {
+	text-align: center;
+}
+
 .tar {
 	text-align: right;
 }
