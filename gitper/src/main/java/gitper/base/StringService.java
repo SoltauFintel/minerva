@@ -23,7 +23,12 @@ public class StringService {
     public static boolean isNullOrEmpty(String string) {
         return string == null || string.isBlank();
     }
-    
+
+    /**
+     * @deprecated use FileService.prettyJSON
+     * @param json -
+     * @return -
+     */
     public static String prettyJSON(String json) {
         try {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -35,6 +40,12 @@ public class StringService {
         }
     }
 
+    /**
+     * @deprecated use FileService.prettyJSON
+     * @param <T> -
+     * @param data -
+     * @return -
+     */
     public static <T> String prettyJSON(T data) {
         return prettyJSON(new Gson().toJson(data));
     }

@@ -21,6 +21,10 @@ import org.apache.commons.io.FileUtils;
 import org.pmw.tinylog.Logger;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 
 import gitper.Workspace;
 import gitper.access.CommitMessage;
@@ -75,7 +79,7 @@ public class FileService {
     }
 
     public static <T> void saveJsonFile(File file, T data) {
-        savePlainTextFile(file, data == null ? null : StringService.prettyJSON(data));
+        savePlainTextFile(file, data == null ? null : prettyJSON(data));
     }
     
     public static boolean isLegalFilename(String filename) {
@@ -236,4 +240,19 @@ public class FileService {
 		workspace.dao().saveFiles(map, new CommitMessage("backup"), workspace);
 		return "backup made for " + map.size() + " file" + (map.size() == 1 ? "" : "s");
 	}
+
+    public static String prettyJSON(String json) {
+        try {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            JsonElement je = JsonParser.parseString(json);
+            return gson.toJson(je);
+        } catch (JsonSyntaxException e) {
+            Logger.error(e);
+            return json;
+        }
+    }
+
+    public static <T> String prettyJSON(T data) {
+        return prettyJSON(new Gson().toJson(data));
+    }
 }
