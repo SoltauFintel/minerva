@@ -7,14 +7,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import org.pmw.tinylog.Logger;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-
 public class StringService {
 
     private StringService() {
@@ -24,32 +16,6 @@ public class StringService {
         return string == null || string.isBlank();
     }
 
-    /**
-     * @deprecated use FileService.prettyJSON
-     * @param json -
-     * @return -
-     */
-    public static String prettyJSON(String json) {
-        try {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            JsonElement je = JsonParser.parseString(json);
-            return gson.toJson(je);
-        } catch (JsonSyntaxException e) {
-            Logger.error(e);
-            return json;
-        }
-    }
-
-    /**
-     * @deprecated use FileService.prettyJSON
-     * @param <T> -
-     * @param data -
-     * @return -
-     */
-    public static <T> String prettyJSON(T data) {
-        return prettyJSON(new Gson().toJson(data));
-    }
-    
     public static String umlaute(String text) {
         if (text == null) {
             return "";

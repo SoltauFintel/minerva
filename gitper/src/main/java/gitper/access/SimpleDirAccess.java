@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import gitper.Workspace;
-import gitper.base.StringService;
+import gitper.base.FileService;
 
 public class SimpleDirAccess {
     private final DirAccess dao;
@@ -25,7 +25,7 @@ public class SimpleDirAccess {
 
     public <T> void save(String id, T data, Set<String> images, CommitMessage commitMessage, String dir) {
         Map<String, String> files = new HashMap<>();
-        files.put(dir + "/" + id + ".json", StringService.prettyJSON(data));
+        files.put(dir + "/" + id + ".json", FileService.prettyJSON(data));
         images.forEach(dn -> files.put(dir + "/" + dn, DirAccess.IMAGE));
         dao.saveFiles(files, commitMessage, workspace);
     }

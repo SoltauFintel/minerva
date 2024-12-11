@@ -13,6 +13,7 @@ import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
 import gitper.access.SimpleDirAccess;
+import gitper.base.FileService;
 import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.base.NLS;
@@ -91,7 +92,7 @@ public abstract class CommonCommentService extends CommentService {
     }
     
     private void saveComment(Comment comment, Map<String, String> files) {
-    	files.put(dir + "/" + comment.getId() + ".json", StringService.prettyJSON(comment));
+    	files.put(dir + "/" + comment.getId() + ".json", FileService.prettyJSON(comment));
     }
     
     protected abstract CommitMessage getSaveCommitMessage(String commitMessage);

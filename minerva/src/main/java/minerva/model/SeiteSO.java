@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
+import gitper.base.FileService;
 import gitper.base.StringService;
 import gitper.movefile.ChangeFile;
 import gitper.movefile.IMoveFile;
@@ -402,7 +403,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     private void changePageTo(int newPosition, List<IMoveFile> files) {
         seite.setParentId(ROOT_ID);
         seite.setPosition(newPosition);
-        files.add(new ChangeFile(filenameMeta(), StringService.prettyJSON(seite)));
+        files.add(new ChangeFile(filenameMeta(), FileService.prettyJSON(seite)));
     }
     
     private void movePageToBookTo(BookSO targetBook, List<String> langs, List<IMoveFile> files) {
@@ -564,7 +565,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
 
     public void saveMetaTo(Map<String,String> files) {
         seite.setVersion(seite.getVersion() + 1);
-        files.put(filenameMeta(), StringService.prettyJSON(seite));
+        files.put(filenameMeta(), FileService.prettyJSON(seite));
     }
 
     public void saveHtmlTo(Map<String,String> files, List<String> langs) {

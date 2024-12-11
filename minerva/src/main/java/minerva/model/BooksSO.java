@@ -79,7 +79,7 @@ public class BooksSO extends MList<BookSO> {
     
     public void saveTo(Map<String, String> files) {
         incVersion();
-        files.put(filename(), StringService.prettyJSON(books));
+        files.put(filename(), FileService.prettyJSON(books));
     }
     
     private String filename() {

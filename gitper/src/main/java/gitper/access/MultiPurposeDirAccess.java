@@ -13,7 +13,7 @@ import org.pmw.tinylog.Logger;
 import com.google.gson.Gson;
 
 import gitper.Workspace;
-import gitper.base.StringService;
+import gitper.base.FileService;
 
 /**
  * Adds more generic functions to less-methods DirAccess interface
@@ -32,7 +32,7 @@ public class MultiPurposeDirAccess {
     }
 
     public <T> void save(String filename, T data, CommitMessage commitMessage, Workspace workspace) {
-        save(filename, StringService.prettyJSON(data), commitMessage, workspace);
+        save(filename, FileService.prettyJSON(data), commitMessage, workspace);
     }
 
     public String load(String dn) {
