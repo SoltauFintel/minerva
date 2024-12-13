@@ -242,7 +242,11 @@ public class SearchSO {
 		public SearchResult add(SeiteSO seite, String content) {
 			SearchResult sr = new SearchResult();
             sr.setPath(seite.getBook().getBook().getFolder() + "/" + seite.getId());
-            sr.setTitle(seite.getTitle());
+            if (seite.isFeatureTree()) {
+            	sr.setTitle(seite.getSeite().getTitle().getString("de"));
+            } else {
+            	sr.setTitle(seite.getTitle());
+            }
             sr.setContent(content);
             result.add(sr);
             return sr;
