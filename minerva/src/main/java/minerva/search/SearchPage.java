@@ -27,6 +27,7 @@ public class SearchPage extends UPage {
         String branch = ctx.pathParam("branch");
         String q = ctx.queryParam("q");
         String qb = ctx.queryParam("qb");
+        boolean forceContainsSearch = "force".equals(ctx.queryParam("contains"));
 
         if (isPOST()) {
         	String params = StringService.isNullOrEmpty(qb) ? "" : "&qb=" + u(qb);
@@ -36,13 +37,14 @@ public class SearchPage extends UPage {
         	WorkspaceSO workspace = user.getWorkspace(branch);
 			qb_book = StringService.isNullOrEmpty(qb) ? null : workspace.getBooks()._byFolder(qb);
         	
-            Map<String, List<SearchResult>> results = getResults(branch, q);
+            Map<String, List<SearchResult>> results = getResults(branch, q, forceContainsSearch);
 
 			header(n("volltextsuche") + ": " + q);
             put("branch", esc(branch));
             put("searchFocus", true);
             put("q", esc(q));
             put("hasq", !StringService.isNullOrEmpty(q));
+            put("forceContainsSearch", forceContainsSearch);
 			fillList(results, workspace);
             putInt("n", n);
 
@@ -52,11 +54,11 @@ public class SearchPage extends UPage {
         }
     }
 
-	private Map<String, List<SearchResult>> getResults(String branch, String q) {
+	private Map<String, List<SearchResult>> getResults(String branch, String q, boolean forceContainsSearch) {
 		Map<String, List<SearchResult>> results = new HashMap<>();
 		boolean first = true;
 		for (String lang : langs) { 
-		    List<SearchResult> result = user.getWorkspace(branch).getSearch().search(q, lang, first);
+		    List<SearchResult> result = user.getWorkspace(branch).getSearch().search(q, forceContainsSearch, lang, first);
 		    first = false;
 		    int nn = result.size();
 		    if (nn > 0) {

@@ -118,13 +118,13 @@ public class SearchSO {
         }
     }
     
-    public List<SearchResult> search(String x, String lang, boolean isFirstLanguage) {
+    public List<SearchResult> search(String x, boolean forceContainsSearch, String lang, boolean isFirstLanguage) {
         List<SearchResult> ret;
         if (StringService.isNullOrEmpty(x)) {
             return new ArrayList<>();
         } else if (!StringService.isNullOrEmpty(host)) {
         	// search pages using xsearch
-            String url = host + "/search/" + getSiteName(lang) + "?q=" + Escaper.urlEncode(x, "");
+            String url = host + "/search/" + getSiteName(lang) + "?q=" + Escaper.urlEncode(x, "") + (forceContainsSearch ? "&contains=force" : "");
             Type type = new TypeToken<ArrayList<SearchResult>>() {}.getType();
             Logger.debug(url);
             ret = new REST(url).get().fromJson(type);
