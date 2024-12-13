@@ -39,6 +39,8 @@
             {{/each}}
         </ul>
         
-        {{if forceContainsSearch}}forceContainsSearch active{{/if}}
+        {{if not forceContainsSearch}}
+            <p class="mt3">{{N.deepSearch1}} <a href="{{containsSearchLink}}">{{N.deepSearch2}}</a> {{N.deepSearch3}}</p>
+        {{/if}}
     </div>
 </div>

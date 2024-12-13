@@ -444,3 +444,6 @@ allSelected=alle ausgewählt
 uploadFailed=Upload hat nicht geklappt!
 fileAlreadyExists=Datei bereits vorhanden!
 LinkedPagesFromOtherBooks=Verknüpfte Seiten aus anderen Büchern
+deepSearch1=Unzufrieden mit dem Suchergebnis?
+deepSearch2=Starte die Tiefensuche.
+deepSearch3=Die kann etwas länger dauern.

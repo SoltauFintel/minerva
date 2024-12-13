@@ -440,3 +440,6 @@ allSelected=all selected
 uploadFailed=Upload failed!
 fileAlreadyExists=File already exists!
 LinkedPagesFromOtherBooks=Linked pages from other books
+deepSearch1=Unhappy with the search result?
+deepSearch2=Start the deep search.
+deepSearch3=This may take a little longer.

@@ -45,6 +45,8 @@ public class SearchPage extends UPage {
             put("q", esc(q));
             put("hasq", !StringService.isNullOrEmpty(q));
             put("forceContainsSearch", forceContainsSearch);
+			put("containsSearchLink", "/w/" + branch + "/search?q=" + u(q)
+					+ (StringService.isNullOrEmpty(qb) ? "" : "&qb=" + u(qb)) + "&contains=force");
 			fillList(results, workspace);
             putInt("n", n);
 
