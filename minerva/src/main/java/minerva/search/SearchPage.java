@@ -36,9 +36,11 @@ public class SearchPage extends UPage {
         	n = 0;
         	WorkspaceSO workspace = user.getWorkspace(branch);
 			qb_book = StringService.isNullOrEmpty(qb) ? null : workspace.getBooks()._byFolder(qb);
+			long start = System.currentTimeMillis();
         	
             Map<String, List<SearchResult>> results = getResults(branch, q, forceContainsSearch);
 
+            start = System.currentTimeMillis() - start;
 			header(n("volltextsuche") + ": " + q);
             put("branch", esc(branch));
             put("searchFocus", true);
@@ -53,7 +55,7 @@ public class SearchPage extends UPage {
             fillBooksfilter(q, workspace);
 			Logger.info(user.getLogin() + " | " + branch + " | Search for \"" + q + "\": " + n + " page"
 					+ (n == 1 ? "" : "s") + (qb_book != null ? " | qb: " + qb_book.getBook().getFolder() : "")
-					+ (forceContainsSearch ? " | force contains search" : ""));
+					+ (forceContainsSearch ? " | force contains search" : "") + " | " + start + "ms");
         }
     }
 
