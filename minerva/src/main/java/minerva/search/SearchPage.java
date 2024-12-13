@@ -52,7 +52,8 @@ public class SearchPage extends UPage {
 
             fillBooksfilter(q, workspace);
 			Logger.info(user.getLogin() + " | " + branch + " | Search for \"" + q + "\": " + n + " page"
-					+ (n == 1 ? "" : "s") + (qb_book != null ? " | qb: " + qb_book.getBook().getFolder() : ""));
+					+ (n == 1 ? "" : "s") + (qb_book != null ? " | qb: " + qb_book.getBook().getFolder() : "")
+					+ (forceContainsSearch ? " | force contains search" : ""));
         }
     }
 
