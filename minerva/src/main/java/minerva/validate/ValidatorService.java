@@ -10,10 +10,12 @@ import java.util.stream.Collectors;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.access.CommitMessage;
+import gitper.base.FileService;
 import minerva.MinervaWebapp;
 import minerva.base.AbstractTimer;
 import minerva.base.CustomErrorPage;
@@ -66,6 +68,12 @@ public class ValidatorService {
 				}
 			}
 		}
+		
+		// XXX lab
+		File file = new File(MinervaWebapp.factory().getConfig().getWorkspacesFolder(), "styles.txt");
+		FileService.savePlainTextFile(file, colors.stream().collect(Collectors.joining("\n")));
+		Logger.info("ValidatorService/" + book.getTitle() + ": " + colors.size() + " styles saved to: " + file.getAbsolutePath());
+		
 		return result;
 	}
 	
@@ -254,9 +262,24 @@ public class ValidatorService {
         return false;
     }
 
+    TreeSet<String> colors=new TreeSet<>();
     private void colors(Element body, List<String> msg) {
-        // TODO
-    }
+//		Set<String> colors = new TreeSet<>();
+		Elements elementsWithStyle = body.select("[style]");
+		for (Element element : elementsWithStyle) {
+			String style = element.attr("style");
+			colors.add(style);
+
+//			for (String i : style.split(";")) {
+//				String w[] = i.split(":");
+//				if (w.length == 2) {
+//					if ("color".equalsIgnoreCase(w[0]) || "background-color".equalsIgnoreCase(w[0])) {
+//						colors.add(w[1].trim().toLowerCase());
+//					}
+//				}
+//			}
+		}
+	}
     
     private String translate(String key, String lang) {
         String ret;
