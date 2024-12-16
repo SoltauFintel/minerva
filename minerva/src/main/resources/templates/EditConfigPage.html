@@ -3,11 +3,17 @@
 <div class="row"> 
     <div class="col-lg-12">
         <h1 class="page-header">{{header}}</h1>
+
+        <small>
+            {{each cat in categories}}
+                <a href="#{{cat.id}}">{{cat.label}}</a><br/>
+            {{/each}}
+        </small>
         
         <form action="config" class="form-horizontal" method="post">
             <fieldset>
                 {{each cat in categories}}
-                    <h2 style="border-bottom: 1pt solid grey;">{{cat.label}}</h2>
+                    <h2 id="{{cat.id}}" style="border-bottom: 1pt solid grey;">{{cat.label}}</h2>
                     
                     {{each o in cat.options}}
                         <div class="form-group">

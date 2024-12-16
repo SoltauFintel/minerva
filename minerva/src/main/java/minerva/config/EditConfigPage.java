@@ -27,8 +27,10 @@ public class EditConfigPage extends UPage {
 		boolean customerVersion = MinervaWebapp.factory().isCustomerVersion();
 		header("Configuration");
 		DataList list = list("categories");
+		int n = 0;
 		for (OptionCategory cat : MinervaOptions.options.getCategories()) {
 			DataMap map = list.add();
+			map.put("id", "cat" + n++);
 			map.put("label", esc(cat.getLabel()));
 			DataList list2 = map.list("options");
 			for (Option o : cat.getOptions()) {
