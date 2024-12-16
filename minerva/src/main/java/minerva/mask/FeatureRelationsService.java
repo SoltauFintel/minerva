@@ -76,6 +76,8 @@ public class FeatureRelationsService {
         private final String link;
         private final String icon;
         private final DeleteRoutine deleteRoutine;
+        private final int column;
+        private final String columnTitleKey;
         
         private PageRelation(String id, BookSO book, DeleteRoutine deleteRoutine) {
             this.id = id;
@@ -84,10 +86,14 @@ public class FeatureRelationsService {
             	link = "";
 	            title = id;
 	            icon = "fa-chain-broken error";
+	            column = 10;
+	            columnTitleKey = "frctPage";
             } else {
             	link = "/s/{branch}/" + seite.getBook().getBook().getFolder() + "/" + id;
 	            title = seite.getTitle();
 	            icon = seite.isFeatureTree() ? "fa-sitemap fa-sitemap-color" : "fa-file-text greenbook";
+	            column = seite.isFeatureTree() ? 9 : 10;
+	            columnTitleKey = seite.isFeatureTree() ? "Features" : "pages";
             }
             this.deleteRoutine = deleteRoutine;
         }
@@ -119,12 +125,12 @@ public class FeatureRelationsService {
 
 		@Override
 		public int getColumn() {
-			return 10;
+			return column;
 		}
 
 		@Override
 		public String getColumnTitleKey() {
-			return "frctPage";
+			return columnTitleKey;
 		}
 
 		@Override
