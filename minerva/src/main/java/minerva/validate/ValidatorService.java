@@ -256,28 +256,33 @@ public class ValidatorService {
     }
 
 	private void colors(Element body, List<String> msg) {
+		Set<String> colors = new TreeSet<>();
+		List<String> allowedColors = List.of("rgb(0,0,255)", "rgb(153,204,0)");
 		Elements elementsWithStyle = body.select("[style]");
 		for (Element element : elementsWithStyle) {
 			String style = element.attr("style");
 			if (style.contains("-webkit")) {
 				msg.add("v.webkit");
+				return;
 			} else {
-				Set<String> colors = new TreeSet<>();
 				String sl = style.toLowerCase();
 				if (sl.contains("color") || style.contains("#") || sl.contains("rgb") || sl.contains("hsl")) {
 					for (String pair : style.split(";")) {
 						if (pair.startsWith("color:") || pair.startsWith("background-color:")) {
 							String[] keyAndValue = pair.split(":");
 							if (keyAndValue.length == 2) {
-								colors.add(keyAndValue[1].replace(" ", ""));
+								String color = keyAndValue[1].replace(" ", "");
+								if (!allowedColors.contains(color)) {
+									colors.add(color);
+								}
 							}
 						}
 					}
 				}
-				if (!colors.isEmpty()) {
-					msg.add("v.colors;" + colors.stream().collect(Collectors.joining(" | ")));
-				}
 			}
+		}
+		for (String color : colors) {
+			msg.add("v.colors;" + color);
 		}
 	}
     
