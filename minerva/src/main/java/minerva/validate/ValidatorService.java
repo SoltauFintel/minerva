@@ -15,7 +15,6 @@ import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.access.CommitMessage;
-import gitper.base.FileService;
 import minerva.MinervaWebapp;
 import minerva.base.AbstractTimer;
 import minerva.base.CustomErrorPage;
@@ -68,12 +67,6 @@ public class ValidatorService {
 				}
 			}
 		}
-		
-		// XXX lab
-		File file = new File(MinervaWebapp.factory().getConfig().getWorkspacesFolder(), "styles.txt");
-		FileService.savePlainTextFile(file, colors.stream().collect(Collectors.joining("\n")));
-		Logger.info("ValidatorService/" + book.getTitle() + ": " + colors.size() + " styles saved to: " + file.getAbsolutePath());
-		
 		return result;
 	}
 	
@@ -262,22 +255,29 @@ public class ValidatorService {
         return false;
     }
 
-    TreeSet<String> colors=new TreeSet<>();
-    private void colors(Element body, List<String> msg) {
-//		Set<String> colors = new TreeSet<>();
+	private void colors(Element body, List<String> msg) {
 		Elements elementsWithStyle = body.select("[style]");
 		for (Element element : elementsWithStyle) {
 			String style = element.attr("style");
-			colors.add(style);
-
-//			for (String i : style.split(";")) {
-//				String w[] = i.split(":");
-//				if (w.length == 2) {
-//					if ("color".equalsIgnoreCase(w[0]) || "background-color".equalsIgnoreCase(w[0])) {
-//						colors.add(w[1].trim().toLowerCase());
-//					}
-//				}
-//			}
+			if (style.contains("-webkit")) {
+				msg.add("v.webkit");
+			} else {
+				Set<String> colors = new TreeSet<>();
+				String sl = style.toLowerCase();
+				if (sl.contains("color") || style.contains("#") || sl.contains("rgb") || sl.contains("hsl")) {
+					for (String pair : style.split(";")) {
+						if (pair.startsWith("color:") || pair.startsWith("background-color:")) {
+							String[] keyAndValue = pair.split(":");
+							if (keyAndValue.length == 2) {
+								colors.add(keyAndValue[1].replace(" ", ""));
+							}
+						}
+					}
+				}
+				if (!colors.isEmpty()) {
+					msg.add("v.colors;" + colors.stream().collect(Collectors.joining(" | ")));
+				}
+			}
 		}
 	}
     
