@@ -90,6 +90,7 @@ public class ValidatorService {
                 headings(body, msg);
                 missingImageFiles(seite, html, msg);
                 brokenLocalAnchors(body, msg);
+                colors(body, msg);
             }
         }
         return msg.stream().map(key -> translate(key, guiLang)).collect(Collectors.toList());
@@ -253,6 +254,10 @@ public class ValidatorService {
         return false;
     }
 
+    private void colors(Element body, List<String> msg) {
+        // TODO
+    }
+    
     private String translate(String key, String lang) {
         String ret;
         int o = key.indexOf(";");
