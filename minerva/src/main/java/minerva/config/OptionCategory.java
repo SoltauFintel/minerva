@@ -6,6 +6,7 @@ import java.util.List;
 public class OptionCategory {
 	private String label;
 	private final List<Option> options = new ArrayList<>();
+	private String color = "white";
 
 	public OptionCategory() {
 	}
@@ -20,6 +21,10 @@ public class OptionCategory {
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+	
+	public String sort() {
+	    return "General".equals(label) ? "0" : label.toLowerCase();
 	}
 
 	public List<Option> getOptions() {
@@ -47,4 +52,13 @@ public class OptionCategory {
 		}
 		return null;
 	}
+
+    public String getColor() {
+        return color;
+    }
+    
+    public OptionCategory withColor(String color) {
+        this.color = color;
+        return this;
+    }
 }

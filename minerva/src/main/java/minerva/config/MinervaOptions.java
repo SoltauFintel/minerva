@@ -19,7 +19,7 @@ public class MinervaOptions {
 	
 	// All labels in English language!
 	
-	public static final OptionCategory CAT_GENERAL = new OptionCategory("General");
+	public static final OptionCategory CAT_GENERAL = new OptionCategory("General").withColor("#ccc");
 	public static final Option TIMER_ACTIVE = add(CAT_GENERAL, "timer-active", "Automatic processing")
 			.setHint("1: on, other value: off");
 	public static final Option PDF_TAGS = add(CAT_GENERAL, "pdf-tags", "PDF tags"); 
@@ -30,36 +30,36 @@ public class MinervaOptions {
             .setDefaultValue("http://192.168.40.77:4190\nhttp://192.168.40.77:4490")
             .notForCustomerVersion();
 	
-	private static final OptionCategory CAT_SEARCH = new OptionCategory("Search");
+	private static final OptionCategory CAT_SEARCH = new OptionCategory("Search").withColor("black");
 	public static final Option SEARCH_URL = add(CAT_SEARCH, "search.url", "Search URL")
 			.setHint("protocol + host name + port");
 	public static final Option SEARCH_SITE_PREFIX = add(CAT_SEARCH, "search.site-prefix", "Search site prefix")
 			.setDefaultValue("minerva-")
 			.setHint("usually ends with '-'");
 
-	private static final OptionCategory CAT_WATCH = new OptionCategory("Changed page notification (watch)");
+	private static final OptionCategory CAT_WATCH = new OptionCategory("Notification for changed page (watch)").withColor("#090");
 	public static final Option MAIL_WATCH_SUBJECT = add(CAT_WATCH, "mail.watch.subject", "Subject")
 			.setDefaultValue("watched page modified").setHint("var: {pageTitle}");
 	public static final Option MAIL_WATCH_BODY = add(CAT_WATCH, "mail.watch.body", "Mail text", OptionType.TEXTAREA)
 			.setHint("vars: {pageTitle}, {url}");
 	
-	private static final OptionCategory CAT_COMMENT = new OptionCategory("New comment notification");
+	private static final OptionCategory CAT_COMMENT = new OptionCategory("Notification for new comment").withColor("#0c0");
 	public static final Option MAIL_COMMENT_SUBJECT = add(CAT_COMMENT, "mail.comment.subject", "Subject")
 			.setDefaultValue("new comment").setHint("var: {pageTitle}");
 	public static final Option MAIL_COMMENT_BODY = add(CAT_COMMENT, "mail.comment.body", "Mail text", OptionType.TEXTAREA)
 			.setHint("vars: {pageTitle}, {host}, {commentPath}, {myTasksPath}");
 	
-	private static final OptionCategory CAT_TAG_NEW_PAGE = new OptionCategory("tag new page");
+	private static final OptionCategory CAT_TAG_NEW_PAGE = new OptionCategory("tag new page").withColor("#0ff");
 	public static final Option TNP_TAG = add(CAT_TAG_NEW_PAGE, "tag-new-page.tag", "set tag");
 	public static final Option TNP_EXCEPT_USERS = add(CAT_TAG_NEW_PAGE, "tag-new-page.except-users", "except for users");
 	public static final Option TNP_BOOKS = add(CAT_TAG_NEW_PAGE, "tag-new-page.books", "for book folders").setHint("empty: for all books");
 
-	private static final OptionCategory CAT_JIRA = new OptionCategory("Jira Cloud");
+	private static final OptionCategory CAT_JIRA = new OptionCategory("Jira Cloud").withColor("red");
 	public static final Option JIRA_CUSTOMER = add(CAT_JIRA, "jira.customer", "Customer").notForCustomerVersion();
 	public static final Option JIRA_MAIL = add(CAT_JIRA, "jira.mail", "Mail").notForCustomerVersion();
 	public static final Option JIRA_TOKEN = add(CAT_JIRA, "jira.token", "Token", OptionType.SECRET).notForCustomerVersion();
 
-	private static final OptionCategory CAT_CLEANUP = new OptionCategory("Cleanup service");
+	private static final OptionCategory CAT_CLEANUP = new OptionCategory("Cleanup service").withColor("brown");
 	public static final Option CLEANUP_CRON = add(CAT_CLEANUP, "cleanup.cron", "cron").setDefaultValue("0 0 23 ? * MON-FRI"); // werktags 23:00 Uhr
 	public static final Option CLEANUP_LOGIN = add(CAT_CLEANUP, "cleanup.login", "Login")
 			.setHint("Login and password are also used by other timer-controlled services.")

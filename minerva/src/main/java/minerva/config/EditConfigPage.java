@@ -9,6 +9,7 @@ import minerva.MinervaWebapp;
 import minerva.user.UPage;
 
 public class EditConfigPage extends UPage {
+    private int n;
 
 	@Override
 	protected void execute() {
@@ -27,11 +28,13 @@ public class EditConfigPage extends UPage {
 		boolean customerVersion = MinervaWebapp.factory().isCustomerVersion();
 		header("Configuration");
 		DataList list = list("categories");
-		int n = 0;
-		for (OptionCategory cat : MinervaOptions.options.getCategories()) {
+		n = 1;
+		MinervaOptions.options.getCategories().stream().sorted((a, b) -> a.sort().compareTo(b.sort())).forEach(cat -> {
 			DataMap map = list.add();
 			map.put("id", "cat" + n++);
 			map.put("label", esc(cat.getLabel()));
+			map.put("color", cat.getColor());
+			
 			DataList list2 = map.list("options");
 			for (Option o : cat.getOptions()) {
 				if (!customerVersion || !o.isNotForCustomerVersion()) {
@@ -48,7 +51,7 @@ public class EditConfigPage extends UPage {
 			if (list2.isEmpty()) {
 				list.remove(list.size() - 1);
 			}
-		}
+		});
 	}
 
 	private void save() {
