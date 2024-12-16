@@ -2,8 +2,10 @@ package minerva.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
@@ -234,4 +236,17 @@ public class BookSO {
     public BookSO getMeAsFreshInstance() {
         return workspace.getBooks().byFolder(book.getFolder());
     }
+
+    public Set<String> getAllSeiteIdSet() {
+    	Set<String> set = new HashSet<>();
+    	fillSet(seiten, set);
+    	return set;
+    }
+    
+    private void fillSet(SeitenSO seiten, Set<String> set) {
+		for (SeiteSO seite : seiten) {
+			set.add(seite.getId());
+			fillSet(seite.getSeiten(), set); // recursive
+		}
+	}
 }
