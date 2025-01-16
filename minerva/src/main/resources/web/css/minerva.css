@@ -886,3 +886,12 @@ tr.cnticket td {
 .f5 {
 	background-color: #f5f5f5;
 }
+
+.copy {
+    color: #999;
+}
+
+.copy:hover {
+    color: #555;
+    cursor: pointer;
+}
