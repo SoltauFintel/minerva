@@ -99,7 +99,12 @@ public class FeaturesTablePage extends SPage {
             for (MaskField field : te.mad.getMaskFields()) {
                 String value = te.mad.getDataFields().get(field.getId());
                 if (!value.isBlank() && !"SQLJasperReportInformation".equals(value)) {
-                    columns += "\n<br/><small>" + field.getLabel() + ": </small><b>" + value + "</b>";
+                	if (field.isFeatureNr()) {
+                		columns += "\n<br/><small>" + field.getLabel() + ": </small><b class=\"label featurenumber\">"
+                				+ value + "</b> <i class=\"fa fa-copy copy\" onclick=\"copy(this, '" + value + "')\"></i>";
+                	} else {
+                		columns += "\n<br/><small>" + field.getLabel() + ": </small><b>" + value + "</b>";
+                	}
                 }
             }
             String title = te.feature.getTitle();
