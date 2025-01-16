@@ -17,7 +17,10 @@
             {{each L in langs}}
                 {{each r in L.result}}
                     <li class="search-result"><a href="/s/{{branch}}/{{r.path}}">{{r.title}}</a>
-                        {{if r.hasFeatureNumber}}<span class="label featurenumber">{{r.featureNumber}}</span>{{/if}}
+                        {{if r.hasFeatureNumber}}
+                            <span class="label featurenumber">{{r.featureNumber}}</span>
+                            <i class="fa fa-copy copy" onclick="copy(this, '{{r.featureNumber}}')"></i>
+                        {{/if}}
                         <br/><div class="textfrag">{{r.content}}</div>
                         {{if r.hasBreadcrumbs}}
                             <small class="searchResultBreadcrumbs">
@@ -44,3 +47,16 @@
         {{/if}}
     </div>
 </div>
+
+<script>
+    function copy(copyBtn, text) {
+        let temp = $('<input>')
+        $('body').append(temp)
+        temp.val(text).select()
+        document.execCommand('copy')
+        temp.remove()
+        copyBtn.style.color = '#0a0'
+        copyBtn.style.transform = 'scale(1.2) rotate(10deg)'
+        setTimeout(() => { copyBtn.style.color = ''; copyBtn.style.transform = ''; }, 500)
+    }
+</script>
