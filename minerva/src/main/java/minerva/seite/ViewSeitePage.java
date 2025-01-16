@@ -12,7 +12,6 @@ import com.github.template72.data.DataMap;
 import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.base.StringService;
 import minerva.MinervaWebapp;
-import minerva.base.CSSFilter;
 import minerva.base.DeliverHtmlContent;
 import minerva.base.Uptodatecheck;
 import minerva.book.BookPage;
@@ -229,9 +228,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         html = new LocalAnchors().transform(html); // after TocMacro.transform()
         html = Thumbnails.thumbnails(html, seite.getBook().getFolder(), seite.getId(), booklink.replace("/b/", "/s/") + "/");
         map.put("toc", macro.getTOC()); // no esc, after TocMacro.transform()
-        if ("en".equals(user.getGuiLanguage())) { // XXX temp.
-        	html = new CSSFilter().filter(html);
-        }
+//        if ("en".equals(user.getGuiLanguage())) { // XXX temp.
+//        	html = new CSSFilter().filter(html);
+//        }
         return html;
     }
     
