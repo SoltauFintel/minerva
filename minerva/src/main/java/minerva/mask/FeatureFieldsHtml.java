@@ -49,12 +49,14 @@ public class FeatureFieldsHtml {
         boolean first = true;
         for (MaskField f : fields) {
             String st = getFieldHtml(f, ff);
-            if (first && st.contains("<input ")) {
-                st = st.replace("<input ", "<input autofocus ");
-                first = false;
-            } else if (first && st.contains("<select ")) {
-                st = st.replace("<select ", "<select autofocus ");
-                first = false;
+            if (editMode) {
+	            if (first && st.contains("<input ")) {
+	                st = st.replace("<input ", "<input autofocus ");
+	                first = false;
+	            } else if (first && st.contains("<select ")) {
+	                st = st.replace("<select ", "<select autofocus ");
+	                first = false;
+	            }
             }
             ret += st
                     .replace("{id}", f.getId())
