@@ -88,7 +88,7 @@ public class FeatureFieldsService implements AddFeatures {
         for (SeiteSO seite : book.getAlleSeiten()) {
             FeatureFields dataFields = load(seite);
             if (dataFields != null) {
-                String key = dataFields.get("responsible");
+                String key = dataFields.get(FeatureFields.RESPONSIBLE);
                 if (!StringService.isNullOrEmpty(key)) {
                     find(key, ret).add(seite);
                 }
