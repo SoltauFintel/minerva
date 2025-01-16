@@ -26,8 +26,11 @@
                     <p class="pheader">{{N.zuLoeschendeBeziehungenAnhaken}}</p>
                     {{each s in seiten}}
                         <div class="checkbox">
-                            <label><input type="checkbox" name="{{s.id}}"{{if not s.isDeletable}} disabled{{/if}}>
-                                <i class="fa {{s.icon}}"></i> {{s.title}}</label>
+                            <label>
+                                <input type="checkbox" name="{{s.id}}"{{if not s.isDeletable}} disabled{{/if}}>
+                                <i class="fa {{s.icon}}"></i> {{s.title}}
+                                {{if s.hasPath}}<span class="relationsPath">[{{s.path}}]</span>{{/if}}
+                            </label>
                         </div>
                     {{/each}}
                 </div>

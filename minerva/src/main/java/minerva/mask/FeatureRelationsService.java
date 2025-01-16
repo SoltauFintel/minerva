@@ -57,6 +57,9 @@ public class FeatureRelationsService {
         
         String getIcon();
         
+        /**
+         * @return range: 10 - 99
+         */
         int getColumn();
         
         String getColumnTitleKey();
@@ -83,6 +86,7 @@ public class FeatureRelationsService {
         private final DeleteRoutine deleteRoutine;
         private final int column;
         private final String columnTitleKey;
+        private final String sort;
         
         private PageRelation(String id, BookSO book, DeleteRoutine deleteRoutine) {
             this.id = id;
@@ -92,7 +96,7 @@ public class FeatureRelationsService {
 	            title = id;
 	            path = id;
 	            icon = "fa-chain-broken error";
-	            column = 10;
+	            column = 41;
 	            columnTitleKey = "frctPage";
             } else {
             	link = "/s/{branch}/" + seite.getBook().getBook().getFolder() + "/" + id;
@@ -111,10 +115,11 @@ public class FeatureRelationsService {
 				}
 				path = _path;
 	            icon = seite.isFeatureTree() ? "fa-sitemap fa-sitemap-color" : "fa-file-text greenbook";
-	            column = seite.isFeatureTree() ? 9 : 10;
+	            column = seite.isFeatureTree() ? 40 : 41;
 	            columnTitleKey = seite.isFeatureTree() ? "Features" : "pages";
             }
             this.deleteRoutine = deleteRoutine;
+            sort = column + title + "/" + path;
         }
 
         @Override
@@ -159,7 +164,7 @@ public class FeatureRelationsService {
 
 		@Override
 		public String getSort() {
-			return title + "/" + path;
+			return sort;
 		}
     }
     
@@ -167,11 +172,13 @@ public class FeatureRelationsService {
         private final String link;
         private final String id;
         private final String title;
+        private final String sort;
         
         private LinkRelation(String link) {
             this.link = link == null ? "" : link;
             id = "link_" + IdGenerator.code6(link);
             title = WebpageTitleService.webpageTitleService.getTitle(link);
+            sort = getColumn() + (this.link.contains("atlassian.net/wiki/") ? "1" : "2") + title;
         }
 
         @Override
@@ -186,7 +193,7 @@ public class FeatureRelationsService {
 
 		@Override
 		public String getPath() {
-			return link;
+			return title.equals(link) ? "" : link;
 		}
 
         @Override
@@ -216,7 +223,7 @@ public class FeatureRelationsService {
 
 		@Override
 		public String getSort() {
-			return (link.contains("atlassian.net/wiki/") ? "1" : "2") + title;
+			return sort;
 		}
     }
     
