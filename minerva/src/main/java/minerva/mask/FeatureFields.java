@@ -14,6 +14,8 @@ import minerva.model.WorkspaceSO;
 public class FeatureFields {
 	/** Feature field name for the feature number. */
 	public static final String FEATURENUMBER = "featurenumber";
+	/** Feature field name for Zuständiger */
+	public static final String RESPONSIBLE = "responsible";
 	public static final String ENGLISH_NAME = "englishName";
     private String seiteId;
     /** special mask tag or "ft" */
