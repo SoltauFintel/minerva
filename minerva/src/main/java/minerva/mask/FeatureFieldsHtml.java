@@ -99,7 +99,7 @@ public class FeatureFieldsHtml {
     }
 
     private String getFieldHtml(MaskField f, FeatureFields ff) {
-        return (
+        String html = (
             switch (f.getType()) {
                 case USER ->      userField(f, ff);
                 case CUSTOMERS -> customersField(f, ff);
@@ -108,7 +108,9 @@ public class FeatureFieldsHtml {
                 case TEXTAREA ->  textareaField(f, ff);
                 default ->        standardField(f, ff);   // TEXT, UNIQUE
             }
-            ).replace("{disabled}", !editMode || f.isImportField() ? " disabled" : "");
+            );
+        String d = f.isFeatureNr() ? " readonly" /*damit Copy geht*/ : " disabled";
+        return html.replace("{disabled}", !editMode || f.isImportField() ? d : "");
     }
 
     private String userField(MaskField f, FeatureFields ff) {
@@ -205,17 +207,18 @@ public class FeatureFieldsHtml {
         String html = """
             <div class="form-group">
                 <label for="{id}" class="col-lg-2 control-label">{label}</label>
-                <div class="col-lg-8">
+                <div class="col-lg-8">{copydiv}
                     <input class="form-control" type="text" id="{id}" name="{id}" value="{value}"{disabled}>{copy}
                 </div>
             </div>
              """;
         html = html.replace("{value}", Escaper.esc(ff.get(f.getId())));
-        String copy = "";
-        if ("Feature-Nr.".equals(f.getLabel())) {
-        	copy = "<a onclick=\"copy('{id}');\" class=\"btn btn-default btn-sm input-group-addon\" title=\"Copy\"><i class=\"fa fa-copy\"></i></a>";
+        String copy = "", copydiv = "";
+        if (!editMode && f.isFeatureNr()) {
+        	copydiv = "<div class=\"input-group\">";
+        	copy = "<a onclick=\"copy('{id}');\" class=\"btn btn-default btn-sm input-group-addon\" title=\"Copy\"><i class=\"fa fa-copy\"></i></a></div>";
         }
-        return html.replace("{copy}", copy);
+        return html.replace("{copydiv}", copydiv).replace("{copy}", copy);
     }
 
     private String relations(FeatureFields ff) {

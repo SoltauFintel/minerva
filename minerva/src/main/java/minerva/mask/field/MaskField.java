@@ -13,6 +13,10 @@ public class MaskField {
     public void setId(String id) {
         this.id = id;
     }
+    
+    public boolean isFeatureNr() {
+    	return "Feature-Nr.".equals(label);
+    }
 
     public String getLabel() {
         return label;
