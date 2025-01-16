@@ -895,3 +895,7 @@ tr.cnticket td {
     color: #555;
     cursor: pointer;
 }
+
+.relationsPath {
+	font-size: 7pt;
+}

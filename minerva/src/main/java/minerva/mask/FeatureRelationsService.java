@@ -6,6 +6,8 @@ import java.util.List;
 import github.soltaufintel.amalia.base.IdGenerator;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
+import minerva.seite.Breadcrumb;
+import minerva.seite.ViewAreaBreadcrumbLinkBuilder;
 
 public class FeatureRelationsService {
     public static RelationsAdder relationsAdder = (feature, ff, relations) -> {};
@@ -49,6 +51,8 @@ public class FeatureRelationsService {
         
         String getTitle();
         
+        String getPath();
+        
         String getLink();
         
         String getIcon();
@@ -73,6 +77,7 @@ public class FeatureRelationsService {
     public static class PageRelation implements Relation {
         private final String id;
         private final String title;
+        private final String path;
         private final String link;
         private final String icon;
         private final DeleteRoutine deleteRoutine;
@@ -85,12 +90,26 @@ public class FeatureRelationsService {
             if (seite == null) { // Target page has been deleted.
             	link = "";
 	            title = id;
+	            path = id;
 	            icon = "fa-chain-broken error";
 	            column = 10;
 	            columnTitleKey = "frctPage";
             } else {
             	link = "/s/{branch}/" + seite.getBook().getBook().getFolder() + "/" + id;
 	            title = seite.getTitle();
+				List<Breadcrumb> breadcrumbs = seite.getBook().getBreadcrumbs(seite.getId(), new ViewAreaBreadcrumbLinkBuilder());
+				int start = breadcrumbs.size() - 1;
+				if (seite.getBook().isFeatureTree()) {
+					start--;
+				}
+				String _path = "";
+				for (int i = start; i >= 0; i--) {
+					if (!_path.isEmpty()) {
+						_path += " > ";
+					}
+					_path += breadcrumbs.get(i).getTitle().getString("de");
+				}
+				path = _path;
 	            icon = seite.isFeatureTree() ? "fa-sitemap fa-sitemap-color" : "fa-file-text greenbook";
 	            column = seite.isFeatureTree() ? 9 : 10;
 	            columnTitleKey = seite.isFeatureTree() ? "Features" : "pages";
@@ -109,6 +128,11 @@ public class FeatureRelationsService {
         }
 
         @Override
+		public String getPath() {
+			return path;
+		}
+
+		@Override
         public String getLink() {
             return link;
         }
@@ -135,7 +159,7 @@ public class FeatureRelationsService {
 
 		@Override
 		public String getSort() {
-			return title;
+			return title + "/" + path;
 		}
     }
     
@@ -159,6 +183,11 @@ public class FeatureRelationsService {
         public String getTitle() {
         	return title;
         }
+
+		@Override
+		public String getPath() {
+			return link;
+		}
 
         @Override
         public String getLink() {

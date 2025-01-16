@@ -1,7 +1,6 @@
 package minerva.mask;
 
 import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
 import github.soltaufintel.amalia.web.action.Escaper;
@@ -228,40 +227,27 @@ public class FeatureFieldsHtml {
         if (relations.isEmpty()) {
             return "";
         }
-        Set<Integer> cols = new TreeSet<>();
-        for (Relation r : relations) {
-        	cols.add(Integer.valueOf(r.getColumn()));
-        }
+        TreeSet<RelationColumn> cols = RelationColumn.makeColumns(relations);
 		StringBuilder top = new StringBuilder();
 		StringBuilder bottom = new StringBuilder();
 		top.append("<p><b>");
 		top.append(n("relations"));
 		top.append("</b></p><table class=\"relationstable\"><tr>");
 		bottom.append("<tr>");
-		for (Integer col : cols) {
-			Relation muster = null;
-			for (Relation r : relations) {
-				if (r.getColumn() == col.intValue()) {
-					muster = r;
-					break;
-				}
-			}
-			if (muster == null) { // can not happen
-				continue;
-			}
+		for (RelationColumn col : cols) {
+			col.findDuplicateTitles();
+			Relation muster = col.getRelations().get(0);
 			top.append("<td>");
 			top.append(n(muster.getColumnTitleKey()));
 			top.append("</td>");
             bottom.append("<td><ul class=\"ulFeatures\">");
-			for (Relation s : relations) {
-				if (s.getColumn() == col.intValue()) {
-					bottom.append(("<li>" + (s.noBreak() ? "<nobr>" : "") + "<i class=\"fa {icon}\"></i> <a href=\"{link}\"{target}>{title}</a>" //
-					        + (s.noBreak() ? "</nobr>" : "") + "</li>") //
-		                  .replace("{icon}", s.getIcon()) //
-		                  .replace("{link}", s.getLink()) //
-		                  .replace("{target}", s.getLink().startsWith("http") ? " target=\"_blank\"" : "") //
-		                  .replace("{title}", Escaper.esc(s.getTitle())));
-				}				
+			for (Relation r : col.getRelations()) {
+				bottom.append(("<li>" + (r.noBreak() ? "<nobr>" : "") + "<i class=\"fa {icon}\"></i> <a href=\"{link}\"{target}>{title}</a>" //
+				        + (r.noBreak() ? "</nobr>" : "") + "</li>") //
+	                  .replace("{icon}", r.getIcon()) //
+	                  .replace("{link}", r.getLink()) //
+	                  .replace("{target}", r.getLink().startsWith("http") ? " target=\"_blank\"" : "") //
+	                  .replace("{title}", getTitle(col, r)));
 			}
 			bottom.append("</ul></td>\n");
 		}
@@ -269,6 +255,14 @@ public class FeatureFieldsHtml {
 		bottom.append("</tr></table>");
 		top.append(bottom.toString());
 		return top.toString();
+    }
+    
+    private String getTitle(RelationColumn col, Relation r) {
+		String title = Escaper.esc(r.getTitle());
+		if (col.mustShowPath(r.getId())) {
+			title += " <span class=\"relationsPath\">[" + Escaper.esc(r.getPath()) + "]</span>";
+		}
+    	return title;
     }
     
     private String n(String key) {
