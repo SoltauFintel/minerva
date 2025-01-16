@@ -31,7 +31,16 @@ public class FeatureFieldsHtml {
             return ""; // feature fields only for feature tree item
         }
         MaskAndDataFields mad = new MaskAndDataFields(seite);
-        return mask(mad.getMaskFields(), mad.getDataFields());
+        String html = mask(mad.getMaskFields(), mad.getDataFields());
+        html += """
+        		<script>
+        			function copy(id) {
+						document.getElementById(id).select();
+						document.execCommand('copy');
+					}
+				</script>
+        		""";
+        return html;
     }
     
     private String mask(List<MaskField> fields, FeatureFields ff) {
@@ -193,15 +202,20 @@ public class FeatureFieldsHtml {
     }
 
     private String standardField(MaskField f, FeatureFields ff) {
-        return """
+        String html = """
             <div class="form-group">
                 <label for="{id}" class="col-lg-2 control-label">{label}</label>
                 <div class="col-lg-8">
-                    <input class="form-control" type="text" id="{id}" name="{id}" value="{value}"{disabled}>
+                    <input class="form-control" type="text" id="{id}" name="{id}" value="{value}"{disabled}>{copy}
                 </div>
             </div>
-             """
-            .replace("{value}", Escaper.esc(ff.get(f.getId())));
+             """;
+        html = html.replace("{value}", Escaper.esc(ff.get(f.getId())));
+        String copy = "";
+        if ("Feature-Nr.".equals(f.getLabel())) {
+        	copy = "<a onclick=\"copy('{id}');\" class=\"btn btn-default btn-sm input-group-addon\" title=\"Copy\"><i class=\"fa fa-copy\"></i></a>";
+        }
+        return html.replace("{copy}", copy);
     }
 
     private String relations(FeatureFields ff) {
