@@ -1,0 +1,23 @@
+{{if not hasLeftArea}}{{if not page}}
+    <!-- MindMap -->
+    <div id="mindmaproot"></div>
+    <div class="row">
+        <div class="col-lg-9">
+            {{include: vspStyles}}
+    
+            <script>
+                var mindMapBaseUrl = '/s/{{branch}}/{{bookFolder}}/'
+            </script>
+            
+            <div id="mindmapc"></div>
+            
+            <script src="/js/mindmap.js"></script>
+            <script>
+                const data = [ {{mindmapData}} ];
+                createMap(data);
+                resizeObserver.observe(document.getElementById('mindmapc'));
+            </script>
+        </div>
+    </div>
+    <!-- End of mindmap -->
+{{/if}}{{/if}}

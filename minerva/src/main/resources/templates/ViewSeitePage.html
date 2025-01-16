@@ -1,80 +1,5 @@
 {{master: master2}}
-
-{{if not hasLeftArea}}{{if not page}}
-    <!-- MindMap -->
-    <div id="mindmaproot"></div>
-    <div class="row">
-        <div class="col-lg-9">
-            <style>
-                .f-col {
-                  display: flex;
-                  flex-direction: column;
-                  flex-wrap: nowrap;
-                  justify-content: space-around;
-                }
-            
-                #mindmapc {
-                  display: flex;
-                  justify-content: space-between;
-                  padding: 1em;
-                  min-width: 500px;
-                  border: 1px solid #ddd;
-                  margin-top: 1em;
-                }
-                
-                #mindmapc p {
-                  padding: 0.25em 0.5em;
-                  background: #f0f0ff;
-                  border: 1px solid #666;
-                  border-radius: 0.5em;
-                  text-align: center;
-                  max-width: 300px;
-                }
-                
-                #mindmapc p a {
-                    text-decoration: none;
-                }
-            
-                #mindmapc p a:hover {
-                    background-color: #ff3;
-                }
-                
-                .type-a {
-                    background-color: #fcc !important;
-                    word-wrap: break-word;
-                }
-                .type-b {
-                    word-wrap: break-word;
-                }
-            
-                svg {
-                  position: absolute;
-                  z-index: -1
-                }
-            
-                .path {
-                  stroke: silver;
-                  fill: none;
-                  stroke-width: 2;
-                }
-            </style>
-    
-            <script>
-                var mindMapBaseUrl = '/s/{{branch}}/{{bookFolder}}/'
-            </script>
-            
-            <div id="mindmapc"></div>
-            
-            <script src="/js/mindmap.js"></script>
-            <script>
-                const data = [ {{mindmapData}} ];
-                createMap(data);
-                resizeObserver.observe(document.getElementById('mindmapc'));
-            </script>
-        </div>
-    </div>
-    <!-- End of mindmap -->
-{{/if}}{{/if}}
+{{include: vspMindMap}}
 
 <div class="row">
     <div class="col-lg-9">
@@ -277,72 +202,10 @@
     </div>
 </div>
 
-<!-- Modal dialog for TOC -->
-<div class="modal fade" id="tocModal" tabindex="-1" role="dialog" aria-labelledby="meinModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <form id="form" class="form-horizontal" action="{{viewlink}}/toc" method="POST">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span
-                        aria-hidden="true">&times;</span><span
-                        class="sr-only">{{N.close}}</span></button>
-                    <h4 class="modal-title">{{N.TOC}}</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="tocHeadingsLevels" class="col-sm-5 control-label">{{N.tocHeadingsLevels}}</label>
-                        <div class="col-sm-4">
-                            <select class="form-control" id="tocHeadingsLevels" name="tocHeadingsLevels">
-                                {{each e in levellist}}
-                                    <option{{if e.selected}} selected{{/if}}>{{e.text}}</option>
-                                {{/each}}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="tocSubpagesLevels" class="col-sm-5 control-label">{{N.tocSubpagesLevels}}</label>
-                        <div class="col-sm-4">
-                            <select class="form-control" id="tocSubpagesLevels" name="tocSubpagesLevels">
-                                {{each e in levellist2}}
-                                    <option{{if e.selected}} selected{{/if}}>{{e.text}}</option>
-                                {{/each}}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary br" onclick=" document.querySelector('#ssave').style='';">{{N.save}}
-                    <i id="ssave" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">{{N.cancel}}</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
+{{include: vspModals}}
 
-{{EditorsNoteModal}}
-
+<script src="/js/vspScripts.js"></script>
 <script>
-    document.querySelectorAll('.copy').forEach(copyBtn => {
-        copyBtn.addEventListener('click', () => {
-            const targetElement = document.querySelector(copyBtn.dataset.copy)
-            const text = targetElement.textContent.replace(/\s+/g, ' ')
-            let temp = $('<input>')
-            $('body').append(temp)
-            temp.val(text).select()
-            document.execCommand('copy')
-            temp.remove()
-            copyBtn.style.color = '#0a0'
-            copyBtn.style.transform = 'scale(1.2) rotate(10deg)'
-            setTimeout(() => { copyBtn.style.color = ''; copyBtn.style.transform = ''; }, 500)
-        })
-    })
-    
-    $('#tocModal').on('shown.bs.modal', function() {
-        $('#tocLevels').focus();
-    })
-    
     $('#langTabs a').click(function (e) {
         e.preventDefault()
         $(this).tab('show')

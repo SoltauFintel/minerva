@@ -85,4 +85,7 @@ encoding//src/main/resources/templates/master_mainbody.html=UTF-8
 encoding//src/main/resources/templates/master_mainhead.html=UTF-8
 encoding//src/main/resources/templates/taskbuttons.html=UTF-8
 encoding//src/main/resources/templates/taskbuttons2.html=UTF-8
+encoding//src/main/resources/templates/vspMindMap.html=UTF-8
+encoding//src/main/resources/templates/vspModals.html=UTF-8
+encoding//src/main/resources/templates/vspStyles.html=UTF-8
 encoding/<project>=UTF-8
