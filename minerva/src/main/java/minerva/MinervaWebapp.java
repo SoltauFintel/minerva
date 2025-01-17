@@ -147,6 +147,7 @@ import minerva.user.DeleteUserAction;
 import minerva.user.EditUserPage;
 import minerva.user.UserAccess;
 import minerva.user.UsersPage;
+import minerva.validate.RemoveStyleAttributesAction;
 import minerva.validate.ValidationPage;
 import minerva.validate.ValidatorService.UnusedImagesTimer;
 import minerva.workspace.ActivateFSModeAction;
@@ -210,6 +211,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/customer-mode/:customer", SelectCustomerModeAction.class);
         get("/w/:branch/customer-mode", CustomerModePage.class);
         get("/w/:branch/menu", MenuPage.class);
+        get("/w/:branch/remove-style", RemoveStyleAttributesAction.class);
 
         // Export
         get("/w/:branch/books/export", ExportWorkspaceAction.class); // all books
