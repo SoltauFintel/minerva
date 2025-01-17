@@ -1,6 +1,8 @@
 package minerva.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
@@ -97,5 +99,21 @@ public class StatesSO {
         public SessionExpiredException() {
             super("session-expired", (UserSO) null);
         }
+    }
+    
+    public static List<WorkspaceSO> getWorkspacesForTimer(String branches) {
+        List<WorkspaceSO> ret = new ArrayList<>();
+        if (branches != null) {
+            UserSO user = login();
+            for (String branch : branches.split(",")) {
+                try {
+                    ret.add(user.getWorkspace(branch.trim()));
+                } catch (Exception e) {
+                    Logger.error("StatesSO.getWorkspacesForTimer() cannot access branch " + branch + ": "
+                            + e.getClass().getName() + ": " + e.getMessage());
+                }
+            }
+        }
+        return ret;
     }
 }

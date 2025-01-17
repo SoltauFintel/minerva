@@ -382,15 +382,16 @@ public class ValidatorService {
         
         @Override
         protected void timerEvent() {
-            DeleteUnusedImages.start();
             CustomErrorPage.clear();
+            DeleteUnusedImages.start();
+            RemoveStyleAttributesService.start();
         }
     }
     
     public static class DeleteUnusedImages {
         
         public static void start() {
-			UserSO userSO = StatesSO.login();
+			UserSO userSO = StatesSO.login(); // TODO Das funktioniert nicht für customerVersion!
             List<String> langs = MinervaWebapp.factory().getLanguages();
             Set<String> filesToBeDeleted = new TreeSet<>();
             for (String branch : MinervaOptions.CLEANUP_BRANCHES.get().split(",")) {
