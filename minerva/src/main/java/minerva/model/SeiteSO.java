@@ -43,6 +43,7 @@ import minerva.subscription.SubscriptionService;
 import minerva.subscription.TPage;
 import minerva.user.CustomerMode;
 import minerva.user.User;
+import minerva.validate.RemoveStyleAttributesService;
 import ohhtml.toc.HelpKeysForHeading;
 import ohhtml.toc.TocMacroPage;
 
@@ -477,7 +478,9 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         // Verdacht dass das was kaputt machen könnte. -> new FixHttpImage().process(newContent, langs, images, book, seite.getId());
         for (String lang : langs) {
             seite.getTitle().setString(lang, newTitle.getString(lang));
-            content.setString(lang, newContent.getString(lang));
+            String html = newContent.getString(lang);
+            html = new RemoveStyleAttributesService().filter(html, null, null);
+            content.setString(lang, html);
         }
         comment = createTagsFromComment(comment);
         IPageChangeStrategy strat = MinervaWebapp.factory().getPageChangeStrategy();

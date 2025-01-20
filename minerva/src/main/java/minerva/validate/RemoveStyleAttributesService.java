@@ -89,7 +89,13 @@ public class RemoveStyleAttributesService {
         return dirty;
     }
 
-    private String filter(String html, String title, List<String> ops) {
+    /**
+     * @param html -
+     * @param title can be null if ops is null
+     * @param ops can be null
+     * @return html without style attributes
+     */
+    public String filter(String html, String title, List<String> ops) {
         Document document = Jsoup.parse(html);
         Elements elementsWithStyle = document.select("[style]");
         dirty = !elementsWithStyle.isEmpty();
