@@ -15,16 +15,12 @@ public class ImageDownloadAction extends AbstractImageDownload {
     @Override
     protected IBinaryDataLoader getLoader() {
         File file = ImageDownloadService.get(ctx).getDownloadFile();
-        return () -> new BinaryData(null, file.getName()) {
-            @Override
-            public byte[] getData() {
-                try {
-                    return Files.toByteArray(file);
-                } catch (Exception e) {
-                    Logger.error("[ImageDownloadAction] " + e.getClass().getSimpleName() + ": " + e.getMessage());
-                    return null;
-                }
-            }
-        };
+        try {
+            byte[] image = Files.toByteArray(file);
+            return () -> new BinaryData(image, file.getName());
+        } catch (Exception e) {
+            Logger.error("[ImageDownloadAction] " + e.getClass().getSimpleName() + ": " + e.getMessage());
+            return () -> BinaryData.NULL;
+        }
     }
 }

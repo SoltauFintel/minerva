@@ -392,7 +392,7 @@ public class MinervaWebapp extends RouteDefinitions {
                 	Timer.INSTANCE.createTimer(JournalTimer.class, "0 0 6 1 * ?"); // first day of month 6:00
             		Timer.INSTANCE.createTimer(UnusedImagesTimer.class, UnusedImagesTimer.cron(), true);
                 })
-                .withAuth(new MinervaAuth());
+                .withAuth(config -> new MinervaAuth());
     }
     
     public static void info() {
