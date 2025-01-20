@@ -23,6 +23,7 @@ public class Gliederung {
 	private final String guiLang;
 	private final String lang;
 	private final boolean allPages;
+	private DeliverHtmlContent<SeiteSO> alternativeAppend;
 	
 	public Gliederung(BookSO book, String lang, boolean allPages) {
 		this.book = book;
@@ -55,8 +56,12 @@ public class Gliederung {
 			}
             entry(gliederung, branch, bookFolder, seite, visible);
             tags(gliederung, seiten2, i, seite);
-            comments(gliederung, hasComment, hasCommentForMe, seite);
-            gliederung.append(append.getHTML(seite));
+            if (alternativeAppend == null) {
+            	comments(gliederung, hasComment, hasCommentForMe, seite);
+            	gliederung.append(append.getHTML(seite));
+            } else {
+            	gliederung.append(alternativeAppend.getHTML(seite));
+            }
             gliederung.append("</li>\n");
             
 			if ("true".equals(recursively.getHTML(seite))) {
@@ -133,5 +138,13 @@ public class Gliederung {
 
 	private String n(String key) {
 		return NLS.get(guiLang, key);
+	}
+
+	public DeliverHtmlContent<SeiteSO> getAlternativeAppend() {
+		return alternativeAppend;
+	}
+
+	public void setAlternativeAppend(DeliverHtmlContent<SeiteSO> alternativeAppend) {
+		this.alternativeAppend = alternativeAppend;
 	}
 }
