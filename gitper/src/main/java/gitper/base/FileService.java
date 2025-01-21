@@ -48,15 +48,8 @@ public class FileService {
     }
     
     public static String loadPlainTextFile(File file) {
-        if (file.isFile()) {
-            try {
-                return new String(Files.readAllBytes(file.toPath()));
-            } catch (Exception e) {
-                Logger.error(file.getAbsolutePath());
-                throw new RuntimeException("Error loading file", e);
-            }
-        }                
-        return null;
+    	byte[] data = loadBinaryFile(file);
+    	return data == null ? null : new String(data);
     }
 
     public static void savePlainTextFile(File file, String content) {
@@ -80,6 +73,32 @@ public class FileService {
 
     public static <T> void saveJsonFile(File file, T data) {
         savePlainTextFile(file, data == null ? null : prettyJSON(data));
+    }
+    
+    public static byte[] loadBinaryFile(File file) {
+        if (file.isFile()) {
+            try {
+                return Files.readAllBytes(file.toPath());
+            } catch (Exception e) {
+                Logger.error(file.getAbsolutePath());
+                throw new RuntimeException("Error loading file", e);
+            }
+        }                
+        return null;
+    }
+
+    public static void saveBinaryFile(File file, byte[] data) {
+    	if (data == null) {
+    		file.delete();
+    	} else {
+	        file.getParentFile().mkdirs();
+	        try (FileOutputStream w = new FileOutputStream(file)) {
+	            w.write(data);
+	        } catch (IOException e) {
+                Logger.error(file.getAbsolutePath());
+                throw new RuntimeException("Error saving file", e);
+	        }
+    	}
     }
     
     public static boolean isLegalFilename(String filename) {
