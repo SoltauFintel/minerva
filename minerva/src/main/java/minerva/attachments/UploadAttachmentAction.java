@@ -37,7 +37,7 @@ public class UploadAttachmentAction extends SAction {
             Logger.error(e);
             throw new RuntimeException("Error uploading attachment!"); // status 500
         } catch (FileAreadyExists e) {
-        	ctx.res.status(403);
+        	ctx.status(403);
         }
     }
 }
