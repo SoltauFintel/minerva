@@ -44,7 +44,7 @@ public class GitlabAuthService {
             String param = getParam() + "&code=" + u(code) + "&grant_type=authorization_code";
             Answer answer = new REST(cfg().getGitlabUrl() + "/oauth/token").post(param).fromJson(Answer.class);
 
-            try (GitLabApi gitLabApi = Gitper.gitperInterface.initWithAccessToken(answer.getAccess_token())) {
+            try (GitLabApi gitLabApi = (GitLabApi) Gitper.gitperInterface.initWithAccessToken(answer.getAccess_token())) {
                 initUser(gitLabApi, loginAction, answer);
                 // Redirect is done by login2().
                 return true;

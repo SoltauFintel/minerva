@@ -1,6 +1,5 @@
 package minerva;
 
-import org.gitlab4j.api.GitLabApi;
 import org.pmw.tinylog.Level;
 
 import github.soltaufintel.amalia.spark.Context;
@@ -418,7 +417,7 @@ public class MinervaWebapp extends RouteDefinitions {
 			}
 			
 			@Override
-			public GitLabApi initWithAccessToken(String token) {
+			public Object initWithAccessToken(String token) {
 				return GitFactory.initWithAccessToken(token, new MinervaGitlabConfig().getGitlabUrl());
 			}
 			

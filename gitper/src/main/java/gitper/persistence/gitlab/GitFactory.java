@@ -73,7 +73,7 @@ public class GitFactory {
      * @param gitlabUrl from config
      * @return GitLabApi
      */
-    public static GitLabApi initWithAccessToken(String accessToken, String gitlabUrl) {
+    public static Object initWithAccessToken(String accessToken, String gitlabUrl) {
         Logger.debug("GitLabApi via access token");
         return new GitLabApi(gitlabUrl, TokenType.OAUTH2_ACCESS, accessToken);
     }

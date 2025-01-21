@@ -1,7 +1,5 @@
 package gitper;
 
-import org.gitlab4j.api.GitLabApi;
-
 import github.soltaufintel.amalia.spark.Context;
 import gitper.persistence.gitlab.GitlabAuthService;
 
@@ -13,7 +11,8 @@ public interface GitperInterface {
 
 	Object tosmap_pop(String state); // Tosmap.pop()
 	
-	GitLabApi initWithAccessToken(String token); // GitFactory.initWithAccessToken()
+	/** returns GitLabApi */
+	Object initWithAccessToken(String token); // GitFactory.initWithAccessToken()
 	
 	User createUser(String login);
 	
