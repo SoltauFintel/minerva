@@ -43,4 +43,16 @@ public class NlsString {
             target.put(prefix + entry.getKey(), entry.getValue());
         }
     }
+    
+    public boolean equal(NlsString o) {
+    	if (nls.size() == o.nls.size()) {
+    		for (Entry<String, String> e : nls.entrySet()) {
+				if (!o.nls.get(e.getKey()).equals(e.getValue())) {
+					return false;
+				}
+			}
+    		return true;
+    	}
+    	return false;
+    }
 }
