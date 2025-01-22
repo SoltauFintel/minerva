@@ -74,7 +74,7 @@ public class LinkResolverPage extends SPage {
             result = new ArrayList<>();
         } else {
             result = book.getSeiten().searchInTitle(search.toLowerCase(), id, langs);
-            Logger.info("search: \"" + search + "\", found: " + result.size());
+            Logger.info("[LinkResolverPage] search: \"" + search + "\", found: " + result.size());
         }
         linkPrefix = "/links/" + branch + "/" + bookFolder + "/" + id + "?index=" + (index + 1);
     }
