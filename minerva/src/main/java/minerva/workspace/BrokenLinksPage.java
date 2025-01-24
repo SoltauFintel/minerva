@@ -33,7 +33,7 @@ public class BrokenLinksPage extends WPage {
             map.put("id", esc(page.getId()));
             map.put("title", esc(page.getTitle()));
             map.put("hasTitle", !page.getTitle().equals(page.getId()));
-            map.put("book", esc(StringService.isNullOrEmpty(page.getBookTitle()) ? "" : esc("(" + page.getBookTitle() + ")")));
+            map.put("book", esc(StringService.isNullOrEmpty(page.getBookTitle()) ? "" : "(" + page.getBookTitle() + ")"));
             DataList list2 = map.list("languages");
             for (BLLanguage language : page.getLanguages()) {
                 DataMap map2 = list2.add();
