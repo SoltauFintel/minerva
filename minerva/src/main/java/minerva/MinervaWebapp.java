@@ -107,6 +107,7 @@ import minerva.seite.EditHtmlPage;
 import minerva.seite.EditSeitePage;
 import minerva.seite.ViewSeitePage;
 import minerva.seite.actions.DeleteSeitePage;
+import minerva.seite.actions.DontChangePage;
 import minerva.seite.actions.DuplicateSeitePage;
 import minerva.seite.actions.LockedByPage;
 import minerva.seite.actions.MoveSeiteAckPage;
@@ -239,6 +240,7 @@ public class MinervaWebapp extends RouteDefinitions {
     private void page() {
         get("/s/:branch/:book/:id", ViewSeitePage.class);
         form("/s-edit/:branch/:book/:id", EditSeitePage.class); // Wegen den Images hänge ich hier nicht "/edit" hinten dran, sondern ändere den 1. Pfadteil auf "s-edit".
+        get("/s-dont/:branch/:book/:id", DontChangePage.class);
         form("/s/:branch/:book/:id/html", EditHtmlPage.class);
         post("/post-contents/:type", PostContentsAction.class);
         get("/s/:branch/:book/:id/cancel", CancelEditingAction.class);

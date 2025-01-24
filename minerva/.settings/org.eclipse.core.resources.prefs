@@ -19,6 +19,7 @@ encoding//src/main/resources/templates/DeactivateFSModePage.html=UTF-8
 encoding//src/main/resources/templates/DeleteBookPage.html=UTF-8
 encoding//src/main/resources/templates/DeleteSeitePage.html=UTF-8
 encoding//src/main/resources/templates/DeleteWorkspacePage.html=UTF-8
+encoding//src/main/resources/templates/DontChangePage.html=UTF-8
 encoding//src/main/resources/templates/DownloadExportPage.html=UTF-8
 encoding//src/main/resources/templates/DuplicateSeitePage.html=UTF-8
 encoding//src/main/resources/templates/EditAttachmentPage.html=UTF-8

@@ -449,3 +449,5 @@ LinkedPagesFromOtherBooks=Verknüpfte Seiten aus anderen Büchern
 deepSearch1=Unzufrieden mit dem Suchergebnis?
 deepSearch2=Starte die Tiefensuche.
 deepSearch3=Die kann etwas länger dauern.
+Schreibschutz=Schreibschutz
+SchreibschutzMsg=Seiten aus dem Buch "$b" sollen eigentlich nicht manuell bearbeitet werden, da sie automatisch erzeugt werden.

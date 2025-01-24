@@ -445,3 +445,5 @@ LinkedPagesFromOtherBooks=Linked pages from other books
 deepSearch1=Unhappy with the search result?
 deepSearch2=Start the deep search.
 deepSearch3=This may take a little longer.
+Schreibschutz=Write protection
+SchreibschutzMsg=Pages from the book "$b" should not actually be edited manually, as they are generated automatically.
