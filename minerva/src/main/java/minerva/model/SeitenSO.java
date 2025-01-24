@@ -19,7 +19,6 @@ import gitper.access.MultiPurposeDirAccess;
 import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.base.MList;
-import minerva.book.BookType;
 import minerva.comment.Comment;
 import minerva.comment.SeiteCommentService2;
 import minerva.config.MinervaConfig;
@@ -170,7 +169,7 @@ public class SeitenSO extends MList<SeiteSO> {
     }
     
     private void tagNewPage(SeiteSO seite) {
-        if (!BookType.PUBLIC.equals(seite.getBook().getBook().getType())) {
+        if (seite.getBook().isNotPublic()) {
             return;
         }
         MinervaConfig config = MinervaWebapp.factory().getConfig();

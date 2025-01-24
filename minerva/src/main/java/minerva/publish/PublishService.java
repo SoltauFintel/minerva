@@ -13,7 +13,6 @@ import com.google.gson.Gson;
 
 import gitper.base.FileService;
 import minerva.MinervaWebapp;
-import minerva.book.BookType;
 import minerva.model.AttachmentsSO;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
@@ -65,7 +64,7 @@ public class PublishService {
         }
         // book level
         for (BookSO book : workspace.getBooks()) {
-            if (BookType.PUBLIC.equals(book.getBook().getType())) {
+            if (book.getBook().getType().isPublic()) {
                 Map<String, TocEntry> bookPages = new HashMap<>();
                 for (String lang : langs) {
                     TocEntry bookPage = new TocEntry();

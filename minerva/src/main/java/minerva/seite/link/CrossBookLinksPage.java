@@ -79,8 +79,7 @@ public class CrossBookLinksPage extends SPage {
         List<BookSO> ret = new ArrayList<>();
         for (BookSO b : workspace.getBooks()) {
             if (b.getBook().getFolder().equals(book.getBook().getFolder())) {
-            } else if (b.isFeatureTree() || b.isInternal()) {
-            } else {
+            } else if (b.getBook().getType().isPublic()) {
                 // TODO Ich wollte irgendwann noch einschränken von welchem Buch nach welchen Büchern gelinkt werden darf.
                 ret.add(b);
             }

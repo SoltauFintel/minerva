@@ -119,7 +119,6 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         putInt("version", _seite.getVersion());
         put("bookTitle", esc(seite.getBook().getBook().getTitle().getString(u.getPageLanguage()))); // bin unsicher
         put("isPublicBook", !seite.isNotPublic());
-        put("isInternalBook", seite.isInternal());
         put("isFeatureTree", seite.isFeatureTree());
         put("newPage", n(book.isFeatureTree() ? "newFeature" : "newPage"));
         put("Sortierung", n(_seite.isSorted() ? "alfaSorted" : "manuSorted"));

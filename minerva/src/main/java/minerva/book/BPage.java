@@ -32,6 +32,6 @@ public abstract class BPage extends WPage {
     }
 
     protected boolean isOneLang() {
-        return book.isFeatureTree() || book.isInternal();
+        return book.getBook().getType().isInternal();
     }
 }
