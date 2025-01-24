@@ -318,6 +318,7 @@ bookType_PUBLIC=Online help
 bookType_CUSTOMER=Online help (customer)
 bookType_INTERNAL=Internal book
 bookType_FEATURE_TREE=Feature tree
+bookType_RELEASE_NOTES=Release Notes
 keyValues=Key Values
 masks=Masks
 addNewMask=Create new mask
