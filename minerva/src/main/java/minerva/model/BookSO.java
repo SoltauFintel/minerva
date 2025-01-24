@@ -156,6 +156,10 @@ public class BookSO {
     public boolean isNotPublic() {
         return !book.getType().isPublic();
     }
+    
+    public boolean isReleaseNotes() {
+    	return BookType.RELEASE_NOTES.equals(book.getType());
+    }
 
     public void activateSorted() {
         book.setSorted(true);

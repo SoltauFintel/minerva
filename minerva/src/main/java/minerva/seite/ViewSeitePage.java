@@ -350,12 +350,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("deletelink", withSeiteId + "/delete");
         
         // Edit
-		String editlink = "/s-edit/" + branch + "/" + bookFolder + "/" + id;
-/* TODO Baustelle		if (seiteSO.getBook().isReleaseNotes()) {
-			editlink = "/s-dont/" + branch + "/" + bookFolder + "/" + id;
-		}
-*/
-		put("editlink", esc(editlink));
+		put("editlink", esc((seiteSO.getBook().isReleaseNotes() ? "/s-dont/" : "/s-edit/") + branch + "/" + bookFolder + "/" + id));
         put("imageuploadlink", "/s-image-upload/" + branch + "/" + bookFolder + "/" + id);
     }
     
