@@ -28,6 +28,8 @@ dependencies {
     implementation 'com.openhtmltopdf:openhtmltopdf-slf4j:1.0.10'
     api            files('lib/oh-html.jar')  // https://github.com/SoltauFintel/oh-html
     
+    implementation 'net.htmlparser.jericho:jericho-html:3.4'
+    
     testImplementation 'junit:junit:4.13.2'
 }
 
