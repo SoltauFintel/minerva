@@ -238,7 +238,16 @@ public class FeatureFieldsHtml {
 			col.findDuplicateTitles();
 			Relation muster = col.getRelations().get(0);
 			top.append("<td>");
-			top.append(n(muster.getColumnTitleKey()));
+			String coltitle = n(muster.getColumnTitleKey());
+			if ("Tickets".equalsIgnoreCase(coltitle)) { // Das ist etwas krückig.
+				// Link zur TicketsPage für TicketRelation Spalte
+				top.append("<a href=\"/tickets/" + seite.getBook().getWorkspace().getBranch() + "/"
+						+ seite.getBook().getBook().getFolder() + "/" + seite.getId() + "\">");
+			}
+			top.append(coltitle);
+			if ("Tickets".equalsIgnoreCase(coltitle)) {
+				top.append("</a>");
+			}
 			top.append("</td>");
             bottom.append("<td><ul class=\"ulFeatures\">");
 			for (Relation r : col.getRelations()) {
