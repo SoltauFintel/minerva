@@ -903,3 +903,9 @@ tr.cnticket td {
 .hbfehlt {
 	color: #e0d2d2;
 }
+
+.excnInfo {
+	margin-left: 8px;
+	font-size: 8pt;
+	font-style: italic;
+}
