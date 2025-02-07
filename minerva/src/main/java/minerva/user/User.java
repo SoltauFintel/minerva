@@ -14,9 +14,9 @@ public class User implements gitper.User {
     private String mailAddress;
     private boolean exportAllowed;
     /** The user has a preferred language. That will be used for the GUI. */
-    private String guiLanguage = MinervaWebapp.factory().getInitialLanguage();
+    private String guiLanguage = MinervaWebapp.factory() == null ? null : MinervaWebapp.factory().getInitialLanguage();
     /** The current language tab for a page. */
-    private String pageLanguage = MinervaWebapp.factory().getInitialLanguage();
+    private String pageLanguage = MinervaWebapp.factory() == null ? null : MinervaWebapp.factory().getInitialLanguage();
     private ExportUserSettings export;
     private final List<String> favorites = new ArrayList<>();
     private final List<String> watchlist = new ArrayList<>();
