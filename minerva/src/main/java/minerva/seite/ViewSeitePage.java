@@ -26,6 +26,7 @@ import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.seite.actions.EditorsNoteModal;
+import minerva.seite.helpkeys.VSPTocMacro;
 import minerva.user.User;
 import minerva.user.UserAccess;
 import ohhtml.Thumbnails;
@@ -195,7 +196,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
                 titel = "without title #" + _seite.getId();
             }
             map.put("titel", esc(titel));
-            TocMacro macro = new TocMacro(seite.getTocMacroPage(), "-", lang, "");
+			TocMacro macro = new VSPTocMacro(seite.getTocMacroPage(), lang);
             macro.setHelpKeysText(n("helpKeys"));
             if (!MinervaWebapp.factory().isCustomerVersion()) {
                 macro.setSeite(new SeiteIPageAdapter(seite));
