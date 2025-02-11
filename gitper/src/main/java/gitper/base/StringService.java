@@ -108,4 +108,8 @@ public class StringService {
         }
         return html;
     }
+    
+	public static String unquote(String s) {
+		return s != null && s.startsWith("\"") && s.endsWith("\"") ? s.substring(1, s.length() - 1) : s;
+    }
 }
