@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -274,4 +275,27 @@ public class FileService {
     public static <T> String prettyJSON(T data) {
         return prettyJSON(new Gson().toJson(data));
     }
+
+    public static List<File> findFiles(File folder, String nameEndsWith) {
+    	return findFiles(folder, file -> file.getName().endsWith(nameEndsWith));
+    }
+    
+    public static List<File> findFiles(File folder, Predicate<File> test) {
+		try {
+			final List<File> files = new ArrayList<>();
+			Files.walkFileTree(folder.toPath(), new SimpleFileVisitor<Path>() {
+				@Override
+				public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+					if (test.test(file.toFile())) {
+						files.add(file.toFile());
+					}
+					return super.visitFile(file, attrs);
+				}
+			});
+			files.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
+			return files;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }
