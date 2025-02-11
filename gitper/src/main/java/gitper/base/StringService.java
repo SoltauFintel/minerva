@@ -109,7 +109,30 @@ public class StringService {
         return html;
     }
     
-	public static String unquote(String s) {
-		return s != null && s.startsWith("\"") && s.endsWith("\"") ? s.substring(1, s.length() - 1) : s;
+	public static String unquote(String str) {
+		return unquote(str, "\"", "\"");
+    }
+
+	public static String unquote(String str, String start, String end) {
+		return str != null && str.startsWith(start) && str.endsWith(end) ? str.substring(start.length(), str.length() - end.length()) : str;
+    }
+
+	public static boolean onlyDigits(String str) {
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (c < '0' || c > '9') {
+                return false;
+            }
+        }
+        return str.length() > 0;
+    }
+
+    public static boolean isWhitespace(String str, int position) {
+        if (position >= 0 && position < str.length()) {
+            char c = str.charAt(position);
+            return (c == ' ' || c == '\t' || c == ',' || c == '\n');
+        } else {
+            return true;
+        }
     }
 }
