@@ -99,6 +99,7 @@ import minerva.papierkorb.PapierkorbUnterseitenPage;
 import minerva.papierkorb.RecycleAction;
 import minerva.postcontents.PostContentsAction;
 import minerva.publish.PublishAction;
+import minerva.search.IndexBooksTimer;
 import minerva.search.IndexWorkspaceAction;
 import minerva.search.SearchPage;
 import minerva.seite.AddSeiteAction;
@@ -391,6 +392,7 @@ public class MinervaWebapp extends RouteDefinitions {
                 .withInitializer(config -> { 
                 	Timer.create(config);
                 	Timer.INSTANCE.createTimer(JournalTimer.class, "0 0 6 1 * ?"); // first day of month 6:00
+                	Timer.INSTANCE.createTimer(IndexBooksTimer.class, "0 15 8 ? * MON-FRI");
             		Timer.INSTANCE.createTimer(UnusedImagesTimer.class, UnusedImagesTimer.cron(), true);
                 })
                 .withAuth(config -> new MinervaAuth());
