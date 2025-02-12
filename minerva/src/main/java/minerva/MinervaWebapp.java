@@ -100,7 +100,7 @@ import minerva.papierkorb.RecycleAction;
 import minerva.postcontents.PostContentsAction;
 import minerva.publish.PublishAction;
 import minerva.search.IndexBooksTimer;
-import minerva.search.IndexWorkspaceAction;
+import minerva.search.IndexBooksAction;
 import minerva.search.SearchPage;
 import minerva.seite.AddSeiteAction;
 import minerva.seite.CancelEditingAction;
@@ -196,7 +196,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/create-workspace", AddWorkspacePage.class);
         get("/w/:branch/help-keys", AllHelpKeysPage.class);
         get("/w/:branch/history", WorkspaceHistoryPage.class);
-        get("/w/:branch/index", IndexWorkspaceAction.class);
+        get("/w/:branch/index", IndexBooksAction.class);
         form("/w/:branch/search", SearchPage.class);
         get("/w/:branch/push-data", PushDataAction.class);
         get("/w/:branch/language", SelectLanguageAction.class);

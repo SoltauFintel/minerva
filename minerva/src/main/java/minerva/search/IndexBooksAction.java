@@ -5,7 +5,7 @@ import org.pmw.tinylog.Logger;
 import minerva.MinervaWebapp;
 import minerva.user.UAction;
 
-public class IndexWorkspaceAction extends UAction {
+public class IndexBooksAction extends UAction {
     private static long lastCall = 0;
     
     @Override
@@ -26,7 +26,6 @@ public class IndexWorkspaceAction extends UAction {
         
         user.log(branch + " | Indexing...");
         user.getWorkspace(branch).getSearch().indexBooks();
-        user.log(branch + " | Indexing finished.");
         lastCall = System.currentTimeMillis();
 
         ctx.redirect("/message?m=3");
