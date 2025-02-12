@@ -5,11 +5,13 @@ import org.pmw.tinylog.Logger;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import minerva.base.DeliverHtmlContent;
 import minerva.book.BookPage;
 import minerva.model.SeiteSO;
 import minerva.seite.SPage;
 
 public class DeleteSeitePage extends SPage {
+    public static DeliverHtmlContent<SeiteSO> additionalInfo = seite -> "";
     
     @Override
     protected void execute() {
@@ -39,6 +41,7 @@ public class DeleteSeitePage extends SPage {
                 map.put("link", "/s/" + branch + "/" + bookFolder + "/" + s.getId());
                 map.put("title", esc(s.getTitle()));
             }
+			put("additionalInfo", esc(n(additionalInfo.getHTML(seite))));
             put("hasLinkingPages", !list.isEmpty());
             put("pagesLinkToThisPage", list.size() == 1 ? n("pageLinkToThisPage") : n("pagesLinkToThisPage"));
             render = true;
