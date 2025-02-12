@@ -3,6 +3,7 @@ package minerva.seite.link;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.action.Escaper;
@@ -73,7 +74,7 @@ public class LinkResolverPage extends SPage {
         if (search.trim().length() <= 1) {
             result = new ArrayList<>();
         } else {
-            result = book.getSeiten().searchInTitle(search.toLowerCase(), id, langs);
+            result = book.getSeiten().searchInTitle(StringEscapeUtils.unescapeHtml(search.toLowerCase()), id, langs);
             Logger.info("[LinkResolverPage] search: \"" + search + "\", found: " + result.size());
         }
         linkPrefix = "/links/" + branch + "/" + bookFolder + "/" + id + "?index=" + (index + 1);
