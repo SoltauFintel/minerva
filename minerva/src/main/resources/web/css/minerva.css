@@ -910,3 +910,7 @@ tr.cnticket td {
 	font-style: italic;
 	color: #999;
 }
+
+.badge-size {
+    background-color: #090 !important;
+}
