@@ -48,6 +48,7 @@ public class UserSO {
     private final Set<String> hasToPull = new HashSet<>();
     private String lastSelectedBranch;
     private Map<String, TaskPriority> taskPriorities;
+    public static LoginRoutine loginRoutine = userSO -> {};
     
     public UserSO(User user) {
         if (user == null) {
@@ -59,6 +60,7 @@ public class UserSO {
         dao = MinervaWebapp.factory().getBackendService().getDirAccess();
         journal = new JournalSO(this);
         workspaces = new WorkspacesSO(this, getWorkspacesFolder() + "/" + folder);
+        loginRoutine.login(this);
     }
 
     public User getUser() {
@@ -494,5 +496,9 @@ public class UserSO {
     
     public static boolean isAdmin(Context ctx) {
     	return "1".equals(ctx.req.session().attribute("admin"));
+    }
+    
+    public interface LoginRoutine {
+    	void login(UserSO userSO);
     }
 }
