@@ -55,6 +55,10 @@ body {
     margin-left: 5px;
 }
 
+.ml2 {
+	margin-left: 2em;
+}
+
 .last-change {
     color: #666;
     font-style: italic;
