@@ -221,6 +221,12 @@ public class UserSO {
         return user.getFavorites();
     }
     
+    public void setDatabase(String database) {
+    	load();
+    	user.setDatabase(database);
+    	save();
+    }
+    
     public void saveExportSettings(String item, String customer, String lang, String format, String template, boolean cover, boolean toc, boolean chapters) {
         load();
         if (user.getExport() == null) {

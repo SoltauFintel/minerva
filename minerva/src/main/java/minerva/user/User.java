@@ -28,6 +28,8 @@ public class User implements gitper.User {
     private String attachmentCategory;
     private String publishReleaseNumber;
     private String customerMode;
+    /** Business model: selected database */
+    private String database;
     
     @Override
     public String getLogin() {
@@ -173,6 +175,14 @@ public class User implements gitper.User {
     public void setCustomerMode(String customerMode) {
         this.customerMode = customerMode;
     }
+
+	public String getDatabase() {
+		return database;
+	}
+
+	public void setDatabase(String database) {
+		this.database = database;
+	}
 
 	@Override
 	public GitlabConfig getGitlabConfig() {
