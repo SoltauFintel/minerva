@@ -28,9 +28,9 @@ public class DownloadAttachmentAction extends Route<Object> {
         Attachment att = so.get(dn);
 
         if (att.getFilename().toLowerCase().endsWith(".pdf")) {
-            ctx.res.header("Content-Type", "application/pdf");
+            ctx.contentTypePDF();
         }
-        ctx.res.header("Cache-Control", "max-age=" + (15 * 60)); // 15 minutes
+        ctx.maxAge(15); // minutes
 
         File file = new File(seite.getBook().getFolder() + "/attachments/" + seite.getId(), att.getFilename());
         try {

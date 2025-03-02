@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.spark.Context;
+import github.soltaufintel.amalia.spark.Context.ContentDisposition;
 import github.soltaufintel.amalia.web.action.Action;
 import gitper.base.FileService;
 
@@ -47,7 +48,7 @@ public class PublishAction extends Action {
     }
     
     private static void downloadFile(File file, Context ctx) {
-        ctx.res.header("Content-Disposition", "attachment; filename=\"" + file.getName() + "\"");
+        ctx.contentDisposition(ContentDisposition.attachment, file.getName());
         try {
             ctx.res.raw().getOutputStream().write(Files.readAllBytes(file.toPath()));
         } catch (IOException e) {

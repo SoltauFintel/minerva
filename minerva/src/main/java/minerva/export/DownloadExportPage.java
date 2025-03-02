@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.spark.Context;
+import github.soltaufintel.amalia.spark.Context.ContentDisposition;
 import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.base.FileService;
 import minerva.base.UserMessage;
@@ -26,10 +27,10 @@ public class DownloadExportPage extends WPage {
             if (file != null && file.isFile()) {
                 if (file.getName().endsWith(".pdf")) {
                     ctx.res.type("application/pdf");
-                    download(file, asAttachment ? "attachment" : "inline");
+                    download(file, asAttachment ? ContentDisposition.attachment : ContentDisposition.inline);
                 } else if (file.getName().endsWith(".zip")) {
                     ctx.res.type("application/zip");
-                    download(file, "attachment");
+                    download(file, ContentDisposition.attachment);
                 }
             } else {
                 throw new UserMessage("export-already-downloaded", user);
@@ -52,10 +53,9 @@ public class DownloadExportPage extends WPage {
      * @param file -
      * @param attachment "inline": opens PDF in new tab instead of showing it in the browser download list, or "attachment"
      */
-    private void download(File file, String attachment) {
-		Logger.debug(attachment + " download: " + file.getAbsolutePath());
-		String disposition = attachment + "; filename=\"" + file.getName() + "\"";
-		ctx.res.header("Content-Disposition", disposition);
+    private void download(File file, ContentDisposition contentDisposition) {
+		Logger.debug(contentDisposition.name() + " download: " + file.getAbsolutePath());
+		ctx.contentDisposition(contentDisposition, file.getName());
         try {
             ctx.res.raw().getOutputStream().write(Files.readAllBytes(file.toPath()));
         } catch (IOException e) {
