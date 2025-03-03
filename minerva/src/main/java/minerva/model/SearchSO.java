@@ -5,6 +5,7 @@ import static github.soltaufintel.amalia.web.action.Escaper.urlEncode;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.pmw.tinylog.Logger;
 
@@ -144,12 +145,7 @@ public class SearchSO {
         addBreadcrumbs(ret);
 		
         // search in other data
-        additionalSearchers.forEach(additionalSearcher -> {
-			List<SearchResult> ret2 = additionalSearcher.search(sc, workspace);
-			if (ret2 != null) {
-				ret.addAll(ret2);
-			}
-        });
+		additionalSearchers.forEach(i -> i.search(sc, workspace));
     	
         boolean again = true;
         while (again) {
@@ -224,19 +220,33 @@ public class SearchSO {
     	private final String x;
     	private final String lang;
     	private final List<SearchResult> result;
+    	private final Pattern pattern;
 
     	public SearchContext(String x, String lang, List<SearchResult> result) {
 			this.x = x;
 			this.lang = lang;
 			this.result = result;
+			this.pattern = Pattern.compile(".*" + Pattern.quote(x) + ".*", Pattern.CASE_INSENSITIVE);
 		}
 
 		public String getX() {
 			return x;
 		}
+		
+		public Pattern getPattern() {
+			return pattern;
+		}
+		
+		public boolean matches(String str) {
+			return str != null && pattern.matcher(str).find();
+		}
 
 		public String getLang() {
 			return lang;
+		}
+		
+		public boolean isGerman() {
+			return "de".equalsIgnoreCase(lang);
 		}
 
 		public SearchResult add(SeiteSO seite, String content) {
@@ -248,8 +258,12 @@ public class SearchSO {
             	sr.setTitle(seite.getTitle());
             }
             sr.setContent(content);
-            result.add(sr);
+            add(sr);
             return sr;
+		}
+		
+		public void add(SearchResult hit) {
+			result.add(hit);
 		}
     }
 
@@ -260,6 +274,6 @@ public class SearchSO {
 
 	public interface WorkspaceSearcher {
 
-		List<SearchResult> search(SearchContext sc, WorkspaceSO workspace);
+		void search(SearchContext sc, WorkspaceSO workspace);
 	}
 }

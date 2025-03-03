@@ -12,6 +12,7 @@ public class SearchResult {
     private String content;
     private final List<Breadcrumb> breadcrumbs = new ArrayList<>();
     private String featureNumber = null;
+	private int hits;
 
     public String getPath() {
         return path;
@@ -56,5 +57,13 @@ public class SearchResult {
 		if (!content.contains(b.content)) {
 			content += "\n" + b.content;
 		}
+	}
+
+    public int getHits() {
+		return hits;
+	}
+
+	public void setHits(int hits) {
+		this.hits = hits;
 	}
 }
