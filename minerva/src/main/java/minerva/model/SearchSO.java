@@ -24,7 +24,7 @@ import minerva.seite.ViewAreaBreadcrumbLinkBuilder;
  * <p>Search service: https://github.com/SoltauFintel/xsearch</p>
  */
 public class SearchSO {
-    public static WorkspaceSearcher additionalSearcher = null;
+    public static List<WorkspaceSearcher> additionalSearchers = new ArrayList<>();
     private final String host;
     private final WorkspaceSO workspace;
     private final List<String> langs;
@@ -144,12 +144,12 @@ public class SearchSO {
         addBreadcrumbs(ret);
 		
         // search in other data
-        if (additionalSearcher != null) {
+        additionalSearchers.forEach(additionalSearcher -> {
 			List<SearchResult> ret2 = additionalSearcher.search(sc, workspace);
 			if (ret2 != null) {
 				ret.addAll(ret2);
 			}
-        }
+        });
     	
         boolean again = true;
         while (again) {
