@@ -922,3 +922,8 @@ tr.cnticket td {
 .badge-size {
     background-color: #090 !important;
 }
+
+.fc0 { color: #c00; }
+.fc1 { color: #999; }
+.fc2 { color: #0a0; }
+.fc3 { color: #33f; }
