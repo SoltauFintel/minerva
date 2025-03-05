@@ -13,6 +13,8 @@ public class SearchResult {
     private final List<Breadcrumb> breadcrumbs = new ArrayList<>();
     private String featureNumber = null;
 	private int hits;
+	/** book folder, table, BO, GO, verifier, catalog, ... */
+	private String category;
 
     public String getPath() {
         return path;
@@ -65,5 +67,13 @@ public class SearchResult {
 
 	public void setHits(int hits) {
 		this.hits = hits;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
 	}
 }

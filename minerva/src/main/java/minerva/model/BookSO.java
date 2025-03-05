@@ -15,6 +15,7 @@ import gitper.access.DirAccess;
 import minerva.book.Book;
 import minerva.book.BookType;
 import minerva.exclusions.SeiteSichtbar;
+import minerva.search.BookFilter;
 import minerva.seite.Breadcrumb;
 import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.ISeite;
@@ -22,7 +23,8 @@ import minerva.seite.Seite;
 import minerva.seite.tag.TagNList;
 import minerva.subscription.SubscriptionService;
 
-public class BookSO {
+public class BookSO implements BookFilter {
+	public static final String BOOK_PREFIX = "book:";
     private final WorkspaceSO workspace;
     private final Book book;
     /** Seiten auf oberster Ebene */
@@ -141,8 +143,14 @@ public class BookSO {
         return seiten.createSeite(getISeite(), this, dao());
     }
     
+    @Override
     public String getTitle() {
         return book.getTitle().getString(getUser().getGuiLanguage());
+    }
+    
+    @Override
+    public String getBookFilterId() {
+    	return BOOK_PREFIX + book.getFolder();
     }
     
     public boolean isFeatureTree() {

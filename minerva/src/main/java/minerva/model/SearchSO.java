@@ -185,6 +185,7 @@ public class SearchSO {
 					String bookFolder = p[0];
 					String id = p[1];
 					BookSO book = workspace.getBooks().byFolder(bookFolder);
+					r.setCategory(book.getBookFilterId());
 					r.getBreadcrumbs().addAll(book.getBreadcrumbs(id, new ViewAreaBreadcrumbLinkBuilder()));
 					if (book.isFeatureTree() && r.getFeatureNumber() == null) {
 						// Die normale MongoDB-basierte Suche hat ein Feature gefunden. Hier muss dann noch die Feature-Nummer gesetzt werden.
@@ -251,6 +252,7 @@ public class SearchSO {
 
 		public SearchResult add(SeiteSO seite, String content) {
 			SearchResult sr = new SearchResult();
+			sr.setCategory(seite.getBook().getBookFilterId());
             sr.setPath(seite.getBook().getBook().getFolder() + "/" + seite.getId());
             if (seite.isFeatureTree()) {
             	sr.setTitle(seite.getSeite().getTitle().getString("de"));
