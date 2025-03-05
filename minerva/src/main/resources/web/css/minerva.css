@@ -939,3 +939,15 @@ tr.cnticket td {
 .colcat  { color: #fc6b03; }
 .colgo   { color: #3333ff; }
 .colval  { color: #990000; }
+
+.vallist {
+	margin-bottom: 0;
+}
+.vallist2 {
+    margin-bottom: 0;
+	border-top: 1px #999 dashed;
+}
+
+.pl {
+    color: #ddd;
+}
