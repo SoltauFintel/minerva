@@ -227,7 +227,7 @@ public class SearchSO {
 			this.x = x;
 			this.lang = lang;
 			this.result = result;
-			this.pattern = Pattern.compile(".*" + Pattern.quote(x) + ".*", Pattern.CASE_INSENSITIVE);
+			this.pattern = Pattern.compile(".*" + StringService.unquote(Pattern.quote(x)) + ".*", Pattern.CASE_INSENSITIVE);
 		}
 
 		public String getX() {
