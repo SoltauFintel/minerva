@@ -14,8 +14,9 @@ public class SearchResult {
     private String featureNumber = null;
 	private int hits;
 	/** book folder, table, BO, GO, verifier, catalog, ... */
-	private String category;
-
+	private String category = "";
+	private String icon = "";
+	
     public String getPath() {
         return path;
     }
@@ -75,5 +76,13 @@ public class SearchResult {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 }

@@ -343,10 +343,14 @@ body {
     background-color: #FFBBFF;
 }
 
-.textfrag {
+.textfragBook {
     font-size: 10pt;
     width: 500px;
     max-width: 500px;
+}
+
+.textfrag {
+    font-size: 10pt;
 }
 
 .textareaExclusions {
@@ -927,3 +931,11 @@ tr.cnticket td {
 .fc1 { color: #999; }
 .fc2 { color: #0a0; }
 .fc3 { color: #33f; }
+
+.colschn { color: #000000; }
+.colpe   { color: #000000; }
+.colbo   { color: #cc0000; }
+.coltab  { color: #ff66ff; }
+.colcat  { color: #fc6b03; }
+.colgo   { color: #3333ff; }
+.colval  { color: #990000; }

@@ -129,6 +129,10 @@ public class SearchSO {
             Type type = new TypeToken<ArrayList<SearchResult>>() {}.getType();
             Logger.debug(url);
             ret = new REST(url).get().fromJson(type);
+			ret.forEach(sr -> {
+				sr.setTitle(Escaper.esc(sr.getTitle()));
+				sr.setIcon("fa-book greenbook");
+			});
         } else {
         	ret = new ArrayList<>();
         }
@@ -255,9 +259,9 @@ public class SearchSO {
 			sr.setCategory(seite.getBook().getBookFilterId());
             sr.setPath(seite.getBook().getBook().getFolder() + "/" + seite.getId());
             if (seite.isFeatureTree()) {
-            	sr.setTitle(seite.getSeite().getTitle().getString("de"));
+            	sr.setTitle(Escaper.esc(seite.getSeite().getTitle().getString("de")));
             } else {
-            	sr.setTitle(seite.getTitle());
+            	sr.setTitle(Escaper.esc(seite.getTitle()));
             }
             sr.setContent(content);
             add(sr);

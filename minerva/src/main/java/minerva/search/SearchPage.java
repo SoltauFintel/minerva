@@ -97,15 +97,17 @@ public class SearchPage extends UPage {
 		n++;
 		
 		DataMap map = list.add();
-		map.put("title", esc(s.getTitle()));
+		map.put("title", s.getTitle()); // no esc
 		map.put("path", esc(s.getPath()));
-		map.put("content", s.getContent());
+		map.put("content", s.getContent()); // no esc
 		boolean hasBreadcrumbs = !s.getBreadcrumbs().isEmpty();
 		map.put("hasBreadcrumbs", hasBreadcrumbs);
 		map.put("isFeatureTree", book == null ? false : book.isFeatureTree());
 		map.put("isInternal", book == null ? false : book.isInternal());
 		map.put("featureNumber", esc(s.getFeatureNumber()));
 		map.putHas("featureNumber", s.getFeatureNumber());
+		map.put("isBook", s.getCategory().startsWith(BookSO.BOOK_PREFIX));
+		map.put("icon", esc(s.getIcon()));
 		
 		DataList list2 = map.list("breadcrumbs");
 		for (int i = s.getBreadcrumbs().size() - 1; i >= 0; i--) {

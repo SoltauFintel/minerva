@@ -17,20 +17,16 @@
         <ul>
             {{each L in langs}}
                 {{each r in L.result}}
-                    <li class="search-result"><a href="/s/{{branch}}/{{r.path}}">{{r.title}}</a>
+                    <li class="search-result"><i class="fa fa-fw {{r.icon}}"></i> <a href="/s/{{branch}}/{{r.path}}">{{r.title}}</a>
                         {{if r.hasFeatureNumber}}
                             <span class="label featurenumber">{{r.featureNumber}}</span>
                             <i class="fa fa-copy" onclick="copy(this, '{{r.featureNumber}}')"></i>
                         {{/if}}
-                        <br/><div class="textfrag">{{r.content}}</div>
+                        <br/><div class="textfrag{{if r.isBook}}Book{{/if}}">{{r.content}}</div>
                         {{if r.hasBreadcrumbs}}
                             <small class="searchResultBreadcrumbs">
                                 {{if r.isInternal}}
                                     <i class="fa fa-book fa-internal"></i>
-                                {{else if r.isFeatureTree}}
-                                    <i class="fa fa-sitemap fa-sitemap-color"></i>
-                                {{else}}
-                                    <i class="fa fa-book greenbook"></i>
                                 {{/if}}
 	                            {{each b in r.breadcrumbs}}
 	                                <a href="{{b.link}}">{{b.title}}</a> &gt;

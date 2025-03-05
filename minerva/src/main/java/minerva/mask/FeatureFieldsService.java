@@ -17,6 +17,7 @@ import minerva.model.BookSO;
 import minerva.model.SearchSO.SeiteSearcher;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
+import minerva.search.SearchResult;
 import minerva.seite.ViewSeitePage.AddFeatures;
 
 public class FeatureFieldsService implements AddFeatures {
@@ -157,7 +158,9 @@ public class FeatureFieldsService implements AddFeatures {
     		}
     		String lv = dataFields.search(sc.getX().toLowerCase(), mlcontext);
     		if (lv != null) {
-				sc.add(seite, lv).setFeatureNumber(dataFields.getFeatureNumber());
+				SearchResult sr = sc.add(seite, lv);
+				sr.setFeatureNumber(dataFields.getFeatureNumber());
+				sr.setIcon("fa-sitemap fa-sitemap-color");
     		}
     	};
     }
