@@ -54,7 +54,7 @@ public class SearchPage extends UPage {
 
             fillBooksfilter(q, workspace);
 			Logger.info(user.getLogin() + " | " + branch + " | Search for \"" + q + "\": " + n + " page"
-					+ (n == 1 ? "" : "s") + " | qb: " + qb
+					+ (n == 1 ? "" : "s") + (qb == null ? "" : (" | qb: " + qb))
 					+ (forceContainsSearch ? " | force contains search" : "") + " | " + start + "ms");
         }
     }
@@ -149,7 +149,8 @@ public class SearchPage extends UPage {
 		for (BookFilter book : booksfilter) {
 			list.add().put("title", esc(book.getTitle())) //
 					.put("link", "search?q=" + u(q) + "&qb=" + u(book.getBookFilterId())) //
-					.put("last", i == booksfilter.size() - 1);
+					.put("last", i == booksfilter.size() - 1) //
+					.put("active", qb != null && qb.equals(book.getBookFilterId()));
 			i++;
 		}
 		put("hasqb", qb != null);

@@ -5,11 +5,12 @@
         <h1 class="page-header">{{header}}</h1>
 
         {{if hasBooksfilter}}
-            <p>{{N.buchfilter}}: {{each b in booksfilter}}<a href="{{b.link}}">{{b.title}}</a>{{if not b.last}}, {{/if}} {{/each}}</p>
+            <p> {{N.buchfilter}}: {{each b in booksfilter}}{{if b.active}}{{b.title}}{{else}}<a
+                    href="{{b.link}}">{{b.title}}</a>{{/if}}{{if not b.last}}, {{/if}} {{/each}}
+                {{if hasqb}}<a href="{{qboff}}" class="btn btn-default btn-sm ml2">{{N.qbofftext}}</a>{{/if}}
+            </p>
         {{/if}}
-        {{if hasqb}}
-            <p><a href="{{qboff}}">{{N.qbofftext}}</a></p>
-        {{/if}}
+        
         <p>{{N.treffer}}: {{n}}</p>
         <hr/>
         
