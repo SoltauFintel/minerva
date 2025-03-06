@@ -24,9 +24,11 @@ public class StatesSO {
     }
     
     public static StateSO get(Context ctx) {
-        StateSO state = get(key(ctx));
+        String key = key(ctx);
+		StateSO state = get(key);
         if (state == null) {
             MinervaAuth.logout2(ctx);
+			Logger.error("StatesSO.get key=" + key);
             throw new SessionExpiredException();
         }
         return state;
