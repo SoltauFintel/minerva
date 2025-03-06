@@ -3,13 +3,12 @@ package minerva.image;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import javax.servlet.MultipartConfigElement;
-import javax.servlet.ServletException;
-import javax.servlet.http.Part;
-
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.action.JsonAction;
+import jakarta.servlet.MultipartConfigElement;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Part;
 import minerva.image.ImageUploadAction.Success;
 import spark.utils.IOUtils;
 
