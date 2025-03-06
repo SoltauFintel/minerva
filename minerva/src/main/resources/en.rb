@@ -341,6 +341,7 @@ maskFieldType_BOOL=Bool
 maskFieldType_UNIQUE=unique
 maskFieldType_CUSTOMERS=Customers
 maskFieldType_USER=User
+maskFieldType_SHOWTEST=Show tests
 up=up
 down=down
 addMaskField=Create new mask field

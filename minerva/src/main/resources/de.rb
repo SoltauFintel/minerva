@@ -342,6 +342,7 @@ maskFieldType_BOOL=Bool
 maskFieldType_UNIQUE=eindeutig
 maskFieldType_CUSTOMERS=Kunden
 maskFieldType_USER=Benutzer
+maskFieldType_SHOWTEST=Zeige Tests
 up=hoch
 down=runter
 addMaskField=Neues Maskenfeld anlegen

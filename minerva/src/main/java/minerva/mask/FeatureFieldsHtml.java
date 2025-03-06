@@ -1,11 +1,14 @@
 package minerva.mask;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.base.StringService;
 import minerva.base.NLS;
+import minerva.config.MinervaOptions;
 import minerva.keyvalue.Values;
 import minerva.keyvalue.ValuesSO;
 import minerva.mask.FeatureRelationsService.Relation;
@@ -107,6 +110,7 @@ public class FeatureFieldsHtml {
                 case BOOL ->      boolField(f, ff);
                 case INTEGER ->   integerField(f, ff);
                 case TEXTAREA ->  textareaField(f, ff);
+                case SHOWTEST ->  showtestField(f, ff);
                 default ->        standardField(f, ff);   // TEXT, UNIQUE
             }
             );
@@ -203,6 +207,42 @@ public class FeatureFieldsHtml {
                  """
                 .replace("{value}", Escaper.esc(ff.get(f.getId())));
     }
+
+    private String showtestField(MaskField f, FeatureFields ff) {
+    	if (!MinervaOptions.FM_SHOW_TEST_URL.isSet()) {
+    		return standardField(f, ff); // fallback
+    	}
+		String showTestUrl = MinervaOptions.FM_SHOW_TEST_URL.get();
+		String testsHtml = split(ff.get(f.getId())).stream().map(test -> //
+			"<a href=\"" + showTestUrl + Escaper.urlEncode(test, "") + "\" target=\"_blank\">" + Escaper.esc(test) + "</a>" //
+			).collect(Collectors.joining("<br>\n"));
+        return """
+                <div class="form-group">
+                    <label for="{id}" class="col-lg-2 control-label">{label}</label>
+                    <div class="col-lg-8">{testsHtml}</div>
+                </div>
+                 """.replace("{testsHtml}", testsHtml);
+    }
+    
+    // see FeatureFieldsHtmlTest
+	static List<String> split(String text) {
+		List<String> ret = new ArrayList<>();
+		final String sep = ", ";
+		String[] w = text.split(sep);
+		for (int i = 0; i < w.length; i++) {
+			if (!w[i].isBlank()) {
+				String result = w[i];
+				int j = i + 1;
+				while (j < w.length && !w[j].contains(" / ")) { // clever splitting
+					result += sep + w[j];
+					i = j;
+					j++;
+				}
+				ret.add(result);
+			}
+		}
+		return ret;
+	}
 
     private String standardField(MaskField f, FeatureFields ff) {
         String html = """

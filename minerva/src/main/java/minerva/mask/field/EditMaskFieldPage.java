@@ -38,7 +38,7 @@ public class EditMaskFieldPage extends WPage {
             put("id", esc(id));
             put("label", esc(f.getLabel()));
             put("importField", f.isImportField());
-            combobox_idAndLabel("types", AddMaskFieldPage.types(user.getGuiLanguage()), f.getType().name(), false);
+            combobox_idAndLabel("types", AddMaskFieldPage.types(user.getGuiLanguage()), f.getType() == null ? "": f.getType().name(), false);
             header(n("editMaskField"));
         }
     }

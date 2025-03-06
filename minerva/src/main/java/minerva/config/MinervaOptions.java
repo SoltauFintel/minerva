@@ -67,6 +67,9 @@ public class MinervaOptions {
 	public static final Option CLEANUP_PASSWORD = add(CAT_CLEANUP, "cleanup.password", "Password", OptionType.SECRET).notForCustomerVersion();
 	public static final Option CLEANUP_BRANCHES = add(CAT_CLEANUP, "cleanup.branches", "Branches").setDefaultValue("master").notForCustomerVersion();
 
+	private static final OptionCategory CAT_TEST = new OptionCategory("Test").withColor("#006699");
+	public static final Option FM_SHOW_TEST_URL = add(CAT_TEST, "test.show-test.url", "Show test URL");
+
 	/** global instance, same for all users, must be set at program start */
 	public static MinervaOptions options;
 
@@ -126,6 +129,7 @@ public class MinervaOptions {
 		cats.add(CAT_COMMENT);
 		cats.add(CAT_JIRA);
 		cats.add(CAT_CLEANUP);
+		cats.add(CAT_TEST);
 		return cats;
 	}
 	

@@ -30,7 +30,7 @@ public class ViewMaskPage extends WPage {
             map.put("id", esc(f.getId()));
             map.put("label", esc(f.getLabel()));
             map.put("importField", f.isImportField());
-            map.put("type", n("maskFieldType_" + f.getType().name()));
+            map.put("type", f.getType() == null ? "" : n("maskFieldType_" + f.getType().name()));
             map.put("upAllowed", i > 0);
             map.put("downAllowed", i < max);
         }

@@ -8,5 +8,6 @@ public enum MaskFieldType {
     BOOL,
     UNIQUE,
     CUSTOMERS,
-    USER;
+    USER,
+	SHOWTEST;
 }
