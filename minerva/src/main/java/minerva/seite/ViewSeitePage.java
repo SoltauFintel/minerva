@@ -445,7 +445,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
                 SeiteSO s = book._seiteById(id);
                 if (s != null) {
                     String url = "/s/" + esc(branch) + "/" + esc(book.getBook().getFolder()) + "/" + esc(id);
-                    Logger.warn(ctx.path() + ": page does not exist. Found page in another book. Redirecting to: " + url);
+                    Logger.info(ctx.path() + ": Page does not exist. Found page in another book. Redirecting to: " + url);
                     render = false;
                     ctx.redirect(url);
                     return true;
