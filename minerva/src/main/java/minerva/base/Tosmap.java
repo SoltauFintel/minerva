@@ -63,8 +63,7 @@ public class Tosmap {
 
         final long time = System.currentTimeMillis();
         synchronized (HANDLE) {
-			Logger.debug("Tosmap map.size: " + map.size() + " | key: " + key);
-			TosmapEntry ret = map.get(key);
+            TosmapEntry ret = map.get(key);
             if (ret == null) {
                 return null;
             }
