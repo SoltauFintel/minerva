@@ -939,6 +939,7 @@ tr.cnticket td {
 .colcat  { color: #fc6b03; }
 .colgo   { color: #3333ff; }
 .colval  { color: #990000; }
+.colatt  { color: #006699; }
 
 .vallist {
 	margin-bottom: 0;

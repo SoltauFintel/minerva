@@ -131,22 +131,25 @@ public class AttachmentsSO {
     }
 
 	public void search(SearchContext sc) {
-		Set<String> filenames = getFilenames();
-		if (filenames != null) {
-			final String x = sc.getX().toLowerCase();
-			for (String filename : filenames) {
-				// search by exact category
-				if (filename.endsWith(".cat")) {
-					String cat = FileService.loadPlainTextFile(new File(filename));
-					if (cat != null && cat.equalsIgnoreCase(x)) {
-						sc.add(seite, "attachment category: " + cat);
+		if ("de".equals(sc.getLang())) {
+			Set<String> filenames = getFilenames();
+			if (filenames != null) {
+				final String x = sc.getX().toLowerCase();
+				for (String filename : filenames) {
+					// search by exact category
+					if (filename.endsWith(".cat")) {
+						String cat = FileService.loadPlainTextFile(new File(dir, filename));
+						if (cat != null && cat.equalsIgnoreCase(x)) {
+							sc.add(seite, "attachment category: " + cat).setIcon("fa-paperclip colatt");
+						}
+					} else {
+						
+						// search by filename
+						String dn = new File(filename).getName();
+						if (dn.toLowerCase().contains(x)) {
+							sc.add(seite, "attachment: " + dn).setIcon("fa-paperclip colatt");
+						}
 					}
-				}
-				
-				// search by filename
-				String dn = new File(filename).getName();
-				if (dn.toLowerCase().contains(x)) {
-					sc.add(seite, "attachment: " + dn);
 				}
 			}
 		}

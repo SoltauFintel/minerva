@@ -167,7 +167,7 @@ public class SearchSO {
     	if (isFirstLanguage) {
     		ret.add((sc, seite) -> {
 				if (seite.getId().equalsIgnoreCase(sc.getX())) {
-		            sc.add(seite, "ID: " + seite.getId());
+		            sc.add(seite, "ID: " + seite.getId()).setIcon("fa-key greenbook");
 				}
 			});
     	}
