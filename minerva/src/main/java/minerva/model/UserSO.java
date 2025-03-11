@@ -31,6 +31,7 @@ import minerva.seite.CommentWithSeite;
 import minerva.seite.link.InvalidLinksModel;
 import minerva.task.TaskPriority;
 import minerva.user.CustomerMode;
+import minerva.user.Quickbutton;
 import minerva.user.User;
 import minerva.user.UserAccess;
 
@@ -501,4 +502,19 @@ public class UserSO {
     public interface LoginRoutine {
     	void login(UserSO userSO);
     }
+    
+    public List<Quickbutton> getQuickbuttons() {
+    	load();
+    	return user.getQuickbuttons();
+    }
+    
+    public void saveQuickbuttons() {
+    	save();
+    }
+
+	public void toggleQuickbuttons() {
+		load();
+		user.setShowQuickbuttons(!user.isShowQuickbuttons());
+		save();
+	}
 }

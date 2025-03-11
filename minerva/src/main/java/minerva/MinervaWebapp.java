@@ -143,9 +143,13 @@ import minerva.subscription.SubscribeAction;
 import minerva.task.MyTasksPage;
 import minerva.task.TaskPrioAction;
 import minerva.task.TasksCreatedByMePage;
+import minerva.user.AddQuickButtonAction;
 import minerva.user.AddUserPage;
+import minerva.user.DeleteQuickbuttonAction;
 import minerva.user.DeleteUserAction;
 import minerva.user.EditUserPage;
+import minerva.user.QuickbuttonsPage;
+import minerva.user.ToggleQuickbuttonsAction;
 import minerva.user.UserAccess;
 import minerva.user.UsersPage;
 import minerva.validate.ValidationPage;
@@ -320,6 +324,10 @@ public class MinervaWebapp extends RouteDefinitions {
         addNotProtected("/backdoor");
         get("/activate-admin-rights", ActivateAdminRightsAction.class);
         get("/error", CustomErrorPage.class);
+        get("/q/config", QuickbuttonsPage.class);
+        get("/q/add", AddQuickButtonAction.class);
+        get("/q/delete", DeleteQuickbuttonAction.class);
+        get("/w/:branch/toggle-quickbuttons", ToggleQuickbuttonsAction.class);
     }
 
     private void values() {

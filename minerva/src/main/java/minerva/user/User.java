@@ -30,6 +30,8 @@ public class User implements gitper.User {
     private String customerMode;
     /** Business model: selected database */
     private String database;
+    private final List<Quickbutton> quickbuttons = new ArrayList<>();
+    private boolean showQuickbuttons = false;
     
     @Override
     public String getLogin() {
@@ -187,5 +189,17 @@ public class User implements gitper.User {
 	@Override
 	public GitlabConfig getGitlabConfig() {
 		return new MinervaGitlabConfig();
+	}
+
+	public List<Quickbutton> getQuickbuttons() {
+		return quickbuttons;
+	}
+
+	public boolean isShowQuickbuttons() {
+		return showQuickbuttons;
+	}
+
+	public void setShowQuickbuttons(boolean showQuickbuttons) {
+		this.showQuickbuttons = showQuickbuttons;
 	}
 }

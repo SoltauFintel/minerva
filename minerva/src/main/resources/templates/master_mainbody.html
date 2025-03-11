@@ -1,5 +1,14 @@
 <nav class="navbar navbar-default" style="margin-bottom: 0;">
     <div class="container-fluid">
+        {{if hasQuickbuttons}}
+	        <div class="quickbuttons">
+	            {{each qb in quickbuttons}}
+	                <a href="{{qb.link}}" class="btn btn-default btn-xs prx">{{qb.label}}</a>
+	            {{/each}}
+	            <a class="btn btn-default btn-xs pr" href="/q/add?p={{qpath}}&t={{title}}"><i class="fa fa-plus"></i></a>
+	            <a class="btn btn-default btn-xs pr" href="/q/config"><i class="fa fa-cog"></i></a>
+	        </div>
+        {{/if}}
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav_c1" aria-expanded="false">
                 <span class="sr-only">Show/hide navigation</span>

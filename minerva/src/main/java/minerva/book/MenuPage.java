@@ -88,6 +88,8 @@ public class MenuPage extends WPage {
 	        menu(list, "masks", "fa-list-alt", "/mask/:branch");
         }
         additionalMenuItems(list);
+		menu(list, user.getUser().isShowQuickbuttons() ? "hideQuickButtons" : "showQuickButtons", "fa-space-shuttle",
+				"/w/:branch/toggle-quickbuttons");
         admin(fac, isAdmin, booksOk, list);
         if (booksOk && fac.isCustomerVersion() && !fac.getAdmins().contains(user.getLogin())) {
             menu(list, "reindex", "fa-refresh", "/w/:branch/index", true);

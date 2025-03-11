@@ -8,6 +8,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.spark.Context;
+import github.soltaufintel.amalia.web.action.Escaper;
 import github.soltaufintel.amalia.web.action.Page;
 import github.soltaufintel.amalia.web.action.PageInitializer;
 import gitper.base.StringService;
@@ -21,6 +22,7 @@ import minerva.model.SeiteSO;
 import minerva.model.UserSO;
 import minerva.task.TaskService;
 import minerva.user.CustomerMode;
+import minerva.user.Quickbutton;
 import minerva.user.UserAccess;
 
 public class MinervaPageInitializer extends PageInitializer {
@@ -96,6 +98,9 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("lastEditedPage_title", m.getLastEditedPage_title());
         page.put("customerModeActive", false);
         page.put("customerModeLabel", "Kundenmodus");
+        page.list("quickbuttons");
+        page.put("hasQuickbuttons", false);
+        page.put("qpath", Escaper.urlEncode(ctx.path(), ""));
         if (m.hasUser()) {
             hasUserVars(page, m);
         }
@@ -162,6 +167,15 @@ public class MinervaPageInitializer extends PageInitializer {
                 && !(m.getBranch().length() >= 1 && m.getBranch().charAt(0) >= '0' && m.getBranch().charAt(0) <= '9'));
         page.put("endFSMode", NLS.get(userLang, "endFSMode"));
         page.list("favorites");
+		DataList q = page.list("quickbuttons");
+		int i = 0;
+		for (Quickbutton qb : m.getUser().getQuickbuttons()) {
+			DataMap map = q.add();
+			map.putInt("nr", i++);
+			map.put("link", esc(qb.getLink()));
+			map.put("label", esc(qb.getLabel()));
+		}
+        page.put("hasQuickbuttons", m.getUser().getUser().isShowQuickbuttons());
         if (m.getBooks() == null) {
             return;
         }

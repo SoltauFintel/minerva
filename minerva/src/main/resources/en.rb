@@ -449,3 +449,5 @@ deepSearch2=Start the deep book search.
 deepSearch3=This may take a little longer.
 Schreibschutz=Write protection
 SchreibschutzMsg=Pages from the book "$b" should not actually be edited manually, as they are generated automatically.
+showQuickButtons=Show quick buttons
+hideQuickButtons=Hide quick buttons

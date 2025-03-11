@@ -453,3 +453,5 @@ deepSearch2=Starte die Bücher-Tiefensuche.
 deepSearch3=Die kann etwas länger dauern.
 Schreibschutz=Schreibschutz
 SchreibschutzMsg=Seiten aus dem Buch "$b" sollen eigentlich nicht manuell bearbeitet werden, da sie automatisch erzeugt werden.
+showQuickButtons=Zeige Schnell-Buttons
+hideQuickButtons=Verstecke Schnell-Buttons

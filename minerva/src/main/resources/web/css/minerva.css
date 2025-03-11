@@ -956,3 +956,19 @@ tr.cnticket td {
 .selRow {
     background-color: #dfd !important;
 }
+
+.prx {
+    margin-right: 1em;
+    margin-top: 5px;
+    background-color: #eee;
+}
+
+.pr {
+    margin-top: 5px;
+    background-color: #eee;
+}
+
+.quickbuttons {
+/*	height: 32px;*/
+	text-align: center;
+}
