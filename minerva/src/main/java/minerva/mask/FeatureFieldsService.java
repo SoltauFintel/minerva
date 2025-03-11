@@ -1,6 +1,7 @@
 package minerva.mask;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -205,5 +206,17 @@ public class FeatureFieldsService implements AddFeatures {
 			}
 		}
 		throw new RuntimeException("Feature number '" + nr + "' not found in book '" + book.getTitle() + "'!");
+	}
+
+	public Map<String, FeatureFields> getSeitenForReportInfoClasses(BookSO featureTree) {
+		Map<String, FeatureFields> features = new HashMap<>();
+		for (SeiteSO seite : featureTree.getAlleSeiten()) {
+			FeatureFields ff = get(seite);
+			String info = ff.get("info");
+			if (!StringService.isNullOrEmpty(info)) {
+				features.put(info, ff);
+			}
+		}
+		return features;
 	}
 }
