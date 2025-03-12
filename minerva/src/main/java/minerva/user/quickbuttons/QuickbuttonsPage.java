@@ -14,6 +14,7 @@ import minerva.mask.WebpageTitleService;
 import minerva.user.UPage;
 
 public class QuickbuttonsPage extends UPage {
+	public static ChangeLink changeLink = link -> link;
 
 	@Override
 	protected void execute() {
@@ -63,6 +64,7 @@ public class QuickbuttonsPage extends UPage {
 			throw new UserMessage("pleaseEnterURL", user);
 		}
 		link = link.trim();
+		link = changeLink.changeLink(link); // Enter ticket number as link and transform to a valid ticket system URL.
 		final var jira = "atlassian.net/browse/";
 		int o = link.indexOf(jira);
 		if (o >= 0) {
@@ -89,5 +91,10 @@ public class QuickbuttonsPage extends UPage {
 		}
 		
 		ctx.redirect("/q/config");
+	}
+	
+	public interface ChangeLink {
+		
+		String changeLink(String link);
 	}
 }
