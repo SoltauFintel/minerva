@@ -204,6 +204,7 @@ public class MinervaPageInitializer extends PageInitializer {
 			map.put("disabled1", i == 0);
 			map.put("disabled2", i == max);
 			map.put("http", link.startsWith("https://") || link.startsWith("http://"));
+			map.put("onlyMe", qb.isOnlyMe());
 			i++;
 		}
         page.put("showQuickbuttons", user.getUser().isShowQuickbuttons());

@@ -31,7 +31,10 @@ public class QuickbuttonsPage extends UPage {
 				new Col("", ""
 						+ " <a href=\"/q/edit?i={{i.nr}}\" class=\"btn btn-default btn-xs\">"
 						+ "<i class=\"fa fa-pencil\"></i></a>"
-						
+
+						+ " <a href=\"/q/move?i={{i.nr}}&d=0\" class=\"btn btn-default btn-xs\" title=\"{{if i.onlyMe}}Nobody can see this quick button{{else}}Other users can take this quick button{{/if}}\">"
+						+ "<i class=\"fa fa-fw {{if i.onlyMe}}fa-lock error{{else}}fa-unlock{{/if}}\"></i></a>"
+
 						+ " <a href=\"/q/move?i={{i.nr}}&d=-1\" class=\"btn btn-default btn-xs{{if i.disabled1}} disabled{{/if}}\">"
 						+ "<i class=\"fa fa-arrow-up\"></i></a>"
 						
