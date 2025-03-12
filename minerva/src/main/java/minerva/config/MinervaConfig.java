@@ -136,7 +136,11 @@ public class MinervaConfig {
         	Logger.info("\"" + MailSender.SMTP_SERVER + "\" is not set -> don't send mail \"" + mail.getSubject() + "\" to " + mail.getToEmailaddress());
         } else {
         	mail.setSendername("Minerva");
-        	new MailSender().send(mail, config);
+        	try {
+				new MailSender().send(mail, config);
+			} catch (Exception e) {
+				Logger.error(e, "Can't send mail \"" + mail.getSubject() + "\" to " + mail.getToEmailaddress());
+			}
         }
     }
 
