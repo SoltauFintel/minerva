@@ -2,7 +2,7 @@ package minerva.user;
 
 import java.util.List;
 
-public class AddQuickButtonAction extends UAction {
+public class AddQuickbuttonAction extends UAction {
 
 	@Override
 	protected void execute() {

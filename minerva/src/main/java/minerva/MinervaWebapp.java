@@ -143,11 +143,12 @@ import minerva.subscription.SubscribeAction;
 import minerva.task.MyTasksPage;
 import minerva.task.TaskPrioAction;
 import minerva.task.TasksCreatedByMePage;
-import minerva.user.AddQuickButtonAction;
+import minerva.user.AddQuickbuttonAction;
 import minerva.user.AddUserPage;
 import minerva.user.DeleteQuickbuttonAction;
 import minerva.user.DeleteUserAction;
 import minerva.user.EditUserPage;
+import minerva.user.MoveQuickbuttonAction;
 import minerva.user.QuickbuttonsPage;
 import minerva.user.ToggleQuickbuttonsAction;
 import minerva.user.UserAccess;
@@ -325,7 +326,8 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/activate-admin-rights", ActivateAdminRightsAction.class);
         get("/error", CustomErrorPage.class);
         get("/q/config", QuickbuttonsPage.class);
-        get("/q/add", AddQuickButtonAction.class);
+        get("/q/add", AddQuickbuttonAction.class);
+        get("/q/move", MoveQuickbuttonAction.class);
         get("/q/delete", DeleteQuickbuttonAction.class);
         get("/w/:branch/toggle-quickbuttons", ToggleQuickbuttonsAction.class);
     }
