@@ -28,6 +28,9 @@ public class QuickbuttonsPage extends UPage {
 		Cols cols = Cols.of(
 				new Col("<i class=\"fa fa-fw\"></i> " + n("label"), "<i class=\"fa fa-fw {{i.icon}}\"></i> {{i.label}}"),
 				new Col("", ""
+						+ " <a href=\"/q/edit?i={{i.nr}}\" class=\"btn btn-default btn-xs\">"
+						+ "<i class=\"fa fa-pencil\"></i></a>"
+						
 						+ " <a href=\"/q/move?i={{i.nr}}&d=-1\" class=\"btn btn-default btn-xs{{if i.disabled1}} disabled{{/if}}\">"
 						+ "<i class=\"fa fa-arrow-up\"></i></a>"
 						

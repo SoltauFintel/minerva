@@ -147,6 +147,7 @@ import minerva.user.AddQuickbuttonAction;
 import minerva.user.AddUserPage;
 import minerva.user.DeleteQuickbuttonAction;
 import minerva.user.DeleteUserAction;
+import minerva.user.EditQuickbuttonPage;
 import minerva.user.EditUserPage;
 import minerva.user.MoveQuickbuttonAction;
 import minerva.user.QuickbuttonsPage;
@@ -331,6 +332,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/q/take", TakeQuickbuttonAction.class);
         get("/q/move", MoveQuickbuttonAction.class);
         get("/q/delete", DeleteQuickbuttonAction.class);
+        form("/q/edit", EditQuickbuttonPage.class);
         get("/w/:branch/toggle-quickbuttons", ToggleQuickbuttonsAction.class);
     }
 
