@@ -5,12 +5,14 @@
         <h1 class="page-header">{{header}}</h1>
         {{table1}}
         
-        <hr>
-        <p>{{N.takeQuickButtonsFromOtherUsers}}:</p>
-        <div>
-	        {{each j in other}}
-	            <a href="{{j.link}}" class="btn btn-default btn-sm brr"><i class="fa fa-plus"></i> {{j.label}}</a>
-	        {{/each}}
-        </div>
+        {{if haveOtherButtons}}
+	        <hr>
+	        <p>{{N.takeQuickButtonsFromOtherUsers}}:</p>
+	        <div>
+		        {{each j in other}}
+		            <a href="{{j.link}}" class="btn btn-default btn-sm brr"><i class="fa fa-plus"></i> {{j.label}}</a>
+		        {{/each}}
+	        </div>
+        {{/if}}
     </div>
 </div>

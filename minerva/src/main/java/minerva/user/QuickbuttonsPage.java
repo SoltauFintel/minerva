@@ -33,5 +33,6 @@ public class QuickbuttonsPage extends UPage {
 			map.put("link", "/q/take?p=" + u(qb.getLink()) + "&t=" + u(qb.getLabel()));
 			map.put("label", esc(qb.getLabel()));
 		}
+		put("haveOtherButtons", !list.isEmpty());
 	}
 }
