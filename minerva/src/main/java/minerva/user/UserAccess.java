@@ -22,7 +22,12 @@ public class UserAccess {
         if (files != null) {
             for (File file : files) {
                 if (file.getName().endsWith(".user")) {
-                    ret.add(FileService.loadJsonFile(file, User.class));
+                    User user = FileService.loadJsonFile(file, User.class);
+                    if (user == null) {
+                    	Logger.warn(".user file can not be loaded: " + file.getAbsolutePath());
+                    } else {
+                    	ret.add(user);
+                    }
                 }
             }
         }
