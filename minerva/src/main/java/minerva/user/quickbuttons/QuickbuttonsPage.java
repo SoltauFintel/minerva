@@ -4,6 +4,7 @@ import org.pmw.tinylog.Logger;
 
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
+import com.github.template72.data.IDataList;
 
 import github.soltaufintel.amalia.web.table.TableComponent;
 import github.soltaufintel.amalia.web.table.TableComponent.Col;
@@ -45,7 +46,11 @@ public class QuickbuttonsPage extends UPage {
 						+ " <a href=\"/q/delete?i={{i.nr}}\" class=\"btn btn-danger btn-xs\" onclick=\"return confirm('Sicher?');\">"
 						+ "<i class=\"fa fa-trash-o\"></i></a>"
 						));
-		put("table1", new TableComponent("wauto", cols, model, "quickbuttons"));
+		if (((IDataList) model.get("quickbuttons")).isEmpty()) {
+			put("table1", "");
+		} else {
+			put("table1", new TableComponent("wauto", cols, model, "quickbuttons"));
+		}
 		
 		DataList list = list("other");
 		for (Quickbutton qb : user.getQuickbuttonsFromOtherUsers()) {
