@@ -7,6 +7,7 @@ import gitper.GitlabConfig;
 import minerva.MinervaWebapp;
 import minerva.config.MinervaGitlabConfig;
 import minerva.export.ExportUserSettings;
+import minerva.user.quickbuttons.Quickbutton;
 
 public class User implements gitper.User {
     private String login;

@@ -1,4 +1,4 @@
-package minerva.user;
+package minerva.user.quickbuttons;
 
 import org.pmw.tinylog.Logger;
 
@@ -11,6 +11,7 @@ import github.soltaufintel.amalia.web.table.TableComponent.Cols;
 import gitper.base.StringService;
 import minerva.base.UserMessage;
 import minerva.mask.WebpageTitleService;
+import minerva.user.UPage;
 
 public class QuickbuttonsPage extends UPage {
 

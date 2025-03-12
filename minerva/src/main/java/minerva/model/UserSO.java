@@ -31,9 +31,9 @@ import minerva.seite.CommentWithSeite;
 import minerva.seite.link.InvalidLinksModel;
 import minerva.task.TaskPriority;
 import minerva.user.CustomerMode;
-import minerva.user.Quickbutton;
 import minerva.user.User;
 import minerva.user.UserAccess;
+import minerva.user.quickbuttons.Quickbutton;
 
 public class UserSO {
     private User user;

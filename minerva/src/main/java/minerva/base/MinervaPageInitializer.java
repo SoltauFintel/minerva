@@ -24,8 +24,8 @@ import minerva.model.SeiteSO;
 import minerva.model.UserSO;
 import minerva.task.TaskService;
 import minerva.user.CustomerMode;
-import minerva.user.Quickbutton;
 import minerva.user.UserAccess;
+import minerva.user.quickbuttons.Quickbutton;
 
 public class MinervaPageInitializer extends PageInitializer {
     

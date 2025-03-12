@@ -1,6 +1,8 @@
-package minerva.user;
+package minerva.user.quickbuttons;
 
 import java.util.List;
+
+import minerva.user.UAction;
 
 public class DeleteQuickbuttonAction extends UAction {
 

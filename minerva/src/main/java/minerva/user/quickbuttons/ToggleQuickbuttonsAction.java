@@ -1,4 +1,4 @@
-package minerva.user;
+package minerva.user.quickbuttons;
 
 import minerva.workspace.WAction;
 

@@ -1,6 +1,8 @@
-package minerva.user;
+package minerva.user.quickbuttons;
 
 import org.pmw.tinylog.Logger;
+
+import minerva.user.UAction;
 
 public class TakeQuickbuttonAction extends UAction {
 	
