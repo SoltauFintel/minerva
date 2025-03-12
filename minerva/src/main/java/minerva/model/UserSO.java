@@ -514,6 +514,9 @@ public class UserSO {
 		qb.setLink(link);
 		load();
 		List<Quickbutton> quickbuttons = user.getQuickbuttons();
+		if (quickbuttons.size() >= 50) {
+			throw new RuntimeException("Too many quick buttons!");
+		}
 		quickbuttons.removeIf(i -> i.getLink().equals(link));
 		quickbuttons.add(qb);
 		save();
