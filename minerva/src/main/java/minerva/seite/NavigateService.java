@@ -87,12 +87,7 @@ public class NavigateService {
     }
     
     private SeiteSO nextPageOnSameLevel(SeiteSO seite) {
-        SeitenSO seiten = seiten(seite.getBook());
-        parent = null;
-        if (seite.hasParent()) {
-            parent = seiten.byId(seite.getSeite().getParentId());
-            seiten = seiten(parent);
-        }
+    	SeitenSO seiten = fetchSeiten(seite);
         boolean pick = false;
         for (SeiteSO s : seiten) {
             if (pick && valid(s)) {
@@ -106,12 +101,7 @@ public class NavigateService {
     }
 
     private SeiteSO previousPageOnSameLevel(SeiteSO seite) {
-        SeitenSO seiten = seiten(seite.getBook());
-        parent = null;
-        if (seite.hasParent()) {
-            parent = seiten.byId(seite.getSeite().getParentId());
-            seiten = seiten(parent);
-        }
+    	SeitenSO seiten = fetchSeiten(seite);
         SeiteSO ret = null;
         for (SeiteSO s : seiten) {
             if (s.getId().equals(seite.getId())) {
@@ -122,6 +112,16 @@ public class NavigateService {
             }
         }
         return null;
+    }
+    
+    private SeitenSO fetchSeiten(SeiteSO seite) {
+        SeitenSO seiten = seiten(seite.getBook());
+        parent = null;
+        if (seite.hasParent()) {
+            parent = seiten.byId(seite.getSeite().getParentId());
+            seiten = seiten(parent);
+        }
+        return seiten;
     }
     
     private boolean valid(SeiteSO seite) {
