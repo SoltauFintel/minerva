@@ -37,20 +37,24 @@ public class StatesSO {
     }
     
     public static void login(Context ctx, User user) {
-        StateSO state = new StateSO(user);
-        state.getUser().finishMyEditings();
-        
-        int sessionTimeout = 1000 * 60 * 60 * 24 * 7; // I'm not sure what value and if needs to be configurable.
-        Tosmap.add(key(ctx), System.currentTimeMillis() + sessionTimeout, state);
-        
-        // Nach dem Einloggen soll nicht kein Workspace gewählt sein. Daher wird
-        // hier der master eingestellt. Zukünftig könnte man sich den zuletzt aktiven
-        // Workspace merken.
         try {
-            WorkspaceSO workspace = state.getUser().masterWorkspace();
-            state.getUser().setCurrentWorkspace(workspace);
-        } catch (Exception ignore) {
-        }
+			StateSO state = new StateSO(user);
+			state.getUser().finishMyEditings();
+			
+			int sessionTimeout = 1000 * 60 * 60 * 24 * 7; // I'm not sure what value and if needs to be configurable.
+			Tosmap.add(key(ctx), System.currentTimeMillis() + sessionTimeout, state);
+			
+			// Nach dem Einloggen soll nicht kein Workspace gewählt sein. Daher wird
+			// hier der master eingestellt. Zukünftig könnte man sich den zuletzt aktiven
+			// Workspace merken.
+			try {
+			    WorkspaceSO workspace = state.getUser().masterWorkspace();
+			    state.getUser().setCurrentWorkspace(workspace);
+			} catch (Exception ignore) {
+			}
+		} catch (Exception e) {
+			Logger.error(e, "Error logging in"); // Important so that errors are not missed when logging in.
+		}
     }
     
     /**
