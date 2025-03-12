@@ -209,11 +209,12 @@ public class FeatureFieldsHtml {
     }
 
     private String showtestField(MaskField f, FeatureFields ff) {
-    	if (!MinervaOptions.FM_SHOW_TEST_URL.isSet()) {
+    	String content = ff.get(f.getId());
+    	if (StringService.isNullOrEmpty(content) || !MinervaOptions.FM_SHOW_TEST_URL.isSet()) {
     		return standardField(f, ff); // fallback
     	}
 		String showTestUrl = MinervaOptions.FM_SHOW_TEST_URL.get();
-		String testsHtml = split(ff.get(f.getId())).stream().map(test -> //
+		String testsHtml = split(content).stream().map(test -> //
 			"<a href=\"" + showTestUrl + Escaper.urlEncode(test, "") + "\" target=\"_blank\">" + Escaper.esc(test) + "</a>" //
 			).collect(Collectors.joining("<br>\n"));
         return """
