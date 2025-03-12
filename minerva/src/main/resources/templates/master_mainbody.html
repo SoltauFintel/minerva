@@ -1,6 +1,6 @@
 <nav class="navbar navbar-default" style="margin-bottom: 0;">
     <div class="container-fluid">
-        {{if hasQuickbuttons}}
+        {{if showQuickbuttons}}
 	        <div class="quickbuttons">
 	            {{each qb in quickbuttons}}
 	                <a href="{{qb.link}}" class="btn btn-default btn-xs prx">{{if qb.hasIcon}}<i class="fa {{qb.icon}}"></i> {{/if}}{{qb.label}}</a>

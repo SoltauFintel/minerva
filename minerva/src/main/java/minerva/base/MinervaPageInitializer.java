@@ -107,7 +107,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("customerModeActive", false);
         page.put("customerModeLabel", "Kundenmodus");
         page.list("quickbuttons");
-        page.put("hasQuickbuttons", false);
+        page.put("showQuickbuttons", false);
         page.put("qpath", Escaper.urlEncode(ctx.path(), ""));
 	}
 
@@ -179,22 +179,7 @@ public class MinervaPageInitializer extends PageInitializer {
 		int i = 0;
 		for (Quickbutton qb : user.getQuickbuttons()) {
 			String link = qb.getLink();
-			String icon = "";
-			if (link.endsWith("/featuretree")) {
-				icon = "fa-sitemap fa-sitemap-color";
-			} else if (link.endsWith("/customer-mode")) {
-				icon = "fa-thumbs-o-up";
-			} else if (link.endsWith("/my-tasks")) {
-				icon = "fa-inbox";
-			} else if (link.startsWith("/change-notes")) {
-				icon = "fa-pencil-square-o";
-			} else if (link.startsWith("/fm/") || "/fm".equals(link)) {
-				icon = "fa-database";
-			} else if (link.startsWith("/b/")) {
-				icon = "fa-book greenbook";
-			} else if (link.startsWith("/sch/")) {
-				icon = "fa-exchange";
-			}
+			String icon = getIcon(link);
 
 			DataMap map = list.add();
 			map.putInt("nr", i++);
@@ -203,7 +188,27 @@ public class MinervaPageInitializer extends PageInitializer {
 			map.put("icon", icon);
 			map.put("hasIcon", !icon.isEmpty());
 		}
-        page.put("hasQuickbuttons", user.getUser().isShowQuickbuttons());
+        page.put("showQuickbuttons", user.getUser().isShowQuickbuttons());
+	}
+
+	private String getIcon(String link) {
+		if (link.endsWith("/featuretree")) {
+			return "fa-sitemap fa-sitemap-color";
+		} else if (link.startsWith("/b/")) { // must be after featuretree
+			return "fa-book greenbook";
+		} else if (link.endsWith("/customer-mode")) {
+			return "fa-thumbs-o-up";
+		} else if (link.endsWith("/my-tasks")) {
+			return "fa-inbox";
+		} else if (link.startsWith("/change-notes")) {
+			return "fa-pencil-square-o";
+		} else if (link.startsWith("/fm/") || "/fm".equals(link)) {
+			return "fa-database";
+		} else if (link.startsWith("/sch/")) {
+			return "fa-exchange";
+		} else {
+			return "";
+		}
 	}
 
     public static void customerMode(CustomerMode customerMode, Page page) {
