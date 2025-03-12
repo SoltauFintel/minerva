@@ -147,7 +147,9 @@ public class MinervaPageInitializer extends PageInitializer {
     }
     
     private void hasUserVars(Page page, MinervaPageInitModel m) {
+    	UserSO userSO = m.getUser();
         String userLang = m.getUserLang();
+        String branch = m.getBranch();
         page.put("abmelden", NLS.get(userLang, "logout"));
         page.put("Menu", NLS.get(userLang, "Menu"));
         page.put("BranchLabel", NLS.get(userLang, "Branch"));
@@ -156,30 +158,33 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("exclusionsTitle", NLS.get(userLang, "exclusions"));
         page.put("myTasks", NLS.get(userLang, "myTasks"));
         page.put("formulaEditor", NLS.get(userLang, "formulaEditor"));
-        page.put("delayedPush", m.getUser().getUser().getDelayedPush().contains(m.getBranch()));
+		page.put("delayedPush", userSO.getUser().getDelayedPush().contains(branch));
         page.put("delayedPushAllowed", MinervaWebapp.factory().isGitlab()
-                && !"master".equals(m.getBranch())
-                && !(m.getBranch().length() >= 1 && m.getBranch().charAt(0) >= '0' && m.getBranch().charAt(0) <= '9'));
+                && !"master".equals(branch)
+                && !(branch.length() >= 1 && branch.charAt(0) >= '0' && branch.charAt(0) <= '9'));
         page.put("endFSMode", NLS.get(userLang, "endFSMode"));
         page.list("favorites");
-		DataList q = page.list("quickbuttons");
+		displayQuickbuttons(page, userSO);
+        if (m.getBooks() != null) {
+        	page.put("previewTitle", NLS.get(userLang, "preview"));
+        	page.put("previewlink", "/p/" + branch);
+        	page.put("hasBook", true);
+        	page.put("customerModeLabel",NLS.get(userLang, "customerMode"));
+        	customerMode(userSO.getCustomerMode(), page);
+        }
+    }
+
+	private void displayQuickbuttons(Page page, UserSO user) {
+		DataList list = page.list("quickbuttons");
 		int i = 0;
-		for (Quickbutton qb : m.getUser().getQuickbuttons()) {
-			DataMap map = q.add();
+		for (Quickbutton qb : user.getQuickbuttons()) {
+			DataMap map = list.add();
 			map.putInt("nr", i++);
 			map.put("link", esc(qb.getLink()));
 			map.put("label", esc(qb.getLabel()));
 		}
-        page.put("hasQuickbuttons", m.getUser().getUser().isShowQuickbuttons());
-        if (m.getBooks() == null) {
-            return;
-        }
-        page.put("previewTitle", NLS.get(userLang, "preview"));
-        page.put("previewlink", "/p/" + m.getBranch());
-        page.put("hasBook", true);
-        page.put("customerModeLabel",NLS.get(userLang, "customerMode"));
-        customerMode(m.getUser().getCustomerMode(), page);
-    }
+        page.put("hasQuickbuttons", user.getUser().isShowQuickbuttons());
+	}
 
     public static void customerMode(CustomerMode customerMode, Page page) {
         boolean active = customerMode.isActive();
