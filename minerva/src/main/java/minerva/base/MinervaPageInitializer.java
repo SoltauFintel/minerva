@@ -61,7 +61,15 @@ public class MinervaPageInitializer extends PageInitializer {
             page.put("isMasterBranch", "master".equals(qq));
         }
         
-        page.put("hasUser", hasUser);
+        simpleVars(ctx, page, m, config, hasUser, isAdmin);
+        if (m.hasUser()) {
+            hasUserVars(page, m);
+        }
+        updateOpenMasterTasks(m, page);
+    }
+
+	private void simpleVars(Context ctx, Page page, MinervaPageInitModel m, MinervaConfig config, boolean hasUser, boolean isAdmin) {
+		page.put("hasUser", hasUser);
         page.put("title", "Minerva");
         page.put("abmelden", "Abmelden");
         page.put("development", config.isDevelopment());
@@ -101,20 +109,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.list("quickbuttons");
         page.put("hasQuickbuttons", false);
         page.put("qpath", Escaper.urlEncode(ctx.path(), ""));
-        if (m.hasUser()) {
-            hasUserVars(page, m);
-        }
-        updateOpenMasterTasks(m, page);
-    }
-    
-    public static void updateOpenMasterTasks(MinervaPageInitModel m, Page page) {
-    	fillNumberOfOpenMasterTasks(TaskService.get(m.getUser()), page);
-    }
-
-    public static void fillNumberOfOpenMasterTasks(int omt, Page page) {
-        page.put("hasOpenMasterTasks", omt > 0);
-        page.putInt("numberOfOpenMasterTasks", omt);
-    }
+	}
 
     public static void booksForMenu(boolean hasUser, String userLang, BooksSO books, Page page) {
         DataList list = page.list("booksForMenu");
@@ -185,10 +180,19 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("customerModeLabel",NLS.get(userLang, "customerMode"));
         customerMode(m.getUser().getCustomerMode(), page);
     }
-    
+
     public static void customerMode(CustomerMode customerMode, Page page) {
         boolean active = customerMode.isActive();
         page.put("customerModeActive", active);
         page.put("customerMode", esc(customerMode.toString()));
+    }
+    
+    public static void updateOpenMasterTasks(MinervaPageInitModel m, Page page) {
+    	fillNumberOfOpenMasterTasks(TaskService.get(m.getUser()), page);
+    }
+
+    public static void fillNumberOfOpenMasterTasks(int omt, Page page) {
+        page.put("hasOpenMasterTasks", omt > 0);
+        page.putInt("numberOfOpenMasterTasks", omt);
     }
 }
