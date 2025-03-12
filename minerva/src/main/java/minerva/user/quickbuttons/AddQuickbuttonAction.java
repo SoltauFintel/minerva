@@ -28,8 +28,10 @@ public class AddQuickbuttonAction extends UAction {
 				link += "?q=" + u(q);
 			}
 		}
-		user.addQuickbutton(label, link);
-		Logger.info(user.getLogin() + " | added quick button: \"" + label + "\", " + link);
+		if (!"/q/config".equals(link)) {
+			user.addQuickbutton(label, link);
+			Logger.info(user.getLogin() + " | added quick button: \"" + label + "\", " + link);
+		}
 		
 		ctx.redirect(link);
 	}
