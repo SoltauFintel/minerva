@@ -27,6 +27,7 @@ public class SearchPage extends UPage {
     protected void execute() {
         String branch = ctx.pathParam("branch");
         String q = ctx.queryParam("q");
+        q = q == null ? "" : q;
         qb = ctx.queryParam("qb");
         boolean forceContainsSearch = "force".equals(ctx.queryParam("contains"));
 

@@ -3,7 +3,7 @@
         {{if hasQuickbuttons}}
 	        <div class="quickbuttons">
 	            {{each qb in quickbuttons}}
-	                <a href="{{qb.link}}" class="btn btn-default btn-xs prx">{{qb.label}}</a>
+	                <a href="{{qb.link}}" class="btn btn-default btn-xs prx">{{if qb.hasIcon}}<i class="fa {{qb.icon}}"></i> {{/if}}{{qb.label}}</a>
 	            {{/each}}
 	            <a class="btn btn-default btn-xs pr" href="/q/add?p={{qpath}}&t={{title}}"><i class="fa fa-plus"></i></a>
 	            <a class="btn btn-default btn-xs pr" href="/q/config"><i class="fa fa-cog"></i></a>
