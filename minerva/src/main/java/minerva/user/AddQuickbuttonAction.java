@@ -1,41 +1,33 @@
 package minerva.user;
 
-import java.util.List;
-
 import org.pmw.tinylog.Logger;
 
 public class AddQuickbuttonAction extends UAction {
-	private String path;
+	private String link;
 	
 	@Override
 	protected void execute() {
-		path = ctx.queryParam("p");
-		String title = ctx.queryParam("t");
+		link = ctx.queryParam("p");
+		String label = ctx.queryParam("t");
 		String q = ctx.queryParam("q");
 		
-		title = title.replace(UPage.TITLE_POSTFIX, "");
-		List<Quickbutton> buttons = user.getQuickbuttons();
+		label = label.replace(UPage.TITLE_POSTFIX, "");
 		if (q != null && !q.isBlank()) {
 			if (q.startsWith("__CM")) {
-				title = q.substring("__CM".length());
-				path += "/" + title;
-				if ("null".equals(title)) {
-					title = "Kundenmodus aus";
+				label = q.substring("__CM".length());
+				link += "/" + label;
+				if ("null".equals(label)) {
+					label = "Kundenmodus aus";
 				} else {
-					title = title.toUpperCase();
+					label = label.toUpperCase();
 				}
 			} else {
-				path += "?q=" + u(q);
+				link += "?q=" + u(q);
 			}
 		}
-		buttons.removeIf(i -> i.getLink().equals(path));
-		Quickbutton b = new Quickbutton();
-		b.setLink(path);
-		b.setLabel(title);
-		buttons.add(b);
-		user.saveQuickbuttons();
-		Logger.info(user.getLogin() + " | added quick button: \"" + title + "\", " + path);
+		user.addQuickbutton(label, link);
+		Logger.info(user.getLogin() + " | added quick button: \"" + label + "\", " + link);
 		
-		ctx.redirect(path);
+		ctx.redirect(link);
 	}
 }

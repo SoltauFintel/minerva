@@ -1,18 +1,17 @@
 package minerva.user;
 
+import org.pmw.tinylog.Logger;
+
 public class TakeQuickbuttonAction extends UAction {
 	
 	@Override
 	protected void execute() {
-		String path = ctx.queryParam("p");
-		String title = ctx.queryParam("t");
+		String link = ctx.queryParam("p");
+		String label = ctx.queryParam("t");
 
-		Quickbutton qb = new Quickbutton();
-		qb.setLabel(title);
-		qb.setLink(path);
-		user.getQuickbuttons().add(qb);
-		user.saveQuickbuttons();
-		
+		user.addQuickbutton(label, link);
+		Logger.info(user.getLogin() + " | took quick button from other user: \"" + label + "\", " + link);
+
 		ctx.redirect("/q/config");
 	}
 }
