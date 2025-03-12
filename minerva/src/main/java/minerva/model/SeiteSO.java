@@ -507,7 +507,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         
         new Thread(() -> new WatchersService(this).notifyWatchers()).start();
 
-        Logger.info(getLogLine(null) + " | *** Page saved. (" + (System.currentTimeMillis() - start) + "ms)");
+		Logger.info(getLogLine(null) + " | *** Page saved. (#" + getId() + ", " + (System.currentTimeMillis() - start) + "ms)");
     }
 
     private String createTagsFromComment(String comment) {
