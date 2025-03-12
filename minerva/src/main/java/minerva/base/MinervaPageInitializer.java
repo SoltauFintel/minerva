@@ -178,6 +178,7 @@ public class MinervaPageInitializer extends PageInitializer {
     }
 
 	private void displayQuickbuttons(Page page, UserSO user) {
+		final int limit = 30;
 		DataList list = page.list("quickbuttons");
 		List<Quickbutton> quickbuttons = user.getQuickbuttons();
 		int i = 0;
@@ -189,6 +190,9 @@ public class MinervaPageInitializer extends PageInitializer {
 			if (link.contains("/search?q=")) {
 				label = label.replace("Volltextsuche: ", "");
 			}
+			if (label.length() > limit + 3) {
+				label = label.substring(0, limit) + "...";
+			}
 
 			DataMap map = list.add();
 			map.putInt("nr", i);
@@ -199,13 +203,23 @@ public class MinervaPageInitializer extends PageInitializer {
 			map.put("bc", link.contains("/customer-mode/") ? "btn-success" : "btn-default");
 			map.put("disabled1", i == 0);
 			map.put("disabled2", i == max);
+			map.put("http", link.startsWith("https://") || link.startsWith("http://"));
 			i++;
 		}
         page.put("showQuickbuttons", user.getUser().isShowQuickbuttons());
 	}
 
 	private String getIcon(String link) {
-		if (link.endsWith("/featuretree")) {
+		if (link.startsWith("https://") || link.startsWith("http://")) {
+			if (link.contains("atlassian")) {
+				if (link.contains("/spaces/")) { // Confluence
+					return "fa-file-text-o ftConfluenceLinkColor";
+				} else {
+					return "fa-bookmark greenbook";
+				}
+			}
+			return "fa-link";
+		} else if (link.endsWith("/featuretree")) {
 			return "fa-sitemap fa-sitemap-color";
 		} else if (link.startsWith("/b/")) { // must be after featuretree
 			return "fa-book greenbook";

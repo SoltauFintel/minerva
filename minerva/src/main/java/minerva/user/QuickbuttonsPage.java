@@ -1,17 +1,29 @@
 package minerva.user;
 
+import org.pmw.tinylog.Logger;
+
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.web.table.TableComponent;
 import github.soltaufintel.amalia.web.table.TableComponent.Col;
 import github.soltaufintel.amalia.web.table.TableComponent.Cols;
+import gitper.base.StringService;
+import minerva.base.UserMessage;
+import minerva.mask.WebpageTitleService;
 
 public class QuickbuttonsPage extends UPage {
-	// TODO Web URL's hinzufügen (wobei man Quickbuttons als privat kennzeichnen kann)
 
 	@Override
 	protected void execute() {
+		if (isPOST()) {
+			save();
+		} else {
+			display();
+		}
+	}
+
+	private void display() {
 		header(n("schnellButtonLeiste"));
 		Cols cols = Cols.of(
 				new Col("<i class=\"fa fa-fw\"></i> " + n("label"), "<i class=\"fa fa-fw {{i.icon}}\"></i> {{i.label}}"),
@@ -34,5 +46,41 @@ public class QuickbuttonsPage extends UPage {
 			map.put("label", esc(qb.getLabel()));
 		}
 		put("haveOtherButtons", !list.isEmpty());
+	}
+	
+	private void save() {
+		String link = ctx.formParam("qburl");
+		String label = ctx.formParam("qbtitle");
+		
+		if (StringService.isNullOrEmpty(link)) {
+			throw new UserMessage("pleaseEnterURL", user);
+		}
+		link = link.trim();
+		final var jira = "atlassian.net/browse/";
+		int o = link.indexOf(jira);
+		if (o >= 0) {
+			label = link.substring(o + jira.length());
+		}
+		boolean empty = StringService.isNullOrEmpty(label);
+		if (empty) {
+			label = link.replace("https://", "").replace("http://", ""); // temporary label
+		}
+		Quickbutton qb = user.addQuickbutton(label, link);
+		Logger.info(user.getLogin() + " | add URL based quick button \"" + qb.getLabel() + "\", " + qb.getLink());
+		if (empty) {
+			new Thread(() -> {
+				String label2 = WebpageTitleService.webpageTitleService.getTitle(qb.getLink()) // expensive
+						.replace("https://", "").replace("http://", "");
+				user.getQuickbuttons().forEach(i -> {
+					if (i.getLink().equals(qb.getLink())) {
+						i.setLabel(label2);
+						Logger.info(user.getLogin() + " | saved label: \"" + label2 + "\"");
+					}
+				});
+				user.saveQuickbuttons();
+			}).start();
+		}
+		
+		ctx.redirect("/q/config");
 	}
 }

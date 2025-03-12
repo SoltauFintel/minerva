@@ -453,3 +453,4 @@ showQuickButtons=Show quick buttons
 hideQuickButtons=Hide quick buttons
 schnellButtonLeiste=Quick button bar
 takeQuickButtonsFromOtherUsers=Take quick buttons from other users
+pleaseEnterURL=Please enter URL!

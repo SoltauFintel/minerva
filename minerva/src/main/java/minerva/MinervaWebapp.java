@@ -326,7 +326,7 @@ public class MinervaWebapp extends RouteDefinitions {
         addNotProtected("/backdoor");
         get("/activate-admin-rights", ActivateAdminRightsAction.class);
         get("/error", CustomErrorPage.class);
-        get("/q/config", QuickbuttonsPage.class);
+        form("/q/config", QuickbuttonsPage.class);
         get("/q/add", AddQuickbuttonAction.class);
         get("/q/take", TakeQuickbuttonAction.class);
         get("/q/move", MoveQuickbuttonAction.class);

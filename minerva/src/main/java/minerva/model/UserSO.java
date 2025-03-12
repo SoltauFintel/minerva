@@ -508,7 +508,7 @@ public class UserSO {
     	return user.getQuickbuttons();
     }
     
-    public void addQuickbutton(String label, String link) {
+    public Quickbutton addQuickbutton(String label, String link) {
 		Quickbutton qb = new Quickbutton();
 		qb.setLabel(label);
 		qb.setLink(link);
@@ -517,6 +517,7 @@ public class UserSO {
 		quickbuttons.removeIf(i -> i.getLink().equals(link));
 		quickbuttons.add(qb);
 		save();
+		return qb;
     }
     
     public void saveQuickbuttons() {

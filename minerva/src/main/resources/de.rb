@@ -457,3 +457,4 @@ showQuickButtons=Zeige Schnell-Buttons
 hideQuickButtons=Verstecke Schnell-Buttons
 schnellButtonLeiste=Schnell-Button-Leiste
 takeQuickButtonsFromOtherUsers=Schnell-Buttons von anderen Benutzern übernehmen
+pleaseEnterURL=Bitte URL eingeben!

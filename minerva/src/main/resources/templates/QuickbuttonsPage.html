@@ -5,6 +5,21 @@
         <h1 class="page-header">{{header}}</h1>
         {{table1}}
         
+        <hr/>
+        <form class="form-horizontal" method="post">
+            <fieldset>
+                <div class="form-group">
+                    <div class="col-lg-4">
+                        <input class="form-control" type="text" id="qburl" name="qburl" placeholder="URL">
+                    </div>
+                    <div class="col-lg-2 br">
+                        <input class="form-control" type="text" id="qbtitle" name="qbtitle" placeholder="{{N.label}}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">{{N.save}}</button>
+                </div>
+            </fieldset>
+        </form>
+        
         {{if haveOtherButtons}}
 	        <hr>
 	        <p>{{N.takeQuickButtonsFromOtherUsers}}:</p>
