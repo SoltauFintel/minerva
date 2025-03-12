@@ -29,16 +29,24 @@ public class CustomerModePage extends WPage {
         header(n("customerMode"));
         put("ccm", esc(ccm.toString()));
         DataList list = list("customers");
+        boolean set = false;
         for (String customer : customers) {
             list.add()
                 .put("customer", customer.toLowerCase())
                 .put("label", customer.toUpperCase())
                 .put("css", customer.equalsIgnoreCase(ccm.getCustomer()) ? "btn-success" : "btn-default");
+            if (customer.equalsIgnoreCase(ccm.getCustomer())) {
+            	put("quickbuttonsExtra", "&q=" + u("__CM" + customer));
+            	set = true;
+            }
         }
         list.add()
             .put("customer", "null")
             .put("label", n(StringService.isNullOrEmpty(ccm.getCustomer()) ? "customerModeIsOff" : "turnOffCustomerMode"))
             .put("css", StringService.isNullOrEmpty(ccm.getCustomer()) ? "btn-danger" : "btn-default");
+        if (!set) {
+        	put("quickbuttonsExtra", "&q=" + u("__CMnull"));
+        }
         if (tags == null) {
             put("showTags", false);
         } else {

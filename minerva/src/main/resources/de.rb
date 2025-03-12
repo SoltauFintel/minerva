@@ -455,3 +455,5 @@ Schreibschutz=Schreibschutz
 SchreibschutzMsg=Seiten aus dem Buch "$b" sollen eigentlich nicht manuell bearbeitet werden, da sie automatisch erzeugt werden.
 showQuickButtons=Zeige Schnell-Buttons
 hideQuickButtons=Verstecke Schnell-Buttons
+schnellButtonLeiste=Schnell-Button-Leiste
+takeQuickButtonsFromOtherUsers=Schnell-Buttons von anderen Benutzern übernehmen

@@ -451,3 +451,5 @@ Schreibschutz=Write protection
 SchreibschutzMsg=Pages from the book "$b" should not actually be edited manually, as they are generated automatically.
 showQuickButtons=Show quick buttons
 hideQuickButtons=Hide quick buttons
+schnellButtonLeiste=Quick button bar
+takeQuickButtonsFromOtherUsers=Take quick buttons from other users

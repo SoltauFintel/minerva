@@ -2,6 +2,8 @@ package minerva.base;
 
 import static github.soltaufintel.amalia.web.action.Escaper.esc;
 
+import java.util.List;
+
 import org.pmw.tinylog.Logger;
 
 import com.github.template72.data.DataList;
@@ -109,6 +111,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.list("quickbuttons");
         page.put("showQuickbuttons", false);
         page.put("qpath", Escaper.urlEncode(ctx.path(), ""));
+        page.put("quickbuttonsExtra", "");
 	}
 
     public static void booksForMenu(boolean hasUser, String userLang, BooksSO books, Page page) {
@@ -176,17 +179,27 @@ public class MinervaPageInitializer extends PageInitializer {
 
 	private void displayQuickbuttons(Page page, UserSO user) {
 		DataList list = page.list("quickbuttons");
+		List<Quickbutton> quickbuttons = user.getQuickbuttons();
 		int i = 0;
-		for (Quickbutton qb : user.getQuickbuttons()) {
+		int max = quickbuttons.size() - 1;
+		for (Quickbutton qb : quickbuttons) {
 			String link = qb.getLink();
 			String icon = getIcon(link);
+			String label = qb.getLabel();
+			if (link.contains("/search?q=")) {
+				label = label.replace("Volltextsuche: ", "");
+			}
 
 			DataMap map = list.add();
-			map.putInt("nr", i++);
+			map.putInt("nr", i);
 			map.put("link", esc(link));
-			map.put("label", esc(qb.getLabel()));
+			map.put("label", esc(label));
 			map.put("icon", icon);
 			map.put("hasIcon", !icon.isEmpty());
+			map.put("bc", link.contains("/customer-mode/") ? "btn-success" : "btn-default");
+			map.put("disabled1", i == 0);
+			map.put("disabled2", i == max);
+			i++;
 		}
         page.put("showQuickbuttons", user.getUser().isShowQuickbuttons());
 	}
@@ -196,7 +209,7 @@ public class MinervaPageInitializer extends PageInitializer {
 			return "fa-sitemap fa-sitemap-color";
 		} else if (link.startsWith("/b/")) { // must be after featuretree
 			return "fa-book greenbook";
-		} else if (link.endsWith("/customer-mode")) {
+		} else if (link.contains("/customer-mode/")) {
 			return "fa-thumbs-o-up";
 		} else if (link.endsWith("/my-tasks")) {
 			return "fa-inbox";
@@ -206,6 +219,8 @@ public class MinervaPageInitializer extends PageInitializer {
 			return "fa-database";
 		} else if (link.startsWith("/sch/")) {
 			return "fa-exchange";
+		} else if (link.contains("/search?q=")) {
+			return "fa-search";
 		} else {
 			return "";
 		}

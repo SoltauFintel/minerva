@@ -517,4 +517,27 @@ public class UserSO {
 		user.setShowQuickbuttons(!user.isShowQuickbuttons());
 		save();
 	}
+	
+	public List<Quickbutton> getQuickbuttonsFromOtherUsers() {
+		List<Quickbutton> ret = new ArrayList<>();
+		for (User u : UserAccess.loadUsers()) {
+			for (Quickbutton b : u.getQuickbuttons()) {
+				boolean found = false;
+				for (Quickbutton x : ret) {
+					if (x.getLink().equals(b.getLink())) {
+						found = true;
+						break;
+					}
+				}
+				if (!found) {
+					ret.add(b);
+				}
+			}
+		}
+		ret.sort((a, b) -> a.getLabel().compareToIgnoreCase(b.getLabel()));
+		for (Quickbutton b : getQuickbuttons()) {
+			ret.removeIf(i -> i.getLink().equals(b.getLink()));
+		}
+		return ret;
+	}
 }

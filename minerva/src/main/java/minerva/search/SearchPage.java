@@ -52,6 +52,7 @@ public class SearchPage extends UPage {
 					+ (StringService.isNullOrEmpty(qb) ? "" : "&qb=" + u(qb)) + "&contains=force");
 			fillList(results, workspace);
             putInt("n", n);
+            put("quickbuttonsExtra", "&q=" + u(q));
 
             fillBooksfilter(q, workspace);
 			Logger.info(user.getLogin() + " | " + branch + " | Search for \"" + q + "\": " + n + " page"
