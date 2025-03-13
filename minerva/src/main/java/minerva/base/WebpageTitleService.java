@@ -1,4 +1,4 @@
-package minerva.mask;
+package minerva.base;
 
 public class WebpageTitleService {
 	public static WebpageTitleService webpageTitleService = new WebpageTitleService();

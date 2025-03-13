@@ -14,7 +14,6 @@ import com.google.gson.reflect.TypeToken;
 import github.soltaufintel.amalia.rest.REST;
 import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.base.StringService;
-import minerva.mask.FeatureFieldsService;
 import minerva.search.CreatePageRequest;
 import minerva.search.CreateSiteRequest;
 import minerva.search.SearchResult;
@@ -26,6 +25,7 @@ import minerva.seite.ViewAreaBreadcrumbLinkBuilder;
  */
 public class SearchSO {
     public static List<WorkspaceSearcher> additionalSearchers = new ArrayList<>();
+    public static FeatureSearcher searchFeatures;
     private final String host;
     private final WorkspaceSO workspace;
     private final List<String> langs;
@@ -176,7 +176,9 @@ public class SearchSO {
 		ret.add((sc, seite) -> new AttachmentsSO(seite).search(sc));
 		
 		// search features
-		ret.add(new FeatureFieldsService().getSearcher(workspace));
+		if (searchFeatures != null) {
+			searchFeatures.search(workspace, ret);
+		}
 		
     	return ret;
     }
@@ -191,9 +193,9 @@ public class SearchSO {
 					BookSO book = workspace.getBooks().byFolder(bookFolder);
 					r.setCategory(book.getBookFilterId());
 					r.getBreadcrumbs().addAll(book.getBreadcrumbs(id, new ViewAreaBreadcrumbLinkBuilder()));
-					if (book.isFeatureTree() && r.getFeatureNumber() == null) {
+					if (book.isFeatureTree() && r.getFeatureNumber() == null && searchFeatures != null) {
 						// Die normale MongoDB-basierte Suche hat ein Feature gefunden. Hier muss dann noch die Feature-Nummer gesetzt werden.
-						r.setFeatureNumber(new FeatureFieldsService().get(book._seiteById(id)).getFeatureNumber());
+						r.setFeatureNumber(searchFeatures.getFeatureNumber(book._seiteById(id)));
 					}
 				} catch (Exception e) {
 					Logger.debug("path: " + r.getPath());
@@ -281,5 +283,12 @@ public class SearchSO {
 	public interface WorkspaceSearcher {
 
 		void search(SearchContext sc, WorkspaceSO workspace);
+	}
+	
+	public interface FeatureSearcher {
+		
+		void search(WorkspaceSO workspace, List<SeiteSearcher> result);
+		
+		String getFeatureNumber(SeiteSO seite);
 	}
 }

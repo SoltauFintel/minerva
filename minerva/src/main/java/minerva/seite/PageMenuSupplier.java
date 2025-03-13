@@ -14,7 +14,6 @@ public class PageMenuSupplier {
 			new PageMenuItem("{viewlink}/toggle-watch?m=s", "fa-sitemap", "N.watchSubpages", ctx.isSubpagesWatched()),
 	        new PageMenuItem(" data-toggle=\"modal\" data-target=\"#tocModal\"", "fa-list-ul", "N.TOC"),
 	        new PageMenuItem("{viewlink}/attachments", "fa-paperclip", "N." + AttachmentsPage.getTitleKey()),
-        	new PageMenuItem(ctx.getSeite().isFeatureTree(), "{viewlink}/quick", "fa-rocket", "N.QuicklyCreateFeaturesTitle"),
         	new PageMenuItem("", "", "-"),
         	new PageMenuItem(ctx.isGitlab(), "{viewlink}/history", "fa-history", "N.history"),
             new PageMenuItem(ctx.isAdmin(), " data-toggle=\"modal\" data-target=\"#" + EditorsNoteModal.class.getSimpleName() + "\"",

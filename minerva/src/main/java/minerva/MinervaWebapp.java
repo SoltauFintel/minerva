@@ -78,18 +78,6 @@ import minerva.keyvalue.AddValuesPage;
 import minerva.keyvalue.DeleteValuesAction;
 import minerva.keyvalue.EditValuesPage;
 import minerva.keyvalue.ValuesListPage;
-import minerva.mask.AddMaskPage;
-import minerva.mask.DeleteMaskAction;
-import minerva.mask.EditFeatureFieldsPage;
-import minerva.mask.FeaturesTablePage;
-import minerva.mask.MasksPage;
-import minerva.mask.QuicklyCreateFeaturesPage;
-import minerva.mask.ResponsibilitiesPage;
-import minerva.mask.ViewMaskPage;
-import minerva.mask.field.AddMaskFieldPage;
-import minerva.mask.field.DeleteMaskFieldAction;
-import minerva.mask.field.EditMaskFieldPage;
-import minerva.mask.field.SortMaskFieldAction;
 import minerva.migration.MigrationPage;
 import minerva.model.JournalSO;
 import minerva.model.JournalSO.JournalTimer;
@@ -171,7 +159,7 @@ import minerva.workspace.WorkspacesPage;
 import spark.Spark;
 
 public class MinervaWebapp extends RouteDefinitions {
-    public static final String VERSION = "3.9.0";
+    public static final String VERSION = "3.10.0";
     private static MinervaFactory factory;
     
     @Override
@@ -184,7 +172,6 @@ public class MinervaWebapp extends RouteDefinitions {
         comments();
         users();
         values();
-        masks();
         misc();
         restApi();
     }
@@ -270,7 +257,6 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/s/:branch/:book/:id/toggle-watch", ToggleWatchAction.class);
         get("/s/:branch/:book/:id/links", LinkAnalysisPage.class);
         post("/s/:branch/:book/:id/toc", TocAction.class);
-        form("/s/:branch/:book/:id/quick", QuicklyCreateFeaturesPage.class);
         post("/s/:branch/:book/:id/editorsnote", SaveEditorsNoteAction.class);
         form("/s/:branch/:book/:id/help-keys/:lang/:h", HelpKeysForHeadingPage.class);
         get("/s/:branch/:book/:id/cleanup-hkh", CleanupHelpKeysForHeadingsAction.class);
@@ -343,21 +329,6 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/values/:branch", ValuesListPage.class);
     }
 
-    private void masks() {
-        get("/mask/:branch", MasksPage.class);
-        form("/mask/:branch/add", AddMaskPage.class);
-        get("/mask/:branch/:tag", ViewMaskPage.class);
-        get("/mask/:branch/:tag/delete", DeleteMaskAction.class);
-        form("/mask/:branch/:tag/add-field", AddMaskFieldPage.class);
-        form("/mask/:branch/:tag/:id/edit-field", EditMaskFieldPage.class);
-        get("/mask/:branch/:tag/:id/delete-field", DeleteMaskFieldAction.class);
-        get("/mask/:branch/:tag/:id/sort-field", SortMaskFieldAction.class);
-        
-        form("/ff/:branch/:book/:id", EditFeatureFieldsPage.class);
-        form("/f/:branch/:book/:id", FeaturesTablePage.class);
-        get("/responsibilities/:branch/:book", ResponsibilitiesPage.class);
-    }
-    
     private void misc() {
         get("/logged-out", LoggedOutPage.class);
         addNotProtected("/logged-out");

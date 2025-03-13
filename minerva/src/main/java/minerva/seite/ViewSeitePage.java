@@ -13,15 +13,13 @@ import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.base.DeliverHtmlContent;
+import minerva.base.FillModel;
 import minerva.base.Uptodatecheck;
 import minerva.book.BookPage;
 import minerva.comment.SeiteCommentService2;
 import minerva.exclusions.SeiteSichtbar;
 import minerva.exclusions.Visible;
 import minerva.image.FixHttpImage;
-import minerva.mask.FeatureFieldsHtmlFactory;
-import minerva.mask.FeatureFieldsService;
-import minerva.mask.MaskAndDataFields;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
@@ -34,8 +32,11 @@ import ohhtml.toc.LocalAnchors;
 import ohhtml.toc.TocMacro;
 
 public class ViewSeitePage extends SPage implements Uptodatecheck {
-    public static DeliverHtmlContent<SeiteSO> additionalButtons = i -> "";
-    public static DeliverHtmlContent<SeiteSO> featureStatusButtons = i -> "";
+    public static DeliverHtmlContent<SeiteSO> additionalButtons = seite -> "";
+    public static DeliverHtmlContent<SeiteSO> featureStatusButtons = seite -> "";
+    public static DeliverHtmlContent<SeiteSO> featureFields = seite -> "";
+    public static FillModel<SeiteSO, DataList> fillFeaturesList = (seite, list) -> {};
+    public static FillModel<SeiteSO, DataMap> customersMultiselect = (seite, model) -> {};
     public static AddFeatures addFeatures = (seite, features) -> {};
     public static PageMenuSupplier menuSupplier = new PageMenuSupplier();
     private String mindmapJson;
@@ -78,7 +79,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         fillLanguageSpecifics(u);
         Seite _seite = seite.getSeite();
         simpleVars(u, _seite);
-        new MaskAndDataFields(seite).customersMultiselect(model);
+        customersMultiselect.fill(seite, model);
         commentsSize();
         PageChange change = seite.getLastChange();
         put("hasLastChange", change != null);
@@ -125,12 +126,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("Sortierung", n(_seite.isSorted() ? "alfaSorted" : "manuSorted"));
         put("isSorted", _seite.isSorted());
         put("hasAbsoluteUrlImage", new FixHttpImage().hasAbsoluteUrlImage(seite, langs));
-        if (!seite.isFeatureTree() || seite.isPageInFeatureTree()) {
-        	put("featureFields", "");
-        } else {
-        	put("featureFields", FeatureFieldsHtmlFactory.FACTORY.build(seite, false).html() + "</fieldset></form>" +
-        			featureStatusButtons.getHTML(seite) + "<hr/>");
-        }
+        put("featureFields", featureFields.getHTML(seite));
         put("EditorsNoteModal", new EditorsNoteModal(seite)); // component
         put("editorsNoteBR", esc(_seite.getEditorsNote()).replace("\n", "<br/>"));
         put("hasEditorsNote", !StringService.isNullOrEmpty(_seite.getEditorsNote()));
@@ -152,7 +148,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             put("hasLeftArea", true);
             put("leftAreaContent", new PageTree().getHTML(seite.getBook().getSeiten(), langs, seite.getId(), user.getPageLanguage()));
             put("mindmapData", "");
-            new FeatureFieldsService().addFeatures(seite, list);
+            fillFeaturesList.fill(seite, list);
             addFeatures.addFeatures(seite, list);
 			list.sort((a, b) -> a.getValue("title").toString().compareToIgnoreCase(b.getValue("title").toString()));
             put("editButton2", n("edit"));
