@@ -85,7 +85,6 @@ public class MenuPage extends WPage {
         workspace(list);
         if (!fac.isCustomerVersion()) {
 	        menu(list, "keyValues", "fa-key", "/values/:branch");
-	        menu(list, "masks", "fa-list-alt", "/mask/:branch");
         }
         additionalMenuItems(list);
 		menu(list, user.getUser().isShowQuickbuttons() ? "hideQuickButtons" : "showQuickButtons", "fa-space-shuttle",
