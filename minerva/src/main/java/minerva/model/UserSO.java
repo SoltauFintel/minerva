@@ -537,7 +537,7 @@ public class UserSO {
 		List<Quickbutton> ret = new ArrayList<>();
 		for (User u : UserAccess.loadUsers()) {
 			for (Quickbutton b : u.getQuickbuttons()) {
-				if (!b.isOnlyMe() || !"/q/config".equals(b.getLink())) {
+				if (!b.isOnlyMe() && !"/q/config".equals(b.getLink())) {
 					boolean found = false;
 					for (Quickbutton x : ret) {
 						if (x.getLink().equals(b.getLink())) {
