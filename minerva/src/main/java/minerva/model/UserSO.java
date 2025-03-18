@@ -173,6 +173,12 @@ public class UserSO {
         }
         save();
     }
+    
+    public void selectPageLanguage(String lang) {
+    	load();
+    	user.setPageLanguage(lang);
+    	save();
+    }
 
     public void toggleGuiLanguage() {
         load();
