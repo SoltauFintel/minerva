@@ -135,4 +135,20 @@ public class StringService {
             return true;
         }
     }
+
+    /**
+	 * @param str e.g. a tag
+	 * @return number of "." in str
+	 */
+	public static int dots(String str) {
+		int ret = 0;
+		if (str != null) {
+			for (int i = 0; i < str.length(); i++) {
+				if (str.charAt(i) == '.') {
+					ret++;
+				}
+			}
+		}
+		return ret;
+	}
 }
