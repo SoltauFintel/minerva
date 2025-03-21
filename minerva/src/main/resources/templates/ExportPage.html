@@ -98,5 +98,8 @@
             </fieldset>
         </form>
         <p class="mt3" style="font-size: 9pt;">{{N.exportInfo}}</p>
+        {{if templatesAllowed}}
+            <p class="mt2"><a href="/ets/{{branch}}" class="btn btn-default"><i class="fa fa-file-text-o"></i> {{N.exportTemplates}}</a></p>
+        {{/if}}
     </div>
 </div>

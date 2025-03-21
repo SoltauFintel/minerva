@@ -12,7 +12,6 @@ import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
-import minerva.user.UserAccess;
 import minerva.workspace.WPage;
 
 public class MenuPage extends WPage {
@@ -137,9 +136,6 @@ public class MenuPage extends WPage {
     private void export(boolean booksOk, DataList list) {
         if (booksOk) {
             menu(list, "export", "fa-upload", "/w/:branch/export");
-            if (UserAccess.hasExportRight(user.getLogin())) {
-                menu(list, "exportTemplates", "fa-file-text-o", "/ets/:branch");
-            }
         }
     }
 

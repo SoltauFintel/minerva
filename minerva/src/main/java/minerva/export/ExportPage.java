@@ -15,6 +15,7 @@ import minerva.export.template.ExportTemplateSet;
 import minerva.export.template.ExportTemplatesService;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
+import minerva.user.UserAccess;
 import minerva.workspace.WPage;
 
 public class ExportPage extends WPage {
@@ -76,6 +77,7 @@ public class ExportPage extends WPage {
             put("withCover", us.isCover());
             put("withTOC", us.isToc());
             put("withChapters", us.isChapters());
+            put("templatesAllowed", UserAccess.hasExportRight(user.getLogin()));
         }
     }
 
