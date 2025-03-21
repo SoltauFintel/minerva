@@ -971,3 +971,52 @@ tr.cnticket td {
 .quickbuttons {
 	text-align: center;
 }
+
+.table1 td, .table1 th {
+    border-right: 1px solid #666;
+    padding: .5em;
+    text-align: center;
+}
+
+.table1 th {
+    background-color: #f5f5f5;
+}
+
+.tal {
+    text-align: left !important;
+}
+
+.vat {
+    vertical-align: top;
+}
+
+.startdate {
+    font-weight: normal;
+    font-size: 9pt;
+    border-top: 1pt solid #ccc;
+}
+
+.starttime {
+    font-weight: normal;
+    font-size: 9pt;
+}
+
+.black {
+    background-color: rgba(153,153,153,0.3);
+}
+
+.question {
+    color: #999;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.badge-size {
+    background-color: #090;
+}
+
+.subBtn {
+    min-width: 140px;
+}
