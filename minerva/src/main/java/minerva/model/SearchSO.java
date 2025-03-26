@@ -124,6 +124,7 @@ public class SearchSO {
         if (StringService.isNullOrEmpty(x)) {
             return new ArrayList<>();
         } else if (!StringService.isNullOrEmpty(host)) {
+        	x = quoteHyphenatedWords(x);
         	// search pages using xsearch
             String url = host + "/search/" + getSiteName(lang) + "?q=" + Escaper.urlEncode(x, "") + (forceContainsSearch ? "&contains=force" : "");
             Type type = new TypeToken<ArrayList<SearchResult>>() {}.getType();
@@ -134,6 +135,7 @@ public class SearchSO {
 				sr.setIcon("fa-book greenbook");
 			});
         } else {
+        	x = quoteHyphenatedWords(x);
         	ret = new ArrayList<>();
         }
 
@@ -159,7 +161,15 @@ public class SearchSO {
         return ret;
     }
     
-    // page search algorithms
+    private String quoteHyphenatedWords(String input) {
+    	if (input.contains("-") && !input.trim().contains(" ")) {
+	        String regex = "\\b(?:[A-Za-z]+-)+[0-9]+\\b";
+	        return input.replaceAll(regex, "\"$0\"");
+    	}
+    	return input;
+    }
+    
+	// page search algorithms
     private List<SeiteSearcher> getSearchers(WorkspaceSO workspace, boolean isFirstLanguage) {
     	List<SeiteSearcher> ret = new ArrayList<>();
     	
