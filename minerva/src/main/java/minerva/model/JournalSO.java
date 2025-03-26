@@ -10,9 +10,9 @@ import java.util.Map;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.timer.AbstractTimer;
 import gitper.base.FileService;
 import minerva.MinervaWebapp;
-import minerva.base.AbstractTimer;
 import minerva.base.NlsString;
 
 public class JournalSO {

@@ -13,14 +13,14 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.timer.AbstractTimer;
+import github.soltaufintel.amalia.timer.Timer;
 import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.access.CommitMessage;
 import minerva.MinervaWebapp;
-import minerva.base.AbstractTimer;
 import minerva.base.CustomErrorPage;
 import minerva.base.NLS;
 import minerva.base.TextService;
-import minerva.base.Timer;
 import minerva.config.MinervaOptions;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;

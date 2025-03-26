@@ -3,6 +3,7 @@ package minerva;
 import org.pmw.tinylog.Level;
 
 import github.soltaufintel.amalia.spark.Context;
+import github.soltaufintel.amalia.timer.Timer;
 import github.soltaufintel.amalia.web.WebApp;
 import github.soltaufintel.amalia.web.builder.LoggingInitializer;
 import github.soltaufintel.amalia.web.builder.WebAppBuilder;
@@ -36,7 +37,6 @@ import minerva.base.MinervaError404Page;
 import minerva.base.MinervaErrorPage;
 import minerva.base.MinervaPageInitializer;
 import minerva.base.ServerlogPage;
-import minerva.base.Timer;
 import minerva.base.Tosmap;
 import minerva.book.AddBookPage;
 import minerva.book.BookPage;
@@ -374,7 +374,9 @@ public class MinervaWebapp extends RouteDefinitions {
                 .withInitializer(config -> factory = new MinervaFactory(new MinervaConfig(config)))
                 .withInitializer(config -> initGitper())
                 .withInitializer(config -> CommentService.services.put(ctx -> ctx.path().startsWith("/sc/"), SeiteCommentService.class))
-                .withInitializer(config -> { 
+                .withInitializer(config -> {
+                	Timer.TIMER_ACTIVE = MinervaOptions.TIMER_ACTIVE.get();
+                	Timer.TIMER_ACTIVE_LABEL = MinervaOptions.TIMER_ACTIVE.getLabel();
                 	Timer.create(config);
                 	Timer.INSTANCE.createTimer(JournalTimer.class, "0 0 6 1 * ?"); // first day of month 6:00
                 	Timer.INSTANCE.createTimer(IndexBooksTimer.class, "0 15 8 ? * MON-FRI");

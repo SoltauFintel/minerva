@@ -1,6 +1,6 @@
 package minerva.search;
 
-import minerva.base.AbstractTimer;
+import github.soltaufintel.amalia.timer.AbstractTimer;
 import minerva.model.StatesSO;
 
 public class IndexBooksTimer extends AbstractTimer {
