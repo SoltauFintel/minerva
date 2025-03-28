@@ -1020,3 +1020,11 @@ tr.cnticket td {
 .subBtn {
     min-width: 140px;
 }
+
+.seite figure.table table td {
+    vertical-align: top;
+}
+
+.editorform figure.table table td {
+    vertical-align: top;
+}
