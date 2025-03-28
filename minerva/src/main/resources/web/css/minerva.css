@@ -1021,10 +1021,35 @@ tr.cnticket td {
     min-width: 140px;
 }
 
+.seite figure.table table th {
+    vertical-align: top;
+}
+
 .seite figure.table table td {
+    vertical-align: top;
+}
+
+.editorform figure.table table th {
     vertical-align: top;
 }
 
 .editorform figure.table table td {
     vertical-align: top;
+}
+
+.ck-content .table {
+    margin: unset !important;
+    display: table;
+}
+
+.ck-content .table table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: auto !important;
+    height: 100%;
+    border: 1px double hsl(0,0%,70%);
+}
+
+.editorform .table {
+    width: auto;
 }
