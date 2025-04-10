@@ -210,4 +210,13 @@ public class WorkspaceSO implements Workspace {
 		}
 		return null;
     }
+    
+	public BookSO getReleaseNotesBook() {
+		for (BookSO book : getBooks()) {
+			if (book.isReleaseNotes()) {
+				return book;
+			}
+		}
+		return null;
+    }
 }
