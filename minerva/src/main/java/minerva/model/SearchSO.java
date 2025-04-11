@@ -55,7 +55,7 @@ public class SearchSO {
 		});
         
         long end = System.currentTimeMillis();
-        Logger.info("All books of workspace " + workspace.getBranch() + " have been reindexed. "
+        Logger.info("[reindex] All books of workspace " + workspace.getBranch() + " have been reindexed. "
                 + nPages + " pages, " + (end - start) + "ms");
     }
     
@@ -64,9 +64,9 @@ public class SearchSO {
             CreateSiteRequest req = new CreateSiteRequest();
             req.setLanguage(lang);
             String siteName = getSiteName(lang);
-            Logger.info("creating site by calling " + host + "/indexing/" + siteName + " ...");
+            Logger.info("[reindex] creating site by calling " + host + "/indexing/" + siteName + " ...");
             post("/indexing/" + siteName, req);
-            Logger.info("created site: " + siteName);
+            Logger.info("[reindex] created site: " + siteName);
         }
     }
     
