@@ -1053,3 +1053,7 @@ tr.cnticket td {
 .editorform .table {
     width: auto;
 }
+
+.bofields ul {
+	margin-bottom: 0;
+}
