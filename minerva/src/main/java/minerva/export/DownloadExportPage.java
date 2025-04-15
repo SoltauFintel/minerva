@@ -23,8 +23,8 @@ public class DownloadExportPage extends WPage {
         if ("dl".equals(mode) || asAttachment) {
             render = false;
             File file = GenericExportService.get(id);
-System.out.println("jux: " + file.getAbsolutePath());            
             if (file != null && file.isFile()) {
+            	Logger.info(user.getLogin() + " | DownloadExportPage (2): " + file.getName());
                 if (file.getName().endsWith(".pdf")) {
                     ctx.res.type("application/pdf");
                     download(file, asAttachment ? ContentDisposition.attachment : ContentDisposition.inline);
@@ -33,6 +33,7 @@ System.out.println("jux: " + file.getAbsolutePath());
                     download(file, ContentDisposition.attachment);
                 }
             } else {
+				Logger.info(user.getLogin() + " | DownloadExportPage (3): " + (file == null ? null : file.getName() + ", " + file.exists()));
                 throw new UserMessage("export-already-downloaded", user);
             }
         } else {
@@ -40,7 +41,7 @@ System.out.println("jux: " + file.getAbsolutePath());
             if (dn == null) {
                 throw new UserMessage("export-already-downloaded", user);
             }
-            Logger.info("DownloadExportPage: " + dn);
+            Logger.info(user.getLogin() + " | DownloadExportPage (1): " + dn);
             put("id", esc(id));
             put("dn", esc(dn));
             put("dnu", u(dn));

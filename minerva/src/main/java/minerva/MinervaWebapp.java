@@ -1,12 +1,10 @@
 package minerva;
 
 import org.pmw.tinylog.Level;
-import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.timer.Timer;
 import github.soltaufintel.amalia.web.WebApp;
-import github.soltaufintel.amalia.web.action.Action;
 import github.soltaufintel.amalia.web.builder.LoggingInitializer;
 import github.soltaufintel.amalia.web.builder.WebAppBuilder;
 import github.soltaufintel.amalia.web.config.AppConfig;
@@ -69,7 +67,6 @@ import minerva.export.DownloadExportPage;
 import minerva.export.ExportBookAction;
 import minerva.export.ExportPage;
 import minerva.export.ExportWorkspaceAction;
-import minerva.export.GenericExportService;
 import minerva.export.GenericExportService.CleanupExportFolderTimer;
 import minerva.export.SeitenauswahlPage;
 import minerva.export.template.AddExportTemplateSetAction;
@@ -219,21 +216,10 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/ets/:branch", ExportTemplateSetsPage.class);
         get("/ets/:branch/add", AddExportTemplateSetAction.class);
         form("/ets/:branch/edit/:id", EditExportTemplateSetPage.class);
-        get("/ets/:branch/delete/:id", DeleteExportTemplateSetAction.class);
-        
-        get("/cleanup-export", CleanEx.class); // TODO temp.
-    }
+		get("/ets/:branch/delete/:id", DeleteExportTemplateSetAction.class);
+	}
 
-    public static class CleanEx extends Action { // TODO temp.
-
-		@Override
-		protected void execute() {
-			Logger.info("CleanEx");
-			GenericExportService.cleanup();
-		}
-    }
-
-    private void oneBook() {
+	private void oneBook() {
         form("/b/:branch/add", AddBookPage.class);
         form("/b/:branch/:book/edit", EditBookPage.class);
         get("/b/:branch/:book/delete", DeleteBookPage.class);

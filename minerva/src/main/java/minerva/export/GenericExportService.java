@@ -215,7 +215,6 @@ public abstract class GenericExportService {
     
     public static void cleanup() {
 		if (downloads.size() > 0) {
-			Logger.info("cleared " + downloads.size() + " download" + (downloads.size() == 1 ? "" : "s")); // TODO .debug
 			downloads.clear();
 		}
 		File[] files = new File(MinervaWebapp.factory().getConfig().getWorkFolder()).listFiles();
@@ -223,11 +222,9 @@ public abstract class GenericExportService {
 			for (File file : files) {
 				if (file.isDirectory() && file.getName().startsWith("export_")) {
 					FileService.deleteFolder(file);
-					Logger.info("[cleanup] delete folder: " + file.getAbsolutePath()); // TODO raus
 				}
 			}
 		}
-		Logger.info("export cleanup fertig"); // TODO raus
     }
     
     public static class CleanupExportFolderTimer extends AbstractTimer {
