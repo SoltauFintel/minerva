@@ -9,7 +9,6 @@ import org.pmw.tinylog.Logger;
 import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.spark.Context.ContentDisposition;
 import github.soltaufintel.amalia.web.action.Escaper;
-import gitper.base.FileService;
 import minerva.base.UserMessage;
 import minerva.workspace.WPage;
 
@@ -23,7 +22,8 @@ public class DownloadExportPage extends WPage {
         
         if ("dl".equals(mode) || asAttachment) {
             render = false;
-            File file = GenericExportService.pop(id);
+            File file = GenericExportService.get(id);
+System.out.println("jux: " + file.getAbsolutePath());            
             if (file != null && file.isFile()) {
                 if (file.getName().endsWith(".pdf")) {
                     ctx.res.type("application/pdf");
@@ -60,14 +60,6 @@ public class DownloadExportPage extends WPage {
             ctx.res.raw().getOutputStream().write(Files.readAllBytes(file.toPath()));
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-		if (file.getParentFile().getParentFile() != null
-				&& file.getParentFile().getParentFile().getName().startsWith("export_")) { // PDF export
-			Logger.debug("delete folder: " + file.getParentFile().getParentFile().getAbsolutePath());
-			FileService.deleteFolder(file.getParentFile().getParentFile());
-        } else {
-			Logger.debug("delete folder: " + file.getParentFile().getAbsolutePath());
-            FileService.deleteFolder(file.getParentFile());
         }
     }
     

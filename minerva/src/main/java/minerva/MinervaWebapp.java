@@ -1,10 +1,12 @@
 package minerva;
 
 import org.pmw.tinylog.Level;
+import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.timer.Timer;
 import github.soltaufintel.amalia.web.WebApp;
+import github.soltaufintel.amalia.web.action.Action;
 import github.soltaufintel.amalia.web.builder.LoggingInitializer;
 import github.soltaufintel.amalia.web.builder.WebAppBuilder;
 import github.soltaufintel.amalia.web.config.AppConfig;
@@ -67,6 +69,8 @@ import minerva.export.DownloadExportPage;
 import minerva.export.ExportBookAction;
 import minerva.export.ExportPage;
 import minerva.export.ExportWorkspaceAction;
+import minerva.export.GenericExportService;
+import minerva.export.GenericExportService.CleanupExportFolderTimer;
 import minerva.export.SeitenauswahlPage;
 import minerva.export.template.AddExportTemplateSetAction;
 import minerva.export.template.DeleteExportTemplateSetAction;
@@ -216,6 +220,17 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/ets/:branch/add", AddExportTemplateSetAction.class);
         form("/ets/:branch/edit/:id", EditExportTemplateSetPage.class);
         get("/ets/:branch/delete/:id", DeleteExportTemplateSetAction.class);
+        
+        get("/cleanup-export", CleanEx.class); // TODO temp.
+    }
+
+    public static class CleanEx extends Action { // TODO temp.
+
+		@Override
+		protected void execute() {
+			Logger.info("CleanEx");
+			GenericExportService.cleanup();
+		}
     }
 
     private void oneBook() {
@@ -378,6 +393,7 @@ public class MinervaWebapp extends RouteDefinitions {
                 	Timer.TIMER_ACTIVE = MinervaOptions.TIMER_ACTIVE.get();
                 	Timer.TIMER_ACTIVE_LABEL = MinervaOptions.TIMER_ACTIVE.getLabel();
                 	Timer.create(config);
+                	Timer.INSTANCE.createTimer(CleanupExportFolderTimer.class, "0 0 3 ? * *"); // 3:00 daily
                 	Timer.INSTANCE.createTimer(JournalTimer.class, "0 0 6 1 * ?"); // first day of month 6:00
                 	Timer.INSTANCE.createTimer(IndexBooksTimer.class, "0 15 8 ? * MON-FRI");
             		Timer.INSTANCE.createTimer(UnusedImagesTimer.class, UnusedImagesTimer.cron(), true); // 23:00
