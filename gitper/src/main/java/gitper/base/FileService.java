@@ -291,6 +291,15 @@ public class FileService {
 					}
 					return super.visitFile(file, attrs);
 				}
+				
+				@Override
+				public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
+					String name = dir.toFile().getName();
+					if ("node_modules".equals(name) || "ROLLOUT".equals(name) || "bin".equals(name) || "build".equals(name)) {
+						return FileVisitResult.SKIP_SUBTREE;
+					}
+					return super.preVisitDirectory(dir, attrs);
+				}
 			});
 			files.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
 			return files;
