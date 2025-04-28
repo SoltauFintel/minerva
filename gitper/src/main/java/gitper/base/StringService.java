@@ -21,10 +21,10 @@ public class StringService {
             return "";
         }
         return text.toLowerCase()
-            .replace("Ã¤", "ae")
-            .replace("Ã¶", "oe")
-            .replace("Ã¼", "ue")
-            .replace("ÃŸ", "ss");
+            .replace("ä", "ae")
+            .replace("ö", "oe")
+            .replace("ü", "ue")
+            .replace("ß", "ss");
     }
 
     public static List<String> upper(List<String> list) {
