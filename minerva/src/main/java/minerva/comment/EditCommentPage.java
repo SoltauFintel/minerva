@@ -4,6 +4,7 @@ import github.soltaufintel.amalia.base.IdGenerator;
 import github.soltaufintel.amalia.web.action.Page;
 import gitper.base.StringService;
 import minerva.base.NLS;
+import minerva.model.StatesSO;
 import minerva.postcontents.PostContentsService;
 import minerva.user.UPage;
 import minerva.user.UserAccess;
@@ -45,10 +46,15 @@ public class EditCommentPage extends Page {
 			}
 		}
 		Comment parent = null;
+		boolean checked = true;
 		if (hasParentId) {
 			parent = sv.get(parentId);
 			if (add && parent != null) {
-				c.setPerson(parent.getUser());
+				if (parent.getUser().equals(StatesSO.get(ctx).getUser().getLogin())) { // It's me?
+					checked = false;
+				} else {
+					c.setPerson(parent.getUser());
+				}
 			}
 		}
 		
@@ -58,6 +64,7 @@ public class EditCommentPage extends Page {
 		combobox("persons", UserAccess.getUserNames(), UserAccess.login2RealName(c.getPerson()), true);
 
 		put("add", add);
+		put("checked", checked);
 		put("backlink", sv.getCommentsPagePath());
 		put("lang", sv.getLanguage());
 		String teil2 = hasParentId ? "&parent=" + parentId : "";
