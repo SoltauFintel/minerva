@@ -5,6 +5,7 @@ import org.pmw.tinylog.Logger;
 import com.github.template72.data.DataMap;
 
 import minerva.MinervaWebapp;
+import minerva.base.MinervaPageInitializer;
 import minerva.model.SeiteSO;
 import minerva.model.UserSO.LoginAndEndTime;
 import minerva.postcontents.PostContentsService;
@@ -32,13 +33,14 @@ public class EditSeitePage extends ViewSeitePage {
             workspace.onEditing(seite, false); // editing started
             
             super.execute2();
+            calculateEditorHeight();
             put("postcontentslink", "/post-contents/seite?key=" + u(getKey()));
             seite.imagesBeforeEdit();
             Logger.info(seite.getLogLine(null) + " | *** start editing");
         }
     }
 
-    @Override
+	@Override
     protected String transformContent(TocMacro macro, String lang, DataMap map) {
         return seite.getContent().getString(lang);
     }
@@ -90,4 +92,15 @@ public class EditSeitePage extends ViewSeitePage {
     protected void pagemode() {
         setCKEditorPageMode();
     }
+
+    private void calculateEditorHeight() {
+		int vh = 330;
+		if (user.getUser().isShowQuickbuttons()) {
+			vh += 27;
+		}
+		if (!MinervaPageInitializer.isMasterBranch(ctx) || user.getCustomerMode().isActive()) {
+			vh += 25;
+		}
+    	putInt("vh", vh);
+	}
 }

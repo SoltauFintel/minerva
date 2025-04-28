@@ -55,19 +55,18 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("leftAreaContent", "");
         page.put("guiLanguage", m.getUserLang());
         page.put("gitlab", gitlab);
-        
-        String qq = ctx.pathParam("branch");
-        if (StringService.isNullOrEmpty(qq)) {
-            page.put("isMasterBranch", true);
-        } else {
-            page.put("isMasterBranch", "master".equals(qq));
-        }
+        page.put("isMasterBranch", isMasterBranch(ctx));
         
         simpleVars(ctx, page, m, config, hasUser, isAdmin);
         if (m.hasUser()) {
             hasUserVars(page, m);
         }
         updateOpenMasterTasks(m, page);
+    }
+    
+    public static boolean isMasterBranch(Context ctx) {
+    	String qq = ctx.pathParam("branch");
+    	return StringService.isNullOrEmpty(qq) || "master".equals(qq);
     }
 
 	private void simpleVars(Context ctx, Page page, MinervaPageInitModel m, MinervaConfig config, boolean hasUser, boolean isAdmin) {
