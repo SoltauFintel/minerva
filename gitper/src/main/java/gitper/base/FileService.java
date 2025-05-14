@@ -281,6 +281,9 @@ public class FileService {
     }
     
     public static List<File> findFiles(File folder, Predicate<File> test) {
+    	if (!folder.exists()) {
+    		return List.of();
+    	}
 		try {
 			final List<File> files = new ArrayList<>();
 			Files.walkFileTree(folder.toPath(), new SimpleFileVisitor<Path>() {

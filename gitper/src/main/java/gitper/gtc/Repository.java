@@ -145,7 +145,11 @@ public class Repository {
 	}
 
 	public String getChanges(String commitId) {
-		return getChanges2(loadCommit(commitId));
+		RevCommit commit = loadCommit(commitId);
+		if (commit == null) {
+			return commitId;
+		}
+		return getChanges2(commit);
 	}
 
 	private String getChanges2(RevCommit commit) { // teuer
@@ -168,9 +172,10 @@ public class Repository {
 					// 38553635 Bytes = 36 MB      XDEV-5823
 					return "No changes because of OutOfMemoryError for commit #" + commit.getId().getName();
 				}
-				Logger.error("getChanges error for commit " + commit.getId().getName());
+				Logger.error("getChanges error for commit "
+						+ (commit == null ? "<commit is null>" : commit.getId().getName()));
 				Logger.error(e);
-				return "No changes because of an " + e.getClass().getName() + " for commit #" + commit.getId().getName();
+				return "No changes because of an " + e.getClass().getName() + " for commit #" + (commit == null ? "<commit is null>" : commit.getId().getName());
 			}
 		}
 	}
