@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.eclipse.jgit.api.CloneCommand;
-import org.eclipse.jgit.api.FetchCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
@@ -30,17 +29,26 @@ public class Repository {
 		this.repo = repo;
 	}
 
+	public void fetch() {
+		fetchOrPull(false);
+	}
+
 	public void pull() {
+		fetchOrPull(true);
+	}
+	
+	private void fetchOrPull(boolean pull) {
 		if (repo.getLocalFolder().isDirectory()) {
 			synchronized (HANDLE) {
 				try {
-					FetchCommand fetch = getGit().fetch();
-					fetch.setCredentialsProvider(new UsernamePasswordCredentialsProvider(repo.getUser(), repo.getPassword()));
-					fetch.call();
+					var git = getGit();
+					var cmd = pull ? git.pull() : git.fetch();
+					cmd.setCredentialsProvider(new UsernamePasswordCredentialsProvider(repo.getUser(), repo.getPassword()));
+					cmd.call();
 				} catch (GitAPIException e) {
-					Logger.error("pull error: " + repo.getUrl() + " => " + repo.getLocalFolder().getAbsolutePath());
+					Logger.error((pull ? "pull" : "fetch") + " error: " + repo.getUrl() + " => " + repo.getLocalFolder().getAbsolutePath());
 					Logger.error(e);
-					throw new RuntimeException("Error pulling Git repository");
+					throw new RuntimeException("Error " + (pull ? "pulling" : "fetching") + " Git repository");
 				}
 			}
 		} else {
@@ -187,7 +195,9 @@ public class Repository {
 		synchronized (HANDLE) {
 			try {
 				Iterator<RevCommit> iter = getGit().log().setMaxCount(1).call().iterator();
-				return iter.hasNext() ? iter.next().getName() : "-";
+				var ret = iter.hasNext() ? iter.next().getName() : "-";
+Logger.info("Repository.getCurrentCommitHash: " + ret);
+				return ret;
 			} catch (Exception e) {
 				Logger.error(e);
 				return "?";
