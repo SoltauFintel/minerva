@@ -59,6 +59,10 @@ body {
 	margin-left: 2em;
 }
 
+.mr2 {
+	margin-right: 2em;
+}
+
 .last-change {
     color: #666;
     font-style: italic;
