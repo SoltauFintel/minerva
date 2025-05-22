@@ -1,5 +1,7 @@
 package gitper.access;
 
+import gitper.base.StringService;
+
 /**
  * ID for commit
  */
@@ -28,6 +30,6 @@ public class CommitHash {
      * @return can be empty, not null
      */
     public String getShortHash() {
-        return hash.length() > 7 ? hash.substring(0, 7) : hash;
+        return StringService.seven(hash);
     }
 }

@@ -44,11 +44,7 @@ public class HCommit implements ICommit {
 
     @Override
     public String getHash7() {
-        String ret = getHash();
-        if (!StringService.isNullOrEmpty(ret) && ret.length() > 7) {
-            return ret.substring(0, 7);
-        }
-        return ret;
+        return StringService.seven(getHash());
     }
 
     @Override

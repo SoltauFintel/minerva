@@ -151,4 +151,8 @@ public class StringService {
 		}
 		return ret;
 	}
+	
+	public static String seven(String commitId) {
+		return commitId != null && commitId.length() > 7 ? commitId.substring(0, 7) : commitId;
+	}
 }
