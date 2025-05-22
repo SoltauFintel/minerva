@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.api.ListBranchCommand.ListMode;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
@@ -123,6 +124,19 @@ public class Repository {
 			} catch (GitAPIException e) {
 				throw new RuntimeException(e);
 			}
+		}
+	}
+	
+	public List<String> getBranchNames() {
+		try {
+			return getGit().branchList()
+					.setListMode(ListMode.REMOTE)
+					.call()
+					.stream()
+					.map(ref -> ref.getName().replace("refs/remotes/origin/", ""))
+					.collect(Collectors.toList());
+		} catch (GitAPIException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
