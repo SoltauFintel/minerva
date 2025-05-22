@@ -196,7 +196,7 @@ public class Repository {
 			try {
 				Iterator<RevCommit> iter = getGit().log().setMaxCount(1).call().iterator();
 				var ret = iter.hasNext() ? iter.next().getName() : "-";
-Logger.info("Repository.getCurrentCommitHash: " + ret);
+				Logger.debug("Repository.getCurrentCommitHash: " + ret);
 				return ret;
 			} catch (Exception e) {
 				Logger.error(e);
