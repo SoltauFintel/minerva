@@ -1,7 +1,10 @@
 package minerva.seite;
 
+import com.github.template72.data.DataMap;
+
 import minerva.base.NlsString;
 import minerva.base.TextService;
+import ohhtml.toc.TocMacro;
 
 public class EditHtmlPage extends EditSeitePage {
 
@@ -10,6 +13,11 @@ public class EditHtmlPage extends EditSeitePage {
         user.onlyAdmin();
         super.execute2();
         put("editlink", "/s/" + branch + "/" + bookFolder + "/" + id + "/html");
+    }
+    
+    @Override
+    protected String transformContent(TocMacro macro, String lang, DataMap map) {
+		return super.transformContent(macro, lang, map).replace("&", "&amp;");
     }
     
     @Override
