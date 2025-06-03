@@ -1066,3 +1066,7 @@ tr.cnticket td {
 	color: #ec971f;
 	font-style: italic;
 }
+
+.label-0 {
+    background-color: #aaa;
+}
