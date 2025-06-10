@@ -11,6 +11,7 @@ public class Tag {
 	private final String name;
 	private final String sort;
 	private String commitDate;
+	private boolean used = false;
 	
 	public Tag(Ref tag, Git git) {
 		name = Repository.shortenRefName(tag.getName());
@@ -78,4 +79,12 @@ public class Tag {
     public String getCommitDate() {
         return commitDate;
     }
+
+	public boolean isUsed() {
+		return used;
+	}
+
+	public void setUsed(boolean used) {
+		this.used = used;
+	}
 }
