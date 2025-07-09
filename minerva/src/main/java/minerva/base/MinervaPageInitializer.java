@@ -50,6 +50,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("math", false);
         page.put("jstree", false);
         page.put("multiselect", false);
+        page.put("sortableJS", false);
         
         page.put("hasLeftArea", false);
         page.put("leftAreaContent", "");

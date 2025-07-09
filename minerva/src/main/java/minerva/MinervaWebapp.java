@@ -343,7 +343,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/rest/ping", PingAction.class);
         Spark.get("/rest/cleanup-journals", (req, res) -> JournalSO.cleanupAllJournals());
         form("/config", EditConfigPage.class);
-        get("/tablesort/:id/:col", TableSortAction.class);
+        form("/tablesort/:id/:col", TableSortAction.class);
     }
 
     private void restApi() {

@@ -8,5 +8,20 @@
 
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    {{if sortableJS}}
+        <script>
+            htmx.onLoad(function(content) {
+                var sortables = content.querySelectorAll(".sortable");
+                for (var i = 0; i < sortables.length; i++) {
+                  var sortable = sortables[i];
+                  new Sortable(sortable, {
+                      animation: 150,
+                      ghostClass: 'sortable-background',
+                      handle: '.handle'
+                  });
+                }
+            })
+        </script>
+     {{/if}}
 </body>
 </html>
