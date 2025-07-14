@@ -29,6 +29,7 @@ import gitper.persistence.gitlab.GitFactory;
  * Control Git repository with quite low level functions: clone, fetch, pull, tag, branch, commit, select branch/commit.
  */
 public class GitService {
+	private static final String HANDLE = "GitService";
     public static final String ADD_ALL_FILES = "$$ALL";
     private final File workspace;
     private final boolean onlyRemoteBranches;
@@ -63,19 +64,21 @@ public class GitService {
      * @param bare false: with repository and with workspace, true: with repository and without workspace
      */
     public void clone(String url, User user, String branch, boolean bare) {
-        try (Git result = Git.cloneRepository()
-                .setURI(GitFactory.handleUrl(url, user))
-                .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
-                .setBranch(branch)
-                .setDirectory(workspace)
-                .setBare(bare)
-                .call()) {
-        } catch (Exception e) {
-            e.printStackTrace(); // Brauch ich für die Fehleranalyse. Ich habe den Verdacht, dass tinylog zu viel vom Stacktrace nicht ausgibt.
-            Logger.error("Error cloning Git repository! URL: " + url + " | user: " + user.getLogin()
-                + " | branch: " + branch);
-            throw new RuntimeException("Error accessing Git repository! Please try logout and login.", e);
-        }
+    	synchronized (HANDLE) {
+	        try (Git result = Git.cloneRepository()
+	                .setURI(GitFactory.handleUrl(url, user))
+	                .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
+	                .setBranch(branch)
+	                .setDirectory(workspace)
+	                .setBare(bare)
+	                .call()) {
+	        } catch (Exception e) {
+	            e.printStackTrace(); // Brauch ich für die Fehleranalyse. Ich habe den Verdacht, dass tinylog zu viel vom Stacktrace nicht ausgibt.
+	            Logger.error("Error cloning Git repository! URL: " + url + " | user: " + user.getLogin()
+	                + " | branch: " + branch);
+	            throw new RuntimeException("Error accessing Git repository! Please try logout and login.", e);
+	        }
+    	}
     }
     
     /**
@@ -83,13 +86,15 @@ public class GitService {
      * @param user user to log into remote Git repository
      */
     public void fetch(User user) {
-        try (Git git = Git.open(workspace)) {
-            git.fetch()
-                .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
-                .call();
-        } catch (Exception e) {
-            throw new RuntimeException("Error fetching Git repository!", e);
-        }
+    	synchronized (HANDLE) {
+	        try (Git git = Git.open(workspace)) {
+	            git.fetch()
+	                .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
+	                .call();
+	        } catch (Exception e) {
+	            throw new RuntimeException("Error fetching Git repository!", e);
+	        }
+    	}
     }
 
     /**
@@ -98,13 +103,15 @@ public class GitService {
      * @param user user to log into remote Git repository
      */
     public void pull(User user) {
-        try (Git git = Git.open(workspace)) {
-            git.pull()
-                .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
-                .call();
-        } catch (Exception e) {
-            throw new RuntimeException("Error pulling Git repository!", e);
-        }
+    	synchronized (HANDLE) {
+	        try (Git git = Git.open(workspace)) {
+	            git.pull()
+	                .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
+	                .call();
+	        } catch (Exception e) {
+	            throw new RuntimeException("Error pulling Git repository!", e);
+	        }
+    	}
     }
 
     /**
@@ -185,40 +192,42 @@ public class GitService {
     }
     
     private void branch(String name, User user) {
-        String action = "creating";
-        try (Git git = Git.open(workspace)) {
-            // step 1: create
-            git.branchCreate()
-                .setName(name)
-                .call();
+    	synchronized (HANDLE) {
+	        String action = "creating";
+	        try (Git git = Git.open(workspace)) {
+	            // step 1: create
+	            git.branchCreate()
+	                .setName(name)
+	                .call();
             
-            // step 2: push
-            if (user != null) {
-                try {
-                    action = "pushing";
-                    git.push()
-                        .setRemote("origin")
-                        .setRefSpecs(new RefSpec(name + ":" + name))
-                        .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
-                        .call();
-                } catch (Exception up) {
-                    try {
-                        git.branchDelete()
-                            .setBranchNames(name)
-                            .call();
-                        Logger.warn("branch push error! -> compensation: local branch " + name + " deleted");
-                    } catch (Throwable ignore) { //
-                    }
-                    throw up;
-                }
-            }
-        } catch (RefAlreadyExistsException e) {
-            // This also happens if the user doubleclicks the submit button.
-            Logger.error(e);
-            throw new RuntimeException("Branch name already exists. Please choose another name.");
-        } catch (Exception e) {
-            throw new RuntimeException("Error " + action + " a branch!", e);
-        }
+	            // step 2: push
+	            if (user != null) {
+	                try {
+	                    action = "pushing";
+	                    git.push()
+	                        .setRemote("origin")
+	                        .setRefSpecs(new RefSpec(name + ":" + name))
+	                        .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
+	                        .call();
+	                } catch (Exception up) {
+	                    try {
+	                        git.branchDelete()
+	                            .setBranchNames(name)
+	                            .call();
+	                        Logger.warn("branch push error! -> compensation: local branch " + name + " deleted");
+	                    } catch (Throwable ignore) { //
+	                    }
+	                    throw up;
+	                }
+	            }
+	        } catch (RefAlreadyExistsException e) {
+	            // This also happens if the user doubleclicks the submit button.
+	            Logger.error(e);
+	            throw new RuntimeException("Branch name already exists. Please choose another name.");
+	        } catch (Exception e) {
+	            throw new RuntimeException("Error " + action + " a branch!", e);
+	        }
+    	}
     }
     
     /**
@@ -227,13 +236,15 @@ public class GitService {
      * A tag name should also work.
      */
     public void selectCommit(String commit) {
-        try (Git git = Git.open(workspace)) {
-            git.checkout()
-                .setName(commit)
-                .call();
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Error selecting commit! " + e.getMessage(), e);
-        }
+    	synchronized (HANDLE) {
+    		try (Git git = Git.open(workspace)) {
+    			git.checkout()
+    			.setName(commit)
+    			.call();
+    		} catch (Exception e) {
+    			throw new IllegalArgumentException("Error selecting commit! " + e.getMessage(), e);
+    		}
+		}
     }
 
     /**
@@ -241,22 +252,24 @@ public class GitService {
      * @param branch e.g. "3.03.x"
      */
     public void switchToBranch(String branch) {
-        try (Git git = Git.open(workspace)) {
-            try {
-                // try for locally existing branch
-                git.checkout()
-                    .setName(branch)
-                    .call();
-            } catch (RefNotFoundException e) {
-                // create local branch from remote tracking branch
-                git.checkout()
-                    .setName(branch)
-                    .setCreateBranch(true)
-                    .call();
-            }            
-        } catch (Exception e) {
-            throw new RuntimeException("Error while switching branch to " + branch, e);
-        }
+    	synchronized (HANDLE) {
+	        try (Git git = Git.open(workspace)) {
+	            try {
+	                // try for locally existing branch
+	                git.checkout()
+	                    .setName(branch)
+	                    .call();
+	            } catch (RefNotFoundException e) {
+	                // create local branch from remote tracking branch
+	                git.checkout()
+	                    .setName(branch)
+	                    .setCreateBranch(true)
+	                    .call();
+	            }            
+	        } catch (Exception e) {
+	            throw new RuntimeException("Error while switching branch to " + branch, e);
+	        }
+    	}
     }
 
     /**
@@ -304,40 +317,42 @@ public class GitService {
         if (mail == null || mail.trim().isEmpty()) {
             throw new IllegalArgumentException("mail must not be empty!");
         }
-        try (Git git = Git.open(workspace)) {
-        	boolean allowEmpty = false;
-            if (addFilenames.size() == 1 && addFilenames.contains(ADD_ALL_FILES)) {
-                git.add().addFilepattern(".").call();
-            } else {
-                if (!addFilenames.isEmpty()) {
-                    AddCommand add = git.add();
-                    addFilenames.forEach(filename -> add.addFilepattern(filename));
-                    add.call();
-                }
-                if (!removeFilenames.isEmpty()) {
-                    RmCommand rm = git.rm();
-                    removeFilenames.forEach(filename -> rm.addFilepattern(filename));
-                    rm.call();
-                    allowEmpty = true;
-                }
-            }
-            RevCommit commit = git.commit()
-                .setMessage(commitMessage.toString())
-                .setAuthor(authorName, mail)
-                .setCommitter(authorName, mail)
-                .setAllowEmpty(allowEmpty)
-                .call();
-            if (user != null) {
-                git.push()
-                    .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
-                    .call();
-            }
-            return commit.getName();
-        } catch (EmptyCommitException e) {
-            throw new MinervaEmptyCommitException(e.getMessage());
-        } catch (Exception e) {
-            Logger.error(e); // Das muss leider so, damit keine Info verloren geht.
-            throw new RuntimeException("Error committing changes! (See log.) Try to logout and login.");
+        synchronized (HANDLE) {
+	        try (Git git = Git.open(workspace)) {
+	        	boolean allowEmpty = false;
+	            if (addFilenames.size() == 1 && addFilenames.contains(ADD_ALL_FILES)) {
+	                git.add().addFilepattern(".").call();
+	            } else {
+	                if (!addFilenames.isEmpty()) {
+	                    AddCommand add = git.add();
+	                    addFilenames.forEach(filename -> add.addFilepattern(filename));
+	                    add.call();
+	                }
+	                if (!removeFilenames.isEmpty()) {
+	                    RmCommand rm = git.rm();
+	                    removeFilenames.forEach(filename -> rm.addFilepattern(filename));
+	                    rm.call();
+	                    allowEmpty = true;
+	                }
+	            }
+	            RevCommit commit = git.commit()
+	                .setMessage(commitMessage.toString())
+	                .setAuthor(authorName, mail)
+	                .setCommitter(authorName, mail)
+	                .setAllowEmpty(allowEmpty)
+	                .call();
+	            if (user != null) {
+	                git.push()
+	                    .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
+	                    .call();
+	            }
+	            return commit.getName();
+	        } catch (EmptyCommitException e) {
+	            throw new MinervaEmptyCommitException(e.getMessage());
+	        } catch (Exception e) {
+	            Logger.error(e); // Das muss leider so, damit keine Info verloren geht.
+	            throw new RuntimeException("Error committing changes! (See log.) Try to logout and login.");
+	        }
         }
     }
 
@@ -385,15 +400,17 @@ public class GitService {
     }
     
     public boolean areThereRemoteUpdates(String targetBranch, User user) {
-        try (Git git = Git.open(workspace)) {
-            FetchResult f = git.fetch()
-                    .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
-                    .call();
-            long n = f.getTrackingRefUpdates().stream().filter(i -> i.getRemoteName().endsWith("/" + targetBranch)).count();
-            return n > 0;
-        } catch (Exception e) {
-            Logger.error(e);
-            return true;
-        }
+    	synchronized (HANDLE) {
+	        try (Git git = Git.open(workspace)) {
+	            FetchResult f = git.fetch()
+	                    .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
+	                    .call();
+	            long n = f.getTrackingRefUpdates().stream().filter(i -> i.getRemoteName().endsWith("/" + targetBranch)).count();
+	            return n > 0;
+	        } catch (Exception e) {
+	            Logger.error(e);
+	            return true;
+	        }
+    	}
     }
 }
