@@ -32,6 +32,16 @@ public class Tag {
 		commitDate = "";
 	}
 	
+	private Tag(String name) {
+		this.name = name;
+		sort = makeSort();
+		commitDate = "";
+	}
+	
+	public static Tag create4Test(String name) {
+		return new Tag(name);
+	}
+	
 	private String makeSort() {
 		String n = name.replace(".x", "").replace("root_", "");
 		for (int i = 0; i < n.length(); i++) {
@@ -70,6 +80,30 @@ public class Tag {
 	public boolean isNumericName() {
 		String n = getNameWithoutRoot();
 		return n.charAt(0) >= '1' && n.charAt(0) <= '9';
+	}
+	
+	public int dots() {
+		return _dots(name);
+	}
+	
+	public static int _dots(String x) {
+		if (x.startsWith("root_")) {
+			x = x.substring("root_".length());
+		}
+		int dots = 0;
+		if (x.endsWith(".x")) {
+			x = x.substring(0, x.length() - ".x".length());
+			dots = 1;
+		}
+		for (int i = 0; i < x.length(); i++) {
+			char c = x.charAt(i);
+			if (c == '.') {
+				dots++;
+			} else if (c < '0' || c > '9') {
+				return 0;
+			}
+		}
+		return dots;
 	}
 	
 	public String sort() {
