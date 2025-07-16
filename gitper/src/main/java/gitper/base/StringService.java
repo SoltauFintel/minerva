@@ -127,6 +127,24 @@ public class StringService {
         return str.length() > 0;
     }
 
+	public static boolean isVersionNumber(String str) {
+		for (int i = 0; i < str.length(); i++) {
+			char c = str.charAt(i);
+			if (c >= '0' && c <= '9') {
+				if (i == 0 && c == '0') {
+					return false;
+				}
+			} else if (c == '.') {
+				if (i == 0 || str.charAt(i - 1) == '.' || i == str.length() - 1) {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+		return str.length() > 0;
+	}
+
     public static boolean isWhitespace(String str, int position) {
         if (position >= 0 && position < str.length()) {
             char c = str.charAt(position);
