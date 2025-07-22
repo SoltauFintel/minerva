@@ -417,3 +417,5 @@ takeQuickButtonsFromOtherUsers=Schnell-Buttons von anderen Benutzern übernehmen
 pleaseEnterURL=Bitte URL eingeben!
 quickbuttonsInfo=Mit dem + Button der Schnell-Button-Leiste kann man nahezu jede Minerva Seite der Schnell-Button-Leiste hinzufügen. Webseiten außerhalb von Minerva können unten mit den Feldern URL und Beschriftung hinzugefügt werden. Bei Jira und Confluence Seiten muss kein Titel eingegeben werden, da dieser (verzögert) durch Minerva ermittelt wird.
 editQuickbutton=Schnell-Button bearbeiten
+qCantSee=Niemand kann diesen Schnell-Button sehen.
+qOthersCanTake=Andere Benutzer können diesen Schnell-Button übernehmen.

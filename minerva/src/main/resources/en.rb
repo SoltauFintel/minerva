@@ -416,3 +416,5 @@ takeQuickButtonsFromOtherUsers=Take quick buttons from other users
 pleaseEnterURL=Please enter URL!
 quickbuttonsInfo=Using the + button on the quick buttons bar, you can add almost any Minerva page to the quick buttons bar. Websites outside of Minerva can be added using the URL and label fields below. For Jira and Confluence, no title needs to be entered, as Minerva determines this (with a delay).
 editQuickbutton=Edit quick button
+qCantSee=Nobody can see this quick button.
+qOthersCanTake=Other users can take this quick button.
