@@ -16,6 +16,7 @@ public class EditSeitePage extends ViewSeitePage {
 
     @Override
     protected void execute2() {
+        user.getJournal().clearLivesave(branch, id);
         if (isPOST()) {
             Logger.debug(seite.getLogLine(null) + " | Saving page..." + saveinfo());
             save(branch, bookFolder, id, seite);
@@ -35,6 +36,7 @@ public class EditSeitePage extends ViewSeitePage {
             super.execute2();
             calculateEditorHeight();
             put("postcontentslink", "/post-contents/seite?key=" + u(getKey()));
+			put("livesavelink", "/s/" + branch + "/" + bookFolder + "/" + id + "/live-save");
             seite.imagesBeforeEdit();
             Logger.info(seite.getLogLine(null) + " | *** start editing");
         }

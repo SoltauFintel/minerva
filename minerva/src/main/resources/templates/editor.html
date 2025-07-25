@@ -105,3 +105,15 @@ setInterval(function() {
         localStorage.setItem('{{errorName}}{{L.LANG}}.{{id}}', editor{{L.LANG}}.getData());
     {{/each}}
 }, 3000);
+
+setInterval(function() {
+    setTimeout(function() { // Firefox problem NS_BINDING_ABORTED
+        $.post("{{livesavelink}}", {
+            {{each L in languages}}
+                content{{L.LANG}}: editor{{L.LANG}}.getData(),
+            {{/each}}
+        }).fail(e => {
+            console.error('{{livesavelink}} error: ', e);
+        });
+    }, 0);
+}, 15000);

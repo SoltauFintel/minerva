@@ -8,6 +8,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.timer.AbstractTimer;
@@ -18,6 +19,8 @@ import minerva.base.NlsString;
 public class JournalSO {
     private static final String handle = "journal";
     public static final String FOLDER = "_journal";
+    /** key: login+SeiteSO.id, value: hash */
+	private static final Map<String, String> lastHash = new HashMap<>();
     private final UserSO user;
     
     public JournalSO(UserSO user) {
@@ -37,6 +40,28 @@ public class JournalSO {
             Logger.debug("Journal entry saved: " + file.getAbsolutePath());
             user.log("Journal entry saved: " + file.toString());
         }
+    }
+
+    public void livesave(String branch, String id, String data) {
+		synchronized (handle) {
+			String hash = DigestUtils.sha256Hex(data);
+			String key = user.getLogin() + "/" + branch + "/" + id;
+			String last = lastHash.get(key);
+			if (hash.equals(last)) {
+				return;
+			}
+			String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HHmmss"));
+			File file = new File(
+					user.getUserFolder() + "/" + FOLDER + "/" + branch + "/" + now + "_" + id + "_live.txt");
+			FileService.savePlainTextFile(file, data);
+			Logger.debug("Journal entry saved: " + file.getAbsolutePath());
+			lastHash.put(key, hash);
+		}
+    }
+    
+    public void clearLivesave(String branch, String id) {
+		String key = user.getLogin() + "/" + branch + "/" + id;
+		lastHash.remove(key);
     }
 
     public static String cleanupAllJournals() {
@@ -73,7 +98,7 @@ public class JournalSO {
         File[] journalFiles = branchDir.listFiles();
         if (journalFiles != null) {
             for (File journalFile : journalFiles) {
-                if (journalFile.isFile() && journalFile.getName().endsWith(".json")) {
+                if (journalFile.isFile() && (journalFile.getName().endsWith(".json") || journalFile.getName().endsWith(".txt"))) {
                     if (processJournalFile(journalFile, now)) {
                         ret++;
                     }
@@ -108,5 +133,22 @@ public class JournalSO {
         protected void timerEvent() {
             cleanupAllJournals();
         }
+    }
+    
+    /**
+     * Clears JournalSO.lastHash HashMap
+     */
+    public static class HourlyJournalTimer extends AbstractTimer {
+
+		@Override
+		protected void timerEvent() {
+	        synchronized (handle) {
+	        	int size = JournalSO.lastHash.size();
+	        	if (size >= 5) { // TODO erstmal kleiner Wert zum Testen, später auf 20 (oder 50) setzen
+	        		Logger.warn("JournalSO.lastHash with size " + size + " cleared.");
+	        		JournalSO.lastHash.clear();
+	        	}
+	        }
+		}
     }
 }

@@ -81,6 +81,7 @@ import minerva.keyvalue.EditValuesPage;
 import minerva.keyvalue.ValuesListPage;
 import minerva.migration.MigrationPage;
 import minerva.model.JournalSO;
+import minerva.model.JournalSO.HourlyJournalTimer;
 import minerva.model.JournalSO.JournalTimer;
 import minerva.papierkorb.DeleteWeggeworfeneSeiteAction;
 import minerva.papierkorb.PapierkorbPage;
@@ -95,6 +96,7 @@ import minerva.seite.AddSeiteAction;
 import minerva.seite.CancelEditingAction;
 import minerva.seite.EditHtmlPage;
 import minerva.seite.EditSeitePage;
+import minerva.seite.LiveSaveSeiteAction;
 import minerva.seite.ViewSeitePage;
 import minerva.seite.actions.DeleteSeitePage;
 import minerva.seite.actions.DontChangePage;
@@ -262,6 +264,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/s/:branch/:book/:id/help-keys/:lang/:h", HelpKeysForHeadingPage.class);
         get("/s/:branch/:book/:id/cleanup-hkh", CleanupHelpKeysForHeadingsAction.class);
         get("/s/:branch/:book/:id/cross-book-links", CrossBookLinksPage.class);
+        post("/s/:branch/:book/:id/live-save", LiveSaveSeiteAction.class);
         
         // Attachments
         get("/s/:branch/:book/:id/attachments/:dn", DownloadAttachmentAction.class);
@@ -380,6 +383,7 @@ public class MinervaWebapp extends RouteDefinitions {
                 	Timer.TIMER_ACTIVE_LABEL = MinervaOptions.TIMER_ACTIVE.getLabel();
                 	Timer.create(config);
                 	Timer.INSTANCE.createTimer(CleanupExportFolderTimer.class, "0 0 3 ? * *"); // 3:00 daily
+                	Timer.INSTANCE.createTimer(HourlyJournalTimer.class, "0 0 8-19 * * ?"); // daily every hour   TODO später auf alle 3h setzen
                 	Timer.INSTANCE.createTimer(JournalTimer.class, "0 0 6 1 * ?"); // first day of month 6:00
                 	Timer.INSTANCE.createTimer(IndexBooksTimer.class, "0 15 8 ? * MON-FRI");
             		Timer.INSTANCE.createTimer(UnusedImagesTimer.class, UnusedImagesTimer.cron(), true); // 23:00
