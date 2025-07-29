@@ -464,7 +464,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         book.dao().copyFiles(book.getFolder(), "/img/" + seite.getId(), "/img/" + id);
         
         // save page (needed if there are images, but we save it always to have same behaviour)
-        copy.saveAll(copy.getSeite().getTitle(), copy.getContent(), 1, "duplicate", langs, start);
+        copy.saveAll(copy.getSeite().getTitle(), copy.getContent(), copy.getSeite().getVersion(), "duplicate", langs, start);
         
     	return id;
     }
