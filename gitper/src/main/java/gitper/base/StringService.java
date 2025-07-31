@@ -7,6 +7,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import github.soltaufintel.amalia.web.action.Escaper;
+
 public class StringService {
 
     private StringService() {
@@ -169,7 +171,11 @@ public class StringService {
 		}
 		return ret;
 	}
-	
+
+	public static String getParentVersion(String version) {
+		return dots(version) > 1 ? Escaper.esc(version.substring(0, version.lastIndexOf("."))) : "master";
+	}
+
 	public static String seven(String commitId) {
 		return commitId != null && commitId.length() > 7 ? commitId.substring(0, 7) : commitId;
 	}
