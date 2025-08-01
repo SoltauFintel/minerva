@@ -6,9 +6,9 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 import com.github.template72.data.IDataList;
 
+import github.soltaufintel.amalia.web.table.Col;
+import github.soltaufintel.amalia.web.table.Cols;
 import github.soltaufintel.amalia.web.table.TableComponent;
-import github.soltaufintel.amalia.web.table.TableComponent.Col;
-import github.soltaufintel.amalia.web.table.TableComponent.Cols;
 import gitper.base.StringService;
 import minerva.base.UserMessage;
 import minerva.base.WebpageTitleService;

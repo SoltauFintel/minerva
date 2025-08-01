@@ -7,8 +7,8 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 import com.google.common.base.Strings;
 
+import github.soltaufintel.amalia.web.table.Col;
 import github.soltaufintel.amalia.web.table.TableComponent;
-import github.soltaufintel.amalia.web.table.TableComponent.Col;
 import minerva.workspace.WPage;
 
 public class ValuesListPage extends WPage {

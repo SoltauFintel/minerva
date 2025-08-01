@@ -5,8 +5,8 @@ import java.util.List;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import github.soltaufintel.amalia.web.table.Col;
 import github.soltaufintel.amalia.web.table.TableComponent;
-import github.soltaufintel.amalia.web.table.TableComponent.Col;
 import minerva.workspace.WPage;
 
 public class ExportTemplateSetsPage extends WPage {
