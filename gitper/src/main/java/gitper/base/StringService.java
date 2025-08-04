@@ -60,6 +60,14 @@ public class StringService {
         }
         return text;
     }
+
+    /**
+     * @param html HTML with http/https links
+     * @return HTML with clickable links
+     */
+    public static String makeClickableLinks2(String html) {
+    	return HtmlLinkifier.makeLinksClickable(html);
+    }
     
     /**
      * Limit text to maxlen, but to do not cut text within link "(...)[...]"
