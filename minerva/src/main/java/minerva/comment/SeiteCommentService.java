@@ -1,5 +1,7 @@
 package minerva.comment;
 
+import org.pmw.tinylog.Logger;
+
 import github.soltaufintel.amalia.spark.Context;
 import gitper.access.CommitMessage;
 import minerva.model.SeiteSO;
@@ -56,4 +58,14 @@ public class SeiteCommentService extends CommonCommentService {
     public String getParentShortId() {
         return seite.getId();
     }
+
+	@Override
+	public void logInfo() {
+		Logger.info(workspace.getUser().getLogin() + " | " + workspace.getBranch() + " | writing comment #" + seite.getId());
+	}
+
+	@Override
+	public void logSaveInfo() {
+		Logger.info(workspace.getUser().getLogin() + " | " + workspace.getBranch() + " |  saving comment #" + seite.getId());
+	}
 }

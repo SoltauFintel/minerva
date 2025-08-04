@@ -77,6 +77,7 @@ public abstract class CommonCommentService extends CommentService {
     	}
         dao.saveFiles(files, getSaveCommitMessage(commitMessage), workspace);
 
+        logSaveInfo();
         if (changed) {
             sendNotifications(comment.getId(), comment.getPerson());
         }
@@ -98,9 +99,12 @@ public abstract class CommonCommentService extends CommentService {
     protected abstract CommitMessage getSaveCommitMessage(String commitMessage);
 
     protected void sendNotifications(String commentId, String person/*login*/) {
+    	if (person.isEmpty()) {
+    		return;
+    	}
         MinervaConfig c = MinervaWebapp.factory().getConfig();
-        if (!c.readyForCommentNotifications()) {
-            Logger.info("send no mails because there's no mail configuration");
+		if (!c.readyForCommentNotifications()) {
+			Logger.info("send no mails because there's no mail configuration");
         } else if (!person.isEmpty()) {
             String login = getLogin();
             if (person.equals(login)) {

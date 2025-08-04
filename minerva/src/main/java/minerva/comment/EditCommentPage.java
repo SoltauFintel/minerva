@@ -57,6 +57,7 @@ public class EditCommentPage extends Page {
 				}
 			}
 		}
+		sv.logInfo();
 		
 		put("id", c.getId());
 		putInt("version", c.getVersion());
@@ -77,6 +78,7 @@ public class EditCommentPage extends Page {
 		put("postFailExtra", "");
 		put("errorName", "comment");
 		put("onloadExtra", "");
+		put("livesavelink", "#"); // feature ausgeschaltet   TODO livesave feature einbauen
 		// <<
 		sv.initModel(model);
 

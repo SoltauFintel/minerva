@@ -109,4 +109,7 @@ public abstract class CommentService {
     public abstract String getKey(String id);
     
     public abstract String getParentShortId(); // Seite Id
+    
+    public abstract void logInfo();
+    public abstract void logSaveInfo();
 }
