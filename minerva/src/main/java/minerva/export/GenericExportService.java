@@ -166,7 +166,7 @@ public abstract class GenericExportService {
     
     private File getFolder(String name) {
         File folder = new File(
-                MinervaWebapp.factory().getWorkFolder("export_" + IdGenerator.createId6().toUpperCase()),
+                MinervaWebapp.factory().getWorkFolder("export_" + IdGenerator.createId25().toUpperCase()),
                 FileService.getSafeName(name));
         Logger.info("export work folder: " + folder.getAbsolutePath());
         FileService.deleteFolder(folder); // ensure empty folder

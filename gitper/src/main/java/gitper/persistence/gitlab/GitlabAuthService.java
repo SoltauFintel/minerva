@@ -31,8 +31,8 @@ public class GitlabAuthService {
     }
     
     private String createState() {
-        String state = STATE_PREFIX + IdGenerator.createId6();
-        Gitper.gitperInterface.tosmap_add(state, System.currentTimeMillis() + 1000 * 60 * 3); //Tosmap.add(state, System.currentTimeMillis() + 1000 * 60 * 3, state);
+        String state = STATE_PREFIX + IdGenerator.createId25();
+        Gitper.gitperInterface.tosmap_add(state, System.currentTimeMillis() + 1000 * 60 * 3);
         return state;
     }
     

@@ -14,7 +14,7 @@ public class CustomErrorPage extends UPage {
 	private static final Map<String, CustomerErrorMessage> errors = new ConcurrentHashMap<>();
 	
 	public static void showErrorPage(String msg, String continueLink, Context ctx) {
-		String id = IdGenerator.createId6();
+		String id = IdGenerator.createId25();
 		CustomerErrorMessage error = new CustomerErrorMessage(msg, continueLink);
 		errors.put(id, error);
 		ctx.redirect("/error?id=" + id);

@@ -62,9 +62,9 @@ public abstract class ImageUploadService {
         if (file.isFile()) { // Name schon vergeben
             int o = filename.lastIndexOf(".");
             if (o >= 0) {
-                filename = filename.substring(0, o) + "-" + IdGenerator.createId6() + filename.substring(o);
+                filename = filename.substring(0, o) + "-" + IdGenerator.createId25() + filename.substring(o);
             } else {
-                filename += "-" + IdGenerator.createId6();
+                filename += "-" + IdGenerator.createId25();
             }
             Logger.debug("File name already taken. Changed to " + filename);
             file = new File(dir, filename);
