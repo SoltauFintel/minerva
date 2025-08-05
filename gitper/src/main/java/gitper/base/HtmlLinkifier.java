@@ -29,7 +29,7 @@ class HtmlLinkifier {
 		return sb.toString();
 	}
 
-	// Prüft, ob die Position innerhalb eines bereits bestehenden <a>...</a> liegt
+	// Prueft, ob die Position innerhalb eines bereits bestehenden <a>...</a> liegt
 	private static boolean isInsideAnchorTag(String input, int index) {
 		int openTag = input.lastIndexOf("<a ", index);
 		int closeTag = input.lastIndexOf("</a>", index);

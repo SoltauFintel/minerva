@@ -252,7 +252,7 @@ public class Repository {
 					case DELETE -> path = entry.getOldPath();
 					default -> path = entry.getNewPath(); // MODIFY, RENAME, COPY
 				}
-				changes.add(new FileChange(path, entry.getChangeType()));
+				changes.add(new FileChange(path, entry.getChangeType().name()));
 			}
 		} catch (IOException e) {
 			Logger.error("Error while getting file changes for commit " + commit.getId().getName(), e);
