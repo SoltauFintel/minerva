@@ -231,12 +231,12 @@ public class Repository {
 		}
 	}
 
-	public List<FileChange> getFileChanges(String commitId) {
+	public List<GitFileChange> getFileChanges(String commitId) {
 		RevCommit commit = loadCommit(commitId);
 		if (commit == null) {
 			return List.of();
 		}
-		List<FileChange> changes = new ArrayList<>();
+		List<GitFileChange> changes = new ArrayList<>();
 		if (commit.getParentCount() == 0) {
 			return List.of(); // Initialer Commit – keine Änderungen zum Vergleichen
 		}
@@ -252,7 +252,7 @@ public class Repository {
 					case DELETE -> path = entry.getOldPath();
 					default -> path = entry.getNewPath(); // MODIFY, RENAME, COPY
 				}
-				changes.add(new FileChange(path, entry.getChangeType().name()));
+				changes.add(new GitFileChange(path, entry.getChangeType().name()));
 			}
 		} catch (IOException e) {
 			Logger.error("Error while getting file changes for commit " + commit.getId().getName(), e);

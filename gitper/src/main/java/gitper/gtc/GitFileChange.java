@@ -1,4 +1,4 @@
 package gitper.gtc;
 
-public record FileChange(String path, String changeType) {
+public record GitFileChange(String path, String changeType) {
 }
