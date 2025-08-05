@@ -231,7 +231,11 @@ public class Repository {
 		}
 	}
 
-	public List<FileChange> getFileChanges(RevCommit commit) {
+	public List<FileChange> getFileChanges(String commitId) {
+		RevCommit commit = loadCommit(commitId);
+		if (commit == null) {
+			return List.of();
+		}
 		List<FileChange> changes = new ArrayList<>();
 		if (commit.getParentCount() == 0) {
 			return List.of(); // Initialer Commit – keine Änderungen zum Vergleichen
