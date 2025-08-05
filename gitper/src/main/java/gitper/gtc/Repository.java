@@ -3,6 +3,7 @@ package gitper.gtc;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +20,7 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.util.FileUtils;
+import org.eclipse.jgit.util.io.DisabledOutputStream;
 import org.pmw.tinylog.Logger;
 
 public class Repository {
@@ -227,5 +229,30 @@ public class Repository {
 			}
 			git = null;
 		}
+	}
+
+	public List<FileChange> getFileChanges(RevCommit commit) {
+		List<FileChange> changes = new ArrayList<>();
+		if (commit.getParentCount() == 0) {
+			return List.of(); // Initialer Commit – keine Änderungen zum Vergleichen
+		}
+		RevCommit parent = commit.getParent(0);
+		try (DiffFormatter diffFormatter = new DiffFormatter(DisabledOutputStream.INSTANCE)) {
+			diffFormatter.setRepository(getGit().getRepository());
+
+			List<DiffEntry> diffEntries = diffFormatter.scan(parent, commit);
+			for (DiffEntry entry : diffEntries) {
+				String path;
+				switch (entry.getChangeType()) {
+					case ADD -> path = entry.getNewPath();
+					case DELETE -> path = entry.getOldPath();
+					default -> path = entry.getNewPath(); // MODIFY, RENAME, COPY
+				}
+				changes.add(new FileChange(path, entry.getChangeType()));
+			}
+		} catch (IOException e) {
+			Logger.error("Error while getting file changes for commit " + commit.getId().getName(), e);
+		}
+		return changes;
 	}
 }
