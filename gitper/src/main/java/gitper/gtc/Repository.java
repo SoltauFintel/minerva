@@ -232,11 +232,12 @@ public class Repository {
 		}
 	}
 
-	public List<GitFileChange> getFileChanges(String commitId) {
+	public GitFileChanges getFileChanges(String commitId) {
 		RevCommit commit = loadCommit(commitId);
 		if (commit == null || commit.getParentCount() != 1) {
-			return List.of();
+			return null;
 		}
+		BCommit bc = new BCommitBuilder().build(commit, null);
 		List<GitFileChange> changes = new ArrayList<>();
 		RevCommit parent = commit.getParent(0);
 		try (DiffFormatter diffFormatter = new DiffFormatter(DisabledOutputStream.INSTANCE)) {
@@ -250,6 +251,6 @@ public class Repository {
 		} catch (IOException e) {
 			Logger.error("Error while getting file changes for commit " + commit.getId().getName(), e);
 		}
-		return changes;
+		return new GitFileChanges(bc, changes);
 	}
 }
