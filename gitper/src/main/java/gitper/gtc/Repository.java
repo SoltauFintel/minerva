@@ -13,6 +13,7 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ListBranchCommand.ListMode;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.diff.DiffEntry.ChangeType;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
@@ -233,25 +234,17 @@ public class Repository {
 
 	public List<GitFileChange> getFileChanges(String commitId) {
 		RevCommit commit = loadCommit(commitId);
-		if (commit == null) {
+		if (commit == null || commit.getParentCount() != 1) {
 			return List.of();
 		}
 		List<GitFileChange> changes = new ArrayList<>();
-		if (commit.getParentCount() == 0) {
-			return List.of(); // Initialer Commit – keine Änderungen zum Vergleichen
-		}
 		RevCommit parent = commit.getParent(0);
 		try (DiffFormatter diffFormatter = new DiffFormatter(DisabledOutputStream.INSTANCE)) {
-			diffFormatter.setRepository(getGit().getRepository());
+			diffFormatter.setRepository(getGit().getRepository()); // TODO <- das wird immer wieder aufgerufen
 
 			List<DiffEntry> diffEntries = diffFormatter.scan(parent, commit);
 			for (DiffEntry entry : diffEntries) {
-				String path;
-				switch (entry.getChangeType()) {
-					case ADD -> path = entry.getNewPath();
-					case DELETE -> path = entry.getOldPath();
-					default -> path = entry.getNewPath(); // MODIFY, RENAME, COPY
-				}
+				String path = entry.getChangeType() == ChangeType.DELETE ? entry.getOldPath() : entry.getNewPath();
 				changes.add(new GitFileChange(path, entry.getChangeType().name()));
 			}
 		} catch (IOException e) {
