@@ -33,6 +33,9 @@ public class User implements gitper.User {
     private String database;
     private final List<Quickbutton> quickbuttons = new ArrayList<>();
     private boolean showQuickbuttons = false;
+    private String initialien = "";
+    /** hat besondere Rechte für diese Kunden (getrennt mit ",") */
+    private String customerRights;
     
     @Override
     public String getLogin() {
@@ -202,5 +205,21 @@ public class User implements gitper.User {
 
 	public void setShowQuickbuttons(boolean showQuickbuttons) {
 		this.showQuickbuttons = showQuickbuttons;
+	}
+
+	public String getInitialien() {
+		return initialien;
+	}
+
+	public void setInitialien(String initialien) {
+		this.initialien = initialien;
+	}
+
+	public String getCustomerRights() {
+		return customerRights;
+	}
+
+	public void setCustomerRights(String customerRights) {
+		this.customerRights = customerRights;
 	}
 }

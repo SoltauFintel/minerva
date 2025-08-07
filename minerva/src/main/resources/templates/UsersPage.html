@@ -13,6 +13,7 @@
             <tr>
                 <th>Login</th>
                 <th>Name</th>
+                <th>{{N.initials}}</th>
                 <th>{{N.mailAddress}}</th>
                 <th style="text-align: center;">{{N.exportAllowed}}</th>
                 <th></th>
@@ -21,6 +22,7 @@
                 <tr>
                     <td><a href="{{u.link}}">{{u.login}}</a></td>
                     <td>{{u.realName}}</td>
+                    <td>{{u.init}}</td>
                     <td>{{u.mailAddress}}</td>
                     <td style="text-align: center;">{{if u.exportAllowed}}{{N.yes}}{{/if}}</td>
                     <td style="max-width: 2em;"><a href="{{u.deletelink}}" class="btn btn-danger btn-xs" title="{{N.deleteUser}}"

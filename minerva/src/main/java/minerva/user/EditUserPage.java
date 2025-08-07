@@ -12,6 +12,14 @@ public class EditUserPage extends UPage {
         User u = UserAccess.loadUser(login);
 
         if (isPOST()) {
+			String init = ctx.formParam("u_init");
+			if (init == null || init.isEmpty()) { // ok
+				u.setInitialien("");
+			} else if (init.length() == 2) { // ok
+				u.setInitialien(init.toUpperCase());
+			} else {
+				throw new RuntimeException("Initialien müssen 2 Großbuchstaben sein!");
+			}
             u.setRealName(ctx.formParam("u_name"));
             u.setMailAddress(ctx.formParam("u_mail"));
             u.setExportAllowed("on".equals(ctx.formParam("u_ea")));
@@ -25,6 +33,7 @@ public class EditUserPage extends UPage {
             put("u_name", esc(u.getRealName()));
             put("u_mail", esc(u.getMailAddress()));
             put("u_ea", u.isExportAllowed());
+            put("u_init", esc(u.getInitialien()));
         }
     }
 }

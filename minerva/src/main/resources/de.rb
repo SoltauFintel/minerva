@@ -419,3 +419,4 @@ quickbuttonsInfo=Mit dem + Button der Schnell-Button-Leiste kann man nahezu jede
 editQuickbutton=Schnell-Button bearbeiten
 qCantSee=Niemand kann diesen Schnell-Button sehen.
 qOthersCanTake=Andere Benutzer können diesen Schnell-Button übernehmen.
+initials=Initialien

@@ -31,6 +31,7 @@ public class UsersPage extends UPage {
             map.put("realName", esc(u.getRealName()));
             map.put("mailAddress", esc(u.getMailAddress()));
             map.put("exportAllowed", u.isExportAllowed());
+            map.put("init", esc(u.getInitialien()));
         });
         putSize("n", list);
     }

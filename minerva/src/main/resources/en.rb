@@ -418,3 +418,4 @@ quickbuttonsInfo=Using the + button on the quick buttons bar, you can add almost
 editQuickbutton=Edit quick button
 qCantSee=Nobody can see this quick button.
 qOthersCanTake=Other users can take this quick button.
+initials=Initials
