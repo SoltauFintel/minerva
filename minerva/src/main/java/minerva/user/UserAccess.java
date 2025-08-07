@@ -108,4 +108,9 @@ public class UserAccess {
         return loadUsers().stream().filter(u -> u.getRealName().equals(realName))
                 .map(u -> u.getLogin()).findFirst().orElse(realName);
     }
+
+	public static String login2Initials(String login) {
+		User u = loadUser(login);
+		return u == null || u.getInitialien() == null ? "" : u.getInitialien();
+	}
 }
