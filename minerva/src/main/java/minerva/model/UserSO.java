@@ -558,4 +558,9 @@ public class UserSO {
 		}
 		return ret;
 	}
+	
+	public String getCustomerRights() {
+		load();
+		return user.getCustomerRights();
+	}
 }
