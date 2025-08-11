@@ -187,4 +187,17 @@ public class StringService {
 	public static String seven(String commitId) {
 		return commitId != null && commitId.length() > 7 ? commitId.substring(0, 7) : commitId;
 	}
+	
+	public static String getFirstLine(String text) {
+		if (text == null) {
+			return "";
+		}
+		text = text.trim();
+		while (text.startsWith("\n")) {
+			text = text.substring(1).trim();
+		}
+		text = text.replace("\r\n", "\n");
+		int o = text.indexOf("\n");
+		return o >= 0 ? text.substring(0, o) : text;
+	}
 }
