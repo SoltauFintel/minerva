@@ -1,10 +1,16 @@
 package minerva.user.quickbuttons;
 
+import github.soltaufintel.amalia.base.IdGenerator;
+
 public class Quickbutton {
 	private String link;
 	private String label;
 	/** true: no other user can take this quick button */
 	private boolean onlyMe = false;
+
+	public String getId() {
+		return IdGenerator.code6(link + ";" + label);
+	}
 
 	public String getLink() {
 		return link;

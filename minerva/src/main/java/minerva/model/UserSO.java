@@ -509,11 +509,6 @@ public class UserSO {
     	void login(UserSO userSO);
     }
     
-    public List<Quickbutton> getQuickbuttons() {
-    	load();
-    	return user.getQuickbuttons();
-    }
-    
     public Quickbutton addQuickbutton(String label, String link) {
 		Quickbutton qb = new Quickbutton();
 		qb.setLabel(label);
@@ -558,7 +553,7 @@ public class UserSO {
 			}
 		}
 		ret.sort((a, b) -> a.getLabel().compareToIgnoreCase(b.getLabel()));
-		for (Quickbutton b : getQuickbuttons()) {
+		for (Quickbutton b : user.getQuickbuttons()) {
 			ret.removeIf(i -> i.getLink().equals(b.getLink()));
 		}
 		return ret;

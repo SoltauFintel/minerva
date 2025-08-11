@@ -1,5 +1,9 @@
 package minerva.user.quickbuttons;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+
 import org.pmw.tinylog.Logger;
 
 import com.github.template72.data.DataList;
@@ -31,26 +35,27 @@ public class QuickbuttonsPage extends UPage {
 		Cols cols = Cols.of(
 				new Col("<i class=\"fa fa-fw\"></i> " + n("label"), "<i class=\"fa fa-fw {{i.icon}}\"></i> {{i.label}}"),
 				new Col("", ""
-						+ " <a href=\"/q/edit?i={{i.nr}}\" class=\"btn btn-default btn-xs\">"
+						+ " <a href=\"/q/edit?id={{i.id}}\" class=\"btn btn-default btn-xs\">"
 						+ "<i class=\"fa fa-pencil\"></i></a>"
 
-						+ " <a href=\"/q/move?i={{i.nr}}&d=0\" class=\"btn btn-default btn-xs\" title=\"{{if i.onlyMe}}"
+						+ " <a href=\"/q/only-me?id={{i.id}}\" class=\"btn btn-default btn-xs\" title=\"{{if i.onlyMe}}"
 						+ n("qCantSee") + "{{else}}" + n("qOthersCanTake") + "{{/if}}\">"
 						+ "<i class=\"fa fa-fw {{if i.onlyMe}}fa-lock error{{else}}fa-unlock{{/if}}\"></i></a>"
 
-						+ " <a href=\"/q/move?i={{i.nr}}&d=-1\" class=\"btn btn-default btn-xs{{if i.disabled1}} disabled{{/if}}\">"
-						+ "<i class=\"fa fa-arrow-up\"></i></a>"
-						
-						+ " <a href=\"/q/move?i={{i.nr}}&d=1\" class=\"btn btn-default btn-xs{{if i.disabled2}} disabled{{/if}}\">"
-						+ "<i class=\"fa fa-arrow-down\"></i></a>"
-
-						+ " <a href=\"/q/delete?i={{i.nr}}\" class=\"btn btn-danger btn-xs\" onclick=\"return confirm('" + n("delete") + "?');\">"
-						+ "<i class=\"fa fa-trash-o\"></i></a>"
-						));
+						+ " <a href=\"/q/delete?id={{i.id}}\" class=\"btn btn-danger btn-xs\" title=\"Löschen\""
+						+ " onclick=\"return confirm('" + n("delete") + "?');\"><i class=\"fa fa-trash-o\"></i></a>"));
 		if (((IDataList) model.get("quickbuttons")).isEmpty()) {
 			put("table1", "");
 		} else {
-			put("table1", new TableComponent("wauto", cols, model, "quickbuttons"));
+			var table1 = new TableComponent("wauto", cols, model, "quickbuttons") {
+				@Override
+				public void saveSortedRows(List<String> newOrder, Map<String, Integer> indexMap) {
+					user.getUser().getQuickbuttons().sort(Comparator.comparingInt(i -> indexMap.getOrDefault(i.getId(), -1)));
+					user.saveQuickbuttons();
+				}
+			};
+			put("table1", table1.withRowDragDrop());
+			put("sortableJS", true);
 		}
 		
 		DataList list = list("other");
@@ -86,7 +91,7 @@ public class QuickbuttonsPage extends UPage {
 			new Thread(() -> {
 				String label2 = WebpageTitleService.webpageTitleService.getTitle(qb.getLink()) // expensive
 						.replace("https://", "").replace("http://", "");
-				user.getQuickbuttons().forEach(i -> {
+				user.getUser().getQuickbuttons().forEach(i -> {
 					if (i.getLink().equals(qb.getLink())) {
 						i.setLabel(label2);
 						Logger.info(user.getLogin() + " | saved label: \"" + label2 + "\"");

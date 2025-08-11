@@ -2,8 +2,6 @@ package minerva.base;
 
 import static github.soltaufintel.amalia.web.action.Escaper.esc;
 
-import java.util.List;
-
 import org.pmw.tinylog.Logger;
 
 import com.github.template72.data.DataList;
@@ -178,36 +176,34 @@ public class MinervaPageInitializer extends PageInitializer {
     }
 
 	private void displayQuickbuttons(Page page, UserSO user) {
-		final int limit = 30;
 		DataList list = page.list("quickbuttons");
-		List<Quickbutton> quickbuttons = user.getQuickbuttons();
-		int i = 0;
-		int max = quickbuttons.size() - 1;
-		for (Quickbutton qb : quickbuttons) {
+		for (Quickbutton qb : user.getUser().getQuickbuttons()) {
 			String link = qb.getLink();
 			String icon = getIcon(link);
-			String label = qb.getLabel();
-			if (link.contains("/search?q=")) {
-				label = label.replace("Volltextsuche: ", "");
-			}
-			if (label.length() > limit + 3) {
-				label = label.substring(0, limit) + "...";
-			}
-
-			DataMap map = list.add();
-			map.putInt("nr", i);
+			
+			var map = list.add();
+			map.put("id", qb.getId());
 			map.put("link", esc(link));
-			map.put("label", esc(label));
+			map.put("label", esc(getQuickbuttonLabel(qb, link)));
 			map.put("icon", icon);
 			map.put("hasIcon", !icon.isEmpty());
 			map.put("bc", link.contains("/customer-mode/") ? "btn-success" : "btn-default");
-			map.put("disabled1", i == 0);
-			map.put("disabled2", i == max);
 			map.put("http", link.startsWith("https://") || link.startsWith("http://"));
 			map.put("onlyMe", qb.isOnlyMe());
-			i++;
 		}
         page.put("showQuickbuttons", user.getUser().isShowQuickbuttons());
+	}
+
+	private String getQuickbuttonLabel(Quickbutton qb, String link) {
+		final int limit = 30;
+		String label = qb.getLabel();
+		if (link.contains("/search?q=")) {
+			label = label.replace("Volltextsuche: ", "");
+		}
+		if (label.length() > limit + 3) {
+			label = label.substring(0, limit) + "...";
+		}
+		return label;
 	}
 
 	private String getIcon(String link) {

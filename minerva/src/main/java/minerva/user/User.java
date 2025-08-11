@@ -198,6 +198,15 @@ public class User implements gitper.User {
 	public List<Quickbutton> getQuickbuttons() {
 		return quickbuttons;
 	}
+	
+	public Quickbutton getQuickbutton(String id) {
+		for (var q : quickbuttons) {
+			if (q.getId().equals(id)) {
+				return q;
+			}
+		}
+		throw new RuntimeException("Quick button does not exist!");
+	}
 
 	public boolean isShowQuickbuttons() {
 		return showQuickbuttons;

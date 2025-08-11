@@ -1,20 +1,14 @@
 package minerva.user.quickbuttons;
 
-import java.util.List;
-
 import minerva.user.UPage;
 
 public class EditQuickbuttonPage extends UPage {
 
 	@Override
 	protected void execute() {
-		int index = Integer.valueOf(ctx.queryParam("i"));
+		var id = ctx.queryParam("id");
 
-		List<Quickbutton> list = user.getQuickbuttons();
-		if (index < 0 || index >= list.size()) {
-			throw new RuntimeException("Wrong index");
-		}
-		Quickbutton qb = list.get(index);
+		var qb = user.getUser().getQuickbutton(id);
 		if (isPOST()) {
 			String label = ctx.formParam("label");
 			String link = ctx.formParam("link");
