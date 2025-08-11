@@ -56,7 +56,7 @@ public class LogFollowCommand {
                 }
             }
             if (start == null) return commits;
-        } while ((path = getRenamedPath( start)) != null);
+        } while ((path = getRenamedPath(start)) != null);
         return commits;
     }
 
