@@ -51,7 +51,7 @@ public class RemoveStyleAttributesService {
                 Logger.info(info + ": saving " + files.size() + " changed files...");
             }
             File log = new File(MinervaWebapp.factory().getConfig().getWorkspacesFolder() + "/remove-style-attributes-"
-                    + workspace.getBranch() + "-" + StringService.now() + ".log");
+                    + workspace.getBranch() + "-" + StringService.now().replace(" ", "_").replace(":", "") + ".log");
             FileService.savePlainTextFile(log, ops.stream().collect(Collectors.joining("\r\n")));
             workspace.dao().saveFiles(files, new CommitMessage("style attributes removed"), workspace);
             Logger.info(info + ": style attributes log file: " + log.getAbsolutePath());
