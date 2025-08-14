@@ -181,6 +181,10 @@ public class StringService {
 	}
 
 	public static String getParentVersion(String version) {
+		int o = version.indexOf("-SNAPSHOT");
+		if (o >= 0) {
+			return version.substring(0, o);
+		}
 		return dots(version) > 1 ? Escaper.esc(version.substring(0, version.lastIndexOf("."))) : "master";
 	}
 
