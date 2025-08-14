@@ -117,11 +117,11 @@ public class User implements gitper.User {
 
     @Override
     public String getRealName() {
-        return realName;
+        return realName == null ? "" : realName;
     }
 
     public void setRealName(String realName) {
-        this.realName = realName;
+        this.realName = realName == null ? "" : realName;
     }
 
     public List<String> getFavorites() {
