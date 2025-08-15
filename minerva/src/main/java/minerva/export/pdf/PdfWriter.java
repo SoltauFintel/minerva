@@ -64,11 +64,11 @@ public class PdfWriter {
                 String m = d.getFormattedMessage();
                 if (m.contains("color must be")) {
                     eColor++;
-                } else if (m.contains("Unrecognized image format for: http://jira01")) {
+                } else if (m.contains("Unrecognized image format for:")) {
                     eImgJira++;
                     // Da muss die Minerva Seite korrigiert werden.
-                } else if (m.contains("Can't read image file; unexpected problem for URI 'http://jira01")) { // ignore, same as eImgJira
-                } else if (m.contains("IO problem for http://docker01:9000")) {
+                } else if (m.contains("Can't read image file; unexpected problem for URI")) { // ignore, same as eImgJira
+                } else if (m.contains("IO problem for http://docker01:9000") || m.contains("IO problem for http://minerva:9000")) {
                     eImgOldMinervaUrl++;
                     // Da muss die Minerva Seite korrigiert werden.
                 } else { // Die sonstigen Meldungen könnten interessant sein.
