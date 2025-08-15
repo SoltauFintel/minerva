@@ -22,6 +22,9 @@ public class MinervaErrorPage extends Page implements ErrorPage {
                 msg = exception.getClass().getName();
             } else {
                 msg = exception.getMessage();
+                if (msg.contains("Jira.access") && exception instanceof NullPointerException) {
+                	msg = "Jira access is not available. Please check configuration.";
+                }
             }
         }
     }
