@@ -233,7 +233,10 @@ public class Repository {
 	}
 
 	public GitFileChanges getFileChanges(String commitId) {
-		RevCommit commit = loadCommit(commitId);
+		return loadFileChanges(loadCommit(commitId), getGit().getRepository());
+	}
+	
+	public static GitFileChanges loadFileChanges(RevCommit commit, org.eclipse.jgit.lib.Repository repository) {
 		if (commit == null || commit.getParentCount() != 1) {
 			return null;
 		}
@@ -241,7 +244,7 @@ public class Repository {
 		List<GitFileChange> changes = new ArrayList<>();
 		RevCommit parent = commit.getParent(0);
 		try (DiffFormatter diffFormatter = new DiffFormatter(DisabledOutputStream.INSTANCE)) {
-			diffFormatter.setRepository(getGit().getRepository()); // TODO <- das wird immer wieder aufgerufen
+			diffFormatter.setRepository(repository);
 
 			List<DiffEntry> diffEntries = diffFormatter.scan(parent, commit);
 			for (DiffEntry entry : diffEntries) {

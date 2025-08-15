@@ -23,6 +23,7 @@ import gitper.User;
 import gitper.access.CommitMessage;
 import gitper.base.ICommit;
 import gitper.base.StringService;
+import gitper.gtc.Repository;
 import gitper.persistence.gitlab.GitFactory;
 
 /**
@@ -378,17 +379,22 @@ public class GitService {
 
     public List<ICommit> getHtmlChangesHistory(int start, int size) {
         try (Git git = Git.open(workspace)) {
+        	final var repository = git.getRepository();
             Iterable<RevCommit> commits = git.log().setSkip(start).setMaxCount(size).call();
             List<ICommit> ret = new ArrayList<>();
             for (RevCommit commit : commits) {
                 if (commit.getParentCount() == 1) {
                     if (!commit.getShortMessage().startsWith("(Migration)")) {
                         HCommit hc = new HCommit(commit);
-                        hc.setFiles(hc.loadFiles(git).stream() //
-                                .map(diff -> "/dev/null".equals(diff.getNewPath()) ? diff.getOldPath() //
-                                        : diff.getNewPath()) //
-                                .filter(dn -> dn.endsWith(".html")) //
-                                .collect(Collectors.toList()));
+                        var changes = Repository.loadFileChanges(commit, repository);
+                        if (changes != null) {
+                        	hc.setFiles(changes.changes().stream()
+                        			.map(i -> i.path())
+                        			.filter(dn -> dn.endsWith(".html"))
+                        			.collect(Collectors.toList()));
+                        } else {
+                        	hc.setFiles(List.of());
+                        }
                         ret.add(hc);
                     }
                 }
