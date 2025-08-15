@@ -1,4 +1,4 @@
-package minerva.base;
+package gitper.base;
 
 public class WebpageTitleService {
 	public static WebpageTitleService webpageTitleService = new WebpageTitleService();

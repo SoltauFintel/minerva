@@ -14,8 +14,8 @@ import github.soltaufintel.amalia.web.table.Col;
 import github.soltaufintel.amalia.web.table.Cols;
 import github.soltaufintel.amalia.web.table.TableComponent;
 import gitper.base.StringService;
+import gitper.base.WebpageTitleService;
 import minerva.base.UserMessage;
-import minerva.base.WebpageTitleService;
 import minerva.user.UPage;
 
 public class QuickbuttonsPage extends UPage {
