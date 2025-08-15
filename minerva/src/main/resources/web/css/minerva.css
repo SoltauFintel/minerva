@@ -1074,3 +1074,7 @@ tr.cnticket td {
 .sortable-background {
     background-color: #b3e6ff;
 }
+
+.handle {
+	color: #aaa;
+}
