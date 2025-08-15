@@ -37,7 +37,7 @@ public class RemoveStyleAttributesService {
     
     public void removeStyleAttributes(WorkspaceSO workspace) {
         String info = workspace.getBranch() + " | Removing style attributes";
-        Logger.info(info + "...");
+        Logger.debug(info + "...");
         
         files.clear();
         List<String> ops = new ArrayList<>();
