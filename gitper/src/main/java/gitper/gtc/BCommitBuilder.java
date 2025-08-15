@@ -17,8 +17,10 @@ public class BCommitBuilder {
 			return null;
 		}
 		BCommit ret = new BCommit();
+		ret.setId(commit.getId().getName());
 		ret.setShortMessage(commit.getShortMessage());
 		ret.setAuthoredDate(getAuthoredDate(commit));
+		ret.setAutor(commit.getAuthorIdent().getName());
 		ret.setAutorInitialien(getAutorInitialien(commit));
 		ret.setCommitDate(getCommitDate(commit));
 		ret.setCommitterInitialien(getCommitterInitialien(commit));

@@ -23,6 +23,8 @@ import gitper.User;
 import gitper.access.CommitMessage;
 import gitper.base.ICommit;
 import gitper.base.StringService;
+import gitper.gtc.BCommit;
+import gitper.gtc.BCommitBuilder;
 import gitper.gtc.Repository;
 import gitper.persistence.gitlab.GitFactory;
 
@@ -358,6 +360,7 @@ public class GitService {
     }
 
     public List<ICommit> getFileHistory(String file, boolean followRenames) {
+    	var builder = new BCommitBuilder();
         try (Git git = Git.open(workspace)) {
             Iterable<RevCommit> commits;
             if (followRenames) {
@@ -368,7 +371,7 @@ public class GitService {
             List<ICommit> ret = new ArrayList<>();
             for (RevCommit commit : commits) {
                 //if (commit.getParentCount() == 1) {      auskommentiert damit Erst-Commit sichtbar wird
-                    ret.add(new HCommit(commit));
+                    ret.add(builder.build(commit, null));
                 //}
             }
             return ret;
@@ -378,6 +381,7 @@ public class GitService {
     }
 
     public List<ICommit> getHtmlChangesHistory(int start, int size) {
+    	var builder = new BCommitBuilder();
         try (Git git = Git.open(workspace)) {
         	final var repository = git.getRepository();
             Iterable<RevCommit> commits = git.log().setSkip(start).setMaxCount(size).call();
@@ -385,7 +389,7 @@ public class GitService {
             for (RevCommit commit : commits) {
                 if (commit.getParentCount() == 1) {
                     if (!commit.getShortMessage().startsWith("(Migration)")) {
-                        HCommit hc = new HCommit(commit);
+						BCommit hc = builder.build(commit, null);
                         var changes = Repository.loadFileChanges(commit, repository);
                         if (changes != null) {
                         	hc.setFiles(changes.changes().stream()
