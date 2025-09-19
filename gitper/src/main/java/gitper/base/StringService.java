@@ -154,6 +154,37 @@ public class StringService {
 		}
 		return str.length() > 0;
 	}
+	
+	public static String makeVersionSort(String version) {
+		String ret = "";
+		String[] w = version.split("\\.");
+		for (int i = 0; i < w.length; i++) {
+			String a = w[i];
+			while (a.length() < 2) {
+				a = "0" + a;
+			}
+			if (!ret.isEmpty()) {
+				ret += ".";
+			}
+			ret += a;
+		}
+		return ret;
+	}
+	
+	public static String makeTicketNumberSort(String ticketNumber) {
+		int o = ticketNumber.indexOf("-");
+		if (o < 1) {
+			return ticketNumber;
+		}
+		String prefix = ticketNumber.substring(0, o + "-".length());
+		String number = ticketNumber.substring(o + "-".length());
+		if (onlyDigits(number)) {
+			while (number.length() < 6) {
+				number = "0" + number;
+			}
+		}
+		return prefix + number;
+	}
 
     public static boolean isWhitespace(String str, int position) {
         if (position >= 0 && position < str.length()) {
