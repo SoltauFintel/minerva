@@ -155,6 +155,24 @@ public class StringService {
 		return str.length() > 0;
 	}
 	
+	/**
+	 * @param a valid version number
+	 * @param b valid version number
+	 * @return a.equals(b) or 4.01.0 == 4.01
+	 */
+	public static boolean compareVersions(String a, String b) {
+		if (a == null || b == null) {
+			return false;
+		} else if (a.equals(b)) {
+			return true;
+		}
+		return compareMitOhne0Versions(a, b) || compareMitOhne0Versions(b, a);
+	}
+	
+	private static boolean compareMitOhne0Versions(String mit0, String ohne0) {
+		return (ohne0 + ".0").equals(mit0);
+	}
+	
 	public static String makeVersionSort(String version) {
 		String ret = "";
 		String[] w = version.split("\\.");
