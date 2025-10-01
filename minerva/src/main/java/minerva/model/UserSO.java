@@ -563,4 +563,15 @@ public class UserSO {
 		load();
 		return user.getCustomerRights();
 	}
+	
+	public String getRolloutConfig() {
+		load();
+		return user.getRolloutConfig();
+	}
+	
+	public void setRolloutConfig(String rolloutConfig) {
+		load();
+		user.setRolloutConfig(rolloutConfig);
+		save();
+	}
 }
