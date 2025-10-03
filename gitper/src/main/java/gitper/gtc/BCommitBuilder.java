@@ -41,7 +41,7 @@ public class BCommitBuilder {
 	}
 
 	private String d(Instant instant, PersonIdent ident) {
-		ZoneId zoneId = ident.getTimeZone().toZoneId();
+		ZoneId zoneId = ZoneId.of("Europe/Berlin");
 		ZonedDateTime date = ZonedDateTime.ofInstant(instant, zoneId);
 		return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 	}
