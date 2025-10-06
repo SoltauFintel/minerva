@@ -1086,3 +1086,8 @@ tr.cnticket td {
 .handle {
 	color: #aaa;
 }
+
+.rahmen1 {
+    border: 1pt solid #999;
+    padding: 4px;
+}
