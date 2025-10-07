@@ -33,15 +33,15 @@ public class Repository {
 		this.repo = repo;
 	}
 
-	public void fetch() {
-		fetchOrPull(false);
+	public void fetch(boolean bare) {
+		fetchOrPull(false, bare);
 	}
 
-	public void pull() {
-		fetchOrPull(true);
+	public void pull(boolean bare) {
+		fetchOrPull(true, bare);
 	}
 	
-	private void fetchOrPull(boolean pull) {
+	private void fetchOrPull(boolean pull, boolean bare) {
 		if (repo.getLocalFolder().isDirectory()) {
 			synchronized (HANDLE) {
 				try {
@@ -56,11 +56,11 @@ public class Repository {
 				}
 			}
 		} else {
-			cloneRepo();
+			cloneRepo(bare);
 		}
 	}
 
-	public void cloneRepo() {
+	public void cloneRepo(boolean bare) {
 		close();
 		synchronized (HANDLE) {
 			try {
@@ -74,7 +74,7 @@ public class Repository {
 				clone.setDirectory(repo.getLocalFolder());
 				clone.setURI(repo.getUrl());
 				clone.setCredentialsProvider(new UsernamePasswordCredentialsProvider(repo.getUser(), repo.getPassword()));
-				clone.setBare(true);
+				clone.setBare(bare);
 				clone.call();
 				Logger.info("  clone ok");
 			} catch (GitAPIException | IOException e) {
