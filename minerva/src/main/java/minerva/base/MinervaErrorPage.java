@@ -56,6 +56,7 @@ public class MinervaErrorPage extends Page implements ErrorPage {
         put("p", "");
         put("title", "Minerva error");
         put("header", exception instanceof UserMessage ? "Message" : "Sorry, this should not happen!");
+        MinervaMetrics.ERRORPAGE.inc();
     }
     
     private String language() {

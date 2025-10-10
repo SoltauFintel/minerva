@@ -9,6 +9,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import gitper.base.StringService;
+import minerva.base.MinervaMetrics;
 import minerva.exclusions.SeiteSichtbar;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
@@ -41,6 +42,7 @@ public class SeitenauswahlPage extends WPage {
         
             String id = GenericExportService.getService(new ExportRequest(workspace, ctx)).getSeitenExportDownloadId(seiten);
             
+            MinervaMetrics.EXPORT.inc();
             DownloadExportPage.redirectToThisPage(ctx, branch, id);
         } else {
             String seiteId = ctx.queryParam("seite");

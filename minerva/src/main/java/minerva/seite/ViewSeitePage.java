@@ -14,6 +14,7 @@ import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.base.DeliverHtmlContent;
 import minerva.base.FillModel;
+import minerva.base.MinervaMetrics;
 import minerva.base.Uptodatecheck;
 import minerva.book.BookPage;
 import minerva.comment.SeiteCommentService2;
@@ -64,6 +65,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         }
         execute2();
         pagemode();
+        MinervaMetrics.PAGE_VIEW.inc();
     }
 
     protected void execute2() {

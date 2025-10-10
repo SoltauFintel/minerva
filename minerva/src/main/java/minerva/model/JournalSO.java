@@ -14,6 +14,7 @@ import org.pmw.tinylog.Logger;
 import github.soltaufintel.amalia.timer.AbstractTimer;
 import gitper.base.FileService;
 import minerva.MinervaWebapp;
+import minerva.base.MinervaMetrics;
 import minerva.base.NlsString;
 
 public class JournalSO {
@@ -40,6 +41,7 @@ public class JournalSO {
             Logger.debug("Journal entry saved: " + file.getAbsolutePath());
             user.log("Journal entry saved: " + file.toString());
         }
+        MinervaMetrics.JOURNAL.add(1, Map.of("user", user.getLogin()));
     }
 
     public void livesave(String branch, String id, String data) {
@@ -57,6 +59,7 @@ public class JournalSO {
 			Logger.debug("Journal entry saved: " + file.getAbsolutePath());
 			lastHash.put(key, hash);
 		}
+        MinervaMetrics.JOURNAL.add(1, Map.of("user", user.getLogin()));
     }
     
     public void clearLivesave(String branch, String id) {

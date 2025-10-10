@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
+import minerva.base.MinervaMetrics;
 import minerva.book.Book;
 import minerva.book.BookType;
 import minerva.exclusions.SeiteSichtbar;
@@ -41,6 +42,7 @@ public class BookSO implements BookFilter {
                 .filter(e -> e.getKey().endsWith(SeiteSO.META_SUFFIX))
                 .map(e -> gson.fromJson(e.getValue(), Seite.class))
                 .collect(Collectors.toList());
+        MinervaMetrics.PAGE_LOADED.add(alleSeiten.size());
 
         seiten = SeitenSO.findeUnterseiten(getISeite(), alleSeiten, this);
     }

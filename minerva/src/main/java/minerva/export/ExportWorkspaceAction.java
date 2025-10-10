@@ -2,6 +2,7 @@ package minerva.export;
 
 import org.pmw.tinylog.Logger;
 
+import minerva.base.MinervaMetrics;
 import minerva.model.WorkspaceSO;
 import minerva.workspace.WAction;
 
@@ -27,6 +28,7 @@ public class ExportWorkspaceAction extends WAction {
         }
         String id = GenericExportService.getService(new ExportRequest(workspace, ctx)).getBooksExportDownloadId(workspace);
         
+        MinervaMetrics.EXPORT.inc();
         DownloadExportPage.redirectToThisPage(ctx, branch, id);
     }
 }

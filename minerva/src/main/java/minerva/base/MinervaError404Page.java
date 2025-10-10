@@ -19,6 +19,7 @@ public class MinervaError404Page extends Page {
         put("msg", esc(msg)); // for subclasses
         put("p", "The information you are looking for may be in a different location or"
                 + " the page no longer exists. Start again from the homepage.");
+        MinervaMetrics.ERRORPAGE404.inc();
     }
     
     @Override

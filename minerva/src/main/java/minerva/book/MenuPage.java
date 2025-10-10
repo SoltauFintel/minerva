@@ -7,6 +7,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import minerva.MinervaWebapp;
+import minerva.base.MinervaMetrics;
 import minerva.config.MinervaFactory;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
@@ -24,6 +25,7 @@ public class MenuPage extends WPage {
         menu();
         favorites();
         put("persistenceInfo", esc(MinervaWebapp.factory().getBackendService().getInfo(user.getGuiLanguage())));
+        MinervaMetrics.MENU.inc();
     }
 
     private void workspaces() {

@@ -7,6 +7,11 @@ import io.opentelemetry.api.metrics.LongCounter;
 
 public class Counter extends AbstractMetricsInstrument<LongCounter> {
 
+	/** unit "1" */
+	public Counter(String name) {
+		super(name, "1");
+	}
+
 	public Counter(String name, String unit) {
 		super(name, unit);
 	}
