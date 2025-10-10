@@ -45,7 +45,6 @@ public class BookSO implements BookFilter {
         MinervaMetrics.PAGE_LOADED.add(alleSeiten.size());
 
         seiten = SeitenSO.findeUnterseiten(getISeite(), alleSeiten, this);
-        StatesSO.updatePagesMetrics();
     }
     
     // public for migration

@@ -126,6 +126,7 @@ public class StatesSO {
     }
     
     public static void updatePagesMetrics() {
+    	Logger.info("updatePagesMetrics");
     	try {
     		long users = 0;
     		long workspaces = 0;

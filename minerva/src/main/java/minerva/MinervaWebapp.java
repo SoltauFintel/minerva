@@ -38,6 +38,7 @@ import minerva.base.MinervaErrorPage;
 import minerva.base.MinervaPageInitializer;
 import minerva.base.ServerlogPage;
 import minerva.base.Tosmap;
+import minerva.base.UpdatePagesMetricsAction;
 import minerva.book.AddBookPage;
 import minerva.book.BookPage;
 import minerva.book.BooksPage;
@@ -347,6 +348,7 @@ public class MinervaWebapp extends RouteDefinitions {
         Spark.get("/rest/cleanup-journals", (req, res) -> JournalSO.cleanupAllJournals());
         form("/config", EditConfigPage.class);
         form("/tablesort/:id/:col", TableSortAction.class);
+        get("/update-metrics", UpdatePagesMetricsAction.class);
     }
 
     private void restApi() {
