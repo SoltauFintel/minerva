@@ -14,6 +14,7 @@ import com.google.gson.reflect.TypeToken;
 import github.soltaufintel.amalia.rest.REST;
 import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.base.StringService;
+import minerva.base.MinervaMetrics;
 import minerva.search.CreatePageRequest;
 import minerva.search.CreateSiteRequest;
 import minerva.search.SearchResult;
@@ -57,6 +58,7 @@ public class SearchSO {
         long end = System.currentTimeMillis();
         Logger.info("[reindex] All books of workspace " + workspace.getBranch() + " have been reindexed. "
                 + nPages + " pages, " + (end - start) + "ms");
+        MinervaMetrics.REINDEX.inc();
     }
     
     private void createSite() {
@@ -158,6 +160,7 @@ public class SearchSO {
         	again = merge(ret);
         }
         
+        MinervaMetrics.SEARCH.inc();
         return ret;
     }
     

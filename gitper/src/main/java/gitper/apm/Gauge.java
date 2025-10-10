@@ -7,6 +7,11 @@ import io.opentelemetry.api.metrics.LongGauge;
 
 public class Gauge extends AbstractMetricsInstrument<LongGauge> {
 
+	/** unit "1" */
+	public Gauge(String name) {
+		this(name, "1");
+	}
+
 	public Gauge(String name, String unit) {
 		super(name, unit);
 	}

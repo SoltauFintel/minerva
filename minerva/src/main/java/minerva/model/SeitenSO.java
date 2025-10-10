@@ -402,4 +402,12 @@ public class SeitenSO extends MList<SeiteSO> {
         }
         return ret;
     }
+    
+    public int countAll() {
+    	int ret = size();
+    	for (SeiteSO seite : this) {
+    		ret += seite.getSeiten().countAll(); // recursive
+    	}
+    	return ret;
+    }
 }
