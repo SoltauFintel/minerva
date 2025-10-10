@@ -28,6 +28,7 @@ import gitper.movefile.ChangeFile;
 import gitper.movefile.IMoveFile;
 import gitper.movefile.MoveFile;
 import minerva.MinervaWebapp;
+import minerva.base.MinervaMetrics;
 import minerva.base.NlsString;
 import minerva.base.TextService;
 import minerva.base.UserMessage;
@@ -507,7 +508,10 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         
         new Thread(() -> new WatchersService(this).notifyWatchers()).start();
 
-		Logger.info(getLogLine(null) + " | *** Page saved. (#" + getId() + ", " + (System.currentTimeMillis() - start) + "ms)");
+        long duration = System.currentTimeMillis() - start;
+		Logger.info(getLogLine(null) + " | *** Page saved. (#" + getId() + ", " + duration + "ms)");
+		MinervaMetrics.PAGE_SAVETIME.record(duration);
+		Logger.info("Metric PAGE_SAVETIME sent: " + duration); // XXX debug
     }
 
     private String createTagsFromComment(String comment) {
