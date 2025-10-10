@@ -11,6 +11,7 @@ import github.soltaufintel.amalia.auth.rememberme.NoOpRememberMe;
 import github.soltaufintel.amalia.auth.webcontext.WebContext;
 import github.soltaufintel.amalia.spark.Context;
 import minerva.MinervaWebapp;
+import minerva.base.MinervaMetrics;
 import minerva.model.StateSO;
 import minerva.model.StatesSO;
 import minerva.model.UserSO;
@@ -96,5 +97,6 @@ public class MinervaAuth extends AbstractAuth {
     public static void logout2(Context ctx) {
         AuthService.logout(new WebContext(ctx), new NoOpRememberMe());
         ctx.req.session().invalidate();
+		MinervaMetrics.LOGOUT.inc();
     }
 }

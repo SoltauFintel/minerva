@@ -8,6 +8,10 @@ public class UpdatePagesMetricsAction extends UAction {
 	@Override
 	protected void execute() {
 		StatesSO.updatePagesMetrics();
-		ctx.redirect("/");
+	}
+	
+	@Override
+	protected String render() {
+		return "ok";
 	}
 }

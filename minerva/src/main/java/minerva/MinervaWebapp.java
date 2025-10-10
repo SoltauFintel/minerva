@@ -349,6 +349,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/config", EditConfigPage.class);
         form("/tablesort/:id/:col", TableSortAction.class);
         get("/update-metrics", UpdatePagesMetricsAction.class);
+        addNotProtected("/update-metrics");
     }
 
     private void restApi() {

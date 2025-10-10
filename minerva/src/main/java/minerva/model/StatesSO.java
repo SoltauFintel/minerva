@@ -76,7 +76,6 @@ public class StatesSO {
 
     public static void logout(Context ctx) {
         Tosmap.remove(key(ctx));
-		MinervaMetrics.LOGOUT.inc();
     }
 
     private static String key(Context ctx) {
