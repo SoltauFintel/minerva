@@ -53,6 +53,7 @@ public class Tosmap {
     
             // add
             map.put(key, new TosmapEntry(expires, data));
+            MinervaMetrics.TOSMAP_SIZE.set(map.size());
         }
     }
     
@@ -71,6 +72,7 @@ public class Tosmap {
                 String info = "removed from Tosmap by get(): " + key + " / " + (ret.getData() == null ? "null"
                         : ret.getData().getClass().getSimpleName() + " / " + time + ">" + ret.getExpires());
                 map.remove(key);
+                MinervaMetrics.TOSMAP_SIZE.set(map.size());
                 Logger.info(info);
                 return null;
             }
@@ -101,6 +103,7 @@ public class Tosmap {
     public static Object pop(String key) {
         Object ret = get(key);
         remove(key);
+        MinervaMetrics.TOSMAP_SIZE.set(map.size());
         return ret;
     }
 
@@ -111,6 +114,7 @@ public class Tosmap {
 
         synchronized (HANDLE) {
             map.remove(key);
+            MinervaMetrics.TOSMAP_SIZE.set(map.size());
         }
     }
     
