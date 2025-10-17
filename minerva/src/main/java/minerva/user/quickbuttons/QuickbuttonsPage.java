@@ -15,17 +15,20 @@ import github.soltaufintel.amalia.web.table.Cols;
 import github.soltaufintel.amalia.web.table.TableComponent;
 import gitper.base.StringService;
 import gitper.base.WebpageTitleService;
+import minerva.base.MinervaMetrics;
 import minerva.base.UserMessage;
 import minerva.user.UPage;
 
 public class QuickbuttonsPage extends UPage {
 	public static ChangeLink changeLink = link -> link;
+	public static long counter = 0;
 
 	@Override
 	protected void execute() {
 		if (isPOST()) {
 			save();
 		} else {
+MinervaMetrics.TEST1.set(++counter);
 			display();
 		}
 	}

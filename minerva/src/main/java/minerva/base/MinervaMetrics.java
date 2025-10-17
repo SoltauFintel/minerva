@@ -35,4 +35,6 @@ public interface MinervaMetrics {
 	Histogram PAGE_SAVETIME = new Histogram("minerva_page_savetime4", "ms", Arrays.asList(500l, 1000l, 2000l, 3000l, 4000l, 5000l));
 
 	Gauge TOSMAP_SIZE = new Gauge("minerva_tosmap_size");
+	
+	Gauge TEST1 = new Gauge("minerva_test1");
 }
