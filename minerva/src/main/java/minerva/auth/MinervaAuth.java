@@ -90,6 +90,7 @@ public class MinervaAuth extends AbstractAuth {
             stateSO.getUser().finishMyEditings();
             String info = MinervaWebapp.factory().getBackendService().logout(stateSO.getUser().getUser());
             Logger.info(stateSO.getUser().getLogin() + " | logout" + (info.isEmpty() ? "" : " | " + info));
+            StatesSO.logout(ctx);
         }
         logout2(ctx);
     }

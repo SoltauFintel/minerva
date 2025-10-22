@@ -1,5 +1,12 @@
 package minerva.base;
 
+import static github.soltaufintel.amalia.web.action.Escaper.esc;
+import static github.soltaufintel.amalia.web.action.Escaper.urlEncode;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,6 +18,7 @@ import java.util.stream.Collectors;
 import org.pmw.tinylog.Logger;
 
 import gitper.base.StringService;
+import minerva.model.StateSO;
 
 /**
  * Thread- and overflow-safe map
@@ -140,5 +148,32 @@ public class Tosmap {
         public Object getData() {
             return data;
         }
+    }
+
+	public static String getInfo() {
+		String ret = "";
+		for (Entry<String, TosmapEntry> e : map.entrySet()) {
+			TosmapEntry v = e.getValue();
+			ret += "\n- " + esc(e.getKey()) + " <a href=\"/tosmap?key=" + urlEncode(e.getKey(), "")
+					+ "\" class=\"btn btn-xs btn-danger\">remove</a>: expires " + formatMillis(v.getExpires()) + " ("
+					+ ((v.getExpires() - System.currentTimeMillis()) / 1000 / 60) + " minutes) -> "
+					+ v.getData().getClass().getSimpleName() + ": ";
+			if (v.getData() instanceof StateSO st) {
+				ret += esc(st.getUser().getLogin());
+			} else if (v.getData() != null) {
+				ret += esc(v.getData().toString());
+			} else {
+				ret += "null";
+			}
+			ret += "\n";
+		}
+		return ret;
+	}
+	
+	private static String formatMillis(long milliseconds) {
+		Instant instant = Instant.ofEpochMilli(milliseconds);
+		LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.of("Europe/Berlin"));
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+		return localDateTime.format(formatter);
     }
 }

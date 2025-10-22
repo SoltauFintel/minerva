@@ -38,6 +38,7 @@ import minerva.base.MinervaErrorPage;
 import minerva.base.MinervaPageInitializer;
 import minerva.base.ServerlogPage;
 import minerva.base.Tosmap;
+import minerva.base.TosmapInfoPage;
 import minerva.base.UpdatePagesMetricsAction;
 import minerva.book.AddBookPage;
 import minerva.book.BookPage;
@@ -350,6 +351,8 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/tablesort/:id/:col", TableSortAction.class);
         get("/update-metrics", UpdatePagesMetricsAction.class);
         addNotProtected("/update-metrics");
+        get("/tosmap", TosmapInfoPage.class);
+        addNotProtected("/tosmap");
     }
 
     private void restApi() {

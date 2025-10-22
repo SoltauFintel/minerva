@@ -306,7 +306,7 @@ public class UserSO {
         if (finished) {
             Tosmap.remove(key); // remove soft page lock
         } else {
-            long endtime = System.currentTimeMillis() + 1000 * 60 * 60;
+            long endtime = System.currentTimeMillis() + 1000 * 60 * 60; // 60 minutes
             LocalDateTime enddate = Instant.ofEpochMilli(endtime).atZone(ZoneId.systemDefault()).toLocalDateTime();
             Tosmap.add(key, endtime, enddate.format(DateTimeFormatter.ofPattern("HH:mm"))); // soft page lock for 60 minutes
         }
