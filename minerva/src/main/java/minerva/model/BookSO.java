@@ -29,22 +29,30 @@ public class BookSO implements BookFilter {
     private final WorkspaceSO workspace;
     private final Book book;
     /** Seiten auf oberster Ebene */
-    private SeitenSO seiten;
+    private SeitenSO seiten; // use only in _seiten() and in savePagesAfterReordering()
     
     public BookSO(WorkspaceSO workspace, Book book) {
         this.workspace = workspace;
         this.book = book;
-        
-        // Alle Seiten eines Buchs laden
-        Map<String, String> files = workspace.dao().loadAllFiles(workspace.getFolder() + "/" + book.getFolder());
-        Gson gson = new Gson();
-        List<Seite> alleSeiten = files.entrySet().stream()
-                .filter(e -> e.getKey().endsWith(SeiteSO.META_SUFFIX))
-                .map(e -> gson.fromJson(e.getValue(), Seite.class))
-                .collect(Collectors.toList());
-        MinervaMetrics.PAGE_LOADED.add(alleSeiten.size());
-
-        seiten = SeitenSO.findeUnterseiten(getISeite(), alleSeiten, this);
+    }
+    
+    // SeitenSO lazy laden
+    private SeitenSO _seiten() {
+    	synchronized (BOOK_PREFIX) {
+	    	if (seiten == null) {
+	            // Alle Seiten eines Buchs laden
+	            Map<String, String> files = workspace.dao().loadAllFiles(workspace.getFolder() + "/" + book.getFolder());
+	            Gson gson = new Gson();
+	            List<Seite> alleSeiten = files.entrySet().stream()
+	                    .filter(e -> e.getKey().endsWith(SeiteSO.META_SUFFIX))
+	                    .map(e -> gson.fromJson(e.getValue(), Seite.class))
+	                    .collect(Collectors.toList());
+	            MinervaMetrics.PAGE_LOADED.add(alleSeiten.size());
+	
+	            seiten = SeitenSO.findeUnterseiten(getISeite(), alleSeiten, this);
+	    	}
+	    	return seiten;
+    	}
     }
     
     // public for migration
@@ -72,18 +80,19 @@ public class BookSO implements BookFilter {
             
             @Override
             public SeitenSO getSeiten() {
-                return seiten;
+                return _seiten();
             }
         };
     }
 
     public SeitenSO getSeiten() {
-        return seiten;
+        return _seiten();
     }
 
     public SeitenSO getSeiten(String lang) {
-        seiten.sort(lang);
-        return seiten;
+    	var ret = _seiten();
+        ret.sort(lang);
+        return ret;
     }
 
     /**
@@ -92,7 +101,7 @@ public class BookSO implements BookFilter {
      */
     public List<SeiteSO> getAlleSeiten() {
         List<SeiteSO> ret = new ArrayList<>();
-        addSeiten(seiten, ret);
+        addSeiten(_seiten(), ret);
         return ret;
     }
 
@@ -104,11 +113,11 @@ public class BookSO implements BookFilter {
     }
     
     public SeiteSO seiteById(String id) {
-        return seiten.byId(id);
+        return _seiten().byId(id);
     }
     
     public SeiteSO _seiteById(String id) {
-        return seiten._byId(id);
+        return _seiten()._byId(id);
     }
 
     public Book getBook() {
@@ -142,7 +151,7 @@ public class BookSO implements BookFilter {
      * @return page ID
      */
     public String createTopLevelSeite() {
-        return seiten.createSeite(getISeite(), this, dao());
+        return _seiten().createSeite(getISeite(), this, dao());
     }
     
     @Override
@@ -186,7 +195,9 @@ public class BookSO implements BookFilter {
 
     // similar method in SeiteSO
     public void savePagesAfterReordering(SeitenSO reorderdSeiten) {
-        this.seiten = reorderdSeiten;
+    	synchronized (BOOK_PREFIX) {
+	        this.seiten = reorderdSeiten;
+    	}
         Map<String, String> files = new HashMap<>();
         if (book.isSorted()) {
             book.setSorted(false);
@@ -205,19 +216,19 @@ public class BookSO implements BookFilter {
      */
     public List<SeiteSO> findTag(String tag) {
         List<SeiteSO> ret = new ArrayList<>();
-        for (SeiteSO seite : seiten) {
+        for (SeiteSO seite : _seiten()) {
             ret.addAll(seite.tags().findTag(tag));
         }
         return ret;
     }
 
     public void addAllTags(TagNList tags) {
-        seiten.forEach(seite -> seite.tags().addAllTags(tags));
+        _seiten().forEach(seite -> seite.tags().addAllTags(tags));
     }
 
     public List<Breadcrumb> getBreadcrumbs(String seiteId, IBreadcrumbLinkBuilder builder) {
         List<Breadcrumb> breadcrumbs = new ArrayList<>();
-        if (seiten.getBreadcrumbs(seiteId, builder, breadcrumbs)) {
+        if (_seiten().getBreadcrumbs(seiteId, builder, breadcrumbs)) {
             Breadcrumb b = new Breadcrumb();
             b.setTitle(book.getTitle());
             b.setLink(builder.build(workspace.getBranch(), book.getFolder(), null));
@@ -227,7 +238,7 @@ public class BookSO implements BookFilter {
     }
 
     public boolean hasContent(SeiteSichtbar ssc) {
-        for (SeiteSO seite : seiten) {
+        for (SeiteSO seite : _seiten()) {
             if (ssc.isVisible(seite)) {
                 return true;
             }
@@ -253,7 +264,7 @@ public class BookSO implements BookFilter {
 
     public Set<String> getAllSeiteIdSet() {
     	Set<String> set = new HashSet<>();
-    	fillSet(seiten, set);
+    	fillSet(_seiten(), set);
     	return set;
     }
     
