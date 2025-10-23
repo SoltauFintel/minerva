@@ -42,7 +42,7 @@ public class StatesSO {
 			StateSO state = new StateSO(user);
 			state.getUser().finishMyEditings();
 			
-			int sessionTimeout = 1000 * 60 * 60 * 8; // I'm not sure what value and if needs to be configurable.
+			int sessionTimeout = 1000 * 60 * 60 * 12; // I'm not sure what value and if needs to be configurable.
 			Tosmap.add(key(ctx), System.currentTimeMillis() + sessionTimeout, state);
 			
 			// Nach dem Einloggen soll nicht kein Workspace gewählt sein. Daher wird
