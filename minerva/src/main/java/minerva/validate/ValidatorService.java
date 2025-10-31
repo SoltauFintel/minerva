@@ -41,6 +41,13 @@ public class ValidatorService {
 	public ValidationResult start(BookSO book, List<String> langs, String userGuiLanguage) {
 		ValidationResult result = new ValidationResult();
 		List<SeiteSO> alleSeiten = book.getAlleSeiten();
+		validate_extractLinks(alleSeiten, langs, userGuiLanguage, result);
+		unusedImageFiles_sameTitle(alleSeiten, langs, result);
+		return result;
+	}
+
+	private void validate_extractLinks(List<SeiteSO> alleSeiten, List<String> langs, String userGuiLanguage,
+			ValidationResult result) {
 		for (String lang : langs) {
 			for (SeiteSO seite : alleSeiten) {
 		        List<String> msg = validate(seite, lang, userGuiLanguage);
@@ -51,6 +58,9 @@ public class ValidatorService {
 				extractLinks(seite, lang, result);
 			}
 		}
+	}
+
+	private void unusedImageFiles_sameTitle(List<SeiteSO> alleSeiten, List<String> langs, ValidationResult result) {
 		for (int i = 0; i < alleSeiten.size(); i++) {
 			SeiteSO seite1 = alleSeiten.get(i);
 
@@ -67,7 +77,6 @@ public class ValidatorService {
 				}
 			}
 		}
-		return result;
 	}
 	
     private List<String> validate(SeiteSO seite, String pageLang, String guiLang) {
