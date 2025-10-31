@@ -66,9 +66,8 @@
 		        {{/each}}
 	        </ul>
         {{/if}}
-        
-        <hr/>
 
+        <hr>
         {{each h in hauptliste}}
             {{if h.hasLinks}}
                 <h2>{{N.externalLinks}}: {{h.lang}}</h2>
@@ -79,6 +78,16 @@
                 </ul>
             {{/if}}
         {{/each}}
+        
+        {{if hasNoHelpKeys}}        
+	        <hr>
+	        <h2>{{N.manualPagesWithoutHelpKeys}}</h2>
+	        <ul>
+		        {{each s in noHelpKeys}}
+		            <li><a href="{{s.link}}">{{s.title}}</a></li>
+		        {{/each}}
+	        </ul>
+        {{/if}}
         
         <hr/>
         <h2>{{N.erlaeuterungen}}</h2>

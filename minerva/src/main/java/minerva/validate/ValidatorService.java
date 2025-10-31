@@ -41,8 +41,12 @@ public class ValidatorService {
 	public ValidationResult start(BookSO book, List<String> langs, String userGuiLanguage) {
 		ValidationResult result = new ValidationResult();
 		List<SeiteSO> alleSeiten = book.getAlleSeiten();
+		
 		validate_extractLinks(alleSeiten, langs, userGuiLanguage, result);
-		unusedImageFiles_sameTitle(alleSeiten, langs, result);
+		
+		boolean benutzerhandbuch = "Benutzerhandbuch".equals(book.getBook().getTitle().getString("de"));
+		unusedImageFiles_helpKeys_sameTitle(alleSeiten, langs, benutzerhandbuch, result);
+		
 		return result;
 	}
 
@@ -60,11 +64,17 @@ public class ValidatorService {
 		}
 	}
 
-	private void unusedImageFiles_sameTitle(List<SeiteSO> alleSeiten, List<String> langs, ValidationResult result) {
+	private void unusedImageFiles_helpKeys_sameTitle(List<SeiteSO> alleSeiten, List<String> langs, boolean checkHelpKeys,
+			ValidationResult result) {
 		for (int i = 0; i < alleSeiten.size(); i++) {
 			SeiteSO seite1 = alleSeiten.get(i);
 
 			unusedImageFiles(seite1, langs, result, null);
+			
+			if (checkHelpKeys && seite1.getSeite().getHelpKeys().isEmpty()
+					&& (seite1.getSeite().getHkh() == null || seite1.getSeite().getHkh().isEmpty())) {
+				result.getPagesWithoutHelpKeys().add(seite1);
+			}
 
 			for (int j = 0; j < i; j++) {
 				SeiteSO seite2 = alleSeiten.get(j);

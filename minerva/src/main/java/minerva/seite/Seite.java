@@ -143,7 +143,7 @@ public class Seite {
     }
 
     /**
-     * @return help keys for headings
+     * @return help keys for headings, can be null
      */
     public List<HelpKeysForHeading> getHkh() {
         return hkh;

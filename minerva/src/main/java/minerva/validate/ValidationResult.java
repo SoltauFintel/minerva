@@ -15,6 +15,7 @@ public class ValidationResult {
 	private final List<VRUnusedImageSeite> unusedImages = new ArrayList<>();
 	/** key: language + ":" + title, value: unique SeiteSO list */
 	private final Map<String, List<SeiteSO>> sameTitles = new TreeMap<>();
+	private final List<SeiteSO> pagesWithoutHelpKeys = new ArrayList<>();
 	
 	public List<VRSeite> getSeiten() {
 		return seiten;
@@ -151,5 +152,9 @@ public class ValidationResult {
 		public List<String> getUnusedImages() {
 			return unusedImages;
 		}
+	}
+
+	public List<SeiteSO> getPagesWithoutHelpKeys() {
+		return pagesWithoutHelpKeys;
 	}
 }

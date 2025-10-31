@@ -422,3 +422,4 @@ qOthersCanTake=Andere Benutzer können diesen Schnell-Button übernehmen.
 initials=Initialien
 initialsError=Initialien müssen 2 Großbuchstaben sein!
 customerRights=Kundenrechte
+manualPagesWithoutHelpKeys=Benutzerhandbuch-Seiten ohne Hilfe-Keys

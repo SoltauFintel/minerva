@@ -41,6 +41,12 @@ public class ValidationPage extends BPage {
 		putInt("nPages", result.getSeitenCount());
 		putInt("nMessages", result.getMessagesCount());
         fillUnusedImages(result);
+        var list = list("noHelpKeys");
+        for (SeiteSO seite : result.getPagesWithoutHelpKeys()) {
+			list.add().put("title", esc(seite.getSeite().getTitle().getString(user.getGuiLanguage())))
+				.put("link", esc(seite.viewlink()));
+		}
+        put("hasNoHelpKeys", !list.isEmpty());
     }
 
 	private void fillPages(ValidationResult result, String lang, DataMap langEintrag) {

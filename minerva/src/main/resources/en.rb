@@ -421,3 +421,4 @@ qOthersCanTake=Other users can take this quick button.
 initials=Initials
 initialsError=Initials must be 2 upper case letters!
 customerRights=Customer rights
+manualPagesWithoutHelpKeys=Manual pages without help keys
