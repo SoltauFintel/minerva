@@ -12,7 +12,7 @@ import minerva.seite.SeiteImageUploadService;
  * Seite-specific comment ImageUploadService
  */
 public class CommentImageUploadService extends SeiteImageUploadService {
-    private static final String handle = "images";
+	private static final Object LOCK = new Object();
     /** key: comment ID, value: filenames */
     public static final Map<String, Set<String>> images = new HashMap<>();
     private final String commentId;
@@ -34,7 +34,7 @@ public class CommentImageUploadService extends SeiteImageUploadService {
     
     @Override
     public void success() {
-        synchronized (handle) {
+        synchronized (LOCK) {
             Set<String> list = images.get(commentId);
             if (list == null) {
                 images.put(commentId, list = new HashSet<>());
@@ -44,7 +44,7 @@ public class CommentImageUploadService extends SeiteImageUploadService {
     }
     
     public static Set<String> popImages(String pCommentId) {
-        synchronized (handle) {
+        synchronized (LOCK) {
             Set<String> list = images.get(pCommentId);
             if (list != null) {
                 images.remove(pCommentId);

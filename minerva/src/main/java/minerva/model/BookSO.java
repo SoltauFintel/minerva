@@ -25,6 +25,7 @@ import minerva.seite.tag.TagNList;
 import minerva.subscription.SubscriptionService;
 
 public class BookSO implements BookFilter {
+	private static final Object LOCK = new Object();
 	public static final String BOOK_PREFIX = "book:";
     private final WorkspaceSO workspace;
     private final Book book;
@@ -38,7 +39,7 @@ public class BookSO implements BookFilter {
     
     // SeitenSO lazy laden
     private SeitenSO _seiten() {
-    	synchronized (BOOK_PREFIX) {
+    	synchronized (LOCK) {
 	    	if (seiten == null) {
 	            // Alle Seiten eines Buchs laden
 	            Map<String, String> files = workspace.dao().loadAllFiles(workspace.getFolder() + "/" + book.getFolder());

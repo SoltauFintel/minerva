@@ -18,7 +18,7 @@ import minerva.base.MinervaMetrics;
 import minerva.base.NlsString;
 
 public class JournalSO {
-    private static final String handle = "journal";
+	private static final Object LOCK = new Object();
     public static final String FOLDER = "_journal";
     /** key: login+SeiteSO.id, value: hash */
 	private static final Map<String, String> lastHash = new HashMap<>();
@@ -29,7 +29,7 @@ public class JournalSO {
     }
 
     public void save(String branch, String id, NlsString title, NlsString content) {
-        synchronized (handle) {
+        synchronized (LOCK) {
             String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HHmmss"));
             File file = new File(user.getUserFolder() + "/" + FOLDER + "/" + branch + "/" + now + "_" + id + ".json");
             Map<String, String> data = new HashMap<>();
@@ -45,7 +45,7 @@ public class JournalSO {
     }
 
     public void livesave(String branch, String id, String data) {
-		synchronized (handle) {
+		synchronized (LOCK) {
 			String hash = DigestUtils.sha256Hex(data);
 			String key = user.getLogin() + "/" + branch + "/" + id;
 			String last = lastHash.get(key);
@@ -145,7 +145,7 @@ public class JournalSO {
 
 		@Override
 		protected void timerEvent() {
-	        synchronized (handle) {
+	        synchronized (LOCK) {
 	        	int size = JournalSO.lastHash.size();
 	        	if (size >= 5) { // TODO erstmal kleiner Wert zum Testen, später auf 20 (oder 50) setzen
 	        		Logger.warn("JournalSO.lastHash with size " + size + " cleared.");

@@ -32,7 +32,7 @@ import gitper.persistence.gitlab.GitFactory;
  * Control Git repository with quite low level functions: clone, fetch, pull, tag, branch, commit, select branch/commit.
  */
 public class GitService {
-	private static final String HANDLE = "GitService";
+	private static final Object LOCK = new Object();
     public static final String ADD_ALL_FILES = "$$ALL";
     private final File workspace;
     private final boolean onlyRemoteBranches;
@@ -67,7 +67,7 @@ public class GitService {
      * @param bare false: with repository and with workspace, true: with repository and without workspace
      */
     public void clone(String url, User user, String branch, boolean bare) {
-    	synchronized (HANDLE) {
+    	synchronized (LOCK) {
 	        try (Git result = Git.cloneRepository()
 	                .setURI(GitFactory.handleUrl(url, user))
 	                .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
@@ -89,7 +89,7 @@ public class GitService {
      * @param user user to log into remote Git repository
      */
     public void fetch(User user) {
-    	synchronized (HANDLE) {
+    	synchronized (LOCK) {
 	        try (Git git = Git.open(workspace)) {
 	            git.fetch()
 	                .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
@@ -106,7 +106,7 @@ public class GitService {
      * @param user user to log into remote Git repository
      */
     public void pull(User user) {
-    	synchronized (HANDLE) {
+    	synchronized (LOCK) {
 	        try (Git git = Git.open(workspace)) {
 	            git.pull()
 	                .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
@@ -195,7 +195,7 @@ public class GitService {
     }
     
     private void branch(String name, User user) {
-    	synchronized (HANDLE) {
+    	synchronized (LOCK) {
 	        String action = "creating";
 	        try (Git git = Git.open(workspace)) {
 	            // step 1: create
@@ -239,7 +239,7 @@ public class GitService {
      * A tag name should also work.
      */
     public void selectCommit(String commit) {
-    	synchronized (HANDLE) {
+    	synchronized (LOCK) {
     		try (Git git = Git.open(workspace)) {
     			git.checkout()
     			.setName(commit)
@@ -255,7 +255,7 @@ public class GitService {
      * @param branch e.g. "3.03.x"
      */
     public void switchToBranch(String branch) {
-    	synchronized (HANDLE) {
+    	synchronized (LOCK) {
 	        try (Git git = Git.open(workspace)) {
 	            try {
 	                // try for locally existing branch
@@ -320,7 +320,7 @@ public class GitService {
         if (mail == null || mail.trim().isEmpty()) {
             throw new IllegalArgumentException("mail must not be empty!");
         }
-        synchronized (HANDLE) {
+        synchronized (LOCK) {
 	        try (Git git = Git.open(workspace)) {
 	        	boolean allowEmpty = false;
 	            if (addFilenames.size() == 1 && addFilenames.contains(ADD_ALL_FILES)) {
@@ -410,7 +410,7 @@ public class GitService {
     }
     
     public boolean areThereRemoteUpdates(String targetBranch, User user) {
-    	synchronized (HANDLE) {
+    	synchronized (LOCK) {
 	        try (Git git = Git.open(workspace)) {
 	            FetchResult f = git.fetch()
 	                    .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))

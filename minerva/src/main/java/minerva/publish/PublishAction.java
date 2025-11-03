@@ -14,7 +14,7 @@ import github.soltaufintel.amalia.web.action.Action;
 import gitper.base.FileService;
 
 public class PublishAction extends Action {
-    private static String handle = "handle";
+	private static final Object LOCK = new Object();
 
     @Override
     protected void execute() {
@@ -26,7 +26,7 @@ public class PublishAction extends Action {
             throw new RuntimeException("Missing parameter");
         }
         
-        synchronized (handle) {
+        synchronized (LOCK) {
             File targetFolder = new PublishService(langs).loginAndPublish(login, password, branch);
             downloadFolderAsZip(targetFolder, ctx);
         }

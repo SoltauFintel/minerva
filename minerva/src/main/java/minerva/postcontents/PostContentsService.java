@@ -11,7 +11,7 @@ import minerva.comment.CommentPCD;
 import minerva.seite.SeitePCD;
 
 public class PostContentsService {
-    private static final String handle = "handle";
+	private static final Object LOCK = new Object();
     /** key: type (Bestandteil der post-contents URL), value: PostContentsData class */
     private static final Map<String, Class<? extends PostContentsData>> pcdClasses = new HashMap<>();
     private static PostContentsData last; // einfach verkettete Liste
@@ -38,7 +38,7 @@ public class PostContentsService {
     }
 
     private void push(PostContentsData data) {
-        synchronized (handle) {
+        synchronized (LOCK) {
             data.setPrevious(last);
             last = data;
         }
@@ -65,7 +65,7 @@ public class PostContentsService {
     }
 
     private PostContentsData pop(String key, int version) {
-        synchronized (handle) {
+        synchronized (LOCK) {
             PostContentsData pick = last;
             PostContentsData vorg = null;
             while (pick != null) {

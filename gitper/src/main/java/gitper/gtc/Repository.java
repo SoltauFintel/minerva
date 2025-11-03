@@ -25,7 +25,7 @@ import org.eclipse.jgit.util.io.DisabledOutputStream;
 import org.pmw.tinylog.Logger;
 
 public class Repository {
-	private static final String HANDLE = "HANDLE_R";
+	private static final Object LOCK = new Object();
 	private final RepositoryDefinition repo;
 	private Git git;
 
@@ -43,7 +43,7 @@ public class Repository {
 	
 	private void fetchOrPull(boolean pull, boolean bare) {
 		if (repo.getLocalFolder().isDirectory()) {
-			synchronized (HANDLE) {
+			synchronized (LOCK) {
 				try {
 					var git = getGit();
 					var cmd = pull ? git.pull() : git.fetch();
@@ -62,7 +62,7 @@ public class Repository {
 
 	public void cloneRepo(boolean bare) {
 		close();
-		synchronized (HANDLE) {
+		synchronized (LOCK) {
 			try {
 				if (repo.getLocalFolder().isDirectory()) {
 					FileUtils.delete(repo.getLocalFolder(), FileUtils.RECURSIVE);
@@ -117,7 +117,7 @@ public class Repository {
 	}
 
 	public List<Tag> getTags(String contains) {
-		synchronized (HANDLE) {
+		synchronized (LOCK) {
 			try {
 				Git git = getGit();
 				return git.tagList().call().stream()
@@ -145,7 +145,7 @@ public class Repository {
 
 	public String getBranchStartDate(String branch) {
 		if (!"master".equals(branch)) {
-			synchronized (HANDLE) {
+			synchronized (LOCK) {
 				String x = "root_" + branch;
 				try {
 					Git git = getGit();
@@ -178,7 +178,7 @@ public class Repository {
 	}
 
 	private String getChanges2(RevCommit commit) { // teuer
-		synchronized (HANDLE) {
+		synchronized (LOCK) {
 			ByteArrayOutputStream boas = new ByteArrayOutputStream();
 			try {
 				if (commit.getParentCount() == 0) {
@@ -209,7 +209,7 @@ public class Repository {
 	 * @return hash of current commit (HEAD), e.g. "f65bb8c600a3ea1eabdbdcad1f6bd381f00636b6"
 	 */
 	public String getCurrentCommitHash() {
-		synchronized (HANDLE) {
+		synchronized (LOCK) {
 			try {
 				Iterator<RevCommit> iter = getGit().log().setMaxCount(1).call().iterator();
 				var ret = iter.hasNext() ? iter.next().getName() : "-";

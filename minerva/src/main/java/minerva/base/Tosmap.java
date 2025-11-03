@@ -25,7 +25,7 @@ import minerva.model.StateSO;
  */
 public class Tosmap {
     private static final Map<String, TosmapEntry> map = new HashMap<>();
-    private static final String HANDLE = "map";
+	private static final Object LOCK = new Object();
     
     private Tosmap() {
     }
@@ -43,7 +43,7 @@ public class Tosmap {
             throw new IllegalArgumentException("expires value too small\n" + expires + "<" + time);
         }
         
-        synchronized (HANDLE) {
+        synchronized (LOCK) {
             // cleanup
             Iterator<Entry<String, TosmapEntry>> iter = map.entrySet().iterator();
             while (iter.hasNext()) {
@@ -71,7 +71,7 @@ public class Tosmap {
         }
 
         final long time = System.currentTimeMillis();
-        synchronized (HANDLE) {
+        synchronized (LOCK) {
             TosmapEntry ret = map.get(key);
             if (ret == null) {
                 return null;
@@ -97,7 +97,7 @@ public class Tosmap {
         if (StringService.isNullOrEmpty(keyBegin)) {
             throw new IllegalArgumentException("keyBegin must not be empty");
         }
-        synchronized (HANDLE) {
+        synchronized (LOCK) {
             List<String> ret = new ArrayList<>();
             for (String key : map.keySet()) {
                 if (key.startsWith(keyBegin)) {
@@ -120,14 +120,14 @@ public class Tosmap {
             throw new IllegalArgumentException("key must not be empty");
         }
 
-        synchronized (HANDLE) {
+        synchronized (LOCK) {
             map.remove(key);
             MinervaMetrics.TOSMAP_SIZE.set(map.size());
         }
     }
     
     public static List<Object> getValues() {
-        synchronized (HANDLE) {
+        synchronized (LOCK) {
             return map.values().stream().map(v -> v.getData()).collect(Collectors.toList());
         }
     }
