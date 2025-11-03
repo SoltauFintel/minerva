@@ -45,9 +45,11 @@ public class LinkResolverPage extends SPage {
         
         Link link = null;
         if (index >= linksModel.getLinks().size()) {
+			Logger.info(seite.getLogin() + " | #" + seite.getId() + " | LinkResolverPage | save");
             linksModel.save(seite, langs);
             ctx.redirect(viewlink);
         } else {
+			Logger.info(seite.getLogin() + " | #" + seite.getId() + " | LinkResolverPage | next");
             link = linksModel.getLinks().get(index);
         }
         String href = link == null ? "" : link.getHref();
