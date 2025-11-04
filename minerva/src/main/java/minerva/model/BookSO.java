@@ -43,16 +43,18 @@ public class BookSO implements BookFilter {
 	    		long start = System.currentTimeMillis();
 	            // Alle Seiten eines Buchs laden
 	            Map<String, String> files = workspace.dao().loadAllFiles(workspace.getFolder() + "/" + book.getFolder());
+	            long load = System.currentTimeMillis();
 	            AlleSeiten alleSeiten = new AlleSeiten(files);
+	            long as = System.currentTimeMillis();
 	            int n = files.size();
 				MinervaMetrics.PAGE_LOADED.add(n);
 	
 	            seiten = SeitenSO.findeUnterseiten(getISeite(), alleSeiten, this);
 	            
-	            start = System.currentTimeMillis() - start;
-				Logger.info(workspace.getUser().getLogin() + " | All " + n + " pages of book '"
-						+ book.getFolder() + "' losaded. Branch: " + workspace.getBranch()
-						+ " | " + start + "ms");
+	            long end = System.currentTimeMillis();
+				Logger.info(workspace.getUser().getLogin() + " | All " + n + " pages of book '" + book.getFolder()
+						+ "' loaded. Branch: " + workspace.getBranch() + " | load: " + (load - start)
+						+ "ms, alleSeiten: " + (as - load) + "ms, total: " + (end - start) + "ms");
 	    	}
 	    	return seiten;
     	}
