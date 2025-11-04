@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.pmw.tinylog.Logger;
+
 import com.google.gson.Gson;
 
 import gitper.access.CommitMessage;
@@ -41,6 +43,7 @@ public class BookSO implements BookFilter {
     private SeitenSO _seiten() {
     	synchronized (LOCK) {
 	    	if (seiten == null) {
+	    		long start = System.currentTimeMillis();
 	            // Alle Seiten eines Buchs laden
 	            Map<String, String> files = workspace.dao().loadAllFiles(workspace.getFolder() + "/" + book.getFolder());
 	            Gson gson = new Gson();
@@ -51,6 +54,11 @@ public class BookSO implements BookFilter {
 	            MinervaMetrics.PAGE_LOADED.add(alleSeiten.size());
 	
 	            seiten = SeitenSO.findeUnterseiten(getISeite(), alleSeiten, this);
+	            
+	            start = System.currentTimeMillis() - start;
+				Logger.info(workspace.getUser().getLogin() + " | All " + alleSeiten.size() + " pages of book '"
+						+ book.getFolder() + "' loaded (raw=" + files.size() + "). Branch: " + workspace.getBranch()
+						+ " | " + start + "ms");
 	    	}
 	    	return seiten;
     	}
