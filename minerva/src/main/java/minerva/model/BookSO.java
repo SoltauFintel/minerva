@@ -49,12 +49,14 @@ public class BookSO implements BookFilter {
 	            int n = files.size();
 				MinervaMetrics.PAGE_LOADED.add(n);
 	
+				long time4 = System.currentTimeMillis();
 	            seiten = SeitenSO.findeUnterseiten(getISeite(), alleSeiten, this);
 	            
 	            long end = System.currentTimeMillis();
 				Logger.info(workspace.getUser().getLogin() + " | All " + n + " pages of book '" + book.getFolder()
 						+ "' loaded. Branch: " + workspace.getBranch() + " | load: " + (load - start)
-						+ "ms, alleSeiten: " + (as - load) + "ms, total: " + (end - start) + "ms");
+						+ "ms, alleSeiten: " + (as - load) + "ms, fus: " + (end - time4) + "ms,  total: "
+						+ (end - start) + "ms");
 	    	}
 	    	return seiten;
     	}

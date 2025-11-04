@@ -52,7 +52,7 @@ public class SeitenSO extends MList<SeiteSO> {
 
     public static SeitenSO findeUnterseiten(ISeite parent, AlleSeiten alleSeiten, BookSO book) {
         SeitenSO ret = new SeitenSO(parent);
-        alleSeiten.fetch(parent.getId(), book, ret);
+        alleSeiten.fetch(parent.getId(), book, ret); // recursive
         return ret;
     }
 
