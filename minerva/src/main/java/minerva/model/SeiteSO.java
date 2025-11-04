@@ -60,7 +60,6 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
 
     /** null: nicht geladen */
     private NlsString content = null;
-    private final TagsSO tags = new TagsSO(this);
     /** true: it's a new page that has never been saved, false: already existing page */
     private boolean neu = false;
     
@@ -265,7 +264,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     }
 
     public TagsSO tags() {
-        return tags;
+        return new TagsSO(this);
     }
     
     public void remove() {
