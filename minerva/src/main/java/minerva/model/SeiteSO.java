@@ -34,6 +34,7 @@ import minerva.base.TextService;
 import minerva.base.UserMessage;
 import minerva.comment.SeiteCommentService2;
 import minerva.exclusions.SeiteSichtbar;
+import minerva.seite.AlleSeiten;
 import minerva.seite.IPageChangeStrategy;
 import minerva.seite.ISeite;
 import minerva.seite.PageChange;
@@ -69,7 +70,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
      * @param seite -
      * @param alleSeiten -
      */
-    public SeiteSO(BookSO book, Seite seite, List<Seite> alleSeiten) {
+    public SeiteSO(BookSO book, Seite seite, AlleSeiten alleSeiten) {
         if (seite == null) {
             throw new IllegalArgumentException("seite is null");
         }

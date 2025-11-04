@@ -6,11 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
-
-import com.google.gson.Gson;
 
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
@@ -19,10 +16,10 @@ import minerva.book.Book;
 import minerva.book.BookType;
 import minerva.exclusions.SeiteSichtbar;
 import minerva.search.BookFilter;
+import minerva.seite.AlleSeiten;
 import minerva.seite.Breadcrumb;
 import minerva.seite.IBreadcrumbLinkBuilder;
 import minerva.seite.ISeite;
-import minerva.seite.Seite;
 import minerva.seite.tag.TagNList;
 import minerva.subscription.SubscriptionService;
 
@@ -46,18 +43,15 @@ public class BookSO implements BookFilter {
 	    		long start = System.currentTimeMillis();
 	            // Alle Seiten eines Buchs laden
 	            Map<String, String> files = workspace.dao().loadAllFiles(workspace.getFolder() + "/" + book.getFolder());
-	            Gson gson = new Gson();
-	            List<Seite> alleSeiten = files.entrySet().stream()
-	                    .filter(e -> e.getKey().endsWith(SeiteSO.META_SUFFIX))
-	                    .map(e -> gson.fromJson(e.getValue(), Seite.class))
-	                    .collect(Collectors.toList());
-	            MinervaMetrics.PAGE_LOADED.add(alleSeiten.size());
+	            AlleSeiten alleSeiten = new AlleSeiten(files);
+	            int n = files.size();
+				MinervaMetrics.PAGE_LOADED.add(n);
 	
 	            seiten = SeitenSO.findeUnterseiten(getISeite(), alleSeiten, this);
 	            
 	            start = System.currentTimeMillis() - start;
-				Logger.info(workspace.getUser().getLogin() + " | All " + alleSeiten.size() + " pages of book '"
-						+ book.getFolder() + "' loaded (raw=" + files.size() + "). Branch: " + workspace.getBranch()
+				Logger.info(workspace.getUser().getLogin() + " | All " + n + " pages of book '"
+						+ book.getFolder() + "' losaded. Branch: " + workspace.getBranch()
 						+ " | " + start + "ms");
 	    	}
 	    	return seiten;

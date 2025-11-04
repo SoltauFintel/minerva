@@ -24,6 +24,7 @@ import minerva.comment.SeiteCommentService2;
 import minerva.config.MinervaConfig;
 import minerva.exclusions.SeiteSichtbar;
 import minerva.exclusions.Visible;
+import minerva.seite.AlleSeiten;
 import minerva.seite.Breadcrumb;
 import minerva.seite.CommentWithSeite;
 import minerva.seite.IBreadcrumbLinkBuilder;
@@ -49,13 +50,9 @@ public class SeitenSO extends MList<SeiteSO> {
         }
     }
 
-    public static SeitenSO findeUnterseiten(ISeite parent, List<Seite> alleSeiten, BookSO book) {
+    public static SeitenSO findeUnterseiten(ISeite parent, AlleSeiten alleSeiten, BookSO book) {
         SeitenSO ret = new SeitenSO(parent);
-        for (Seite seite : alleSeiten) {
-            if (seite.getParentId().equals(parent.getId())) {
-                ret.add(new SeiteSO(book, seite, alleSeiten));
-            }
-        }
+        alleSeiten.fetch(parent.getId(), book, ret);
         return ret;
     }
 
