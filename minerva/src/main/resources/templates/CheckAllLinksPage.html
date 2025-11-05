@@ -6,10 +6,14 @@
         
         <p>{{N.book}}: {{bookTitle}}</p>
 
-        <ul>
-            {{each l in links}}
-                <li>{{l.text}}</li>
-            {{/each}}
-        </ul>
+        {{if hasBL}}
+	        <ul>
+	            {{each l in links}}
+	                <li>{{l.text}}</li>
+	            {{/each}}
+	        </ul>
+        {{else}}
+            <p class="mt3">{{N.NothingFound}}</p>
+        {{/if}}
     </div>
 </div>

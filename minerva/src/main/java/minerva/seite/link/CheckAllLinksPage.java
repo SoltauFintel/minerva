@@ -23,7 +23,7 @@ public class CheckAllLinksPage extends BPage {
                     .replace("$v", esc("/s/" + branch + "/" + bookFolder + "/" + link.getSeite().getId()))
                     .replace("$t", esc(link.getSeite().getTitle()))
                     .replace("$l", esc(link.getLink().getTitle())));
-            
         }
+        put("hasBL", !list.isEmpty());
     }
 }
