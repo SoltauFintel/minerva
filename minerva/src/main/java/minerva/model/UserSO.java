@@ -574,4 +574,15 @@ public class UserSO {
 		user.setRolloutConfig(rolloutConfig);
 		save();
 	}
+	
+	public String getRolloutCustomer() {
+		load();
+		return user.getRolloutCustomer();
+	}
+	
+	public void setRolloutCustomer(String rolloutCustomer) {
+		load();
+		user.setRolloutCustomer(rolloutCustomer);
+		save();
+	}
 }

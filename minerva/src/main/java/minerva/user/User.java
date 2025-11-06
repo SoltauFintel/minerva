@@ -37,6 +37,7 @@ public class User implements gitper.User {
     /** hat besondere Rechte für diese Kunden (getrennt mit ",") */
     private String customerRights;
     private String rolloutConfig;
+    private String rolloutCustomer;
     
     @Override
     public String getLogin() {
@@ -239,5 +240,13 @@ public class User implements gitper.User {
 
 	public void setRolloutConfig(String rolloutConfig) {
 		this.rolloutConfig = rolloutConfig;
+	}
+
+	public String getRolloutCustomer() {
+		return rolloutCustomer;
+	}
+
+	public void setRolloutCustomer(String rolloutCustomer) {
+		this.rolloutCustomer = rolloutCustomer;
 	}
 }
