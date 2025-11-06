@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.pmw.tinylog.Logger;
-
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
 import minerva.base.MinervaMetrics;
@@ -40,23 +38,12 @@ public class BookSO implements BookFilter {
     private SeitenSO _seiten() {
     	synchronized (LOCK) {
 	    	if (seiten == null) {
-	    		long start = System.currentTimeMillis();
 	            // Alle Seiten eines Buchs laden
 	            Map<String, String> files = workspace.dao().loadAllFiles(workspace.getFolder() + "/" + book.getFolder());
-	            long load = System.currentTimeMillis();
 	            AlleSeiten alleSeiten = new AlleSeiten(files);
-	            long as = System.currentTimeMillis();
 	            int n = files.size();
 				MinervaMetrics.PAGE_LOADED.add(n);
-	
-				long time4 = System.currentTimeMillis();
 	            seiten = SeitenSO.findeUnterseiten(getISeite(), alleSeiten, this);
-	            
-	            long end = System.currentTimeMillis();
-				Logger.info(workspace.getUser().getLogin() + " | All " + n + " pages of book '" + book.getFolder()
-						+ "' loaded. Branch: " + workspace.getBranch() + " | load: " + (load - start)
-						+ "ms, alleSeiten: " + (as - load) + "ms, fus: " + (end - time4) + "ms,  total: "
-						+ (end - start) + "ms");
 	    	}
 	    	return seiten;
     	}
