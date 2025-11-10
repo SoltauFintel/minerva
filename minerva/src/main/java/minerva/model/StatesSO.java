@@ -70,7 +70,7 @@ public class StatesSO {
         }
         gitper.User user = MinervaWebapp.factory().getBackendService()
         		.login(MinervaOptions.CLEANUP_LOGIN.get(), MinervaOptions.CLEANUP_PASSWORD.get(), null);
-		MinervaMetrics.LOGIN.inc();
+		MinervaMetrics.LOGIN_AUTOMATIC.inc();
         return user == null ? null : new UserSO((User) user);
 	}
 

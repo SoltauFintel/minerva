@@ -9,6 +9,7 @@ import gitper.apm.Histogram;
 public interface MinervaMetrics {
 
 	Counter LOGIN = new Counter("minerva_login");
+	Counter LOGIN_AUTOMATIC = new Counter("minerva_login_automatic");
 	Counter LOGOUT = new Counter("minerva_logout");
 
 	Counter MENU = new Counter("minerva_menu");
