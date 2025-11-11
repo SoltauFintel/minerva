@@ -14,7 +14,10 @@ public class AddQuickbuttonAction extends UAction {
 		String label = ctx.queryParam("t");
 		String q = ctx.queryParam("q");
 		
-		label = label.replace(UPage.TITLE_POSTFIX, "");
+		label = label.replace(UPage.TITLE_POSTFIX, "").replace("GTC-Auswertungen", "GTC-Ausw.");
+		if (label.endsWith(" - GTC")) {
+			label = label.substring(0, label.length() - " - GTC".length());
+		}
 		if (q != null && !q.isBlank()) {
 			if (q.startsWith("__CM")) {
 				label = q.substring("__CM".length());
