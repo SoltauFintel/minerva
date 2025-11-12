@@ -147,8 +147,9 @@ public class JournalSO {
 		protected void timerEvent() {
 	        synchronized (LOCK) {
 	        	int size = JournalSO.lastHash.size();
-	        	if (size >= 5) { // TODO erstmal kleiner Wert zum Testen, später auf 20 (oder 50) setzen
-	        		Logger.warn("JournalSO.lastHash with size " + size + " cleared.");
+	        	if (size >= 10) { // TODO erstmal kleiner Wert zum Testen, später auf 20 (oder 50) setzen
+	        		// Ich muss einfach zeitlich alte Werte löschen. Und ich brauch eine ~Obergrenze (z.B. 1000) wo ich drastischer reagiere (Hackingversuch?).
+	        		Logger.warn("JournalSO.lastHash with size " + size + " cleared. " + JournalSO.lastHash);
 	        		JournalSO.lastHash.clear();
 	        	}
 	        }
