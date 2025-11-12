@@ -511,7 +511,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         long duration = System.currentTimeMillis() - start;
 		Logger.info(getLogLine(null) + " | *** Page saved. (#" + getId() + ", " + duration + "ms)");
 		MinervaMetrics.PAGE_SAVETIME.record(duration);
-		Logger.info("Metric PAGE_SAVETIME sent: " + duration); // XXX debug
+		Logger.debug("Metric PAGE_SAVETIME sent: " + duration);
     }
 
     private String createTagsFromComment(String comment) {
