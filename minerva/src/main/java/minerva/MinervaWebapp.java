@@ -289,8 +289,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/s/:branch/:book/img/:id/:dn", ImageDownloadAction.class);
         get("/s-edit/:branch/:book/img/:id/:dn", ImageDownloadAction.class); // Image download must also work in edit mode.
 
-        get("/sc/:branch/:book/:id/img/:commentId/:dn", ImageDownloadAction.class); // view mode
-        get("/sc/:branch/:book/:id/img/:commentId/:dn", ImageDownloadAction.class); // edit mode
+        get("/sc/:branch/:book/:id/img/:commentId/:dn", ImageDownloadAction.class); // view+edit mode
     }
 
     private void tags() {
