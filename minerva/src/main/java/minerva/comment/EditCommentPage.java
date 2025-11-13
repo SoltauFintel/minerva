@@ -16,7 +16,7 @@ public class EditCommentPage extends Page {
 
 	@Override
 	protected void execute() {
-		String id = ctx.queryParam("id"); // GET: id is missing id add case, POST: id is always set
+		String id = ctx.queryParam("id"); // GET: id is missing in add case, POST: id is always set
 		String parentId = ctx.queryParam("parent");
 		CommentService sv = CommentService.service(ctx);
 
