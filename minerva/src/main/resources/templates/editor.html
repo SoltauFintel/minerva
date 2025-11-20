@@ -1,0 +1,109 @@
+<script type="module">
+    function MyCustomUploadAdapterPlugin(editor) {
+        editor.plugins.get('FileRepository').createUploadAdapter = loader => {
+            return new MyUploadAdapter(loader, '{{imageuploadlink}}');
+        }
+    }
+
+{{each L in ckedLangs}}
+    let editor{{L.LANG}};
+    window.moco.createEditor(
+        '{{ckedGuiLanguage}}',
+        'editor{{L.LANG}}',
+        { options: [
+            { model: 'paragraph', title: 'Paragraph' },
+            {{if bigEditor}}{ model: 'heading1', view: 'h2', title: 'Heading 1', class: 'ck-heading_heading1' },{{/if}}
+            { model: 'heading2', view: 'h3', title: 'Heading 2', class: 'ck-heading_heading2' },
+            {{if bigEditor}}{ model: 'heading3', view: 'h4', title: 'Heading 3', class: 'ck-heading_heading3' },
+            { model: 'heading4', view: 'h5', title: 'Heading 4', class: 'ck-heading_heading4' },
+            { model: 'heading5', view: 'h6', title: 'Heading 5', class: 'ck-heading_heading5' },{{/if}}
+            { model: 'pre', view: 'pre', title: 'Code' },
+        ]},
+        [ MyCustomUploadAdapterPlugin ],
+        _editor => {
+            editor{{L.LANG}} = _editor;
+            return document.querySelector('#toolbar-container{{L.LANG}}');
+        }
+    );
+{{/each}}
+
+    function speichereFelder(prefix = '') {
+        let v;
+        {{each i in ckedFields}}
+        {{if i.isCKEditor}}v = {{i.field}}.getData();{{else}}v = document.getElementById('{{i.field}}').value;{{/if}}
+        localStorage.setItem(prefix + '{{i.field}}.{{id}}', v);
+        {{/each}}
+    }
+   
+    $('#submit').click(function(e) {
+        setTimeout(function() { // Firefox problem NS_BINDING_ABORTED
+            $.post('{{postcontentslink}}', {
+                {{each L in ckedLangs}}
+                    content{{L.LANG}}: editor{{L.LANG}}.getData(),
+                {{/each}}
+                version: document.getElementById('version').value
+            }).fail(e => {
+                speichereFelder('postError_');
+                console.error('{{saveError}}');
+                alert('{{saveError}}');
+            });
+        }, 0);
+    });
+
+    document.addEventListener('keydown', e => {   {{-- // https://stackoverflow.com/a/60279187 --}}
+        if (e.ctrlKey && e.key === 's') {
+            e.preventDefault();
+            $('#submit').click();
+        }
+    })
+    
+    $(window).on('beforeunload', function() {
+        return 'Any changes will be lost'  {{-- browser shows its own text --}}
+    });
+    
+    $(document).on('submit', 'form.editorform', function(event) {  {{-- allow Save button to leave without above question --}}
+        $(window).off('beforeunload')
+    });
+
+    {{-- Die 3 Sekunden Sicherung beim Verlassen wieder loeschen. --}}    
+    $(window).on('unload', function() {
+        {{each i in ckedFields}}
+            localStorage.removeItem('{{i.field}}.{{id}}')
+        {{/each}}
+    });
+
+    {{-- Muessen die Feldinhalte wiederhergestellt werden? --}}    
+    $(window).on('load', function() {
+        let vID;
+        let v;
+        {{each i in ckedFields}}
+            vID = '{{i.field}}.{{id}}';
+            v = localStorage.getItem(vID);
+            if (!v) {
+                vID = 'postError_' + vID;
+                v = localStorage.getItem(vID);
+            }
+            if (v) {
+                {{if i.isCKEditor}}{{i.field}}.setData(v);{{else}}document.getElementById('{{i.field}}').value = v;{{/if}}
+                localStorage.removeItem(vID);
+            }
+        {{/each}}
+    });
+
+    {{-- Alle 3 Sekunden die Eingaben lokal sichern. --}}    
+    setInterval(speichereFelder, 3000);
+    
+    if ('{{livesavelink}}' != '#') {
+        setInterval(function() {
+            setTimeout(function() { // Firefox problem NS_BINDING_ABORTED
+                $.post('{{livesavelink}}', {
+                    {{each L in ckedLangs}}
+                        content{{L.LANG}}: editor{{L.LANG}}.getData(),
+                    {{/each}}
+                }).fail(e => {
+                    console.error('{{livesavelink}} error: ', e);
+                });
+            }, 0);
+        }, 15000);
+    }
+</script>
