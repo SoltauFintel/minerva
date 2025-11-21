@@ -48,7 +48,7 @@ public abstract class UPage extends Page {
     }
     
     protected final void setCKEditorPageMode() { // EditSeitePage, EditCommentPage
-        put("ckeditor", true);
+        put("useCKEditor", true);
         put("jstree", true);
     }
     

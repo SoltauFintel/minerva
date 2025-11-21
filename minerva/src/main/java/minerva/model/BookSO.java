@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import github.soltaufintel.amalia.spark.Context;
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
 import minerva.base.MinervaMetrics;
@@ -32,6 +33,12 @@ public class BookSO implements BookFilter {
     public BookSO(WorkspaceSO workspace, Book book) {
         this.workspace = workspace;
         this.book = book;
+    }
+    
+    public static BookSO retrieve(Context ctx) {
+        UserSO user = StatesSO.get(ctx).getUser();
+        WorkspaceSO workspace = user.getWorkspace(ctx.pathParam("branch"));
+        return workspace.getBooks().byFolder(ctx.pathParam("book"));
     }
     
     // SeitenSO lazy laden

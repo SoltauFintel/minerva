@@ -44,7 +44,7 @@ public class MinervaPageInitializer extends PageInitializer {
 
         // pagemodes
         page.put("jstree", false);
-        page.put("ckeditor", false);
+        page.put("useCKEditor", false);
         page.put("math", false);
         page.put("jstree", false);
         page.put("multiselect", false);

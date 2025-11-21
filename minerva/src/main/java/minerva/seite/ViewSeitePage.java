@@ -412,6 +412,10 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     }
 
     private void fillBreadcrumbs(String lang, DataList list) {
+    	fillBreadcrumbs2(book, id, lang, list);
+    }
+    
+    public static void fillBreadcrumbs2(BookSO book, String id, String lang, DataList list) {
         List<Breadcrumb> breadcrumbs = book.getBreadcrumbs(id, new ViewAreaBreadcrumbLinkBuilder());
         for (int i = breadcrumbs.size() - 1; i >= 0; i--) {
             Breadcrumb b = breadcrumbs.get(i);
@@ -420,7 +424,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             if (title.isBlank()) {
                 title = "without title";
             }
-            map.put("title", esc(title));
+            map.put("title", Escaper.esc(title));
             map.put("link", b.getLink());
             map.put("first", i == breadcrumbs.size() - 1);
             map.put("last", i == 0);
