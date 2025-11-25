@@ -39,9 +39,9 @@ import 'ckeditor5/ckeditor5.css';
 
 import './style.css';
 
-window.minerva = window.minerva || {}; // namespace
+window.moco = window.moco || {}; // namespace
 
-window.minerva.createEditor = function(lang, id, heading, extraPlugins, setter) {
+window.moco.createEditor = function(lang, id, heading, extraPlugins, setter) {
     const editorConfig = {
         toolbar: {
             items: [

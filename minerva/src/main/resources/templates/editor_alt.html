@@ -6,7 +6,7 @@ function MyCustomUploadAdapterPlugin( editor ) {
 
 {{each L in languages}}
     let editor{{L.LANG}};
-    window.minerva.createEditor(
+    window.moco.createEditor(
         '{{guiLanguage}}',
         'editor{{L.LANG}}',
         { options: [

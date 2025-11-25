@@ -7,7 +7,7 @@
 
 {{each L in ckedLangs}}
     let editor{{L.LANG}};
-    window.minerva.createEditor(
+    window.moco.createEditor(
         '{{ckedGuiLanguage}}',
         'editor{{L.LANG}}',
         { options: [
