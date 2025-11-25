@@ -1091,3 +1091,11 @@ tr.cnticket td {
     border: 1pt solid #999;
     padding: 4px;
 }
+
+.TRS_FAILURE {
+	color: #c00;
+}
+
+.TRS_SUCCESS {
+	color: #090;
+}
