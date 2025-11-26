@@ -38,6 +38,7 @@ public class User implements gitper.User {
     private String customerRights;
     private String rolloutConfig;
     private String rolloutCustomer;
+    private String targetBranch;
     
     @Override
     public String getLogin() {
@@ -248,5 +249,13 @@ public class User implements gitper.User {
 
 	public void setRolloutCustomer(String rolloutCustomer) {
 		this.rolloutCustomer = rolloutCustomer;
+	}
+
+	public String getTargetBranch() {
+		return targetBranch;
+	}
+
+	public void setTargetBranch(String targetBranch) {
+		this.targetBranch = targetBranch;
 	}
 }

@@ -424,3 +424,7 @@ initialsError=Initialien müssen 2 Großbuchstaben sein!
 customerRights=Kundenrechte
 manualPagesWithoutHelpKeys=Benutzerhandbuch-Seiten ohne Hilfe-Keys
 NothingFound=Nichts gefunden
+copyToWorkspace=Kopiere nach anderen Workspace
+Transfer=Transferiere
+targetWorkspace=Ziel-Workspace
+noOtherWorkspace=Seite kann in keinen anderen Workspace transferiert werden, da es keine anderen Workspaces gibt.

@@ -585,4 +585,15 @@ public class UserSO {
 		user.setRolloutCustomer(rolloutCustomer);
 		save();
 	}
+	
+	public String getTargetBranch() {
+		load();
+		return user.getTargetBranch();
+	}
+	
+	public void setTargetBranch(String tb) {
+		load();
+		user.setTargetBranch(tb);
+		save();
+	}
 }

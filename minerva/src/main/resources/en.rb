@@ -423,3 +423,7 @@ initialsError=Initials must be 2 upper case letters!
 customerRights=Customer rights
 manualPagesWithoutHelpKeys=Manual pages without help keys
 NothingFound=Nothing found
+copyToWorkspace=Copy to other workspace
+Transfer=Transfer
+targetWorkspace=Target workspace
+noOtherWorkspace=This page can not be transferred to another workspace because there are no other workspaces.

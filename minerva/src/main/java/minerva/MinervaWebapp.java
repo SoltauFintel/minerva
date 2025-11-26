@@ -100,6 +100,7 @@ import minerva.seite.EditHtmlPage;
 import minerva.seite.EditSeitePage;
 import minerva.seite.LiveSaveSeiteAction;
 import minerva.seite.ViewSeitePage;
+import minerva.seite.actions.CopyToWorkspacePage;
 import minerva.seite.actions.DeleteSeitePage;
 import minerva.seite.actions.DontChangePage;
 import minerva.seite.actions.DuplicateSeitePage;
@@ -267,6 +268,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/s/:branch/:book/:id/cleanup-hkh", CleanupHelpKeysForHeadingsAction.class);
         get("/s/:branch/:book/:id/cross-book-links", CrossBookLinksPage.class);
         post("/s/:branch/:book/:id/live-save", LiveSaveSeiteAction.class);
+        form("/s/:branch/:book/:id/ctw", CopyToWorkspacePage.class);
         
         // Attachments
         get("/s/:branch/:book/:id/attachments/:dn", DownloadAttachmentAction.class);

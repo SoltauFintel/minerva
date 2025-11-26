@@ -85,6 +85,17 @@ public class Seite {
 	    	links.clear();
 	    }
     }
+	
+	// needed for transfer to other branch
+	public void copyFrom_allFields(Seite c) {
+		copyFrom(c, true);
+		setPosition(c.getPosition());
+		getTitle().from(c.getTitle());
+		setVersion(c.getVersion());
+		getChanges().clear();
+		getChanges().addAll(c.getChanges());
+		setEditorsNote(c.getEditorsNote());
+	}
 
     public String getId() {
         return id;
