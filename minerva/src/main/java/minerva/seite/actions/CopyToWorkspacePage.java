@@ -17,6 +17,7 @@ public class CopyToWorkspacePage extends SPage {
 		} else {
 			var targetBranchs = user.getWorkspaces().getBranches();
 			targetBranchs.remove(branch);
+			targetBranchs.remove("editor");
 			if (targetBranchs.isEmpty()) {
 				throw new UserMessage("noOtherWorkspace", user);
 			}
