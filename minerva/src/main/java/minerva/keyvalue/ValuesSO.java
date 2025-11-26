@@ -12,6 +12,7 @@ import gitper.access.CommitMessage;
 import gitper.access.MultiPurposeDirAccess;
 import minerva.base.MList;
 import minerva.base.UserMessage;
+import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 
 public class ValuesSO extends MList<Values> {
@@ -29,6 +30,10 @@ public class ValuesSO extends MList<Values> {
                 add(gson.fromJson(e.getValue(), Values.class));
             }
         }
+    }
+    
+    public ValuesSO(SeiteSO seite) {
+    	this(seite.getBook().getWorkspace());
     }
 
     public void saveNew(Values v) {
