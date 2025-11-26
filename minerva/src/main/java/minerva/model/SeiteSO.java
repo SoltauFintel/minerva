@@ -821,7 +821,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         return ret;
     }
 
-    private Set<String> getImageFilenames() {
+    public Set<String> getImageFilenames() {
         String imageDir = book.getFolder() + "/img/" + seite.getId();
         return book.dao().getFilenames(imageDir);
     }

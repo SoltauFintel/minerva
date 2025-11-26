@@ -431,3 +431,4 @@ noOtherWorkspace=This page can not be transferred to another workspace because t
 copyToWorkspaceError1=Not allowed for feature tree.
 copyToWorkspaceError2=Can not transfer page to target branch. Missing book.
 copyToWorkspaceError3=Can not transfer page to target branch. Missing parent page.
+copyToWorkspaceMsg1=Page master data, texts in all languages and all images ​​will be copied. Comments and attachments won't be copied.
