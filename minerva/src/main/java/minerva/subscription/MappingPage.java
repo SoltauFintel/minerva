@@ -22,8 +22,7 @@ public class MappingPage extends SPage {
 
         if (titles != null && titles.getLang() != null) {
             List<PageTitle> titleList = titles.getLang().get(user.getPageLanguage());
-            titleList.sort((a, b) -> StringService.umlaute(a.getTitle()).compareTo(
-                    StringService.umlaute(b.getTitle())));
+            StringService.sortUmlaute(titleList, PageTitle::getTitle);
             createPageTitlesList(titleList, titles_list);
             createLinkedPagesList(titleList, linked_list);
         }

@@ -1,7 +1,5 @@
 package minerva.export.template;
 
-import static gitper.base.StringService.umlaute;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -52,7 +50,7 @@ public class ExportTemplatesService {
                 }
             }
         }
-        ret.sort((a, b) -> umlaute(a.getName()).compareTo(umlaute(b.getName())));
+        StringService.sortUmlaute(ret, ExportTemplateSet::getName);
         return ret;
     }
     

@@ -1,11 +1,10 @@
 package minerva.book;
 
-import static gitper.base.StringService.umlaute;
-
 import com.github.template72.data.DataCondition;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.base.MinervaMetrics;
 import minerva.config.MinervaFactory;
@@ -209,7 +208,7 @@ public class MenuPage extends WPage {
                 hasFavorites = true;
             }
         }
-        list.sort((a, b) -> umlaute(a.get("title").toString()).compareTo(umlaute(b.get("title").toString())));
+        StringService.sortDataListUmlaute(list, "title");
         put("hasFavorites", hasFavorites);
     }
 }

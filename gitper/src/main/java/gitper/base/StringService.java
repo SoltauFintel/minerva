@@ -2,10 +2,14 @@ package gitper.base;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import com.github.template72.data.DataList;
 
 import github.soltaufintel.amalia.web.action.Escaper;
 
@@ -27,6 +31,14 @@ public class StringService {
                 .replace("ö", "oe")
                 .replace("ü", "ue")
                 .replace("ß", "ss");
+    }
+    
+    public static <T> void sortUmlaute(List<T> list, Function<T, String> sortFieldGetter) {
+        list.sort(Comparator.comparing(t -> umlaute(sortFieldGetter.apply(t))));
+    }
+    
+    public static void sortDataListUmlaute(DataList list, String field) {
+        list.sort((a, b) -> umlaute(a.get(field).toString()).compareTo(umlaute(b.get(field).toString())));
     }
 
     public static List<String> upper(List<String> list) {

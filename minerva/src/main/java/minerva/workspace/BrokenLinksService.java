@@ -36,7 +36,7 @@ public class BrokenLinksService {
             sites.add(parseMain(host.trim()));
         }
         BLPages ret = merge(sites);
-        ret.getPages().sort((a, b) -> StringService.umlaute(a.getTitle()).compareTo(StringService.umlaute(b.getTitle())));
+        StringService.sortUmlaute(ret.getPages(), BLPage::getTitle);
         return ret;
     }
     
@@ -244,7 +244,7 @@ public class BrokenLinksService {
                 bl.setBookFolder(seite.getBook().getBook().getFolder());
             }
             brokenLinks.add(bl);
-            brokenLinks.sort((a, b) -> StringService.umlaute(a.getTitle()).compareTo(StringService.umlaute(b.getTitle())));
+            StringService.sortUmlaute(brokenLinks, BLBrokenLink::getTitle);
             return bl;
         }
 
