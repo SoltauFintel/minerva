@@ -18,7 +18,7 @@ public class GitlabAuthService {
     private final GitlabConfig gitlabConfig;
     
     public GitlabAuthService(GitlabConfig gitlabConfig) {
-    	this.gitlabConfig = gitlabConfig;
+        this.gitlabConfig = gitlabConfig;
     }
     
     public String getAuthUrl() {
@@ -109,7 +109,7 @@ public class GitlabAuthService {
     }
     
     private GitlabConfig cfg() {
-    	return gitlabConfig;
+        return gitlabConfig;
     }
     
     private String u(String k) {

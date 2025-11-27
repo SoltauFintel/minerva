@@ -278,8 +278,8 @@ public class PdfExportService extends MultiPageHtmlExportService {
     private void logErrorMessages(int number) {
         Logger.info("[PDF-" + number + "] error messages: " + errorMessages.size() + " (details see DEBUG log)"); // [PDF-1] [PDF-2] [PDF-3]
         for (String line : errorMessages) {
-			Logger.debug("- " + line);
-		}
+            Logger.debug("- " + line);
+        }
     }
     
     private String esc(String text) {

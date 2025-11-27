@@ -30,8 +30,8 @@ public class MessagePage extends UPage {
             put("h2", "No access granted.");
             break;
         case 5: // XMinerva UpdateFeatureNumbersInJiraAction
-        	put("h2", n("featureNumbersToJira"));
-        	break;
+            put("h2", n("featureNumbersToJira"));
+            break;
         default:
             Logger.error("[MessagePage] unsupported m value: " + m);
             put("h2", "Sorry, no message text for this message.");

@@ -67,9 +67,9 @@ public abstract class CommentService {
     
     public Comment get(String id) {
         String dn = dir() + "/" + id + ".json";
-		Comment ret = new MultiPurposeDirAccess(dao().dao()).load(dn, Comment.class);
+        Comment ret = new MultiPurposeDirAccess(dao().dao()).load(dn, Comment.class);
         if (ret == null) {
-        	Logger.error("Comment is null for file: " + dn);
+            Logger.error("Comment is null for file: " + dn);
             throw new RuntimeException("Comment does not exist!");
         }
         return ret;

@@ -23,6 +23,6 @@ public abstract class WPage extends UPage {
     }
     
     protected String __branch() {
-    	return ctx.pathParam("branch");
+        return ctx.pathParam("branch");
     }
 }

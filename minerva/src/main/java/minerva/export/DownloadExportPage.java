@@ -24,7 +24,7 @@ public class DownloadExportPage extends WPage {
             render = false;
             File file = GenericExportService.get(id);
             if (file != null && file.isFile()) {
-            	Logger.info(user.getLogin() + " | DownloadExportPage (2): " + file.getName());
+                Logger.info(user.getLogin() + " | DownloadExportPage (2): " + file.getName());
                 if (file.getName().endsWith(".pdf")) {
                     ctx.res.type("application/pdf");
                     download(file, asAttachment ? ContentDisposition.attachment : ContentDisposition.inline);
@@ -33,7 +33,7 @@ public class DownloadExportPage extends WPage {
                     download(file, ContentDisposition.attachment);
                 }
             } else {
-				Logger.info(user.getLogin() + " | DownloadExportPage (3): " + (file == null ? null : file.getName() + ", " + file.exists()));
+                Logger.info(user.getLogin() + " | DownloadExportPage (3): " + (file == null ? null : file.getName() + ", " + file.exists()));
                 throw new UserMessage("export-already-downloaded", user);
             }
         } else {
@@ -55,8 +55,8 @@ public class DownloadExportPage extends WPage {
      * @param attachment "inline": opens PDF in new tab instead of showing it in the browser download list, or "attachment"
      */
     private void download(File file, ContentDisposition contentDisposition) {
-		Logger.debug(contentDisposition.name() + " download: " + file.getAbsolutePath());
-		ctx.contentDisposition(contentDisposition, file.getName());
+        Logger.debug(contentDisposition.name() + " download: " + file.getAbsolutePath());
+        ctx.contentDisposition(contentDisposition, file.getName());
         try {
             ctx.res.raw().getOutputStream().write(Files.readAllBytes(file.toPath()));
         } catch (IOException e) {

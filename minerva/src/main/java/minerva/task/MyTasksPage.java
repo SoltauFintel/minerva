@@ -35,9 +35,9 @@ public class MyTasksPage extends WPage implements Uptodatecheck {
         } else {
             User theUser = UserAccess.loadUser(login);
             if (theUser == null) {
-            	throw new RuntimeException("Unknown user!");
+                throw new RuntimeException("Unknown user!");
             }
-			tasklist = init(new UserSO(theUser), me);
+            tasklist = init(new UserSO(theUser), me);
             Logger.info(user.getLogin() + " | All tasks for " + login);
             header(n("Tasks"));
         }        

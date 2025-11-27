@@ -23,8 +23,8 @@ import minerva.seite.tag.TagNList;
 import minerva.subscription.SubscriptionService;
 
 public class BookSO implements BookFilter {
-	private static final Object LOCK = new Object();
-	public static final String BOOK_PREFIX = "book:";
+    private static final Object LOCK = new Object();
+    public static final String BOOK_PREFIX = "book:";
     private final WorkspaceSO workspace;
     private final Book book;
     /** Seiten auf oberster Ebene */
@@ -43,17 +43,17 @@ public class BookSO implements BookFilter {
     
     // SeitenSO lazy laden
     private SeitenSO _seiten() {
-    	synchronized (LOCK) {
-	    	if (seiten == null) {
-	            // Alle Seiten eines Buchs laden
-	            Map<String, String> files = workspace.dao().loadAllFiles(workspace.getFolder() + "/" + book.getFolder());
-	            AlleSeiten alleSeiten = new AlleSeiten(files);
-	            int n = files.size();
-				MinervaMetrics.PAGE_LOADED.add(n);
-	            seiten = SeitenSO.findeUnterseiten(getISeite(), alleSeiten, this);
-	    	}
-	    	return seiten;
-    	}
+        synchronized (LOCK) {
+            if (seiten == null) {
+                // Alle Seiten eines Buchs laden
+                Map<String, String> files = workspace.dao().loadAllFiles(workspace.getFolder() + "/" + book.getFolder());
+                AlleSeiten alleSeiten = new AlleSeiten(files);
+                int n = files.size();
+                MinervaMetrics.PAGE_LOADED.add(n);
+                seiten = SeitenSO.findeUnterseiten(getISeite(), alleSeiten, this);
+            }
+            return seiten;
+        }
     }
     
     // public for migration
@@ -91,7 +91,7 @@ public class BookSO implements BookFilter {
     }
 
     public SeitenSO getSeiten(String lang) {
-    	var ret = _seiten();
+        var ret = _seiten();
         ret.sort(lang);
         return ret;
     }
@@ -145,7 +145,7 @@ public class BookSO implements BookFilter {
     }
     
     public String getUserRealName() {
-    	return workspace.getUser().getUser().getRealName();
+        return workspace.getUser().getUser().getRealName();
     }
     
     /**
@@ -162,7 +162,7 @@ public class BookSO implements BookFilter {
     
     @Override
     public String getBookFilterId() {
-    	return BOOK_PREFIX + book.getFolder();
+        return BOOK_PREFIX + book.getFolder();
     }
     
     public boolean isFeatureTree() {
@@ -178,7 +178,7 @@ public class BookSO implements BookFilter {
     }
     
     public boolean isReleaseNotes() {
-    	return BookType.RELEASE_NOTES.equals(book.getType());
+        return BookType.RELEASE_NOTES.equals(book.getType());
     }
 
     public void activateSorted() {
@@ -196,9 +196,9 @@ public class BookSO implements BookFilter {
 
     // similar method in SeiteSO
     public void savePagesAfterReordering(SeitenSO reorderdSeiten) {
-    	synchronized (BOOK_PREFIX) {
-	        this.seiten = reorderdSeiten;
-    	}
+        synchronized (BOOK_PREFIX) {
+            this.seiten = reorderdSeiten;
+        }
         Map<String, String> files = new HashMap<>();
         if (book.isSorted()) {
             book.setSorted(false);
@@ -264,15 +264,15 @@ public class BookSO implements BookFilter {
     }
 
     public Set<String> getAllSeiteIdSet() {
-    	Set<String> set = new HashSet<>();
-    	fillSet(_seiten(), set);
-    	return set;
+        Set<String> set = new HashSet<>();
+        fillSet(_seiten(), set);
+        return set;
     }
     
     private void fillSet(SeitenSO seiten, Set<String> set) {
-		for (SeiteSO seite : seiten) {
-			set.add(seite.getId());
-			fillSet(seite.getSeiten(), set); // recursive
-		}
-	}
+        for (SeiteSO seite : seiten) {
+            set.add(seite.getId());
+            fillSet(seite.getSeiten(), set); // recursive
+        }
+    }
 }

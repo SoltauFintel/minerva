@@ -45,11 +45,11 @@ public class LinkResolverPage extends SPage {
         
         Link link = null;
         if (index >= linksModel.getLinks().size()) {
-			Logger.info(seite.getLogin() + " | #" + seite.getId() + " | LinkResolverPage | save");
+            Logger.info(seite.getLogin() + " | #" + seite.getId() + " | LinkResolverPage | save");
             linksModel.save(seite, langs);
             ctx.redirect(viewlink);
         } else {
-			Logger.info(seite.getLogin() + " | #" + seite.getId() + " | LinkResolverPage | next");
+            Logger.info(seite.getLogin() + " | #" + seite.getId() + " | LinkResolverPage | next");
             link = linksModel.getLinks().get(index);
         }
         String href = link == null ? "" : link.getHref();
@@ -67,9 +67,9 @@ public class LinkResolverPage extends SPage {
         putSize("size", linksModel.getLinks());
         put("result0", makeSearchHTML());
         put("linkResolverPage5", n("linkResolverPage5")
-        		.replace("$h", href)
-        		.replace("$p", seite == null ? "" : esc(seite.getTitle()))
-        		.replace("$t", link == null ? "" : esc(link.getTitle())));
+                .replace("$h", href)
+                .replace("$p", seite == null ? "" : esc(seite.getTitle()))
+                .replace("$t", link == null ? "" : esc(link.getTitle())));
     }
 
     private void search(String search, int index) {

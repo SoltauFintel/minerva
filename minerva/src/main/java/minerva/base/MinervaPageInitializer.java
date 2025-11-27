@@ -64,12 +64,12 @@ public class MinervaPageInitializer extends PageInitializer {
     }
     
     public static boolean isMasterBranch(Context ctx) {
-    	String qq = ctx.pathParam("branch");
-    	return StringService.isNullOrEmpty(qq) || "master".equals(qq);
+        String qq = ctx.pathParam("branch");
+        return StringService.isNullOrEmpty(qq) || "master".equals(qq);
     }
 
-	private void simpleVars(Context ctx, Page page, MinervaPageInitModel m, MinervaConfig config, boolean hasUser, boolean isAdmin) {
-		page.put("hasUser", hasUser);
+    private void simpleVars(Context ctx, Page page, MinervaPageInitModel m, MinervaConfig config, boolean hasUser, boolean isAdmin) {
+        page.put("hasUser", hasUser);
         page.put("title", "Minerva");
         page.put("abmelden", "Abmelden");
         page.put("development", config.isDevelopment());
@@ -110,7 +110,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("showQuickbuttons", false);
         page.put("qpath", Escaper.urlEncode(ctx.path(), ""));
         page.put("quickbuttonsExtra", "");
-	}
+    }
 
     public static void booksForMenu(boolean hasUser, String userLang, BooksSO books, Page page) {
         DataList list = page.list("booksForMenu");
@@ -125,10 +125,10 @@ public class MinervaPageInitializer extends PageInitializer {
                         title = "without title";
                     }
                     map.put("title", esc(title));
-				} else if (BookType.FEATURE_TREE.equals(book.getBook().getType())) {
-					page.put("showFeatureTree", true);
-			        page.put("featuretreeBookFolder", esc(book.getBook().getFolder()));
-				}
+                } else if (BookType.FEATURE_TREE.equals(book.getBook().getType())) {
+                    page.put("showFeatureTree", true);
+                    page.put("featuretreeBookFolder", esc(book.getBook().getFolder()));
+                }
             }
         }
     }
@@ -148,7 +148,7 @@ public class MinervaPageInitializer extends PageInitializer {
     }
     
     private void hasUserVars(Page page, MinervaPageInitModel m) {
-    	UserSO userSO = m.getUser();
+        UserSO userSO = m.getUser();
         String userLang = m.getUserLang();
         String branch = m.getBranch();
         page.put("abmelden", NLS.get(userLang, "logout"));
@@ -159,83 +159,83 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("exclusionsTitle", NLS.get(userLang, "exclusions"));
         page.put("myTasks", NLS.get(userLang, "myTasks"));
         page.put("formulaEditor", NLS.get(userLang, "formulaEditor"));
-		page.put("delayedPush", userSO.getUser().getDelayedPush().contains(branch));
+        page.put("delayedPush", userSO.getUser().getDelayedPush().contains(branch));
         page.put("delayedPushAllowed", MinervaWebapp.factory().isGitlab()
                 && !"master".equals(branch)
                 && !(branch.length() >= 1 && branch.charAt(0) >= '0' && branch.charAt(0) <= '9'));
         page.put("endFSMode", NLS.get(userLang, "endFSMode"));
         page.list("favorites");
-		displayQuickbuttons(page, userSO);
+        displayQuickbuttons(page, userSO);
         if (m.getBooks() != null) {
-        	page.put("previewTitle", NLS.get(userLang, "preview"));
-        	page.put("previewlink", "/p/" + branch);
-        	page.put("hasBook", true);
-        	page.put("customerModeLabel",NLS.get(userLang, "customerMode"));
-        	customerMode(userSO.getCustomerMode(), page);
+            page.put("previewTitle", NLS.get(userLang, "preview"));
+            page.put("previewlink", "/p/" + branch);
+            page.put("hasBook", true);
+            page.put("customerModeLabel",NLS.get(userLang, "customerMode"));
+            customerMode(userSO.getCustomerMode(), page);
         }
     }
 
-	private void displayQuickbuttons(Page page, UserSO user) {
-		DataList list = page.list("quickbuttons");
-		for (Quickbutton qb : user.getUser().getQuickbuttons()) {
-			String link = qb.getLink();
-			String icon = getIcon(link);
-			
-			var map = list.add();
-			map.put("id", qb.getId());
-			map.put("link", esc(link));
-			map.put("label", esc(getQuickbuttonLabel(qb, link)));
-			map.put("icon", icon);
-			map.put("hasIcon", !icon.isEmpty());
-			map.put("bc", link.contains("/customer-mode/") ? "btn-success" : "btn-default");
-			map.put("http", link.startsWith("https://") || link.startsWith("http://"));
-			map.put("onlyMe", qb.isOnlyMe());
-		}
+    private void displayQuickbuttons(Page page, UserSO user) {
+        DataList list = page.list("quickbuttons");
+        for (Quickbutton qb : user.getUser().getQuickbuttons()) {
+            String link = qb.getLink();
+            String icon = getIcon(link);
+            
+            var map = list.add();
+            map.put("id", qb.getId());
+            map.put("link", esc(link));
+            map.put("label", esc(getQuickbuttonLabel(qb, link)));
+            map.put("icon", icon);
+            map.put("hasIcon", !icon.isEmpty());
+            map.put("bc", link.contains("/customer-mode/") ? "btn-success" : "btn-default");
+            map.put("http", link.startsWith("https://") || link.startsWith("http://"));
+            map.put("onlyMe", qb.isOnlyMe());
+        }
         page.put("showQuickbuttons", user.getUser().isShowQuickbuttons());
-	}
+    }
 
-	private String getQuickbuttonLabel(Quickbutton qb, String link) {
-		final int limit = 30;
-		String label = qb.getLabel();
-		if (link.contains("/search?q=")) {
-			label = label.replace("Volltextsuche: ", "");
-		}
-		if (label.length() > limit + 3) {
-			label = label.substring(0, limit) + "...";
-		}
-		return label;
-	}
+    private String getQuickbuttonLabel(Quickbutton qb, String link) {
+        final int limit = 30;
+        String label = qb.getLabel();
+        if (link.contains("/search?q=")) {
+            label = label.replace("Volltextsuche: ", "");
+        }
+        if (label.length() > limit + 3) {
+            label = label.substring(0, limit) + "...";
+        }
+        return label;
+    }
 
-	private String getIcon(String link) {
-		if (link.startsWith("https://") || link.startsWith("http://")) {
-			if (link.contains("atlassian")) {
-				if (link.contains("/spaces/")) { // Confluence
-					return "fa-file-text-o ftConfluenceLinkColor";
-				} else {
-					return "fa-bookmark greenbook";
-				}
-			}
-			return "fa-link";
-		} else if (link.endsWith("/featuretree")) {
-			return "fa-sitemap fa-sitemap-color";
-		} else if (link.startsWith("/b/")) { // must be after featuretree
-			return "fa-book greenbook";
-		} else if (link.contains("/customer-mode/")) {
-			return "fa-thumbs-o-up";
-		} else if (link.endsWith("/my-tasks")) {
-			return "fa-inbox";
-		} else if (link.startsWith("/change-notes")) {
-			return "fa-pencil-square-o";
-		} else if (link.startsWith("/fm/") || "/fm".equals(link)) {
-			return "fa-database";
-		} else if (link.startsWith("/sch/")) {
-			return "fa-exchange";
-		} else if (link.contains("/search?q=")) {
-			return "fa-search";
-		} else {
-			return "";
-		}
-	}
+    private String getIcon(String link) {
+        if (link.startsWith("https://") || link.startsWith("http://")) {
+            if (link.contains("atlassian")) {
+                if (link.contains("/spaces/")) { // Confluence
+                    return "fa-file-text-o ftConfluenceLinkColor";
+                } else {
+                    return "fa-bookmark greenbook";
+                }
+            }
+            return "fa-link";
+        } else if (link.endsWith("/featuretree")) {
+            return "fa-sitemap fa-sitemap-color";
+        } else if (link.startsWith("/b/")) { // must be after featuretree
+            return "fa-book greenbook";
+        } else if (link.contains("/customer-mode/")) {
+            return "fa-thumbs-o-up";
+        } else if (link.endsWith("/my-tasks")) {
+            return "fa-inbox";
+        } else if (link.startsWith("/change-notes")) {
+            return "fa-pencil-square-o";
+        } else if (link.startsWith("/fm/") || "/fm".equals(link)) {
+            return "fa-database";
+        } else if (link.startsWith("/sch/")) {
+            return "fa-exchange";
+        } else if (link.contains("/search?q=")) {
+            return "fa-search";
+        } else {
+            return "";
+        }
+    }
 
     public static void customerMode(CustomerMode customerMode, Page page) {
         boolean active = customerMode.isActive();
@@ -244,7 +244,7 @@ public class MinervaPageInitializer extends PageInitializer {
     }
     
     public static void updateOpenMasterTasks(MinervaPageInitModel m, Page page) {
-    	fillNumberOfOpenMasterTasks(TaskService.get(m.getUser()), page);
+        fillNumberOfOpenMasterTasks(TaskService.get(m.getUser()), page);
     }
 
     public static void fillNumberOfOpenMasterTasks(int omt, Page page) {

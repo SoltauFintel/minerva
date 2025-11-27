@@ -16,6 +16,6 @@ public abstract class WAction extends UAction {
     }
     
     protected String __branch() {
-    	return ctx.pathParam("branch");
+        return ctx.pathParam("branch");
     }
 }

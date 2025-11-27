@@ -27,7 +27,7 @@ public class EditValuesPage extends WPage {
             so.save(v);
             ctx.redirect("/values/" + branch);
         } else {
-			header(n("kvedittype").replace("$t", v.getTitle()));
+            header(n("kvedittype").replace("$t", v.getTitle()));
             put("key", esc(v.getKey()));
             put("title", esc(v.getTitle()));
             put("values", esc(v.getValues().stream().collect(Collectors.joining("\n"))));

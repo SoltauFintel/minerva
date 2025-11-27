@@ -14,7 +14,7 @@ import github.soltaufintel.amalia.spark.Context.ContentDisposition;
 import github.soltaufintel.amalia.web.action.Action;
 
 public class PublishAction extends Action {
-	private static final Object LOCK = new Object();
+    private static final Object LOCK = new Object();
 
     @Override
     protected void execute() {

@@ -18,7 +18,7 @@ public class ExportWorkspaceAction extends WAction {
         String customer = ctx.queryParam("customer");
 
         String info = branch + " | ExportWorkspaceAction: exporting all books except feature tree and internal books"
-        		+ " for customer \"" + customer + "\" and language \"" + lang + "\"";
+                + " for customer \"" + customer + "\" and language \"" + lang + "\"";
         Logger.info(user.getLogin() + " | " + info);
         user.log(info);
 

@@ -131,8 +131,8 @@ public class SeitenSO extends MList<SeiteSO> {
         }
 
         tagNewPage(neueSeite);
-		neueSeite.saveAll(neueSeite.getSeite().getTitle(), neueSeite.getContent(), neueSeite.getSeite().getVersion(),
-				"", MinervaWebapp.factory().getLanguages(), System.currentTimeMillis());
+        neueSeite.saveAll(neueSeite.getSeite().getTitle(), neueSeite.getContent(), neueSeite.getSeite().getVersion(),
+                "", MinervaWebapp.factory().getLanguages(), System.currentTimeMillis());
         return neueSeite.getId();
     }
 
@@ -392,19 +392,19 @@ public class SeitenSO extends MList<SeiteSO> {
             }
             ret.add(treeItem);
             if (seite.isFeatureTree() && seite.checkSubfeaturesLimit()) {
-            	treeItem.setSubitems(List.of());
+                treeItem.setSubitems(List.of());
             } else {
-            	treeItem.setSubitems(seite.getSeiten().getTreeItems(lang, currentPageId, treeItem)); // resursive
+                treeItem.setSubitems(seite.getSeiten().getTreeItems(lang, currentPageId, treeItem)); // resursive
             }
         }
         return ret;
     }
     
     public int countAll() {
-    	int ret = size();
-    	for (SeiteSO seite : this) {
-    		ret += seite.getSeiten().countAll(); // recursive
-    	}
-    	return ret;
+        int ret = size();
+        for (SeiteSO seite : this) {
+            ret += seite.getSeiten().countAll(); // recursive
+        }
+        return ret;
     }
 }

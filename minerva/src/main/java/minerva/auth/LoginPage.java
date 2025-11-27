@@ -18,7 +18,7 @@ public class LoginPage extends Page {
         BackendService loginService = MinervaWebapp.factory().getBackendService();
         boolean withPassword = loginService.withPassword();
         Logger.debug("LoginPage, " + loginService.getClass().getSimpleName() +
-        		", " + (withPassword ? "login with Gitlab" : "login with login/password"));
+                ", " + (withPassword ? "login with Gitlab" : "login with login/password"));
         put("withPassword", withPassword);
         if (withPassword) {
             ctx.redirect("/gitlab-auth");

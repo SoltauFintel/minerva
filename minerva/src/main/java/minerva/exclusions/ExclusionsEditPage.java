@@ -54,16 +54,16 @@ public class ExclusionsEditPage extends UPage {
             // alle verwendeten tags finden
             Set<String> unused = new TreeSet<>();
             for (TagN tag : user.getWorkspace(branch).getAllTags().sortedByTag()) {
-				if (!tags.contains(tag.getTag())) {
-					unused.add(tag.getTag());
-				}
-			}
+                if (!tags.contains(tag.getTag())) {
+                    unused.add(tag.getTag());
+                }
+            }
             DataList list3 = list("unusedTags");
             int i = 0, max = unused.size() - 1;
             for (String tag : unused) {
-            	DataMap map3 = list3.add();
-				map3.put("tag", esc(tag));
-				map3.put("last", i++ == max);
+                DataMap map3 = list3.add();
+                map3.put("tag", esc(tag));
+                map3.put("last", i++ == max);
             }
         }
     }

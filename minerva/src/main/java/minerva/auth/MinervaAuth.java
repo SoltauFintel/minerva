@@ -98,6 +98,6 @@ public class MinervaAuth extends AbstractAuth {
     public static void logout2(Context ctx) {
         AuthService.logout(new WebContext(ctx), new NoOpRememberMe());
         ctx.req.session().invalidate();
-		MinervaMetrics.LOGOUT.inc();
+        MinervaMetrics.LOGOUT.inc();
     }
 }

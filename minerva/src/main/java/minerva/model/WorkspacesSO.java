@@ -60,14 +60,14 @@ public class WorkspacesSO extends MList<WorkspaceSO> implements Workspaces {
         return ret;
     }
 
-	@Override
-	public List<String> getBranches() {
-		List<String> ret = new ArrayList<>();
-		for (WorkspaceSO w : this) {
-			ret.add(w.getBranch());
-		}
-		return ret;
-	}
+    @Override
+    public List<String> getBranches() {
+        List<String> ret = new ArrayList<>();
+        for (WorkspaceSO w : this) {
+            ret.add(w.getBranch());
+        }
+        return ret;
+    }
 
     public List<String> getAddableBranches(WorkspaceSO ref) {
         return MinervaWebapp.factory().getBackendService().getAddableBranches(this, ref);

@@ -37,15 +37,15 @@ public class AddUserPage extends UPage {
         }
     }
 
-	private String initialienAutomatik(String name) {
-		if (name != null && !name.isBlank()) {
-			name = name.trim();
-			int o = name.lastIndexOf(" ");
-			try {
-				return ("" + name.charAt(0) + name.charAt(o + 1)).toUpperCase();
-			} catch (Exception e) {
-			}
-		}
-		return "";
-	}
+    private String initialienAutomatik(String name) {
+        if (name != null && !name.isBlank()) {
+            name = name.trim();
+            int o = name.lastIndexOf(" ");
+            try {
+                return ("" + name.charAt(0) + name.charAt(o + 1)).toUpperCase();
+            } catch (Exception e) {
+            }
+        }
+        return "";
+    }
 }

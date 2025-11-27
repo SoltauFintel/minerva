@@ -85,9 +85,9 @@ public class SubscribersAccess {
         }
     }
 
-	private String makeUrl(String id, String subscriber) {
-		return subscriber + "/book6/page/" + id + "?token=" + System.getenv("MINERVA_TOKEN");
-	}
+    private String makeUrl(String id, String subscriber) {
+        return subscriber + "/book6/page/" + id + "?token=" + System.getenv("MINERVA_TOKEN");
+    }
     
     private boolean available(String subscriber) {
         String r;

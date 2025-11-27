@@ -153,13 +153,13 @@ public class User implements gitper.User {
         return "User "  + login;
     }
 
-	public boolean isShowAllPages() {
-		return showAllPages;
-	}
+    public boolean isShowAllPages() {
+        return showAllPages;
+    }
 
-	public void setShowAllPages(boolean showAllPages) {
-		this.showAllPages = showAllPages;
-	}
+    public void setShowAllPages(boolean showAllPages) {
+        this.showAllPages = showAllPages;
+    }
 
     public String getAttachmentCategory() {
         return attachmentCategory;
@@ -169,13 +169,13 @@ public class User implements gitper.User {
         this.attachmentCategory = attachmentCategory;
     }
 
-	public String getPublishReleaseNumber() {
-		return publishReleaseNumber;
-	}
+    public String getPublishReleaseNumber() {
+        return publishReleaseNumber;
+    }
 
-	public void setPublishReleaseNumber(String publishReleaseNumber) {
-		this.publishReleaseNumber = publishReleaseNumber;
-	}
+    public void setPublishReleaseNumber(String publishReleaseNumber) {
+        this.publishReleaseNumber = publishReleaseNumber;
+    }
 
     public String getCustomerMode() {
         return customerMode;
@@ -185,77 +185,77 @@ public class User implements gitper.User {
         this.customerMode = customerMode;
     }
 
-	public String getDatabase() {
-		return database;
-	}
+    public String getDatabase() {
+        return database;
+    }
 
-	public void setDatabase(String database) {
-		this.database = database;
-	}
+    public void setDatabase(String database) {
+        this.database = database;
+    }
 
-	@Override
-	public GitlabConfig getGitlabConfig() {
-		return new MinervaGitlabConfig();
-	}
+    @Override
+    public GitlabConfig getGitlabConfig() {
+        return new MinervaGitlabConfig();
+    }
 
-	public List<Quickbutton> getQuickbuttons() {
-		return quickbuttons;
-	}
-	
-	public Quickbutton getQuickbutton(String id) {
-		for (var q : quickbuttons) {
-			if (q.getId().equals(id)) {
-				return q;
-			}
-		}
-		throw new RuntimeException("Quick button does not exist!");
-	}
+    public List<Quickbutton> getQuickbuttons() {
+        return quickbuttons;
+    }
+    
+    public Quickbutton getQuickbutton(String id) {
+        for (var q : quickbuttons) {
+            if (q.getId().equals(id)) {
+                return q;
+            }
+        }
+        throw new RuntimeException("Quick button does not exist!");
+    }
 
-	public boolean isShowQuickbuttons() {
-		return showQuickbuttons;
-	}
+    public boolean isShowQuickbuttons() {
+        return showQuickbuttons;
+    }
 
-	public void setShowQuickbuttons(boolean showQuickbuttons) {
-		this.showQuickbuttons = showQuickbuttons;
-	}
+    public void setShowQuickbuttons(boolean showQuickbuttons) {
+        this.showQuickbuttons = showQuickbuttons;
+    }
 
-	public String getInitialien() {
-		return initialien;
-	}
+    public String getInitialien() {
+        return initialien;
+    }
 
-	public void setInitialien(String initialien) {
-		this.initialien = initialien;
-	}
+    public void setInitialien(String initialien) {
+        this.initialien = initialien;
+    }
 
-	public String getCustomerRights() {
-		return customerRights;
-	}
+    public String getCustomerRights() {
+        return customerRights;
+    }
 
-	public void setCustomerRights(String customerRights) {
-		this.customerRights = customerRights;
-	}
+    public void setCustomerRights(String customerRights) {
+        this.customerRights = customerRights;
+    }
 
-	public String getRolloutConfig() {
-		return rolloutConfig;
-	}
+    public String getRolloutConfig() {
+        return rolloutConfig;
+    }
 
-	public void setRolloutConfig(String rolloutConfig) {
-		this.rolloutConfig = rolloutConfig;
-	}
+    public void setRolloutConfig(String rolloutConfig) {
+        this.rolloutConfig = rolloutConfig;
+    }
 
-	public String getRolloutCustomer() {
-		return rolloutCustomer;
-	}
+    public String getRolloutCustomer() {
+        return rolloutCustomer;
+    }
 
-	public void setRolloutCustomer(String rolloutCustomer) {
-		this.rolloutCustomer = rolloutCustomer;
-	}
+    public void setRolloutCustomer(String rolloutCustomer) {
+        this.rolloutCustomer = rolloutCustomer;
+    }
 
-	public String getTargetBranch() {
-		return targetBranch;
-	}
+    public String getTargetBranch() {
+        return targetBranch;
+    }
 
-	public void setTargetBranch(String targetBranch) {
-		this.targetBranch = targetBranch;
-	}
+    public void setTargetBranch(String targetBranch) {
+        this.targetBranch = targetBranch;
+    }
 }

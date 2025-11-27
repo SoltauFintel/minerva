@@ -12,11 +12,11 @@ public class SearchResult {
     private String content;
     private final List<Breadcrumb> breadcrumbs = new ArrayList<>();
     private String featureNumber = null;
-	private int hits;
-	/** book folder, table, BO, GO, verifier, catalog, ... */
-	private String category = "";
-	private String icon = "";
-	
+    private int hits;
+    /** book folder, table, BO, GO, verifier, catalog, ... */
+    private String category = "";
+    private String icon = "";
+    
     public String getPath() {
         return path;
     }
@@ -41,48 +41,48 @@ public class SearchResult {
         this.content = content;
     }
 
-	public List<Breadcrumb> getBreadcrumbs() {
-		return breadcrumbs;
-	}
+    public List<Breadcrumb> getBreadcrumbs() {
+        return breadcrumbs;
+    }
 
-	public String getFeatureNumber() {
-		return featureNumber;
-	}
+    public String getFeatureNumber() {
+        return featureNumber;
+    }
 
-	public void setFeatureNumber(String featureNumber) {
-		this.featureNumber = featureNumber;
-	}
+    public void setFeatureNumber(String featureNumber) {
+        this.featureNumber = featureNumber;
+    }
 
     public void merge(SearchResult b) {
-		if (StringService.isNullOrEmpty(featureNumber)) {
-			featureNumber = b.featureNumber;
-		}
-		if (!content.contains(b.content)) {
-			content += "\n" + b.content;
-		}
-	}
+        if (StringService.isNullOrEmpty(featureNumber)) {
+            featureNumber = b.featureNumber;
+        }
+        if (!content.contains(b.content)) {
+            content += "\n" + b.content;
+        }
+    }
 
     public int getHits() {
-		return hits;
-	}
+        return hits;
+    }
 
-	public void setHits(int hits) {
-		this.hits = hits;
-	}
+    public void setHits(int hits) {
+        this.hits = hits;
+    }
 
-	public String getCategory() {
-		return category;
-	}
+    public String getCategory() {
+        return category;
+    }
 
-	public void setCategory(String category) {
-		this.category = category;
-	}
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
-	public String getIcon() {
-		return icon;
-	}
+    public String getIcon() {
+        return icon;
+    }
 
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
 }

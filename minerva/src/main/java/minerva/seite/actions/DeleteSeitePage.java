@@ -41,7 +41,7 @@ public class DeleteSeitePage extends SPage {
                 map.put("link", "/s/" + branch + "/" + bookFolder + "/" + s.getId());
                 map.put("title", esc(s.getTitle()));
             }
-			put("additionalInfo", esc(n(additionalInfo.getHTML(seite))));
+            put("additionalInfo", esc(n(additionalInfo.getHTML(seite))));
             put("hasLinkingPages", !list.isEmpty());
             put("pagesLinkToThisPage", list.size() == 1 ? n("pageLinkToThisPage") : n("pagesLinkToThisPage"));
             render = true;

@@ -46,7 +46,7 @@ public class GitFactory {
             return false;
         }
         GitlabConfig gitlab = user.getGitlabConfig();
-		String gitlabUrl = gitlab.getGitlabUrl();
+        String gitlabUrl = gitlab.getGitlabUrl();
         String appId = gitlab.getGitlabAppId();
         String secret = gitlab.getGitlabSecret();
         String params = "client_id=" + u(appId) //

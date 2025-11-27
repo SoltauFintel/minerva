@@ -52,9 +52,9 @@ public class Seite {
         this.version = c.version;
         this.helpKeys.addAll(c.helpKeys);
         if (c.hkh == null) {
-        	this.hkh = c.hkh;
+            this.hkh = c.hkh;
         } else {
-        	this.hkh = new ArrayList<>(c.hkh);
+            this.hkh = new ArrayList<>(c.hkh);
         }
         this.changes.addAll(c.changes);
         this.tocHeadingsLevels = c.tocHeadingsLevels;
@@ -65,37 +65,37 @@ public class Seite {
     
     // needed for duplicate action
     // not to set: id, parentId, title, position, version, changes, editorsNote.
-	public void copyFrom(Seite c, boolean completeCopy) {
-	    sorted = c.sorted;
-		tocHeadingsLevels = c.tocHeadingsLevels;
-		tocSubpagesLevels = c.tocSubpagesLevels;
-	    if (completeCopy) {
-	    	tags.addAll(c.tags);
-	    	helpKeys.addAll(c.helpKeys);
-			if (c.hkh == null) {
-				hkh = null;
-			} else {
-				hkh = new ArrayList<>(c.hkh);
-			}
-			links.addAll(c.links);
-	    } else {
-	    	tags.clear();
-	    	helpKeys.clear();
-	    	hkh = null;
-	    	links.clear();
-	    }
+    public void copyFrom(Seite c, boolean completeCopy) {
+        sorted = c.sorted;
+        tocHeadingsLevels = c.tocHeadingsLevels;
+        tocSubpagesLevels = c.tocSubpagesLevels;
+        if (completeCopy) {
+            tags.addAll(c.tags);
+            helpKeys.addAll(c.helpKeys);
+            if (c.hkh == null) {
+                hkh = null;
+            } else {
+                hkh = new ArrayList<>(c.hkh);
+            }
+            links.addAll(c.links);
+        } else {
+            tags.clear();
+            helpKeys.clear();
+            hkh = null;
+            links.clear();
+        }
     }
-	
-	// needed for transfer to other branch
-	public void copyFrom_allFields(Seite c) {
-		copyFrom(c, true);
-		setPosition(c.getPosition());
-		getTitle().from(c.getTitle());
-		setVersion(c.getVersion());
-		getChanges().clear();
-		getChanges().addAll(c.getChanges());
-		setEditorsNote(c.getEditorsNote());
-	}
+    
+    // needed for transfer to other branch
+    public void copyFrom_allFields(Seite c) {
+        copyFrom(c, true);
+        setPosition(c.getPosition());
+        getTitle().from(c.getTitle());
+        setVersion(c.getVersion());
+        getChanges().clear();
+        getChanges().addAll(c.getChanges());
+        setEditorsNote(c.getEditorsNote());
+    }
 
     public String getId() {
         return id;

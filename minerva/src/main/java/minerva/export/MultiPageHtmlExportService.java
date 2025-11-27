@@ -106,7 +106,7 @@ public class MultiPageHtmlExportService extends GenericExportService {
     private void addSeitenToOutline(SeitenSO seiten, StringBuilder outline) {
         boolean first = true;
         for (SeiteSO seite : seiten) {
-			Visible visible = ssc.getVisibleResult(seite);
+            Visible visible = ssc.getVisibleResult(seite);
             if (visible.isVisible() && !visible.isNoTree()) {
                 if (first) {
                     outline.append("<ul>");

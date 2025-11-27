@@ -21,6 +21,6 @@ public class TocAction extends SAction {
     }
     
     private int i(String label) {
-    	return Integer.valueOf(ctx.queryParam(label).substring(0, 1));
+        return Integer.valueOf(ctx.queryParam(label).substring(0, 1));
     }
 }

@@ -64,7 +64,7 @@ public class GitlabRepository {
                         at org.eclipse.jgit.api.FetchCommand.call(FetchCommand.java:249)
                         at org.eclipse.jgit.api.PullCommand.call(PullCommand.java:266)
                         at minerva.persistence.gitlab.git.GitService.pull(GitService.java:101)*/
-                    	Gitper.gitperInterface.authService().refreshToken(user);
+                        Gitper.gitperInterface.authService().refreshToken(user);
                         continue;
                     }
                     return;

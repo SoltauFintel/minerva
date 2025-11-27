@@ -43,7 +43,7 @@ public class MultiPurposeDirAccess {
     }
     
     public <T> T load(String dn, Class<T> type) {
-    	return _load(dn, type, new Gson());
+        return _load(dn, type, new Gson());
     }
 
     public <T> T _load(String dn, Class<T> type, Gson gson) {

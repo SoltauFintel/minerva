@@ -48,17 +48,17 @@ public class Book {
     }
 
     public BookType getType() {
-    	if (type == null) {
-			Logger.warn("Book with folder '" + folder + "' has no book type! Returning PUBLIC.");
-    		return BookType.PUBLIC;
-    	}
+        if (type == null) {
+            Logger.warn("Book with folder '" + folder + "' has no book type! Returning PUBLIC.");
+            return BookType.PUBLIC;
+        }
         return type;
     }
 
     public void setType(BookType type) {
-    	if (type == null) {
-    		throw new IllegalArgumentException("Please specify a book type!");
-    	}
+        if (type == null) {
+            throw new IllegalArgumentException("Please specify a book type!");
+        }
         this.type = type;
     }
 }

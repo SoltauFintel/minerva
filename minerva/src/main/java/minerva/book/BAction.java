@@ -25,6 +25,6 @@ public abstract class BAction extends WAction {
     }
     
     protected String __book() {
-    	return ctx.pathParam("book");
+        return ctx.pathParam("book");
     }
 }

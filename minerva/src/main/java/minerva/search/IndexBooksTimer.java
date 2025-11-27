@@ -5,8 +5,8 @@ import minerva.model.StatesSO;
 
 public class IndexBooksTimer extends AbstractTimer {
 
-	@Override
-	protected void timerEvent() {
-		StatesSO.login().masterWorkspace().getSearch().indexBooks();
-	}
+    @Override
+    protected void timerEvent() {
+        StatesSO.login().masterWorkspace().getSearch().indexBooks();
+    }
 }

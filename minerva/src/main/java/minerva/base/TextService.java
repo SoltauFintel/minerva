@@ -11,9 +11,9 @@ import ohhtml.Thumbnails;
 // ~StringService
 public class TextService {
 
-	private TextService() {
-	}
-	
+    private TextService() {
+    }
+    
     public static String prettyHTML(String html) {
         // https://mkyong.com/java/java-pretty-print-html/
         try {
@@ -35,38 +35,38 @@ public class TextService {
     }
 
     public static String findCopyOfTitle(String title, String lang, List<String> titles) {
-		final int limit = 100;
-		
-		// remove all "copy [n] of " prefixes
-		boolean found = true;
-		while (found) {
-			found = false;
-			String prefix = NLS.get(lang, "copy-of") + " ";
-			while (title.startsWith(prefix)) {
-				found = true;
-				title = title.substring(prefix.length());
-			}
-			for (int i = 2; i < limit; i++) {
-				prefix = NLS.get(lang, "copy-n-of").replace("$n", "" + i) + " ";
-				while (title.startsWith(prefix)) {
-					found = true;
-					title = title.substring(prefix.length());
-				}
-			}
-		}
+        final int limit = 100;
+        
+        // remove all "copy [n] of " prefixes
+        boolean found = true;
+        while (found) {
+            found = false;
+            String prefix = NLS.get(lang, "copy-of") + " ";
+            while (title.startsWith(prefix)) {
+                found = true;
+                title = title.substring(prefix.length());
+            }
+            for (int i = 2; i < limit; i++) {
+                prefix = NLS.get(lang, "copy-n-of").replace("$n", "" + i) + " ";
+                while (title.startsWith(prefix)) {
+                    found = true;
+                    title = title.substring(prefix.length());
+                }
+            }
+        }
 
-		// prepend copy of prefix
-		String prefix = NLS.get(lang, "copy-of") + " ";
-		String copyOf = prefix + title;
-		if (titles.contains(copyOf)) {
-			for (int i = 2; i < limit; i++) {
-				prefix = NLS.get(lang, "copy-n-of").replace("$n", "" + i) + " ";
-				String n = prefix + title;
-				if (!titles.contains(n)) {
-					return n;
-				}
-			}
-		}
-		return copyOf; // "copy of" or limit exceeded (killer loop protection)
-	}
+        // prepend copy of prefix
+        String prefix = NLS.get(lang, "copy-of") + " ";
+        String copyOf = prefix + title;
+        if (titles.contains(copyOf)) {
+            for (int i = 2; i < limit; i++) {
+                prefix = NLS.get(lang, "copy-n-of").replace("$n", "" + i) + " ";
+                String n = prefix + title;
+                if (!titles.contains(n)) {
+                    return n;
+                }
+            }
+        }
+        return copyOf; // "copy of" or limit exceeded (killer loop protection)
+    }
 }

@@ -72,7 +72,7 @@ public abstract class GenericExportService {
                 String bookFolder = FileService.getSafeName(book.getBook().getFolder());
                 saveBookTo(book, new File(outputFolder, bookFolder));
             } else {
-            	Logger.info("omitting non-public book \"" + book.getTitle() + "\"");
+                Logger.info("omitting non-public book \"" + book.getTitle() + "\"");
             }
         }
         return outputFolder;
@@ -140,7 +140,7 @@ public abstract class GenericExportService {
     
     private boolean _saveSeiteTo(SeiteSO seite, SeiteSO parent, Chapter chapter, SubpagesSelector ss, File outputFolder) {
         Visible visible = ssc.getVisibleResult(seite);
-    	if (visible.isVisible()) {
+        if (visible.isVisible()) {
             if (saveSeiteTo(seite, parent, chapter, outputFolder)) {
 
                 Bookmark keep = cb; // remember
@@ -215,25 +215,25 @@ public abstract class GenericExportService {
     }
     
     public static void cleanup() {
-		if (downloads.size() > 0) {
-			downloads.clear();
-		}
-		File[] files = new File(MinervaWebapp.factory().getConfig().getWorkFolder()).listFiles();
-		if (files != null) {
-			for (File file : files) {
-				if (file.isDirectory() && file.getName().startsWith("export_")) {
-					FileService.deleteFolder(file);
-				}
-			}
-		}
+        if (downloads.size() > 0) {
+            downloads.clear();
+        }
+        File[] files = new File(MinervaWebapp.factory().getConfig().getWorkFolder()).listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory() && file.getName().startsWith("export_")) {
+                    FileService.deleteFolder(file);
+                }
+            }
+        }
     }
     
     public static class CleanupExportFolderTimer extends AbstractTimer {
 
-		@Override
-		protected void timerEvent() {
-			GenericExportService.cleanup();
-			TableSortAction.clearCache();
-		}
+        @Override
+        protected void timerEvent() {
+            GenericExportService.cleanup();
+            TableSortAction.clearCache();
+        }
     }
 }

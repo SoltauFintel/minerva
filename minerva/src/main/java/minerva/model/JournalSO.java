@@ -18,10 +18,10 @@ import minerva.base.MinervaMetrics;
 import minerva.base.NlsString;
 
 public class JournalSO {
-	private static final Object LOCK = new Object();
+    private static final Object LOCK = new Object();
     public static final String FOLDER = "_journal";
     /** key: login+SeiteSO.id, value: hash */
-	private static final Map<String, String> lastHash = new HashMap<>();
+    private static final Map<String, String> lastHash = new HashMap<>();
     private final UserSO user;
     
     public JournalSO(UserSO user) {
@@ -45,26 +45,26 @@ public class JournalSO {
     }
 
     public void livesave(String branch, String id, String data) {
-		synchronized (LOCK) {
-			String hash = DigestUtils.sha256Hex(data);
-			String key = user.getLogin() + "/" + branch + "/" + id;
-			String last = lastHash.get(key);
-			if (hash.equals(last)) {
-				return;
-			}
-			String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HHmmss"));
-			File file = new File(
-					user.getUserFolder() + "/" + FOLDER + "/" + branch + "/" + now + "_" + id + "_live.txt");
-			FileService.savePlainTextFile(file, data);
-			Logger.debug("Journal entry saved: " + file.getAbsolutePath());
-			lastHash.put(key, hash);
-		}
+        synchronized (LOCK) {
+            String hash = DigestUtils.sha256Hex(data);
+            String key = user.getLogin() + "/" + branch + "/" + id;
+            String last = lastHash.get(key);
+            if (hash.equals(last)) {
+                return;
+            }
+            String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HHmmss"));
+            File file = new File(
+                    user.getUserFolder() + "/" + FOLDER + "/" + branch + "/" + now + "_" + id + "_live.txt");
+            FileService.savePlainTextFile(file, data);
+            Logger.debug("Journal entry saved: " + file.getAbsolutePath());
+            lastHash.put(key, hash);
+        }
         MinervaMetrics.JOURNAL.add(1, Map.of("user", user.getLogin()));
     }
     
     public void clearLivesave(String branch, String id) {
-		String key = user.getLogin() + "/" + branch + "/" + id;
-		lastHash.remove(key);
+        String key = user.getLogin() + "/" + branch + "/" + id;
+        lastHash.remove(key);
     }
 
     public static String cleanupAllJournals() {
@@ -143,16 +143,16 @@ public class JournalSO {
      */
     public static class HourlyJournalTimer extends AbstractTimer {
 
-		@Override
-		protected void timerEvent() {
-	        synchronized (LOCK) {
-	        	int size = JournalSO.lastHash.size();
-	        	if (size >= 10) { // TODO erstmal kleiner Wert zum Testen, später auf 20 (oder 50) setzen
-	        		// Ich muss einfach zeitlich alte Werte löschen. Und ich brauch eine ~Obergrenze (z.B. 1000) wo ich drastischer reagiere (Hackingversuch?).
-	        		Logger.warn("JournalSO.lastHash with size " + size + " cleared. " + JournalSO.lastHash);
-	        		JournalSO.lastHash.clear();
-	        	}
-	        }
-		}
+        @Override
+        protected void timerEvent() {
+            synchronized (LOCK) {
+                int size = JournalSO.lastHash.size();
+                if (size >= 10) { // TODO erstmal kleiner Wert zum Testen, später auf 20 (oder 50) setzen
+                    // Ich muss einfach zeitlich alte Werte löschen. Und ich brauch eine ~Obergrenze (z.B. 1000) wo ich drastischer reagiere (Hackingversuch?).
+                    Logger.warn("JournalSO.lastHash with size " + size + " cleared. " + JournalSO.lastHash);
+                    JournalSO.lastHash.clear();
+                }
+            }
+        }
     }
 }

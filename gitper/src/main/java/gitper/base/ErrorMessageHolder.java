@@ -4,7 +4,7 @@ import java.util.Map;
 
 public interface ErrorMessageHolder {
 
-	String getKey();
-	
-	Map<String, String> getParameters();
+    String getKey();
+    
+    Map<String, String> getParameters();
 }

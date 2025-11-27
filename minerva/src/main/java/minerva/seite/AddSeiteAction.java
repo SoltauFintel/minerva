@@ -4,7 +4,7 @@ import minerva.book.BAction;
 import minerva.model.BookSO;
 
 public class AddSeiteAction extends BAction {
-	public static AddSeiteAllowed addSeiteAllowed = (book, parent) -> {};
+    public static AddSeiteAllowed addSeiteAllowed = (book, parent) -> {};
 
     @Override
     protected void execute() {
@@ -17,7 +17,7 @@ public class AddSeiteAction extends BAction {
     }
     
     public interface AddSeiteAllowed {
-    	
-    	void checkIfAllowed(BookSO book, String parentId);
+        
+        void checkIfAllowed(BookSO book, String parentId);
     }
 }

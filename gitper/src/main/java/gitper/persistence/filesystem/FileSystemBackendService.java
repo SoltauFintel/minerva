@@ -105,14 +105,14 @@ public abstract class FileSystemBackendService implements BackendService {
     public void checkIfMoveIsAllowed(Workspace workspace) { // it's always allowed
     }
     
-	public interface MinervaFileSystemConfig {
+    public interface MinervaFileSystemConfig {
 
-		String getWorkspacesFolder();
+        String getWorkspacesFolder();
 
-		String getEditorPassword();
+        String getEditorPassword();
 
-		String getUserFolder();
+        String getUserFolder();
 
-		String n(String lang, String key);
-	}
+        String n(String lang, String key);
+    }
 }

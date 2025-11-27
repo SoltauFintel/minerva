@@ -57,7 +57,7 @@ public class MinervaConfig {
     }
     
     public String getWorkspacesFolder() {
-    	return MinervaOptions.getWorkspacesFolder(config);
+        return MinervaOptions.getWorkspacesFolder(config);
     }
     
     public String getGitlabUrl() {
@@ -71,10 +71,10 @@ public class MinervaConfig {
     public String getGitlabProject() {
         String ret = get(StartRelevantOption.GITLAB_PROJECT);
         if (isGitlab()) {
-			if (StringService.isNullOrEmpty(ret)) {
-				throw new ConfigurationException("Missing setting '" + StartRelevantOption.GITLAB_PROJECT + "'!");
-			} else if (!ret.contains("/")) {
-				throw new ConfigurationException("Setting '" + StartRelevantOption.GITLAB_PROJECT + "' must contain '/'!");
+            if (StringService.isNullOrEmpty(ret)) {
+                throw new ConfigurationException("Missing setting '" + StartRelevantOption.GITLAB_PROJECT + "'!");
+            } else if (!ret.contains("/")) {
+                throw new ConfigurationException("Setting '" + StartRelevantOption.GITLAB_PROJECT + "' must contain '/'!");
             }
         }
         return ret;
@@ -133,14 +133,14 @@ public class MinervaConfig {
     
     public void sendMail(Mail mail) {
         if (StringService.isNullOrEmpty(config.get(MailSender.SMTP_SERVER))) {
-        	Logger.info("\"" + MailSender.SMTP_SERVER + "\" is not set -> don't send mail \"" + mail.getSubject() + "\" to " + mail.getToEmailaddress());
+            Logger.info("\"" + MailSender.SMTP_SERVER + "\" is not set -> don't send mail \"" + mail.getSubject() + "\" to " + mail.getToEmailaddress());
         } else {
-        	mail.setSendername("Minerva");
-        	try {
-				new MailSender().send(mail, config);
-			} catch (Exception e) {
-				Logger.error(e, "Can't send mail \"" + mail.getSubject() + "\" to " + mail.getToEmailaddress());
-			}
+            mail.setSendername("Minerva");
+            try {
+                new MailSender().send(mail, config);
+            } catch (Exception e) {
+                Logger.error(e, "Can't send mail \"" + mail.getSubject() + "\" to " + mail.getToEmailaddress());
+            }
         }
     }
 
@@ -148,7 +148,7 @@ public class MinervaConfig {
      * @return never null
      */
     public String getCommentBody() {
-    	return replaceHost(MinervaOptions.MAIL_COMMENT_BODY.get());
+        return replaceHost(MinervaOptions.MAIL_COMMENT_BODY.get());
     }
     
     public boolean readyForCommentNotifications() {
@@ -162,7 +162,7 @@ public class MinervaConfig {
     }
     
     private String replaceHost(String body) {
-		return body == null ? "" : body.replace("{host}", getHost());
+        return body == null ? "" : body.replace("{host}", getHost());
     }
 
     public boolean readyForWatchNotifications() {
@@ -172,7 +172,7 @@ public class MinervaConfig {
     }
     
     private boolean hasMailServer() {
-    	return !StringService.isNullOrEmpty(config.get(MailSender.SMTP_SERVER));
+        return !StringService.isNullOrEmpty(config.get(MailSender.SMTP_SERVER));
     }
     
     public String getWorkFolder() {
@@ -237,7 +237,7 @@ public class MinervaConfig {
      * @return tag text. New pages will get this tag. Can be null or empty.
      */
     public String getTagNewPage_tag() {
-    	return MinervaOptions.TNP_TAG.get();
+        return MinervaOptions.TNP_TAG.get();
     }
     
     /**
@@ -245,7 +245,7 @@ public class MinervaConfig {
      * @return comma separated user list. If an user of this list creates a new page no tag will be created.
      */
     public String getTagNewPage_exceptUsers() {
-    	return MinervaOptions.TNP_EXCEPT_USERS.get();
+        return MinervaOptions.TNP_EXCEPT_USERS.get();
     }
 
     /**
@@ -253,7 +253,7 @@ public class MinervaConfig {
      * @return comma separated book folders. Tags will only be created for given books. If list is null or empty tags will be created for all books.
      */
     public String getTagNewPage_books() {
-    	return MinervaOptions.TNP_BOOKS.get();
+        return MinervaOptions.TNP_BOOKS.get();
     }
     
     public List<String> getOneLang() {
@@ -273,7 +273,7 @@ public class MinervaConfig {
         return config.getInt(StartRelevantOption.INDEX_LIMIT, 60);
     }
 
-	public String getHost() {
-		return config.get(StartRelevantOption.HOST);
-	}
+    public String getHost() {
+        return config.get(StartRelevantOption.HOST);
+    }
 }

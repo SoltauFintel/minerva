@@ -299,7 +299,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         }
     }
 
-	public void remove(Set<String> filenamesToDelete, List<SeiteSO> changedPages) {
+    public void remove(Set<String> filenamesToDelete, List<SeiteSO> changedPages) {
         // Untergeordnete Seiten
         for (SeiteSO unterseite : seiten) {
             unterseite.remove(filenamesToDelete, changedPages); // rekursiv
@@ -311,21 +311,21 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         removeCrossBookLinksTargetingThisPage(changedPages);
         
         // Images für diese Seite
-		filenamesToDelete.add(bookFolder + "/img/" + r);
+        filenamesToDelete.add(bookFolder + "/img/" + r);
 
         // Feature tree Daten für diese Seite
-		filenamesToDelete.add(bookFolder + "/feature-fields/" + getId() + ".ff");
+        filenamesToDelete.add(bookFolder + "/feature-fields/" + getId() + ".ff");
 
         // Kommentare (inkl. Images) dieser Seite
         filenamesToDelete.add(new SeiteCommentService2(this).dir() + "/**");
         
-		// HTML-Seiteninhalte aller Sprachen für diese Seite
-		MinervaWebapp.factory().getLanguages().forEach(lang -> {
-			String dn = filenameHtml(lang);
-			if (new File(dn).isFile()) {
-				filenamesToDelete.add(dn);
-			}
-		});
+        // HTML-Seiteninhalte aller Sprachen für diese Seite
+        MinervaWebapp.factory().getLanguages().forEach(lang -> {
+            String dn = filenameHtml(lang);
+            if (new File(dn).isFile()) {
+                filenamesToDelete.add(dn);
+            }
+        });
         
         // Metadaten dieser Seite
         filenamesToDelete.add(filenameMeta());
@@ -361,7 +361,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
             }
             dao().saveFiles(files, commitMessage("page deleted (cross-book links cleanup)"), book.getWorkspace());
         }
-	}
+    }
 
     public void move(String parentId) {
         // Seite bei neuer Parent-Seite hinzfuügen
@@ -426,40 +426,40 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     }
     
     public String getLogLine(User u) {
-    	if (u == null) {
-    		u = book.getWorkspace().getUser().getUser();
-    	}
-		return u.getLogin() + " | " + book.getWorkspace().getBranch() + " | " + book.getBook().getFolder() + " | " + getTitle();
+        if (u == null) {
+            u = book.getWorkspace().getUser().getUser();
+        }
+        return u.getLogin() + " | " + book.getWorkspace().getBranch() + " | " + book.getBook().getFolder() + " | " + getTitle();
     }
 
     public String duplicate(List<String> langs, boolean completeCopy) {
-    	// create new page
+        // create new page
         long start = System.currentTimeMillis();
-    	String id;
-    	if (hasParent()) {
+        String id;
+        if (hasParent()) {
             SeiteSO parent = getParent();
             id = parent.getSeiten().createSeite(parent, book, book.dao());
-    	} else {
-    		id = book.createTopLevelSeite();
-    	}
-    	Logger.info(getLogLine(null) + " | Page " + id + " is a copy.");
-    	
-    	// copy data
+        } else {
+            id = book.createTopLevelSeite();
+        }
+        Logger.info(getLogLine(null) + " | Page " + id + " is a copy.");
+        
+        // copy data
         SeiteSO copy = book._seiteById(id);
         copy.getSeite().copyFrom(seite, completeCopy);
         copy.content = new NlsString();
         for (String lang : langs) {
-        	// find new title
-    		List<String> allPageTitles = book.getAlleSeiten().stream()
-    				.map(s -> s.getSeite().getTitle().getString(lang))
-    				.collect(Collectors.toList());
-    		String newTitle = TextService.findCopyOfTitle(seite.getTitle().getString(lang), lang, allPageTitles);
-        	copy.getSeite().getTitle().setString(lang, newTitle);
-        	
-        	// copy HTML
-        	copy.content/*not getContent()!*/.setString(lang, content.getString(lang)
-        			.replace("img/" + seite.getId() + "/", "img/" + id + "/")); // adjust image paths
-		}
+            // find new title
+            List<String> allPageTitles = book.getAlleSeiten().stream()
+                    .map(s -> s.getSeite().getTitle().getString(lang))
+                    .collect(Collectors.toList());
+            String newTitle = TextService.findCopyOfTitle(seite.getTitle().getString(lang), lang, allPageTitles);
+            copy.getSeite().getTitle().setString(lang, newTitle);
+            
+            // copy HTML
+            copy.content/*not getContent()!*/.setString(lang, content.getString(lang)
+                    .replace("img/" + seite.getId() + "/", "img/" + id + "/")); // adjust image paths
+        }
 
         // copy images
         book.dao().copyFiles(book.getFolder(), "/img/" + seite.getId(), "/img/" + id);
@@ -467,7 +467,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         // save page (needed if there are images, but we save it always to have same behaviour)
         copy.saveAll(copy.getSeite().getTitle(), copy.getContent(), copy.getSeite().getVersion(), "duplicate", langs, start);
         
-    	return id;
+        return id;
     }
 
     public void saveAll(NlsString newTitle, NlsString newContent, int version, String comment, List<String> langs, long start) {
@@ -509,9 +509,9 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         new Thread(() -> new WatchersService(this).notifyWatchers()).start();
 
         long duration = System.currentTimeMillis() - start;
-		Logger.info(getLogLine(null) + " | *** Page saved. (#" + getId() + ", " + duration + "ms)");
-		MinervaMetrics.PAGE_SAVETIME.record(duration);
-		Logger.debug("Metric PAGE_SAVETIME sent: " + duration);
+        Logger.info(getLogLine(null) + " | *** Page saved. (#" + getId() + ", " + duration + "ms)");
+        MinervaMetrics.PAGE_SAVETIME.record(duration);
+        Logger.debug("Metric PAGE_SAVETIME sent: " + duration);
     }
 
     private String createTagsFromComment(String comment) {
@@ -791,13 +791,13 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
      * @return true: don't show sub features because they are too many
      */
     public boolean checkSubfeaturesLimit() {
-    	return !seite.getTags().contains("show-all-pages") && getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures();
+        return !seite.getTags().contains("show-all-pages") && getSeiten().size() > MinervaWebapp.factory().getConfig().getMaxSubfeatures();
     }
     
     public String viewlink() {
-		return "/s/" + Escaper.esc(book.getWorkspace().getBranch()) + "/"
-				+ Escaper.esc(book.getBook().getFolder()) + "/" + seite.getId();
-	}
+        return "/s/" + Escaper.esc(book.getWorkspace().getBranch()) + "/"
+                + Escaper.esc(book.getBook().getFolder()) + "/" + seite.getId();
+    }
 
     public void imagesBeforeEdit() {
         Set<String> filenames = getImageFilenames();
@@ -899,11 +899,11 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         return book.getWorkspace().getUser().getCustomerMode().isActive();
     }
     
-	public CommitMessage commitMessage(String comment) {
-		String title = seite.getTitle().getString(MinervaWebapp.factory().getLanguages().get(0));
-		if (!title.equals(comment) && !comment.isEmpty()) {
-			title += ": " + comment;
-		}
-		return new CommitMessage(title);
-	}
+    public CommitMessage commitMessage(String comment) {
+        String title = seite.getTitle().getString(MinervaWebapp.factory().getLanguages().get(0));
+        if (!title.equals(comment) && !comment.isEmpty()) {
+            title += ": " + comment;
+        }
+        return new CommitMessage(title);
+    }
 }

@@ -19,7 +19,7 @@ public class AttachmentsPage extends SPage {
     protected void execute() {
         List<Attachment> attachments = new AttachmentsSO(seite).list();
 
-		header(n(getTitleKey()));
+        header(n(getTitleKey()));
         put("cat", esc(user.getAttachmentCategory()));
         put("dropzone", new Dropzone().getHTML(viewlink + "/upload-attachment")
             .replace(" multiple", " ") // TO-DO Wenn man mehr als eine Datei hochlädt, meldet das JS einen Fehler. Auch im Serverlog stehen ominöse Template Fehler.
@@ -42,22 +42,22 @@ public class AttachmentsPage extends SPage {
         }
         putHas("attachments", list);
         List<Col> cols = List.of(
-        		new Col(n("Filename"), "<a href=\"{{viewlink}}/attachments/{{i.filename}}\" target=\"_blank\">{{i.filename}}</a>").sortable("filename"),
-        		new Col(n("Categories"), "{{each j in i.categories}}\n"
-        				+ "<span class=\"label label-info\">{{j.cat}}</span>\n{{/each}}").sortable("cats"),
-        		new Col(n("insertIntoPage"), "{{if i.hasCat1}}${attachment={{i.cat1}}}{{/if}}"),
-				new Col("", "tar", """
-		                            <a href="{{viewlink}}/edit-attachment/{{i.filename}}" class="btn btn-xs btn-default br"><i
-		                                class="fa fa-pencil"></i> {{N.EditCategories}}</a>
-		                            <a  onclick="return loeschen('{{i.filename}}', 'n_{{i.id}}');"
-		                                href="{{viewlink}}/delete-attachment/{{i.filename}}" class="btn btn-xs btn-danger" title="{{N.delete}}"><i
-		                                class="fa fa-trash-o"></i> <i id="n_{{i.id}}" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
-						           """)
-        		);
+                new Col(n("Filename"), "<a href=\"{{viewlink}}/attachments/{{i.filename}}\" target=\"_blank\">{{i.filename}}</a>").sortable("filename"),
+                new Col(n("Categories"), "{{each j in i.categories}}\n"
+                        + "<span class=\"label label-info\">{{j.cat}}</span>\n{{/each}}").sortable("cats"),
+                new Col(n("insertIntoPage"), "{{if i.hasCat1}}${attachment={{i.cat1}}}{{/if}}"),
+                new Col("", "tar", """
+                                    <a href="{{viewlink}}/edit-attachment/{{i.filename}}" class="btn btn-xs btn-default br"><i
+                                        class="fa fa-pencil"></i> {{N.EditCategories}}</a>
+                                    <a  onclick="return loeschen('{{i.filename}}', 'n_{{i.id}}');"
+                                        href="{{viewlink}}/delete-attachment/{{i.filename}}" class="btn btn-xs btn-danger" title="{{N.delete}}"><i
+                                        class="fa fa-trash-o"></i> <i id="n_{{i.id}}" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
+                                   """)
+                );
         put("table1", new TableComponent(cols, model, "attachments"));
     }
     
     public static String getTitleKey() {
-    	return MinervaWebapp.factory().isCustomerVersion() ? "AttachmentsKundenversion" : "Attachments";
+        return MinervaWebapp.factory().isCustomerVersion() ? "AttachmentsKundenversion" : "Attachments";
     }
 }

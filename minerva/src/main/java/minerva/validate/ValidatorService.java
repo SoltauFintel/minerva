@@ -38,57 +38,57 @@ import minerva.validate.ValidationResult.VRUnusedImageSeite;
  */
 public class ValidatorService {
 
-	public ValidationResult start(BookSO book, List<String> langs, String userGuiLanguage) {
-		ValidationResult result = new ValidationResult();
-		List<SeiteSO> alleSeiten = book.getAlleSeiten();
-		
-		validate_extractLinks(alleSeiten, langs, userGuiLanguage, result);
-		
-		boolean benutzerhandbuch = "Benutzerhandbuch".equals(book.getBook().getTitle().getString("de"));
-		unusedImageFiles_helpKeys_sameTitle(alleSeiten, langs, benutzerhandbuch, result);
-		
-		return result;
-	}
+    public ValidationResult start(BookSO book, List<String> langs, String userGuiLanguage) {
+        ValidationResult result = new ValidationResult();
+        List<SeiteSO> alleSeiten = book.getAlleSeiten();
+        
+        validate_extractLinks(alleSeiten, langs, userGuiLanguage, result);
+        
+        boolean benutzerhandbuch = "Benutzerhandbuch".equals(book.getBook().getTitle().getString("de"));
+        unusedImageFiles_helpKeys_sameTitle(alleSeiten, langs, benutzerhandbuch, result);
+        
+        return result;
+    }
 
-	private void validate_extractLinks(List<SeiteSO> alleSeiten, List<String> langs, String userGuiLanguage,
-			ValidationResult result) {
-		for (String lang : langs) {
-			for (SeiteSO seite : alleSeiten) {
-		        List<String> msg = validate(seite, lang, userGuiLanguage);
-		        if (!msg.isEmpty()) {
-		            result.getSeiten().add(new VRSeite(seite, lang, msg));
-		        }
-		        
-				extractLinks(seite, lang, result);
-			}
-		}
-	}
+    private void validate_extractLinks(List<SeiteSO> alleSeiten, List<String> langs, String userGuiLanguage,
+            ValidationResult result) {
+        for (String lang : langs) {
+            for (SeiteSO seite : alleSeiten) {
+                List<String> msg = validate(seite, lang, userGuiLanguage);
+                if (!msg.isEmpty()) {
+                    result.getSeiten().add(new VRSeite(seite, lang, msg));
+                }
+                
+                extractLinks(seite, lang, result);
+            }
+        }
+    }
 
-	private void unusedImageFiles_helpKeys_sameTitle(List<SeiteSO> alleSeiten, List<String> langs, boolean checkHelpKeys,
-			ValidationResult result) {
-		for (int i = 0; i < alleSeiten.size(); i++) {
-			SeiteSO seite1 = alleSeiten.get(i);
+    private void unusedImageFiles_helpKeys_sameTitle(List<SeiteSO> alleSeiten, List<String> langs, boolean checkHelpKeys,
+            ValidationResult result) {
+        for (int i = 0; i < alleSeiten.size(); i++) {
+            SeiteSO seite1 = alleSeiten.get(i);
 
-			unusedImageFiles(seite1, langs, result, null);
-			
-			if (checkHelpKeys && seite1.getSeite().getHelpKeys().isEmpty()
-					&& (seite1.getSeite().getHkh() == null || seite1.getSeite().getHkh().isEmpty())) {
-				result.getPagesWithoutHelpKeys().add(seite1);
-			}
+            unusedImageFiles(seite1, langs, result, null);
+            
+            if (checkHelpKeys && seite1.getSeite().getHelpKeys().isEmpty()
+                    && (seite1.getSeite().getHkh() == null || seite1.getSeite().getHkh().isEmpty())) {
+                result.getPagesWithoutHelpKeys().add(seite1);
+            }
 
-			for (int j = 0; j < i; j++) {
-				SeiteSO seite2 = alleSeiten.get(j);
-				for (String lang : langs) {
-					String title1 = seite1.getSeite().getTitle().getString(lang);
-					String title2 = seite2.getSeite().getTitle().getString(lang);
-					if (title1.equals(title2)) {
-						result.sameTitle(lang + ":" + title1, seite1, seite2);
-					}
-				}
-			}
-		}
-	}
-	
+            for (int j = 0; j < i; j++) {
+                SeiteSO seite2 = alleSeiten.get(j);
+                for (String lang : langs) {
+                    String title1 = seite1.getSeite().getTitle().getString(lang);
+                    String title2 = seite2.getSeite().getTitle().getString(lang);
+                    if (title1.equals(title2)) {
+                        result.sameTitle(lang + ":" + title1, seite1, seite2);
+                    }
+                }
+            }
+        }
+    }
+    
     private List<String> validate(SeiteSO seite, String pageLang, String guiLang) {
         List<String> msg = new ArrayList<>();
         String html = seite.getContent().getString(pageLang);
@@ -274,36 +274,36 @@ public class ValidatorService {
         return false;
     }
 
-	private void colors(Element body, List<String> msg) {
-		Set<String> colors = new TreeSet<>();
-		List<String> allowedColors = List.of("rgb(0,0,255)", "rgb(153,204,0)");
-		Elements elementsWithStyle = body.select("[style]");
-		for (Element element : elementsWithStyle) {
-			String style = element.attr("style");
-			if (style.contains("-webkit")) {
-				msg.add("v.webkit");
-				return;
-			} else {
-				String sl = style.toLowerCase();
-				if (sl.contains("color") || style.contains("#") || sl.contains("rgb") || sl.contains("hsl")) {
-					for (String pair : style.split(";")) {
-						if (pair.startsWith("color:") || pair.startsWith("background-color:")) {
-							String[] keyAndValue = pair.split(":");
-							if (keyAndValue.length == 2) {
-								String color = keyAndValue[1].replace(" ", "");
-								if (!allowedColors.contains(color)) {
-									colors.add(color);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		for (String color : colors) {
-			msg.add("v.colors;" + color);
-		}
-	}
+    private void colors(Element body, List<String> msg) {
+        Set<String> colors = new TreeSet<>();
+        List<String> allowedColors = List.of("rgb(0,0,255)", "rgb(153,204,0)");
+        Elements elementsWithStyle = body.select("[style]");
+        for (Element element : elementsWithStyle) {
+            String style = element.attr("style");
+            if (style.contains("-webkit")) {
+                msg.add("v.webkit");
+                return;
+            } else {
+                String sl = style.toLowerCase();
+                if (sl.contains("color") || style.contains("#") || sl.contains("rgb") || sl.contains("hsl")) {
+                    for (String pair : style.split(";")) {
+                        if (pair.startsWith("color:") || pair.startsWith("background-color:")) {
+                            String[] keyAndValue = pair.split(":");
+                            if (keyAndValue.length == 2) {
+                                String color = keyAndValue[1].replace(" ", "");
+                                if (!allowedColors.contains(color)) {
+                                    colors.add(color);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        for (String color : colors) {
+            msg.add("v.colors;" + color);
+        }
+    }
     
     private String translate(String key, String lang) {
         String ret;
@@ -340,63 +340,63 @@ public class ValidatorService {
         return dirty ? doc.toString() : html;
     }
 
-	public void unusedImageFiles(SeiteSO seite, List<String> langs, ValidationResult result, Set<String> filesToBeDeleted) {
-		String folder = seite.getBook().getFolder() + "/img/" + seite.getId();
-		Set<String> filenames = seite.getBook().dao().getFilenames(folder);
-		if (filenames != null) {
-			boolean first = true;
-			List<String> unusedImages = null;
-			for (String dn : filenames) {
-				if (!hasImage(seite, langs, dn)) {
-					if (result == null) { // timer mode
-						filesToBeDeleted.add(folder + "/" + dn);
-					} else { // GUI mode
-						if (first) {
-							first = false;
-							VRUnusedImageSeite uis = new VRUnusedImageSeite(seite);
-							result.getUnusedImages().add(uis);
-							unusedImages = uis.getUnusedImages();
-						}
-						unusedImages.add(dn);
-					}
-				}
-			}
-		}
-	}
-	
-	private boolean hasImage(SeiteSO seite, List<String> langs, String dn) {
-		for (String lang : langs) {
-			String html = seite.getContent().getString(lang);
-			// old -> if (html.contains("\"img/" + seite.getId() + "/" + dn + "\"")) {
-			if (html.contains(dn)) {
-				return true;
-			}
-		}
-		return false;
-	}
+    public void unusedImageFiles(SeiteSO seite, List<String> langs, ValidationResult result, Set<String> filesToBeDeleted) {
+        String folder = seite.getBook().getFolder() + "/img/" + seite.getId();
+        Set<String> filenames = seite.getBook().dao().getFilenames(folder);
+        if (filenames != null) {
+            boolean first = true;
+            List<String> unusedImages = null;
+            for (String dn : filenames) {
+                if (!hasImage(seite, langs, dn)) {
+                    if (result == null) { // timer mode
+                        filesToBeDeleted.add(folder + "/" + dn);
+                    } else { // GUI mode
+                        if (first) {
+                            first = false;
+                            VRUnusedImageSeite uis = new VRUnusedImageSeite(seite);
+                            result.getUnusedImages().add(uis);
+                            unusedImages = uis.getUnusedImages();
+                        }
+                        unusedImages.add(dn);
+                    }
+                }
+            }
+        }
+    }
+    
+    private boolean hasImage(SeiteSO seite, List<String> langs, String dn) {
+        for (String lang : langs) {
+            String html = seite.getContent().getString(lang);
+            // old -> if (html.contains("\"img/" + seite.getId() + "/" + dn + "\"")) {
+            if (html.contains(dn)) {
+                return true;
+            }
+        }
+        return false;
+    }
     
     /**
      * Delete unused images e.g. every day 23:00
      */
     public static class UnusedImagesTimer extends AbstractTimer {
         
-    	/**
-    	 * @return null if timer should not be started, otherwise cron expression
-    	 */
+        /**
+         * @return null if timer should not be started, otherwise cron expression
+         */
         public static String cron() {
-        	boolean start = false;
-        	if (MinervaWebapp.factory().isCustomerVersion()) {
-        		start = MinervaOptions.CLEANUP_CRON.isSet();
-        	} else if (Timer.checkIfTimersAreActive(UnusedImagesTimer.class)) {
-    			start = MinervaOptions.CLEANUP_LOGIN.isSet()
-    					&& MinervaOptions.CLEANUP_PASSWORD.isSet()
-    					&& MinervaOptions.CLEANUP_BRANCHES.isSet()
-    					&& MinervaOptions.CLEANUP_CRON.isSet();
-    			if (!start) {
-    				Logger.info("No UnusedImagesTimer started because 'Cleanup service' options are not set.");
-    			}
-        	}
-        	return start ? MinervaOptions.CLEANUP_CRON.get() : null;
+            boolean start = false;
+            if (MinervaWebapp.factory().isCustomerVersion()) {
+                start = MinervaOptions.CLEANUP_CRON.isSet();
+            } else if (Timer.checkIfTimersAreActive(UnusedImagesTimer.class)) {
+                start = MinervaOptions.CLEANUP_LOGIN.isSet()
+                        && MinervaOptions.CLEANUP_PASSWORD.isSet()
+                        && MinervaOptions.CLEANUP_BRANCHES.isSet()
+                        && MinervaOptions.CLEANUP_CRON.isSet();
+                if (!start) {
+                    Logger.info("No UnusedImagesTimer started because 'Cleanup service' options are not set.");
+                }
+            }
+            return start ? MinervaOptions.CLEANUP_CRON.get() : null;
         }
         
         @Override
@@ -410,7 +410,7 @@ public class ValidatorService {
     public static class DeleteUnusedImages {
         
         public static void start() {
-			UserSO userSO = StatesSO.login(); // TODO Das funktioniert nicht für customerVersion!
+            UserSO userSO = StatesSO.login(); // TODO Das funktioniert nicht für customerVersion!
             List<String> langs = MinervaWebapp.factory().getLanguages();
             Set<String> filesToBeDeleted = new TreeSet<>();
             for (String branch : MinervaOptions.CLEANUP_BRANCHES.get().split(",")) {
@@ -446,12 +446,12 @@ public class ValidatorService {
         }
     }
 
-	private void extractLinks(SeiteSO seite, String lang, ValidationResult result) {
+    private void extractLinks(SeiteSO seite, String lang, ValidationResult result) {
         String html = seite.getContent().getString(lang);
         List<Link> xlinks = LinkService.extractLinks(html, true);
         for (Link link : xlinks) {
             if (link.getHref().startsWith("http://") || link.getHref().startsWith("https://")) {
-            	result.getLinks().add(new VRLink(lang, link, seite));
+                result.getLinks().add(new VRLink(lang, link, seite));
             }
         }
     }

@@ -39,40 +39,40 @@ public class StatesSO {
     
     public static void login(Context ctx, User user) {
         try {
-			StateSO state = new StateSO(user);
-			state.getUser().finishMyEditings();
-			
-			int sessionTimeout = 1000 * 60 * 60 * 12; // I'm not sure what value and if needs to be configurable.
-			Tosmap.add(key(ctx), System.currentTimeMillis() + sessionTimeout, state);
-			
-			// Nach dem Einloggen soll nicht kein Workspace gewählt sein. Daher wird
-			// hier der master eingestellt. Zukünftig könnte man sich den zuletzt aktiven
-			// Workspace merken.
-			try {
-			    WorkspaceSO workspace = state.getUser().masterWorkspace();
-			    state.getUser().setCurrentWorkspace(workspace);
-			} catch (Exception ignore) {
-			}
-			MinervaMetrics.LOGIN.inc();
-		} catch (Exception e) {
-			Logger.error(e, "Error logging in"); // Important so that errors are not missed when logging in.
-		}
+            StateSO state = new StateSO(user);
+            state.getUser().finishMyEditings();
+            
+            int sessionTimeout = 1000 * 60 * 60 * 12; // I'm not sure what value and if needs to be configurable.
+            Tosmap.add(key(ctx), System.currentTimeMillis() + sessionTimeout, state);
+            
+            // Nach dem Einloggen soll nicht kein Workspace gewählt sein. Daher wird
+            // hier der master eingestellt. Zukünftig könnte man sich den zuletzt aktiven
+            // Workspace merken.
+            try {
+                WorkspaceSO workspace = state.getUser().masterWorkspace();
+                state.getUser().setCurrentWorkspace(workspace);
+            } catch (Exception ignore) {
+            }
+            MinervaMetrics.LOGIN.inc();
+        } catch (Exception e) {
+            Logger.error(e, "Error logging in"); // Important so that errors are not missed when logging in.
+        }
     }
     
     /**
      * Login for cron timers
      * @return UserSO
      */
-	public static UserSO login() {
+    public static UserSO login() {
         if (!MinervaOptions.CLEANUP_LOGIN.isSet() || !MinervaOptions.CLEANUP_PASSWORD.isSet()) {
             Logger.error("Cleanup login and/or password are not set in configuration. Go to Menu (in admin mode) > Configuration to enter the needed values.");
             return null;
         }
         gitper.User user = MinervaWebapp.factory().getBackendService()
-        		.login(MinervaOptions.CLEANUP_LOGIN.get(), MinervaOptions.CLEANUP_PASSWORD.get(), null);
-		MinervaMetrics.LOGIN_AUTOMATIC.inc();
+                .login(MinervaOptions.CLEANUP_LOGIN.get(), MinervaOptions.CLEANUP_PASSWORD.get(), null);
+        MinervaMetrics.LOGIN_AUTOMATIC.inc();
         return user == null ? null : new UserSO((User) user);
-	}
+    }
 
     public static void logout(Context ctx) {
         Tosmap.remove(key(ctx));
@@ -125,31 +125,31 @@ public class StatesSO {
     }
     
     public static void updatePagesMetrics() {
-    	Logger.info("updatePagesMetrics");
-    	try {
-    		long users = 0;
-    		long workspaces = 0;
-    		long books = 0;
-			long pages = 0;
-			for (Object o : Tosmap.getValues()) {
-				if (o instanceof StateSO state) {
-					users++;
-					var userWorkspaces = state.getUser().getWorkspaces();
-					workspaces += userWorkspaces.size();
-					for (WorkspaceSO workspace : userWorkspaces) {
-						for (BookSO book : workspace.getBooks()) {
-							pages += book.getSeiten().countAll();
-						}
-						books += workspace.getBooks().size();
-					}
-				}
-			}
-			MinervaMetrics.USERS_IN_MEMORY.set(users);
-			MinervaMetrics.WORKSPACES_IN_MEMORY.set(workspaces);
-			MinervaMetrics.BOOKS_IN_MEMORY.set(books);
-			MinervaMetrics.PAGES_IN_MEMORY.set(pages);
-		} catch (Exception e) {
-			Logger.error(e);
-		}
+        Logger.info("updatePagesMetrics");
+        try {
+            long users = 0;
+            long workspaces = 0;
+            long books = 0;
+            long pages = 0;
+            for (Object o : Tosmap.getValues()) {
+                if (o instanceof StateSO state) {
+                    users++;
+                    var userWorkspaces = state.getUser().getWorkspaces();
+                    workspaces += userWorkspaces.size();
+                    for (WorkspaceSO workspace : userWorkspaces) {
+                        for (BookSO book : workspace.getBooks()) {
+                            pages += book.getSeiten().countAll();
+                        }
+                        books += workspace.getBooks().size();
+                    }
+                }
+            }
+            MinervaMetrics.USERS_IN_MEMORY.set(users);
+            MinervaMetrics.WORKSPACES_IN_MEMORY.set(workspaces);
+            MinervaMetrics.BOOKS_IN_MEMORY.set(books);
+            MinervaMetrics.PAGES_IN_MEMORY.set(pages);
+        } catch (Exception e) {
+            Logger.error(e);
+        }
     }
 }

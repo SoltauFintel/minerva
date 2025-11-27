@@ -59,13 +59,13 @@ public class SeiteCommentService extends CommonCommentService {
         return seite.getId();
     }
 
-	@Override
-	public void logInfo() {
-		Logger.info(workspace.getUser().getLogin() + " | " + workspace.getBranch() + " | writing comment #" + seite.getId());
-	}
+    @Override
+    public void logInfo() {
+        Logger.info(workspace.getUser().getLogin() + " | " + workspace.getBranch() + " | writing comment #" + seite.getId());
+    }
 
-	@Override
-	public void logSaveInfo() {
-		Logger.info(workspace.getUser().getLogin() + " | " + workspace.getBranch() + " |  saving comment #" + seite.getId());
-	}
+    @Override
+    public void logSaveInfo() {
+        Logger.info(workspace.getUser().getLogin() + " | " + workspace.getBranch() + " |  saving comment #" + seite.getId());
+    }
 }

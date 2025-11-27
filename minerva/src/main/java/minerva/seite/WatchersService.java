@@ -35,7 +35,7 @@ public class WatchersService {
         
         // get all users
         if (me == null) {
-        	Logger.error("me is null in WatchersService.notifyWatchers()");
+            Logger.error("me is null in WatchersService.notifyWatchers()");
         }
         List<NotifyUser> nu = UserAccess.loadUsers().stream()
                 .filter(user -> user != null && user.getLogin() != null && !user.getLogin().equals(me.getLogin()))
@@ -105,17 +105,17 @@ public class WatchersService {
         Mail mail = new Mail();
         mail.setToEmailaddress(user.getMailAddress());
         mail.setSubject(MinervaOptions.MAIL_WATCH_SUBJECT.get()
-        		.replace("{pageTitle}", editedSeite.getTitle())); // no esc!
+                .replace("{pageTitle}", editedSeite.getTitle())); // no esc!
         mail.setBody(MinervaOptions.MAIL_WATCH_BODY.get()
-        		.replace("{url}", getUrl())
+                .replace("{url}", getUrl())
                 .replace("{pageTitle}", editedSeite.getTitle()) // no esc!
                 .replace("{notifiedPage}", user.getNotifiedBecauseOfPage().getTitle()));
         c.sendMail(mail);
     }
     
     private String getUrl() {
-    	return "http://" + c.getHost() + "/s/" + editedSeite.getBook().getWorkspace().getBranch() + 
-				"/" + editedSeite.getBook().getBook().getFolder() + "/" + editedSeite.getId();
+        return "http://" + c.getHost() + "/s/" + editedSeite.getBook().getWorkspace().getBranch() + 
+                "/" + editedSeite.getBook().getBook().getFolder() + "/" + editedSeite.getId();
     }
     
     public String getWatchers() {

@@ -24,8 +24,8 @@ public class FileSystemDirAccess extends AbstractDirAccess {
         return new ArrayList<>();
     }
 
-	@Override
-	public void mergeBranch(String sourceBranch, String targetBranch, User user) {
+    @Override
+    public void mergeBranch(String sourceBranch, String targetBranch, User user) {
         throw new UnsupportedOperationException("Merge branch not supported");
-	}
+    }
 }

@@ -12,9 +12,9 @@ import gitper.Workspace;
 import gitper.access.CommitMessage;
 
 public class BackupService {
-	
-	private BackupService() {
-	}
+    
+    private BackupService() {
+    }
 
     /**
      * Call only in Gitlab mode!
@@ -24,25 +24,25 @@ public class BackupService {
      * @return message
      */
     public static String backup(List<File> files, File backupDir, Workspace workspace) {
-		Map<String, String> map = new HashMap<>();
-		for (File file : files) {
-			if (file.isFile()) {
-				String content = FileService.loadPlainTextFile(file);
-				File target = new File(backupDir, file.getName());
-				if (!target.isFile() || !content.equals(FileService.loadPlainTextFile(target))) {
-					map.put(target.getAbsolutePath(), content);
-					Logger.debug("File backup: " + file.getAbsolutePath() + " -> " + target.getAbsolutePath());
-				} else {
-					Logger.debug("Target file is already uptodate: " + target.getAbsolutePath());
-				}
-			} else {
-				Logger.debug("File not found: " + file.getAbsolutePath());
-			}
-		}
-		if (map.isEmpty()) {
-			return "files not found or not changed -> no backup!";
-		}
-		workspace.dao().saveFiles(map, new CommitMessage("backup"), workspace);
-		return "backup made for " + map.size() + " file" + (map.size() == 1 ? "" : "s");
-	}
+        Map<String, String> map = new HashMap<>();
+        for (File file : files) {
+            if (file.isFile()) {
+                String content = FileService.loadPlainTextFile(file);
+                File target = new File(backupDir, file.getName());
+                if (!target.isFile() || !content.equals(FileService.loadPlainTextFile(target))) {
+                    map.put(target.getAbsolutePath(), content);
+                    Logger.debug("File backup: " + file.getAbsolutePath() + " -> " + target.getAbsolutePath());
+                } else {
+                    Logger.debug("Target file is already uptodate: " + target.getAbsolutePath());
+                }
+            } else {
+                Logger.debug("File not found: " + file.getAbsolutePath());
+            }
+        }
+        if (map.isEmpty()) {
+            return "files not found or not changed -> no backup!";
+        }
+        workspace.dao().saveFiles(map, new CommitMessage("backup"), workspace);
+        return "backup made for " + map.size() + " file" + (map.size() == 1 ? "" : "s");
+    }
 }

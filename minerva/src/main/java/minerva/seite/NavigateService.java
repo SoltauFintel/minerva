@@ -87,7 +87,7 @@ public class NavigateService {
     }
     
     private SeiteSO nextPageOnSameLevel(SeiteSO seite) {
-    	SeitenSO seiten = fetchSeiten(seite);
+        SeitenSO seiten = fetchSeiten(seite);
         boolean pick = false;
         for (SeiteSO s : seiten) {
             if (pick && valid(s)) {
@@ -101,7 +101,7 @@ public class NavigateService {
     }
 
     private SeiteSO previousPageOnSameLevel(SeiteSO seite) {
-    	SeitenSO seiten = fetchSeiten(seite);
+        SeitenSO seiten = fetchSeiten(seite);
         SeiteSO ret = null;
         for (SeiteSO s : seiten) {
             if (s.getId().equals(seite.getId())) {

@@ -36,8 +36,8 @@ public class CustomerModePage extends WPage {
                 .put("label", customer.toUpperCase())
                 .put("css", customer.equalsIgnoreCase(ccm.getCustomer()) ? "btn-success" : "btn-default");
             if (customer.equalsIgnoreCase(ccm.getCustomer())) {
-            	put("quickbuttonsExtra", "&q=" + u("__CM" + customer));
-            	set = true;
+                put("quickbuttonsExtra", "&q=" + u("__CM" + customer));
+                set = true;
             }
         }
         list.add()
@@ -45,7 +45,7 @@ public class CustomerModePage extends WPage {
             .put("label", n(StringService.isNullOrEmpty(ccm.getCustomer()) ? "customerModeIsOff" : "turnOffCustomerMode"))
             .put("css", StringService.isNullOrEmpty(ccm.getCustomer()) ? "btn-danger" : "btn-default");
         if (!set) {
-        	put("quickbuttonsExtra", "&q=" + u("__CMnull"));
+            put("quickbuttonsExtra", "&q=" + u("__CMnull"));
         }
         if (tags == null) {
             put("showTags", false);

@@ -11,18 +11,18 @@ import minerva.model.SeiteSO;
  * Wenn Seite AA eine Unterseite von A ist, so ist AA auch im Export mit Seitenauswahl eine Unterseite von A.
  */
 public class SomeSubpages implements SubpagesSelector {
-	public static ProcessPages processPages = seiten -> seiten;
+    public static ProcessPages processPages = seiten -> seiten;
     private final List<SeiteAndDone> allPages;
     
     public interface ProcessPages {
-    	List<SeiteSO> process(List<SeiteSO> seiten);
+        List<SeiteSO> process(List<SeiteSO> seiten);
     }
     
     public SomeSubpages(List<SeiteSO> allPages) {
-		this.allPages = processPages.process(allPages).stream().map(seite -> new SeiteAndDone(seite)).collect(Collectors.toList());
+        this.allPages = processPages.process(allPages).stream().map(seite -> new SeiteAndDone(seite)).collect(Collectors.toList());
     }
 
-	public List<SeiteAndDone> getAllPages() {
+    public List<SeiteAndDone> getAllPages() {
         return allPages;
     }
 

@@ -71,9 +71,9 @@ public class TreeItem {
         return "/s/" + Escaper.esc(branch) + "/" + Escaper.esc(bookFolder) + "/" + Escaper.esc(id);
     }
 
-	public Set<String> getTags() {
-		return tags;
-	}
+    public Set<String> getTags() {
+        return tags;
+    }
 
     public boolean isNoTree() {
         return noTree;

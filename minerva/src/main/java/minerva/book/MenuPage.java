@@ -70,7 +70,7 @@ public class MenuPage extends WPage {
             }
         }
         if (!fac.isCustomerVersion()) {
-        	menu(list, "allHelpKeys", "fa-question-circle", "/w/:branch/help-keys");
+            menu(list, "allHelpKeys", "fa-question-circle", "/w/:branch/help-keys");
         }
         menu(list, "formulaEditor", "fa-superscript", "/math");
         onlinehelp(fac, booksOk, list);
@@ -80,16 +80,16 @@ public class MenuPage extends WPage {
             menu(list, "Broken Links", "fa-chain-broken", "/w/:branch/broken-links");
         }
         if (fac.isCustomerVersion()) {
-        	menu(list, "papierkorb", "fa-recycle", "/w/:branch/recycle");
+            menu(list, "papierkorb", "fa-recycle", "/w/:branch/recycle");
         }
         export(booksOk, list);
         workspace(list);
         if (!fac.isCustomerVersion()) {
-	        menu(list, "keyValues", "fa-key", "/values/:branch");
+            menu(list, "keyValues", "fa-key", "/values/:branch");
         }
         additionalMenuItems(list);
-		menu(list, user.getUser().isShowQuickbuttons() ? "hideQuickButtons" : "showQuickButtons", "fa-space-shuttle",
-				"/w/:branch/toggle-quickbuttons");
+        menu(list, user.getUser().isShowQuickbuttons() ? "hideQuickButtons" : "showQuickButtons", "fa-space-shuttle",
+                "/w/:branch/toggle-quickbuttons");
         admin(fac, isAdmin, booksOk, list);
         if (booksOk && fac.isCustomerVersion() && !fac.getAdmins().contains(user.getLogin())) {
             menu(list, "reindex", "fa-refresh", "/w/:branch/index", true);

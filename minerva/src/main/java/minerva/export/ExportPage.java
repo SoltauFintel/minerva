@@ -118,13 +118,13 @@ public class ExportPage extends WPage {
 
         String link;
         if (ALL.equals(item)) { // all books -> ExportWorkspaceAction
-        	link = "/w/" + branch + "/books" + q;
+            link = "/w/" + branch + "/books" + q;
         } else if (PAGE_WITH_FEATURES.equals(item)) { // -> SeitenauswahlPage
             link = "/w/" + branch + "/pages" + q + "&f=1";
         } else if (PAGE.equals(item)) { // -> SeitenauswahlPage
-        	link = "/w/" + branch + "/pages" + q;
+            link = "/w/" + branch + "/pages" + q;
         } else { // book -> ExportBookAction
-        	link = "/b/" + branch + "/" + esc(item) + q;
+            link = "/b/" + branch + "/" + esc(item) + q;
         }
         Logger.info("-> " + link);
         ctx.redirect(link);        

@@ -39,7 +39,7 @@ public class WorkspaceSO implements Workspace {
     
     @Override
     public User user() {
-    	return user.getUser();
+        return user.getUser();
     }
 
     @Override
@@ -113,28 +113,28 @@ public class WorkspaceSO implements Workspace {
     
     private void info(String text) {
         String login = user.getLogin();
-		text = text
+        text = text
                 .replace("$l", login)
                 .replace("$b", branch)
                 .replace("$n", "" + books.size());
-		if (isAutomaticUser(login)) {
-			Logger.debug(text);
-		} else {
-			Logger.info(text);
-		}
+        if (isAutomaticUser(login)) {
+            Logger.debug(text);
+        } else {
+            Logger.info(text);
+        }
     }
     
     public static void info(String login, String msg) {
-		if (isAutomaticUser(login)) {
-			Logger.debug(login + " | " + msg);
-		} else {
-			Logger.info(login + " | " + msg);
-		}
-	}
+        if (isAutomaticUser(login)) {
+            Logger.debug(login + " | " + msg);
+        } else {
+            Logger.info(login + " | " + msg);
+        }
+    }
 
-	private static boolean isAutomaticUser(String login) {
-		return login != null && login.equalsIgnoreCase(MinervaOptions.CLEANUP_LOGIN.get());
-	}
+    private static boolean isAutomaticUser(String login) {
+        return login != null && login.equalsIgnoreCase(MinervaOptions.CLEANUP_LOGIN.get());
+    }
 
     public List<SeiteSO> findTag(String tag) {
         String x = TagsSO.cleanTag(tag);
@@ -158,8 +158,8 @@ public class WorkspaceSO implements Workspace {
     }
     
     public SearchSO getSearch() {
-		return new SearchSO(MinervaOptions.SEARCH_URL.get(), MinervaOptions.SEARCH_SITE_PREFIX.get(), this,
-				MinervaWebapp.factory().getLanguages());
+        return new SearchSO(MinervaOptions.SEARCH_URL.get(), MinervaOptions.SEARCH_SITE_PREFIX.get(), this,
+                MinervaWebapp.factory().getLanguages());
     }
     
     public ExclusionsSO getExclusions() {
@@ -167,14 +167,14 @@ public class WorkspaceSO implements Workspace {
     }
     
     public Exclusions exclusions() {
-		if (exclusions == null) {
-			exclusions = new Exclusions(getExclusions().get());
-		}
-		return exclusions;
+        if (exclusions == null) {
+            exclusions = new Exclusions(getExclusions().get());
+        }
+        return exclusions;
     }
     
     public void clearExclusionsCache() {
-    	exclusions = null;
+        exclusions = null;
     }
     
     public void createBranch(String newBranch, String commit) {
@@ -202,21 +202,21 @@ public class WorkspaceSO implements Workspace {
         return new PapierkorbSO(this);
     }
     
-	public BookSO getFeatureTreeBook() {
-		for (BookSO book : getBooks()) {
-			if (book.isFeatureTree()) {
-				return book;
-			}
-		}
-		return null;
+    public BookSO getFeatureTreeBook() {
+        for (BookSO book : getBooks()) {
+            if (book.isFeatureTree()) {
+                return book;
+            }
+        }
+        return null;
     }
     
-	public BookSO getReleaseNotesBook() {
-		for (BookSO book : getBooks()) {
-			if (book.isReleaseNotes()) {
-				return book;
-			}
-		}
-		return null;
+    public BookSO getReleaseNotesBook() {
+        for (BookSO book : getBooks()) {
+            if (book.isReleaseNotes()) {
+                return book;
+            }
+        }
+        return null;
     }
 }

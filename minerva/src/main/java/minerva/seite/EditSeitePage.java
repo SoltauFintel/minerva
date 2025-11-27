@@ -36,13 +36,13 @@ public class EditSeitePage extends ViewSeitePage {
             super.execute2();
             calculateEditorHeight();
             put("postcontentslink", "/post-contents/seite?key=" + u(getKey()));
-			put("livesavelink", "/s/" + branch + "/" + bookFolder + "/" + id + "/live-save");
+            put("livesavelink", "/s/" + branch + "/" + bookFolder + "/" + id + "/live-save");
             seite.imagesBeforeEdit();
             Logger.info(seite.getLogLine(null) + " | *** start editing");
         }
     }
 
-	@Override
+    @Override
     protected String transformContent(TocMacro macro, String lang, DataMap map) {
         return seite.getContent().getString(lang);
     }
@@ -96,13 +96,13 @@ public class EditSeitePage extends ViewSeitePage {
     }
 
     private void calculateEditorHeight() {
-		int vh = 330;
-		if (user.getUser().isShowQuickbuttons()) {
-			vh += 27;
-		}
-		if (!MinervaPageInitializer.isMasterBranch(ctx) || user.getCustomerMode().isActive()) {
-			vh += 25;
-		}
-    	putInt("vh", vh);
-	}
+        int vh = 330;
+        if (user.getUser().isShowQuickbuttons()) {
+            vh += 27;
+        }
+        if (!MinervaPageInitializer.isMasterBranch(ctx) || user.getCustomerMode().isActive()) {
+            vh += 25;
+        }
+        putInt("vh", vh);
+    }
 }

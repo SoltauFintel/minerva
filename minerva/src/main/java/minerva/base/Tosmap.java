@@ -25,7 +25,7 @@ import minerva.model.StateSO;
  */
 public class Tosmap {
     private static final Map<String, TosmapEntry> map = new HashMap<>();
-	private static final Object LOCK = new Object();
+    private static final Object LOCK = new Object();
     
     private Tosmap() {
     }
@@ -150,30 +150,30 @@ public class Tosmap {
         }
     }
 
-	public static String getInfo() {
-		String ret = "";
-		for (Entry<String, TosmapEntry> e : map.entrySet()) {
-			TosmapEntry v = e.getValue();
-			ret += "\n- " + esc(e.getKey()) + " <a href=\"/tosmap?key=" + urlEncode(e.getKey(), "")
-					+ "\" class=\"btn btn-xs btn-danger\">remove</a>: expires " + formatMillis(v.getExpires()) + " ("
-					+ ((v.getExpires() - System.currentTimeMillis()) / 1000 / 60) + " minutes) -> "
-					+ v.getData().getClass().getSimpleName() + ": ";
-			if (v.getData() instanceof StateSO st) {
-				ret += esc(st.getUser().getLogin());
-			} else if (v.getData() != null) {
-				ret += esc(v.getData().toString());
-			} else {
-				ret += "null";
-			}
-			ret += "\n";
-		}
-		return ret;
-	}
-	
-	private static String formatMillis(long milliseconds) {
-		Instant instant = Instant.ofEpochMilli(milliseconds);
-		LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.of("Europe/Berlin"));
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
-		return localDateTime.format(formatter);
+    public static String getInfo() {
+        String ret = "";
+        for (Entry<String, TosmapEntry> e : map.entrySet()) {
+            TosmapEntry v = e.getValue();
+            ret += "\n- " + esc(e.getKey()) + " <a href=\"/tosmap?key=" + urlEncode(e.getKey(), "")
+                    + "\" class=\"btn btn-xs btn-danger\">remove</a>: expires " + formatMillis(v.getExpires()) + " ("
+                    + ((v.getExpires() - System.currentTimeMillis()) / 1000 / 60) + " minutes) -> "
+                    + v.getData().getClass().getSimpleName() + ": ";
+            if (v.getData() instanceof StateSO st) {
+                ret += esc(st.getUser().getLogin());
+            } else if (v.getData() != null) {
+                ret += esc(v.getData().toString());
+            } else {
+                ret += "null";
+            }
+            ret += "\n";
+        }
+        return ret;
+    }
+    
+    private static String formatMillis(long milliseconds) {
+        Instant instant = Instant.ofEpochMilli(milliseconds);
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.of("Europe/Berlin"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
+        return localDateTime.format(formatter);
     }
 }

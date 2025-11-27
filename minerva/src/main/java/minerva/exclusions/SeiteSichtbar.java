@@ -35,11 +35,11 @@ public class SeiteSichtbar {
      * @param language -
      */
     public SeiteSichtbar(SeiteSichtbar ss, String language) {
-    	this.exclusions = ss.exclusions;
-    	this.languages = List.of(language);
-    	this.customerMode = ss.customerMode;
-    	this.showAllPages = ss.showAllPages;
-    	this.pdfTags = ss.pdfTags;
+        this.exclusions = ss.exclusions;
+        this.languages = List.of(language);
+        this.customerMode = ss.customerMode;
+        this.showAllPages = ss.showAllPages;
+        this.pdfTags = ss.pdfTags;
     }
 
     /**
@@ -56,14 +56,14 @@ public class SeiteSichtbar {
      * @param language e.g. "de"
      */
     public SeiteSichtbar(WorkspaceSO workspace, String language) {
-    	this(workspace, List.of(language));
+        this(workspace, List.of(language));
     }
     
     private SeiteSichtbar(WorkspaceSO workspace, List<String> languages) {
         exclusions = workspace.exclusions();
         this.languages = languages;
         User user = workspace.getUser().getUser();
-		customerMode = workspace.getUser().getCustomerMode();
+        customerMode = workspace.getUser().getCustomerMode();
         showAllPages = user.isShowAllPages();
         pdfTags = new String[0];
     }
@@ -118,7 +118,7 @@ public class SeiteSichtbar {
      * @return Seite sichtbar?
      */
     public boolean isVisible(SeiteSO seite) {
-    	return getVisibleResult(seite, this).isVisible();
+        return getVisibleResult(seite, this).isVisible();
     }
 
     /**
@@ -126,7 +126,7 @@ public class SeiteSichtbar {
      * @return Sichtbarkeit der Seite
      */
     public Visible getVisibleResult(SeiteSO seite) {
-    	return getVisibleResult(seite, this);
+        return getVisibleResult(seite, this);
     }
     
     // main part
@@ -134,25 +134,25 @@ public class SeiteSichtbar {
         boolean noTree = isNoTree(seite);
         Accessibility accessibility = isAccessible(seite.getSeite().getTags(), context);
         if (!accessibility.accessible) {
-        	// Es ist ein Kunde gesetzt und dessen Ausschlüsse-tags verbieten den Zugriff auf die Seite.
-        	return new Visible(noTree, false, accessibility.reason);
+            // Es ist ein Kunde gesetzt und dessen Ausschlüsse-tags verbieten den Zugriff auf die Seite.
+            return new Visible(noTree, false, accessibility.reason);
         } else {
             // Wenn es für mind. eine Sprache nicht leer ist, dann ist die Seite sichtbar.
             for (String lang : context.languages) {
-            	if (!isEmpty(seite, lang)) {
+                if (!isEmpty(seite, lang)) {
                     return new Visible(noTree, true, ""/*sichtbar weil für Sprache ... nicht leer*/);
                 }
             }
             // Die Seite ist leer und daher eigentlich nicht sichtbar.
             // Wenn es aber mindestens eine nicht-leere Unterseite gibt, dann ist das Ergebnis hasSubpages statt nicht-sichtbar.
             for (SeiteSO sub : seite.getSeiten()) {
-            	if (getVisibleResult(sub, context).isVisible()) { // recursive
-            		return new Visible(noTree, true, true, false, ""/*leer, aber dennoch sichtbar weil Unterseite ... sichtbar ist*/);
-            	}
+                if (getVisibleResult(sub, context).isVisible()) { // recursive
+                    return new Visible(noTree, true, true, false, ""/*leer, aber dennoch sichtbar weil Unterseite ... sichtbar ist*/);
+                }
             }
             // Seite nicht sichtbar oder show-all-pages-mode aktiv.
-        	return new Visible(noTree, context.showAllPages, false, context.showAllPages,
-        			context.showAllPages ? ""/*sichtbar weil alle-Seiten-Modus aktiv*/ : "reasonEMPTY");
+            return new Visible(noTree, context.showAllPages, false, context.showAllPages,
+                    context.showAllPages ? ""/*sichtbar weil alle-Seiten-Modus aktiv*/ : "reasonEMPTY");
         }
     }
     
@@ -192,7 +192,7 @@ public class SeiteSichtbar {
                 ret = new Accessibility("reasonTAG|" + tag);
             }
         }
-    	return voteForON ? new Accessibility() /*wegen 'ON' tag ...*/ : ret;
+        return voteForON ? new Accessibility() /*wegen 'ON' tag ...*/ : ret;
     }
 
     private enum LabelClass {
@@ -212,22 +212,22 @@ public class SeiteSichtbar {
         NOT_IN;
     }
     
-	private static class Accessibility {
-		final boolean accessible;
-		final String reason;
+    private static class Accessibility {
+        final boolean accessible;
+        final String reason;
 
-		/** is accessible */
-		Accessibility() {
-			accessible = true;
-			reason = "";
-		}
-		
-		/** is not accessible */
-		Accessibility(String reason) {
-			accessible = false;
-			this.reason = reason;
-		}
-	}
+        /** is accessible */
+        Accessibility() {
+            accessible = true;
+            reason = "";
+        }
+        
+        /** is not accessible */
+        Accessibility(String reason) {
+            accessible = false;
+            this.reason = reason;
+        }
+    }
 
     private static LabelClass contains(String tag, List<String> exclusionsTags) {
         if (exclusionsTags != null) {
@@ -246,8 +246,8 @@ public class SeiteSichtbar {
 
     private static boolean isEmpty(SeiteSO seite, String language) {
         return !seite.getBook().isFeatureTree() // Leere Seiten sind im Feature Tree Standard und sollen nicht ausgeblendet werden.
-        		&& (seite.getSeite().getTags().contains("autolink") // autolink-Seiten soll standardmäßig versteckt werden.
-        				|| contentIsEmpty(seite, language));
+                && (seite.getSeite().getTags().contains("autolink") // autolink-Seiten soll standardmäßig versteckt werden.
+                        || contentIsEmpty(seite, language));
     }
 
     public static boolean contentIsEmpty(SeiteSO seite, String language) {

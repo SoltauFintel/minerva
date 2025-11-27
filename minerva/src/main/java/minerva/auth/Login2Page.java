@@ -13,9 +13,9 @@ public class Login2Page extends LoginPage {
 
     @Override
     protected void execute() {
-    	Logger.info("backdoor");
+        Logger.info("backdoor");
         if (isPOST()) {
-        	BackendService loginService = MinervaWebapp.factory().getBackendService();
+            BackendService loginService = MinervaWebapp.factory().getBackendService();
             String login = ctx.formParam("user[login]"); // gleiche name's wie bei Gitlab
             String password = ctx.formParam("user[password]");
             Logger.info("LoginPage POST " + login);
@@ -29,8 +29,8 @@ public class Login2Page extends LoginPage {
             
             Gitper.gitperInterface.login2(ctx, user);
         } else {
-        	super.execute();
-        	put("loginError", "f".equals(ctx.queryParam("m")));
+            super.execute();
+            put("loginError", "f".equals(ctx.queryParam("m")));
         }
     }
 }

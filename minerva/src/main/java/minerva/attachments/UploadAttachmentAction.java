@@ -26,8 +26,8 @@ public class UploadAttachmentAction extends SAction {
                 throw new RuntimeException("Attachment too big! Maximum size: " + MAX_MB + " MB");
             }
             String dn = part.getSubmittedFileName();
-			Logger.info(seite.getLogLine(null) + " | upload attachment | filename: " + dn +
-					" | size: " + mb + " MB (" + nbytes + ")");
+            Logger.info(seite.getLogLine(null) + " | upload attachment | filename: " + dn +
+                    " | size: " + mb + " MB (" + nbytes + ")");
 
             new AttachmentsSO(seite).save(part.getInputStream(), dn, user.getAttachmentCategory());
 
@@ -36,7 +36,7 @@ public class UploadAttachmentAction extends SAction {
             Logger.error(e);
             throw new RuntimeException("Error uploading attachment!"); // status 500
         } catch (FileAreadyExists e) {
-        	ctx.status(403);
+            ctx.status(403);
         }
     }
 }

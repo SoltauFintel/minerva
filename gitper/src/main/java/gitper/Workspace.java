@@ -4,15 +4,15 @@ import gitper.access.DirAccess;
 
 public interface Workspace {
 
-	String getBranch();
-	
-	String getFolder();
+    String getBranch();
+    
+    String getFolder();
 
-	User user();
-	
-	DirAccess dao();
+    User user();
+    
+    DirAccess dao();
 
-	void onPush();
+    void onPush();
 
-	void pull();
+    void pull();
 }

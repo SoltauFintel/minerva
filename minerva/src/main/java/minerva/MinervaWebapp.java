@@ -221,10 +221,10 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/ets/:branch", ExportTemplateSetsPage.class);
         get("/ets/:branch/add", AddExportTemplateSetAction.class);
         form("/ets/:branch/edit/:id", EditExportTemplateSetPage.class);
-		get("/ets/:branch/delete/:id", DeleteExportTemplateSetAction.class);
-	}
+        get("/ets/:branch/delete/:id", DeleteExportTemplateSetAction.class);
+    }
 
-	private void oneBook() {
+    private void oneBook() {
         form("/b/:branch/add", AddBookPage.class);
         form("/b/:branch/:book/edit", EditBookPage.class);
         get("/b/:branch/:book/delete", DeleteBookPage.class);
@@ -386,14 +386,14 @@ public class MinervaWebapp extends RouteDefinitions {
                 .withInitializer(config -> initGitper())
                 .withInitializer(config -> CommentService.services.put(ctx -> ctx.path().startsWith("/sc/"), SeiteCommentService.class))
                 .withInitializer(config -> {
-                	Timer.TIMER_ACTIVE = MinervaOptions.TIMER_ACTIVE.get();
-                	Timer.TIMER_ACTIVE_LABEL = MinervaOptions.TIMER_ACTIVE.getLabel();
-                	Timer.create(config);
-                	Timer.INSTANCE.createTimer(CleanupExportFolderTimer.class, "0 0 3 ? * *"); // 3:00 daily
-                	Timer.INSTANCE.createTimer(HourlyJournalTimer.class, "0 0 8-19 * * ?"); // daily every hour   TODO später auf alle 3h setzen
-                	Timer.INSTANCE.createTimer(JournalTimer.class, "0 0 6 1 * ?"); // first day of month 6:00
-                	Timer.INSTANCE.createTimer(IndexBooksTimer.class, "0 15 8 ? * MON-FRI");
-            		Timer.INSTANCE.createTimer(UnusedImagesTimer.class, UnusedImagesTimer.cron(), true); // 23:00
+                    Timer.TIMER_ACTIVE = MinervaOptions.TIMER_ACTIVE.get();
+                    Timer.TIMER_ACTIVE_LABEL = MinervaOptions.TIMER_ACTIVE.getLabel();
+                    Timer.create(config);
+                    Timer.INSTANCE.createTimer(CleanupExportFolderTimer.class, "0 0 3 ? * *"); // 3:00 daily
+                    Timer.INSTANCE.createTimer(HourlyJournalTimer.class, "0 0 8-19 * * ?"); // daily every hour   TODO später auf alle 3h setzen
+                    Timer.INSTANCE.createTimer(JournalTimer.class, "0 0 6 1 * ?"); // first day of month 6:00
+                    Timer.INSTANCE.createTimer(IndexBooksTimer.class, "0 15 8 ? * MON-FRI");
+                    Timer.INSTANCE.createTimer(UnusedImagesTimer.class, UnusedImagesTimer.cron(), true); // 23:00
                 })
                 .withAuth(config -> new MinervaAuth());
     }
@@ -414,43 +414,43 @@ public class MinervaWebapp extends RouteDefinitions {
     
     private static void initGitper() {
         Gitper.gitperInterface = new GitperInterface() {
-			
-			@Override
-			public void login2(Context ctx, gitper.User user) {
-				MinervaAuth.login2(ctx, (minerva.user.User) user);
-			}
-			
-			@Override
-			public Object initWithAccessToken(String token) {
-				return GitFactory.initWithAccessToken(token, new MinervaGitlabConfig().getGitlabUrl());
-			}
-			
-			@Override
-			public User loadUser(String login, boolean create, String mail) {
-				return UserAccess.loadUser(login, create, mail);
-			}
-			
-			@Override
-			public gitper.User createUser(String login) {
-				minerva.user.User user = new minerva.user.User();
-				user.setLogin(login);
-				return user;
-			}
-			
-			@Override
-			public Object tosmap_pop(String state) {
-				return Tosmap.pop(state);
-			}
-			
-			@Override
-			public void tosmap_add(String state, long t) {
-				Tosmap.add(state, t, state);
-			}
+            
+            @Override
+            public void login2(Context ctx, gitper.User user) {
+                MinervaAuth.login2(ctx, (minerva.user.User) user);
+            }
+            
+            @Override
+            public Object initWithAccessToken(String token) {
+                return GitFactory.initWithAccessToken(token, new MinervaGitlabConfig().getGitlabUrl());
+            }
+            
+            @Override
+            public User loadUser(String login, boolean create, String mail) {
+                return UserAccess.loadUser(login, create, mail);
+            }
+            
+            @Override
+            public gitper.User createUser(String login) {
+                minerva.user.User user = new minerva.user.User();
+                user.setLogin(login);
+                return user;
+            }
+            
+            @Override
+            public Object tosmap_pop(String state) {
+                return Tosmap.pop(state);
+            }
+            
+            @Override
+            public void tosmap_add(String state, long t) {
+                Tosmap.add(state, t, state);
+            }
 
-			@Override
-			public GitlabAuthService authService() {
-				return new GitlabAuthService(new MinervaGitlabConfig());
-			}
-		};
+            @Override
+            public GitlabAuthService authService() {
+                return new GitlabAuthService(new MinervaGitlabConfig());
+            }
+        };
     }
 }

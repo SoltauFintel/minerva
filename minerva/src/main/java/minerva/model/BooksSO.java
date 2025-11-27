@@ -94,13 +94,13 @@ public class BooksSO extends MList<BookSO> {
         save(cm);
     }
 
-	public BookSO byFolder(String folder) {
-		BookSO ret = _byFolder(folder);
-		if (ret == null) {
-			throw new RuntimeException("Book does not exist!");
-		}
-		return ret;
-	}
+    public BookSO byFolder(String folder) {
+        BookSO ret = _byFolder(folder);
+        if (ret == null) {
+            throw new RuntimeException("Book does not exist!");
+        }
+        return ret;
+    }
 
     public BookSO _byFolder(String folder) {
         for (BookSO book : this) {

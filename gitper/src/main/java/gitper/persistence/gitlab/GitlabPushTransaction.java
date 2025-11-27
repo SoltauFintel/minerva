@@ -67,8 +67,8 @@ public class GitlabPushTransaction {
             git.commit(commitMessage, name, user.getMailAddress(), user, filesToAdd, filesToRemove);
             workspace.onPush();
         } catch (MinervaEmptyCommitException ex) {
-			checkIfExist(addFilenames, "addFilenames");
-			checkIfExist(removeFilenames, "removeFilenames");
+            checkIfExist(addFilenames, "addFilenames");
+            checkIfExist(removeFilenames, "removeFilenames");
             if (addFilenames.size() > 5 || removeFilenames.size() > 5) { // prevent ultra long log message output
                 Logger.info("no changes -> no commit and no merge request needed. add: "
                         + addFilenames.size() + ", remove: " + removeFilenames.size());
@@ -83,15 +83,15 @@ public class GitlabPushTransaction {
         return true;
     }
     
-	private void checkIfExist(Set<String> filenames, String name) {
-		if (!filenames.isEmpty()) {
-			String dn = filenames.iterator().next();
-			File file = new File(dn);
-			if (!file.exists()) {
-				Logger.info("[" + name + "] Check filename! File does not exist: " + file.getAbsolutePath());
-			}
-		}
-	}
+    private void checkIfExist(Set<String> filenames, String name) {
+        if (!filenames.isEmpty()) {
+            String dn = filenames.iterator().next();
+            File file = new File(dn);
+            if (!file.exists()) {
+                Logger.info("[" + name + "] Check filename! File does not exist: " + file.getAbsolutePath());
+            }
+        }
+    }
 
     public void doMergeRequest() {
         try {

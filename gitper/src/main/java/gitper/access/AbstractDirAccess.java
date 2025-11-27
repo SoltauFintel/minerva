@@ -177,36 +177,36 @@ public abstract class AbstractDirAccess implements DirAccess {
         return new CommitHash();
     }
     
-	@Override
-	public List<String> copyFiles(String bookFolder, String source, String target) {
-		List<String> ret = new ArrayList<>();
-		File[] files = new File(bookFolder + source).listFiles();
-		if (files != null) {
-			File targetDir = new File(bookFolder, target);
-			targetDir.mkdirs();
-			for (File file : files) {
-				FileService.copyFile(file, targetDir);
-				ret.add(target + "/" + file.getName());
-			}
-		}
-		return ret;
-	}
+    @Override
+    public List<String> copyFiles(String bookFolder, String source, String target) {
+        List<String> ret = new ArrayList<>();
+        File[] files = new File(bookFolder + source).listFiles();
+        if (files != null) {
+            File targetDir = new File(bookFolder, target);
+            targetDir.mkdirs();
+            for (File file : files) {
+                FileService.copyFile(file, targetDir);
+                ret.add(target + "/" + file.getName());
+            }
+        }
+        return ret;
+    }
 
-	// see also FileService.loadFilenames()
-	@Override
-	public Set<String> getFilenames(String folder) {
-		var dir = new File(folder);
-		if (!dir.isDirectory()) {
-			return null;
-		}
-		File[] files = dir.listFiles();
-		if (files == null) {
-			return null;
-		}
-		Set<String> ret = new TreeSet<>();
-		for (File file : files) {
-			ret.add(file.getName());
-		}
-		return ret;
-	}
+    // see also FileService.loadFilenames()
+    @Override
+    public Set<String> getFilenames(String folder) {
+        var dir = new File(folder);
+        if (!dir.isDirectory()) {
+            return null;
+        }
+        File[] files = dir.listFiles();
+        if (files == null) {
+            return null;
+        }
+        Set<String> ret = new TreeSet<>();
+        for (File file : files) {
+            ret.add(file.getName());
+        }
+        return ret;
+    }
 }

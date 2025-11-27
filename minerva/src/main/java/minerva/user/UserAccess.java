@@ -24,9 +24,9 @@ public class UserAccess {
                 if (file.getName().endsWith(".user")) {
                     User user = FileService.loadJsonFile(file, User.class);
                     if (user == null) {
-                    	Logger.warn(".user file can not be loaded: " + file.getAbsolutePath());
+                        Logger.warn(".user file can not be loaded: " + file.getAbsolutePath());
                     } else {
-                    	ret.add(user);
+                        ret.add(user);
                     }
                 }
             }
@@ -109,8 +109,8 @@ public class UserAccess {
                 .map(u -> u.getLogin()).findFirst().orElse(realName);
     }
 
-	public static String login2Initials(String login) {
-		User u = loadUser(login);
-		return u == null || u.getInitialien() == null ? "" : u.getInitialien();
-	}
+    public static String login2Initials(String login) {
+        User u = loadUser(login);
+        return u == null || u.getInitialien() == null ? "" : u.getInitialien();
+    }
 }

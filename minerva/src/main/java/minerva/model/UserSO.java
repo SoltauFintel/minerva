@@ -175,9 +175,9 @@ public class UserSO {
     }
     
     public void selectPageLanguage(String lang) {
-    	load();
-    	user.setPageLanguage(lang);
-    	save();
+        load();
+        user.setPageLanguage(lang);
+        save();
     }
 
     public void toggleGuiLanguage() {
@@ -215,9 +215,9 @@ public class UserSO {
     }
     
     public void toggleShowAllPages() {
-    	load();
-    	user.setShowAllPages(!user.isShowAllPages());
-    	save();
+        load();
+        user.setShowAllPages(!user.isShowAllPages());
+        save();
     }
     
     public void setLastEditedPage(String id) {
@@ -231,9 +231,9 @@ public class UserSO {
     }
     
     public void setDatabase(String database) {
-    	load();
-    	user.setDatabase(database);
-    	save();
+        load();
+        user.setDatabase(database);
+        save();
     }
     
     public void saveExportSettings(String item, String customer, String lang, String format, String template, boolean cover, boolean toc, boolean chapters) {
@@ -486,9 +486,9 @@ public class UserSO {
     }
     
     public void saveReleaseNumber(String rn) {
-    	load();
-    	user.setPublishReleaseNumber(rn == null ? "" : rn.trim());
-    	save();
+        load();
+        user.setPublishReleaseNumber(rn == null ? "" : rn.trim());
+        save();
     }
     
     public void saveCustomerMode(String customer) {
@@ -502,98 +502,98 @@ public class UserSO {
     }
     
     public static boolean isAdmin(Context ctx) {
-    	return "1".equals(ctx.req.session().attribute("admin"));
+        return "1".equals(ctx.req.session().attribute("admin"));
     }
     
     public interface LoginRoutine {
-    	void login(UserSO userSO);
+        void login(UserSO userSO);
     }
     
     public Quickbutton addQuickbutton(String label, String link) {
-		Quickbutton qb = new Quickbutton();
-		qb.setLabel(label);
-		qb.setLink(link);
-		load();
-		List<Quickbutton> quickbuttons = user.getQuickbuttons();
-		if (quickbuttons.size() >= 50) {
-			throw new RuntimeException("Too many quick buttons!");
-		}
-		quickbuttons.removeIf(i -> i.getLink().equals(link));
-		quickbuttons.add(qb);
-		save();
-		return qb;
+        Quickbutton qb = new Quickbutton();
+        qb.setLabel(label);
+        qb.setLink(link);
+        load();
+        List<Quickbutton> quickbuttons = user.getQuickbuttons();
+        if (quickbuttons.size() >= 50) {
+            throw new RuntimeException("Too many quick buttons!");
+        }
+        quickbuttons.removeIf(i -> i.getLink().equals(link));
+        quickbuttons.add(qb);
+        save();
+        return qb;
     }
     
     public void saveQuickbuttons() {
-    	save();
+        save();
     }
 
-	public void toggleQuickbuttons() {
-		load();
-		user.setShowQuickbuttons(!user.isShowQuickbuttons());
-		save();
-	}
-	
-	public List<Quickbutton> getQuickbuttonsFromOtherUsers() {
-		List<Quickbutton> ret = new ArrayList<>();
-		for (User u : UserAccess.loadUsers()) {
-			for (Quickbutton b : u.getQuickbuttons()) {
-				if (!b.isOnlyMe() && !"/q/config".equals(b.getLink())) {
-					boolean found = false;
-					for (Quickbutton x : ret) {
-						if (x.getLink().equals(b.getLink())) {
-							found = true;
-							break;
-						}
-					}
-					if (!found) {
-						ret.add(b);
-					}
-				}
-			}
-		}
-		ret.sort((a, b) -> a.getLabel().compareToIgnoreCase(b.getLabel()));
-		for (Quickbutton b : user.getQuickbuttons()) {
-			ret.removeIf(i -> i.getLink().equals(b.getLink()));
-		}
-		return ret;
-	}
-	
-	public String getCustomerRights() {
-		load();
-		return user.getCustomerRights();
-	}
-	
-	public String getRolloutConfig() {
-		load();
-		return user.getRolloutConfig();
-	}
-	
-	public void setRolloutConfig(String rolloutConfig) {
-		load();
-		user.setRolloutConfig(rolloutConfig);
-		save();
-	}
-	
-	public String getRolloutCustomer() {
-		load();
-		return user.getRolloutCustomer();
-	}
-	
-	public void setRolloutCustomer(String rolloutCustomer) {
-		load();
-		user.setRolloutCustomer(rolloutCustomer);
-		save();
-	}
-	
-	public String getTargetBranch() {
-		load();
-		return user.getTargetBranch();
-	}
-	
-	public void setTargetBranch(String tb) {
-		load();
-		user.setTargetBranch(tb);
-		save();
-	}
+    public void toggleQuickbuttons() {
+        load();
+        user.setShowQuickbuttons(!user.isShowQuickbuttons());
+        save();
+    }
+    
+    public List<Quickbutton> getQuickbuttonsFromOtherUsers() {
+        List<Quickbutton> ret = new ArrayList<>();
+        for (User u : UserAccess.loadUsers()) {
+            for (Quickbutton b : u.getQuickbuttons()) {
+                if (!b.isOnlyMe() && !"/q/config".equals(b.getLink())) {
+                    boolean found = false;
+                    for (Quickbutton x : ret) {
+                        if (x.getLink().equals(b.getLink())) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        ret.add(b);
+                    }
+                }
+            }
+        }
+        ret.sort((a, b) -> a.getLabel().compareToIgnoreCase(b.getLabel()));
+        for (Quickbutton b : user.getQuickbuttons()) {
+            ret.removeIf(i -> i.getLink().equals(b.getLink()));
+        }
+        return ret;
+    }
+    
+    public String getCustomerRights() {
+        load();
+        return user.getCustomerRights();
+    }
+    
+    public String getRolloutConfig() {
+        load();
+        return user.getRolloutConfig();
+    }
+    
+    public void setRolloutConfig(String rolloutConfig) {
+        load();
+        user.setRolloutConfig(rolloutConfig);
+        save();
+    }
+    
+    public String getRolloutCustomer() {
+        load();
+        return user.getRolloutCustomer();
+    }
+    
+    public void setRolloutCustomer(String rolloutCustomer) {
+        load();
+        user.setRolloutCustomer(rolloutCustomer);
+        save();
+    }
+    
+    public String getTargetBranch() {
+        load();
+        return user.getTargetBranch();
+    }
+    
+    public void setTargetBranch(String tb) {
+        load();
+        user.setTargetBranch(tb);
+        save();
+    }
 }

@@ -28,7 +28,7 @@ public abstract class BPage extends WPage {
     }
     
     protected String __book() {
-    	return ctx.pathParam("book");
+        return ctx.pathParam("book");
     }
 
     protected boolean isOneLang() {

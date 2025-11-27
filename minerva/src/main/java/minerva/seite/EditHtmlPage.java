@@ -17,7 +17,7 @@ public class EditHtmlPage extends EditSeitePage {
     
     @Override
     protected String transformContent(TocMacro macro, String lang, DataMap map) {
-		return super.transformContent(macro, lang, map).replace("&", "&amp;");
+        return super.transformContent(macro, lang, map).replace("&", "&amp;");
     }
     
     @Override

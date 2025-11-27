@@ -24,16 +24,16 @@ public class ExportTemplateSetsPage extends WPage {
             map.put("customer", esc(set.getCustomer()));
         }
         List<Col> cols = List.of(
-	        new Col("Name", "<a href=\"/ets/" + branch + "/edit/{{i.id}}\">{{i.name}}</a>").sortable("name"),
-	        new Col(n("customer"), "{{i.customer}}").sortable("customer"),
-	        new Col("", "c3",
-	        		    """
+            new Col("Name", "<a href=\"/ets/" + branch + "/edit/{{i.id}}\">{{i.name}}</a>").sortable("name"),
+            new Col(n("customer"), "{{i.customer}}").sortable("customer"),
+            new Col("", "c3",
+                        """
                         <a href="/ets/{{branch}}/add?id={{i.id}}"
                             class="btn btn-default btn-xs" title="{{N.copyExportTemplateSet}}"><i class="fa fa-copy"></i></a>
                         <a href="/ets/{{branch}}/delete/{{i.id}}"
                             class="btn btn-danger btn-xs" title="{{N.deleteExportTemplateSet}}"
                             onclick="return confirm('Export Template Set &quot;{{i.name}}&quot; l&ouml;schen?')"><i class="fa fa-trash"></i></a>
-	        			""")
+                        """)
         );
         put("table1", new TableComponent("wauto", cols, model, "sets"));
     }

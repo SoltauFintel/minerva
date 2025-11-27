@@ -49,7 +49,7 @@ public abstract class CommonCommentService extends CommentService {
         lang = user.getGuiLanguage();
         dao = user.dao();
         workspace = user.getWorkspace(branch);
-		MinervaWebapp.factory().getBackendService().uptodatecheck(workspace, () -> Logger.info("CommonCommentService #" + id + " -> pull"));
+        MinervaWebapp.factory().getBackendService().uptodatecheck(workspace, () -> Logger.info("CommonCommentService #" + id + " -> pull"));
         simpledao = new SimpleDirAccess(dao, workspace);
 
         init(workspace, bookFolder, id);
@@ -72,9 +72,9 @@ public abstract class CommonCommentService extends CommentService {
         Map<String, String> files = new HashMap<>();
         saveComment(comment, files);
         CommentImageUploadService.popImages(comment.getId()).forEach(dn -> files.put(dir + "/" + dn, DirAccess.IMAGE));
-    	if (!StringService.isNullOrEmpty(doneParent)) {
-    		done(doneParent, files);
-    	}
+        if (!StringService.isNullOrEmpty(doneParent)) {
+            done(doneParent, files);
+        }
         dao.saveFiles(files, getSaveCommitMessage(commitMessage), workspace);
 
         logSaveInfo();
@@ -84,27 +84,27 @@ public abstract class CommonCommentService extends CommentService {
     }
     
     private void done(String id, Map<String, String> files) {
-		Comment parent = get(id);
-		if (parent != null) {
-			parent.setDone(true);
-			parent.setDoneDate(StringService.now());
-			saveComment(parent, files);
-		}
+        Comment parent = get(id);
+        if (parent != null) {
+            parent.setDone(true);
+            parent.setDoneDate(StringService.now());
+            saveComment(parent, files);
+        }
     }
     
     private void saveComment(Comment comment, Map<String, String> files) {
-    	files.put(dir + "/" + comment.getId() + ".json", FileService.prettyJSON(comment));
+        files.put(dir + "/" + comment.getId() + ".json", FileService.prettyJSON(comment));
     }
     
     protected abstract CommitMessage getSaveCommitMessage(String commitMessage);
 
     protected void sendNotifications(String commentId, String person/*login*/) {
-    	if (person.isEmpty()) {
-    		return;
-    	}
+        if (person.isEmpty()) {
+            return;
+        }
         MinervaConfig c = MinervaWebapp.factory().getConfig();
-		if (!c.readyForCommentNotifications()) {
-			Logger.info("send no mails because there's no mail configuration");
+        if (!c.readyForCommentNotifications()) {
+            Logger.info("send no mails because there's no mail configuration");
         } else if (!person.isEmpty()) {
             String login = getLogin();
             if (person.equals(login)) {

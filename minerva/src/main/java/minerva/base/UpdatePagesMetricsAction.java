@@ -5,13 +5,13 @@ import minerva.user.UAction;
 
 public class UpdatePagesMetricsAction extends UAction {
 
-	@Override
-	protected void execute() {
-		StatesSO.updatePagesMetrics();
-	}
-	
-	@Override
-	protected String render() {
-		return "ok";
-	}
+    @Override
+    protected void execute() {
+        StatesSO.updatePagesMetrics();
+    }
+    
+    @Override
+    protected String render() {
+        return "ok";
+    }
 }

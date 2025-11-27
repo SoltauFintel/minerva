@@ -17,24 +17,24 @@ public class MergeRequestException extends RuntimeException implements ErrorMess
     }
     
     public Long getId() {
-    	return id;
+        return id;
     }
     
     public String getTargetBranch() {
-    	return targetBranch;
+        return targetBranch;
     }
 
-	@Override
-	public String getKey() {
-		return "mergeRequestCantBeMerged";
-	}
+    @Override
+    public String getKey() {
+        return "mergeRequestCantBeMerged";
+    }
 
-	@Override
-	public Map<String, String> getParameters() {
-		return Map.of(
-				"$url", mergeRequestPath + id,
-				"$id", "" + id,
-				"$tb", targetBranch
-				);
-	}
+    @Override
+    public Map<String, String> getParameters() {
+        return Map.of(
+                "$url", mergeRequestPath + id,
+                "$id", "" + id,
+                "$tb", targetBranch
+                );
+    }
 }

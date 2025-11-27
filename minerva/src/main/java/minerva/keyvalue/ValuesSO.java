@@ -33,7 +33,7 @@ public class ValuesSO extends MList<Values> {
     }
     
     public ValuesSO(SeiteSO seite) {
-    	this(seite.getBook().getWorkspace());
+        this(seite.getBook().getWorkspace());
     }
 
     public void saveNew(Values v) {

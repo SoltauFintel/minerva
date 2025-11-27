@@ -71,7 +71,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     protected void execute2() {
         User u = user.getFreshUser();
         if (book.isFeatureTree() && !"de".equals(u.getPageLanguage())) {
-        	u.setPageLanguage("de");
+            u.setPageLanguage("de");
         }
         seite.forceReloadIfCheap();
         ssc = new SeiteSichtbar(workspace);
@@ -107,10 +107,10 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         fillLinks(branch, bookFolder, id, seite, _seite, u.getPageLanguage());
 
         PageMenuContext pmc = new PageMenuContext(seite, isAdmin, isFavorite, pageWatched, subpagesWatched, model);
-		DataList menuitems = model.list("menuitems");
-		menuSupplier.getMenuItems(pmc).forEach(item -> item.add(pmc, menuitems)); // möglichst spät aufrufen
+        DataList menuitems = model.list("menuitems");
+        menuSupplier.getMenuItems(pmc).forEach(item -> item.add(pmc, menuitems)); // möglichst spät aufrufen
         
-		Logger.info(seite.getLogLine(u));
+        Logger.info(seite.getLogLine(u));
     }
     
     private void simpleVars(User u, Seite _seite) {
@@ -152,14 +152,14 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             put("mindmapData", "");
             fillFeaturesList.fill(seite, list);
             addFeatures.addFeatures(seite, list);
-			list.sort((a, b) -> a.getValue("title").toString().compareToIgnoreCase(b.getValue("title").toString()));
+            list.sort((a, b) -> a.getValue("title").toString().compareToIgnoreCase(b.getValue("title").toString()));
             put("editButton2", n("edit"));
         }
         put("showFeatures", !list.isEmpty());
     }
     
     public interface AddFeatures {
-    	void addFeatures(SeiteSO seite, DataList features);
+        void addFeatures(SeiteSO seite, DataList features);
     }
 
     private void commentsSize() {
@@ -194,7 +194,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
                 titel = "without title #" + _seite.getId();
             }
             map.put("titel", esc(titel));
-			TocMacro macro = new VSPTocMacro(seite.getTocMacroPage(), lang);
+            TocMacro macro = new VSPTocMacro(seite.getTocMacroPage(), lang);
             macro.setHelpKeysText(n("helpKeys"));
             if (!MinervaWebapp.factory().isCustomerVersion()) {
                 macro.setSeite(new SeiteIPageAdapter(seite));
@@ -206,13 +206,13 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             }
             fillBreadcrumbs(lang, map.list("breadcrumbs"));
             int size = fillSubpages(seite, seite.getSeiten(), lang, map.list("subpages"), branch, bookFolder, new SeiteSichtbar(ssc, lang));
-			map.putInt("subpagesSize", size);
-			if (size > 0) {
-			    hasSubPages = true;
-			}
-			if (size >= 2 || (seite.isFeatureTree() && seite.getSeiten().size() >= 2)) {
-			    hasPositionlink = true;
-			}
+            map.putInt("subpagesSize", size);
+            if (size > 0) {
+                hasSubPages = true;
+            }
+            if (size >= 2 || (seite.isFeatureTree() && seite.getSeiten().size() >= 2)) {
+                hasPositionlink = true;
+            }
         }
         put("hasSubPages", hasSubPages);
         put("hasPositionlink", hasPositionlink);
@@ -349,7 +349,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("deletelink", withSeiteId + "/delete");
         
         // Edit
-		put("editlink", esc((seiteSO.getBook().isReleaseNotes() ? "/s-dont/" : "/s-edit/") + branch + "/" + bookFolder + "/" + id));
+        put("editlink", esc((seiteSO.getBook().isReleaseNotes() ? "/s-dont/" : "/s-edit/") + branch + "/" + bookFolder + "/" + id));
         put("imageuploadlink", "/s-image-upload/" + branch + "/" + bookFolder + "/" + id);
     }
     
@@ -412,7 +412,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     }
 
     private void fillBreadcrumbs(String lang, DataList list) {
-    	fillBreadcrumbs2(book, id, lang, list);
+        fillBreadcrumbs2(book, id, lang, list);
     }
     
     public static void fillBreadcrumbs2(BookSO book, String id, String lang, DataList list) {

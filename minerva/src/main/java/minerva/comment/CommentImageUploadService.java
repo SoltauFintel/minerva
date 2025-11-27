@@ -12,7 +12,7 @@ import minerva.seite.SeiteImageUploadService;
  * Seite-specific comment ImageUploadService
  */
 public class CommentImageUploadService extends SeiteImageUploadService {
-	private static final Object LOCK = new Object();
+    private static final Object LOCK = new Object();
     /** key: comment ID, value: filenames */
     public static final Map<String, Set<String>> images = new HashMap<>();
     private final String commentId;
