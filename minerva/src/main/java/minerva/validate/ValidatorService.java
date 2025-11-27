@@ -37,6 +37,7 @@ import minerva.validate.ValidationResult.VRUnusedImageSeite;
  * Check if page formatting is fine
  */
 public class ValidatorService {
+    public static GetUnusedImages getUnusedImages;
 
     public ValidationResult start(BookSO book, List<String> langs, String userGuiLanguage) {
         ValidationResult result = new ValidationResult();
@@ -362,6 +363,12 @@ public class ValidatorService {
                 }
             }
         }
+        if (getUnusedImages != null && filesToBeDeleted != null) {
+            var imageFiles = getUnusedImages.getUnusedImages(seite);
+            if (imageFiles != null) {
+                imageFiles.forEach(file -> filesToBeDeleted.add(file.getAbsolutePath().replace("\\", "/")));
+            }
+        }
     }
     
     private boolean hasImage(SeiteSO seite, List<String> langs, String dn) {
@@ -454,5 +461,10 @@ public class ValidatorService {
                 result.getLinks().add(new VRLink(lang, link, seite));
             }
         }
+    }
+    
+    public interface GetUnusedImages {
+        
+        List<File> getUnusedImages(SeiteSO seite);
     }
 }
