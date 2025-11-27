@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.FileService;
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
-import gitper.base.FileService;
 import gitper.base.StringService;
 import minerva.base.UserMessage;
 import minerva.model.SearchSO.SearchContext;

@@ -3,9 +3,9 @@ package minerva.config;
 import java.io.File;
 import java.util.List;
 
+import github.soltaufintel.amalia.base.FileService;
 import gitper.BackendService;
 import gitper.access.CommitMessage;
-import gitper.base.FileService;
 import gitper.base.StringService;
 import minerva.auth.MinervaAuth;
 import minerva.base.NlsString;

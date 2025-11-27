@@ -12,8 +12,8 @@ import org.pmw.tinylog.Logger;
 
 import com.google.gson.Gson;
 
+import github.soltaufintel.amalia.base.FileService;
 import gitper.Workspace;
-import gitper.base.FileService;
 
 /**
  * Adds more generic functions to less-methods DirAccess interface

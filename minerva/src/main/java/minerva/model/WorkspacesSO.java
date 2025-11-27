@@ -10,9 +10,9 @@ import java.util.Map;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.FileService;
 import gitper.Workspaces;
 import gitper.access.DirAccess;
-import gitper.base.FileService;
 import minerva.MinervaWebapp;
 import minerva.base.MList;
 

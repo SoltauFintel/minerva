@@ -11,8 +11,8 @@ import java.util.Map;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.FileService;
 import github.soltaufintel.amalia.web.config.AppConfig;
-import gitper.base.FileService;
 
 public class MinervaOptions {
 	public static final String MAIN_CONFIG = "main";

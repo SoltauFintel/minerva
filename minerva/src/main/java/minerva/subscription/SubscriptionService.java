@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 
-import gitper.base.FileService;
+import github.soltaufintel.amalia.base.FileService;
 import minerva.MinervaWebapp;
 import minerva.base.NlsString;
 import minerva.model.SeiteSO;

@@ -112,7 +112,7 @@ public interface DirAccess {
 
     /**
      * @param folder -
-     * @return null if folder does not exist
+     * @return null if folder does not exist, filenames without folder
      */
     Set<String> getFilenames(String folder);
 }

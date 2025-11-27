@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import gitper.base.FileService;
+import github.soltaufintel.amalia.base.FileService;
 import minerva.migration.confluence.ConfluencePage;
 
 public class MappingTableCreator {

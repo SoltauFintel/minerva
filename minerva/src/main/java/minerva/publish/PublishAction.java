@@ -8,10 +8,10 @@ import java.nio.file.Files;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.FileService;
 import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.spark.Context.ContentDisposition;
 import github.soltaufintel.amalia.web.action.Action;
-import gitper.base.FileService;
 
 public class PublishAction extends Action {
 	private static final Object LOCK = new Object();

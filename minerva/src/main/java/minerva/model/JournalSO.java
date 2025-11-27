@@ -11,8 +11,8 @@ import java.util.Map;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.FileService;
 import github.soltaufintel.amalia.timer.AbstractTimer;
-import gitper.base.FileService;
 import minerva.MinervaWebapp;
 import minerva.base.MinervaMetrics;
 import minerva.base.NlsString;

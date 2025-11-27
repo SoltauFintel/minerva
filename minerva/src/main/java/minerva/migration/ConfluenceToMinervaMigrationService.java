@@ -16,10 +16,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.FileService;
 import github.soltaufintel.amalia.base.IdGenerator;
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
-import gitper.base.FileService;
 import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.base.NlsString;

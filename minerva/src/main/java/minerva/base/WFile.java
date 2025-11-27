@@ -2,7 +2,7 @@ package minerva.base;
 
 import java.io.File;
 
-import gitper.base.FileService;
+import github.soltaufintel.amalia.base.FileService;
 import minerva.MinervaWebapp;
 
 /**

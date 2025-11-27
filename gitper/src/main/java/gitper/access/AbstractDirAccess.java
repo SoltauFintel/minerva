@@ -15,8 +15,8 @@ import java.util.function.Predicate;
 import org.apache.commons.io.FileUtils;
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.FileService;
 import gitper.Workspace;
-import gitper.base.FileService;
 import gitper.movefile.ChangeFile;
 import gitper.movefile.IMoveFile;
 import gitper.movefile.MoveFile;
@@ -192,9 +192,14 @@ public abstract class AbstractDirAccess implements DirAccess {
 		return ret;
 	}
 
+	// see also FileService.loadFilenames()
 	@Override
 	public Set<String> getFilenames(String folder) {
-		File[] files = new File(folder).listFiles();
+		var dir = new File(folder);
+		if (!dir.isDirectory()) {
+			return null;
+		}
+		File[] files = dir.listFiles();
 		if (files == null) {
 			return null;
 		}

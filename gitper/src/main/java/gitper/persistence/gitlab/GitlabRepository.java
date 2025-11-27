@@ -9,11 +9,11 @@ import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.FileService;
 import gitper.Gitper;
 import gitper.User;
 import gitper.Workspace;
 import gitper.access.CommitMessage;
-import gitper.base.FileService;
 import gitper.base.ICommit;
 import gitper.persistence.gitlab.git.GitService;
 

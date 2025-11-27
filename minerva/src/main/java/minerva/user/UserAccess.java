@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
-import gitper.base.FileService;
+import github.soltaufintel.amalia.base.FileService;
 import gitper.base.StringService;
 import minerva.MinervaWebapp;
 

@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import github.soltaufintel.amalia.base.FileService;
 import gitper.Workspace;
-import gitper.base.FileService;
 
 public class SimpleDirAccess {
     private final DirAccess dao;

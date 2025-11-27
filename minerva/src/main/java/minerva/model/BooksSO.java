@@ -4,10 +4,10 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import github.soltaufintel.amalia.base.FileService;
 import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.access.CommitMessage;
 import gitper.access.MultiPurposeDirAccess;
-import gitper.base.FileService;
 import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.base.MList;

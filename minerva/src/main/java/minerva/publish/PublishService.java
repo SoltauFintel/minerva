@@ -11,7 +11,7 @@ import org.pmw.tinylog.Logger;
 
 import com.google.gson.Gson;
 
-import gitper.base.FileService;
+import github.soltaufintel.amalia.base.FileService;
 import minerva.MinervaWebapp;
 import minerva.model.AttachmentsSO;
 import minerva.model.BookSO;

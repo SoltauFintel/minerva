@@ -19,10 +19,10 @@ import org.pmw.tinylog.Logger;
 
 import com.google.gson.Gson;
 
+import github.soltaufintel.amalia.base.FileService;
 import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
-import gitper.base.FileService;
 import gitper.base.StringService;
 import gitper.movefile.ChangeFile;
 import gitper.movefile.IMoveFile;

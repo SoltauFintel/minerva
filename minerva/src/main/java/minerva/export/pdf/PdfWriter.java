@@ -15,7 +15,7 @@ import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 import com.openhtmltopdf.util.Diagnostic;
 import com.openhtmltopdf.util.XRLog;
 
-import gitper.base.FileService;
+import github.soltaufintel.amalia.base.FileService;
 
 public class PdfWriter {
     private final List<String> errorMessages = new ArrayList<>();

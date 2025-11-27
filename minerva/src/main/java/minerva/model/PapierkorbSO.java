@@ -1,6 +1,6 @@
 package minerva.model;
 
-import static gitper.base.FileService.moveFiles;
+import static github.soltaufintel.amalia.base.FileService.moveFiles;
 
 import java.io.File;
 import java.util.List;
@@ -9,8 +9,8 @@ import java.util.stream.Stream;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.FileService;
 import gitper.access.MultiPurposeDirAccess;
-import gitper.base.FileService;
 import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.comment.SeiteCommentService;
