@@ -8,7 +8,8 @@ public class LiveSaveSeiteAction extends SAction {
 	@Override
 	protected void execute() {
 		try {
-			final String data = ctx.path() + " " + ctx.body();
+			final String data = ctx.path() + (ctx.req.queryString() == null ? "" : "?" + ctx.req.queryString()) + " "
+					+ ctx.body();
 			new Thread(() -> user.getJournal().livesave(branch, id, data)).start();
 		} catch (Exception ignore) {
 		}
