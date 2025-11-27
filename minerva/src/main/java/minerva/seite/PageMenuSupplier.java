@@ -28,7 +28,7 @@ public class PageMenuSupplier {
             new PageMenuItem(!ctx.isCustomerMode(), "{viewlink}/ctw", "fa-arrow-right", "N.copyToWorkspaceShort"),
             new PageMenuItem("{duplicatelink}", "fa-copy", "N.duplicatePage|..."),
             new PageMenuItem(!ctx.isCustomerMode() /*recht willkuerliches Verbot*/, "{movelink}", "fa-arrow-circle-right", "N.movePage"), 
-            new PageMenuItem(!ctx.isCustomerMode() /*recht willkuerliches Verbot*/, "{deletelink}" , "fa-trash", "N.deletePage|...")
+            new PageMenuItem(!ctx.isCustomerMode() /*recht willkuerliches Verbot*/, "{deletelink}" , "fa-trash-o", "N.deletePage|...")
             );
     }
 }

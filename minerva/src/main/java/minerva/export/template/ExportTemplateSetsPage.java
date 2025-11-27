@@ -32,7 +32,7 @@ public class ExportTemplateSetsPage extends WPage {
                             class="btn btn-default btn-xs" title="{{N.copyExportTemplateSet}}"><i class="fa fa-copy"></i></a>
                         <a href="/ets/{{branch}}/delete/{{i.id}}"
                             class="btn btn-danger btn-xs" title="{{N.deleteExportTemplateSet}}"
-                            onclick="return confirm('Export Template Set &quot;{{i.name}}&quot; l&ouml;schen?')"><i class="fa fa-trash"></i></a>
+                            onclick="return confirm('Export Template Set &quot;{{i.name}}&quot; l&ouml;schen?')"><i class="fa fa-trash-o"></i></a>
                         """)
         );
         put("table1", new TableComponent("wauto", cols, model, "sets"));

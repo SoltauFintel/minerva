@@ -35,7 +35,7 @@ public class ValuesListPage extends WPage {
                 new Col("",
                 """
                 <a href="/values/{{branch}}/delete/{{i.key}}" onclick="return loeschen('{{i.title}}');"
-                   class="btn btn-danger btn-xs" title="{{N.kvdeletekey}}"><i class="fa fa-trash"></i><i
+                   class="btn btn-danger btn-xs" title="{{N.kvdeletekey}}"><i class="fa fa-trash-o"></i><i
                    id="wait_{{i.title}}" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
                 """).right());
         put("table1", new TableComponent(cols, model, "valuesList"));
