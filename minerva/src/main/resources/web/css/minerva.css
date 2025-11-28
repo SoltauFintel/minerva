@@ -1099,3 +1099,7 @@ tr.cnticket td {
 .TRS_SUCCESS {
 	color: #090;
 }
+
+.errorbg {
+	background-color: #af0000;
+}
