@@ -69,7 +69,9 @@ public class MultiPurposeDirAccess {
      */
     public boolean delete(String filename, CommitMessage commitMessage, Workspace workspace) {
         List<String> cantBeDeleted = new ArrayList<>();
-        workspace.dao().deleteFiles(Set.of(filename), commitMessage, workspace, cantBeDeleted);
+        Set<String> filenames = new HashSet<>();
+        filenames.add(filename);
+        workspace.dao().deleteFiles(filenames, commitMessage, workspace, cantBeDeleted);
         return cantBeDeleted.isEmpty();
     }
 }
