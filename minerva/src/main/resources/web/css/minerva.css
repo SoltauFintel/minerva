@@ -268,23 +268,30 @@ body {
 }
 
 .seite h2, .ck-content h2 {
-    color: #c00;
+    color: #444;
     border-bottom: 1px solid #ccc;
+    font-size: 24px;
 }
 
 .seite h3, .ck-content h3 {
-    color: #080;
+    color: #444;
+    font-size: 21px;
+}
+
+.seite h4, .ck-content h4 {
+    color: #333;
+    font-style: italic;
 }
 
 .seite h5, .ck-content h5 {
-    font-size: 16px;
-    color: #906;
+    font-size: 15px;
+    color: black;
 }
 
 .seite h6, .ck-content h6 {
-    font-size: 16px;
-    color: #b28;
-    font-style: italic;
+    font-size: 14px;
+    color: black;
+    font-weight: bold;
 }
 
 #search-results td {
