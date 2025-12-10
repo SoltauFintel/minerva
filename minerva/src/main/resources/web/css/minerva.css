@@ -268,7 +268,7 @@ body {
 }
 
 .seite h2, .ck-content h2 {
-    color: #444;
+    color: red;
     border-bottom: 1px solid #ccc;
     font-size: 24px;
 }
@@ -293,6 +293,11 @@ body {
     color: black;
     font-weight: bold;
 }
+
+.seite h2+h3,.seite h3+h4,.seite h4+h5,.seite h5+h6,
+.seite h2+h2,.seite h3+h3,.seite h4+h4,.seite h5+h5,.seite h6+h6,
+.ck-content h2+h3,.ck-content h3+h4,.ck-content h4+h5,.ck-content h5+h6,
+.ck-content h2+h2,.ck-content h3+h3,.ck-content h4+h4,.ck-content h5+h5,.ck-content h6+h6 { margin-top: 10px; }
 
 #search-results td {
     border: 0;
