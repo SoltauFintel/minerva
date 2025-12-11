@@ -78,6 +78,9 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         Visible vr = ssc.getVisibleResult(seite);
         put("visible", vr.isVisible());
         put("visibleReason", esc(vr.getReason(user.getGuiLanguage())));
+        boolean coloredHeadings = user.isColoredHeadings();
+        put("seiteCSS", coloredHeadings ? "seitech" : "seite");
+        put("isCH", coloredHeadings);
         fillLanguageSpecifics(u);
         Seite _seite = seite.getSeite();
         simpleVars(u, _seite);

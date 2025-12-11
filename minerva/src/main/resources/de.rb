@@ -433,3 +433,5 @@ copyToWorkspaceError1=Für Featurebaum nicht zulässig.
 copyToWorkspaceError2=Seite kann nicht in den Ziel-Branch übertragen werden. Fehlendes Buch.
 copyToWorkspaceError3=Seite kann nicht in den Ziel-Branch übertragen werden. Fehlende übergeordnete Seite.
 copyToWorkspaceMsg1=Kopiert werden: Seiten-Stammdaten, Texte in allen Sprachen, Grafiken. Nicht kopiert werden: Kommentare, Attachments.
+turnOffColoredHeadings=Farbige Überschriften ausschalten
+turnOnColoredHeadings=Farbige Überschriften einschalten

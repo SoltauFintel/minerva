@@ -39,6 +39,7 @@ public class User implements gitper.User {
     private String rolloutConfig;
     private String rolloutCustomer;
     private String targetBranch;
+    private boolean coloredHeadings = false;
     
     @Override
     public String getLogin() {
@@ -257,5 +258,13 @@ public class User implements gitper.User {
 
     public void setTargetBranch(String targetBranch) {
         this.targetBranch = targetBranch;
+    }
+
+    public boolean isColoredHeadings() {
+        return coloredHeadings;
+    }
+
+    public void setColoredHeadings(boolean coloredHeadings) {
+        this.coloredHeadings = coloredHeadings;
     }
 }

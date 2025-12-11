@@ -160,6 +160,7 @@ import minerva.workspace.DeactivateFSModePage;
 import minerva.workspace.DeleteWorkspacePage;
 import minerva.workspace.MergeBranchPage;
 import minerva.workspace.PullWorkspaceAction;
+import minerva.workspace.ToggleColoredHeadingsAction;
 import minerva.workspace.WorkspaceHistoryPage;
 import minerva.workspace.WorkspacesPage;
 import spark.Spark;
@@ -210,6 +211,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/w/:branch/recycle", PapierkorbPage.class);
         get("/w/:branch/customer-mode/:customer", SelectCustomerModeAction.class);
         get("/w/:branch/customer-mode", CustomerModePage.class);
+        get("/w/:branch/toggle-colored-headings", ToggleColoredHeadingsAction.class);
         get("/w/:branch/menu", MenuPage.class);
 
         // Export

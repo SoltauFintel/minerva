@@ -24,6 +24,7 @@ public class MenuPage extends WPage {
         menu();
         favorites();
         put("persistenceInfo", esc(MinervaWebapp.factory().getBackendService().getInfo(user.getGuiLanguage())));
+        put("coloredHeadings", n(user.isColoredHeadings() ? "turnOffColoredHeadings" : "turnOnColoredHeadings"));
         MinervaMetrics.MENU.inc();
     }
 

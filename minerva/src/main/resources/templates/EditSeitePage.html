@@ -1,32 +1,61 @@
 {{master: master2}}
 
 <style>
-/* Definitions for CKEditor font-type menu must be here. */
-.ck.ck-heading_heading1 {
-    color: #c00;
-}
-
-.ck.ck-heading_heading2 {
-    color: #080;
-}
-
-.ck.ck-heading_heading3 {
-    font-size: 16px;
-}
-
-.ck.ck-heading_heading4 {
-    font-size: 16px;
-    color: #906;
-}
-
-.ck.ck-heading_heading5 {
-    font-size: 16px;
-    color: #b28;
-}
-
 .editbox:not(:focus) {
     border: 1px #ccc solid;
 }
+
+{{if isCH}}
+	/* Definitions for CKEditor font-type menu must be here. */
+	.ck.ck-heading_heading1 {
+	    color: #c00;
+	}
+	
+	.ck.ck-heading_heading2 {
+	    color: #080;
+	}
+	
+	.ck.ck-heading_heading3 {
+	    font-size: 16px;
+	}
+	
+	.ck.ck-heading_heading4 {
+	    font-size: 16px;
+	    color: #909;
+	}
+	
+	.ck.ck-heading_heading5 {
+	    font-size: 16px;
+	    color: #909;
+	}
+
+	.ck-content h2 {
+	    color: #c00;
+	    border-bottom: 1px solid #ccc;
+	    font-size: 24px;
+	}
+	
+	.ck-content h3 {
+	    color: #080;
+	    font-size: 21px;
+	}
+	
+	.ck-content h4 {
+	    color: #333;
+	    font-style: italic;
+	}
+	
+	.ck-content h5 {
+	    font-size: 15px;
+	    color: #909;
+	}
+	
+	.ck-content h6 {
+	    font-size: 14px;
+	    color: #909;
+	    font-weight: bold;
+	}
+{{/if}}
 </style>
 
 <div class="row" style="margin-right: 1em;">

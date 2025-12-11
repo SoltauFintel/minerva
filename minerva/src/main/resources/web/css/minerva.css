@@ -268,7 +268,7 @@ body {
 }
 
 .seite h2, .ck-content h2 {
-    color: red;
+    color: #444;
     border-bottom: 1px solid #ccc;
     font-size: 24px;
 }
@@ -294,8 +294,32 @@ body {
     font-weight: bold;
 }
 
+.seitech h2 {
+    color: #c00;
+    border-bottom: 1px solid #ccc;
+    font-size: 24px;
+}
+
+.seitech h3 {
+    color: #080;
+    font-size: 21px;
+}
+
+.seitech h5 {
+    font-size: 15px;
+    color: #909;
+}
+
+.seitech h6 {
+    font-size: 14px;
+    color: #909;
+    font-weight: bold;
+}
+
 .seite h2+h3,.seite h3+h4,.seite h4+h5,.seite h5+h6,
+.seitech h2+h3,.seitech h3+h4,.seitech h4+h5,.seitech h5+h6,
 .seite h2+h2,.seite h3+h3,.seite h4+h4,.seite h5+h5,.seite h6+h6,
+.seitech h2+h2,.seitech h3+h3,.seitech h4+h4,.seitech h5+h5,.seitech h6+h6,
 .ck-content h2+h3,.ck-content h3+h4,.ck-content h4+h5,.ck-content h5+h6,
 .ck-content h2+h2,.ck-content h3+h3,.ck-content h4+h4,.ck-content h5+h5,.ck-content h6+h6 { margin-top: 10px; }
 

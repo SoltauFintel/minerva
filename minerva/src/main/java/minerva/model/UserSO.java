@@ -596,4 +596,15 @@ public class UserSO {
         user.setTargetBranch(tb);
         save();
     }
+
+    public boolean isColoredHeadings() {
+        load();
+        return user.isColoredHeadings();
+    }
+
+    public void toggleColoredHeadings() {
+        load();
+        user.setColoredHeadings(!user.isColoredHeadings());
+        save();
+    }
 }
