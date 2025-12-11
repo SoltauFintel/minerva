@@ -56,8 +56,13 @@ public class SearchSO {
         });
         
         long end = System.currentTimeMillis();
-        Logger.info("[reindex] All books of workspace " + workspace.getBranch() + " have been reindexed. "
-                + nPages + " pages, " + (end - start) + "ms");
+        var msg = "[reindex] All books of workspace " + workspace.getBranch() + " have been reindexed. "
+                + nPages + " pages, " + (end - start) + "ms";
+        if (nPages == 0) {
+            Logger.error(msg);
+        } else {
+            Logger.info(msg);
+        }
         MinervaMetrics.REINDEX.inc();
     }
     
