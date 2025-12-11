@@ -226,9 +226,9 @@ public class SearchSO {
             for (int j = 0; j < i; j++) {
                 SearchResult jj = sr.get(j);
                 if (iPath.equals(jj.getPath())) {
-                    // i und j müssten vereinigt werden
-                    ii.merge(jj);
-                    sr.remove(j); // j muss weg
+                    // i und j müssen vereinigt werden
+                    jj.merge(ii);
+                    sr.remove(i); // i muss weg
                     return true; // von vorne beginnen
                 }
             }
