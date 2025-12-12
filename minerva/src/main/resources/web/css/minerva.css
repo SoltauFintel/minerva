@@ -252,18 +252,18 @@ body {
     background-color: #f5f5f9 !important;
 }
 
-.seite table.confluenceTable td {
+.seite table.confluenceTable td, .seitech table.confluenceTable td {
     border: 1px solid #BBB;
     padding: 5px;
 }
 
-.seite table.confluenceTable th {
+.seite table.confluenceTable th, .seitech table.confluenceTable th {
     border: 1px solid #BBB;
     padding: 5px;
     background-color: #f0f0f0;
 }
 
-.seite p img {
+.seite p img, .seitech p img {
     max-width: 100%;
 }
 
@@ -421,32 +421,32 @@ blockquote {
     font-size: 10pt;
 }
 
-.seite figure.image {
+.seite figure.image, .seitech figure.image {
     text-align: center;
 }
 
-.seite figcaption {
+.seite figcaption, .seitech figcaption {
     font-size: 8pt;
 }
 
-.seite figure.image-style-block-align-left {
+.seite figure.image-style-block-align-left, .seitech figure.image-style-block-align-left {
     text-align: left;
 }
 
-.seite figure.image-style-block-align-right {
+.seite figure.image-style-block-align-right, .seitech figure.image-style-block-align-right {
     text-align: right;
 }
 
-.seite img {
+.seite img, .seitech img {
     vertical-align: bottom;
 }
 
-.seite figure.image-style-align-left {
+.seite figure.image-style-align-left, .seitech figure.image-style-align-left {
     float: left;
     padding-right: 1em;
 }
 
-.seite figure.image-style-align-right {
+.seite figure.image-style-align-right, .seitech figure.image-style-align-right {
     float: right;
     padding-left: 1em;
 }
@@ -809,7 +809,7 @@ a:hover.sortlink {
     margin-top: 3em;
 }
 
-.seite pre {
+.seite pre, .seitech pre {
     max-width: 75vw;
 }
 
@@ -1069,11 +1069,11 @@ tr.cnticket td {
     min-width: 140px;
 }
 
-.seite figure.table table th {
+.seite figure.table table th, .seitech figure.table table th {
     vertical-align: top;
 }
 
-.seite figure.table table td {
+.seite figure.table table td, .seitech figure.table table td {
     vertical-align: top;
 }
 
