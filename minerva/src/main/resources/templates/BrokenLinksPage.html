@@ -20,33 +20,51 @@
     <div class="col-lg-12">
         <h1 class="page-header">{{header}}</h1>
         
-        <p class="mt2">{{N.anzahl}}: {{n}}</p>
+        <p class="mt2">{{N.anzahl}}: {{n}}{{if hidden}} ({{nn}}){{/if}}</p>
         
         {{each page in pages}}
-            <h3><a href="/s/{{branch}}/{{bookFolder}}/{{page.id}}" target="page1">{{page.title}}</a> <span class="buch">{{page.book}}</span></h3>
-            {{each L in page.languages}}
-                <p>
-                    <b>{{L.language}}</b>{{L.info}}
-                    <ul>
-                        {{each B in L.brokenLinks}}
-                            <li>
-                                {{if B.is404}}
-                                    <a href="/s/{{branch}}/{{B.bookFolder}}/{{B.id}}" target="page2">{{B.title}}</a>
-                                    {{if B.hasTitle}}#{{B.id}}{{/if}}
-                                {{else}}
-                                    <span class="errorType">{{B.errorType}}</span>
-                                    {{B.title}}
-                                {{/if}}
-                                <small class="cust">({{B.customers}})</small>
-                                {{each tag in B.tags}} <span class="label label-tag">{{tag.tag}}</span>{{/each}}
-                            </li>
-                        {{/each}}
-                    </ul>
-                </p>
-            {{/each}}
+            {{if page.visible}}
+	            <h3><a href="/s/{{branch}}/{{bookFolder}}/{{page.id}}" target="page1">{{page.title}}</a> <span class="buch">{{page.book}}</span></h3>
+	            {{each L in page.languages}}
+	                {{if L.visible}}
+		                <p>
+		                    <b>{{L.language}}</b>{{L.info}}
+		                    <ul>
+		                        {{each B in L.brokenLinks}}
+		                            {{if B.visible}}
+			                            <li>
+			                                <a href="/w/{{branch}}/broken-links/{{B.id2}}{{if showAll}}?m=all{{/if}}"
+			                                     class="btn btn-xs {{if B.ignored}}btn-success{{else}}btn-danger{{/if}}"
+			                                     title="{{if B.ignored}}{{N.AusblendenRueckgaengig}}{{else}}{{N.Ausblenden}}{{/if}}"><i class="fa {{if B.ignored}}fa-undo{{else}}fa-times{{/if}}"></i></a>
+			                                {{if B.is404}}
+			                                    <a href="/s/{{branch}}/{{B.bookFolder}}/{{B.id}}" target="page2">{{B.title}}</a>
+			                                    {{if B.hasTitle}}#{{B.id}}{{/if}}
+			                                {{else}}
+			                                    <span class="errorType">{{B.errorType}}</span>
+			                                    {{B.title}}
+			                                {{/if}}
+			                                <small class="cust">({{B.customers}})</small>
+			                                {{each tag in B.tags}} <span class="label label-tag">{{tag.tag}}</span>{{/each}}
+			                            </li>
+		                            {{/if}}
+		                        {{/each}}
+		                    </ul>
+		                </p>
+	                {{/if}}
+	            {{/each}}
+            {{/if}}
         {{/each}}
 
-        <hr/>
+        <hr>
+        {{if hidden}}
+	        <p>
+	           {{if showAll}}<a href="?m=" class="btn btn-default br">{{N.ZeigeAktive}}</a>
+	           <a href="/w/{{branch}}/broken-links/CLEAR" class="btn btn-success"
+	               onclick="return confirm('{{N.BLSiAbfr}}');"><i class="fa fa-undo"></i> {{N.AlleEinblenden}}</a>
+	           {{else}}<a href="?m=all" class="btn btn-default br">{{N.ZeigeAlle}}</a>
+	           {{/if}}
+	        </p><hr>
+        {{/if}}
         <p><small>{{ohHosts}}</small></p>
     </div>
 </div>

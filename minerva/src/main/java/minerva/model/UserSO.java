@@ -607,4 +607,24 @@ public class UserSO {
         user.setColoredHeadings(!user.isColoredHeadings());
         save();
     }
+    
+    public List<String> getIgnoredBrokenLinks() {
+        load();
+        return user.getIgnoredBrokenLinks();
+    }
+    
+    public void toggleIgnoredBrokenLink(String id) {
+        load();
+        var i = user.getIgnoredBrokenLinks();
+        if ("CLEAR".equals(id)) { // alle wieder einblenden
+            i.clear();
+        } else {
+            if (i.contains(id)) {
+                i.remove(id);
+            } else {
+                i.add(id);
+            }
+        }
+        save();
+    }
 }

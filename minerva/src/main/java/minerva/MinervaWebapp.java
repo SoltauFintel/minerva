@@ -160,6 +160,7 @@ import minerva.workspace.DeactivateFSModePage;
 import minerva.workspace.DeleteWorkspacePage;
 import minerva.workspace.MergeBranchPage;
 import minerva.workspace.PullWorkspaceAction;
+import minerva.workspace.ToggleBrokenLinkAction;
 import minerva.workspace.ToggleColoredHeadingsAction;
 import minerva.workspace.WorkspaceHistoryPage;
 import minerva.workspace.WorkspacesPage;
@@ -202,6 +203,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/push-data", PushDataAction.class);
         get("/w/:branch/language", SelectLanguageAction.class);
         get("/w/:branch/broken-mappings", BrokenMappingsPage.class);
+        get("/w/:branch/broken-links/:id", ToggleBrokenLinkAction.class);
         get("/w/:branch/broken-links", BrokenLinksPage.class);
         get("/w/:branch/activate-f-s-mode", ActivateFSModeAction.class);
         form("/w/:branch/deactivate-f-s-mode", DeactivateFSModePage.class);

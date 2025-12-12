@@ -40,6 +40,7 @@ public class User implements gitper.User {
     private String rolloutCustomer;
     private String targetBranch;
     private boolean coloredHeadings = false;
+    private final List<String> ignoredBrokenLinks = new ArrayList<>();
     
     @Override
     public String getLogin() {
@@ -266,5 +267,9 @@ public class User implements gitper.User {
 
     public void setColoredHeadings(boolean coloredHeadings) {
         this.coloredHeadings = coloredHeadings;
+    }
+
+    public List<String> getIgnoredBrokenLinks() {
+        return ignoredBrokenLinks;
     }
 }
