@@ -477,7 +477,7 @@ ul.toc li {
 }
 
 div.toc {
-    padding-left: 2em;
+    padding-left: 0;
 }
 
 li.subpage {
