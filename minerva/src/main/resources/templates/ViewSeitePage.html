@@ -96,7 +96,8 @@
         <p style="margin-top: 16px;">
             <a href="{{editlink}}" class="btn btn-primary br" style="min-width: 100px;{{if isFeatureTree}} visibility: hidden;{{/if}}"><i class="fa fa-pencil"></i>
                 {{N.edit}}</a>
-            <a href="{{createlink}}" class="btn btn-default br">{{newPage}}</a>
+            <a href="{{createlink}}" class="btn btn-default br" onclick="document.querySelector('#s2').style='';">{{newPage}}
+                <i id="s2" class="fa fa-delicious fa-spin" style="display: none;"></i></a>
             <a href="{{pulllink}}" class="btn btn-default br" title="{{N.pullT}}"
                 onclick="document.getElementById('s_pull').classList.add('fa-spin');"><i class="fa fa-refresh"
                 id="s_pull"></i></a>
