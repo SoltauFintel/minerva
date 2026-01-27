@@ -415,7 +415,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     }
     
     protected String getEditLink(boolean isReleaseNotes) {
-        return isReleaseNotes ? "/s-dont/" : "/s-edit/" + branch + "/" + bookFolder + "/" + id;
+        return (isReleaseNotes ? "/s-dont/" : "/s-edit/") + branch + "/" + bookFolder + "/" + id;
     }
 
     private void fillBreadcrumbs(String lang, DataList list) {
