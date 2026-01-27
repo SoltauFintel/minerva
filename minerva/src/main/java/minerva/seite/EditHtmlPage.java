@@ -12,7 +12,11 @@ public class EditHtmlPage extends EditSeitePage {
     protected void execute2() {
         user.onlyAdmin();
         super.execute2();
-        put("editlink", "/s/" + branch + "/" + bookFolder + "/" + id + "/html");
+    }
+    
+    @Override
+    protected String getEditLink(boolean isReleaseNotes) {
+        return "/s/" + branch + "/" + bookFolder + "/" + id + "/html";
     }
     
     @Override
