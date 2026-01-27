@@ -352,7 +352,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         put("deletelink", withSeiteId + "/delete");
         
         // Edit
-        put("editlink", esc((seiteSO.getBook().isReleaseNotes() ? "/s-dont/" : "/s-edit/") + branch + "/" + bookFolder + "/" + id));
+        put("editlink", esc(getEditLink(seiteSO.getBook().isReleaseNotes())));
         put("imageuploadlink", "/s-image-upload/" + branch + "/" + bookFolder + "/" + id);
     }
     
@@ -412,6 +412,10 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
             ret += "}\n";
         }
         return ret + ret2;
+    }
+    
+    protected String getEditLink(boolean isReleaseNotes) {
+        return isReleaseNotes ? "/s-dont/" : "/s-edit/" + branch + "/" + bookFolder + "/" + id;
     }
 
     private void fillBreadcrumbs(String lang, DataList list) {

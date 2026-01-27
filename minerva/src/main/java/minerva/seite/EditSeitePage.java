@@ -105,4 +105,9 @@ public class EditSeitePage extends ViewSeitePage {
         }
         putInt("vh", vh);
     }
+
+    @Override
+    protected String getEditLink(boolean isReleaseNotes) {
+        return super.getEditLink(false);
+    }
 }
