@@ -28,12 +28,12 @@
             {{if done}}
                 <a href="{{donelink}}&m=u" title="{{N.undoneComment}}"
                     onclick="document.querySelector('#nu_{{commentId}}').style='';"
-                    class="btn btn-success btn-xs br"><i class="fa fa-check"></i> {{N.done}}! <i id="nu_{{commentId}}"
+                    class="btn btn-success btn-xs br"><i class="fa fa-check"></i> {{N.done}} <i id="nu_{{commentId}}"
                     class="fa fa-delicious fa-spin" style="display: none;"></i></a>
             {{else}}
                 <a href="{{donelink}}" title="{{N.doneComment}}"
                     onclick="document.querySelector('#nd_{{commentId}}').style='';"
-                    class="btn btn-default btn-xs br"><i class="fa fa-check"></i> {{N.done}}! <i id="nd_{{commentId}}"
+                    class="btn btn-default btn-xs br"><i class="fa fa-check"></i> {{N.markAsDone}}! <i id="nd_{{commentId}}"
                     class="fa fa-delicious fa-spin" style="display: none;"></i></a>
             {{/if}}
             {{if editAllowed}}

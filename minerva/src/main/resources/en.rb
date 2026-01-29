@@ -104,6 +104,7 @@ noComments=no comments
 allPages=show all pages
 allPagesOff=Show all pages OFF
 done=Done
+markAsDone=Mark as done
 doneComment=set comment as done
 undoneComment=set comment as not done
 zustaendig=assigned to

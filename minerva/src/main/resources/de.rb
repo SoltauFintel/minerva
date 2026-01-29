@@ -103,6 +103,7 @@ noComments=keine Kommentare vorhanden
 allPages=alle Seiten anzeigen
 allPagesOff=Alle Seiten anzeigen AUS
 done=Erledigt
+markAsDone=Erledigen
 doneComment=Kommentar als erledigt kennzeichnen
 undoneComment=Kommentar als unerledigt kennzeichnen
 zustaendig=zuständig
