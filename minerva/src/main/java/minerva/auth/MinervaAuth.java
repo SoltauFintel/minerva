@@ -1,7 +1,5 @@
 package minerva.auth;
 
-import java.time.LocalDateTime;
-
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.auth.AbstractAuth;
@@ -14,7 +12,6 @@ import minerva.MinervaWebapp;
 import minerva.base.MinervaMetrics;
 import minerva.model.StateSO;
 import minerva.model.StatesSO;
-import minerva.model.UserSO;
 import minerva.user.User;
 
 public class MinervaAuth extends AbstractAuth {
@@ -34,14 +31,6 @@ public class MinervaAuth extends AbstractAuth {
                 browserLanguage = "de";
             } else {
                 browserLanguage = "en";
-            }
-        }
-
-        StateSO stateSO = StatesSO.get(ctx.req().session().id());
-        if (stateSO != null) {
-            UserSO user = stateSO.getUser();
-            if (user != null) {
-                user.setLastAction(LocalDateTime.now());
             }
         }
     }

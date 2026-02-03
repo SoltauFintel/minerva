@@ -40,7 +40,6 @@ public class UserSO {
     private final WorkspacesSO workspaces;
     private WorkspaceSO currentWorkspace;
     private DirAccess dao;
-    private LocalDateTime lastAction;
     private InvalidLinksModel linksModel;
     private SeitenSO orderPagesModel; // SeitenSO working copy
     /** branch list */
@@ -134,14 +133,6 @@ public class UserSO {
     
     public DirAccess dao() {
         return dao;
-    }
-
-    public LocalDateTime getLastAction() {
-        return lastAction;
-    }
-
-    public void setLastAction(LocalDateTime lastAction) {
-        this.lastAction = lastAction;
     }
 
     public InvalidLinksModel getLinksModel() {
