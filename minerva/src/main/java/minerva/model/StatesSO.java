@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.spark.Context;
+import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.auth.MinervaAuth;
 import minerva.base.MinervaMetrics;
@@ -25,10 +26,19 @@ public class StatesSO {
     }
     
     public static StateSO get(Context ctx) {
+        String login = ctx.req.session().attribute("user");
         StateSO state = get(key(ctx));
         if (state == null) {
-            MinervaAuth.logout2(ctx);
-            throw new SessionExpiredException();
+            if (StringService.isNullOrEmpty(login)) {
+                MinervaAuth.logout2(ctx);
+                throw new SessionExpiredException();
+            } else {
+                Logger.info(login + " | re-login");
+                var user = new User();
+                user.setLogin(login);
+                MinervaAuth.login2(ctx, user);
+                state = get(key(ctx));
+            }
         }
         return state;
     }
