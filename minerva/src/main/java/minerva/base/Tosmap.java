@@ -32,15 +32,22 @@ public class Tosmap {
     
     /**
      * @param key not null and not empty
-     * @param expires time in future in milliseconds
-     * @param data can be null
+     * @param expirationDuration ms
+     * @param data can be null, specify "@@" to transform data to time
      */
-    public static void add(String key, long expires, Object data) {
-        final long time = System.currentTimeMillis();
+    public static void add(String key, long expirationDuration, Object data) {
         if (StringService.isNullOrEmpty(key)) {
             throw new IllegalArgumentException("key must not be empty");
-        } else if (expires < time) {
-            throw new IllegalArgumentException("expires value too small\n" + expires + "<" + time);
+        }
+        if (expirationDuration < 0) {
+            throw new IllegalArgumentException("expirationDuration must not be smaller than 0");
+        }
+        final long time = System.currentTimeMillis();
+        final long expires = time + expirationDuration;
+        
+        if ("@@".equals(data)) {
+            LocalDateTime enddate = Instant.ofEpochMilli(expires).atZone(ZoneId.systemDefault()).toLocalDateTime();
+            data = enddate.format(DateTimeFormatter.ofPattern("HH:mm"));
         }
         
         synchronized (LOCK) {
@@ -60,7 +67,7 @@ public class Tosmap {
             }
     
             // add
-            map.put(key, new TosmapEntry(expires, data));
+            map.put(key, new TosmapEntry(expires, expirationDuration, data));
             MinervaMetrics.TOSMAP_SIZE.set(map.size());
         }
     }
@@ -84,6 +91,11 @@ public class Tosmap {
                 Logger.info(info);
                 return null;
             }
+
+            // Verlängere die Session bei Aktivität!
+            var ed = ret.getExpirationDuration();
+            map.put(key, new TosmapEntry(System.currentTimeMillis() + ed, ed, ret.getData()));
+            
             return ret.getData();
         }
     }
@@ -133,16 +145,22 @@ public class Tosmap {
     }
 
     private static class TosmapEntry {
-        private final long expires;
+        private final long expires; // absolute timestamp
+        private final long expirationDuration; // delta
         private final Object data;
 
-        TosmapEntry(long expires, Object data) {
+        TosmapEntry(long expires, long expirationDuration, Object data) {
             this.expires = expires;
+            this.expirationDuration = expirationDuration;
             this.data = data;
         }
 
         public long getExpires() {
             return expires;
+        }
+
+        public long getExpirationDuration() {
+            return expirationDuration;
         }
 
         public Object getData() {
@@ -151,23 +169,25 @@ public class Tosmap {
     }
 
     public static String getInfo() {
-        String ret = "";
-        for (Entry<String, TosmapEntry> e : map.entrySet()) {
-            TosmapEntry v = e.getValue();
-            ret += "\n- " + esc(e.getKey()) + " <a href=\"/tosmap?key=" + urlEncode(e.getKey(), "")
-                    + "\" class=\"btn btn-xs btn-danger\">remove</a>: expires " + formatMillis(v.getExpires()) + " ("
-                    + ((v.getExpires() - System.currentTimeMillis()) / 1000 / 60) + " minutes) -> "
-                    + v.getData().getClass().getSimpleName() + ": ";
-            if (v.getData() instanceof StateSO st) {
-                ret += esc(st.getUser().getLogin());
-            } else if (v.getData() != null) {
-                ret += esc(v.getData().toString());
-            } else {
-                ret += "null";
+        synchronized (LOCK) {
+            String ret = "";
+            for (Entry<String, TosmapEntry> e : map.entrySet()) {
+                TosmapEntry v = e.getValue();
+                ret += "\n- " + esc(e.getKey()) + " <a href=\"/tosmap?key=" + urlEncode(e.getKey(), "")
+                        + "\" class=\"btn btn-xs btn-danger\">remove</a>: expires " + formatMillis(v.getExpires()) + " ("
+                        + ((v.getExpires() - System.currentTimeMillis()) / 1000 / 60) + " minutes) -> "
+                        + v.getData().getClass().getSimpleName() + ": ";
+                if (v.getData() instanceof StateSO st) {
+                    ret += esc(st.getUser().getLogin());
+                } else if (v.getData() != null) {
+                    ret += esc(v.getData().toString());
+                } else {
+                    ret += "null";
+                }
+                ret += "\n";
             }
-            ret += "\n";
+            return ret;
         }
-        return ret;
     }
     
     private static String formatMillis(long milliseconds) {

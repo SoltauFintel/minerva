@@ -7,7 +7,11 @@ public interface GitperInterface {
 
     void login2(Context ctx, User user);
     
-    void tosmap_add(String state, long t); // Tosmap.add()
+    /**
+     * @param state -
+     * @param ed expiration duration
+     */
+    void tosmap_add(String state, long ed); // Tosmap.add()
 
     Object tosmap_pop(String state); // Tosmap.pop()
     

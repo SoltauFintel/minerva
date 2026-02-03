@@ -40,7 +40,7 @@ public class Book6LoginAction extends Action {
             throw new RuntimeException("No access granted.");
         }
         id = "b6L-" + IdGenerator.genId();
-        Tosmap.add(id, System.currentTimeMillis() + 1000 * 60 /* one minute */, user);
+        Tosmap.add(id, 1000 * 60 /* one minute */, user);
     }
 
     @Override

@@ -43,7 +43,7 @@ public class StatesSO {
             state.getUser().finishMyEditings();
             
             int sessionTimeout = 1000 * 60 * 60 * 12; // I'm not sure what value and if needs to be configurable.
-            Tosmap.add(key(ctx), System.currentTimeMillis() + sessionTimeout, state);
+            Tosmap.add(key(ctx), sessionTimeout, state);
             
             // Nach dem Einloggen soll nicht kein Workspace gewählt sein. Daher wird
             // hier der master eingestellt. Zukünftig könnte man sich den zuletzt aktiven

@@ -3,9 +3,7 @@ package minerva.model;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -306,9 +304,7 @@ public class UserSO {
         if (finished) {
             Tosmap.remove(key); // remove soft page lock
         } else {
-            long endtime = System.currentTimeMillis() + 1000 * 60 * 60; // 60 minutes
-            LocalDateTime enddate = Instant.ofEpochMilli(endtime).atZone(ZoneId.systemDefault()).toLocalDateTime();
-            Tosmap.add(key, endtime, enddate.format(DateTimeFormatter.ofPattern("HH:mm"))); // soft page lock for 60 minutes
+            Tosmap.add(key, 1000 * 60 * 60, "@@"/*=time*/); // soft page lock for 60 minutes
         }
     }
     
