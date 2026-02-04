@@ -23,25 +23,30 @@ public class BackupService {
     }
 
     /**
-     * @param files to be backuped
-     * @param backupDir target directory in workspace
+     * @param backupItems items to be backuped
      * @param workspace -
      * @return message
      */
-    public static String backup(List<File> files, File backupDir, Workspace workspace) {
+    public static String backup(List<BackupItem> backupItems, Workspace workspace) {
+        // folder in workspace of current user:
+        File backupDir = new File(workspace.getFolder(), "backup");
         Map<String, String> map = new HashMap<>();
-        for (File file : files) {
-            if (file.isFile()) {
-                String content = FileService.loadPlainTextFile(file);
-                File target = new File(backupDir, file.getName());
+        for (BackupItem file : backupItems) {
+            String dn = file.getFilename();
+            if (dn == null || dn.contains("\\") || dn.contains("/")) {
+                throw new RuntimeException("Error in backup. Illegal filename: " + dn);
+            }
+            String content = file.getContent();
+            if (content == null) {
+                Logger.debug("No backup for non existing file: " + dn);
+            } else {
+                File target = new File(backupDir, dn);
                 if (!target.isFile() || !content.equals(FileService.loadPlainTextFile(target))) {
                     map.put(target.getAbsolutePath(), content);
-                    Logger.debug("File backup: " + file.getAbsolutePath() + " -> " + target.getAbsolutePath());
+                    Logger.debug("File backup: " + dn + " -> " + target.getAbsolutePath());
                 } else {
                     Logger.debug("Target file is already uptodate: " + target.getAbsolutePath());
                 }
-            } else {
-                Logger.debug("File not found: " + file.getAbsolutePath());
             }
         }
         if (map.isEmpty()) {
@@ -52,7 +57,7 @@ public class BackupService {
     }
 
     /**
-     * Copy director srcDir to targetDir and save targetDir to Gitlab.
+     * Copy directory srcDir to targetDir and save targetDir to Gitlab.
      * @param srcDir non Gitlab dir
      * @param targetDir Gitlab dir (will be replaced by srcDir)
      * @param commitMessage -
@@ -75,7 +80,7 @@ public class BackupService {
         for (String dn : FileService.loadFilenames(dir)) {
             var file = new File(dir, dn);
             if (file.isFile()) {
-                files.put(file.getAbsolutePath().replace("\\", "/"), DirAccess.IMAGE);
+                files.put(file.getAbsolutePath(), DirAccess.IMAGE);
             } else if (file.isDirectory()) {
                 collectFiles(file, files); // recursive
             }
