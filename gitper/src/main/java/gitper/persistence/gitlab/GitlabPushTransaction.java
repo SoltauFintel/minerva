@@ -60,9 +60,8 @@ public class GitlabPushTransaction {
     public boolean commitAndPush(Set<String> addFilenames, Set<String> removeFilenames) {
         try {
             user = workspace.user();
-            String x = workspace.getFolder() + "/";
-            Set<String> filesToAdd = addFilenames.stream().map(dn -> dn.replace(x, "")).collect(Collectors.toSet());
-            Set<String> filesToRemove = removeFilenames.stream().map(dn -> dn.replace(x, "")).collect(Collectors.toSet());
+            Set<String> filesToAdd = makeSet(addFilenames);
+            Set<String> filesToRemove = makeSet(removeFilenames);
             String name = StringService.isNullOrEmpty(user.getRealName()) ? user.getLogin() : user.getRealName();
             git.commit(commitMessage, name, user.getMailAddress(), user, filesToAdd, filesToRemove);
             workspace.onPush();
@@ -81,6 +80,11 @@ public class GitlabPushTransaction {
             throw new RuntimeException(ex);
         }
         return true;
+    }
+    
+    private Set<String> makeSet(Set<String> filenames) {
+        final String x = workspace.getFolder() + "/";
+        return filenames.stream().map(dn -> dn.replace("\\", "/").replace(x, "")).collect(Collectors.toSet());
     }
     
     private void checkIfExist(Set<String> filenames, String name) {
