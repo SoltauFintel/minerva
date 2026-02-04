@@ -61,6 +61,6 @@ public class MultiBranchService {
             }
         }
         ts.saveAll(ts.getSeite().getTitle(), seite.getContent(), seite.getSeite().getVersion(), "",
-                MinervaWebapp.factory().getLanguages(), System.currentTimeMillis());
+                MinervaWebapp.factory().getLanguages(), System.currentTimeMillis(), null);
     }
 }

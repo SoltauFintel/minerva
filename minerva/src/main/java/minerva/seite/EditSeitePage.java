@@ -66,7 +66,7 @@ public class EditSeitePage extends ViewSeitePage {
 
     private void saveSeite(String branch, String bookFolder, String id, SeiteSO seiteSO, long start, int version,
             ISeitePCD data) {
-        seiteSO.saveAll(data.getTitle(), data.getContent(), version, data.getComment(), langs, start);
+        seiteSO.saveAll(data.getTitle(), data.getContent(), version, data.getComment(), langs, start, null);
         
         user.setLastEditedPage(seite.getId());
 

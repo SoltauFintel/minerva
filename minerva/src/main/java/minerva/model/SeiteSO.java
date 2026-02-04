@@ -52,6 +52,7 @@ import ohhtml.toc.TocMacroPage;
 public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     public static final String META_SUFFIX = ".meta";
     public static final String ROOT_ID = "root";
+    public static DuplicateSeite duplicateSeite = (alteSeite, neueSeite, files) -> {};
     private final BookSO book;
     private Seite seite;
     /** Unterseiten */
@@ -465,12 +466,22 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         book.dao().copyFiles(book.getFolder(), "/img/" + seite.getId(), "/img/" + id);
         
         // save page (needed if there are images, but we save it always to have same behaviour)
-        copy.saveAll(copy.getSeite().getTitle(), copy.getContent(), copy.getSeite().getVersion(), "duplicate", langs, start);
+        copy.saveAll(copy.getSeite().getTitle(), copy.getContent(), copy.getSeite().getVersion(),
+                "duplicate", langs, start, files -> duplicateSeite.duplicateSeite(this, copy, files));
         
         return id;
     }
+    
+    public interface SaveAdditional {
+        void saveAdditional(Map<String, String> files);
+    }
+    
+    public interface DuplicateSeite {
+        void duplicateSeite(SeiteSO alteSeite, SeiteSO neueSeite, Map<String, String> files);
+    }
 
-    public void saveAll(NlsString newTitle, NlsString newContent, int version, String comment, List<String> langs, long start) {
+    // sx is most times null
+    public void saveAll(NlsString newTitle, NlsString newContent, int version, String comment, List<String> langs, long start, SaveAdditional sx) {
         validate(newTitle, newContent, version, langs);
         if (content == null) {
             content = new NlsString();
@@ -491,6 +502,9 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         Map<String, String> files = new HashMap<>();
         saveMetaTo(files);
         saveHtmlTo(files, langs);
+        if (sx != null) {
+            sx.saveAdditional(files);
+        }
         images.forEach(filename -> files.put(filenameImage(filename), IMAGE));
         
         dao().saveFiles(files, commitMessage, book.getWorkspace());

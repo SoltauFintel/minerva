@@ -132,7 +132,7 @@ public class SeitenSO extends MList<SeiteSO> {
 
         tagNewPage(neueSeite);
         neueSeite.saveAll(neueSeite.getSeite().getTitle(), neueSeite.getContent(), neueSeite.getSeite().getVersion(),
-                "", MinervaWebapp.factory().getLanguages(), System.currentTimeMillis());
+                "", MinervaWebapp.factory().getLanguages(), System.currentTimeMillis(), null);
         return neueSeite.getId();
     }
 
