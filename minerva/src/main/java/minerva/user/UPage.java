@@ -73,4 +73,9 @@ public abstract class UPage extends Page {
     public String getModelValue(String name) {
         return model.get(name) == null ? null : model.get(name).toString();
     }
+    
+    @Override
+    public String getLogin() {
+        return user == null ? "" : user.getLogin();
+    }
 }
