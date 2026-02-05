@@ -37,6 +37,7 @@ public class EditSeitePage extends ViewSeitePage {
             calculateEditorHeight();
             put("postcontentslink", "/post-contents/seite?key=" + u(getKey()));
             put("livesavelink", "/s/" + branch + "/" + bookFolder + "/" + id + "/live-save");
+            put("leftAreaContent", "");
             seite.imagesBeforeEdit();
             Logger.info(seite.getLogLine(null) + " | *** start editing");
         }
