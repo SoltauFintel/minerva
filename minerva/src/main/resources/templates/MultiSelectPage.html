@@ -1,0 +1,53 @@
+{{master: master}}
+
+<style>
+    ul.no-bullets {
+        list-style-type: none;
+        padding-left: 1.5em;
+    }
+</style>
+
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">{{header}}</h1>
+        
+        <p>
+            <a href="{{booklink}}/select-none" class="btn btn-default br" onclick="return confirm('{{N.selectNone}}?');">{{N.selectNone}}</a>
+            <a href="/w/{{branch}}/tag-cloud" class="btn btn-default"><i class="fa fa-cloud"></i> tag cloud</a>
+        </p>
+        <hr>
+    
+        {{gliederung}}
+        
+        <hr>
+        <form class="form-horizontal" method="post">
+            <fieldset>
+                <div class="form-group">
+                    <label for="type" class="col-lg-1 control-label">{{N.action}}</label>
+                    <div class="col-lg-2">
+                        <select class="form-control" id="action" name="action">
+                            {{each a in actions}}
+                                <option value="{{a.id}}"{{if a.selected}} selected{{/if}}>{{a.text}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tag" class="col-lg-1 control-label">tag</label>
+                    <div class="col-lg-2">
+                        <input class="form-control" type="text" id="tag" name="tag">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <button type="submit" class="btn btn-primary br"
+                            onclick="document.querySelector('#s1').style='';">{{N.execute}}!
+                            <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        
+    </div>
+</div>

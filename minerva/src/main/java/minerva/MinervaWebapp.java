@@ -46,8 +46,12 @@ import minerva.book.BooksPage;
 import minerva.book.DeleteBookPage;
 import minerva.book.EditBookPage;
 import minerva.book.MenuPage;
+import minerva.book.MultiSelectPage;
 import minerva.book.OrderTopLevelSeitePage;
 import minerva.book.SelectLanguageAction;
+import minerva.book.SelectNoneAction;
+import minerva.book.SelectSeiteAction;
+import minerva.book.SelectThesePagesAction;
 import minerva.book.SortTopLevelSeiteAction;
 import minerva.book.ToggleShowAllPagesAction;
 import minerva.comment.CommentDoneAction;
@@ -167,7 +171,7 @@ import minerva.workspace.WorkspacesPage;
 import spark.Spark;
 
 public class MinervaWebapp extends RouteDefinitions {
-    public static final String VERSION = "4.02.0";
+    public static final String VERSION = "4.03.0";
     private static MinervaFactory factory;
     
     @Override
@@ -239,6 +243,10 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/b/:branch/:book/show-all-pages", ToggleShowAllPagesAction.class);
         get("/b/:branch/:book/export", ExportBookAction.class);
         get("/b/:branch/:book/validate", ValidationPage.class);
+        form("/b/:branch/:book/select", MultiSelectPage.class);
+        post("/b/:branch/:book/select-page", SelectSeiteAction.class);
+        get("/b/:branch/:book/select-none", SelectNoneAction.class);
+        get("/b/:branch/:book/select-by-tag", SelectThesePagesAction.class);
         get("/b/", CurrentWorkspaceAction.class); // falls man sich dahin verirren sollte
     }
 

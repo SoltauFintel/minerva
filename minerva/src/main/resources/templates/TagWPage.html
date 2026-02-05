@@ -34,6 +34,12 @@
         </table>
         
         <p>{{N.anzahl}}: {{anzahl}}</p>
+        
+        <p class="mt3">
+            {{each b in books}}
+                <a href="/b/{{branch}}/{{b.folder}}/select-by-tag?tag={{tagU}}" class="btn btn-default br">{{b.label}}</a>
+            {{/each}}
+        </p>
 
     </div>
 </div>

@@ -1,16 +1,23 @@
 package minerva.model;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
 
+import github.soltaufintel.amalia.base.FileService;
 import github.soltaufintel.amalia.spark.Context;
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
+import gitper.base.StringService;
+import minerva.MinervaWebapp;
 import minerva.base.MinervaMetrics;
+import minerva.base.UserMessage;
 import minerva.book.Book;
 import minerva.book.BookType;
 import minerva.exclusions.SeiteSichtbar;
@@ -274,5 +281,98 @@ public class BookSO implements BookFilter {
             set.add(seite.getId());
             fillSet(seite.getSeiten(), set); // recursive
         }
+    }
+    
+    public TreeSet<String> loadMultiSelect() {
+        TreeSet<String> selectedPages = new TreeSet<>();
+        String content = FileService.loadPlainTextFile(getMultiSelectFile());
+        if (content != null) {
+            for (String i : content.split(",")) {
+                selectedPages.add(i);
+            }
+        }
+        return selectedPages;
+    }
+
+    public void saveMultiSelect(String id, boolean checked) {
+        var selectedPages = loadMultiSelect();
+        if (checked) {
+            selectedPages.add(id);
+        } else {
+            selectedPages.remove(id);
+        }
+        _saveMultiSelect(selectedPages);
+    }
+    
+    public void saveMultiSelectByTag(String tag) {
+        var selectedPages = loadMultiSelect();
+        for (SeiteSO seite : findTag(tag)) {
+            selectedPages.add(seite.getId());
+        }
+        _saveMultiSelect(selectedPages);
+    }
+    
+    private void _saveMultiSelect(TreeSet<String> selectedPages) {
+        FileService.savePlainTextFile(getMultiSelectFile(),
+                selectedPages.isEmpty() ? null : selectedPages.stream().collect(Collectors.joining(",")));
+    }
+
+    public void clearMultiSelect() {
+        FileService.savePlainTextFile(getMultiSelectFile(), null); // löscht Datei
+    }
+    
+    private File getMultiSelectFile() {
+        return new File(MinervaWebapp.factory().getConfig().getWorkspacesFolder(),
+                getUser().getLogin() + "-" + book.getFolder() + ".ms");
+    }
+
+    public void multiSelectAction(Set<String> selectedPages, String tag, boolean clear, boolean add) {
+        if (selectedPages.isEmpty()) {
+            throw new UserMessage("multiSelectError1", getUser());
+        } else if (!clear && StringService.isNullOrEmpty(tag)) {
+            throw new UserMessage("multiSelectError2", getUser());
+        } else if (clear && !StringService.isNullOrEmpty(tag)) { // Bedienungsschutz
+            throw new UserMessage("multiSelectError3", getUser());
+        }
+        
+        Map<String, String> files = new HashMap<>();
+        for (String seiteId : selectedPages) {
+            SeiteSO seite = _seiteById(seiteId);
+            if (seite != null) {
+                if (multiSelectAction_editTags(seite, tag, clear, add)) {
+                    seite.saveMetaTo(files);
+                }
+            } // else: Seite gibt es nicht mehr
+        }
+        String cm = "clear tags";
+        if (!clear) {
+            cm = (add ? "add" : "delete") + " tag: " + tag.trim().toLowerCase();
+        }
+        dao().saveFiles(files, new CommitMessage(cm), workspace);
+    }
+
+    private boolean multiSelectAction_editTags(SeiteSO seite, String pTags, boolean clear, boolean add) {
+        boolean dirty = false;
+        Set<String> tags = seite.getSeite().getTags();
+        if (clear) {
+            if (!tags.isEmpty()) {
+                tags.clear();
+                dirty = true;
+            }
+        } else {
+            for (String tag : pTags.split(",")) {
+                tag = tag.trim().toLowerCase();
+                if (add) {
+                    if (tags.add(tag)) {
+                        dirty = true;
+                    }
+                } else { // delete
+                    if (tags.remove(tag)) {
+                        dirty = true;
+                    }
+                }
+            }
+        }
+        return dirty;
     }
 }
