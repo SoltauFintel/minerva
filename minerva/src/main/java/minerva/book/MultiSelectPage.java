@@ -58,7 +58,7 @@ public class MultiSelectPage extends BPage {
                     + "</a>";
             for (String tag : seite.getSeite().getTags()) {
                 ret += " <span class=\"label label-tag\"><i class=\"fa fa-tag\"></i> <a href=\"/w/" + branch + "/tag/"
-                        + esc(tag) + "\">" + esc(tag) + "</a></span>";
+                        + esc(tag) + "\" tabindex=\"-1\">" + esc(tag) + "</a></span>";
             }
             ret += gliederung(seite.getSeiten()); // rekursiv
             ret += "</li>";
