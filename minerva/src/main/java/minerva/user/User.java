@@ -41,6 +41,8 @@ public class User implements gitper.User {
     private String targetBranch;
     private boolean coloredHeadings = false;
     private final List<String> ignoredBrokenLinks = new ArrayList<>();
+    /** 1. Zeichen: "1" oder "0", 2. Zeichen: "1" oder "0". Kann null sein und steht dann für "00" */
+    private String gitFileWatchOptions;
     
     @Override
     public String getLogin() {
@@ -271,5 +273,13 @@ public class User implements gitper.User {
 
     public List<String> getIgnoredBrokenLinks() {
         return ignoredBrokenLinks;
+    }
+
+    public String getGitFileWatchOptions() {
+        return gitFileWatchOptions;
+    }
+
+    public void setGitFileWatchOptions(String gitFileWatchOptions) {
+        this.gitFileWatchOptions = gitFileWatchOptions;
     }
 }

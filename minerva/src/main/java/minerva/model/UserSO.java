@@ -621,4 +621,19 @@ public class UserSO {
         }
         save();
     }
+
+    public String getGitFileWatchOptions(Context ctx) {
+        load();
+        String ret = user.getGitFileWatchOptions();
+        if (ret == null || ret.length() != 2) {
+            return "00";
+        }
+        return ret;
+    }
+
+    public void setGitFileWatchOptions(Context ctx, String options) {
+        load();
+        user.setGitFileWatchOptions(options);
+        save();
+    }
 }
