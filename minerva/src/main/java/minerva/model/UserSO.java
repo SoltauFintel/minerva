@@ -242,12 +242,23 @@ public class UserSO {
         save();
     }
     
-    public void onlyAdmin() {
+    public static boolean isAdmin(Context ctx) {
+        return "1".equals(ctx.req.session().attribute("admin"));
+    }
+    
+    public void _onlyAdmin() {
         if (!MinervaWebapp.factory().getAdmins().contains(user.getLogin())) {
             throw new RuntimeException("User " + user.getLogin() + " is not an admin!");
         }
     }
 
+    public void onlyAdmin(Context ctx) {
+        _onlyAdmin();
+        if (!"1".equals(ctx.req.session().attribute("admin"))) {
+            throw new RuntimeException("User " + getLogin() + " is not an admin!");
+        }
+    }
+    
     public void onlyWithExportRight() {
         if (!UserAccess.hasExportRight(user.getLogin())) {
             throw new RuntimeException("User " + user.getLogin() + " has no export right!");
@@ -486,10 +497,6 @@ public class UserSO {
     
     public CustomerMode getCustomerMode() {
         return new CustomerMode(user.getCustomerMode());
-    }
-    
-    public static boolean isAdmin(Context ctx) {
-        return "1".equals(ctx.req.session().attribute("admin"));
     }
     
     public interface LoginRoutine {

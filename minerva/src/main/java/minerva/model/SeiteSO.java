@@ -259,6 +259,7 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     }
 
     public void activateSorted() {
+        book.getUser()._onlyAdmin();
         seite.setSorted(true);
         saveMeta(commitMessage("subpages sorted alphabetically"));
         book.getWorkspace().pull(); // ja, ist etwas brutal...

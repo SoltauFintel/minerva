@@ -20,7 +20,7 @@ public class ExclusionsEditPage extends UPage {
     protected void execute() {
         String branch = ctx.pathParam("branch");
         
-        user.onlyAdmin();
+        onlyAdmin();
         
         if (isPOST()) {
             String exclusions = ctx.formParam("exclusions");

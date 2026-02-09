@@ -14,7 +14,7 @@ public class UsersPage extends UPage {
 
     @Override
     protected void execute() {
-        user.onlyAdmin();
+        onlyAdmin();
         Logger.info("Manage users");
         user.log("Manage users");
         

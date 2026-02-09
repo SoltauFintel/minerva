@@ -11,7 +11,7 @@ public class EditBookPage extends BPage {
 
     @Override
     protected void execute() {
-        user.onlyAdmin();
+        onlyAdmin();
         
         if (isPOST()) {
             NlsString title = new NlsString();

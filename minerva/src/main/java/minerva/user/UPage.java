@@ -17,7 +17,6 @@ public abstract class UPage extends Page {
     public static final String TITLE_POSTFIX = " - Minerva";
     protected UserSO user;
     protected List<String> langs;
-    protected boolean isAdmin = false;
 
     @Override
     public void init(Context ctx) {
@@ -25,7 +24,6 @@ public abstract class UPage extends Page {
         user = StatesSO.get(ctx).getUser();
         langs = MinervaWebapp.factory().getLanguages();
         model.put("N", "en".equals(user.getGuiLanguage()) ? NLS.dataMap_en : NLS.dataMap_de); // RB texts
-        isAdmin = UserSO.isAdmin(ctx);
     }
 
     protected void header(String title) {
@@ -77,5 +75,9 @@ public abstract class UPage extends Page {
     @Override
     public String getLogin() {
         return user == null ? "" : user.getLogin();
+    }
+    
+    protected void onlyAdmin() {
+        user.onlyAdmin(ctx);
     }
 }

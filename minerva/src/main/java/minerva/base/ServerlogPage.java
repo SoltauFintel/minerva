@@ -9,7 +9,7 @@ public class ServerlogPage extends UPage {
 
     @Override
     protected void execute() {
-        user.onlyAdmin();
+        onlyAdmin();
         user.log("-- Server log called.");
         
         header(n("serverlog"));

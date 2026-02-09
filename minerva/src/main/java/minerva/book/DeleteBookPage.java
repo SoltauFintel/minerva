@@ -9,7 +9,7 @@ public class DeleteBookPage extends BPage {
         if (MinervaWebapp.factory().isCustomerVersion()) {
             throw new RuntimeException("This operation is not allowed.");
         }
-        user.onlyAdmin();
+        onlyAdmin();
 
         put("bookTitle", esc(book.getTitle()));
         header(n("deleteBook"));

@@ -39,6 +39,7 @@ public class BooksSO extends MList<BookSO> {
     }
     
     public void createBook(String bookFolder, NlsString title, List<String> langs, BookType type, int position) {
+        workspace.getUser()._onlyAdmin();
         if (!(MinervaWebapp.factory().isGitlab() || isEmpty())) {
             throw new RuntimeException("It is not allowed to create another book.");
         }
@@ -87,6 +88,7 @@ public class BooksSO extends MList<BookSO> {
     }
 
     public void remove(String folder) {
+        workspace.getUser()._onlyAdmin();
         BookSO x = byFolder(folder);
         CommitMessage cm = x.cm("book deleted");
         books.getBooks().removeIf(i -> i.getFolder().equals(folder));

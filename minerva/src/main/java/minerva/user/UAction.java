@@ -31,4 +31,8 @@ public abstract class UAction extends Action {
     protected String n(String key) {
         return NLS.get(user.getGuiLanguage(), key);
     }
+    
+    protected void onlyAdmin() {
+        user.onlyAdmin(ctx);
+    }
 }

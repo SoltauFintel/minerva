@@ -8,7 +8,7 @@ public class AddUserPage extends UPage {
 
     @Override
     protected void execute() {
-        user.onlyAdmin();
+        onlyAdmin();
 
         if (isPOST()) {
             User u = new User();

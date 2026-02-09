@@ -18,6 +18,8 @@ public class MigrationPage extends UPage {
         if ("master".equals(branch)) {
             throw new RuntimeException("Migration nicht für master erlaubt! (Schutz)");
         }
+        
+        onlyAdmin();
 
         String sourceFolder = MinervaWebapp.factory().getConfig().getMigrationSourceFolder();
         if (StringService.isNullOrEmpty(sourceFolder)) {

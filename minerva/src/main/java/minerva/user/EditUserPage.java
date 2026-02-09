@@ -10,7 +10,7 @@ public class EditUserPage extends UPage {
     protected void execute() {
         String login = ctx.pathParam("login");
 
-        user.onlyAdmin();
+        onlyAdmin();
         User u = UserAccess.loadUser(login);
 
         if (isPOST()) {

@@ -21,7 +21,7 @@ public class IndexBooksAction extends UAction {
                 throw new RuntimeException("Reindexing can not be performed that often. Please try again later.");
             }
         } else {
-            user.onlyAdmin();
+            onlyAdmin();
         }
         
         user.log(branch + " | Indexing...");

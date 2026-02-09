@@ -10,7 +10,7 @@ public class CheckAllLinksPage extends BPage {
 
     @Override
     protected void execute() {
-        user.onlyAdmin();
+        onlyAdmin();
         
         List<CALBrokenLink> links = new CheckAllLinksService(book, langs).getBrokenLinks();
 

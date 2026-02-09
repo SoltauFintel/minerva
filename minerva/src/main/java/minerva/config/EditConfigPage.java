@@ -13,9 +13,7 @@ public class EditConfigPage extends UPage {
 
     @Override
     protected void execute() {
-        if (!isAdmin) {
-            throw new RuntimeException("Config page only accessible by admin");
-        }
+        onlyAdmin();
         if (isPOST()) {
             save();
         } else {

@@ -58,6 +58,7 @@ public class ConfluenceToMinervaMigrationService {
     }
 
     public void migrate() throws Exception {
+        workspace.getUser()._onlyAdmin();
         Logger.info("[Migration] Start of migration | source folder: " + sourceFolder.getAbsolutePath());
         imgErrors = 0;
 

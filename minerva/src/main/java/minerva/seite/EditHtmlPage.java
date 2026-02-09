@@ -10,7 +10,7 @@ public class EditHtmlPage extends EditSeitePage {
 
     @Override
     protected void execute2() {
-        user.onlyAdmin();
+        onlyAdmin();
         super.execute2();
     }
     

@@ -24,6 +24,7 @@ import minerva.image.FixHttpImage;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
+import minerva.model.UserSO;
 import minerva.seite.actions.EditorsNoteModal;
 import minerva.seite.helpkeys.VSPTocMacro;
 import minerva.user.User;
@@ -109,7 +110,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         header(modifyHeader(seite.getTitle()));
         fillLinks(branch, bookFolder, id, seite, _seite, u.getPageLanguage());
 
-        PageMenuContext pmc = new PageMenuContext(seite, isAdmin, isFavorite, pageWatched, subpagesWatched, model);
+        PageMenuContext pmc = new PageMenuContext(seite, UserSO.isAdmin(ctx), isFavorite, pageWatched, subpagesWatched, model);
         DataList menuitems = model.list("menuitems");
         menuSupplier.getMenuItems(pmc).forEach(item -> item.add(pmc, menuitems)); // möglichst spät aufrufen
         

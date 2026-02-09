@@ -16,6 +16,7 @@ public class CheckAllLinksService {
     }
 
     public List<CALBrokenLink> getBrokenLinks() {
+        book.getUser()._onlyAdmin();
         List<CALBrokenLink> ret = new ArrayList<>();
         for (SeiteSO seite : book.getAlleSeiten()) {
             InvalidLinksModel invalidLinks = new InvalidLinksModel(seite, langs);
