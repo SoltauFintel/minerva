@@ -1,7 +1,9 @@
 package minerva.seite;
 
-import java.util.List;
-
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.pmw.tinylog.Logger;
 
 import com.github.template72.data.DataMap;
@@ -13,8 +15,6 @@ import minerva.model.SeiteSO;
 import minerva.model.UserSO.LoginAndEndTime;
 import minerva.postcontents.PostContentsService;
 import minerva.seite.link.InvalidLinksModel;
-import minerva.seite.link.Link;
-import minerva.seite.link.LinkService;
 import ohhtml.toc.TocMacro;
 
 public class EditSeitePage extends ViewSeitePage {
@@ -73,7 +73,7 @@ public class EditSeitePage extends ViewSeitePage {
     private void saveSeite(String branch, String bookFolder, String id, SeiteSO seiteSO, long start, int version,
             ISeitePCD data) {
         NlsString content = data.getContent();
-        changeMinervaLink(content);
+        examineHtml(content);
         seiteSO.saveAll(data.getTitle(), content, version, data.getComment(), langs, start, null);
         
         user.setLastEditedPage(seite.getId());
@@ -89,15 +89,22 @@ public class EditSeitePage extends ViewSeitePage {
         }
     }
     
-    private void changeMinervaLink(NlsString content) {
+    private void examineHtml(NlsString content) {
         for (String lang : langs) {
             String html = content.getString(lang);
             if (html != null) {
-                List<Link> links = LinkService.extractLinks(html, false);
-                for (Link link : links) {
-                    if (link.getHref().startsWith("http://minerva:9000/s/")) {
-                        user.log("Illegal absolute link on page " + id + "/" + lang + ": " + link.getHref());
+                Document doc = Jsoup.parse(html);
+                // illegal absolute Minerva link
+                Elements links = doc.select("a[href]");
+                for (Element link : links) {
+                    String href = link.attr("href");
+                    if (href.startsWith("http://minerva:9000/s/")) {
+                        user.log("Illegal absolute link on page " + id + " [" + lang + "]: " + href);
                     }
+                }
+                // illegal <h1>
+                if (!doc.select("h1").isEmpty()) {
+                    user.log("Illegal <h1> elements in HTML of page " + id + " [" + lang + "]");
                 }
             }
         }
