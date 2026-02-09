@@ -450,3 +450,4 @@ selectThesePages=Diese ${bt} Seiten auswählen
 multiSelectError1=Es wurden keine Seiten gewählt!
 multiSelectError2=Bitte geben Sie ein tag ein!
 multiSelectError3=Bitte geben Sie für diese Aktion kein tag ein!
+AllAttachments=Alle Attachments

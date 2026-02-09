@@ -18,6 +18,7 @@ import gitper.persistence.gitlab.GitFactory;
 import gitper.persistence.gitlab.GitlabAuthAction;
 import gitper.persistence.gitlab.GitlabAuthCallbackAction;
 import gitper.persistence.gitlab.GitlabAuthService;
+import minerva.attachments.AllAttachmentsPage;
 import minerva.attachments.AttachmentsPage;
 import minerva.attachments.DeleteAttachmentAction;
 import minerva.attachments.DownloadAttachmentAction;
@@ -289,6 +290,7 @@ public class MinervaWebapp extends RouteDefinitions {
         form("/s/:branch/:book/:id/edit-attachment/:dn", EditAttachmentPage.class);
         get("/s/:branch/:book/:id/delete-attachment/:dn", DeleteAttachmentAction.class);
         post("/attachment-category", SaveUserAttachmentCategoryAction.class);
+        get("/w/:branch/all-attachments", AllAttachmentsPage.class);
 
         // Links
         form("/links/:branch/:book/:id", LinkResolverPage.class);

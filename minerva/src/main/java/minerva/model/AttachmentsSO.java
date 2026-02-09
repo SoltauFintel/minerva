@@ -154,4 +154,56 @@ public class AttachmentsSO {
             }
         }
     }
+
+    public static List<Attachment2> getAllAttachments(WorkspaceSO workspace) {
+        List<Attachment2> ret = new ArrayList<>();
+        for (BookSO book : workspace.getBooks()) {
+            String dir = book.getFolder() + "/" + FOLDER;
+            if (new File(dir).isDirectory()) {
+                File[] files = new File(dir).listFiles();
+                if (files != null) {
+                    for (File seiteDir : files) {
+                        if (seiteDir.isDirectory()) {
+                            File[] files2 = seiteDir.listFiles();
+                            if (files2 != null) {
+                                for (File file : files2) {
+                                    if (file.isFile() && !file.getName().endsWith(".cat")) {
+                                        SeiteSO seite = book._seiteById(seiteDir.getName());
+                                        ret.add(new Attachment2(seite == null ? "?" : seite.getTitle(), file.getName(),
+                                                "/s/" + workspace.getBranch() + "/" + book.getBook().getFolder() + "/"
+                                                        + seiteDir.getName()));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+    
+    public static class Attachment2 {
+        private final String seiteTitle;
+        private final String filename;
+        private final String link;
+
+        public Attachment2(String seiteTitle, String filename, String link) {
+            this.seiteTitle = seiteTitle;
+            this.filename = filename;
+            this.link = link;
+        }
+
+        public String getSeiteTitle() {
+            return seiteTitle;
+        }
+
+        public String getFilename() {
+            return filename;
+        }
+
+        public String getLink() {
+            return link;
+        }
+    }
 }
