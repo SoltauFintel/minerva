@@ -52,13 +52,15 @@ public class MinervaAuth extends AbstractAuth {
         return wctx;
     }
 
-    public static void login2(Context ctx, User user) {
+    public static void login2(Context ctx, User user, String gotoPath) {
         WebContext wctx = login1(ctx, user);
 
         // Ursprünglich angeforderte Seite aufrufen
         String path = wctx.session().getGoBackPath();
         wctx.session().setGoBackPath(null);
-        if (path == null || path.isBlank() || path.equals(ctx.path())) {
+        if (gotoPath != null) { // re-login path
+            ctx.redirect(gotoPath);
+        } else if (path == null || path.isBlank() || path.equals(ctx.path())) {
             if (MinervaWebapp.factory().isCustomerVersion()) {
                 ctx.redirect("/w/master/menu");
             } else {

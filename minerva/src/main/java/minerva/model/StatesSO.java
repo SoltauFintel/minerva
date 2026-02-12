@@ -33,10 +33,11 @@ public class StatesSO {
                 MinervaAuth.logout2(ctx);
                 throw new SessionExpiredException();
             } else {
-                Logger.info(login + " | re-login");
+                final String path = ctx.path();
+                Logger.info(login + " | re-login | came from " + path);
                 var user = new User();
                 user.setLogin(login);
-                MinervaAuth.login2(ctx, user);
+                MinervaAuth.login2(ctx, user, path);
                 state = get(key(ctx));
             }
         }

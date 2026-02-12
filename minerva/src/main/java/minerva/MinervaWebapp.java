@@ -431,7 +431,7 @@ public class MinervaWebapp extends RouteDefinitions {
             
             @Override
             public void login2(Context ctx, gitper.User user) {
-                MinervaAuth.login2(ctx, (minerva.user.User) user);
+                MinervaAuth.login2(ctx, (minerva.user.User) user, null);
             }
             
             @Override
