@@ -16,7 +16,7 @@ public class AddUserPage extends UPage {
             u.setRealName(ctx.formParam("u_name"));
             u.setMailAddress(ctx.formParam("u_mail"));
             u.setExportAllowed("on".equals(ctx.formParam("u_ea")));
-            u.setInitialien(initialienAutomatik(u.getRealName()));
+            u.setInitialien(StringService.makeInitialien(u.getRealName()));
 
             if (StringService.isNullOrEmpty(u.getLogin())) {
                 throw new RuntimeException("Bitte Login eingeben!");
@@ -35,17 +35,5 @@ public class AddUserPage extends UPage {
         } else {
             header(n("addUser"));
         }
-    }
-
-    private String initialienAutomatik(String name) {
-        if (name != null && !name.isBlank()) {
-            name = name.trim();
-            int o = name.lastIndexOf(" ");
-            try {
-                return ("" + name.charAt(0) + name.charAt(o + 1)).toUpperCase();
-            } catch (Exception e) {
-            }
-        }
-        return "";
     }
 }

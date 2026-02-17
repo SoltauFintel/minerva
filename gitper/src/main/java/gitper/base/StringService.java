@@ -265,4 +265,16 @@ public class StringService {
         int o = text.indexOf("\n");
         return o >= 0 ? text.substring(0, o) : text;
     }
+
+    public static String makeInitialien(String name) {
+        if (name != null && !name.isBlank()) {
+            name = name.trim();
+            int o = name.lastIndexOf(" ");
+            try {
+                return ("" + name.charAt(0) + name.charAt(o + 1)).toUpperCase();
+            } catch (Exception e) {
+            }
+        }
+        return "";
+    }
 }
