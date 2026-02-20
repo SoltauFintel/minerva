@@ -108,7 +108,7 @@ public class MinervaPageInitializer extends PageInitializer {
         page.put("customerModeLabel", "Kundenmodus");
         page.list("quickbuttons");
         page.put("showQuickbuttons", false);
-        page.put("qpath", Escaper.urlEncode(ctx.path(), ""));
+        page.put("qpath", Escaper.urlEncode(ctx.path() + (ctx.req.queryString() == null ? "" : "?" + ctx.req.queryString()), ""));
         page.put("quickbuttonsExtra", "");
     }
 
