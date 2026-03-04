@@ -2,10 +2,8 @@ package minerva.workspace;
 
 import java.util.Set;
 
-import github.soltaufintel.amalia.web.table.Col;
-import github.soltaufintel.amalia.web.table.Cols;
-import github.soltaufintel.amalia.web.table.TableComponent;
 import gitper.base.StringService;
+import minerva.model.UserSO;
 
 public class HideBranchsPage extends WPage {
 
@@ -13,12 +11,14 @@ public class HideBranchsPage extends WPage {
     protected void execute() {
         String hide = ctx.queryParam("h");
         String name = ctx.queryParam("n");
+        boolean forAll = "a".equals(ctx.queryParam("u")) && UserSO.isAdmin(ctx);
 
         if (("1".equals(hide) || "0".equals(hide)) && !StringService.isNullOrEmpty(name)) {
+            render = false;
             if ("1".equals(hide)) {
-                user.addHiddenBranch(name);
+                user.addHiddenBranch(name, forAll);
             } else {
-                user.removeHiddenBranch(name);
+                user.removeHiddenBranch(name, forAll);
             }
             ctx.redirect("/w/" + branch + "/hide-branch");
         } else {
@@ -28,6 +28,7 @@ public class HideBranchsPage extends WPage {
 
     private void display() {
         header(n("hideBranches"));
+        put("admin", UserSO.isAdmin(ctx));
         var branchNames = user.getBranchNames();
         branchNames.remove("master");
         branchNames = MenuPage.branchNamesFilter.filter(branchNames, user.getLogin());
@@ -50,12 +51,7 @@ public class HideBranchsPage extends WPage {
                 map.put("b", n("Ausblenden"));
                 map.put("i", "fa-check greenbook");
             }
+            map.put("color", hidden ? "#f88" : "#6f6");
         }
-        Cols cols = Cols.of( //
-                new Col("", "<i class=\"fa {{i.i}}\"></i>"),
-                Col.i("Branch", "name"), //
-                new Col("", "<a href=\"{{i.a}}\" class=\"btn btn-xs btn-default\">{{i.b}}</a>") //
-        );
-        put("table", new TableComponent("wauto", cols, model, "branches"));
     }
 }

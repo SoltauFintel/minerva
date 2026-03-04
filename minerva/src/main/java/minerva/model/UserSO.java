@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 import org.pmw.tinylog.Logger;
 
@@ -642,25 +644,66 @@ public class UserSO {
         return user.getHiddenBranches();
     }
     
-    public void addHiddenBranch(String branchName) {
-        load();
-        user.getHiddenBranches().add(branchName);
-        save();
+    public void addHiddenBranch(String branchName, boolean allUsers) {
+        if (allUsers) {
+            for (User u : UserAccess.loadUsers()) {
+                if (u.getHiddenBranches().add(branchName)) {
+                    UserAccess.saveUser(u);
+                }
+            }
+        } else {
+            load();
+            if (user.getHiddenBranches().add(branchName)) {
+                save();
+            }
+        }
     }
 
-    public void removeHiddenBranch(String branchName) {
-        load();
-        user.getHiddenBranches().remove(branchName);
-        save();
+    public void removeHiddenBranch(String branchName, boolean allUsers) {
+        if (allUsers) {
+            for (User u : UserAccess.loadUsers()) {
+                if (u.getHiddenBranches().remove(branchName)) {
+                    UserAccess.saveUser(u);
+                }
+            }
+        } else {
+            load();
+            if (user.getHiddenBranches().remove(branchName)) {
+                save();
+            }
+        }
     }
 
     public List<String> getBranchNames() {
         List<String> branchNames = dao.getBranchNames(masterWorkspace());
         branchNames.removeIf(n -> n.startsWith(WorkspacesSO.MINERVA_BRANCH) || n.contains(WorkspacesSO.MINERVA_BRANCH));
-        if (branchNames.contains("master")) { // force master at position 1
-            branchNames.remove("master");
-            branchNames.add(0, "master");
-        }
+        branchNames.sort(getBranchComparator());
         return branchNames;
+    }
+    
+    // Regex für das Format #.##.x oder #.##.#.x
+    private static final Pattern VERSION_PATTERN = Pattern.compile("^\\d+\\.\\d+(\\.\\d+)?\\.x$");
+
+    private static Comparator<String> getBranchComparator() {
+        return (s1, s2) -> {
+            // 1. "master" immer an den Anfang
+            if (s1.equals("master")) return -1;
+            if (s2.equals("master")) return 1;
+
+            boolean isS1Version = VERSION_PATTERN.matcher(s1).matches();
+            boolean isS2Version = VERSION_PATTERN.matcher(s2).matches();
+
+            // 2. Versions-Branches kommen nach master, aber vor dem Rest
+            if (isS1Version && !isS2Version) return -1;
+            if (!isS1Version && isS2Version) return 1;
+
+            // Wenn beide Versions-Branches sind: DESC (Absteigend) sortieren
+            if (isS1Version && isS2Version) {
+                return s2.compareTo(s1); 
+            }
+
+            // 3. Alle anderen Branches: ASC (Aufsteigend) sortieren
+            return s1.compareTo(s2);
+        };
     }
 }

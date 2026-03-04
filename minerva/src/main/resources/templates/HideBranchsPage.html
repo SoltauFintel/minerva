@@ -1,9 +1,30 @@
 {{master: master}}
 
+<style>
+.bhidden {
+    background-color: #6f6;
+}
+</style>
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">{{header}}</h1>
         
-        {{table}}
+        <table class="table wauto">
+            <thead>
+                <th>Branch</th>
+                <th>{{N.FuerMich}}</th>
+                {{if admin}}<th>{{N.FuerAlle}}</th>{{/if}}
+            </thead>
+            <tbody>
+                {{each i in branches}}
+                    <tr style="background-color: {{i.color}};">
+                        <td>{{i.name}}</td>
+                        <td><a href="{{i.a}}" class="btn btn-xs btn-default">{{i.b}}</a>
+                        {{if admin}}<td><a href="{{i.a}}&u=a" class="btn btn-xs btn-default">{{i.b}}</a>{{/if}}
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <hr><small>{{N.hideBranchesInfo}}</small>
     </div>
 </div>

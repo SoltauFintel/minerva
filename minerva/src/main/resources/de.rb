@@ -455,3 +455,6 @@ showAllBranches=Zeige alle Branches
 hideBranches=Branches ausblenden
 Einblenden=Einblenden
 Ausblenden=Ausblenden
+FuerMich=Für mich
+FuerAlle=Für alle
+hideBranchesInfo=Alte Branches werden hier nicht aufgeführt und werden stets ausgeblendet.

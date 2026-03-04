@@ -454,3 +454,6 @@ showAllBranches=Show all branches
 hideBranches=Hide branches
 Einblenden=Show
 Ausblenden=Hide
+FuerMich=For me
+FuerAlle=For everybody
+hideBranchesInfo=Old branches are not listed here and are always hidden.
