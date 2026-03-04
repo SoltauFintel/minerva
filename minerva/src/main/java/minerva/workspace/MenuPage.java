@@ -40,6 +40,9 @@ public class MenuPage extends WPage {
             branchNames = branchNamesFilter.filter(branchNames, user.getLogin());
             branchNames.removeIf(n -> user.getHiddenBranches().contains(n));
         }
+        if (!branchNames.contains(this.branch)) { // force current branch
+            branchNames.add(this.branch);
+        }
         DataList list = list("workspaces");
         for (String branch : branchNames) {
             DataMap map = list.add();
