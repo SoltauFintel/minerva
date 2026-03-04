@@ -2,6 +2,8 @@ package minerva.user;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import gitper.GitlabConfig;
 import minerva.MinervaWebapp;
@@ -43,6 +45,7 @@ public class User implements gitper.User {
     private final List<String> ignoredBrokenLinks = new ArrayList<>();
     /** 1. Zeichen: "1" oder "0", 2. Zeichen: "1" oder "0". Kann null sein und steht dann für "00" */
     private String gitFileWatchOptions;
+    private final Set<String> hiddenBranches = new TreeSet<>();
     
     @Override
     public String getLogin() {
@@ -281,5 +284,9 @@ public class User implements gitper.User {
 
     public void setGitFileWatchOptions(String gitFileWatchOptions) {
         this.gitFileWatchOptions = gitFileWatchOptions;
+    }
+
+    public Set<String> getHiddenBranches() {
+        return hiddenBranches;
     }
 }

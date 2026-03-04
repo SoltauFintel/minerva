@@ -451,3 +451,6 @@ multiSelectError2=Please enter a tag!
 multiSelectError3=Please do not enter a tag for this action!
 AllAttachments=All attachments
 showAllBranches=Show all branches
+hideBranches=Hide branches
+Einblenden=Show
+Ausblenden=Hide

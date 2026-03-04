@@ -37,6 +37,7 @@ encoding//src/main/resources/templates/ExportPage.html=UTF-8
 encoding//src/main/resources/templates/ExportTemplateSetsPage.html=UTF-8
 encoding//src/main/resources/templates/HelpKeysForHeadingPage.html=UTF-8
 encoding//src/main/resources/templates/HelpKeysPage.html=UTF-8
+encoding//src/main/resources/templates/HideBranchsPage.html=UTF-8
 encoding//src/main/resources/templates/LinkAnalysisPage.html=UTF-8
 encoding//src/main/resources/templates/LinkResolverPage.html=UTF-8
 encoding//src/main/resources/templates/LockedByPage.html=UTF-8

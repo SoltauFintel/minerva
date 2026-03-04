@@ -1,4 +1,4 @@
-package minerva.book;
+package minerva.workspace;
 
 import java.util.List;
 
@@ -14,7 +14,6 @@ import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
-import minerva.workspace.WPage;
 
 public class MenuPage extends WPage {
     public static BranchNamesFilter branchNamesFilter = (names, login) -> names;
@@ -39,6 +38,7 @@ public class MenuPage extends WPage {
         var showAll = "1".equals(ctx.queryParam("b"));
         if (!showAll) {
             branchNames = branchNamesFilter.filter(branchNames, user.getLogin());
+            branchNames.removeIf(n -> user.getHiddenBranches().contains(n));
         }
         DataList list = list("workspaces");
         for (String branch : branchNames) {

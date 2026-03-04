@@ -637,6 +637,23 @@ public class UserSO {
         save();
     }
     
+    public Set<String> getHiddenBranches() {
+        load();
+        return user.getHiddenBranches();
+    }
+    
+    public void addHiddenBranch(String branchName) {
+        load();
+        user.getHiddenBranches().add(branchName);
+        save();
+    }
+
+    public void removeHiddenBranch(String branchName) {
+        load();
+        user.getHiddenBranches().remove(branchName);
+        save();
+    }
+
     public List<String> getBranchNames() {
         List<String> branchNames = dao.getBranchNames(masterWorkspace());
         branchNames.removeIf(n -> n.startsWith(WorkspacesSO.MINERVA_BRANCH) || n.contains(WorkspacesSO.MINERVA_BRANCH));

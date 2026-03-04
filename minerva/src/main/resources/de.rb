@@ -452,3 +452,6 @@ multiSelectError2=Bitte geben Sie ein tag ein!
 multiSelectError3=Bitte geben Sie für diese Aktion kein tag ein!
 AllAttachments=Alle Attachments
 showAllBranches=Zeige alle Branches
+hideBranches=Branches ausblenden
+Einblenden=Einblenden
+Ausblenden=Ausblenden

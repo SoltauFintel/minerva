@@ -162,6 +162,7 @@ import minerva.workspace.CreateBranchPage;
 import minerva.workspace.CurrentWorkspaceAction;
 import minerva.workspace.DeactivateFSModePage;
 import minerva.workspace.DeleteWorkspacePage;
+import minerva.workspace.HideBranchsPage;
 import minerva.workspace.MenuPage;
 import minerva.workspace.MergeBranchPage;
 import minerva.workspace.PullWorkspaceAction;
@@ -219,6 +220,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/customer-mode/:customer", SelectCustomerModeAction.class);
         get("/w/:branch/customer-mode", CustomerModePage.class);
         get("/w/:branch/toggle-colored-headings", ToggleColoredHeadingsAction.class);
+        get("/w/:branch/hide-branch", HideBranchsPage.class);
         get("/w/:branch/menu", MenuPage.class);
 
         // Export
