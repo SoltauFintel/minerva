@@ -49,11 +49,7 @@ public class MenuPage extends WPage {
             map.put("icon", isCurrent ? "fa-folder-open-o currentBranchIcon" : "fa-folder-o");
             map.put("isCurrent", isCurrent);
         }
-        DataMap map = list.add();
-        map.put("link", "/w/" + esc(branch) + "/menu" + (showAll ? "" : "?b=1"));
-        map.put("text", n("showAllBranches"));
-        map.put("icon", showAll ? "fa-check currentBranchIcon" : "fa-times");
-        map.put("isCurrent", false);
+        put("showAllBranches", showAll);
     }
 
     private void menu() {
