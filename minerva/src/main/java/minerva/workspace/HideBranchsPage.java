@@ -5,6 +5,9 @@ import java.util.Set;
 import gitper.base.StringService;
 import minerva.model.UserSO;
 
+/**
+ * User can hide branches. Admin can hide branches for all users.
+ */
 public class HideBranchsPage extends WPage {
 
     @Override
@@ -41,17 +44,10 @@ public class HideBranchsPage extends WPage {
             var map = list.add();
             map.put("name", esc(name));
             var hidden = hiddenBranches.contains(name);
-            map.put("hidden", hidden);
-            if (hidden) {
-                map.put("a", a1 + u(name));
-                map.put("b", n("Einblenden"));
-                map.put("i", "fa-times error");
-            } else {
-                map.put("a", a0 + u(name));
-                map.put("b", n("Ausblenden"));
-                map.put("i", "fa-check greenbook");
-            }
-            map.put("color", hidden ? "#f88" : "#6f6");
+            map.put("a", (hidden ? a1 : a0) + u(name));
+            map.put("b", n(hidden ? "Einblenden" : "Ausblenden"));
+            map.put("c", hidden ? "#f88" : "#6f6");
+            map.put("i", hidden ? "fa-times error" : "fa-check greenbook");
         }
     }
 }
