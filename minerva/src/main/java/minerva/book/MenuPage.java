@@ -1,5 +1,7 @@
 package minerva.book;
 
+import java.util.List;
+
 import com.github.template72.data.DataCondition;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
@@ -15,6 +17,7 @@ import minerva.model.WorkspaceSO;
 import minerva.workspace.WPage;
 
 public class MenuPage extends WPage {
+    public static BranchNamesFilter branchNamesFilter = (names, login) -> names;
     private int counter = 0;
 
     @Override
@@ -29,22 +32,28 @@ public class MenuPage extends WPage {
     }
 
     private void workspaces() {
-        DataList list = list("workspaces");
-        if (MinervaWebapp.factory().isGitlab()) {
-            for (WorkspaceSO workspace : user.getWorkspaces()) {
-                DataMap map = list.add();
-                
-                map.put("link", "/w/" + esc(workspace.getBranch()) + "/menu");
-                map.put("text", esc(workspace.getBranch()));
-                if (branch.equals(workspace.getBranch())) {
-                    map.put("icon", "fa-folder-open-o currentBranchIcon");
-                    map.put("isCurrent", true);
-                } else {
-                    map.put("icon", "fa-folder-o");
-                    map.put("isCurrent", false);
-                }
-            }
+        if (!MinervaWebapp.factory().isGitlab()) {
+            return;
         }
+        var branchNames = user.getBranchNames();
+        var showAll = "1".equals(ctx.queryParam("b"));
+        if (!showAll) {
+            branchNames = branchNamesFilter.filter(branchNames, user.getLogin());
+        }
+        DataList list = list("workspaces");
+        for (String branch : branchNames) {
+            DataMap map = list.add();
+            map.put("link", "/w/" + esc(branch) + "/menu");
+            map.put("text", esc(branch));
+            var isCurrent = branch.equals(this.branch);
+            map.put("icon", isCurrent ? "fa-folder-open-o currentBranchIcon" : "fa-folder-o");
+            map.put("isCurrent", isCurrent);
+        }
+        DataMap map = list.add();
+        map.put("link", "/w/" + esc(branch) + "/menu" + (showAll ? "" : "?b=1"));
+        map.put("text", n("showAllBranches"));
+        map.put("icon", showAll ? "fa-check currentBranchIcon" : "fa-times");
+        map.put("isCurrent", false);
     }
 
     private void menu() {
@@ -100,8 +109,6 @@ public class MenuPage extends WPage {
         if (MinervaWebapp.factory().isGitlab()) {
             menu(list, "pullWS", "fa-refresh", "/w/:branch/pull", true);
             menu(list, "cloneWS", "fa-refresh red", "/w/:branch/pull?force=1", true);
-            menu(list, "createWS", "fa-folder", "/create-workspace");
-            menu(list, "deleteWS", "fa-trash-o red", "/w/:branch/delete");
             menu(list, "createBranch", "fa-code-fork", "/branch/:branch");
             menu(list, "mergeBranch", "fa-code-fork", "/merge/:branch");
             if (isDelayedPushAllowed()) {
@@ -211,5 +218,10 @@ public class MenuPage extends WPage {
         }
         StringService.sortDataListUmlaute(list, "title");
         put("hasFavorites", hasFavorites);
+    }
+    
+    public interface BranchNamesFilter {
+        
+        List<String> filter(List<String> branchNames, String login);
     }
 }

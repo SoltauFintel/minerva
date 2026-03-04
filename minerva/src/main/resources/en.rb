@@ -450,3 +450,4 @@ multiSelectError1=No pages were selected!
 multiSelectError2=Please enter a tag!
 multiSelectError3=Please do not enter a tag for this action!
 AllAttachments=All attachments
+showAllBranches=Show all branches

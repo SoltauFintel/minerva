@@ -4,6 +4,7 @@ import minerva.base.UserMessage;
 import minerva.model.WorkspaceSO;
 import minerva.user.UPage;
 
+// TODO Prüfen, ob noch benötigt.
 public class DeleteWorkspacePage extends UPage {
 
     @Override

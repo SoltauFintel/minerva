@@ -636,4 +636,14 @@ public class UserSO {
         user.setGitFileWatchOptions(options);
         save();
     }
+    
+    public List<String> getBranchNames() {
+        List<String> branchNames = dao.getBranchNames(masterWorkspace());
+        branchNames.removeIf(n -> n.startsWith(WorkspacesSO.MINERVA_BRANCH) || n.contains(WorkspacesSO.MINERVA_BRANCH));
+        if (branchNames.contains("master")) { // force master at position 1
+            branchNames.remove("master");
+            branchNames.add(0, "master");
+        }
+        return branchNames;
+    }
 }

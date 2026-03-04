@@ -6,6 +6,7 @@ import minerva.MinervaWebapp;
 import minerva.model.WorkspaceSO;
 import minerva.user.UPage;
 
+// TODO Prüfen, ob noch benötigt.
 public class AddWorkspacePage extends UPage {
     
     @Override
