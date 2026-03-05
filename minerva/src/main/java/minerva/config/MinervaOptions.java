@@ -69,7 +69,7 @@ public class MinervaOptions {
     public static MinervaOptions options;
 
     private final File configFile;
-    final Map<String, String> optionValues;
+    final Map<String, String> optionValues = new HashMap<>();
     
     @SuppressWarnings("unchecked")
     public MinervaOptions(File configFile) {
@@ -77,15 +77,15 @@ public class MinervaOptions {
             throw new IllegalArgumentException("configFile must not be null");
         }
         this.configFile = configFile;
+        final String ev = "\nStarting with config with default option values.";
         if (configFile.isFile()) {
             try {
-                optionValues = new HashMap<>(FileService.loadJsonFile(configFile, Map.class));
+                optionValues.putAll(FileService.loadJsonFile(configFile, Map.class));
             } catch (Exception e) {
-                throw new RuntimeException("Error loading config file: " + configFile.getAbsolutePath(), e);
+                Logger.error(e, "Error loading config file: " + configFile.getAbsolutePath() + ev);
             }
         } else {
-            Logger.info("Config file does not exist: " + configFile.getAbsolutePath() + " | Starting with config with default option values.");
-            optionValues = new HashMap<>();
+            Logger.info("Config file does not exist: " + configFile.getAbsolutePath() + ev);
         }
         
         // Save the configuration when starting the application
