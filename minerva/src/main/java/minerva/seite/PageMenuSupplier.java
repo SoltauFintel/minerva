@@ -19,7 +19,7 @@ public class PageMenuSupplier {
             new PageMenuItem(ctx.isAdmin(), " data-toggle=\"modal\" data-target=\"#" + EditorsNoteModal.class.getSimpleName() + "\"",
                     "fa-thumb-tack", "N.editorsNote"),
             new PageMenuItem(ctx.isCustomerVersion(), "{viewlink}/help-keys", "fa-question-circle",
-                    "N.helpKeys|(" + ctx.get("helpKeysSize") + ")"),
+                    "N.helpKeys| (" + ctx.get("helpKeysSize") + ")"),
             new PageMenuItem(!ctx.isCustomerVersion(), "{viewlink}/cross-book-links", "fa-share", "N.crossBookLinksMenu", !ctx.getSeite().getSeite().getLinks().isEmpty()),
             new PageMenuItem("{viewlink}/links", "fa-link", "N.linkAnalysis"),
             new PageMenuItem("", "", "-"),
