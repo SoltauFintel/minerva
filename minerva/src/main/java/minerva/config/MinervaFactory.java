@@ -3,6 +3,8 @@ package minerva.config;
 import java.io.File;
 import java.util.List;
 
+import org.pmw.tinylog.Logger;
+
 import github.soltaufintel.amalia.base.FileService;
 import gitper.BackendService;
 import gitper.access.CommitMessage;
@@ -93,6 +95,7 @@ public class MinervaFactory {
      * @return true: Kundenversion, false: firmeninterne Version
      */
     public boolean isCustomerVersion() {
+Logger.info("isCustomerVersion: " + config.getKunde()); // XXX
         return "1".equals(config.getKunde());
     }
 
