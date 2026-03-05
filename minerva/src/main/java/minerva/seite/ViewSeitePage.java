@@ -38,7 +38,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     public static DeliverHtmlContent<SeiteSO> featureStatusButtons = seite -> "";
     public static DeliverHtmlContent<SeiteSO> featureFields = seite -> "";
     public static FillModel<SeiteSO, DataList> fillFeaturesList = (seite, list) -> {};
-    public static FillModel<SeiteSO, DataMap> customersMultiselect = (seite, model) -> {};
+    public static FillModel<SeiteSO, DataMap> customersMultiselect = (seite, model) -> model.list("customersMultiselect");
     public static AddFeatures addFeatures = (seite, features) -> {};
     public static PageMenuSupplier menuSupplier = new PageMenuSupplier();
     private String mindmapJson;
