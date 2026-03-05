@@ -35,6 +35,7 @@ public class PagesWatchedByMePage extends WPage {
             map.put("title", esc(we.seite.getTitle()));
             map.put("hasSubpages", we.watchSubpages);
         }
+        put("empty", entries.isEmpty());
     }
     
     private static class WatchEntry {
