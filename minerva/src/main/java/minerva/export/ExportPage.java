@@ -10,7 +10,7 @@ import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.action.IdAndLabel;
 import gitper.base.StringService;
-import minerva.base.UserMessage;
+import minerva.MinervaWebapp;
 import minerva.export.template.ExportTemplateSet;
 import minerva.export.template.ExportTemplatesService;
 import minerva.model.SeiteSO;
@@ -70,14 +70,13 @@ public class ExportPage extends WPage {
             
             List<String> exportTemplateSetNames = new ExportTemplatesService(workspace).loadAll()
                     .stream().map(i -> i.getName()).collect(Collectors.toList());
-            if (exportTemplateSetNames.isEmpty()) {
-                throw new UserMessage("no-export-template-sets", user);
-            }
+            put("hasTemplates", !exportTemplateSetNames.isEmpty());
             combobox("templates", exportTemplateSetNames, us.getTemplate(), false);
             put("withCover", us.isCover());
             put("withTOC", us.isToc());
             put("withChapters", us.isChapters());
-            put("templatesAllowed", UserAccess.hasExportRight(user.getLogin()));
+            put("templatesAllowed", UserAccess.hasExportRight(user.getLogin()) || MinervaWebapp.factory().isCustomerVersion());
+            put("hasFeatureBook", workspace.getFeatureTreeBook() != null);
         }
     }
 
@@ -88,7 +87,9 @@ public class ExportPage extends WPage {
         }
         workspace.getBooks().forEach(book -> items.add(new ExportItem(book.getBook().getFolder(), book.getBook().getTitle().getString(lang))));
         items.add(new ExportItem(PAGE, n("selectPage")));
-        items.add(new ExportItem(PAGE_WITH_FEATURES, n("selectPageWithFeatures")));
+        if (workspace.getFeatureTreeBook() != null) {
+            items.add(new ExportItem(PAGE_WITH_FEATURES, n("selectPageWithFeatures")));
+        }
         return items;
     }
 

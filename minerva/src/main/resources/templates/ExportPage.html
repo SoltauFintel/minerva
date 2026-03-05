@@ -56,6 +56,7 @@
                             {{/each}}
                         </select>
                     </div>
+                    {{if not hasTemplates}}<span class="error">{{N.exportNoTemplates}}</span>{{/if}}
                 </div>
                 <div class="form-group">
                     <div class="col-lg-2 col-lg-offset-2">
@@ -90,14 +91,17 @@
 
                 <div class="form-group">
                     <div class="col-lg-offset-2 col-lg-5">
-                        <button type="submit" class="btn btn-primary br" onclick="document.getElementById('s1').style='';">{{N.export}}
+                        <button type="submit" class="btn btn-primary br" onclick="document.getElementById('s1').style='';"{{if not hasTemplates}} disabled{{/if}}>{{N.export}}
                             <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
                         <a href="/w/{{branch}}/menu" class="btn btn-default">{{N.cancel}}</a>
                     </div>
                 </div>
             </fieldset>
         </form>
-        <p class="mt3" style="font-size: 9pt;">{{N.exportInfo}}</p>
+        <p class="mt3" style="font-size: 9pt;">
+            {{if hasFeatureBook}} {{N.exportInfo1}} {{/if}}
+            {{N.exportInfo2}}
+        </p>
         {{if templatesAllowed}}
             <p class="mt2"><a href="/ets/{{branch}}" class="btn btn-default"><i class="fa fa-file-text-o"></i> {{N.exportTemplates}}</a></p>
         {{/if}}
