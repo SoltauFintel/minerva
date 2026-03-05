@@ -2,8 +2,6 @@ package minerva.workspace;
 
 import java.util.List;
 
-import org.pmw.tinylog.Logger;
-
 import com.github.template72.data.DataCondition;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
@@ -62,7 +60,6 @@ public class MenuPage extends WPage {
         boolean isAdmin = UserSO.isAdmin(ctx);
         boolean booksOk = workspace.getBooks() != null && !workspace.getBooks().isEmpty();
         DataList list = list("commands");
-Logger.info("customerversion="+fac.isCustomerVersion()+", Gitlab? " + fac.isGitlab()); // XXX        
         menu(list, "myTasks", "fa-inbox", "/w/:branch/my-tasks");
         if (!fac.isCustomerVersion()) {
             menu(list, "customerMode", "fa-thumbs-o-up", "/w/:branch/customer-mode/na");
@@ -96,7 +93,6 @@ Logger.info("customerversion="+fac.isCustomerVersion()+", Gitlab? " + fac.isGitl
         export(booksOk, list);
         workspace(list);
         if (!fac.isCustomerVersion()) {
-Logger.info("show keyValues"); // XXX
             menu(list, "keyValues", "fa-key", "/values/:branch");
         }
         additionalMenuItems(list);
