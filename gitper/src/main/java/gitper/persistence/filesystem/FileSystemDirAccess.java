@@ -6,6 +6,7 @@ import java.util.List;
 import gitper.User;
 import gitper.Workspace;
 import gitper.access.AbstractDirAccess;
+import gitper.persistence.gitlab.UserMergeRequests;
 
 public class FileSystemDirAccess extends AbstractDirAccess {
 
@@ -27,5 +28,10 @@ public class FileSystemDirAccess extends AbstractDirAccess {
     @Override
     public void mergeBranch(String sourceBranch, String targetBranch, User user) {
         throw new UnsupportedOperationException("Merge branch not supported");
+    }
+
+    @Override
+    public List<UserMergeRequests> areThereOpenMergeRequests(Workspace workspace) {
+        return new ArrayList<>();
     }
 }

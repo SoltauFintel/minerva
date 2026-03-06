@@ -46,6 +46,8 @@ public class User implements gitper.User {
     /** 1. Zeichen: "1" oder "0", 2. Zeichen: "1" oder "0". Kann null sein und steht dann für "00" */
     private String gitFileWatchOptions;
     private final Set<String> hiddenBranches = new TreeSet<>();
+    /** List of open merge request id */
+    private TreeSet<Long> omrIdList;
     
     @Override
     public String getLogin() {
@@ -288,5 +290,19 @@ public class User implements gitper.User {
 
     public Set<String> getHiddenBranches() {
         return hiddenBranches;
+    }
+
+    /**
+     * @return Open merge request id list
+     */
+    public TreeSet<Long> getOmrIdList() {
+        return omrIdList;
+    }
+
+    /**
+     * @param omrIdList Open merge request id list
+     */
+    public void setOmrIdList(TreeSet<Long> omrIdList) {
+        this.omrIdList = omrIdList;
     }
 }

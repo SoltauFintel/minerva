@@ -7,6 +7,7 @@ import java.util.Set;
 import gitper.User;
 import gitper.Workspace;
 import gitper.movefile.IMoveFile;
+import gitper.persistence.gitlab.UserMergeRequests;
 
 /**
  * That's an generic DAO.
@@ -115,4 +116,11 @@ public interface DirAccess {
      * @return null if folder does not exist, filenames without folder
      */
     Set<String> getFilenames(String folder);
+    
+    /**
+     * If there are still merge requests in the OPEN status, some changes have not been persisted.
+     * @param workspace -
+     * @return merge requests
+     */
+    List<UserMergeRequests> areThereOpenMergeRequests(Workspace workspace);
 }

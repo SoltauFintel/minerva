@@ -144,6 +144,8 @@ import minerva.task.TasksCreatedByMePage;
 import minerva.user.AddUserPage;
 import minerva.user.DeleteUserAction;
 import minerva.user.EditUserPage;
+import minerva.user.OpenMergeRequestsService.OpenMergeRequestsAction;
+import minerva.user.OpenMergeRequestsService.OpenMergeRequestsTimer;
 import minerva.user.UserAccess;
 import minerva.user.UsersPage;
 import minerva.user.quickbuttons.AddQuickbuttonAction;
@@ -188,6 +190,7 @@ public class MinervaWebapp extends RouteDefinitions {
         values();
         misc();
         restApi();
+        get("/omr", OpenMergeRequestsAction.class);
     }
 
     private void workspacesAndBooks() { // Workspaces, 1 workspace == n books
@@ -406,6 +409,7 @@ public class MinervaWebapp extends RouteDefinitions {
                     Timer.TIMER_ACTIVE_LABEL = MinervaOptions.TIMER_ACTIVE.getLabel();
                     Timer.create(config);
                     Timer.INSTANCE.createTimer(CleanupExportFolderTimer.class, "0 0 3 ? * *"); // 3:00 daily
+                    Timer.INSTANCE.createTimer(OpenMergeRequestsTimer.class, "0 0 18 ? * *"); // 18:00 daily
                     Timer.INSTANCE.createTimer(HourlyJournalTimer.class, "0 0 8-19 * * ?"); // daily every hour   TODO später auf alle 3h setzen
                     Timer.INSTANCE.createTimer(JournalTimer.class, "0 0 6 1 * ?"); // first day of month 6:00
                     Timer.INSTANCE.createTimer(IndexBooksTimer.class, "0 15 8 ? * MON-FRI");

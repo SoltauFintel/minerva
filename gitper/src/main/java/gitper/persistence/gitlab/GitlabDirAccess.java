@@ -92,4 +92,9 @@ public class GitlabDirAccess extends AbstractDirAccess {
             return new CommitHash();
         }
     }
+    
+    @Override
+    public List<UserMergeRequests> areThereOpenMergeRequests(Workspace workspace) {
+        return repo.areThereOpenMergeRequests(workspace.user());
+    }
 }

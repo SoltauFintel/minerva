@@ -132,6 +132,10 @@ public class GitlabRepository {
         git.fetch(user);
         git.branch(newBranch, commit, user);
     }
+    
+    public List<UserMergeRequests> areThereOpenMergeRequests(User user) {
+        return new MergeRequestService().areThereOpenMergeRequests(user, project);
+    }
 
     private GitService git(Workspace workspace) {
         return new GitService(new File(workspace.getFolder()));

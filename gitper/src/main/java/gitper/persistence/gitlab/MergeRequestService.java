@@ -1,10 +1,15 @@
 package gitper.persistence.gitlab;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.gitlab4j.api.Constants.MergeRequestState;
 import org.gitlab4j.api.GitLabApi;
 import org.gitlab4j.api.GitLabApiException;
 import org.gitlab4j.api.MergeRequestApi;
 import org.gitlab4j.api.models.MergeRequest;
 import org.gitlab4j.api.models.MergeRequestParams;
+import org.pmw.tinylog.Logger;
 
 import gitper.User;
 import gitper.base.StringService;
@@ -105,5 +110,32 @@ public class MergeRequestService {
     
     public void waitLonger() {
         waitLonger = true;
+    }
+    
+    public List<UserMergeRequests> areThereOpenMergeRequests(User anyUser, String project) {
+        List<UserMergeRequests> ret = new ArrayList<>();
+        try (GitLabApi gitLabApi = GitFactory.getGitLabApi(anyUser)) {
+            gitLabApi.getMergeRequestApi()
+                    .getMergeRequestsStream(project, MergeRequestState.OPENED)
+                    .filter(mr -> mr.getAuthor() != null && !StringService.isNullOrEmpty(mr.getAuthor().getName()))
+                    .forEach(mr -> saveUserMergeRequests(mr, ret));
+        } catch (GitLabApiException e) {
+            Logger.error(e, "Error in areThereOpenMergeRequests");
+        }
+        return ret;
+    }
+    
+    private void saveUserMergeRequests(MergeRequest mr, List<UserMergeRequests> list) {
+        String name = mr.getAuthor().getName();
+        for (UserMergeRequests i : list) {
+            if (i.getName().equalsIgnoreCase(name)) {
+                i.getIdList().add(mr.getId());
+                return;
+            }
+        }
+        UserMergeRequests umr = new UserMergeRequests();
+        umr.setName(name);
+        umr.getIdList().add(mr.getId());
+        list.add(umr);
     }
 }
