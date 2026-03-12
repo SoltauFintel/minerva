@@ -263,7 +263,7 @@ public class SearchSO {
         }
         
         public boolean matches(String str) {
-            return str != null && pattern.matcher(str).find();
+            return !StringService.isNullOrEmpty(str) && pattern.matcher(str).find();
         }
 
         public String getLang() {
