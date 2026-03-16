@@ -349,6 +349,7 @@ public class BookSO implements BookFilter {
             cm = (add ? "add" : "delete") + " tag: " + tag.trim().toLowerCase();
         }
         dao().saveFiles(files, new CommitMessage(cm), workspace);
+        // TODO serverlog?
     }
 
     private boolean multiSelectAction_editTags(SeiteSO seite, String pTags, boolean clear, boolean add) {
