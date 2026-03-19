@@ -1,4 +1,4 @@
-package gitper.base;
+package gitper.backup;
 
 public interface BackupItem {
 
