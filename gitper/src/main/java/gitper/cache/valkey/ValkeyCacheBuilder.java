@@ -16,20 +16,20 @@ public class ValkeyCacheBuilder<C> {
     }
 
     public C build(String cacheTypeName, Function<Valkey, C> func) {
-        cacheTypeName += ":" + prefix;
-        Valkey valkey = valkeys.get(cacheTypeName);
-        if (valkey == null) {
-            valkey = new Valkey(prefix);
-            valkeys.put(cacheTypeName, valkey);
-        }
-        Function<Valkey, C> wrapper = new Function<>() {
-            @Override
-            public C apply(Valkey t) {
-                synchronized (LOCK) {
+        synchronized (LOCK) {
+            cacheTypeName += ":" + prefix;
+            Valkey valkey = valkeys.get(cacheTypeName);
+            if (valkey == null) {
+                valkey = new Valkey(prefix);
+                valkeys.put(cacheTypeName, valkey);
+            }
+            Function<Valkey, C> wrapper = new Function<>() {
+                @Override
+                public C apply(Valkey t) {
                     return func.apply(t);
                 }
-            }
-        };
-        return wrapper.apply(valkey);
+            };
+            return wrapper.apply(valkey);
+        }
     }
 }
