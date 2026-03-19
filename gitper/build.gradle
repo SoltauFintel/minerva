@@ -21,6 +21,7 @@ dependencies {
 	implementation 'io.opentelemetry:opentelemetry-api:1.54.1'
 	implementation 'com.github.ben-manes.caffeine:caffeine:3.2.3'
     implementation 'io.valkey:valkey-java:5.5.0'
+    implementation 'de.mwvb:xmldocument:0.2.4'
     
     testImplementation 'junit:junit:4.13.2'
 }
