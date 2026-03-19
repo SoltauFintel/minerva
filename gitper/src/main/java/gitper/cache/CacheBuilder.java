@@ -10,11 +10,16 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 
 import gitper.cache.valkey.ValkeyCacheBuilder;
 
+/**
+ * Creates by default a transient in-memory cache.
+ * Use valkey() for creating a quite persistent in-memory cache.
+ */
 public class CacheBuilder<C> {
     private static final Object LOCK = new Object();
     private static final Map<String, Cache<String, ?>> map = new HashMap<>();
     private int minutes = 20;
 
+    // no effect for Valkey
     public CacheBuilder<C> minutes(int minutes) {
         this.minutes = minutes;
         return this;
@@ -25,23 +30,23 @@ public class CacheBuilder<C> {
     }
 
     public C build(String cacheTypeName, String key, Function<String, C> func) {
-        @SuppressWarnings("unchecked")
-        Cache<String, C> caffeine = (Cache<String, C>) map.get(cacheTypeName);
-        if (caffeine == null) {
-            caffeine = Caffeine.newBuilder() //
-                    .expireAfterWrite(Duration.ofMinutes(minutes)) //
-                    .build();
-            map.put(cacheTypeName, caffeine);
-        }
-        Function<String, C> wrapper = new Function<>() {
-            @Override
-            public C apply(String t) {
-                synchronized (LOCK) {
+        synchronized (LOCK) {
+            @SuppressWarnings("unchecked")
+            Cache<String, C> caffeine = (Cache<String, C>) map.get(cacheTypeName);
+            if (caffeine == null) {
+                caffeine = Caffeine.newBuilder() //
+                        .expireAfterWrite(Duration.ofMinutes(minutes)) //
+                        .build();
+                map.put(cacheTypeName, caffeine);
+            }
+            Function<String, C> wrapper = new Function<>() {
+                @Override
+                public C apply(String t) {
                     return func.apply(t);
                 }
-            }
-        };
-        return caffeine.get(key, wrapper); // liefert Cache Klasse
+            };
+            return caffeine.get(key, wrapper); // liefert Cache Klasse
+        }
     }
 
     public C build(String cacheTypeName, Function<String, C> func) {
@@ -49,6 +54,8 @@ public class CacheBuilder<C> {
     }
     
     public static void remove(String cacheTypeName) {
-        map.remove(cacheTypeName);
+        synchronized (LOCK) {
+            map.remove(cacheTypeName);
+        }
     }
 }
