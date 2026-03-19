@@ -33,7 +33,8 @@ public class StatesSO {
                 MinervaAuth.logout2(ctx);
                 throw new SessionExpiredException();
             } else {
-                final String path = ctx.path();
+                final String path = ctx.path()
+                        + (StringService.isNullOrEmpty(ctx.req.queryString()) ? "" : "?" + ctx.req.queryString());
                 Logger.info(login + " | re-login | came from " + path);
                 var user = new User();
                 user.setLogin(login);
