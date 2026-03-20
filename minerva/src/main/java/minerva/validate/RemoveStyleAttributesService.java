@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -90,6 +91,7 @@ public class RemoveStyleAttributesService {
     }
 
     /**
+     * style="text-align: right;" wird durchgelassen
      * @param html -
      * @param title can be null if ops is null
      * @param ops can be null
@@ -98,22 +100,78 @@ public class RemoveStyleAttributesService {
     public String filter(String html, String title, List<String> ops) {
         Document document = Jsoup.parse(html);
         Elements elementsWithStyle = document.select("[style]");
-        dirty = !elementsWithStyle.isEmpty();
-        if (dirty) {
-            Set<String> values = new TreeSet<>();
-            for (Element element : elementsWithStyle) {
-                values.add(element.attr("style"));
+
+        dirty = false;
+        Set<String> removedValues = new TreeSet<>();
+
+        for (Element element : elementsWithStyle) {
+            String originalStyle = element.attr("style");
+            String filteredStyle = filterStyle(originalStyle);
+
+            if (!normalizeStyle(originalStyle).equals(normalizeStyle(filteredStyle))) {
+                dirty = true;
+                removedValues.add(originalStyle);
+            }
+
+            if (filteredStyle.isEmpty()) {
                 element.removeAttr("style");
+            } else {
+                element.attr("style", filteredStyle);
             }
-            if (ops != null) {
-                ops.add("\n" + title);
-                for (String value : values) {
-                    ops.add("\t" + value);
-                }
-            }
-            return document.html();
         }
-        return html;
+
+        if (dirty && ops != null) {
+            ops.add("\n" + title);
+            for (String value : removedValues) {
+                ops.add("\t" + value);
+            }
+        }
+
+        return dirty ? document.html() : html;
+    }
+
+    private String filterStyle(String style) {
+        if (style == null || style.isBlank()) {
+            return "";
+        }
+
+        List<String> allowedDeclarations = new ArrayList<>();
+
+        String[] declarations = style.split(";");
+        for (String declaration : declarations) {
+            String trimmed = declaration.trim();
+            if (trimmed.isEmpty()) {
+                continue;
+            }
+
+            int colonPos = trimmed.indexOf(':');
+            if (colonPos < 0) {
+                continue;
+            }
+
+            String key = trimmed.substring(0, colonPos).trim().toLowerCase(Locale.ROOT);
+            String value = trimmed.substring(colonPos + 1).trim().toLowerCase(Locale.ROOT);
+
+            if ("text-align".equals(key) && "right".equals(value)) {
+                allowedDeclarations.add("text-align: right");
+            }
+        }
+
+        if (allowedDeclarations.isEmpty()) {
+            return "";
+        }
+
+        return String.join("; ", allowedDeclarations) + ";";
+    }
+
+    private String normalizeStyle(String style) {
+        if (style == null) {
+            return "";
+        }
+        return style
+                .replaceAll("\\s+", "")
+                .toLowerCase(Locale.ROOT)
+                .trim();
     }
     
     public Map<String, String> getFiles() {
