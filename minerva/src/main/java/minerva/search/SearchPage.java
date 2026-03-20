@@ -14,7 +14,6 @@ import com.github.template72.data.DataMap;
 
 import gitper.base.StringService;
 import minerva.model.BookSO;
-import minerva.model.SearchSO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.Breadcrumb;
 import minerva.user.UPage;
