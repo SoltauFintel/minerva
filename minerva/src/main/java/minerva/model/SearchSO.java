@@ -160,10 +160,7 @@ public class SearchSO {
         // search in other data
         additionalSearchers.forEach(i -> i.search(sc, workspace));
         
-        boolean again = true;
-        while (again) {
-            again = merge(ret);
-        }
+        mergeSearchResults(ret);
         
         MinervaMetrics.SEARCH.inc();
         return ret;
@@ -223,8 +220,15 @@ public class SearchSO {
         }
     }
 
+    public static void mergeSearchResults(List<SearchResult> sr) {
+        boolean again = true;
+        while (again) {
+            again = merge(sr);
+        }
+    }
+    
     // Suchtreffer, die das gleiche Ziel haben, verschmelzen.
-    private boolean merge(List<SearchResult> sr) {
+    private static boolean merge(List<SearchResult> sr) {
         for (int i = 0; i < sr.size(); i++) {
             SearchResult ii = sr.get(i);
             String iPath = ii.getPath();
