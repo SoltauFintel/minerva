@@ -39,13 +39,7 @@ public class CacheBuilder<C> {
                         .build();
                 map.put(cacheTypeName, caffeine);
             }
-            Function<String, C> wrapper = new Function<>() {
-                @Override
-                public C apply(String t) {
-                    return func.apply(t);
-                }
-            };
-            return caffeine.get(key, wrapper); // liefert Cache Klasse
+            return caffeine.get(key, func); // liefert Cache Klasse
         }
     }
 
