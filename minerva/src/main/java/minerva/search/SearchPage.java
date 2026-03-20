@@ -14,6 +14,7 @@ import com.github.template72.data.DataMap;
 
 import gitper.base.StringService;
 import minerva.model.BookSO;
+import minerva.model.SearchSO;
 import minerva.model.WorkspaceSO;
 import minerva.seite.Breadcrumb;
 import minerva.user.UPage;
@@ -63,9 +64,10 @@ public class SearchPage extends UPage {
 
     private Map<String, List<SearchResult>> getResults(String branch, String q, boolean forceContainsSearch) {
         Map<String, List<SearchResult>> results = new HashMap<>();
+        WorkspaceSO workspace = user.getWorkspace(branch);
         boolean first = true;
         for (String lang : langs) { 
-            List<SearchResult> result = user.getWorkspace(branch).getSearch().search(q, forceContainsSearch, lang, first);
+            List<SearchResult> result = workspace.getSearch().search(q, forceContainsSearch, lang, first);
             first = false;
             int nn = result.size();
             if (nn > 0) {
