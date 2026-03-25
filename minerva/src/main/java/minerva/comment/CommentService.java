@@ -30,7 +30,7 @@ public abstract class CommentService {
                     return e.getValue().getConstructor(Context.class).newInstance(ctx);
                 } catch (InvocationTargetException ex) {
                     Logger.error(ex.getTargetException());
-                    throw new RuntimeException(ex);
+                    throw new RuntimeException(ex.getTargetException().getMessage());
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
