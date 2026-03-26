@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Set;
 
 import org.pmw.tinylog.Logger;
 
@@ -49,15 +50,18 @@ public class MultiBranchService {
             ts = tb.getSeiten().createSeite(tParentSeite == null ? tb.getISeite() : tParentSeite, tb, id);
         } // else: Seite überschreiben   TODO prüfen, ob Inhalte verloren gehen würden
         ts.getSeite().copyFrom_allFields(seite.getSeite());
-        for (String dn : seite.getImageFilenames()) {
-            var p = "/img/" + id + "/" + dn;
-            File src = new File(seite.getBook().getFolder() + p);
-            File target = new File(tb.getFolder() + p);
-            target.getParentFile().mkdirs();
-            try {
-                Files.copy(src.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                Logger.error("Error copying " + src.getAbsolutePath() + " to " + target.getAbsolutePath());
+        Set<String> imageFilenames = seite.getImageFilenames();
+        if (imageFilenames != null) {
+            for (String dn : imageFilenames) {
+                var p = "/img/" + id + "/" + dn;
+                File src = new File(seite.getBook().getFolder() + p);
+                File target = new File(tb.getFolder() + p);
+                target.getParentFile().mkdirs();
+                try {
+                    Files.copy(src.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                } catch (IOException e) {
+                    Logger.error("Error copying " + src.getAbsolutePath() + " to " + target.getAbsolutePath());
+                }
             }
         }
         ts.saveAll(ts.getSeite().getTitle(), seite.getContent(), seite.getSeite().getVersion(), "",
