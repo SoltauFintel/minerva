@@ -307,20 +307,22 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
             unterseite.remove(filenamesToDelete, changedPages); // rekursiv
         }
         
-        String bookFolder = book.getFolder();
-        String r = getId() + "/*";
-        
         removeCrossBookLinksTargetingThisPage(changedPages);
         
         // Images für diese Seite
-        filenamesToDelete.add(bookFolder + "/img/" + r);
-
-        // Feature tree Daten für diese Seite
-        filenamesToDelete.add(bookFolder + "/feature-fields/" + getId() + ".ff");
+        filenamesToDelete.add(book.getFolder() + "/img/" + (getId() + "/*"));
 
         // Kommentare (inkl. Images) dieser Seite
         filenamesToDelete.add(new SeiteCommentService2(this).dir() + "/**");
         
+        remove_basic(filenamesToDelete);
+    }
+    
+    // Nur im Spezialfall von außen aufzurufen.
+    public void remove_basic(Set<String> filenamesToDelete) {
+        // Feature tree Daten für diese Seite
+        filenamesToDelete.add(book.getFolder() + "/feature-fields/" + getId() + ".ff");
+
         // HTML-Seiteninhalte aller Sprachen für diese Seite
         MinervaWebapp.factory().getLanguages().forEach(lang -> {
             String dn = filenameHtml(lang);
