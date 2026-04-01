@@ -2,6 +2,7 @@ package minerva.book.multiselect;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import org.pmw.tinylog.Logger;
@@ -10,12 +11,13 @@ import github.soltaufintel.amalia.web.action.IdAndLabel;
 import minerva.base.SimpleIdAndLabel;
 import minerva.base.UserMessage;
 import minerva.book.BPage;
+import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 
 public class MultiSelectPage extends BPage {
-    public static Supplier<List<MultiSelectChange>> changesSupplier = () -> List.of(new AddTagMSC(), new RemoveTagMSC(),
-            new ClearTagsMSC());
+    public static final List<MultiSelectChange> defaultChanges = List.of(new AddTagMSC(), new RemoveTagMSC(), new ClearTagsMSC());
+    public static Function<BookSO, List<MultiSelectChange>> changesSupplier = book -> defaultChanges;
     /** set ahc */
     public static Supplier<Object> additionalHtmlContext = () -> null;
     private Object ahc; // context object for additionalHtml calls
@@ -48,7 +50,7 @@ public class MultiSelectPage extends BPage {
     }
     
     private MultiSelectChange getChange(String changeLabelKey) {
-        var changes = changesSupplier.get();
+        var changes = changesSupplier.apply(book);
         for (MultiSelectChange change : changes) {
             if (change.getLabelKey().equals(changeLabelKey)) {
                 return change;
@@ -92,7 +94,7 @@ public class MultiSelectPage extends BPage {
     }
 
     private List<IdAndLabel> getActions() {
-        return changesSupplier.get().stream()
+        return changesSupplier.apply(book).stream()
                 .map(change -> (IdAndLabel) new SimpleIdAndLabel(change.getLabelKey(), n(change.getLabelKey())))
                 .toList();
     }
