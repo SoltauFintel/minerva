@@ -2,6 +2,7 @@ package minerva.book;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.pmw.tinylog.Logger;
 
@@ -13,7 +14,10 @@ import minerva.model.SeitenSO;
 public class MultiSelectPage extends BPage {
     private static final String ADD = "1";
     private static final String CLEAR = "00";
+    public static Supplier<Object> additionalHtmlContext = () -> null;
+    public static MultiSelectPageDeliverHtmlContent additionalHtml = (_ahc, seite) -> "";
     private Set<String> selectedPages;
+    private Object ahc;
     
     @Override
     protected void execute() {
@@ -38,7 +42,9 @@ public class MultiSelectPage extends BPage {
 
     private void display() {
         header(book.getBook().getTitle().getString(user.getPageLanguage()) + " (" + n("Mehrfachauswahl") + ")");
+        ahc = additionalHtmlContext.get();
         put("gliederung", gliederung(book.getSeiten()));
+        ahc = null;
         put("hasLeftArea", true);
         combobox_idAndLabel("actions", getActions(), ADD, false);
     }
@@ -60,6 +66,7 @@ public class MultiSelectPage extends BPage {
                 ret += " <span class=\"label label-tag\"><i class=\"fa fa-tag\"></i> <a href=\"/w/" + branch + "/tag/"
                         + esc(tag) + "\" tabindex=\"-1\">" + esc(tag) + "</a></span>";
             }
+            ret += additionalHtml.getHTML(ahc, seite);
             ret += gliederung(seite.getSeiten()); // rekursiv
             ret += "</li>";
         }
@@ -71,5 +78,10 @@ public class MultiSelectPage extends BPage {
                 new SimpleIdAndLabel(ADD, n("tag hinzufügen")),
                 new SimpleIdAndLabel("0", n("tag entfernen")),
                 new SimpleIdAndLabel(CLEAR, n("alle tags entfernen")));
+    }
+    
+    public interface MultiSelectPageDeliverHtmlContent {
+        
+        String getHTML(Object context, SeiteSO seite); 
     }
 }
