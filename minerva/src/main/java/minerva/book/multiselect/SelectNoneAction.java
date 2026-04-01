@@ -1,4 +1,6 @@
-package minerva.book;
+package minerva.book.multiselect;
+
+import minerva.book.BAction;
 
 public class SelectNoneAction extends BAction {
 

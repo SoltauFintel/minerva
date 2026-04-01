@@ -1,6 +1,8 @@
-package minerva.book;
+package minerva.book.multiselect;
 
 import org.pmw.tinylog.Logger;
+
+import minerva.book.BAction;
 
 /**
  * Seiten anhand Buch und tag auswählen

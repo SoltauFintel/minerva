@@ -1,4 +1,4 @@
-package minerva.book;
+package minerva.book.multiselect;
 
 import java.util.List;
 import java.util.Set;
@@ -8,6 +8,7 @@ import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.action.IdAndLabel;
 import minerva.base.SimpleIdAndLabel;
+import minerva.book.BPage;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 

@@ -1,6 +1,8 @@
-package minerva.book;
+package minerva.book.multiselect;
 
 import org.pmw.tinylog.Logger;
+
+import minerva.book.BAction;
 
 // HTMX
 public class SelectSeiteAction extends BAction {
