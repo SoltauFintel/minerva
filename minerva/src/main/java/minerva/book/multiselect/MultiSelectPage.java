@@ -8,17 +8,19 @@ import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.web.action.IdAndLabel;
 import minerva.base.SimpleIdAndLabel;
+import minerva.base.UserMessage;
 import minerva.book.BPage;
 import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 
 public class MultiSelectPage extends BPage {
-    private static final String ADD = "1";
-    private static final String CLEAR = "00";
+    public static Supplier<List<MultiSelectChange>> changesSupplier = () -> List.of(new AddTagMSC(), new RemoveTagMSC(),
+            new ClearTagsMSC());
+    /** set ahc */
     public static Supplier<Object> additionalHtmlContext = () -> null;
+    private Object ahc; // context object for additionalHtml calls
     public static MultiSelectPageDeliverHtmlContent additionalHtml = (_ahc, seite) -> "";
     private Set<String> selectedPages;
-    private Object ahc;
     
     @Override
     protected void execute() {
@@ -33,12 +35,26 @@ public class MultiSelectPage extends BPage {
     
     private void executeAction() {
         String tag = ctx.formParam("tag");
-        String action = ctx.formParam("action");
+        String changeLabelKey = ctx.formParam("action");
+
+        if (selectedPages.isEmpty()) {
+            throw new UserMessage("multiSelectError1", book.getUser());
+        }
+        Logger.info(book.getUser().getLogin() + " | Multi select | change: " + changeLabelKey + " | tag: " + tag);
         
-        Logger.info(book.getUser().getLogin() + " | Multi select | action: " + action + " | tag: " + tag);
-        book.multiSelectAction(selectedPages, tag, CLEAR.equals(action), ADD.equals(action));
+        getChange(changeLabelKey).execute(book, selectedPages, tag);
         
         ctx.redirect("select");
+    }
+    
+    private MultiSelectChange getChange(String changeLabelKey) {
+        var changes = changesSupplier.get();
+        for (MultiSelectChange change : changes) {
+            if (change.getLabelKey().equals(changeLabelKey)) {
+                return change;
+            }
+        }
+        throw new RuntimeException("MultiSelectChange not found");
     }
 
     private void display() {
@@ -47,7 +63,8 @@ public class MultiSelectPage extends BPage {
         put("gliederung", gliederung(book.getSeiten()));
         ahc = null;
         put("hasLeftArea", true);
-        combobox_idAndLabel("actions", getActions(), ADD, false);
+        List<IdAndLabel> actions = getActions();
+        combobox_idAndLabel("actions", actions, actions.get(0).getId(), false);
     }
     
     private String gliederung(SeitenSO seiten) {
@@ -75,10 +92,9 @@ public class MultiSelectPage extends BPage {
     }
 
     private List<IdAndLabel> getActions() {
-        return List.of(
-                new SimpleIdAndLabel(ADD, n("tag hinzufügen")),
-                new SimpleIdAndLabel("0", n("tag entfernen")),
-                new SimpleIdAndLabel(CLEAR, n("alle tags entfernen")));
+        return changesSupplier.get().stream()
+                .map(change -> (IdAndLabel) new SimpleIdAndLabel(change.getLabelKey(), n(change.getLabelKey())))
+                .toList();
     }
     
     public interface MultiSelectPageDeliverHtmlContent {

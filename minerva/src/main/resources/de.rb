@@ -461,3 +461,6 @@ FuerAlle=Für alle
 hideBranchesInfo=Alte Branches werden hier nicht aufgeführt und werden stets ausgeblendet.
 exportNoTemplates=Export nicht möglich da es keine Vorlagen gibt!
 QuicklyCreateFeaturesTitle=Schnelles Erstellen von Features
+addtag=tag hinzufügen
+removetag=tag entfernen
+cleartags=alle tags entfernen

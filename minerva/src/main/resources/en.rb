@@ -460,3 +460,6 @@ FuerAlle=For everybody
 hideBranchesInfo=Old branches are not listed here and are always hidden.
 exportNoTemplates=Export not possible because there are no templates!
 QuicklyCreateFeaturesTitle=Quickly Create Features
+addtag=add tag
+removetag=remove tag
+cleartags=clear all tags

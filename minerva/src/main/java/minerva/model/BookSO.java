@@ -14,10 +14,8 @@ import github.soltaufintel.amalia.base.FileService;
 import github.soltaufintel.amalia.spark.Context;
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
-import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.base.MinervaMetrics;
-import minerva.base.UserMessage;
 import minerva.book.Book;
 import minerva.book.BookType;
 import minerva.exclusions.SeiteSichtbar;
@@ -327,14 +325,6 @@ public class BookSO implements BookFilter {
     }
 
     public void multiSelectAction(Set<String> selectedPages, String tag, boolean clear, boolean add) {
-        if (selectedPages.isEmpty()) {
-            throw new UserMessage("multiSelectError1", getUser());
-        } else if (!clear && StringService.isNullOrEmpty(tag)) {
-            throw new UserMessage("multiSelectError2", getUser());
-        } else if (clear && !StringService.isNullOrEmpty(tag)) { // Bedienungsschutz
-            throw new UserMessage("multiSelectError3", getUser());
-        }
-        
         Map<String, String> files = new HashMap<>();
         for (String seiteId : selectedPages) {
             SeiteSO seite = _seiteById(seiteId);
