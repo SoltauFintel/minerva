@@ -226,6 +226,7 @@ public class Repository {
     }
     
     public boolean commitAndPushFile_ifChanged(String filename, String content, String commitMessage) {
+        pull(false);
         var file = new File(repo.getLocalFolder(), filename);
         String oldContent = FileService.loadPlainTextFile(file);
         if (oldContent == null || !oldContent.equals(content)) {
