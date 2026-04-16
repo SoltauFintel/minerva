@@ -1,6 +1,7 @@
 package gitper.gtc;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.util.FileUtils;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
 import org.pmw.tinylog.Logger;
+
+import github.soltaufintel.amalia.base.FileService;
 
 public class Repository {
     private static final Object LOCK = new Object();
@@ -85,7 +88,7 @@ public class Repository {
         }
     }
 
-    public Git getGit() {
+    private Git getGit() {
         if (git == null) {
             try {
                 git = Git.open(repo.getLocalFolder());
@@ -218,6 +221,36 @@ public class Repository {
             } catch (Exception e) {
                 Logger.error(e);
                 return "?";
+            }
+        }
+    }
+    
+    public boolean commitAndPushFile_ifChanged(String filename, String content, String commitMessage) {
+        var file = new File(repo.getLocalFolder(), filename);
+        String oldContent = FileService.loadPlainTextFile(file);
+        if (oldContent == null || !oldContent.equals(content)) {
+            pull(false);
+            if (!repo.getLocalFolder().isDirectory()) {
+                throw new RuntimeException("Ordner nicht vorhanden: " + repo.getLocalFolder().getAbsolutePath());
+            }
+            FileService.savePlainTextFile(file, content);
+            commitAndPush(filename, commitMessage);
+            close();
+            return true;
+        }
+        return false;
+    }
+    
+    public void commitAndPush(String filename, String commitMessage) {
+        synchronized (LOCK) {
+            try {
+                git.add().addFilepattern(filename).call();
+                git.commit().setMessage(commitMessage).call();
+                git.push().setRemote("origin") //
+                        .setCredentialsProvider(new UsernamePasswordCredentialsProvider(repo.getUser(), repo.getPassword())) //
+                        .call();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
     }
