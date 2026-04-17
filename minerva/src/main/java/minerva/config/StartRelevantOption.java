@@ -15,6 +15,7 @@ public interface StartRelevantOption {
     String LANGUAGES = "languages";
     String ONE_LANG = "one.lang";
 
+    // Gitlab API access
     String GITLAB_URL = "gitlab.url";
     String GITLAB_PROJECT = "gitlab.project";
     String GITLAB_APPID = "gitlab.appid";

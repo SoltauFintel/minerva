@@ -20,6 +20,7 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
+import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.util.FileUtils;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
@@ -226,20 +227,19 @@ public class Repository {
     }
     
     public boolean commitAndPushFile_ifChanged(String filename, String content, String commitMessage) {
-        pull(false);
-        var file = new File(repo.getLocalFolder(), filename);
-        String oldContent = FileService.loadPlainTextFile(file);
-        if (oldContent == null || !oldContent.equals(content)) {
+        boolean ret = false;
+        synchronized (LOCK) {
             pull(false);
-            if (!repo.getLocalFolder().isDirectory()) {
-                throw new RuntimeException("Ordner nicht vorhanden: " + repo.getLocalFolder().getAbsolutePath());
+            var file = new File(repo.getLocalFolder(), filename);
+            String oldContent = FileService.loadPlainTextFile(file);
+            if (oldContent == null || !oldContent.equals(content)) {
+                FileService.savePlainTextFile(file, content);
+                commitAndPush(filename, commitMessage);
+                ret = true;
             }
-            FileService.savePlainTextFile(file, content);
-            commitAndPush(filename, commitMessage);
             close();
-            return true;
+            return ret;
         }
-        return false;
     }
     
     public void commitAndPush(String filename, String commitMessage) {
@@ -247,13 +247,15 @@ public class Repository {
             try {
                 git.add().addFilepattern(filename).call();
                 git.commit().setMessage(commitMessage).call();
-                git.push().setRemote("origin") //
-                        .setCredentialsProvider(new UsernamePasswordCredentialsProvider(repo.getUser(), repo.getPassword())) //
-                        .call();
+                git.push().setRemote("origin").setCredentialsProvider(cred()).call();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
+    }
+    
+    protected CredentialsProvider cred() {
+        return new UsernamePasswordCredentialsProvider(repo.getUser(), repo.getPassword());
     }
 
     public void close() {
