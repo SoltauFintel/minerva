@@ -237,7 +237,7 @@ public class Repository {
         }
     }
     
-    public boolean commitAndPushFile_ifChanged(String filename, String content, String commitMessage) {
+    public boolean commitAndPushFile_ifChanged(String filename, String content, String authorName, String mail, String commitMessage) {
         boolean ret = false;
         synchronized (LOCK) {
             pull(false);
@@ -245,7 +245,7 @@ public class Repository {
             String oldContent = FileService.loadPlainTextFile(file);
             if (oldContent == null || !oldContent.equals(content)) {
                 FileService.savePlainTextFile(file, content);
-                commitAndPush(filename, commitMessage);
+                commitAndPush(filename, authorName, mail, commitMessage);
                 ret = true;
             }
             close();
@@ -253,11 +253,15 @@ public class Repository {
         }
     }
     
-    public void commitAndPush(String filename, String commitMessage) {
+    public void commitAndPush(String filename, String authorName, String mail, String commitMessage) {
         synchronized (LOCK) {
             try {
                 git.add().addFilepattern(filename).call();
-                git.commit().setMessage(commitMessage).call();
+                git.commit() //
+                    .setAuthor(authorName, mail) //
+                    .setCommitter(authorName, mail) //
+                    .setMessage(commitMessage) //
+                    .call();
                 git.push().setRemote("origin").setCredentialsProvider(cred()).call();
             } catch (Exception e) {
                 throw new RuntimeException(e);
