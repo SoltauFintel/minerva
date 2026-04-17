@@ -27,6 +27,8 @@ import org.eclipse.jgit.util.io.DisabledOutputStream;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.FileService;
+import gitper.User;
+import gitper.persistence.gitlab.GitFactory;
 
 public class Repository {
     private static final Object LOCK = new Object();
@@ -35,6 +37,15 @@ public class Repository {
 
     public Repository(RepositoryDefinition repo) {
         this.repo = repo;
+    }
+    
+    public static Repository withUser(RepositoryDefinition repo, User user) {
+        return new Repository(repo) {
+            @Override
+            protected CredentialsProvider cred() {
+                return GitFactory.getUsernamePasswordCredentialsProvider(user);
+            }
+        };
     }
 
     public void fetch(boolean bare) {
