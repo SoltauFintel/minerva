@@ -62,7 +62,7 @@ public class Repository {
                 try {
                     var git = getGit();
                     var cmd = pull ? git.pull() : git.fetch();
-                    cmd.setCredentialsProvider(new UsernamePasswordCredentialsProvider(repo.getUser(), repo.getPassword()));
+                    cmd.setCredentialsProvider(cred());
                     cmd.call();
                 } catch (GitAPIException e) {
                     Logger.error((pull ? "pull" : "fetch") + " error: " + repo.getUrl() + " => " + repo.getLocalFolder().getAbsolutePath());
@@ -88,7 +88,7 @@ public class Repository {
                 CloneCommand clone = Git.cloneRepository();
                 clone.setDirectory(repo.getLocalFolder());
                 clone.setURI(repo.getUrl());
-                clone.setCredentialsProvider(new UsernamePasswordCredentialsProvider(repo.getUser(), repo.getPassword()));
+                clone.setCredentialsProvider(cred());
                 clone.setBare(bare);
                 clone.call();
                 Logger.info("  clone ok");
