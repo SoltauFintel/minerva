@@ -57,6 +57,10 @@ public class DownloadExportPage extends WPage {
     private void download(File file, ContentDisposition contentDisposition) {
         Logger.debug(contentDisposition.name() + " download: " + file.getAbsolutePath());
         ctx.contentDisposition(contentDisposition, file.getName());
+        _download(ctx, file);
+    }
+    
+    public static void _download(Context ctx, File file) {
         try {
             ctx.res.raw().getOutputStream().write(Files.readAllBytes(file.toPath()));
         } catch (IOException e) {

@@ -12,6 +12,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.base.FileService;
+import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.base.StringService;
 import minerva.base.NLS;
 import minerva.exclusions.SeiteSichtbar;
@@ -250,12 +251,12 @@ public class PdfExportService extends MultiPageHtmlExportService {
                 + lang.toUpperCase() + "\" \"\">\n";
     }
     
-    private void bookmarks(List<Bookmark> bookmarks, StringBuilder html) {
+    public static void bookmarks(List<Bookmark> bookmarks, StringBuilder html) {
         for (Bookmark bm : bookmarks) {
             html.append("<bookmark href=\"#");
             html.append(bm.getId());
             html.append("\" name=\"");
-            html.append(esc(bm.getTitle()));            
+            html.append(Escaper.esc(bm.getTitle()));            
             if (bm.getBookmarks().isEmpty()) {
                 html.append("\"/>\n");
             } else {
