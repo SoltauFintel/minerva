@@ -5,7 +5,6 @@ import org.pmw.tinylog.Level;
 import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.timer.Timer;
 import github.soltaufintel.amalia.web.WebApp;
-import github.soltaufintel.amalia.web.builder.LoggingInitializer;
 import github.soltaufintel.amalia.web.builder.WebAppBuilder;
 import github.soltaufintel.amalia.web.config.AppConfig;
 import github.soltaufintel.amalia.web.route.PingRouteDefinition.PingAction;
@@ -36,6 +35,7 @@ import minerva.base.MathPage;
 import minerva.base.MessagePage;
 import minerva.base.MinervaError404Page;
 import minerva.base.MinervaErrorPage;
+import minerva.base.MinervaLoggingInitializer;
 import minerva.base.MinervaPageInitializer;
 import minerva.base.ServerlogPage;
 import minerva.base.Tosmap;
@@ -397,7 +397,7 @@ public class MinervaWebapp extends RouteDefinitions {
     
     public static WebAppBuilder getWebAppBuilder(String version) {
         return new WebAppBuilder(version)
-                .withLogging(new LoggingInitializer(Level.INFO, "{date} {level}  {message}"))
+                .withLogging(new MinervaLoggingInitializer(Level.INFO))
                 .withTemplatesFolders(MinervaWebapp.class, "/templates")
                 .withErrorPage(MinervaErrorPage.class, MinervaError404Page.class)
                 .withInitializer(config -> MinervaOptions.options = new MinervaOptions(MinervaOptions.getConfigFile(MinervaOptions.MAIN_CONFIG, config)))
