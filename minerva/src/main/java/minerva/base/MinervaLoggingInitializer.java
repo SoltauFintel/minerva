@@ -20,7 +20,7 @@ public class MinervaLoggingInitializer extends LoggingInitializer {
         var c = Configurator.currentConfig().writer(new ConsoleWriter());
         if (!"0".equals(System.getenv("FILELOGGING"))) {
             // Das Loggen in eine Datei kann mit env var FILELOGGING=0 abgeschaltet werden.
-            c.addWriter(new RollingFileWriter("/logs/minerva/minerva.log", 1, new TimestampLabeler("yyyy-MM-dd")));
+            c.addWriter(new RollingFileWriter("/tmp/logs/minerva/minerva.log", 1, new TimestampLabeler("yyyy-MM-dd")));
         }
         Level level;
         try {
