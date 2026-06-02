@@ -307,4 +307,12 @@ public class Repository {
         }
         return new GitFileChanges(bc, changes);
     }
+    
+    public String getBranch() {
+        try {
+            return git.getRepository().getBranch();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
