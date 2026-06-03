@@ -22,6 +22,7 @@ import minerva.export.template.ExportTemplatesService;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
+import minerva.seite.ViewSeitePage;
 import ohhtml.toc.LocalAnchors;
 
 public class PdfExportService extends MultiPageHtmlExportService {
@@ -165,6 +166,7 @@ public class PdfExportService extends MultiPageHtmlExportService {
 
     private String getHtml(SeiteSO seite, String title, File outputFolder) {
         String html = super.getBody(seite.getContent().getString(lang), title);
+        html = ViewSeitePage.keywordsTransformer.transform(html, lang, seite.getBook().getWorkspace().getBranch());
         if (seite.isFeatureTree()) {
             if (html.isBlank() && seite.getSeiten().isEmpty()) {
                 return null;

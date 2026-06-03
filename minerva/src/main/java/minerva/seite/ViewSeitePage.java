@@ -14,6 +14,7 @@ import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.base.DeliverHtmlContent;
 import minerva.base.FillModel;
+import minerva.base.HtmlTransformer;
 import minerva.base.MinervaMetrics;
 import minerva.base.Uptodatecheck;
 import minerva.book.BookPage;
@@ -41,6 +42,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     public static FillModel<SeiteSO, DataMap> customersMultiselect = (seite, model) -> model.list("customersMultiselect");
     public static AddFeatures addFeatures = (seite, features) -> {};
     public static PageMenuSupplier menuSupplier = new PageMenuSupplier();
+    public static HtmlTransformer keywordsTransformer = (html, lang, branch) -> html;
     private String mindmapJson;
     private SeiteSichtbar ssc;
     
@@ -226,6 +228,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
     
     protected String transformContent(TocMacro macro, String lang, DataMap map) {
         String html = seite.getContent().getString(lang);
+        html = keywordsTransformer.transform(html, lang, branch);
         html = macro.transform(html); // TOC, help keys links
         html = new LocalAnchors().transform(html); // after TocMacro.transform()
         html = Thumbnails.thumbnails(html, seite.getBook().getFolder(), seite.getId(), booklink.replace("/b/", "/s/") + "/");

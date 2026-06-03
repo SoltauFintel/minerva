@@ -19,6 +19,7 @@ import minerva.model.SeiteSO;
 import minerva.model.SeitenSO;
 import minerva.model.UserSO;
 import minerva.model.WorkspaceSO;
+import minerva.seite.ViewSeitePage;
 import minerva.user.User;
 import ohhtml.toc.HelpKeysForHeading;
 import ohhtml.toc.TocEntry;
@@ -74,7 +75,7 @@ public class PublishService {
                     bookPages.put(lang, bookPage);
                 }
                 // page level
-                copyHtmlAndImg(book.getSeiten(), bookPages, targetFolder);
+                copyHtmlAndImg(book.getSeiten(), bookPages, targetFolder, workspace.getBranch());
             }
         }
         // save table of contents file
@@ -88,7 +89,7 @@ public class PublishService {
         return targetFolder;
     }
     
-    private void copyHtmlAndImg(SeitenSO seiten, Map<String, TocEntry> parent, File targetFolder) {
+    private void copyHtmlAndImg(SeitenSO seiten, Map<String, TocEntry> parent, File targetFolder, String branch) {
         if (seiten.isEmpty()) {
             return;
         }
@@ -108,7 +109,9 @@ public class PublishService {
                 // copy .html files
                 File src = new File(seite.filenameHtml(lang));
                 if (src.isFile()) {
-                    FileService.copyFile(src, new File(targetFolder, lang));
+                    String html = FileService.loadPlainTextFile(src);
+                    html = ViewSeitePage.keywordsTransformer.transform(html, lang, branch);
+                    FileService.savePlainTextFile(new File(targetFolder, lang), html);
                 }
             }
             if (copied) {
@@ -120,7 +123,7 @@ public class PublishService {
                 
                 new AttachmentsSO(seite).publish(new File(targetFolder, "attachments")); // copy attachments
     
-                copyHtmlAndImg(seite.getSeiten(), pages, targetFolder); // recursive
+                copyHtmlAndImg(seite.getSeiten(), pages, targetFolder, branch); // recursive
             }
         }
     }

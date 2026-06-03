@@ -34,6 +34,7 @@ public class Repository {
     private static final Object LOCK = new Object();
     private final RepositoryDefinition repo;
     private Git git;
+    private String currentBranch = "master"; 
 
     public Repository(RepositoryDefinition repo) {
         this.repo = repo;
@@ -46,6 +47,13 @@ public class Repository {
                 return GitFactory.getUsernamePasswordCredentialsProvider(user);
             }
         };
+    }
+
+    // 2. Die neue Methode, um den Branch vorab zu setzen
+    public void switchToBranch(String branchName) {
+        if (branchName != null && !branchName.isBlank()) {
+            this.currentBranch = branchName;
+        }
     }
 
     public void fetch(boolean bare) {
@@ -61,17 +69,43 @@ public class Repository {
             synchronized (LOCK) {
                 try {
                     var git = getGit();
+                    
+                    // Sicherstellen, dass das lokale Repo auf dem richtigen Branch steht und diesen trackt
+                    checkoutAndTrackBranch(git);
+
                     var cmd = pull ? git.pull() : git.fetch();
                     cmd.setCredentialsProvider(cred());
                     cmd.call();
-                } catch (GitAPIException e) {
+                } catch (Exception e) {
                     Logger.error((pull ? "pull" : "fetch") + " error: " + repo.getUrl() + " => " + repo.getLocalFolder().getAbsolutePath());
                     Logger.error(e);
-                    throw new RuntimeException("Error " + (pull ? "pulling" : "fetching") + " Git repository");
+                    throw new RuntimeException("Error " + (pull ? "pulling" : "fetching") + " Git repository", e);
                 }
             }
         } else {
             cloneRepo(bare);
+        }
+    }
+
+    // Hilfsmethode, um den lokalen Branch zu wechseln und ggf. Remote-Tracking einzurichten
+    private void checkoutAndTrackBranch(Git git) throws GitAPIException, IOException {
+        String localBranch = git.getRepository().getBranch();
+        if (!currentBranch.equals(localBranch)) {
+            Logger.info("Switching branch from " + localBranch + " to " + currentBranch);
+            
+            // Prüfen, ob der lokale Branch bereits existiert
+            boolean localExists = git.branchList().call().stream()
+                    .anyMatch(ref -> org.eclipse.jgit.lib.Repository.shortenRefName(ref.getName()).equals(currentBranch));
+
+            var checkoutCmd = git.checkout().setName(currentBranch);
+            
+            if (!localExists) {
+                // Wenn er lokal nicht existiert, erstellen wir ihn und binden ihn an den Remote-Branch
+                checkoutCmd.setCreateBranch(true)
+                           .setStartPoint("origin/" + currentBranch);
+            }
+            
+            checkoutCmd.call();
         }
     }
 
@@ -84,18 +118,22 @@ public class Repository {
                 }
                 Files.createDirectory(repo.getLocalFolder().toPath());
     
-                Logger.info("cloning Git repository " + repo.getUrl() + " => " + repo.getLocalFolder().getAbsolutePath());
+                Logger.info("cloning Git repository (" + currentBranch + ") " + repo.getUrl() + " => " + repo.getLocalFolder().getAbsolutePath());
                 CloneCommand clone = Git.cloneRepository();
                 clone.setDirectory(repo.getLocalFolder());
                 clone.setURI(repo.getUrl());
                 clone.setCredentialsProvider(cred());
                 clone.setBare(bare);
+                
+                // 3. Dem Clone-Befehl sagen, welchen Branch er auschecken soll
+                clone.setBranch(currentBranch); 
+                
                 clone.call();
                 Logger.info("  clone ok");
             } catch (GitAPIException | IOException e) {
                 Logger.error("clone error: " + repo.getUrl() + " => " + repo.getLocalFolder().getAbsolutePath());
                 Logger.error(e);
-                throw new RuntimeException("Error cloning Git repository");
+                throw new RuntimeException("Error cloning Git repository", e);
             }
         }
     }
@@ -159,7 +197,8 @@ public class Repository {
     }
 
     public String getBranchStartDate(String branch) {
-        if (!"master".equals(branch)) {
+        // Hier dynamisch gegen den gesetzten Branch prüfen statt hartcodiert gegen "master"
+        if (!currentBranch.equals(branch)) {
             synchronized (LOCK) {
                 String x = "root_" + branch;
                 try {
@@ -262,6 +301,7 @@ public class Repository {
                     .setCommitter(authorName, mail) //
                     .setMessage(commitMessage) //
                     .call();
+                // Push betrifft nun automatisch den aktuell ausgecheckten Branch
                 git.push().setRemote("origin").setCredentialsProvider(cred()).call();
             } catch (Exception e) {
                 throw new RuntimeException(e);
