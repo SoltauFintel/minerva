@@ -64,10 +64,11 @@ $(document).on('submit', 'form.editorform', function(event) {  {{-- // allow Sav
     $(window).off('beforeunload');
 });
 
-$(window).on('unload', function() {
+$(window).on('pagehide', function() {
     {{each L in languages}}
         localStorage.removeItem('{{errorName}}{{L.LANG}}.{{id}}');
     {{/each}}
+    console.log("unload cleared {{errorName}}")
 });
 
 window.onload = function() {
