@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import gitper.base.StringService;
 import minerva.base.NlsString;
+import minerva.config.MinervaOptions;
 import ohhtml.toc.HelpKeysForHeading;
 
 /**
@@ -79,7 +81,12 @@ public class Seite {
             }
             links.addAll(c.links);
         } else {
+            String tag = MinervaOptions.TNP_TAG.get();
+            boolean addReviewTag = !StringService.isNullOrEmpty(tag) && c.tags.contains(tag);
             tags.clear();
+            if (addReviewTag) {
+                tags.add(tag);
+            }
             helpKeys.clear();
             hkh = null;
             links.clear();
