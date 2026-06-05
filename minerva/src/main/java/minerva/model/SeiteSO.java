@@ -423,6 +423,9 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         // img folder
         files.add(new MoveFile(book.getFolder() + "/img/" + getId(), targetBook.getFolder() + "/img/" + getId()));
         
+        // attachments folder
+        files.add(new MoveFile(book.getFolder() + "/attachments/" + getId(), targetBook.getFolder() + "/attachments/" + getId()));
+        
         // subpages
         for (SeiteSO seite : seiten) {
             seite.movePageToBookTo(targetBook, langs, files); // recursive
