@@ -116,7 +116,7 @@ public class SeitenSO extends MList<SeiteSO> {
     }
 
     /**
-     * Just create new SeiteSO. Does not save object.
+     * Create new SeiteSO.
      * @param parent -
      * @param book -
      * @return page ID
