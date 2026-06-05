@@ -75,6 +75,7 @@ public class ViewSeitePage extends SPage implements Uptodatecheck {
         User u = user.getFreshUser();
         if (book.isFeatureTree() && !"de".equals(u.getPageLanguage())) {
             u.setPageLanguage("de");
+            UserAccess.saveUser(user.getUser());
         }
         seite.forceReloadIfCheap();
         ssc = new SeiteSichtbar(workspace);
