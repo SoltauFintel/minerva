@@ -111,7 +111,7 @@ public class PublishService {
                 if (src.isFile()) {
                     String html = FileService.loadPlainTextFile(src);
                     html = ViewSeitePage.keywordsTransformer.transform(html, lang, branch);
-                    FileService.savePlainTextFile(new File(targetFolder, lang), html);
+                    FileService.savePlainTextFile(new File(targetFolder, lang + "/" + src.getName()), html);
                 }
             }
             if (copied) {
