@@ -53,7 +53,7 @@ public class OpenMergeRequestsService {
             Logger.info("[OpenMergeRequestsTimer] no admin mail addresses -> do nothing");
             return;
         }
-        Logger.info("[OpenMergeRequestsTimer] admin mailAddresses: " + mailAddresses); // XXX debug
+        Logger.debug("[OpenMergeRequestsTimer] admin mailAddresses: " + mailAddresses);
         
         if (!isDirty(mr)) {
             return; // abort if there are no changes. We don't want every day the same mail based on same data.
@@ -93,11 +93,11 @@ public class OpenMergeRequestsService {
     private Mail getMail(List<UserMergeRequests> mr, MinervaConfig config) {
         var gitlabUrl = config.getGitlabUrl() + "/" + config.getGitlabProject() + config.getGitlabMergeRequestPath();
         Mail mail = new Mail();
-        mail.setSubject("Open merge requests");
+        mail.setSubject("Open Merge Requests");
         mail.setBody("Diese Benutzer haben offene Merge Requests im Gitlab: "
                 + mr.stream().map(i -> i.getName()).collect(Collectors.joining(", "))
-                + "\nSolche Merge Requests stellen ungespeicherte Änderungen dar. " + gitlabUrl);
-        Logger.info("[OpenMergeRequestsTimer] body: " + mail.getBody()); // XXX debug
+                + " \r\n Solche Merge Requests stellen ungespeicherte Änderungen dar. " + gitlabUrl);
+        Logger.debug("[OpenMergeRequestsTimer] body: " + mail.getBody());
         return mail;
     }
 }
