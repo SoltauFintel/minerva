@@ -44,20 +44,21 @@ public class UsagesPage extends WPage {
             var list = list("usages");
             for (Usage u : usages) {
                 var map = list.add();
-                map.put("customer", esc(u.getCustomer()));
+                map.put("dt", esc(u.getDateTime()));
+                map.put("c", esc(u.getCustomer()));
                 map.put("env", esc(u.getEnvironment()));
                 map.put("lang", esc(u.getLanguage()));
                 map.put("page", u.getLink() == null ? esc(u.getTitle())
                         : ("<a href=\"" + esc(u.getLink()) + "\">" + esc(u.getTitle()) + "</a>"));
-                map.put("dt", esc(u.getDateTime()));
+                map.put("pageSort", esc(u.getTitle()));
             }
             combobox("customers", new ArrayList<>(customers), selectedItems, true);
             Cols cols = Cols.of(
                     Col.si(n("date"), "dt"),
-                    Col.si(n("customer"), "customer"),
+                    Col.si(n("customer"), "c"),
                     Col.si(n("Environment"), "env"),
                     Col.si(n("language"), "lang"),
-                    Col.si(n("page"), "page"));
+                    Col.i(n("page"), "page").sortable("pageSort"));
             put("table", new TableComponent("wauto", cols, model, "usages").sort(0).sort(0));
             putSize("n", list);
         }
