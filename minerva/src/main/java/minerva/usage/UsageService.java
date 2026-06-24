@@ -7,6 +7,7 @@ import java.util.TreeSet;
 import github.soltaufintel.amalia.rest.REST;
 import github.soltaufintel.amalia.web.action.Escaper;
 import github.soltaufintel.amalia.web.config.AppConfig;
+import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
 
@@ -25,12 +26,19 @@ public class UsageService {
                 .fromJson(Usages.class);
         List<Usage> ret = usages == null || usages.getUsages() == null ? new ArrayList<>() : usages.getUsages();
         for (Usage u : ret) {
-            SeiteSO seite = workspace.findPage(u.getPageId()); // TODO evtl. zu teuer
+            SeiteSO seite = workspace.findPage(u.getPageId()); // TODO evtl. zu teuer / und Seiten kommen ja mehrfach vor
             if (seite != null) {
                 u.setTitle(seite.getTitle());
                 u.setLink(seite.viewlink());
             } else {
-                u.setTitle("#" + u.getPageId());
+                u.setTitle("#" + u.getPageId()); // unknown page
+                // Es kann ein Buch Folder sein.
+                for (BookSO book : workspace.getBooks()) {
+                    if (book.getBook().getFolder().equals(u.getPageId())) {
+                        u.setTitle(book.getTitle());
+                        u.setLink("/b/" + workspace.getBranch() + "/" + book.getBook().getFolder());
+                    }
+                }
             }
         }
         return ret;

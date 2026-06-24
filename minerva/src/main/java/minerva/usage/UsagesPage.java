@@ -36,6 +36,7 @@ public class UsagesPage extends WPage {
             put("cancellink", "/w/master/menu");
             put("from", esc(from));
             put("to", esc(to));
+            put("host", esc(host));
             List<String> selectedItems = new ArrayList<>();
             if (customer != null) {
                 selectedItems.add(customer);

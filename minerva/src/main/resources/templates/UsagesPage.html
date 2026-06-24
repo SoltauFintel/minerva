@@ -18,7 +18,7 @@
                         <small>Format: JJJJ-MM-TT'T'HHMMSS</small>
                     </div>
                     <label for="customer" class="col-lg-1 control-label">{{N.customer}}</label>
-                    <div class="col-lg-2">
+                    <div class="col-lg-1">
                         <select class="form-control" id="usageCustomer" name="usageCustomer">
                             {{each a in customers}}
                                 <option{{if a.selected}} selected{{/if}}>{{a.text}}</option>
@@ -38,6 +38,8 @@
         </form>
         <hr>
         {{table}}
+        <hr>
+        <small>{{N.DatenGeladenVon}}: {{host}}</small>
     </div>
 </div>
 

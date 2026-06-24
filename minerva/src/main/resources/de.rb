@@ -469,3 +469,4 @@ from=von
 to=bis
 Environment=Umgebung
 Nutzungen=Nutzungen
+DatenGeladenVon=Daten geladen von
