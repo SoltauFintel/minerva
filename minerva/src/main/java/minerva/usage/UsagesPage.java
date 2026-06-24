@@ -50,7 +50,7 @@ public class UsagesPage extends WPage {
                 map.put("lang", esc(u.getLanguage()));
                 map.put("page", u.getLink() == null ? esc(u.getTitle())
                         : ("<a href=\"" + esc(u.getLink()) + "\">" + esc(u.getTitle()) + "</a>"));
-                map.put("pageSort", esc(u.getTitle()));
+                map.put("pageSort", esc(u.getTitle().toLowerCase()));
             }
             combobox("customers", new ArrayList<>(customers), selectedItems, true);
             Cols cols = Cols.of(

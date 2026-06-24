@@ -93,6 +93,7 @@ public class MenuPage extends WPage {
         export(booksOk, list);
         workspace(list);
         if (!fac.isCustomerVersion()) {
+            menu(list, "Nutzungen", "fa-camera-retro", "/w/:branch/usages");
             menu(list, "keyValues", "fa-key", "/values/:branch");
         }
         additionalMenuItems(list);
