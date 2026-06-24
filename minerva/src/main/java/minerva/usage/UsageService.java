@@ -28,14 +28,14 @@ public class UsageService {
         for (Usage u : ret) {
             SeiteSO seite = workspace.findPage(u.getPageId()); // TODO evtl. zu teuer / und Seiten kommen ja mehrfach vor
             if (seite != null) {
-                u.setTitle(seite.getTitle());
+                u.setTitle(seite.getSeite().getTitle().getString(u.getLanguage()));
                 u.setLink(seite.viewlink());
             } else {
                 u.setTitle("#" + u.getPageId()); // unknown page
                 // Es kann ein Buch Folder sein.
                 for (BookSO book : workspace.getBooks()) {
                     if (book.getBook().getFolder().equals(u.getPageId())) {
-                        u.setTitle(book.getTitle());
+                        u.setTitle(book.getBook().getTitle().getString(u.getLanguage()));
                         u.setLink("/b/" + workspace.getBranch() + "/" + book.getBook().getFolder());
                     }
                 }
