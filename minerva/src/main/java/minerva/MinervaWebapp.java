@@ -141,6 +141,7 @@ import minerva.subscription.SubscribeAction;
 import minerva.task.MyTasksPage;
 import minerva.task.TaskPrioAction;
 import minerva.task.TasksCreatedByMePage;
+import minerva.usage.UsagesPage;
 import minerva.user.AddUserPage;
 import minerva.user.DeleteUserAction;
 import minerva.user.EditUserPage;
@@ -225,6 +226,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/toggle-colored-headings", ToggleColoredHeadingsAction.class);
         get("/w/:branch/hide-branch", HideBranchsPage.class);
         get("/w/:branch/menu", MenuPage.class);
+        form("/w/:branch/usages", UsagesPage.class);
 
         // Export
         get("/w/:branch/books/export", ExportWorkspaceAction.class); // all books

@@ -7,6 +7,8 @@ public class Usage {
     private String language;
     private String pageId;
     private String dateTime;
+    private transient String title;
+    private transient String link;
 
     public String getId() {
         return id;
@@ -54,5 +56,21 @@ public class Usage {
 
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 }

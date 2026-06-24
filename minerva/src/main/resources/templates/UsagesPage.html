@@ -1,0 +1,46 @@
+{{master: master}}
+
+<div class="row"> 
+    <div class="col-lg-12">
+        <h1 class="page-header">{{header}} <span class="badge">{{n}}</span></h1>
+
+        <form class="form-horizontal" method="post">
+            <fieldset>
+                <div class="form-group">
+                    <label for="usageFrom" class="col-lg-1 control-label">{{N.from}}</label>
+                    <div class="col-lg-2">
+                        <input class="form-control" type="text" id="usageFrom" name="usageFrom" value="{{from}}" autofocus>
+                        <small>Format: JJJJ-MM-TT'T'HHMMSS</small>
+                    </div>
+                    <label for="usageTo" class="col-lg-1 control-label">{{N.to}}</label>
+                    <div class="col-lg-2">
+                        <input class="form-control" type="text" id="usageTo" name="usageTo" value="{{to}}">
+                        <small>Format: JJJJ-MM-TT'T'HHMMSS</small>
+                    </div>
+                    <label for="customer" class="col-lg-1 control-label">{{N.customer}}</label>
+                    <div class="col-lg-2">
+                        <select class="form-control" id="usageCustomer" name="usageCustomer">
+                            {{each a in customers}}
+                                <option{{if a.selected}} selected{{/if}}>{{a.text}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-lg-offset-1 col-lg-5">
+                        <button type="submit" class="btn btn-primary br" onclick="document.querySelector('#s1').style='';">{{N.Load}}
+                            <i id="s1" class="fa fa-delicious fa-spin" style="display: none;"></i></button>
+                        <a href="{{cancellink}}" class="btn btn-default">{{N.cancel}}</a>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+        <hr>
+        {{table}}
+    </div>
+</div>
+
+<style>
+small { color: grey; }
+</style>
