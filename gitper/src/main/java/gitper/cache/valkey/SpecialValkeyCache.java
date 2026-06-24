@@ -17,7 +17,7 @@ public abstract class SpecialValkeyCache {
     public String get(String key) {
         String ret = valkey.get(key);
         if (StringService.isNullOrEmpty(ret) && cacheSetUpName != null) {
-            if ("1".equals(valkey.get(cacheSetUpName))) { // Wurde Cache überhaupt schon aufgebaut?
+            if ("1".equals(valkey.get(cacheSetUpName))) { // Wurde Cache ueberhaupt schon aufgebaut?
                 ret = loadOne(key); // Item ist noch nicht im Cache, da Item ganz neu.
                 if (!StringService.isNullOrEmpty(ret)) {
                     valkey.put(key, ret);
