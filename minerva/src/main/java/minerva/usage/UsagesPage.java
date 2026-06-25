@@ -142,8 +142,8 @@ public class UsagesPage extends WPage {
 
     private List<Map.Entry<String, Long>> top10(List<Usage> usages) {
         return usages.stream()
-            // 1. Filtere ungültige oder leere Page-IDs heraus (optional, aber empfohlen)
-            .filter(u -> u.getPageId() != null && !u.getPageId().isEmpty())
+            // 1. Filtere ungültige oder leere Page-IDs heraus
+            .filter(u -> u.getPageId() != null && !u.getPageId().isEmpty() && !"$NOPAGE".equals(u.getPageId()))
             // 2. Gruppiere nach pageId und zähle die Vorkommen
             .collect(Collectors.groupingBy(Usage::getPageId, Collectors.counting()))
             // 3. Stream über das Ergebnis der Map (pageId -> Anzahl)
