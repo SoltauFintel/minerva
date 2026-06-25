@@ -47,9 +47,9 @@
             </fieldset>
         </form>
         
-        <hr>{{table}}
-        
-        <hr><h2>Top 10</h2> {{tableTop10}}
+        {{if hasUsages}}{{table}}{{/if}}
+
+        {{if hasTop10}}<hr><h2>Top 10</h2> {{tableTop10}} {{/if}}
         
         <hr>
         <small>{{N.DatenGeladenVon}}: {{loadedFromHost}}</small>

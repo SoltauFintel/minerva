@@ -68,6 +68,7 @@ public class UsagesPage extends WPage {
         combobox("hosts", hosts, host, false);
         put("table", new TableComponent("wauto", cols(), model, "usages").sort(0).sort(0));
         putSize("n", list);
+        put("hasUsages", !list.isEmpty());
         displayTop10(usages);
     }
 
@@ -112,10 +113,11 @@ public class UsagesPage extends WPage {
             }
             map.put("title", title);
         }
-        var cols = Cols.of(Col.i("#", "nr").right(),
-                Col.i("Seite", "title"),
-                Col.i("Aufrufe", "n").right());
+        var cols = Cols.of(Col.i("", "nr").right(),
+                Col.i(n("page"), "title"),
+                Col.i(n("Aufrufe"), "n").right());
         put("tableTop10", new TableComponent("wauto", cols, model, "top10"));
+        put("hasTop10", !list.isEmpty());
     }
 
     private List<Map.Entry<String, Long>> top10(List<Usage> usages) {
