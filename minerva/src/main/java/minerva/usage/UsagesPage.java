@@ -33,6 +33,7 @@ public class UsagesPage extends WPage {
             String host = ctx.queryParam("host");
 
             display(from, to, customer, host);
+            Logger.info(getLogin() + " | UsagesPage: " + from + ", from host: " + host);
         }
     }
 
@@ -61,7 +62,7 @@ public class UsagesPage extends WPage {
             map.put("c", esc(u.getCustomer()));
             map.put("env", esc(u.getEnvironment()));
             map.put("lang", esc(u.getLanguage()));
-            map.put("page", u.getLink() == null ? esc(u.getTitle()) : ahref(u));
+            map.put("page", page(u));
             map.put("pageSort", esc(u.getTitle().toLowerCase()));
         }
         combobox("customers", new ArrayList<>(customers), customer, true);
@@ -85,9 +86,28 @@ public class UsagesPage extends WPage {
         return ret;
     }
 
+    private String page(Usage usage) {
+        if ("$NOPAGE".equals(usage.getPageId())) {
+            String html = "";
+            String lineStart = "+ ";
+            for (List<String> lines : usage.getHelpKeys()) {
+                for (String line : lines) {
+                    html += lineStart + esc(line);
+                    lineStart = "<br>- ";
+                }
+                lineStart = "<br>+ ";
+            }
+            return "<a class=\"btn btn-xs btn-default\" href=\"#\" onclick=\"toggleDetails(this);\">No Page</a>"
+                    + "<div class=\"detail-text\" style=\"display: none;\">" + html + "</div>";
+        } else if (usage.getLink() == null) {
+            return esc(usage.getTitle());
+        }
+        return ahref(usage);
+    }
+    
     private Cols cols() {
         return Cols.of(
-                Col.si(n("date"), "dt"),
+                new Col(n("date"), "<span style=\"white-space: nowrap;\"{{i.dt}}</span>").sortable("dt"),
                 Col.si(n("customer"), "c"),
                 Col.si(n("Environment"), "env"),
                 Col.si(n("language"), "lang"),

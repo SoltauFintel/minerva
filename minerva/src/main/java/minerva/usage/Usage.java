@@ -1,5 +1,7 @@
 package minerva.usage;
 
+import java.util.List;
+
 public class Usage {
     private String id;
     private String customer;
@@ -7,6 +9,8 @@ public class Usage {
     private String language;
     private String pageId;
     private String dateTime;
+    private String topic;
+    private List<List<String>> helpKeys;
     private transient String title;
     private transient String link;
 
@@ -56,6 +60,22 @@ public class Usage {
 
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public List<List<String>> getHelpKeys() {
+        return helpKeys;
+    }
+
+    public void setHelpKeys(List<List<String>> helpKeys) {
+        this.helpKeys = helpKeys;
     }
 
     public String getTitle() {

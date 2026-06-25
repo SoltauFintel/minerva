@@ -56,6 +56,25 @@
     </div>
 </div>
 
+<script>
+function toggleDetails(elem) {
+  const td = elem.closest('td');
+  const detailDiv = td.querySelector('.detail-text');
+  if (detailDiv.style.display === 'none') {
+    detailDiv.style.display = 'block';
+  } else {
+    detailDiv.style.display = 'none';
+  }
+}
+</script>
+
 <style>
-small { color: grey; }
+    small {
+        color: grey;
+    }
+
+    .detail-text {
+        font-family: 'Courier New';
+        font-size: 9pt;
+    }
 </style>
