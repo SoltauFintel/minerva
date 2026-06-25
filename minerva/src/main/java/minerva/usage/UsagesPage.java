@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.pmw.tinylog.Logger;
+
 import github.soltaufintel.amalia.web.config.AppConfig;
 import github.soltaufintel.amalia.web.table.Col;
 import github.soltaufintel.amalia.web.table.Cols;
@@ -38,6 +40,7 @@ public class UsagesPage extends WPage {
         var sv = new UsageService();
         List<String> hosts = getHosts();
         if (!hosts.contains(host)) {
+            Logger.warn("switched host from \"" + host + "\" to \"" + hosts.get(0) + "\".");
             host = hosts.get(0);
         }
         List<Usage> usages = sv.loadUsage(host, from, to, workspace);
@@ -62,7 +65,7 @@ public class UsagesPage extends WPage {
             map.put("pageSort", esc(u.getTitle().toLowerCase()));
         }
         combobox("customers", new ArrayList<>(customers), customer, true);
-        combobox("hosts", hosts, hosts.get(0), false);
+        combobox("hosts", hosts, host, false);
         put("table", new TableComponent("wauto", cols(), model, "usages").sort(0).sort(0));
         putSize("n", list);
         displayTop10(usages);
