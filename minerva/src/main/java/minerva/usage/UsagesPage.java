@@ -58,8 +58,7 @@ public class UsagesPage extends WPage {
             map.put("c", esc(u.getCustomer()));
             map.put("env", esc(u.getEnvironment()));
             map.put("lang", esc(u.getLanguage()));
-            map.put("page", u.getLink() == null ? esc(u.getTitle())
-                    : ("<a href=\"" + esc(u.getLink()) + "\">" + esc(u.getTitle()) + "</a>"));
+            map.put("page", u.getLink() == null ? esc(u.getTitle()) : ahref(u));
             map.put("pageSort", esc(u.getTitle().toLowerCase()));
         }
         combobox("customers", new ArrayList<>(customers), customer, true);
@@ -104,11 +103,11 @@ public class UsagesPage extends WPage {
             String title = "#" + e.getKey();
             for (Usage u : usages) {
                 if (u.getPageId().equals(e.getKey())) {
-                    title = "<a href=\"" + u.getLink() + "\">" + u.getTitle() + "</a>";
+                    title = ahref(u);
                     break;
                 }
             }
-            map.put("title", esc(title));
+            map.put("title", title);
         }
         var cols = Cols.of(Col.i("#", "nr").right(),
                 Col.i("Seite", "title"),
@@ -130,5 +129,9 @@ public class UsagesPage extends WPage {
             .limit(10)
             // 6. Speichere das Ergebnis in einer Liste
             .collect(Collectors.toList());
+    }
+    
+    private String ahref(Usage u) {
+        return "<a href=\"" + esc(u.getLink()) + "\">" + esc(u.getTitle()) + "</a>";
     }
 }
