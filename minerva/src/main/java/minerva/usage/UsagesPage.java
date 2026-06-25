@@ -104,7 +104,7 @@ public class UsagesPage extends WPage {
             map.put("nSort", Strings.padStart("" + e.getValue(), 8, '0'));
             String title = "#" + e.getKey(), sort = title;
             for (Usage u : usages) {
-                if (u.getId().equals(e.getKey())) {
+                if (u.getPageId().equals(e.getKey())) {
                     title = "<a href=\"" + u.getLink() + "\">" + u.getTitle() + "</a>";
                     sort = u.getTitle().toLowerCase();
                     break;
