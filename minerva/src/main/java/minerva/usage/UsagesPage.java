@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.google.common.base.Strings;
-
 import github.soltaufintel.amalia.web.config.AppConfig;
 import github.soltaufintel.amalia.web.table.Col;
 import github.soltaufintel.amalia.web.table.Cols;
@@ -95,25 +93,26 @@ public class UsagesPage extends WPage {
     
     private void displayTop10(List<Usage> usages) {
         var list = list("top10");
+        int nr = 0;
         for (Map.Entry<String, Long> e : top10(usages)) {
             if (e.getValue() < 2) {
                 continue;
             }
             var map = list.add();
+            map.put("nr", ++nr + ".");
             map.put("n", "" + e.getValue());
-            map.put("nSort", Strings.padStart("" + e.getValue(), 8, '0'));
-            String title = "#" + e.getKey(), sort = title;
+            String title = "#" + e.getKey();
             for (Usage u : usages) {
                 if (u.getPageId().equals(e.getKey())) {
                     title = "<a href=\"" + u.getLink() + "\">" + u.getTitle() + "</a>";
-                    sort = u.getTitle().toLowerCase();
                     break;
                 }
             }
             map.put("title", esc(title));
-            map.put("sort", sort);
         }
-        var cols = Cols.of(Col.i("Seite", "title").sortable("sort"), Col.i("Aufrufe", "n").sortable("nSort").right());
+        var cols = Cols.of(Col.i("#", "nr").right(),
+                Col.i("Seite", "title"),
+                Col.i("Aufrufe", "n").right());
         put("tableTop10", new TableComponent("wauto", cols, model, "top10"));
     }
 
