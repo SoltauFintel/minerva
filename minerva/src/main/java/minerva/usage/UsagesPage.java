@@ -2,6 +2,10 @@ package minerva.usage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.google.common.base.Strings;
 
 import github.soltaufintel.amalia.web.config.AppConfig;
 import github.soltaufintel.amalia.web.table.Col;
@@ -64,6 +68,7 @@ public class UsagesPage extends WPage {
         combobox("hosts", hosts, hosts.get(0), false);
         put("table", new TableComponent("wauto", cols(), model, "usages").sort(0).sort(0));
         putSize("n", list);
+        displayTop10(usages);
     }
 
     private List<String> getHosts() {
@@ -86,5 +91,45 @@ public class UsagesPage extends WPage {
                 Col.si(n("Environment"), "env"),
                 Col.si(n("language"), "lang"),
                 Col.i(n("page"), "page").sortable("pageSort"));
+    }
+    
+    private void displayTop10(List<Usage> usages) {
+        var list = list("top10");
+        for (Map.Entry<String, Long> e : top10(usages)) {
+            if (e.getValue() < 2) {
+                continue;
+            }
+            var map = list.add();
+            map.put("n", "" + e.getValue());
+            map.put("nSort", Strings.padStart("" + e.getValue(), 8, '0'));
+            String title = "#" + e.getKey(), sort = title;
+            for (Usage u : usages) {
+                if (u.getId().equals(e.getKey())) {
+                    title = "<a href=\"" + u.getLink() + "\">" + u.getTitle() + "</a>";
+                    sort = u.getTitle().toLowerCase();
+                    break;
+                }
+            }
+            map.put("title", esc(title));
+            map.put("sort", sort);
+        }
+        var cols = Cols.of(Col.i("Seite", "title").sortable("sort"), Col.i("Aufrufe", "n").sortable("nSort").right());
+        put("tableTop10", new TableComponent("wauto", cols, model, "top10"));
+    }
+
+    private List<Map.Entry<String, Long>> top10(List<Usage> usages) {
+        return usages.stream()
+            // 1. Filtere ungültige oder leere Page-IDs heraus (optional, aber empfohlen)
+            .filter(u -> u.getPageId() != null && !u.getPageId().isEmpty())
+            // 2. Gruppiere nach pageId und zähle die Vorkommen
+            .collect(Collectors.groupingBy(Usage::getPageId, Collectors.counting()))
+            // 3. Stream über das Ergebnis der Map (pageId -> Anzahl)
+            .entrySet().stream()
+            // 4. Sortiere absteigend nach der Anzahl (Value)
+            .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+            // 5. Nimm nur die ersten 10 Einträge
+            .limit(10)
+            // 6. Speichere das Ergebnis in einer Liste
+            .collect(Collectors.toList());
     }
 }
