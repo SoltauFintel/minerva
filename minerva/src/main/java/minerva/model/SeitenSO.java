@@ -400,6 +400,9 @@ public class SeitenSO extends MList<SeiteSO> {
         return ret;
     }
     
+    /**
+     * @return recursive count
+     */
     public int countAll() {
         int ret = size();
         for (SeiteSO seite : this) {
