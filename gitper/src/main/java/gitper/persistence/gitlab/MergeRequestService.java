@@ -97,8 +97,8 @@ public class MergeRequestService {
             }
             if (++loop > max) {
                 throw new RuntimeException("Killer loop while waiting for merged MR. ID: " + mr.getIid()
-                    + "  Please check MR state manually. State is: " + s.getState() + ", merge state is: "
-                    + getMergeStatus(s) + ", error: " + s.getMergeError());
+                    + "  Please check Merge Request state manually. State is: " + s.getState() + ", merge state is: "
+                    + getMergeStatus(s) + (s.getMergeError() == null ? "" : (", error: " + s.getMergeError())));
             }
             try {
                 Thread.sleep(time);
