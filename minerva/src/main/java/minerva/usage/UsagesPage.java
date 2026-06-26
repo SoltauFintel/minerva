@@ -67,7 +67,7 @@ public class UsagesPage extends WPage {
         }
         combobox("customers", new ArrayList<>(customers), customer, true);
         combobox("hosts", hosts, host, false);
-        put("table", new TableComponent("wauto", cols(), model, "usages").sort(0).sort(0));
+        put("table", new TableComponent("wauto", cols(), model, "usages").sortDesc(0));
         putSize("n", list);
         put("hasUsages", !list.isEmpty());
         displayTop10(usages);
