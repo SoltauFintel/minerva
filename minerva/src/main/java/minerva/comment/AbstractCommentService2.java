@@ -17,6 +17,10 @@ public abstract class AbstractCommentService2 {
     public List<Comment> getComments() {
         return CommentService.loadComments(dao().dao(), dir());
     }
+    
+    public boolean hasComments() {
+        return !getComments().isEmpty();
+    }
 
     public SimpleDirAccess dao() {
         return simpledao;
