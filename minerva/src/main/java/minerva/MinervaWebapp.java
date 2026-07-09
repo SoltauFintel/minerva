@@ -176,7 +176,7 @@ import minerva.workspace.WorkspacesPage;
 import spark.Spark;
 
 public class MinervaWebapp extends RouteDefinitions {
-    public static final String VERSION = "4.05.0";
+    public static final String VERSION = "4.05.1";
     private static MinervaFactory factory;
     
     @Override
