@@ -6,9 +6,9 @@ import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.StringService;
 import github.soltaufintel.amalia.mail.Mail;
 import github.soltaufintel.amalia.timer.AbstractTimer;
-import gitper.base.StringService;
 import gitper.persistence.gitlab.UserMergeRequests;
 import minerva.MinervaWebapp;
 import minerva.config.MinervaConfig;

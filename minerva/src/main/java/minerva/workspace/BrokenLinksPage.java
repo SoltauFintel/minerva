@@ -9,7 +9,7 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.base.IdGenerator;
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import minerva.config.MinervaOptions;
 import minerva.workspace.BrokenLinksService.BLBrokenLink;
 import minerva.workspace.BrokenLinksService.BLLanguage;

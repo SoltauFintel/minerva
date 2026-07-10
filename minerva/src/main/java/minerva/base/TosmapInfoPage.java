@@ -1,7 +1,7 @@
 package minerva.base;
 
+import github.soltaufintel.amalia.base.StringService;
 import github.soltaufintel.amalia.web.action.Page;
-import gitper.base.StringService;
 
 public class TosmapInfoPage extends Page {
 

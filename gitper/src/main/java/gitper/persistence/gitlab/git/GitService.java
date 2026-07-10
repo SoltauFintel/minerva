@@ -19,10 +19,10 @@ import org.eclipse.jgit.transport.FetchResult;
 import org.eclipse.jgit.transport.RefSpec;
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.StringService;
 import gitper.User;
 import gitper.access.CommitMessage;
 import gitper.base.ICommit;
-import gitper.base.StringService;
 import gitper.gtc.BCommit;
 import gitper.gtc.BCommitBuilder;
 import gitper.gtc.Repository;

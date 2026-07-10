@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.StringService;
 import gitper.BackendService;
 import gitper.Gitper;
 import gitper.User;
@@ -15,7 +16,6 @@ import gitper.Workspaces;
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
 import gitper.base.ICommit;
-import gitper.base.StringService;
 
 public abstract class FileSystemBackendService implements BackendService {
     private final MinervaFileSystemConfig fsa;

@@ -2,7 +2,7 @@ package minerva.workspace;
 
 import java.util.Set;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import minerva.model.UserSO;
 
 /**

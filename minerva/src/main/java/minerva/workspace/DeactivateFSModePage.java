@@ -2,8 +2,8 @@ package minerva.workspace;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.StringService;
 import gitper.access.CommitMessage;
-import gitper.base.StringService;
 
 public class DeactivateFSModePage extends WPage {
     private static final String defaultCM = "many changes";

@@ -2,7 +2,7 @@ package minerva.subscription;
 
 import java.util.List;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import minerva.seite.SAction;
 
 public class AddMappingAction extends SAction {

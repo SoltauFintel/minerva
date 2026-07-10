@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import minerva.base.NlsString;
 import minerva.config.MinervaOptions;
 import ohhtml.toc.HelpKeysForHeading;

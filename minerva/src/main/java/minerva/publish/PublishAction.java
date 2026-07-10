@@ -1,6 +1,6 @@
 package minerva.publish;
 
-import static gitper.base.StringService.isNullOrEmpty;
+import static github.soltaufintel.amalia.base.StringService.isNullOrEmpty;
 
 import java.io.File;
 import java.io.IOException;

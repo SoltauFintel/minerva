@@ -1,12 +1,13 @@
 package minerva.workspace;
 
+import static github.soltaufintel.amalia.base.StringService.umlaute;
+
 import java.util.List;
 
 import com.github.template72.data.DataCondition;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
-import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.base.MinervaMetrics;
 import minerva.config.MinervaFactory;
@@ -216,8 +217,12 @@ public class MenuPage extends WPage {
                 hasFavorites = true;
             }
         }
-        StringService.sortDataListUmlaute(list, "title");
+        sortDataListUmlaute(list, "title");
         put("hasFavorites", hasFavorites);
+    }
+    
+    public static void sortDataListUmlaute(DataList list, String field) {
+        list.sort((a, b) -> umlaute(a.get(field).toString()).compareTo(umlaute(b.get(field).toString())));
     }
     
     public interface BranchNamesFilter {

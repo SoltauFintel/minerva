@@ -2,7 +2,7 @@ package minerva.config;
 
 import org.pmw.tinylog.Logger;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 
 public class Option {
     private String key;

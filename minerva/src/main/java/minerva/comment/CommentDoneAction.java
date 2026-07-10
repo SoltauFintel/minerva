@@ -1,7 +1,7 @@
 package minerva.comment;
 
+import github.soltaufintel.amalia.base.StringService;
 import github.soltaufintel.amalia.web.action.Action;
-import gitper.base.StringService;
 
 public class CommentDoneAction extends Action {
 

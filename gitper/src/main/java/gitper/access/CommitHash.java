@@ -1,6 +1,6 @@
 package gitper.access;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 
 /**
  * ID for commit

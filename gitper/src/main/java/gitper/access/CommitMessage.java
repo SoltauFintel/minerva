@@ -1,6 +1,6 @@
 package gitper.access;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 
 /**
  * I use a class for the commit message for better tracking its use in the sources.

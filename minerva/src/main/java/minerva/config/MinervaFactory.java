@@ -4,9 +4,9 @@ import java.io.File;
 import java.util.List;
 
 import github.soltaufintel.amalia.base.FileService;
+import github.soltaufintel.amalia.base.StringService;
 import gitper.BackendService;
 import gitper.access.CommitMessage;
-import gitper.base.StringService;
 import minerva.auth.MinervaAuth;
 import minerva.base.NlsString;
 import minerva.model.SeiteSO;

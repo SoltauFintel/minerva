@@ -21,9 +21,9 @@ import org.pmw.tinylog.Logger;
 import com.google.common.base.Strings;
 
 import github.soltaufintel.amalia.base.FileService;
+import github.soltaufintel.amalia.base.StringService;
 import github.soltaufintel.amalia.spark.Context;
 import gitper.access.DirAccess;
-import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.base.Tosmap;
 import minerva.export.ExportUserSettings;

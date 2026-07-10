@@ -9,8 +9,8 @@ import org.pmw.tinylog.Logger;
 import de.mwvb.base.xml.XMLDocument;
 import de.mwvb.base.xml.XMLElement;
 import github.soltaufintel.amalia.base.IdGenerator;
+import github.soltaufintel.amalia.base.StringService;
 import github.soltaufintel.amalia.web.action.Escaper;
-import gitper.base.StringService;
 
 public abstract class JenkinsBuild {
     private final Jenkins jenkins;

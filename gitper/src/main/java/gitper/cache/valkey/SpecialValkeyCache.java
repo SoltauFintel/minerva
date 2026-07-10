@@ -2,7 +2,7 @@ package gitper.cache.valkey;
 
 import java.util.Map;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 
 public abstract class SpecialValkeyCache {
     private final Valkey valkey;

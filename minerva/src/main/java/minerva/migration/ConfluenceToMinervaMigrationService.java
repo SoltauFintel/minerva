@@ -18,9 +18,9 @@ import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.FileService;
 import github.soltaufintel.amalia.base.IdGenerator;
+import github.soltaufintel.amalia.base.StringService;
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
-import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.base.NlsString;
 import minerva.base.TextService;

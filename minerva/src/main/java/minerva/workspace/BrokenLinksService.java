@@ -16,7 +16,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import minerva.config.MinervaOptions;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;

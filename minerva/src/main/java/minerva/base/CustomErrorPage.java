@@ -6,8 +6,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.IdGenerator;
+import github.soltaufintel.amalia.base.StringService;
 import github.soltaufintel.amalia.spark.Context;
-import gitper.base.StringService;
 import minerva.user.UPage;
 
 public class CustomErrorPage extends UPage {

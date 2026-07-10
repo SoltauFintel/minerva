@@ -2,8 +2,8 @@ package minerva.auth;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.StringService;
 import github.soltaufintel.amalia.web.action.Action;
-import gitper.base.StringService;
 import minerva.base.Tosmap;
 import minerva.user.UserAccess;
 

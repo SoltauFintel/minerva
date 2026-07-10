@@ -10,10 +10,10 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 import com.github.template72.data.IDataList;
 
+import github.soltaufintel.amalia.base.StringService;
 import github.soltaufintel.amalia.web.table.Col;
 import github.soltaufintel.amalia.web.table.Cols;
 import github.soltaufintel.amalia.web.table.TableComponent;
-import gitper.base.StringService;
 import gitper.base.WebpageTitleService;
 import minerva.base.MinervaMetrics;
 import minerva.base.UserMessage;

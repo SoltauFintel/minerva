@@ -1,6 +1,6 @@
 package minerva.seite.actions;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import minerva.seite.SAction;
 
 public class MoveSeiteAction extends SAction {

@@ -2,8 +2,8 @@ package gitper.gtc;
 
 import java.util.List;
 
+import github.soltaufintel.amalia.base.StringService;
 import gitper.base.ICommit;
-import gitper.base.StringService;
 
 public class BCommit implements ICommit {
     private String id;

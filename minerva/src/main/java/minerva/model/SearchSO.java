@@ -11,9 +11,9 @@ import org.pmw.tinylog.Logger;
 
 import com.google.gson.reflect.TypeToken;
 
+import github.soltaufintel.amalia.base.StringService;
 import github.soltaufintel.amalia.rest.REST;
 import github.soltaufintel.amalia.web.action.Escaper;
-import gitper.base.StringService;
 import minerva.base.MinervaMetrics;
 import minerva.search.CreatePageRequest;
 import minerva.search.CreateSiteRequest;

@@ -2,7 +2,7 @@ package minerva.keyvalue;
 
 import java.util.stream.Collectors;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.base.UserMessage;
 import minerva.workspace.WPage;

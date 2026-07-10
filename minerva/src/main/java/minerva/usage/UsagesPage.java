@@ -7,11 +7,11 @@ import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.StringService;
 import github.soltaufintel.amalia.web.config.AppConfig;
 import github.soltaufintel.amalia.web.table.Col;
 import github.soltaufintel.amalia.web.table.Cols;
 import github.soltaufintel.amalia.web.table.TableComponent;
-import gitper.base.StringService;
 import minerva.workspace.WPage;
 
 public class UsagesPage extends WPage {

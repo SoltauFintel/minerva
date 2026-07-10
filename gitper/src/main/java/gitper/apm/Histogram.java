@@ -3,7 +3,7 @@ package gitper.apm;
 import java.util.List;
 import java.util.Map;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import io.opentelemetry.api.metrics.LongHistogram;
 
 public class Histogram extends AbstractMetricsInstrument<LongHistogram> {

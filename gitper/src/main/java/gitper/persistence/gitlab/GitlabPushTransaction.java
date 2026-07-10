@@ -9,10 +9,10 @@ import java.util.stream.Collectors;
 import org.gitlab4j.api.GitLabApiException;
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.StringService;
 import gitper.User;
 import gitper.Workspace;
 import gitper.access.CommitMessage;
-import gitper.base.StringService;
 import gitper.persistence.gitlab.git.GitService;
 import gitper.persistence.gitlab.git.MinervaEmptyCommitException;
 

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.pmw.tinylog.Logger;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import minerva.workspace.WPage;
 
 public class EditExportTemplateSetPage extends WPage {

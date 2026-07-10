@@ -9,8 +9,8 @@ import org.pmw.tinylog.Logger;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import github.soltaufintel.amalia.base.StringService;
 import github.soltaufintel.amalia.web.action.Escaper;
-import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.base.DeliverHtmlContent;
 import minerva.base.FillModel;

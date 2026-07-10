@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.StringService;
 import github.soltaufintel.amalia.spark.Context;
-import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.auth.MinervaAuth;
 import minerva.base.MinervaMetrics;

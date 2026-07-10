@@ -10,8 +10,8 @@ import java.util.stream.Stream;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.FileService;
+import github.soltaufintel.amalia.base.StringService;
 import gitper.access.MultiPurposeDirAccess;
-import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.comment.SeiteCommentService;
 import minerva.config.MinervaFactory;

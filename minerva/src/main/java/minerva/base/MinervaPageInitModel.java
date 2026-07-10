@@ -5,8 +5,8 @@ import java.util.List;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.auth.webcontext.WebContext;
+import github.soltaufintel.amalia.base.StringService;
 import github.soltaufintel.amalia.spark.Context;
-import gitper.base.StringService;
 import minerva.model.BooksSO;
 import minerva.model.SeiteSO;
 import minerva.model.StatesSO;

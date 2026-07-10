@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.pmw.tinylog.Logger;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.model.WorkspaceSO;
 import minerva.user.UPage;

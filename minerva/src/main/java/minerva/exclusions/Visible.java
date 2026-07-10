@@ -1,6 +1,6 @@
 package minerva.exclusions;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import minerva.base.NLS;
 
 public class Visible {

@@ -8,13 +8,13 @@ import org.pmw.tinylog.Logger;
 import com.github.template72.data.DataMap;
 
 import github.soltaufintel.amalia.base.FileService;
+import github.soltaufintel.amalia.base.StringService;
 import github.soltaufintel.amalia.mail.Mail;
 import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
 import gitper.access.SimpleDirAccess;
-import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.base.NLS;
 import minerva.config.MinervaConfig;

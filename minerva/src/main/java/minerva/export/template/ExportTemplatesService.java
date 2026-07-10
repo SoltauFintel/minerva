@@ -10,9 +10,9 @@ import java.util.Set;
 import com.github.template72.loader.ResourceTemplateLoader;
 
 import github.soltaufintel.amalia.base.IdGenerator;
+import github.soltaufintel.amalia.base.StringService;
 import gitper.access.CommitMessage;
 import gitper.access.MultiPurposeDirAccess;
-import gitper.base.StringService;
 import minerva.base.NLS;
 import minerva.model.WorkspaceSO;
 

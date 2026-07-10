@@ -7,11 +7,11 @@ import java.util.List;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.auth.webcontext.WebContext;
+import github.soltaufintel.amalia.base.StringService;
 import github.soltaufintel.amalia.mail.Mail;
 import github.soltaufintel.amalia.mail.MailSender;
 import github.soltaufintel.amalia.web.action.Escaper;
 import github.soltaufintel.amalia.web.config.AppConfig;
-import gitper.base.StringService;
 
 public class MinervaConfig {
     private final AppConfig config;

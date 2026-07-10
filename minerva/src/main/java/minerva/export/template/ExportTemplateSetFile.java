@@ -2,7 +2,7 @@ package minerva.export.template;
 
 import org.pmw.tinylog.Logger;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 
 // No JSON, because HTML is not good readable in encoded JSON format.
 public class ExportTemplateSetFile {

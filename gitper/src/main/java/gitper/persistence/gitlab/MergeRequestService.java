@@ -11,8 +11,8 @@ import org.gitlab4j.api.models.MergeRequest;
 import org.gitlab4j.api.models.MergeRequestParams;
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.StringService;
 import gitper.User;
-import gitper.base.StringService;
 
 public class MergeRequestService {
     private boolean waitLonger = false;

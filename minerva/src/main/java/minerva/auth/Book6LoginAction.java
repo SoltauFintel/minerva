@@ -3,8 +3,8 @@ package minerva.auth;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.IdGenerator;
+import github.soltaufintel.amalia.base.StringService;
 import github.soltaufintel.amalia.web.action.Action;
-import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.base.Tosmap;
 

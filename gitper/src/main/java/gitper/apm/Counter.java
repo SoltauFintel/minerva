@@ -2,7 +2,7 @@ package gitper.apm;
 
 import java.util.Map;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import io.opentelemetry.api.metrics.LongCounter;
 
 public class Counter extends AbstractMetricsInstrument<LongCounter> {

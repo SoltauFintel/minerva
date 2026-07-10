@@ -7,6 +7,7 @@ import java.util.TreeSet;
 
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.base.StringService;
 import gitper.BackendService;
 import gitper.GitlabConfig;
 import gitper.Gitper;
@@ -16,7 +17,6 @@ import gitper.Workspaces;
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
 import gitper.base.ICommit;
-import gitper.base.StringService;
 import gitper.persistence.gitlab.git.GitService;
 
 public class GitlabBackendService implements BackendService {

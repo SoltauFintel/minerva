@@ -3,7 +3,7 @@ package minerva.search;
 import java.util.ArrayList;
 import java.util.List;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import minerva.seite.Breadcrumb;
 
 public class SearchResult {

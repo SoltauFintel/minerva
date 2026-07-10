@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.FileService;
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import minerva.MinervaWebapp;
 
 public class UserAccess {

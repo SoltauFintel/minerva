@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 import org.pmw.tinylog.Logger;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import minerva.model.StateSO;
 
 /**

@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import com.github.template72.data.DataList;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import minerva.model.ExclusionsSO;
 import minerva.user.CustomerMode;
 import minerva.workspace.WPage;

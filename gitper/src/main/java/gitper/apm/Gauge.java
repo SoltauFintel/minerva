@@ -2,7 +2,7 @@ package gitper.apm;
 
 import java.util.Map;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import io.opentelemetry.api.metrics.LongGauge;
 
 public class Gauge extends AbstractMetricsInstrument<LongGauge> {

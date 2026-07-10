@@ -17,8 +17,8 @@ import org.jsoup.select.Elements;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.FileService;
+import github.soltaufintel.amalia.base.StringService;
 import gitper.access.CommitMessage;
-import gitper.base.StringService;
 import minerva.MinervaWebapp;
 import minerva.config.MinervaOptions;
 import minerva.model.BookSO;

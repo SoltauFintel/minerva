@@ -2,7 +2,7 @@ package minerva.book.multiselect;
 
 import java.util.Set;
 
-import gitper.base.StringService;
+import github.soltaufintel.amalia.base.StringService;
 import minerva.base.UserMessage;
 import minerva.model.BookSO;
 
