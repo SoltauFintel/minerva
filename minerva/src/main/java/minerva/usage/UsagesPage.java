@@ -74,13 +74,8 @@ public class UsagesPage extends WPage {
     }
 
     private List<String> getHosts() {
-        List<String> ret = new ArrayList<>();
-        for (String host : new AppConfig().get("usage.hosts", "").split(",")) {
-            if (!host.isBlank()) {
-                ret.add(host.trim());
-            }
-        }
-        if (ret.isEmpty()) {
+        var ret = new AppConfig().getList("usage.hosts");
+        if (ret == null || ret.isEmpty()) {
             throw new RuntimeException("Missing parameter 'usage.hosts' in AppConfig!");
         }
         return ret;
