@@ -102,7 +102,7 @@ public class UsagesPage extends WPage {
     
     private Cols cols() {
         return Cols.of(
-                new Col(n("date"), "<span style=\"white-space: nowrap;\">{{i.dt}}</span>").sortable("dt"),
+                Col.si(n("date"), "dt").nobr(),
                 Col.si(n("customer"), "c"),
                 Col.si(n("Environment"), "env"),
                 Col.si(n("language"), "lang"),
