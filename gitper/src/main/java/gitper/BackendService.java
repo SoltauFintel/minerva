@@ -3,9 +3,9 @@ package gitper;
 import java.util.List;
 import java.util.Set;
 
+import github.soltaufintel.amalia.git.ICommit;
 import gitper.access.CommitMessage;
 import gitper.access.DirAccess;
-import gitper.base.ICommit;
 
 public interface BackendService {
 

@@ -6,6 +6,7 @@ import org.gitlab4j.api.GitLabApi;
 import org.gitlab4j.api.GitLabApiException;
 import org.pmw.tinylog.Logger;
 
+import github.soltaufintel.amalia.git.Credentials;
 import github.soltaufintel.amalia.rest.REST;
 import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.GitlabConfig;
@@ -83,16 +84,35 @@ public class GitFactory {
      * @param user -
      * @return UsernamePasswordCredentialsProvider
      */
-    public static UsernamePasswordCredentialsProvider getUsernamePasswordCredentialsProvider(User user) {
+    public static Credentials getCredentials(User user) {
         GitlabDataStore xu = new GitlabDataStore(user);
         String accessToken = xu.getAccessToken();
+        String login, password;
         if (accessToken == null) {
             Logger.debug(user.getLogin() + " | Git access with login and password");
-            return new UsernamePasswordCredentialsProvider(user.getLogin(), xu.getPassword());
+            login = user.getLogin();
+            password = xu.getPassword();
         } else {
             Logger.debug(user.getLogin() + " | Git access with Gitlab oauth2 access token");
-            return new UsernamePasswordCredentialsProvider("oauth2", accessToken);
+            login = "oauth2";
+            password = accessToken;
         }
+        return new Credentials() {
+            @Override
+            public String getUser() {
+                return login;
+            }
+            
+            @Override
+            public String getPassword() {
+                return password;
+            }
+        };
+    }
+    
+    public static UsernamePasswordCredentialsProvider cred(User user) {
+        var c = getCredentials(user);
+        return new UsernamePasswordCredentialsProvider(c.getUser(), c.getPassword());
     }
 
     /**

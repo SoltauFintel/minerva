@@ -10,11 +10,11 @@ import org.eclipse.jgit.errors.RepositoryNotFoundException;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.FileService;
+import github.soltaufintel.amalia.git.ICommit;
 import gitper.Gitper;
 import gitper.User;
 import gitper.Workspace;
 import gitper.access.CommitMessage;
-import gitper.base.ICommit;
 import gitper.persistence.gitlab.git.GitService;
 
 public class GitlabRepository {

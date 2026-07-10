@@ -6,8 +6,8 @@ import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 import com.github.template72.data.IDataMap;
 
+import github.soltaufintel.amalia.git.ICommit;
 import gitper.BackendService;
-import gitper.base.ICommit;
 import minerva.MinervaWebapp;
 import minerva.base.Uptodatecheck;
 import minerva.model.BookSO;

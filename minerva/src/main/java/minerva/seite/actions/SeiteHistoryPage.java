@@ -8,9 +8,9 @@ import java.util.stream.Collectors;
 import com.github.template72.data.DataList;
 import com.github.template72.data.DataMap;
 
+import github.soltaufintel.amalia.git.ICommit;
 import github.soltaufintel.amalia.web.action.Escaper;
 import gitper.BackendService;
-import gitper.base.ICommit;
 import minerva.MinervaWebapp;
 import minerva.book.BookPage;
 import minerva.config.MinervaFactory;

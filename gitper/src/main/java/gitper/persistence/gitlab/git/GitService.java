@@ -20,12 +20,12 @@ import org.eclipse.jgit.transport.RefSpec;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.StringService;
+import github.soltaufintel.amalia.git.Commit;
+import github.soltaufintel.amalia.git.CommitBuilder;
+import github.soltaufintel.amalia.git.ICommit;
+import github.soltaufintel.amalia.git.Repository;
 import gitper.User;
 import gitper.access.CommitMessage;
-import gitper.base.ICommit;
-import gitper.gtc.BCommit;
-import gitper.gtc.BCommitBuilder;
-import gitper.gtc.Repository;
 import gitper.persistence.gitlab.GitFactory;
 
 /**
@@ -70,7 +70,7 @@ public class GitService {
         synchronized (LOCK) {
             try (Git result = Git.cloneRepository()
                     .setURI(GitFactory.handleUrl(url, user))
-                    .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
+                    .setCredentialsProvider(GitFactory.cred(user))
                     .setBranch(branch)
                     .setDirectory(workspace)
                     .setBare(bare)
@@ -92,7 +92,7 @@ public class GitService {
         synchronized (LOCK) {
             try (Git git = Git.open(workspace)) {
                 git.fetch()
-                    .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
+                    .setCredentialsProvider(GitFactory.cred(user))
                     .call();
             } catch (Exception e) {
                 throw new RuntimeException("Error fetching Git repository!", e);
@@ -109,7 +109,7 @@ public class GitService {
         synchronized (LOCK) {
             try (Git git = Git.open(workspace)) {
                 git.pull()
-                    .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
+                    .setCredentialsProvider(GitFactory.cred(user))
                     .call();
             } catch (Exception e) {
                 throw new RuntimeException("Error pulling Git repository!", e);
@@ -210,7 +210,7 @@ public class GitService {
                         git.push()
                             .setRemote("origin")
                             .setRefSpecs(new RefSpec(name + ":" + name))
-                            .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
+                            .setCredentialsProvider(GitFactory.cred(user))
                             .call();
                     } catch (Exception up) {
                         try {
@@ -346,7 +346,7 @@ public class GitService {
                     .call();
                 if (user != null) {
                     git.push()
-                        .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
+                        .setCredentialsProvider(GitFactory.cred(user))
                         .call();
                 }
                 return commit.getName();
@@ -360,7 +360,7 @@ public class GitService {
     }
 
     public List<ICommit> getFileHistory(String file, boolean followRenames) {
-        var builder = new BCommitBuilder();
+        var builder = new CommitBuilder();
         try (Git git = Git.open(workspace)) {
             Iterable<RevCommit> commits;
             if (followRenames) {
@@ -381,7 +381,7 @@ public class GitService {
     }
 
     public List<ICommit> getHtmlChangesHistory(int start, int size) {
-        var builder = new BCommitBuilder();
+        var builder = new CommitBuilder();
         try (Git git = Git.open(workspace)) {
             final var repository = git.getRepository();
             Iterable<RevCommit> commits = git.log().setSkip(start).setMaxCount(size).call();
@@ -389,7 +389,7 @@ public class GitService {
             for (RevCommit commit : commits) {
                 if (commit.getParentCount() == 1) {
                     if (!commit.getShortMessage().startsWith("(Migration)")) {
-                        BCommit hc = builder.build(commit, null);
+                        Commit hc = builder.build(commit, null);
                         var changes = Repository.loadFileChanges(commit, repository);
                         if (changes != null) {
                             hc.setFiles(changes.changes().stream()
@@ -413,7 +413,7 @@ public class GitService {
         synchronized (LOCK) {
             try (Git git = Git.open(workspace)) {
                 FetchResult f = git.fetch()
-                        .setCredentialsProvider(GitFactory.getUsernamePasswordCredentialsProvider(user))
+                        .setCredentialsProvider(GitFactory.cred(user))
                         .call();
                 long n = f.getTrackingRefUpdates().stream().filter(i -> i.getRemoteName().endsWith("/" + targetBranch)).count();
                 return n > 0;
