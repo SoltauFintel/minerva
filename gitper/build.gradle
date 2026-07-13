@@ -14,8 +14,8 @@ tasks.withType(JavaCompile) {
 }
 
 dependencies {
-    api            'com.github.SoltauFintel.amalia:amalia-web:3.0.0-a2'
-    api            'com.github.SoltauFintel.amalia:amalia-git:3.0.0-a2'
+    api            'com.github.SoltauFintel.amalia:amalia-web:3.0.0-a3'
+    api            'com.github.SoltauFintel.amalia:amalia-git:3.0.0-a3'
     api            'commons-io:commons-io:2.12.0'
     implementation 'org.gitlab4j:gitlab4j-api:5.0.1' // keep this version
 	implementation 'io.opentelemetry:opentelemetry-api:1.54.1'
