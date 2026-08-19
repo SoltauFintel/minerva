@@ -172,6 +172,7 @@ import minerva.workspace.MergeBranchPage;
 import minerva.workspace.PullWorkspaceAction;
 import minerva.workspace.ToggleBrokenLinkAction;
 import minerva.workspace.ToggleColoredHeadingsAction;
+import minerva.workspace.WorkspaceDownloadRoute;
 import minerva.workspace.WorkspaceHistoryPage;
 import minerva.workspace.WorkspacesPage;
 import spark.Spark;
@@ -228,6 +229,7 @@ public class MinervaWebapp extends RouteDefinitions {
         get("/w/:branch/hide-branch", HideBranchsPage.class);
         get("/w/:branch/menu", MenuPage.class);
         form("/w/:branch/usages", UsagesPage.class);
+        get("/rest/admin/workspace-download", WorkspaceDownloadRoute.class);
 
         // Export
         get("/w/:branch/books/export", ExportWorkspaceAction.class); // all books
