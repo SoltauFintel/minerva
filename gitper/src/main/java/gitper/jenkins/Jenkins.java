@@ -22,6 +22,9 @@ public class Jenkins {
             String auth = config.getUserLogin() + ":" + config.getAccessToken();
             byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(StandardCharsets.UTF_8));
             String authHeader = "Basic " + new String(encodedAuth, StandardCharsets.UTF_8);
+            if (!path.startsWith("http")) {
+                path = config.getUrl() + path;
+            }
             return new REST(path).withAuthorization(authHeader).get().response();
         } catch (Exception e) {
             Logger.error("Error accessing " + path);
