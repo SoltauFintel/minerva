@@ -37,7 +37,8 @@ public class CreateBookAction extends Action {
         User user = new User();
         user.setLogin("mwx");
         var workspace = new StateSO(user).getUser().masterWorkspace();
-        if (!workspace.getBooks().isEmpty()) {
+        var oneEmptyBook = workspace.getBooks().size() == 1 && workspace.getBooks().get(0).getSeiten().isEmpty();
+        if (!oneEmptyBook && !workspace.getBooks().isEmpty()) {
             ctx.status(500);
             Logger.error("CreateBookAction is not possible because there are already books. You can only create the 1st book.");
             return;
@@ -56,11 +57,16 @@ public class CreateBookAction extends Action {
             return;
         }
         
-        NlsString title = new NlsString();
-        title.setString("en", en);
-        title.setString("de", de);
-        workspace.getBooks().createBook(folder, title, MinervaWebapp.factory().getLanguages(), BookType.PUBLIC, 1);
-        Logger.info("CreateBookAction successful: " + folder + " | \"" + en + "\", \"" + de + "\"");
+        if (!oneEmptyBook) {
+            NlsString title = new NlsString();
+            title.setString("en", en);
+            title.setString("de", de);
+            workspace.getBooks().createBook(folder, title, MinervaWebapp.factory().getLanguages(), BookType.PUBLIC, 1);
+            Logger.info("CreateBookAction successful: " + folder + " | \"" + en + "\", \"" + de + "\"");
+        }
+        if (workspace.getBooks().size() == 1) {
+            workspace.getBooks().get(0).createTopLevelSeite();
+        }
 
         new SubscriptionService().pagesChanged();
     }
