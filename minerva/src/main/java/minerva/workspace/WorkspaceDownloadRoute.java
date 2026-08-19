@@ -37,7 +37,7 @@ public class WorkspaceDownloadRoute extends Route<Object> {
             return;
         }
         User user = new User();
-        user.setLogin("WorkspaceDownloadRoute");
+        user.setLogin("mwx");
         var workspace = new StateSO(user).getUser().masterWorkspace();
         if (workspace.getBooks().isEmpty()) {
             ctx.status(500);

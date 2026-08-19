@@ -35,7 +35,7 @@ public class CreateBookAction extends Action {
             return;
         }
         User user = new User();
-        user.setLogin("CreateBookAction");
+        user.setLogin("mwx");
         var workspace = new StateSO(user).getUser().masterWorkspace();
         if (!workspace.getBooks().isEmpty()) {
             ctx.status(500);
