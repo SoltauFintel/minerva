@@ -44,6 +44,7 @@ import minerva.base.UpdatePagesMetricsAction;
 import minerva.book.AddBookPage;
 import minerva.book.BookPage;
 import minerva.book.BooksPage;
+import minerva.book.CreateBookAction;
 import minerva.book.DeleteBookPage;
 import minerva.book.EditBookPage;
 import minerva.book.OrderTopLevelSeitePage;
@@ -242,6 +243,7 @@ public class MinervaWebapp extends RouteDefinitions {
 
     private void oneBook() {
         form("/b/:branch/add", AddBookPage.class);
+        get("/rest/admin/create-book", CreateBookAction.class);
         form("/b/:branch/:book/edit", EditBookPage.class);
         get("/b/:branch/:book/delete", DeleteBookPage.class);
         get("/b/:branch/:book", BookPage.class);

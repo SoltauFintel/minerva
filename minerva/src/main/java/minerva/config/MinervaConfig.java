@@ -276,4 +276,8 @@ public class MinervaConfig {
     public String getHost() {
         return config.get(StartRelevantOption.HOST);
     }
+    
+    public String getAdminToken() {
+        return config.get("ADMIN_TOKEN");
+    }
 }
