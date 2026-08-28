@@ -2,11 +2,12 @@ package minerva.base;
 
 import org.pmw.tinylog.Configurator;
 import org.pmw.tinylog.Level;
-import org.pmw.tinylog.labelers.TimestampLabeler;
 import org.pmw.tinylog.writers.ConsoleWriter;
-import org.pmw.tinylog.writers.RollingFileWriter;
 
+import github.soltaufintel.amalia.base.StringService;
 import github.soltaufintel.amalia.web.builder.LoggingInitializer;
+import gitper.apm.LokiClient;
+import gitper.apm.LokiWriter;
 
 public class MinervaLoggingInitializer extends LoggingInitializer {
     
@@ -16,12 +17,20 @@ public class MinervaLoggingInitializer extends LoggingInitializer {
 
     @Override
     public void init() {
-        // Es wird immer nach sysout geloggt.
         var c = Configurator.currentConfig().writer(new ConsoleWriter());
-        if (!"0".equals(System.getenv("FILELOGGING"))) {
-            // Das Loggen in eine Datei kann mit env var FILELOGGING=0 abgeschaltet werden.
-            c.addWriter(new RollingFileWriter("/tmp/logs/minerva/minerva.log", 1, new TimestampLabeler("yyyy-MM-dd")));
+        
+        String application = System.getenv("LOG_APP");
+        if (StringService.isNullOrEmpty(application)) {
+            application = "minerva";
         }
+        String host = System.getenv("LOKI");
+        if (StringService.isNullOrEmpty(host)) {
+            host = "http://grafana:3100";
+        }
+        if (!"-".equals(application)) {
+            c.addWriter(new LokiWriter(new LokiClient(application, host)));
+        }
+        
         Level level;
         try {
             level = Level.valueOf(System.getenv("LOGLEVEL").toUpperCase());
@@ -29,7 +38,7 @@ public class MinervaLoggingInitializer extends LoggingInitializer {
             level = Level.INFO;
         }
         c.formatPattern("{date} {level}  {message}")
-            .level(level)
-            .activate();
+                .level(level)
+                .activate();
     }
 }
