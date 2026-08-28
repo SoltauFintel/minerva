@@ -11,8 +11,8 @@ import gitper.apm.LokiWriter;
 
 public class MinervaLoggingInitializer extends LoggingInitializer {
     
-    public MinervaLoggingInitializer(Level level) {
-        super(level);
+    public MinervaLoggingInitializer() {
+        super(Level.INFO);
     }
 
     @Override

@@ -1,7 +1,5 @@
 package minerva;
 
-import org.pmw.tinylog.Level;
-
 import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.timer.Timer;
 import github.soltaufintel.amalia.web.WebApp;
@@ -403,7 +401,7 @@ public class MinervaWebapp extends RouteDefinitions {
     
     public static WebAppBuilder getWebAppBuilder(String version) {
         return new WebAppBuilder(version)
-                .withLogging(new MinervaLoggingInitializer(Level.INFO))
+                .withLogging(new MinervaLoggingInitializer())
                 .withTemplatesFolders(MinervaWebapp.class, "/templates")
                 .withErrorPage(MinervaErrorPage.class, MinervaError404Page.class)
                 .withInitializer(config -> MinervaOptions.options = new MinervaOptions(MinervaOptions.getConfigFile(MinervaOptions.MAIN_CONFIG, config)))
