@@ -674,8 +674,28 @@ public class UserSO {
         }
     }
 
-    public List<String> getBranchNames() {
-        List<String> branchNames = dao.getBranchNames(masterWorkspace());
+    /**
+     * @param reload true: Branchnamen-Laden erzwingen, false: Cache darf benutzt werden
+     * @return Branch-Namen
+     */
+    public List<String> getBranchNames(boolean reload) {
+        List<String> branchNames;
+        if (!reload && MinervaWebapp.branchNames != null) {
+            branchNames = MinervaWebapp.branchNames.get(getLogin());
+            if (branchNames != null) {
+                Logger.info(getLogin() + " | took branch names from cache"); // XXX raus
+                return filterBranchNames(branchNames);
+            }
+        }
+        Logger.info(getLogin() + " | loading branch names..."); // XXX raus
+        branchNames = dao.getBranchNames(masterWorkspace());
+        if (MinervaWebapp.branchNames != null) {
+            MinervaWebapp.branchNames.put(getLogin(), branchNames);
+        }
+        return filterBranchNames(branchNames);
+    }
+
+    private List<String> filterBranchNames(List<String> branchNames) {
         branchNames.removeIf(n -> n.startsWith(WorkspacesSO.MINERVA_BRANCH) || n.contains(WorkspacesSO.MINERVA_BRANCH));
         branchNames.sort(getBranchComparator());
         return branchNames;

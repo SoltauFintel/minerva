@@ -32,7 +32,7 @@ public class HideBranchsPage extends WPage {
     private void display() {
         header(n("hideBranches"));
         put("admin", UserSO.isAdmin(ctx));
-        var branchNames = user.getBranchNames();
+        var branchNames = user.getBranchNames(true);
         branchNames.remove("master");
         branchNames = MenuPage.branchNamesFilter.filter(branchNames, user.getLogin());
         Set<String> hiddenBranches = user.getHiddenBranches();

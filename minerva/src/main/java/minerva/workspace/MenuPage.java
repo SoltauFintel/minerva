@@ -35,8 +35,8 @@ public class MenuPage extends WPage {
         if (!MinervaWebapp.factory().isGitlab()) {
             return;
         }
-        var branchNames = user.getBranchNames();
         var showAll = "1".equals(ctx.queryParam("b"));
+        var branchNames = user.getBranchNames(showAll);
         if (!showAll) {
             branchNames = branchNamesFilter.filter(branchNames, user.getLogin());
             branchNames.removeIf(n -> user.getHiddenBranches().contains(n));

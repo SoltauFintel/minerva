@@ -1,5 +1,12 @@
 package minerva;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.pmw.tinylog.Logger;
+
 import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.timer.Timer;
 import github.soltaufintel.amalia.web.WebApp;
@@ -11,10 +18,13 @@ import github.soltaufintel.amalia.web.table.TableSortAction;
 import gitper.Gitper;
 import gitper.GitperInterface;
 import gitper.User;
+import gitper.WorkspaceAdapter;
+import gitper.access.DirAccess;
 import gitper.persistence.gitlab.GitFactory;
 import gitper.persistence.gitlab.GitlabAuthAction;
 import gitper.persistence.gitlab.GitlabAuthCallbackAction;
 import gitper.persistence.gitlab.GitlabAuthService;
+import gitper.persistence.gitlab.GitlabDirAccess;
 import minerva.attachments.AllAttachmentsPage;
 import minerva.attachments.AttachmentsPage;
 import minerva.attachments.DeleteAttachmentAction;
@@ -178,6 +188,8 @@ import spark.Spark;
 public class MinervaWebapp extends RouteDefinitions {
     public static final String VERSION = "4.07.0";
     private static MinervaFactory factory;
+    /** key: user login, value: branch names */
+    public static Map<String, List<String>> branchNames;
     
     @Override
     public void routes() {
@@ -398,7 +410,7 @@ public class MinervaWebapp extends RouteDefinitions {
         webapp.boot();
         info();
     }
-    
+
     public static WebAppBuilder getWebAppBuilder(String version) {
         return new WebAppBuilder(version)
                 .withLogging(new MinervaLoggingInitializer())
@@ -477,4 +489,44 @@ public class MinervaWebapp extends RouteDefinitions {
             }
         };
     }
+    public static void collectBranchNames() {
+        new Thread(() -> {
+            DirAccess da = factory.getBackendService().getDirAccess();
+            Map<String, List<String>> branchNames2 = new HashMap<>();
+            if (da instanceof GitlabDirAccess) {
+                String workspacesFolder = factory.getConfig().getWorkspacesFolder();
+                var dirs = new File(workspacesFolder).listFiles();
+                if (dirs != null) {
+                    for (File dir : dirs) {
+                        if (dir.isDirectory()) {
+                            var login = dir.getName();
+                            File userFile = new File(dir.getParentFile(), login + ".user"); // Is folder a user-folder?
+                            var folder = workspacesFolder + "/" + login + "/master";
+                            File gitFile = new File(folder + "/.git");
+                            if (userFile.isFile() && gitFile.exists()) {
+                                collectBranchNames2(da, folder, login, branchNames2);
+                            }
+                        }
+                    }
+                }
+            }
+            branchNames = branchNames2;
+            Logger.info("branch names: " + branchNames.size() + " for users " + branchNames2.keySet() +
+                    " | " + da.getClass().getSimpleName()); // XXX debug
+        }).start();
+    }
+    
+    private static void collectBranchNames2(DirAccess access, String folder, String login, Map<String, List<String>> branchNamesMap) {
+        try {
+            List<String> branchNames = access.getBranchNames(new WorkspaceAdapter() {
+                @Override
+                public String getFolder() {
+                    return folder;
+                }
+            });
+            branchNamesMap.put(login, branchNames);
+        } catch (Exception ignore) {
+        }
+    }
+    
 }
