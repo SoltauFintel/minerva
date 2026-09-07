@@ -4,6 +4,52 @@ function MyCustomUploadAdapterPlugin( editor ) {
     };
 }
 
+function MinervaCleanerPlugin( editor ) {
+    editor.plugins.get( 'ClipboardPipeline' ).on( 'inputTransformation', ( evt, data ) => {
+        // 1. Das eingefuegte HTML aus dem Event holen
+        const htmlString = editor.data.processor.toData( data.content );
+
+        // 2. Mithilfe des Browser-eigenen DOMParsers verarbeiten
+        const parser = new DOMParser();
+        const doc = parser.parseFromString( htmlString, 'text/html' );
+
+        // a) Attribute bereinigen (style, class, id, data-*)
+        const allElements = doc.body.querySelectorAll( '*' );
+        allElements.forEach( el => {
+            // Feste Attribute entfernen
+            el.removeAttribute( 'style' );
+            el.removeAttribute( 'class' );
+            el.removeAttribute( 'id' );
+
+            // Alle 'data-*' Attribute dynamisch entfernen
+            Array.from( el.attributes ).forEach( attr => {
+                if ( attr.name.startsWith( 'data-' ) ) {
+                    el.removeAttribute( attr.name );
+                }
+            });
+        });
+
+        // b) Elementtypen inkl. Inhalt komplett loeschen (button, script, style)
+        const toRemove = doc.body.querySelectorAll( 'button, script, style' );
+        toRemove.forEach( el => el.remove() );
+
+        // c) Elementtypen auspacken (mark, span, font), aber Text/Inhalt behalten
+        const toUnwrap = doc.body.querySelectorAll( 'mark, span, font' );
+        toUnwrap.forEach( el => {
+            while ( el.firstChild ) {
+                el.parentNode.insertBefore( el.firstChild, el );
+            }
+            el.remove();
+        });
+
+        // 3. Das gesaeuberte HTML zurueck in das CKEditor ViewDocumentFragment konvertieren
+        const cleanHtml = doc.body.innerHTML;
+        data.content = editor.data.processor.toView( cleanHtml );
+
+        console.log("Confluence-Muell bereinigt (inkl. id & data-*)");
+    });
+}
+
 {{each L in languages}}
     let editor{{L.LANG}};
     window.moco.createEditor(
@@ -22,7 +68,7 @@ function MyCustomUploadAdapterPlugin( editor ) {
             {{/if}}
             { model: 'pre', view: 'pre', title: 'Code' },
         ]},
-        [ MyCustomUploadAdapterPlugin ],
+        [ MyCustomUploadAdapterPlugin, MinervaCleanerPlugin ],
         k => {
             editor{{L.LANG}} = k;
             return document.querySelector('#toolbar-container{{L.LANG}}');
@@ -108,15 +154,15 @@ setInterval(function() {
 }, 3000);
 
 if ("{{livesavelink}}" != "#") {
-	setInterval(function() {
-	    setTimeout(function() { // Firefox problem NS_BINDING_ABORTED
-	        $.post("{{livesavelink}}", {
-	            {{each L in languages}}
-	                content{{L.LANG}}: editor{{L.LANG}}.getData(),
-	            {{/each}}
-	        }).fail(e => {
-	            console.error('{{livesavelink}} error: ', e);
-	        });
-	    }, 0);
-	}, 15000);
+    setInterval(function() {
+        setTimeout(function() { // Firefox problem NS_BINDING_ABORTED
+            $.post("{{livesavelink}}", {
+                {{each L in languages}}
+                    content{{L.LANG}}: editor{{L.LANG}}.getData(),
+                {{/each}}
+            }).fail(e => {
+                console.error('{{livesavelink}} error: ', e);
+            });
+        }, 0);
+    }, 15000);
 }
