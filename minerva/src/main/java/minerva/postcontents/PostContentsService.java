@@ -13,7 +13,7 @@ import minerva.seite.SeitePCD;
 public class PostContentsService {
     private static final Object LOCK = new Object();
     /** key: type (Bestandteil der post-contents URL), value: PostContentsData class */
-    private static final Map<String, Class<? extends PostContentsData>> pcdClasses = new HashMap<>();
+    public static final Map<String, Class<? extends PostContentsData>> pcdClasses = new HashMap<>();
     private static PostContentsData last; // einfach verkettete Liste
     
     static {
