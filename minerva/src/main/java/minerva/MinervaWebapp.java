@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.pmw.tinylog.Logger;
-
 import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.timer.Timer;
 import github.soltaufintel.amalia.web.WebApp;
@@ -511,8 +509,6 @@ public class MinervaWebapp extends RouteDefinitions {
                 }
             }
             branchNames = branchNames2;
-            Logger.info("branch names: " + branchNames.size() + " for users " + branchNames2.keySet() +
-                    " | " + da.getClass().getSimpleName()); // XXX debug
         }).start();
     }
     

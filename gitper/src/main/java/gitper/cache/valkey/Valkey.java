@@ -53,8 +53,13 @@ public class Valkey {
     }
 
     public String get(String key) {
+        return get(key, null);
+    }
+
+    public String get(String key, String defaultValue) {
         try (ValkeyResource valkey = valkeyPool.getResource()) {
-            return valkey.get(prefix + key);
+            String ret = valkey.get(prefix + key);
+            return ret == null ? defaultValue : ret;
         }
     }
     

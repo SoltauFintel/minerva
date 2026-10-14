@@ -35,4 +35,9 @@ public abstract class UAction extends Action {
     protected void onlyAdmin() {
         user.onlyAdmin(ctx);
     }
+    
+    @Override
+    public String getLogin() {
+        return user == null ? "" : user.getLogin();
+    }
 }
