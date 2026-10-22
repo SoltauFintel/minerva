@@ -683,11 +683,9 @@ public class UserSO {
         if (!reload && MinervaWebapp.branchNames != null) {
             branchNames = MinervaWebapp.branchNames.get(getLogin());
             if (branchNames != null) {
-                Logger.info(getLogin() + " | took branch names from cache"); // XXX raus
                 return filterBranchNames(branchNames);
             }
         }
-        Logger.info(getLogin() + " | loading branch names..."); // XXX raus
         branchNames = dao.getBranchNames(masterWorkspace());
         if (MinervaWebapp.branchNames != null) {
             MinervaWebapp.branchNames.put(getLogin(), branchNames);
