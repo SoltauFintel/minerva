@@ -22,6 +22,7 @@ public class MenuPage extends WPage {
 
     @Override
     protected void execute() {
+        put("additionalLinks", ""); // must be first
         header(n("Menu"));
         workspaces();
         menu();

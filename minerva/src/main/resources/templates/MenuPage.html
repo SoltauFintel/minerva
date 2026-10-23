@@ -1,31 +1,16 @@
 {{master: master}}
 
-<style>
-h2 {
-    margin-top: 2em;
-}
-
-.red {
-    color: #800;
-}
-
-.currentBranch {
-    background-color: #e9f3fc !important;
-}
-
-.currentBranch:hover {
-    background-color: #563d7c !important;
-}
-
-.currentBranchIcon {
-    color: #0dd;
-}
-</style>
-
 <div class="row">
     <div class="col-lg-12">
         {{if gitlab}}
-            <h1 class="page-header">Branches</h1>
+            <h1 class="page-header">Branches
+                {{if showAllBranches}}
+                    <a href="/w/{{branch}}/menu" class="btn btn-xs btn-default ml1">{{N.hideBranches}}</a>
+                {{else}}
+                    <a href="/w/{{branch}}/menu?b=1" class="btn btn-xs btn-default ml1">{{N.showAllBranches}}</a>
+                {{/if}}
+                <a href="/w/{{branch}}/hide-branch" class="btn btn-xs btn-default" title="{{N.hideBranches}}"><i class="fa fa-cog"></i></a>
+            </h1>
             <div class="bs-glyphicons">
                 <ul class="bs-glyphicons-list">
                     {{each c in workspaces}}
@@ -36,12 +21,6 @@ h2 {
                     {{/each}}
                 </ul>
             </div>
-            {{if showAllBranches}}
-                <a href="/w/{{branch}}/menu" class="btn btn-xs btn-default">{{N.hideBranches}}</a>
-            {{else}}
-                <a href="/w/{{branch}}/menu?b=1" class="btn btn-xs btn-default">{{N.showAllBranches}}</a>
-            {{/if}}
-            <a href="/w/{{branch}}/hide-branch" class="btn btn-xs btn-default" title="{{N.hideBranches}}"><i class="fa fa-cog"></i></a>
         {{/if}}
         <h1 class="page-header">{{header}}</h1>
         <div class="bs-glyphicons">
@@ -77,7 +56,26 @@ h2 {
         <p>
             <a href="/help/{{guiLanguage}}/index.html" target="help">{{N.MinervaHelp}}</a>
             | <a href="/w/{{branch}}/toggle-colored-headings">{{coloredHeadings}}</a>
+            {{additionalLinks}}
         </p>
         <p><small>Minerva {{VERSION}}</small></p>
     </div>
 </div>
+
+<style>
+h2 {
+    margin-top: 2em;
+}
+.red {
+    color: #800;
+}
+.currentBranch {
+    background-color: #e9f3fc !important;
+}
+.currentBranch:hover {
+    background-color: #563d7c !important;
+}
+.currentBranchIcon {
+    color: #0dd;
+}
+</style>
