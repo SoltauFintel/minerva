@@ -1,39 +1,10 @@
 {{master: master}}
 
-<style>
-.extab tr th {
-    text-align: center;
-    background-color: #f5f5f5;
-}
-
-.extab tr td {
-    text-align: center;
-    min-width: 6em;
-    padding: 2px;
-}
-
-.extab0 {
-    text-align: left !important;
-    background-color: #f5f5f5;
-    padding: 3px !important;
-}
-
-.plus {
-    background-color: #009900;
-}
-.minus {
-    background-color: salmon;
-}
-.x {
-    background-color: #00cc00;
-}
-</style>
-
 <div class="row"> 
     <div class="col-lg-12">
         <h1 class="page-header">{{header}}</h1>
 
-        <form action="/w/{{branch}}/exclusions/edit" class="form-horizontal" method="post">
+        <form class="form-horizontal" method="post">
             <fieldset>
                 <div class="form-group">
                     <div class="col-lg-12">
@@ -76,3 +47,32 @@
         </p>
     </div>
 </div>
+
+<style>
+.extab tr th {
+    text-align: center;
+    background-color: #f5f5f5;
+}
+
+.extab tr td {
+    text-align: center;
+    min-width: 6em;
+    padding: 2px;
+}
+
+.extab0 {
+    text-align: left !important;
+    background-color: #f5f5f5;
+    padding: 3px !important;
+}
+
+.plus {
+    background-color: #009900;
+}
+.minus {
+    background-color: salmon;
+}
+.x {
+    background-color: #00cc00;
+}
+</style>
