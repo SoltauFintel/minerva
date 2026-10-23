@@ -40,7 +40,9 @@ public class UsagesPage extends WPage {
     private void display(String from, String to, String customer, String host) {
         var sv = new UsageService();
         List<String> hosts = getHosts();
-        if (!hosts.contains(host)) {
+        if (host == null) {
+            host = hosts.get(0);
+        } else if (!hosts.contains(host)) {
             Logger.warn("switched host from \"" + host + "\" to \"" + hosts.get(0) + "\".");
             host = hosts.get(0);
         }
