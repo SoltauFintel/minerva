@@ -443,6 +443,31 @@ public class MinervaWebapp extends RouteDefinitions {
     }
     
     public static void bootForTest() {
+        
+        // XXX DEBUG >>
+        String dn = System.getenv("CONFIG");
+        if (dn == null || dn.isBlank()) {
+            dn = "AppConfig.properties";
+        }
+        if (true)
+            throw new RuntimeException("jux: "+new File(dn).getAbsolutePath() + "\n"+dn);
+//        Properties properties = new Properties();
+//
+//        try {
+//            properties.load(new FileReader(dn));
+//        } catch (IOException e1) {
+//            if (dn.startsWith("/")) {
+//                throw new RuntimeException(e1);
+//            }
+//            try {
+//                dn = "/" + dn;
+//                properties.load(new FileReader(dn));
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+
+        
         factory = new MinervaFactory(new MinervaConfig(new AppConfig()));        
     }
     
