@@ -6,7 +6,7 @@ import java.util.TreeSet;
 
 import github.soltaufintel.amalia.rest.REST;
 import github.soltaufintel.amalia.web.action.Escaper;
-import github.soltaufintel.amalia.web.config.AppConfig;
+import minerva.MinervaWebapp;
 import minerva.model.BookSO;
 import minerva.model.SeiteSO;
 import minerva.model.WorkspaceSO;
@@ -50,7 +50,7 @@ public class UsageService {
     
     public TreeSet<String> getCustomers() {
         TreeSet<String> ret = new TreeSet<>();
-        String c = new AppConfig().get("usage.customers", "");
+        String c = MinervaWebapp.config().get("usage.customers", "");
         for (String i : c.split(",")) {
             if (!i.isBlank()) {
                 ret.add(i.trim());

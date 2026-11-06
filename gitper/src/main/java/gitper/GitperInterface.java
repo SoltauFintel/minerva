@@ -23,4 +23,6 @@ public interface GitperInterface {
     User loadUser(String login, boolean create, String mail); // UserAccess
     
     GitlabAuthService authService();
+    
+    String getValkeyHost();
 }

@@ -8,10 +8,10 @@ import java.util.stream.Collectors;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.base.StringService;
-import github.soltaufintel.amalia.web.config.AppConfig;
 import github.soltaufintel.amalia.web.table.Col;
 import github.soltaufintel.amalia.web.table.Cols;
 import github.soltaufintel.amalia.web.table.TableComponent;
+import minerva.MinervaWebapp;
 import minerva.workspace.WPage;
 
 public class UsagesPage extends WPage {
@@ -76,7 +76,7 @@ public class UsagesPage extends WPage {
     }
 
     private List<String> getHosts() {
-        var ret = new AppConfig().getList("usage.hosts");
+        var ret = MinervaWebapp.config().getList("usage.hosts");
         if (ret == null || ret.isEmpty()) {
             throw new RuntimeException("Missing parameter 'usage.hosts' in AppConfig!");
         }

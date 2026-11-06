@@ -7,7 +7,7 @@ import org.pmw.tinylog.Logger;
 
 import com.google.gson.Gson;
 
-import github.soltaufintel.amalia.web.config.AppConfig;
+import gitper.Gitper;
 
 /**
  * Minerva internal interface to "Valkey", the in-memory key-value store.
@@ -17,11 +17,7 @@ public class Valkey {
     private final String prefix;
     
     static {
-        String host = null;
-        try {
-            host = new AppConfig().get("valkey");
-        } catch (Exception e) {
-        }
+        String host = Gitper.gitperInterface == null ? null : Gitper.gitperInterface.getValkeyHost();
         if (host == null || host.isBlank()) {
             host = "docker05:6401";
             Logger.warn("Valkey host not set and set to fixed address: " + host);

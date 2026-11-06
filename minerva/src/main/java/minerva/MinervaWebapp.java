@@ -417,7 +417,7 @@ public class MinervaWebapp extends RouteDefinitions {
                 .withErrorPage(MinervaErrorPage.class, MinervaError404Page.class)
                 .withInitializer(config -> MinervaOptions.options = new MinervaOptions(MinervaOptions.getConfigFile(MinervaOptions.MAIN_CONFIG, config)))
                 .withInitializer(config -> factory = new MinervaFactory(new MinervaConfig(config)))
-                .withInitializer(config -> initGitper())
+                .withInitializer(config -> initGitper(config))
                 .withInitializer(config -> CommentService.services.put(ctx -> ctx.path().startsWith("/sc/"), SeiteCommentService.class))
                 .withInitializer(config -> {
                     Timer.TIMER_ACTIVE = MinervaOptions.TIMER_ACTIVE.get();
@@ -444,11 +444,15 @@ public class MinervaWebapp extends RouteDefinitions {
     }
     
     public static void bootForTest() {
-        AppConfig config = new AppConfig(new Properties(), "AppConfig.properties");
-        factory = new MinervaFactory(new MinervaConfig(config));        
+        factory = new MinervaFactory(new MinervaConfig(configForTest()));        
     }
     
-    private static void initGitper() {
+    public static AppConfig configForTest() {
+        AppConfig config = new AppConfig(new Properties(), "AppConfig.properties");
+        return config;
+    }
+    
+    private static void initGitper(AppConfig config) {
         Gitper.gitperInterface = new GitperInterface() {
             
             @Override
@@ -486,6 +490,11 @@ public class MinervaWebapp extends RouteDefinitions {
             @Override
             public GitlabAuthService authService() {
                 return new GitlabAuthService(new MinervaGitlabConfig());
+            }
+
+            @Override
+            public String getValkeyHost() {
+                return config.get("valkey");
             }
         };
     }
@@ -527,4 +536,7 @@ public class MinervaWebapp extends RouteDefinitions {
         }
     }
     
+    public static AppConfig config() {
+        return new AppConfig();
+    }
 }
