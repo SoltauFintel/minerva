@@ -37,8 +37,4 @@ repositories {
     maven { url 'https://www.javaxt.com/maven' }
 }
 
-test {
-    environment "CONFIG", "C:\\projects\\git-repos-2203\\minerva\\minerva\\AppConfig.properties"
-}
-
 apply from: 'gradle/docker.gradle'
