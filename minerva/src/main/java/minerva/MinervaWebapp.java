@@ -537,6 +537,10 @@ public class MinervaWebapp extends RouteDefinitions {
     }
     
     public static AppConfig config() {
+        // TODO Dieses "new AppConfig()" muss ich noch loswerden.
+        // Und im nächsten Schritt muss ich AppConfig durch IConfig ersetzen (Amalia Änderung dafür notwendig)
+        // oder ganz loswerden (env vars).
+        
         return new AppConfig();
     }
 }
