@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import github.soltaufintel.amalia.spark.Context;
 import github.soltaufintel.amalia.timer.Timer;
@@ -443,7 +444,8 @@ public class MinervaWebapp extends RouteDefinitions {
     }
     
     public static void bootForTest() {
-        factory = new MinervaFactory(new MinervaConfig(new AppConfig()));        
+        AppConfig config = new AppConfig(new Properties(), "AppConfig.properties");
+        factory = new MinervaFactory(new MinervaConfig(config));        
     }
     
     private static void initGitper() {
