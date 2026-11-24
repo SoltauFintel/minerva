@@ -42,7 +42,7 @@ public class Jenkins {
                     request.setHeader("Authorization", authHeader);
                     request.setHeader("Jenkins-Crumb", crumb);
                 }
-            }.get().response();
+            }.post("").response();
             System.out.println("------------------------------------------- r:");
             System.out.println(r);
             return r;
