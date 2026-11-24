@@ -6,6 +6,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.pmw.tinylog.Logger;
 
+import com.google.gson.Gson;
+
 import github.soltaufintel.amalia.rest.REST;
 
 /**
@@ -27,8 +29,10 @@ public class Jenkins {
                 path = config.getUrl() + path;
             }
             System.out.println("crumb address: " + config.getUrl() + "/crumbIssuer/api/json");
-            String crumb = new REST(config.getUrl() + "/crumbIssuer/api/json").withAuthorization(authHeader).get()
+            String crumbJson = new REST(config.getUrl() + "/crumbIssuer/api/json").withAuthorization(authHeader).get()
                     .response();
+            System.out.println("crumb JSON: " + crumbJson); // XXX
+            String crumb = new Gson().fromJson(crumbJson, Crumb.class).getCrumb();
             System.out.println("crumb: " + crumb); // XXX
             return new REST(path) {
                 @Override
@@ -47,5 +51,17 @@ public class Jenkins {
     
     public String getUrl() {
         return config.getUrl();
+    }
+    
+    public static class Crumb {
+        private String crumb;
+
+        public String getCrumb() {
+            return crumb;
+        }
+
+        public void setCrumb(String crumb) {
+            this.crumb = crumb;
+        }
     }
 }
