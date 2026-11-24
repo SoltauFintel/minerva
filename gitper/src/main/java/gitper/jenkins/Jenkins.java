@@ -3,6 +3,7 @@ package gitper.jenkins;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.pmw.tinylog.Logger;
 
 import github.soltaufintel.amalia.rest.REST;
@@ -25,7 +26,18 @@ public class Jenkins {
             if (!path.startsWith("http")) {
                 path = config.getUrl() + path;
             }
-            return new REST(path).withAuthorization(authHeader).get().response();
+            System.out.println("crumb address: " + config.getUrl() + "/crumbIssuer/api/json");
+            String crumb = new REST(config.getUrl() + "/crumbIssuer/api/json").withAuthorization(authHeader).get()
+                    .response();
+            System.out.println("crumb: " + crumb); // XXX
+            return new REST(path) {
+                @Override
+                protected void initRequest(HttpRequestBase request) {
+                    super.initRequest(request);
+                    request.setHeader("Authorization", authHeader);
+                    request.setHeader("Jenkins-Crumb", crumb);
+                }
+            }.get().response();
         } catch (Exception e) {
             Logger.error("Error accessing " + path);
             Logger.error(e);
