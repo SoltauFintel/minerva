@@ -34,7 +34,8 @@ public class Jenkins {
             System.out.println("crumb JSON: " + crumbJson); // XXX
             String crumb = new Gson().fromJson(crumbJson, Crumb.class).getCrumb();
             System.out.println("crumb: " + crumb); // XXX
-            return new REST(path) {
+            System.out.println("path: "+path); // XXX
+            String r = new REST(path) {
                 @Override
                 protected void initRequest(HttpRequestBase request) {
                     super.initRequest(request);
@@ -42,6 +43,9 @@ public class Jenkins {
                     request.setHeader("Jenkins-Crumb", crumb);
                 }
             }.get().response();
+            System.out.println("------------------------------------------- r:");
+            System.out.println(r);
+            return r;
         } catch (Exception e) {
             Logger.error("Error accessing " + path);
             Logger.error(e);
