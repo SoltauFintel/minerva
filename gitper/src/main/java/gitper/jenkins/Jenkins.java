@@ -20,22 +20,20 @@ public class Jenkins {
         this.config = config;
     }
 
-    public String get(String path) {
+    public String post(String path) {
         try {
             String auth = config.getUserLogin() + ":" + config.getAccessToken();
             byte[] encodedAuth = Base64.encodeBase64(auth.getBytes(StandardCharsets.UTF_8));
             String authHeader = "Basic " + new String(encodedAuth, StandardCharsets.UTF_8);
+            
+            String crumbJson = new REST(config.getUrl() + "/crumbIssuer/api/json").withAuthorization(authHeader).get()
+                    .response();
+            String crumb = new Gson().fromJson(crumbJson, Crumb.class).getCrumb();
+            
             if (!path.startsWith("http")) {
                 path = config.getUrl() + path;
             }
-            System.out.println("crumb address: " + config.getUrl() + "/crumbIssuer/api/json");
-            String crumbJson = new REST(config.getUrl() + "/crumbIssuer/api/json").withAuthorization(authHeader).get()
-                    .response();
-            System.out.println("crumb JSON: " + crumbJson); // XXX
-            String crumb = new Gson().fromJson(crumbJson, Crumb.class).getCrumb();
-            System.out.println("crumb: " + crumb); // XXX
-            System.out.println("path: "+path); // XXX
-            String r = new REST(path) {
+            return new REST(path) {
                 @Override
                 protected void initRequest(HttpRequestBase request) {
                     super.initRequest(request);
@@ -43,9 +41,6 @@ public class Jenkins {
                     request.setHeader("Jenkins-Crumb", crumb);
                 }
             }.post("").response();
-            System.out.println("------------------------------------------- r:");
-            System.out.println(r);
-            return r;
         } catch (Exception e) {
             Logger.error("Error accessing " + path);
             Logger.error(e);

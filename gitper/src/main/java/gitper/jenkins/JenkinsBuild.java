@@ -36,7 +36,7 @@ public abstract class JenkinsBuild {
                 .map(kv -> "&" + kv.getKey() + "=" + Escaper.urlEncode(kv.getValue(), ""))
                 .collect(Collectors.joining());
 
-        String r = jenkins.get("/job/" + jobName + "/buildWithParameters?token=" + getJobSecret() + argsString);
+        String r = jenkins.post("/job/" + jobName + "/buildWithParameters?token=" + getJobSecret() + argsString);
         if (!r.isEmpty()) {
             Logger.error(r);
             throw new RuntimeException("Jenkins job could not be started! (See log)");
@@ -54,12 +54,12 @@ public abstract class JenkinsBuild {
         } else if (StringService.isNullOrEmpty(runId)) {
             throw new RuntimeException("Call setRunId() before!");
         }
-        String xml = jenkins.get("/job/" + jobName + "/api/xml");
+        String xml = jenkins.post("/job/" + jobName + "/api/xml");
         try (XMLDocument allBuildsDok = new XMLDocument(xml)) {
             for (XMLElement e : allBuildsDok.getElement().selectNodes("build")) {
                 String number = e.selectSingleNode("number").getText();
 
-                xml = jenkins.get(e.selectSingleNode("url").getText() + "api/xml");
+                xml = jenkins.post(e.selectSingleNode("url").getText() + "api/xml");
                 if (xml.contains("<value>" + runId + "</value>")) {
                     this.number = number;
                     return number;
@@ -75,7 +75,7 @@ public abstract class JenkinsBuild {
         } else if (StringService.isNullOrEmpty(runId)) {
             throw new RuntimeException("Call setRunId() before!");
         }
-        String xml = jenkins.get("/job/" + jobName + "/" + number + "/api/xml");
+        String xml = jenkins.post("/job/" + jobName + "/" + number + "/api/xml");
         try (XMLDocument dok = new XMLDocument(xml)) {
             XMLElement e = dok.getElement().selectSingleNode("result");
             if (e != null) {
