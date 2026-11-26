@@ -499,7 +499,7 @@ public class MinervaWebapp extends RouteDefinitions {
         };
     }
     public static void collectBranchNames() {
-        new Thread(() -> {
+        var t = new Thread(() -> {
             DirAccess da = factory.getBackendService().getDirAccess();
             Map<String, List<String>> branchNames2 = new HashMap<>();
             if (da instanceof GitlabDirAccess) {
@@ -520,7 +520,9 @@ public class MinervaWebapp extends RouteDefinitions {
                 }
             }
             branchNames = branchNames2;
-        }).start();
+        });
+        t.setDaemon(true);
+        t.start();
     }
     
     private static void collectBranchNames2(DirAccess access, String folder, String login, Map<String, List<String>> branchNamesMap) {

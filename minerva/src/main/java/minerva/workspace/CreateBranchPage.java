@@ -31,11 +31,13 @@ public class CreateBranchPage extends UPage {
             user.getWorkspace(branch).createBranch(newBranch, null);
             WorkspaceSO newWS = user.getWorkspaces().addWorkspace(newBranch, user);
             if (newBranch.charAt(0) >= '0' && newBranch.charAt(0) <= '9') {
-                new Thread(() -> {
+                var t = new Thread(() -> {
                     user.log(newBranch + " | Indexing new branch...");
                     newWS.getSearch().indexBooks();
                     Logger.info(newBranch + " | Indexing complete");
-                }).start();
+                });
+                t.setDaemon(true);
+                t.start();
             }
             
             if (newWS.getBooks().isEmpty()) {

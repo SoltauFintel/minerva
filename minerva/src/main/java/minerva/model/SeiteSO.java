@@ -282,10 +282,12 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
         boolean success = cantBeDeleted.isEmpty();
 
         if (success) {
-            new Thread(() -> {  // Access index in background so user does not have to wait for completion.
+            var t = new Thread(() -> {  // Access index in background so user does not have to wait for completion.
                 book.getWorkspace().getSearch().unindex(SeiteSO.this);
                 Logger.debug("Deleted page " + SeiteSO.this.getId() + " has been removed from search index.");
-            }).start();
+            });
+            t.setDaemon(true);
+            t.start();
             new SubscriptionService().pageDeleted(seite.getId());
         }
         
@@ -526,7 +528,9 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
 
         reindex();
         
-        new Thread(() -> new WatchersService(this).notifyWatchers()).start();
+        var t = new Thread(() -> new WatchersService(this).notifyWatchers());
+        t.setDaemon(true);
+        t.start();
 
         long duration = System.currentTimeMillis() - start;
         Logger.info(getLogLine(null) + " | *** Page saved. (#" + getId() + ", " + duration + "ms)");
@@ -571,11 +575,13 @@ public class SeiteSO implements ISeite, Comparable<SeiteSO> {
     }
     
     public void reindex() {
-        new Thread(() -> {  // Access index in background so user does not have to wait for completion.
+        var t = new Thread(() -> {  // Access index in background so user does not have to wait for completion.
             Logger.debug("Reindexing page #" + SeiteSO.this.getId() + "...");
             book.getWorkspace().getSearch().index(SeiteSO.this);
             Logger.debug("Page #" + SeiteSO.this.getId() + " has been reindexed.");
-        }).start();
+        });
+        t.setDaemon(true);
+        t.start();
     }
 
     public void saveMeta(CommitMessage commitMessage) {

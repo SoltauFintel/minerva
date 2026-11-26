@@ -9,7 +9,9 @@ public class LiveSaveSeiteAction extends SAction {
     protected void execute() {
         try {
             final String data = ctx.fullPath() + " " + ctx.body();
-            new Thread(() -> user.getJournal().livesave(branch, id, data)).start();
+            var t = new Thread(() -> user.getJournal().livesave(branch, id, data));
+            t.setDaemon(true);
+            t.start();
         } catch (Exception ignore) {
         }
     }

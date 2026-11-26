@@ -91,7 +91,7 @@ MinervaMetrics.TEST1.set(++counter);
         Quickbutton qb = user.addQuickbutton(label, link);
         Logger.info(user.getLogin() + " | add URL based quick button \"" + qb.getLabel() + "\", " + qb.getLink());
         if (empty) {
-            new Thread(() -> {
+            var t = new Thread(() -> {
                 String label2 = WebpageTitleService.webpageTitleService.getTitle(qb.getLink()) // expensive
                         .replace("https://", "").replace("http://", "");
                 user.getUser().getQuickbuttons().forEach(i -> {
@@ -101,7 +101,9 @@ MinervaMetrics.TEST1.set(++counter);
                     }
                 });
                 user.saveQuickbuttons();
-            }).start();
+            });
+            t.setDaemon(true);
+            t.start();
         }
         
         ctx.redirect("/q/config");

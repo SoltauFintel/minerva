@@ -72,7 +72,9 @@ public class SubscriptionService {
     public void pageModified(TPage page) {
         if (subscribersAccess.hasSubscribers()) {
             checkMode();
-            new Thread(() -> subscribersAccess.put(page)).start();
+            var t = new Thread(() -> subscribersAccess.put(page));
+            t.setDaemon(true);
+            t.start();
         }
     }
     
@@ -83,7 +85,9 @@ public class SubscriptionService {
     public void pageDeleted(String id) {
         if (subscribersAccess.hasSubscribers()) {
             checkMode();
-            new Thread(() -> subscribersAccess.delete(id)).start();
+            var t = new Thread(() -> subscribersAccess.delete(id));
+            t.setDaemon(true);
+            t.start();
         }
     }
 
@@ -99,14 +103,16 @@ public class SubscriptionService {
     private void uploadZip(Consumer<File> action) {
         if (subscribersAccess.hasSubscribers()) {
             checkMode();
-            new Thread(() -> {
+            var t = new Thread(() -> {
                 File zipFile = createZipFile();
                 try {
                     action.accept(zipFile);
                 } finally {
                     zipFile.delete();
                 }
-            }).start();
+            });
+            t.setDaemon(true);
+            t.start();
         }
     }
     
